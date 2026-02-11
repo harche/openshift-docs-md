@@ -1,21 +1,16 @@
 Create and manage seccomp profiles and bind them to workloads.
 
-> [!IMPORTANT]
-> The Security Profiles Operator supports only Red Hat Enterprise Linux CoreOS (RHCOS) worker nodes. Red Hat Enterprise Linux (RHEL) nodes are not supported.
+<div class="important">
+
+The Security Profiles Operator supports only Red Hat Enterprise Linux CoreOS (RHCOS) worker nodes. Red Hat Enterprise Linux (RHEL) nodes are not supported.
+
+</div>
 
 # Creating seccomp profiles
 
 Use the `SeccompProfile` object to create profiles.
 
 `SeccompProfile` objects can restrict syscalls within a container, limiting the access of your application.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a project by running the following command:
 
@@ -34,8 +29,6 @@ Procedure
       defaultAction: SCMP_ACT_LOG
     ```
 
-</div>
-
 The seccomp profile will be saved in `/var/lib/kubelet/seccomp/operator/<namespace>/<name>.json`.
 
 An `init` container creates the root directory of the Security Profiles Operator to run the Operator without `root` group or user ID privileges. A symbolic link is created from the rootless profile storage `/var/lib/openshift-security-profiles` to the default `seccomp` root path inside of the kubelet root `/var/lib/kubelet/seccomp/operator`.
@@ -43,14 +36,6 @@ An `init` container creates the root directory of the Security Profiles Operator
 # Applying seccomp profiles to a pod
 
 Create a pod to apply one of the created profiles.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a pod object that defines a `securityContext`:
 
@@ -80,11 +65,9 @@ Procedure
     $ oc get seccompprofile profile1 --output wide
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -93,27 +76,21 @@ Procedure
     profile1   Installed  14s   operator/profile1.json
     ```
 
-    </div>
-
 3.  View the path to the localhost profile by running the following command:
 
     ``` terminal
     $ oc get sp profile1 --output=jsonpath='{.status.localhostProfile}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     operator/profile1.json
     ```
-
-    </div>
 
 4.  Apply the `localhostProfile` output to the patch file:
 
@@ -133,11 +110,9 @@ Procedure
     $ oc -n my-namespace patch deployment myapp --patch-file patch.yaml --type=merge
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -145,29 +120,15 @@ Procedure
     deployment.apps/myapp patched
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Confirm the profile was applied correctly by running the following command:
 
   ``` terminal
   $ oc -n my-namespace get deployment myapp --output=jsonpath='{.spec.template.spec.securityContext}' | jq .
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -180,21 +141,9 @@ Verification
   }
   ```
 
-  </div>
-
-</div>
-
 ## Binding workloads to profiles with ProfileBindings
 
 You can use the `ProfileBinding` resource to bind a security profile to the `SecurityContext` of a container.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To bind a pod that uses a `quay.io/security-profiles-operator/test-nginx-unprivileged:1.21` image to the example `SeccompProfile` profile, create a `ProfileBinding` object in the same namespace with the pod and the `SeccompProfile` objects:
 
@@ -217,8 +166,11 @@ Procedure
 
     - You can enable a default security profile by using a wildcard in the image attribute: `image: "*"`
 
-      > [!IMPORTANT]
-      > Using the `image: "*"` wildcard attribute binds all new pods with a default security profile in a given namespace.
+      <div class="important">
+
+      Using the `image: "*"` wildcard attribute binds all new pods with a default security profile in a given namespace.
+
+      </div>
 
 2.  Label the namespace with `enable-binding=true` by running the following command:
 
@@ -245,18 +197,11 @@ Procedure
     $ oc create -f test-pod.yaml
     ```
 
-    > [!NOTE]
-    > If the pod already exists, you must re-create the pod for the binding to work properly.
+    <div class="note">
 
-</div>
+    If the pod already exists, you must re-create the pod for the binding to work properly.
 
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+    </div>
 
 - Confirm the pod inherits the `ProfileBinding` by running the following command:
 
@@ -264,11 +209,9 @@ Verification
   $ oc get pod test-pod -o jsonpath='{.spec.containers[*].securityContext.seccompProfile}'
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -276,24 +219,15 @@ Verification
   {"localhostProfile":"operator/profile.json","type":"Localhost"}
   ```
 
-  </div>
-
-</div>
-
 # Recording profiles from workloads
 
 The Security Profiles Operator can record system calls with `ProfileRecording` objects, making it easier to create baseline profiles for applications.
 
 When using the log enricher for recording seccomp profiles, verify the log enricher feature is enabled. See *Additional resources* for more information.
 
-> [!NOTE]
-> A container with `privileged: true` security context restraints prevents log-based recording. Privileged containers are not subject to seccomp policies, and log-based recording makes use of a special seccomp profile to record events.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+A container with `privileged: true` security context restraints prevents log-based recording. Privileged containers are not subject to seccomp policies, and log-based recording makes use of a special seccomp profile to record events.
 
 </div>
 
@@ -363,11 +297,9 @@ Procedure
     $ oc -n my-namespace get pods
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -376,19 +308,15 @@ Procedure
     my-pod   2/2     Running   0          18s
     ```
 
-    </div>
-
 6.  Confirm the enricher indicates that it receives audit logs for those containers:
 
     ``` terminal
     $ oc -n openshift-security-profiles logs --since=1m --selector name=spod -c log-enricher
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -396,17 +324,7 @@ Procedure
     I0523 14:19:08.747313  430694 enricher.go:445] log-enricher "msg"="audit" "container"="redis" "executable"="/usr/local/bin/redis-server" "namespace"="my-namespace" "node"="xiyuan-23-5g2q9-worker-eastus2-6rpgf" "pid"=656802 "pod"="my-pod" "syscallID"=0 "syscallName"="read" "timestamp"="1684851548.745:207179" "type"="seccomp"
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Remove the pod:
 
@@ -420,11 +338,9 @@ Verification
     $ oc get seccompprofiles -lspo.x-k8s.io/recording-id=test-recording
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output for seccompprofile
+    **Example output for seccompprofile**
 
     </div>
 
@@ -434,21 +350,9 @@ Verification
     test-recording-redis   Installed   2m48s
     ```
 
-    </div>
-
-</div>
-
 ## Merging per-container profile instances
 
 By default, each container instance records into a separate profile. The Security Profiles Operator can merge the per-container profiles into a single profile. Merging profiles is useful when deploying applications using `ReplicaSet` or `Deployment` objects.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit a `ProfileRecording` object to include a `mergeStrategy: containers` variable:
 
@@ -519,11 +423,9 @@ Procedure
     $ oc get seccompprofiles -lspo.x-k8s.io/recording-id=test-recording -n my-namespace
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output for seccompprofiles
+    **Example output for seccompprofiles**
 
     </div>
 
@@ -532,15 +434,11 @@ Procedure
     test-recording-nginx-record   Installed    55s
     ```
 
-    </div>
-
 7.  To view the permissions used by any of the containers, run the following command:
 
     ``` terminal
     $ oc get seccompprofiles test-recording-nginx-record -o yaml
     ```
-
-</div>
 
 # Additional resources
 

@@ -28,11 +28,9 @@ It is important that the intended images are actually being deployed, that the i
 
 You can use these policy parameters to allow, deny, or require a trust relationship for entire registries, parts of registries, or individual images. Using trusted public keys, you can ensure that the source is cryptographically verified. The policy rules apply to nodes. Policy may be applied uniformly across all nodes or targeted for different node workloads (for example, build, zone, or environment).
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example image signature policy file
+**Example image signature policy file**
 
 </div>
 
@@ -70,8 +68,6 @@ Example image signature policy file
 }
 ```
 
-</div>
-
 The policy can be saved onto a node as `/etc/containers/policy.json`. Saving this file to a node is best accomplished using a new `MachineConfig` object. This example enforces the following rules:
 
 - Require images from the Red Hat Registry (`registry.access.redhat.com`) to be signed by the Red Hat public key.
@@ -96,11 +92,9 @@ Signatures that use the `docker` transport type are served by local file or web 
 
 However, the `docker` transport type requires additional configuration. You must configure the nodes with the URI of the signature server by placing arbitrarily-named YAML files into a directory on the host system, `/etc/containers/registries.d` by default. The YAML configuration files contain a registry URI and a signature server URI, or *sigstore*:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example registries.d file
+**Example registries.d file**
 
 </div>
 
@@ -110,8 +104,6 @@ docker:
         sigstore: https://access.redhat.com/webassets/docker/content/sigstore
 ```
 
-</div>
-
 In this example, the Red Hat Registry, `access.redhat.com`, is the signature server that provides signatures for the `docker` transport type. Its URI is defined in the `sigstore` parameter. You might name this file `/etc/containers/registries.d/redhat.com.yaml` and use the Machine Config Operator to automatically place the file on each node in your cluster. No service restart is required since policy and `registries.d` files are dynamically loaded by the container runtime.
 
 # Creating secrets and config maps
@@ -119,14 +111,6 @@ In this example, the Red Hat Registry, `access.redhat.com`, is the signature ser
 The `Secret` object type provides a mechanism to hold sensitive information such as passwords, OpenShift Container Platform client configuration files, `dockercfg` files, and private source repository credentials. Secrets decouple sensitive content from pods. You can mount secrets into containers using a volume plugin or the system can use secrets to perform actions on behalf of a pod.
 
 For example, to add a secret to your deployment configuration so that it can access a private image repository, do the following:
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -136,8 +120,6 @@ Procedure
 
 4.  When creating a deployment configuration (for example, from the **Add to Project** → **Deploy Image** page), set the `Pull Secret` to your new secret.
 
-</div>
-
 Config maps are similar to secrets, but are designed to support working with strings that do not contain sensitive information. The `ConfigMap` object holds key-value pairs of configuration data that can be consumed in pods or used to store configuration data for system components such as controllers.
 
 # Automating continuous deployment
@@ -146,14 +128,4 @@ You can integrate your own continuous deployment (CD) tooling with OpenShift Con
 
 By leveraging CI/CD and OpenShift Container Platform, you can automate the process of rebuilding the application to incorporate the latest fixes, testing, and ensuring that it is deployed everywhere within the environment.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Input secrets and config maps](../../cicd/builds/creating-build-inputs.xml#builds-input-secrets-configmaps_creating-build-inputs)
-
-</div>

@@ -2,13 +2,19 @@ You prepare to install an OpenShift Container Platform cluster on vSphere by com
 
 - Downloading the installation program.
 
-  > [!NOTE]
-  > If you are installing in a disconnected environment, you extract the installation program from the mirrored content. For more information, see [Mirroring images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images).
+  <div class="note">
+
+  If you are installing in a disconnected environment, you extract the installation program from the mirrored content. For more information, see [Mirroring images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images).
+
+  </div>
 
 - Installing the OpenShift CLI (`oc`).
 
-  > [!NOTE]
-  > If you are installing in a disconnected environment, install `oc` to the mirror host.
+  <div class="note">
+
+  If you are installing in a disconnected environment, install `oc` to the mirror host.
+
+  </div>
 
 - Generating an SSH key pair. You can use this key pair to authenticate into the OpenShift Container Platform cluster’s nodes after it is deployed.
 
@@ -18,33 +24,21 @@ You prepare to install an OpenShift Container Platform cluster on vSphere by com
 
 Before you install OpenShift Container Platform, download the installation file on the host you are using for installation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have a machine that runs Linux, for example Red Hat Enterprise Linux 8, with 500 MB of local disk space.
 
-  > [!IMPORTANT]
-  > If you attempt to run the installation program on macOS, a known issue related to the `golang` compiler causes the installation of the OpenShift Container Platform cluster to fail. For more information about this issue, see the section named "Known Issues" in the *OpenShift Container Platform 4.17 release notes* document.
+  <div class="important">
 
-</div>
+  If you attempt to run the installation program on macOS, a known issue related to the `golang` compiler causes the installation of the OpenShift Container Platform cluster to fail. For more information about this issue, see the section named "Known Issues" in the *OpenShift Container Platform 4.17 release notes* document.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  Go to the [Cluster Type](https://console.redhat.com/openshift/install) page on the Red Hat Hybrid Cloud Console. If you have a Red Hat account, log in with your credentials. If you do not, create an account.
 
-    > [!TIP]
-    > You can also [download the binaries for a specific OpenShift Container Platform release](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/).
+    <div class="tip">
+
+    You can also [download the binaries for a specific OpenShift Container Platform release](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/).
+
+    </div>
 
 2.  Select your infrastructure provider from the **Run it yourself** section of the page.
 
@@ -53,10 +47,6 @@ Procedure
 4.  Place the downloaded file in the directory where you want to store the installation configuration files.
 
     <div class="important">
-
-    <div class="title">
-
-    </div>
 
     - The installation program creates several files on the computer that you use to install your cluster. You must keep the installation program and the files that the installation program creates after you finish installing the cluster. Both of the files are required to delete the cluster.
 
@@ -72,25 +62,21 @@ Procedure
 
 6.  Download your installation [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret). This pull secret allows you to authenticate with the services that are provided by the included authorities, including Quay.io, which serves the container images for OpenShift Container Platform components.
 
-    > [!TIP]
-    > Alternatively, you can retrieve the installation program from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/290/), where you can specify a version of the installation program to download. However, you must have an active subscription to access this page.
+    <div class="tip">
 
-</div>
+    Alternatively, you can retrieve the installation program from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/290/), where you can specify a version of the installation program to download. However, you must have an active subscription to access this page.
+
+    </div>
 
 # Installing the OpenShift CLI on Linux
 
 To manage your cluster and deploy applications from the command line, install the OpenShift CLI (`oc`) binary on Linux.
 
-> [!IMPORTANT]
-> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
->
-> Download and install the new version of `oc`.
+<div class="important">
 
-<div>
+If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
 
-<div class="title">
-
-Procedure
+Download and install the new version of `oc`.
 
 </div>
 
@@ -116,38 +102,21 @@ Procedure
     $ echo $PATH
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - After you install the OpenShift CLI, it is available using the `oc` command:
 
   ``` terminal
   $ oc <command>
   ```
 
-</div>
-
 # Installing the OpenShift CLI on Windows
 
 To manage your cluster and deploy applications from the command line, install OpenShift CLI (`oc`) binary on Windows.
 
-> [!IMPORTANT]
-> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
->
-> Download and install the new version of `oc`.
+<div class="important">
 
-<div>
+If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
 
-<div class="title">
-
-Procedure
+Download and install the new version of `oc`.
 
 </div>
 
@@ -167,38 +136,21 @@ Procedure
     C:\> path
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - After you install the OpenShift CLI, it is available using the `oc` command:
 
   ``` terminal
   C:\> oc <command>
   ```
 
-</div>
-
 # Installing the OpenShift CLI on macOS
 
 To manage your cluster and deploy applications from the command line, install the OpenShift CLI (`oc`) binary on macOS.
 
-> [!IMPORTANT]
-> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
->
-> Download and install the new version of `oc`.
+<div class="important">
 
-<div>
+If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
 
-<div class="title">
-
-Procedure
+Download and install the new version of `oc`.
 
 </div>
 
@@ -210,8 +162,11 @@ Procedure
 
 4.  Click **Download Now** next to the **OpenShift v4.17 macOS Clients** entry and save the file.
 
-    > [!NOTE]
-    > For macOS arm64, choose the **OpenShift v4.17 macOS arm64 Client** entry.
+    <div class="note">
+
+    For macOS arm64, choose the **OpenShift v4.17 macOS arm64 Client** entry.
+
+    </div>
 
 5.  Unpack and unzip the archive.
 
@@ -223,23 +178,11 @@ Procedure
     $ echo $PATH
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify your installation by using an `oc` command:
 
   ``` terminal
   $ oc <command>
   ```
-
-</div>
 
 # Generating a key pair for cluster node SSH access
 
@@ -249,17 +192,15 @@ The SSH public key gets added to the `~/.ssh/authorized_keys` list for the `core
 
 If you want to SSH in to your cluster nodes to perform installation debugging or disaster recovery, you must provide the SSH public key during the installation process. The `./openshift-install gather` command also requires the SSH public key to be in place on the cluster nodes.
 
-> [!IMPORTANT]
-> Do not skip this procedure in production environments, where disaster recovery and debugging is required.
+<div class="important">
 
-> [!NOTE]
-> You must use a local key, not one that you configured with platform-specific approaches.
+Do not skip this procedure in production environments, where disaster recovery and debugging is required.
 
-<div>
+</div>
 
-<div class="title">
+<div class="note">
 
-Procedure
+You must use a local key, not one that you configured with platform-specific approaches.
 
 </div>
 
@@ -271,8 +212,11 @@ Procedure
 
     Specifies the path and file name, such as `~/.ssh/id_ed25519`, of the new SSH key. If you have an existing key pair, ensure your public key is in the your `~/.ssh` directory.
 
-    > [!NOTE]
-    > If you plan to install an OpenShift Container Platform cluster that uses the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the `x86_64`, `ppc64le`, and `s390x` architectures, do not create a key that uses the `ed25519` algorithm. Instead, create a key that uses the `rsa` or `ecdsa` algorithm.
+    <div class="note">
+
+    If you plan to install an OpenShift Container Platform cluster that uses the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the `x86_64`, `ppc64le`, and `s390x` architectures, do not create a key that uses the `ed25519` algorithm. Instead, create a key that uses the `rsa` or `ecdsa` algorithm.
+
+    </div>
 
 2.  View the public SSH key:
 
@@ -288,8 +232,11 @@ Procedure
 
 3.  Add the SSH private key identity to the SSH agent for your local user, if it has not already been added. SSH agent management of the key is required for password-less SSH authentication onto your cluster nodes, or if you want to use the `./openshift-install gather` command.
 
-    > [!NOTE]
-    > On some distributions, default SSH private key identities such as `~/.ssh/id_rsa` and `~/.ssh/id_dsa` are managed automatically.
+    <div class="note">
+
+    On some distributions, default SSH private key identities such as `~/.ssh/id_rsa` and `~/.ssh/id_dsa` are managed automatically.
+
+    </div>
 
     1.  If the `ssh-agent` process is not already running for your local user, start it as a background task:
 
@@ -297,11 +244,9 @@ Procedure
         $ eval "$(ssh-agent -s)"
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -309,10 +254,11 @@ Procedure
         Agent pid 31874
         ```
 
-        </div>
+        <div class="note">
 
-        > [!NOTE]
-        > If your cluster is in FIPS mode, only use FIPS-compliant algorithms to generate the SSH key. The key must be either RSA or ECDSA.
+        If your cluster is in FIPS mode, only use FIPS-compliant algorithms to generate the SSH key. The key must be either RSA or ECDSA.
+
+        </div>
 
 4.  Add your SSH private key to the `ssh-agent`:
 
@@ -322,11 +268,9 @@ Procedure
 
     Specifies the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -334,33 +278,11 @@ Procedure
     Identity added: /home/<you>/<path>/<file_name> (<computer_name>)
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - When you install OpenShift Container Platform, provide the SSH public key to the installation program.
-
-</div>
 
 # Adding vCenter root CA certificates to your system trust
 
 Because the installation program requires access to your vCenter’s API, you must add your vCenter’s trusted root CA certificates to your system trust before you install an OpenShift Container Platform cluster.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  From the vCenter home page, download the vCenter’s root CA certificates. Click **Download trusted root CA certificates** in the vSphere Web Services SDK section. The `<vCenter>/certs/download.zip` file downloads.
 
@@ -399,5 +321,3 @@ Procedure
     ``` terminal
     # update-ca-trust extract
     ```
-
-</div>

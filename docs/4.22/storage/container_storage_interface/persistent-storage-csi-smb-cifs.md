@@ -36,29 +36,15 @@ The following limitations apply to the Common Internet File System (CIFS)/Server
 
 The CIFS/SMB CSI Driver Operator (a Red Hat Operator) is not installed in OpenShift Container Platform by default. Use the following procedure to install and configure the CIFS/SMB CSI Driver Operator in your cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the OpenShift Container Platform web console.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To install the CIFS/SMB CSI Driver Operator from the web console:
-
-</div>
 
 1.  Log in to the web console.
 
@@ -86,27 +72,9 @@ To install the CIFS/SMB CSI Driver Operator from the web console:
 
 After installing the CIFS/SMB Container Storage Interface (CSI) Driver Operator, install the CIFS/SMB CSI driver.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the OpenShift Container Platform web console.
 
 - CIFS/SMB CSI Driver Operator installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Click **Administration** → **CustomResourceDefinitions** → **ClusterCSIDriver**.
 
@@ -131,19 +99,9 @@ Procedure
 
     - `SambaDriverNodeServiceControllerAvailable`
 
-</div>
-
 # Dynamic provisioning
 
 You can create a storage class for dynamic provisioning of Common Internet File System (CIFS) dialect/Server Message Block (SMB) protocol volumes. Provisioning volumes creates a subdirectory with the persistent volume (PV) name under `source` defined in the storage class.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - CIFS/SMB CSI Driver Operator and driver installed.
 
@@ -157,19 +115,13 @@ Prerequisites
 
   - Username and password
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To set up dynamic provisioning:
-
-</div>
 
 1.  Create a Secret for access to the Samba server using the following command with the following example YAML file:
 
@@ -177,11 +129,9 @@ To set up dynamic provisioning:
     $ oc create -f <file_name>.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Secret example YAML file
+    **Secret example YAML file**
 
     </div>
 
@@ -195,8 +145,6 @@ To set up dynamic provisioning:
       username: <username>
       password: <password>
     ```
-
-    </div>
 
     - Name of the Secret for the Samba server.
 
@@ -214,11 +162,9 @@ To set up dynamic provisioning:
 
     - Name of the storage class YAML file.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Storage class example YAML file
+      **Storage class example YAML file**
 
       </div>
 
@@ -243,8 +189,6 @@ To set up dynamic provisioning:
         - gid=1001
       ```
 
-      </div>
-
     - The name of the storage class.
 
     - The Samba server must be installed somewhere and reachable from the cluster with \<\`hostname\>\` being the hostname for the Samba server and `<shares>` the path the server is configured to have among the exported shares.
@@ -263,11 +207,9 @@ To set up dynamic provisioning:
 
         - The name of the PVC YAML file.
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example PVC YAML file
+          **Example PVC YAML file**
 
           </div>
 
@@ -285,8 +227,6 @@ To set up dynamic provisioning:
             storageClassName: <sc_name>
           ```
 
-          </div>
-
         - The name of the PVC.
 
         - Storage request amount.
@@ -301,11 +241,9 @@ To set up dynamic provisioning:
 
         - The name of the PVC that you created in the preceding step.
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example output
+          **Example output**
 
           </div>
 
@@ -317,21 +255,11 @@ To set up dynamic provisioning:
           ...
           ```
 
-          </div>
-
         - PVC is in Bound status.
 
 # Static provisioning
 
 You can use static provisioning to create a persistent volume (PV) and persistent volume claim (PVC) to consume existing Server Message Block protocol (SMB) shares:
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Access to the OpenShift Container Platform web console.
 
@@ -345,19 +273,13 @@ Prerequisites
 
   - Username and password
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To set up static provisioning:
-
-</div>
 
 1.  Create a Secret for access to the Samba server using the following command with the following example YAML file:
 
@@ -365,11 +287,9 @@ To set up static provisioning:
     $ oc create -f <file_name>.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Secret example YAML file
+    **Secret example YAML file**
 
     </div>
 
@@ -383,8 +303,6 @@ To set up static provisioning:
       username: <username>
       password: <password>
     ```
-
-    </div>
 
     - Name of the Secret for the Samba server.
 
@@ -402,11 +320,9 @@ To set up static provisioning:
 
     - The name of the PV YAML file.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example PV YAML file
+      **Example PV YAML file**
 
       </div>
 
@@ -437,8 +353,6 @@ To set up static provisioning:
             namespace: <namespace>
       ```
 
-      </div>
-
     - The name of the PV.
 
     - `volumeHandle` format: {smb-server-address}#{sub-dir-name}#{share-name}. Ensure that this value is unique for every share in the cluster.
@@ -459,11 +373,9 @@ To set up static provisioning:
 
         - The name of the PVC YAML file.
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example PVC YAML file
+          **Example PVC YAML file**
 
           </div>
 
@@ -482,8 +394,6 @@ To set up static provisioning:
             volumeName: <pv_name>
           ```
 
-          </div>
-
         - The name of the PVC.
 
         - Storage request amount.
@@ -498,11 +408,9 @@ To set up static provisioning:
 
         - The name of the PVC that you created in the preceding step.
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example output
+          **Example output**
 
           </div>
 
@@ -514,14 +422,15 @@ To set up static provisioning:
           ...
           ```
 
-          </div>
-
         - PVC is in Bound status.
 
 4.  Create a deployment on Linux by running the following command with the following example YAML file:
 
-    > [!NOTE]
-    > The following deployment is not mandatory for using the PV and PVC created in the previous steps. It is example of how they can be used.
+    <div class="note">
+
+    The following deployment is not mandatory for using the PV and PVC created in the previous steps. It is example of how they can be used.
+
+    </div>
 
     ``` terminal
     $ oc create -f <deployment_file_name>.yaml
@@ -529,11 +438,9 @@ To set up static provisioning:
 
     - The name of the deployment YAML file.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example deployment YAML file
+      **Example deployment YAML file**
 
       </div>
 
@@ -579,8 +486,6 @@ To set up static provisioning:
           type: RollingUpdate
       ```
 
-      </div>
-
     - The name of the deployment.
 
     - The volume mount path.
@@ -597,11 +502,9 @@ To set up static provisioning:
 
     - The name of the pod.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -612,8 +515,6 @@ To set up static provisioning:
       //20.43.191.64/share   97G   21G   77G  22% /mnt/smb
       ...
       ```
-
-      </div>
 
       In this example, there is a `/mnt/smb` directory mounted as a Common Internet File System (CIFS) filesystem.
 

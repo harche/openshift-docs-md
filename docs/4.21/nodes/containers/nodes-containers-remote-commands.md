@@ -4,17 +4,13 @@ You can use the CLI to execute remote commands in OpenShift Container Platform c
 
 Support for remote container command execution is built into the CLI.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To run a command in a container:
-
-</div>
 
 ``` terminal
 $ oc exec <pod> [-c <container>] -- <command> [<arg_1> ... <arg_n>]
@@ -26,11 +22,9 @@ For example:
 $ oc exec mypod date
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -38,10 +32,11 @@ Example output
 Thu Apr  9 02:21:53 UTC 2015
 ```
 
-</div>
+<div class="important">
 
-> [!IMPORTANT]
-> [For security purposes](https://access.redhat.com/errata/RHSA-2015:1650), the `oc exec` command does not work when accessing privileged containers except when the command is executed by a `cluster-admin` user.
+[For security purposes](https://access.redhat.com/errata/RHSA-2015:1650), the `oc exec` command does not work when accessing privileged containers except when the command is executed by a `cluster-admin` user.
+
+</div>
 
 # Protocol for initiating a remote command from a client
 

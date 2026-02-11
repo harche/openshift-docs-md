@@ -30,8 +30,11 @@ When planning your maximum transmission unit (MTU) migration there are two relat
 
 If your cluster requires different MTU values for different nodes, you must subtract the overhead value for your network plugin from the lowest MTU value that is used by any node in your cluster. For example, if some nodes in your cluster have an MTU of `9001`, and some have an MTU of `1500`, you must set this value to `1400`.
 
-> [!IMPORTANT]
-> To avoid selecting an MTU value that is not acceptable by a node, verify the maximum MTU value (`maxmtu`) that is accepted by the network interface by using the `ip -d link` command.
+<div class="important">
+
+To avoid selecting an MTU value that is not acceptable by a node, verify the maximum MTU value (`maxmtu`) that is accepted by the network interface by using the `ip -d link` command.
+
+</div>
 
 ## How the migration process works
 
@@ -44,13 +47,13 @@ The following table summarizes the migration process by segmenting between the u
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">User-initiated steps</th>
 <th style="text-align: left;">OpenShift Container Platform activity</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Set the following values in the Cluster Network Operator configuration:</p>
 <ul>
 <li><p><code>spec.migration.mtu.machine.to</code></p></li>
@@ -66,7 +69,7 @@ The following table summarizes the migration process by segmenting between the u
 <p>If the values provided are valid, the CNO writes out a new temporary configuration with the MTU for the cluster network set to the value of the <code>mtu.network.to</code> field.</p>
 <p><strong>Machine Config Operator (MCO)</strong>: Performs a rolling reboot of each node in the cluster.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Reconfigure the MTU of the primary network interface for the nodes on the cluster. You can use one of the following methods to accomplish this:</p>
 <ul>
 <li><p>Deploying a new NetworkManager connection profile with the MTU change</p></li>
@@ -75,31 +78,28 @@ The following table summarizes the migration process by segmenting between the u
 </ul></td>
 <td style="text-align: left;"><p>N/A</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Set the <code>mtu</code> value in the CNO configuration for the network plugin and set <code>spec.migration</code> to <code>null</code>.</p></td>
 <td style="text-align: left;"><p><strong>Machine Config Operator (MCO)</strong>: Performs a rolling reboot of each node in the cluster with the new MTU configuration.</p></td>
 </tr>
 </tbody>
 </table>
 
+Live migration of the cluster MTU
+
 # Changing the cluster network MTU
 
 As a cluster administrator, you can increase or decrease the maximum transmission unit (MTU) for your cluster.
 
-> [!IMPORTANT]
-> You cannot roll back an MTU value for nodes during the MTU migration process, but you can roll back the value after the MTU migration process completes.
->
-> The migration is disruptive and nodes in your cluster might be temporarily unavailable as the MTU update takes effect.
+<div class="important">
 
-The following procedures describe how to change the cluster network MTU by using machine configs, Dynamic Host Configuration Protocol (DHCP), or an ISO image. If you use either the DHCP or ISO approaches, you must refer to configuration artifacts that you kept after installing your cluster to complete the procedure.
+You cannot roll back an MTU value for nodes during the MTU migration process, but you can roll back the value after the MTU migration process completes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The migration is disruptive and nodes in your cluster might be temporarily unavailable as the MTU update takes effect.
 
 </div>
+
+The following procedures describe how to change the cluster network MTU by using machine configs, Dynamic Host Configuration Protocol (DHCP), or an ISO image. If you use either the DHCP or ISO approaches, you must refer to configuration artifacts that you kept after installing your cluster to complete the procedure.
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -111,19 +111,9 @@ Prerequisites
 
 - If your nodes are virtual machines (VMs), ensure that the hypervisor and the connected network switches support jumbo frames.
 
-</div>
-
 ## Checking the current cluster MTU value
 
 Use the following procedure to obtain the current maximum transmission unit (MTU) for the cluster network.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To obtain the current MTU for the cluster network, enter the following command:
 
@@ -131,11 +121,9 @@ Procedure
   $ oc describe network.config cluster
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -152,21 +140,9 @@ Procedure
   ...
   ```
 
-  </div>
-
-</div>
-
 ## Preparing your hardware MTU configuration
 
 Many ways exist to configure the hardware maximum transmission unit (MTU) for your cluster nodes. The following examples show only the most common methods. Verify the correctness of your infrastructure MTU. Select your preferred method for configuring your hardware MTU in the cluster nodes.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Prepare your configuration for the hardware MTU:
 
@@ -212,26 +188,19 @@ Procedure
           `<mtu>`
           Specifies the new hardware MTU value.
 
-</div>
-
 ## Creating MachineConfig objects
 
 Use the following procedure to create the `MachineConfig` objects.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create two `MachineConfig` objects, one for the control plane nodes and another for the worker nodes in your cluster:
 
     1.  Create the following Butane config in the `control-plane-interface.bu` file:
 
-        > [!NOTE]
-        > The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+        <div class="note">
+
+        The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+
+        </div>
 
         ``` yaml
         variant: openshift
@@ -254,8 +223,11 @@ Procedure
 
     2.  Create the following Butane config in the `worker-interface.bu` file:
 
-        > [!NOTE]
-        > The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+        <div class="note">
+
+        The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+
+        </div>
 
         ``` yaml
         variant: openshift
@@ -284,22 +256,15 @@ Procedure
       done
     ```
 
-    > [!WARNING]
-    > Do not apply these machine configs until explicitly instructed later in this procedure. Applying these machine configs now causes a loss of stability for the cluster.
+    <div class="warning">
 
-</div>
+    Do not apply these machine configs until explicitly instructed later in this procedure. Applying these machine configs now causes a loss of stability for the cluster.
+
+    </div>
 
 ## Beginning the MTU migration
 
 Use the following procedure to start the MTU migration.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To begin the MTU migration, specify the migration configuration by entering the following command. The Machine Config Operator performs a rolling reboot of the nodes in the cluster in preparation for the MTU change.
 
@@ -332,22 +297,15 @@ Procedure
 
     A successfully updated node has the following status: `UPDATED=true`, `UPDATING=false`, `DEGRADED=false`.
 
-    > [!NOTE]
-    > By default, the Machine Config Operator updates one machine per pool at a time, causing the total time the migration takes to increase with the size of the cluster.
+    <div class="note">
 
-</div>
+    By default, the Machine Config Operator updates one machine per pool at a time, causing the total time the migration takes to increase with the size of the cluster.
+
+    </div>
 
 ## Verifying the machine configuration
 
 Use the following procedure to verify the machine configuration.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Confirm the status of the new machine configuration on the hosts:
 
@@ -357,11 +315,9 @@ Procedure
       $ oc describe node | egrep "hostname|machineconfig"
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -372,8 +328,6 @@ Procedure
       machineconfiguration.openshift.io/reason:
       machineconfiguration.openshift.io/state: Done
       ```
-
-      </div>
 
   2.  Verify that the following statements are true:
 
@@ -398,19 +352,9 @@ Procedure
       ExecStart=/usr/local/bin/mtu-migration.sh
       ```
 
-</div>
-
 ## Applying the new hardware MTU value
 
 Use the following procedure to apply the new hardware maximum transmission unit (MTU) value.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Update the underlying network interface MTU value:
 
@@ -432,8 +376,11 @@ Procedure
 
     A successfully updated node has the following status: `UPDATED=true`, `UPDATING=false`, `DEGRADED=false`.
 
-    > [!NOTE]
-    > By default, the Machine Config Operator updates one machine per pool at a time, causing the total time the migration takes to increase with the size of the cluster.
+    <div class="note">
+
+    By default, the Machine Config Operator updates one machine per pool at a time, causing the total time the migration takes to increase with the size of the cluster.
+
+    </div>
 
 3.  Confirm the status of the new machine configuration on the hosts:
 
@@ -443,11 +390,9 @@ Procedure
         $ oc describe node | egrep "hostname|machineconfig"
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -458,8 +403,6 @@ Procedure
         machineconfiguration.openshift.io/reason:
         machineconfiguration.openshift.io/state: Done
         ```
-
-        </div>
 
         Verify that the following statements are true:
 
@@ -480,19 +423,9 @@ Procedure
 
         If the machine config is successfully deployed, the previous output contains the `/etc/NetworkManager/conf.d/99-<interface>-mtu.conf` file path and the `ExecStart=/usr/local/bin/mtu-migration.sh` line.
 
-</div>
-
 ## Finalizing the MTU migration
 
 Use the following procedure to finalize the MTU migration.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To finalize the MTU migration, enter the following command for the OVN-Kubernetes network plugin:
 
@@ -514,15 +447,7 @@ Procedure
 
     A successfully updated node has the following status: `UPDATED=true`, `UPDATING=false`, `DEGRADED=false`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  To get the current MTU for the cluster network, enter the following command:
 
@@ -552,21 +477,15 @@ Verification
         `<interface>`
         Specifies the primary network interface name for the node.
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
         ``` text
         ens3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 8051
         ```
-
-        </div>
-
-</div>
 
 # Additional resources
 

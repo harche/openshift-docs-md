@@ -13,13 +13,13 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta_v2) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | BuildConfigSpec describes when and how builds are created |
-| `status` | `object` | BuildConfigStatus contains current state of the build config object. |
+| Property     | Type                                                                                       | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                                   | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                                   | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta_v2) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                |
+| `spec`       | `object`                                                                                   | BuildConfigSpec describes when and how builds are created                                                                                                                                                                                                                                            |
+| `status`     | `object`                                                                                   | BuildConfigStatus contains current state of the build config object.                                                                                                                                                                                                                                 |
 
 ## .spec
 
@@ -39,40 +39,40 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>completionDeadlineSeconds</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>completionDeadlineSeconds is an optional duration in seconds, counted from the time when a build pod gets scheduled in the system, that the build may be active on a node before the system actively tries to terminate the build; value must be positive integer</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>failedBuildsHistoryLimit</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>failedBuildsHistoryLimit is the number of old failed builds to retain. When a BuildConfig is created, the 5 most recent failed builds are retained unless this value is set. If removed after the BuildConfig has been created, all failed builds are retained.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mountTrustedCA</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>mountTrustedCA bind mounts the cluster’s trusted certificate authorities, as defined in the cluster’s proxy configuration, into the build. This lets processes within a build trust components signed by custom PKI certificate authorities, such as private artifact repositories and HTTPS proxies.</p>
 <p>When this field is set to true, the contents of <code>/etc/pki/ca-trust</code> within the build are managed by the build container, and any changes to this directory or its subdirectories (for example - within a Dockerfile <code>RUN</code> instruction) are not persisted in the build’s output image.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>nodeSelector</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p>nodeSelector is a selector which must be true for the build pod to fit on a node If nil, it can be overridden by default build nodeselector values for the cluster. If set to an empty map or a map with any values, default build nodeselector values are ignored.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>output</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BuildOutput is input to a build strategy and describes the container image that the strategy should produce.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>postCommit</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>A BuildPostCommitSpec holds a build post commit hook specification. The hook executes a command in a temporary container running the build output image, immediately after the last layer of the image is committed and before the image is pushed to a registry. The command is executed with the current working directory ($PWD) set to the image’s WORKDIR.</p>
@@ -96,47 +96,47 @@ Required
 <p>This form is equivalent to appending the arguments to the Command slice.</p>
 <p>It is invalid to provide both Script and Command simultaneously. If none of the fields are specified, the hook is not executed.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>resources</code></p></td>
 <td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-ResourceRequirements"><code>ResourceRequirements</code></a></p></td>
 <td style="text-align: left;"><p>resources computes resource requirements to execute the build.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>revision</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SourceRevision is the revision or commit information from the source for the build</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>runPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>RunPolicy describes how the new build created from this build configuration will be scheduled for execution. This is optional, if not specified we default to "Serial".</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>serviceAccount</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>serviceAccount is the name of the ServiceAccount to use to run the pod created by this build. The pod will be allowed to use secrets referenced by the ServiceAccount</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>source</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BuildSource is the SCM used for the build.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>strategy</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BuildStrategy contains the details of how to perform a build.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>successfulBuildsHistoryLimit</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>successfulBuildsHistoryLimit is the number of old successful builds to retain. When a BuildConfig is created, the 5 most recent successful builds are retained unless this value is set. If removed after the BuildConfig has been created, all successful builds are retained.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>triggers</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>triggers determine how new Builds can be launched from a BuildConfig. If no triggers are defined, a new build can only occur as a result of an explicit client build creation.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>triggers[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BuildTriggerPolicy describes a policy for a single trigger that results in a new Build.</p></td>
@@ -152,12 +152,12 @@ BuildOutput is input to a build strategy and describes the container image that 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `imageLabels` | `array` | imageLabels define a list of labels that are applied to the resulting image. If there are multiple labels with the same name then the last one in the list is used. |
-| `imageLabels[]` | `object` | ImageLabel represents a label applied to the resulting image. |
-| `pushSecret` | `LocalObjectReference_v2` | PushSecret is the name of a Secret that would be used for setting up the authentication for executing the Docker push to authentication enabled Docker Registry (or Docker Hub). |
-| `to` | [`ObjectReference`](../objects/index.xml#io-k8s-api-core-v1-ObjectReference) | to defines an optional location to push the output of this build to. Kind must be one of 'ImageStreamTag' or 'DockerImage'. This value will be used to look up a container image repository to push to. In the case of an ImageStreamTag, the ImageStreamTag will be looked for in the namespace of the build unless Namespace is specified. |
+| Property        | Type                                                                         | Description                                                                                                                                                                                                                                                                                                                                  |
+|-----------------|------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `imageLabels`   | `array`                                                                      | imageLabels define a list of labels that are applied to the resulting image. If there are multiple labels with the same name then the last one in the list is used.                                                                                                                                                                          |
+| `imageLabels[]` | `object`                                                                     | ImageLabel represents a label applied to the resulting image.                                                                                                                                                                                                                                                                                |
+| `pushSecret`    | `LocalObjectReference_v2`                                                    | PushSecret is the name of a Secret that would be used for setting up the authentication for executing the Docker push to authentication enabled Docker Registry (or Docker Hub).                                                                                                                                                             |
+| `to`            | [`ObjectReference`](../objects/index.xml#io-k8s-api-core-v1-ObjectReference) | to defines an optional location to push the output of this build to. Kind must be one of 'ImageStreamTag' or 'DockerImage'. This value will be used to look up a container image repository to push to. In the case of an ImageStreamTag, the ImageStreamTag will be looked for in the namespace of the build unless Namespace is specified. |
 
 ## .spec.output.imageLabels
 
@@ -178,10 +178,10 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name defines the name of the label. It must have non-zero length. |
-| `value` | `string` | value defines the literal value of the label. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `name`   | `string` | name defines the name of the label. It must have non-zero length. |
+| `value`  | `string` | value defines the literal value of the label.                     |
 
 ## .spec.postCommit
 
@@ -247,11 +247,11 @@ It is invalid to provide both Script and Command simultaneously. If none of the 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `args` | `array (string)` | args is a list of arguments that are provided to either Command, Script or the container image’s default entrypoint. The arguments are placed immediately after the command to be run. |
-| `command` | `array (string)` | command is the command to run. It may not be specified with Script. This might be needed if the image doesn’t have `/bin/sh`, or if you do not want to use a shell. In all other cases, using Script might be more convenient. |
-| `script` | `string` | script is a shell script to be run with `/bin/sh -ic`. It may not be specified with Command. Use Script when a shell script is appropriate to execute the post build hook, for example for running unit tests with `rake test`. If you need control over the image entrypoint, or if the image does not have `/bin/sh`, use Command and/or Args. The `-i` flag is needed to support CentOS and RHEL images that use Software Collections (SCL), in order to have the appropriate collections enabled in the shell. E.g., in the Ruby image, this is necessary to make `ruby`, `bundle` and other binaries available in the PATH. |
+| Property  | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|-----------|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `args`    | `array (string)` | args is a list of arguments that are provided to either Command, Script or the container image’s default entrypoint. The arguments are placed immediately after the command to be run.                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `command` | `array (string)` | command is the command to run. It may not be specified with Script. This might be needed if the image doesn’t have `/bin/sh`, or if you do not want to use a shell. In all other cases, using Script might be more convenient.                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `script`  | `string`         | script is a shell script to be run with `/bin/sh -ic`. It may not be specified with Command. Use Script when a shell script is appropriate to execute the post build hook, for example for running unit tests with `rake test`. If you need control over the image entrypoint, or if the image does not have `/bin/sh`, use Command and/or Args. The `-i` flag is needed to support CentOS and RHEL images that use Software Collections (SCL), in order to have the appropriate collections enabled in the shell. E.g., in the Ruby image, this is necessary to make `ruby`, `bundle` and other binaries available in the PATH. |
 
 ## .spec.revision
 
@@ -264,10 +264,10 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `git` | `object` | GitSourceRevision is the commit information from a git source for a build |
-| `type` | `string` | type of the build source, may be one of 'Source', 'Dockerfile', 'Binary', or 'Images' |
+| Property | Type     | Description                                                                           |
+|----------|----------|---------------------------------------------------------------------------------------|
+| `git`    | `object` | GitSourceRevision is the commit information from a git source for a build             |
+| `type`   | `string` | type of the build source, may be one of 'Source', 'Dockerfile', 'Binary', or 'Images' |
 
 ## .spec.revision.git
 
@@ -277,12 +277,12 @@ GitSourceRevision is the commit information from a git source for a build
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `author` | `object` | SourceControlUser defines the identity of a user of source control |
-| `commit` | `string` | commit is the commit hash identifying a specific commit |
+| Property    | Type     | Description                                                        |
+|-------------|----------|--------------------------------------------------------------------|
+| `author`    | `object` | SourceControlUser defines the identity of a user of source control |
+| `commit`    | `string` | commit is the commit hash identifying a specific commit            |
 | `committer` | `object` | SourceControlUser defines the identity of a user of source control |
-| `message` | `string` | message is the description of a specific commit |
+| `message`   | `string` | message is the description of a specific commit                    |
 
 ## .spec.revision.git.author
 
@@ -318,20 +318,20 @@ BuildSource is the SCM used for the build.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `binary` | `object` | BinaryBuildSource describes a binary file to be used for the Docker and Source build strategies, where the file will be extracted and used as the build source. |
-| `configMaps` | `array` | configMaps represents a list of configMaps and their destinations that will be used for the build. |
-| `configMaps[]` | `object` | ConfigMapBuildSource describes a configmap and its destination directory that will be used only at the build time. The content of the configmap referenced here will be copied into the destination directory instead of mounting. |
-| `contextDir` | `string` | contextDir specifies the sub-directory where the source code for the application exists. This allows to have buildable sources in directory other than root of repository. |
-| `dockerfile` | `string` | dockerfile is the raw contents of a Dockerfile which should be built. When this option is specified, the FROM may be modified based on your strategy base image and additional ENV stanzas from your strategy environment will be added after the FROM, but before the rest of your Dockerfile stanzas. The Dockerfile source type may be used with other options like git - in those cases the Git repo will have any innate Dockerfile replaced in the context dir. |
-| `git` | `object` | GitBuildSource defines the parameters of a Git SCM |
-| `images` | `array` | images describes a set of images to be used to provide source for the build |
-| `images[]` | `object` | ImageSource is used to describe build source that will be extracted from an image or used during a multi stage build. A reference of type ImageStreamTag, ImageStreamImage or DockerImage may be used. A pull secret can be specified to pull the image from an external registry or override the default service account secret if pulling from the internal registry. Image sources can either be used to extract content from an image and place it into the build context along with the repository source, or used directly during a multi-stage container image build to allow content to be copied without overwriting the contents of the repository source (see the 'paths' and 'as' fields). |
-| `secrets` | `array` | secrets represents a list of secrets and their destinations that will be used only for the build. |
-| `secrets[]` | `object` | SecretBuildSource describes a secret and its destination directory that will be used only at the build time. The content of the secret referenced here will be copied into the destination directory instead of mounting. |
-| `sourceSecret` | `LocalObjectReference_v2` | sourceSecret is the name of a Secret that would be used for setting up the authentication for cloning private repository. The secret contains valid credentials for remote repository, where the data’s key represent the authentication method to be used and value is the base64 encoded credentials. Supported auth methods are: ssh-privatekey. |
-| `type` | `string` | type of build input to accept |
+| Property       | Type                      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|----------------|---------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `binary`       | `object`                  | BinaryBuildSource describes a binary file to be used for the Docker and Source build strategies, where the file will be extracted and used as the build source.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `configMaps`   | `array`                   | configMaps represents a list of configMaps and their destinations that will be used for the build.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `configMaps[]` | `object`                  | ConfigMapBuildSource describes a configmap and its destination directory that will be used only at the build time. The content of the configmap referenced here will be copied into the destination directory instead of mounting.                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `contextDir`   | `string`                  | contextDir specifies the sub-directory where the source code for the application exists. This allows to have buildable sources in directory other than root of repository.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `dockerfile`   | `string`                  | dockerfile is the raw contents of a Dockerfile which should be built. When this option is specified, the FROM may be modified based on your strategy base image and additional ENV stanzas from your strategy environment will be added after the FROM, but before the rest of your Dockerfile stanzas. The Dockerfile source type may be used with other options like git - in those cases the Git repo will have any innate Dockerfile replaced in the context dir.                                                                                                                                                                                                                                  |
+| `git`          | `object`                  | GitBuildSource defines the parameters of a Git SCM                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `images`       | `array`                   | images describes a set of images to be used to provide source for the build                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `images[]`     | `object`                  | ImageSource is used to describe build source that will be extracted from an image or used during a multi stage build. A reference of type ImageStreamTag, ImageStreamImage or DockerImage may be used. A pull secret can be specified to pull the image from an external registry or override the default service account secret if pulling from the internal registry. Image sources can either be used to extract content from an image and place it into the build context along with the repository source, or used directly during a multi-stage container image build to allow content to be copied without overwriting the contents of the repository source (see the 'paths' and 'as' fields). |
+| `secrets`      | `array`                   | secrets represents a list of secrets and their destinations that will be used only for the build.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `secrets[]`    | `object`                  | SecretBuildSource describes a secret and its destination directory that will be used only at the build time. The content of the secret referenced here will be copied into the destination directory instead of mounting.                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `sourceSecret` | `LocalObjectReference_v2` | sourceSecret is the name of a Secret that would be used for setting up the authentication for cloning private repository. The secret contains valid credentials for remote repository, where the data’s key represent the authentication method to be used and value is the base64 encoded credentials. Supported auth methods are: ssh-privatekey.                                                                                                                                                                                                                                                                                                                                                    |
+| `type`         | `string`                  | type of build input to accept                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ## .spec.source.binary
 
@@ -341,8 +341,8 @@ BinaryBuildSource describes a binary file to be used for the Docker and Source b
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `asFile` | `string` | asFile indicates that the provided binary input should be considered a single file within the build input. For example, specifying "webapp.war" would place the provided binary as `/webapp.war` for the builder. If left empty, the Docker and Source build strategies assume this file is a zip, tar, or tar.gz file and extract it as the source. The custom strategy receives this binary as standard input. This filename may not contain slashes or be '..' or '.'. |
 
 ## .spec.source.configMaps
@@ -364,10 +364,10 @@ Type
 Required
 - `configMap`
 
-| Property | Type | Description |
-|----|----|----|
-| `configMap` | `LocalObjectReference_v2` | configMap is a reference to an existing configmap that you want to use in your build. |
-| `destinationDir` | `string` | destinationDir is the directory where the files from the configmap should be available for the build time. For the Source build strategy, these will be injected into a container where the assemble script runs. For the container image build strategy, these will be copied into the build directory, where the Dockerfile is located, so users can ADD or COPY them during container image build. |
+| Property         | Type                      | Description                                                                                                                                                                                                                                                                                                                                                                                           |
+|------------------|---------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `configMap`      | `LocalObjectReference_v2` | configMap is a reference to an existing configmap that you want to use in your build.                                                                                                                                                                                                                                                                                                                 |
+| `destinationDir` | `string`                  | destinationDir is the directory where the files from the configmap should be available for the build time. For the Source build strategy, these will be injected into a container where the assemble script runs. For the container image build strategy, these will be copied into the build directory, where the Dockerfile is located, so users can ADD or COPY them during container image build. |
 
 ## .spec.source.git
 
@@ -380,13 +380,13 @@ Type
 Required
 - `uri`
 
-| Property | Type | Description |
-|----|----|----|
-| `httpProxy` | `string` | httpProxy is a proxy used to reach the git repository over http |
-| `httpsProxy` | `string` | httpsProxy is a proxy used to reach the git repository over https |
-| `noProxy` | `string` | noProxy is the list of domains for which the proxy should not be used |
-| `ref` | `string` | ref is the branch/tag/ref to build. |
-| `uri` | `string` | uri points to the source that will be built. The structure of the source will depend on the type of build to run |
+| Property     | Type     | Description                                                                                                      |
+|--------------|----------|------------------------------------------------------------------------------------------------------------------|
+| `httpProxy`  | `string` | httpProxy is a proxy used to reach the git repository over http                                                  |
+| `httpsProxy` | `string` | httpsProxy is a proxy used to reach the git repository over https                                                |
+| `noProxy`    | `string` | noProxy is the list of domains for which the proxy should not be used                                            |
+| `ref`        | `string` | ref is the branch/tag/ref to build.                                                                              |
+| `uri`        | `string` | uri points to the source that will be built. The structure of the source will depend on the type of build to run |
 
 ## .spec.source.images
 
@@ -407,13 +407,13 @@ Type
 Required
 - `from`
 
-| Property | Type | Description |
-|----|----|----|
-| `as` | `array (string)` | A list of image names that this source will be used in place of during a multi-stage container image build. For instance, a Dockerfile that uses "COPY --from=nginx:latest" will first check for an image source that has "nginx:latest" in this field before attempting to pull directly. If the Dockerfile does not reference an image source it is ignored. This field and paths may both be set, in which case the contents will be used twice. |
-| `from` | [`ObjectReference`](../objects/index.xml#io-k8s-api-core-v1-ObjectReference) | from is a reference to an ImageStreamTag, ImageStreamImage, or DockerImage to copy source from. |
-| `paths` | `array` | paths is a list of source and destination paths to copy from the image. This content will be copied into the build context prior to starting the build. If no paths are set, the build context will not be altered. |
-| `paths[]` | `object` | ImageSourcePath describes a path to be copied from a source image and its destination within the build directory. |
-| `pullSecret` | `LocalObjectReference_v2` | pullSecret is a reference to a secret to be used to pull the image from a registry If the image is pulled from the OpenShift registry, this field does not need to be set. |
+| Property     | Type                                                                         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|--------------|------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `as`         | `array (string)`                                                             | A list of image names that this source will be used in place of during a multi-stage container image build. For instance, a Dockerfile that uses "COPY --from=nginx:latest" will first check for an image source that has "nginx:latest" in this field before attempting to pull directly. If the Dockerfile does not reference an image source it is ignored. This field and paths may both be set, in which case the contents will be used twice. |
+| `from`       | [`ObjectReference`](../objects/index.xml#io-k8s-api-core-v1-ObjectReference) | from is a reference to an ImageStreamTag, ImageStreamImage, or DockerImage to copy source from.                                                                                                                                                                                                                                                                                                                                                     |
+| `paths`      | `array`                                                                      | paths is a list of source and destination paths to copy from the image. This content will be copied into the build context prior to starting the build. If no paths are set, the build context will not be altered.                                                                                                                                                                                                                                 |
+| `paths[]`    | `object`                                                                     | ImageSourcePath describes a path to be copied from a source image and its destination within the build directory.                                                                                                                                                                                                                                                                                                                                   |
+| `pullSecret` | `LocalObjectReference_v2`                                                    | pullSecret is a reference to a secret to be used to pull the image from a registry If the image is pulled from the OpenShift registry, this field does not need to be set.                                                                                                                                                                                                                                                                          |
 
 ## .spec.source.images\[\].paths
 
@@ -436,10 +436,10 @@ Required
 
 - `destinationDir`
 
-| Property | Type | Description |
-|----|----|----|
-| `destinationDir` | `string` | destinationDir is the relative directory within the build directory where files copied from the image are placed. |
-| `sourcePath` | `string` | sourcePath is the absolute path of the file or directory inside the image to copy to the build directory. If the source path ends in /. then the content of the directory will be copied, but the directory itself will not be created at the destination. |
+| Property         | Type     | Description                                                                                                                                                                                                                                                |
+|------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `destinationDir` | `string` | destinationDir is the relative directory within the build directory where files copied from the image are placed.                                                                                                                                          |
+| `sourcePath`     | `string` | sourcePath is the absolute path of the file or directory inside the image to copy to the build directory. If the source path ends in /. then the content of the directory will be copied, but the directory itself will not be created at the destination. |
 
 ## .spec.source.secrets
 
@@ -460,10 +460,10 @@ Type
 Required
 - `secret`
 
-| Property | Type | Description |
-|----|----|----|
-| `destinationDir` | `string` | destinationDir is the directory where the files from the secret should be available for the build time. For the Source build strategy, these will be injected into a container where the assemble script runs. Later, when the script finishes, all files injected will be truncated to zero length. For the container image build strategy, these will be copied into the build directory, where the Dockerfile is located, so users can ADD or COPY them during container image build. |
-| `secret` | `LocalObjectReference_v2` | secret is a reference to an existing secret that you want to use in your build. |
+| Property         | Type                      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|------------------|---------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `destinationDir` | `string`                  | destinationDir is the directory where the files from the secret should be available for the build time. For the Source build strategy, these will be injected into a container where the assemble script runs. Later, when the script finishes, all files injected will be truncated to zero length. For the container image build strategy, these will be copied into the build directory, where the Dockerfile is located, so users can ADD or COPY them during container image build. |
+| `secret`         | `LocalObjectReference_v2` | secret is a reference to an existing secret that you want to use in your build.                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ## .spec.strategy
 
@@ -473,13 +473,13 @@ BuildStrategy contains the details of how to perform a build.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `customStrategy` | `object` | CustomBuildStrategy defines input parameters specific to Custom build. |
-| `dockerStrategy` | `object` | DockerBuildStrategy defines input parameters specific to container image build. |
+| Property                  | Type     | Description                                                                                                             |
+|---------------------------|----------|-------------------------------------------------------------------------------------------------------------------------|
+| `customStrategy`          | `object` | CustomBuildStrategy defines input parameters specific to Custom build.                                                  |
+| `dockerStrategy`          | `object` | DockerBuildStrategy defines input parameters specific to container image build.                                         |
 | `jenkinsPipelineStrategy` | `object` | JenkinsPipelineBuildStrategy holds parameters specific to a Jenkins Pipeline build. Deprecated: use OpenShift Pipelines |
-| `sourceStrategy` | `object` | SourceBuildStrategy defines input parameters specific to an Source build. |
-| `type` | `string` | type is the kind of build strategy. |
+| `sourceStrategy`          | `object` | SourceBuildStrategy defines input parameters specific to an Source build.                                               |
+| `type`                    | `string` | type is the kind of build strategy.                                                                                     |
 
 ## .spec.strategy.customStrategy
 
@@ -492,16 +492,16 @@ Type
 Required
 - `from`
 
-| Property | Type | Description |
-|----|----|----|
-| `buildAPIVersion` | `string` | buildAPIVersion is the requested API version for the Build object serialized and passed to the custom builder |
-| `env` | [`array (EnvVar)`](../objects/index.xml#io-k8s-api-core-v1-EnvVar) | env contains additional environment variables you want to pass into a builder container. |
-| `exposeDockerSocket` | `boolean` | exposeDockerSocket will allow running Docker commands (and build container images) from inside the container. |
-| `forcePull` | `boolean` | forcePull describes if the controller should configure the build pod to always pull the images for the builder or only pull if it is not present locally |
-| `from` | [`ObjectReference`](../objects/index.xml#io-k8s-api-core-v1-ObjectReference) | from is reference to an DockerImage, ImageStreamTag, or ImageStreamImage from which the container image should be pulled |
-| `pullSecret` | `LocalObjectReference_v2` | pullSecret is the name of a Secret that would be used for setting up the authentication for pulling the container images from the private Docker registries |
-| `secrets` | `array` | secrets is a list of additional secrets that will be included in the build pod |
-| `secrets[]` | `object` | SecretSpec specifies a secret to be included in a build pod and its corresponding mount point |
+| Property             | Type                                                                         | Description                                                                                                                                                 |
+|----------------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `buildAPIVersion`    | `string`                                                                     | buildAPIVersion is the requested API version for the Build object serialized and passed to the custom builder                                               |
+| `env`                | [`array (EnvVar)`](../objects/index.xml#io-k8s-api-core-v1-EnvVar)           | env contains additional environment variables you want to pass into a builder container.                                                                    |
+| `exposeDockerSocket` | `boolean`                                                                    | exposeDockerSocket will allow running Docker commands (and build container images) from inside the container.                                               |
+| `forcePull`          | `boolean`                                                                    | forcePull describes if the controller should configure the build pod to always pull the images for the builder or only pull if it is not present locally    |
+| `from`               | [`ObjectReference`](../objects/index.xml#io-k8s-api-core-v1-ObjectReference) | from is reference to an DockerImage, ImageStreamTag, or ImageStreamImage from which the container image should be pulled                                    |
+| `pullSecret`         | `LocalObjectReference_v2`                                                    | pullSecret is the name of a Secret that would be used for setting up the authentication for pulling the container images from the private Docker registries |
+| `secrets`            | `array`                                                                      | secrets is a list of additional secrets that will be included in the build pod                                                                              |
+| `secrets[]`          | `object`                                                                     | SecretSpec specifies a secret to be included in a build pod and its corresponding mount point                                                               |
 
 ## .spec.strategy.customStrategy.secrets
 
@@ -524,10 +524,10 @@ Required
 
 - `mountPath`
 
-| Property | Type | Description |
-|----|----|----|
-| `mountPath` | `string` | mountPath is the path at which to mount the secret |
-| `secretSource` | `LocalObjectReference_v2` | secretSource is a reference to the secret |
+| Property       | Type                      | Description                                        |
+|----------------|---------------------------|----------------------------------------------------|
+| `mountPath`    | `string`                  | mountPath is the path at which to mount the secret |
+| `secretSource` | `LocalObjectReference_v2` | secretSource is a reference to the secret          |
 
 ## .spec.strategy.dockerStrategy
 
@@ -537,18 +537,18 @@ DockerBuildStrategy defines input parameters specific to container image build.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `buildArgs` | [`array (EnvVar)`](../objects/index.xml#io-k8s-api-core-v1-EnvVar) | buildArgs contains build arguments that will be resolved in the Dockerfile. See <https://docs.docker.com/engine/reference/builder/#/arg> for more details. NOTE: Only the 'name' and 'value' fields are supported. Any settings on the 'valueFrom' field are ignored. |
-| `dockerfilePath` | `string` | dockerfilePath is the path of the Dockerfile that will be used to build the container image, relative to the root of the context (contextDir). Defaults to `Dockerfile` if unset. |
-| `env` | [`array (EnvVar)`](../objects/index.xml#io-k8s-api-core-v1-EnvVar) | env contains additional environment variables you want to pass into a builder container. |
-| `forcePull` | `boolean` | forcePull describes if the builder should pull the images from registry prior to building. |
-| `from` | [`ObjectReference`](../objects/index.xml#io-k8s-api-core-v1-ObjectReference) | from is a reference to an DockerImage, ImageStreamTag, or ImageStreamImage which overrides the FROM image in the Dockerfile for the build. If the Dockerfile uses multi-stage builds, this will replace the image in the last FROM directive of the file. |
-| `imageOptimizationPolicy` | `string` | imageOptimizationPolicy describes what optimizations the system can use when building images to reduce the final size or time spent building the image. The default policy is 'None' which means the final build image will be equivalent to an image created by the container image build API. The experimental policy 'SkipLayers' will avoid commiting new layers in between each image step, and will fail if the Dockerfile cannot provide compatibility with the 'None' policy. An additional experimental policy 'SkipLayersAndWarn' is the same as 'SkipLayers' but simply warns if compatibility cannot be preserved. |
-| `noCache` | `boolean` | noCache if set to true indicates that the container image build must be executed with the --no-cache=true flag |
-| `pullSecret` | `LocalObjectReference_v2` | pullSecret is the name of a Secret that would be used for setting up the authentication for pulling the container images from the private Docker registries |
-| `volumes` | `array` | volumes is a list of input volumes that can be mounted into the builds runtime environment. Only a subset of Kubernetes Volume sources are supported by builds. More info: <https://kubernetes.io/docs/concepts/storage/volumes> |
-| `volumes[]` | `object` | BuildVolume describes a volume that is made available to build pods, such that it can be mounted into buildah’s runtime environment. Only a subset of Kubernetes Volume sources are supported. |
+| Property                  | Type                                                                         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|---------------------------|------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `buildArgs`               | [`array (EnvVar)`](../objects/index.xml#io-k8s-api-core-v1-EnvVar)           | buildArgs contains build arguments that will be resolved in the Dockerfile. See <https://docs.docker.com/engine/reference/builder/#/arg> for more details. NOTE: Only the 'name' and 'value' fields are supported. Any settings on the 'valueFrom' field are ignored.                                                                                                                                                                                                                                                                                                                                                          |
+| `dockerfilePath`          | `string`                                                                     | dockerfilePath is the path of the Dockerfile that will be used to build the container image, relative to the root of the context (contextDir). Defaults to `Dockerfile` if unset.                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `env`                     | [`array (EnvVar)`](../objects/index.xml#io-k8s-api-core-v1-EnvVar)           | env contains additional environment variables you want to pass into a builder container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `forcePull`               | `boolean`                                                                    | forcePull describes if the builder should pull the images from registry prior to building.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `from`                    | [`ObjectReference`](../objects/index.xml#io-k8s-api-core-v1-ObjectReference) | from is a reference to an DockerImage, ImageStreamTag, or ImageStreamImage which overrides the FROM image in the Dockerfile for the build. If the Dockerfile uses multi-stage builds, this will replace the image in the last FROM directive of the file.                                                                                                                                                                                                                                                                                                                                                                      |
+| `imageOptimizationPolicy` | `string`                                                                     | imageOptimizationPolicy describes what optimizations the system can use when building images to reduce the final size or time spent building the image. The default policy is 'None' which means the final build image will be equivalent to an image created by the container image build API. The experimental policy 'SkipLayers' will avoid commiting new layers in between each image step, and will fail if the Dockerfile cannot provide compatibility with the 'None' policy. An additional experimental policy 'SkipLayersAndWarn' is the same as 'SkipLayers' but simply warns if compatibility cannot be preserved. |
+| `noCache`                 | `boolean`                                                                    | noCache if set to true indicates that the container image build must be executed with the --no-cache=true flag                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `pullSecret`              | `LocalObjectReference_v2`                                                    | pullSecret is the name of a Secret that would be used for setting up the authentication for pulling the container images from the private Docker registries                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `volumes`                 | `array`                                                                      | volumes is a list of input volumes that can be mounted into the builds runtime environment. Only a subset of Kubernetes Volume sources are supported by builds. More info: <https://kubernetes.io/docs/concepts/storage/volumes>                                                                                                                                                                                                                                                                                                                                                                                               |
+| `volumes[]`               | `object`                                                                     | BuildVolume describes a volume that is made available to build pods, such that it can be mounted into buildah’s runtime environment. Only a subset of Kubernetes Volume sources are supported.                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 
 ## .spec.strategy.dockerStrategy.volumes
 
@@ -573,12 +573,12 @@ Required
 
 - `mounts`
 
-| Property | Type | Description |
-|----|----|----|
-| `mounts` | `array` | mounts represents the location of the volume in the image build container |
-| `mounts[]` | `object` | BuildVolumeMount describes the mounting of a Volume within buildah’s runtime environment. |
-| `name` | `string` | name is a unique identifier for this BuildVolume. It must conform to the Kubernetes DNS label standard and be unique within the pod. Names that collide with those added by the build controller will result in a failed build with an error message detailing which name caused the error. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `source` | `object` | BuildVolumeSource represents the source of a volume to mount Only one of its supported types may be specified at any given time. |
+| Property   | Type     | Description                                                                                                                                                                                                                                                                                                                                                                             |
+|------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `mounts`   | `array`  | mounts represents the location of the volume in the image build container                                                                                                                                                                                                                                                                                                               |
+| `mounts[]` | `object` | BuildVolumeMount describes the mounting of a Volume within buildah’s runtime environment.                                                                                                                                                                                                                                                                                               |
+| `name`     | `string` | name is a unique identifier for this BuildVolume. It must conform to the Kubernetes DNS label standard and be unique within the pod. Names that collide with those added by the build controller will result in a failed build with an error message detailing which name caused the error. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `source`   | `object` | BuildVolumeSource represents the source of a volume to mount Only one of its supported types may be specified at any given time.                                                                                                                                                                                                                                                        |
 
 ## .spec.strategy.dockerStrategy.volumes\[\].mounts
 
@@ -599,8 +599,8 @@ Type
 Required
 - `destinationPath`
 
-| Property | Type | Description |
-|----|----|----|
+| Property          | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|-------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `destinationPath` | `string` | destinationPath is the path within the buildah runtime environment at which the volume should be mounted. The transient mount within the build image and the backing volume will both be mounted read only. Must be an absolute path, must not contain '..' or ':', and must not collide with a destination path generated by the builder process Paths that collide with those added by the build controller will result in a failed build with an error message detailing which path caused the error. |
 
 ## .spec.strategy.dockerStrategy.volumes\[\].source
@@ -614,12 +614,12 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `configMap` | [`ConfigMapVolumeSource_v2`](../objects/index.xml#io-k8s-api-core-v1-ConfigMapVolumeSource_v2) | configMap represents a ConfigMap that should populate this volume |
-| `csi` | [`CSIVolumeSource`](../objects/index.xml#io-k8s-api-core-v1-CSIVolumeSource) | csi represents ephemeral storage provided by external CSI drivers which support this capability |
-| `secret` | [`SecretVolumeSource_v2`](../objects/index.xml#io-k8s-api-core-v1-SecretVolumeSource_v2) | secret represents a Secret that should populate this volume. More info: <https://kubernetes.io/docs/concepts/storage/volumes#secret> |
-| `type` | `string` | type is the BuildVolumeSourceType for the volume source. Type must match the populated volume source. Valid types are: Secret, ConfigMap |
+| Property    | Type                                                                                           | Description                                                                                                                              |
+|-------------|------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| `configMap` | [`ConfigMapVolumeSource_v2`](../objects/index.xml#io-k8s-api-core-v1-ConfigMapVolumeSource_v2) | configMap represents a ConfigMap that should populate this volume                                                                        |
+| `csi`       | [`CSIVolumeSource`](../objects/index.xml#io-k8s-api-core-v1-CSIVolumeSource)                   | csi represents ephemeral storage provided by external CSI drivers which support this capability                                          |
+| `secret`    | [`SecretVolumeSource_v2`](../objects/index.xml#io-k8s-api-core-v1-SecretVolumeSource_v2)       | secret represents a Secret that should populate this volume. More info: <https://kubernetes.io/docs/concepts/storage/volumes#secret>     |
+| `type`      | `string`                                                                                       | type is the BuildVolumeSourceType for the volume source. Type must match the populated volume source. Valid types are: Secret, ConfigMap |
 
 ## .spec.strategy.jenkinsPipelineStrategy
 
@@ -629,11 +629,11 @@ JenkinsPipelineBuildStrategy holds parameters specific to a Jenkins Pipeline bui
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `env` | [`array (EnvVar)`](../objects/index.xml#io-k8s-api-core-v1-EnvVar) | env contains additional environment variables you want to pass into a build pipeline. |
-| `jenkinsfile` | `string` | Jenkinsfile defines the optional raw contents of a Jenkinsfile which defines a Jenkins pipeline build. |
-| `jenkinsfilePath` | `string` | JenkinsfilePath is the optional path of the Jenkinsfile that will be used to configure the pipeline relative to the root of the context (contextDir). If both JenkinsfilePath & Jenkinsfile are both not specified, this defaults to Jenkinsfile in the root of the specified contextDir. |
+| Property          | Type                                                               | Description                                                                                                                                                                                                                                                                               |
+|-------------------|--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `env`             | [`array (EnvVar)`](../objects/index.xml#io-k8s-api-core-v1-EnvVar) | env contains additional environment variables you want to pass into a build pipeline.                                                                                                                                                                                                     |
+| `jenkinsfile`     | `string`                                                           | Jenkinsfile defines the optional raw contents of a Jenkinsfile which defines a Jenkins pipeline build.                                                                                                                                                                                    |
+| `jenkinsfilePath` | `string`                                                           | JenkinsfilePath is the optional path of the Jenkinsfile that will be used to configure the pipeline relative to the root of the context (contextDir). If both JenkinsfilePath & Jenkinsfile are both not specified, this defaults to Jenkinsfile in the root of the specified contextDir. |
 
 ## .spec.strategy.sourceStrategy
 
@@ -646,16 +646,16 @@ Type
 Required
 - `from`
 
-| Property | Type | Description |
-|----|----|----|
-| `env` | [`array (EnvVar)`](../objects/index.xml#io-k8s-api-core-v1-EnvVar) | env contains additional environment variables you want to pass into a builder container. |
-| `forcePull` | `boolean` | forcePull describes if the builder should pull the images from registry prior to building. |
-| `from` | [`ObjectReference`](../objects/index.xml#io-k8s-api-core-v1-ObjectReference) | from is reference to an DockerImage, ImageStreamTag, or ImageStreamImage from which the container image should be pulled |
-| `incremental` | `boolean` | incremental flag forces the Source build to do incremental builds if true. |
-| `pullSecret` | `LocalObjectReference_v2` | pullSecret is the name of a Secret that would be used for setting up the authentication for pulling the container images from the private Docker registries |
-| `scripts` | `string` | scripts is the location of Source scripts |
-| `volumes` | `array` | volumes is a list of input volumes that can be mounted into the builds runtime environment. Only a subset of Kubernetes Volume sources are supported by builds. More info: <https://kubernetes.io/docs/concepts/storage/volumes> |
-| `volumes[]` | `object` | BuildVolume describes a volume that is made available to build pods, such that it can be mounted into buildah’s runtime environment. Only a subset of Kubernetes Volume sources are supported. |
+| Property      | Type                                                                         | Description                                                                                                                                                                                                                      |
+|---------------|------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `env`         | [`array (EnvVar)`](../objects/index.xml#io-k8s-api-core-v1-EnvVar)           | env contains additional environment variables you want to pass into a builder container.                                                                                                                                         |
+| `forcePull`   | `boolean`                                                                    | forcePull describes if the builder should pull the images from registry prior to building.                                                                                                                                       |
+| `from`        | [`ObjectReference`](../objects/index.xml#io-k8s-api-core-v1-ObjectReference) | from is reference to an DockerImage, ImageStreamTag, or ImageStreamImage from which the container image should be pulled                                                                                                         |
+| `incremental` | `boolean`                                                                    | incremental flag forces the Source build to do incremental builds if true.                                                                                                                                                       |
+| `pullSecret`  | `LocalObjectReference_v2`                                                    | pullSecret is the name of a Secret that would be used for setting up the authentication for pulling the container images from the private Docker registries                                                                      |
+| `scripts`     | `string`                                                                     | scripts is the location of Source scripts                                                                                                                                                                                        |
+| `volumes`     | `array`                                                                      | volumes is a list of input volumes that can be mounted into the builds runtime environment. Only a subset of Kubernetes Volume sources are supported by builds. More info: <https://kubernetes.io/docs/concepts/storage/volumes> |
+| `volumes[]`   | `object`                                                                     | BuildVolume describes a volume that is made available to build pods, such that it can be mounted into buildah’s runtime environment. Only a subset of Kubernetes Volume sources are supported.                                   |
 
 ## .spec.strategy.sourceStrategy.volumes
 
@@ -680,12 +680,12 @@ Required
 
 - `mounts`
 
-| Property | Type | Description |
-|----|----|----|
-| `mounts` | `array` | mounts represents the location of the volume in the image build container |
-| `mounts[]` | `object` | BuildVolumeMount describes the mounting of a Volume within buildah’s runtime environment. |
-| `name` | `string` | name is a unique identifier for this BuildVolume. It must conform to the Kubernetes DNS label standard and be unique within the pod. Names that collide with those added by the build controller will result in a failed build with an error message detailing which name caused the error. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `source` | `object` | BuildVolumeSource represents the source of a volume to mount Only one of its supported types may be specified at any given time. |
+| Property   | Type     | Description                                                                                                                                                                                                                                                                                                                                                                             |
+|------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `mounts`   | `array`  | mounts represents the location of the volume in the image build container                                                                                                                                                                                                                                                                                                               |
+| `mounts[]` | `object` | BuildVolumeMount describes the mounting of a Volume within buildah’s runtime environment.                                                                                                                                                                                                                                                                                               |
+| `name`     | `string` | name is a unique identifier for this BuildVolume. It must conform to the Kubernetes DNS label standard and be unique within the pod. Names that collide with those added by the build controller will result in a failed build with an error message detailing which name caused the error. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `source`   | `object` | BuildVolumeSource represents the source of a volume to mount Only one of its supported types may be specified at any given time.                                                                                                                                                                                                                                                        |
 
 ## .spec.strategy.sourceStrategy.volumes\[\].mounts
 
@@ -706,8 +706,8 @@ Type
 Required
 - `destinationPath`
 
-| Property | Type | Description |
-|----|----|----|
+| Property          | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|-------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `destinationPath` | `string` | destinationPath is the path within the buildah runtime environment at which the volume should be mounted. The transient mount within the build image and the backing volume will both be mounted read only. Must be an absolute path, must not contain '..' or ':', and must not collide with a destination path generated by the builder process Paths that collide with those added by the build controller will result in a failed build with an error message detailing which path caused the error. |
 
 ## .spec.strategy.sourceStrategy.volumes\[\].source
@@ -721,12 +721,12 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `configMap` | [`ConfigMapVolumeSource_v2`](../objects/index.xml#io-k8s-api-core-v1-ConfigMapVolumeSource_v2) | configMap represents a ConfigMap that should populate this volume |
-| `csi` | [`CSIVolumeSource`](../objects/index.xml#io-k8s-api-core-v1-CSIVolumeSource) | csi represents ephemeral storage provided by external CSI drivers which support this capability |
-| `secret` | [`SecretVolumeSource_v2`](../objects/index.xml#io-k8s-api-core-v1-SecretVolumeSource_v2) | secret represents a Secret that should populate this volume. More info: <https://kubernetes.io/docs/concepts/storage/volumes#secret> |
-| `type` | `string` | type is the BuildVolumeSourceType for the volume source. Type must match the populated volume source. Valid types are: Secret, ConfigMap |
+| Property    | Type                                                                                           | Description                                                                                                                              |
+|-------------|------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| `configMap` | [`ConfigMapVolumeSource_v2`](../objects/index.xml#io-k8s-api-core-v1-ConfigMapVolumeSource_v2) | configMap represents a ConfigMap that should populate this volume                                                                        |
+| `csi`       | [`CSIVolumeSource`](../objects/index.xml#io-k8s-api-core-v1-CSIVolumeSource)                   | csi represents ephemeral storage provided by external CSI drivers which support this capability                                          |
+| `secret`    | [`SecretVolumeSource_v2`](../objects/index.xml#io-k8s-api-core-v1-SecretVolumeSource_v2)       | secret represents a Secret that should populate this volume. More info: <https://kubernetes.io/docs/concepts/storage/volumes#secret>     |
+| `type`      | `string`                                                                                       | type is the BuildVolumeSourceType for the volume source. Type must match the populated volume source. Valid types are: Secret, ConfigMap |
 
 ## .spec.triggers
 
@@ -754,39 +754,39 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bitbucket</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>WebHookTrigger is a trigger that gets invoked using a webhook type of post</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>generic</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>WebHookTrigger is a trigger that gets invoked using a webhook type of post</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>github</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>WebHookTrigger is a trigger that gets invoked using a webhook type of post</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>gitlab</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>WebHookTrigger is a trigger that gets invoked using a webhook type of post</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>imageChange</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ImageChangeTrigger allows builds to be triggered when an ImageStream changes</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>type is the type of build trigger. Valid values:</p>
@@ -808,11 +808,11 @@ WebHookTrigger is a trigger that gets invoked using a webhook type of post
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `allowEnv` | `boolean` | allowEnv determines whether the webhook can set environment variables; can only be set to true for GenericWebHook. |
-| `secret` | `string` | secret used to validate requests. Deprecated: use SecretReference instead. |
-| `secretReference` | `object` | SecretLocalReference contains information that points to the local secret being used |
+| Property          | Type      | Description                                                                                                        |
+|-------------------|-----------|--------------------------------------------------------------------------------------------------------------------|
+| `allowEnv`        | `boolean` | allowEnv determines whether the webhook can set environment variables; can only be set to true for GenericWebHook. |
+| `secret`          | `string`  | secret used to validate requests. Deprecated: use SecretReference instead.                                         |
+| `secretReference` | `object`  | SecretLocalReference contains information that points to the local secret being used                               |
 
 ## .spec.triggers\[\].bitbucket.secretReference
 
@@ -825,9 +825,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name is the name of the resource in the same namespace being referenced |
+| Property | Type     | Description                                                             |
+|----------|----------|-------------------------------------------------------------------------|
+| `name`   | `string` | Name is the name of the resource in the same namespace being referenced |
 
 ## .spec.triggers\[\].generic
 
@@ -837,11 +837,11 @@ WebHookTrigger is a trigger that gets invoked using a webhook type of post
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `allowEnv` | `boolean` | allowEnv determines whether the webhook can set environment variables; can only be set to true for GenericWebHook. |
-| `secret` | `string` | secret used to validate requests. Deprecated: use SecretReference instead. |
-| `secretReference` | `object` | SecretLocalReference contains information that points to the local secret being used |
+| Property          | Type      | Description                                                                                                        |
+|-------------------|-----------|--------------------------------------------------------------------------------------------------------------------|
+| `allowEnv`        | `boolean` | allowEnv determines whether the webhook can set environment variables; can only be set to true for GenericWebHook. |
+| `secret`          | `string`  | secret used to validate requests. Deprecated: use SecretReference instead.                                         |
+| `secretReference` | `object`  | SecretLocalReference contains information that points to the local secret being used                               |
 
 ## .spec.triggers\[\].generic.secretReference
 
@@ -854,9 +854,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name is the name of the resource in the same namespace being referenced |
+| Property | Type     | Description                                                             |
+|----------|----------|-------------------------------------------------------------------------|
+| `name`   | `string` | Name is the name of the resource in the same namespace being referenced |
 
 ## .spec.triggers\[\].github
 
@@ -866,11 +866,11 @@ WebHookTrigger is a trigger that gets invoked using a webhook type of post
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `allowEnv` | `boolean` | allowEnv determines whether the webhook can set environment variables; can only be set to true for GenericWebHook. |
-| `secret` | `string` | secret used to validate requests. Deprecated: use SecretReference instead. |
-| `secretReference` | `object` | SecretLocalReference contains information that points to the local secret being used |
+| Property          | Type      | Description                                                                                                        |
+|-------------------|-----------|--------------------------------------------------------------------------------------------------------------------|
+| `allowEnv`        | `boolean` | allowEnv determines whether the webhook can set environment variables; can only be set to true for GenericWebHook. |
+| `secret`          | `string`  | secret used to validate requests. Deprecated: use SecretReference instead.                                         |
+| `secretReference` | `object`  | SecretLocalReference contains information that points to the local secret being used                               |
 
 ## .spec.triggers\[\].github.secretReference
 
@@ -883,9 +883,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name is the name of the resource in the same namespace being referenced |
+| Property | Type     | Description                                                             |
+|----------|----------|-------------------------------------------------------------------------|
+| `name`   | `string` | Name is the name of the resource in the same namespace being referenced |
 
 ## .spec.triggers\[\].gitlab
 
@@ -895,11 +895,11 @@ WebHookTrigger is a trigger that gets invoked using a webhook type of post
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `allowEnv` | `boolean` | allowEnv determines whether the webhook can set environment variables; can only be set to true for GenericWebHook. |
-| `secret` | `string` | secret used to validate requests. Deprecated: use SecretReference instead. |
-| `secretReference` | `object` | SecretLocalReference contains information that points to the local secret being used |
+| Property          | Type      | Description                                                                                                        |
+|-------------------|-----------|--------------------------------------------------------------------------------------------------------------------|
+| `allowEnv`        | `boolean` | allowEnv determines whether the webhook can set environment variables; can only be set to true for GenericWebHook. |
+| `secret`          | `string`  | secret used to validate requests. Deprecated: use SecretReference instead.                                         |
+| `secretReference` | `object`  | SecretLocalReference contains information that points to the local secret being used                               |
 
 ## .spec.triggers\[\].gitlab.secretReference
 
@@ -912,9 +912,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name is the name of the resource in the same namespace being referenced |
+| Property | Type     | Description                                                             |
+|----------|----------|-------------------------------------------------------------------------|
+| `name`   | `string` | Name is the name of the resource in the same namespace being referenced |
 
 ## .spec.triggers\[\].imageChange
 
@@ -924,11 +924,11 @@ ImageChangeTrigger allows builds to be triggered when an ImageStream changes
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `from` | [`ObjectReference`](../objects/index.xml#io-k8s-api-core-v1-ObjectReference) | from is a reference to an ImageStreamTag that will trigger a build when updated It is optional. If no From is specified, the From image from the build strategy will be used. Only one ImageChangeTrigger with an empty From reference is allowed in a build configuration. |
-| `lastTriggeredImageID` | `string` | lastTriggeredImageID is used internally by the ImageChangeController to save last used image ID for build This field is deprecated and will be removed in a future release. Deprecated |
-| `paused` | `boolean` | paused is true if this trigger is temporarily disabled. Optional. |
+| Property               | Type                                                                         | Description                                                                                                                                                                                                                                                                 |
+|------------------------|------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `from`                 | [`ObjectReference`](../objects/index.xml#io-k8s-api-core-v1-ObjectReference) | from is a reference to an ImageStreamTag that will trigger a build when updated It is optional. If no From is specified, the From image from the build strategy will be used. Only one ImageChangeTrigger with an empty From reference is allowed in a build configuration. |
+| `lastTriggeredImageID` | `string`                                                                     | lastTriggeredImageID is used internally by the ImageChangeController to save last used image ID for build This field is deprecated and will be removed in a future release. Deprecated                                                                                      |
+| `paused`               | `boolean`                                                                    | paused is true if this trigger is temporarily disabled. Optional.                                                                                                                                                                                                           |
 
 ## .status
 
@@ -941,11 +941,11 @@ Type
 Required
 - `lastVersion`
 
-| Property | Type | Description |
-|----|----|----|
-| `imageChangeTriggers` | `array` | ImageChangeTriggers captures the runtime state of any ImageChangeTrigger specified in the BuildConfigSpec, including the value reconciled by the OpenShift APIServer for the lastTriggeredImageID. There is a single entry in this array for each image change trigger in spec. Each trigger status references the ImageStreamTag that acts as the source of the trigger. |
-| `imageChangeTriggers[]` | `object` | ImageChangeTriggerStatus tracks the latest resolved status of the associated ImageChangeTrigger policy specified in the BuildConfigSpec.Triggers struct. |
-| `lastVersion` | `integer` | lastVersion is used to inform about number of last triggered build. |
+| Property                | Type      | Description                                                                                                                                                                                                                                                                                                                                                               |
+|-------------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `imageChangeTriggers`   | `array`   | ImageChangeTriggers captures the runtime state of any ImageChangeTrigger specified in the BuildConfigSpec, including the value reconciled by the OpenShift APIServer for the lastTriggeredImageID. There is a single entry in this array for each image change trigger in spec. Each trigger status references the ImageStreamTag that acts as the source of the trigger. |
+| `imageChangeTriggers[]` | `object`  | ImageChangeTriggerStatus tracks the latest resolved status of the associated ImageChangeTrigger policy specified in the BuildConfigSpec.Triggers struct.                                                                                                                                                                                                                  |
+| `lastVersion`           | `integer` | lastVersion is used to inform about number of last triggered build.                                                                                                                                                                                                                                                                                                       |
 
 ## .status.imageChangeTriggers
 
@@ -963,11 +963,11 @@ ImageChangeTriggerStatus tracks the latest resolved status of the associated Ima
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `from` | `object` | ImageStreamTagReference references the ImageStreamTag in an image change trigger by namespace and name. |
-| `lastTriggerTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | lastTriggerTime is the last time this particular ImageStreamTag triggered a Build to start. This field is only updated when this trigger specifically started a Build. |
-| `lastTriggeredImageID` | `string` | lastTriggeredImageID represents the sha/id of the ImageStreamTag when a Build for this BuildConfig was started. The lastTriggeredImageID is updated each time a Build for this BuildConfig is started, even if this ImageStreamTag is not the reason the Build is started. |
+| Property               | Type                                                                     | Description                                                                                                                                                                                                                                                                |
+|------------------------|--------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `from`                 | `object`                                                                 | ImageStreamTagReference references the ImageStreamTag in an image change trigger by namespace and name.                                                                                                                                                                    |
+| `lastTriggerTime`      | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | lastTriggerTime is the last time this particular ImageStreamTag triggered a Build to start. This field is only updated when this trigger specifically started a Build.                                                                                                     |
+| `lastTriggeredImageID` | `string`                                                                 | lastTriggeredImageID represents the sha/id of the ImageStreamTag when a Build for this BuildConfig was started. The lastTriggeredImageID is updated each time a Build for this BuildConfig is started, even if this ImageStreamTag is not the reason the Build is started. |
 
 ## .status.imageChangeTriggers\[\].from
 
@@ -977,9 +977,9 @@ ImageStreamTagReference references the ImageStreamTag in an image change trigger
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name is the name of the ImageStreamTag for an ImageChangeTrigger |
+| Property    | Type     | Description                                                                              |
+|-------------|----------|------------------------------------------------------------------------------------------|
+| `name`      | `string` | name is the name of the ImageStreamTag for an ImageChangeTrigger                         |
 | `namespace` | `string` | namespace is the namespace where the ImageStreamTag for an ImageChangeTrigger is located |
 
 # API endpoints
@@ -1028,10 +1028,10 @@ HTTP method
 Description
 list or watch objects of kind BuildConfig
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`BuildConfigList`](../objects/index.xml#com-github-openshift-api-build-v1-BuildConfigList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                       |
+|--------------------|----------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`BuildConfigList`](../objects/index.xml#com-github-openshift-api-build-v1-BuildConfigList) schema |
+| 401 - Unauthorized | Empty                                                                                              |
 
 HTTP responses
 
@@ -1043,10 +1043,10 @@ HTTP method
 Description
 watch individual changes to a list of BuildConfig. deprecated: use the 'watch' parameter with a list operation instead.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -1058,16 +1058,16 @@ HTTP method
 Description
 delete collection of BuildConfig
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status_v4`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v4) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                              |
+|--------------------|-------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status_v4`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v4) schema |
+| 401 - Unauthorized | Empty                                                                                     |
 
 HTTP responses
 
@@ -1077,10 +1077,10 @@ HTTP method
 Description
 list or watch objects of kind BuildConfig
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`BuildConfigList`](../objects/index.xml#com-github-openshift-api-build-v1-BuildConfigList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                       |
+|--------------------|----------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`BuildConfigList`](../objects/index.xml#com-github-openshift-api-build-v1-BuildConfigList) schema |
+| 401 - Unauthorized | Empty                                                                                              |
 
 HTTP responses
 
@@ -1090,25 +1090,25 @@ HTTP method
 Description
 create a BuildConfig
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                              | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |
-| 201 - Created | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |
-| 202 - Accepted | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                      |
+|--------------------|-------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |
+| 201 - Created      | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |
+| 202 - Accepted     | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                             |
 
 HTTP responses
 
@@ -1120,10 +1120,10 @@ HTTP method
 Description
 watch individual changes to a list of BuildConfig. deprecated: use the 'watch' parameter with a list operation instead.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -1141,17 +1141,17 @@ HTTP method
 Description
 delete a BuildConfig
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status_v4`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v4) schema |
-| 202 - Accepted | [`Status_v4`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v4) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                              |
+|--------------------|-------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status_v4`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v4) schema |
+| 202 - Accepted     | [`Status_v4`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v4) schema |
+| 401 - Unauthorized | Empty                                                                                     |
 
 HTTP responses
 
@@ -1161,10 +1161,10 @@ HTTP method
 Description
 read the specified BuildConfig
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                      |
+|--------------------|-------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                             |
 
 HTTP responses
 
@@ -1174,18 +1174,18 @@ HTTP method
 Description
 partially update the specified BuildConfig
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |
-| 201 - Created | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                      |
+|--------------------|-------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |
+| 201 - Created      | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                             |
 
 HTTP responses
 
@@ -1195,24 +1195,24 @@ HTTP method
 Description
 replace the specified BuildConfig
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                              | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |
-| 201 - Created | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                      |
+|--------------------|-------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |
+| 201 - Created      | [`BuildConfig`](../workloads_apis/buildconfig-build-openshift-io-v1.xml#buildconfig-build-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                             |
 
 HTTP responses
 
@@ -1230,9 +1230,9 @@ HTTP method
 Description
 watch changes to an object of kind BuildConfig. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses

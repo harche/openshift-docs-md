@@ -12,14 +12,6 @@ Install OpenShift Virtualization on IBM Cloud bare-metal nodes using Assisted In
 
 Configure and provision the IBM Cloud environment to establish the operational framework and nodes for your OpenShift Virtualization cluster.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a new virtual server instance in IBM Cloud at [Virtual Server for Classic](https://cloud.ibm.com/gen1/infrastructure/provision/vs) to be the Bastion server. This instance is used to run the installation and provide environment services.
 
 2.  Change the default properties of the new virtual server instance to the following values. Use the provided defaults for all other values.
@@ -161,19 +153,9 @@ Procedure
     $ firewall-cmd --reload
     ```
 
-</div>
-
 # Initializing the new cluster configuration
 
 Initialize the new cluster configuration using the OpenShift Virtualization Assisted Installer service and Samba on the Bastion virtual server instance.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the **Assisted Installer** service.
 
@@ -226,19 +208,9 @@ Procedure
 
 12. Navigate to the share directory and download the Assisted Installer ISO file using the generated `wget` command.
 
-</div>
-
 # Configuring cluster networking and access
 
 Configure networking and access to allow for remote management of the cluster.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit `/etc/samba/smb.conf` to use the following configuration:
 
@@ -268,8 +240,11 @@ Procedure
           valid users = root
     ```
 
-    > [!NOTE]
-    > For a more detailed example of the `smb.conf` file, see the `smb.conf.example` file in the same directory.
+    <div class="note">
+
+    For a more detailed example of the `smb.conf` file, see the `smb.conf.example` file in the same directory.
+
+    </div>
 
 2.  Save the file.
 
@@ -314,29 +289,25 @@ Procedure
         \<vpn_password\>
         The SSL VPN password you configured.
 
-        > [!NOTE]
-        > Connecting to the IBM Cloud SSL VPN will disconnect you from any open VPN connections.
+        <div class="note">
 
-</div>
+        Connecting to the IBM Cloud SSL VPN will disconnect you from any open VPN connections.
+
+        </div>
 
 # Completing the cluster configuration
 
 Complete the cluster configuration by installing software on the control plane and compute nodes and configuring DNS for external access.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  For each bare-metal server, perform the following tasks:
 
     1.  Access the server using the IPMI console.
 
-        > [!NOTE]
-        > The IP address and credentials for IPMI console access is available in the **Remote management** section for each server.
+        <div class="note">
+
+        The IP address and credentials for IPMI console access is available in the **Remote management** section for each server.
+
+        </div>
 
     2.  Mount the Assisted Installer ISO file with the following attributes:
 
@@ -362,8 +333,11 @@ Procedure
 
 4.  Select a role for each host.
 
-    > [!NOTE]
-    > The cluster consists of 3 control plane and 3 compute nodes.
+    <div class="note">
+
+    The cluster consists of 3 control plane and 3 compute nodes.
+
+    </div>
 
 5.  Wait for the **Assisted Installer** interface to indicate each node is ready.
 
@@ -379,8 +353,11 @@ Procedure
 
     1.  Access the server using the IPMI console.
 
-        > [!NOTE]
-        > The IP address and credentials for IPMI console access is available in the **Remote management** section for each server.
+        <div class="note">
+
+        The IP address and credentials for IPMI console access is available in the **Remote management** section for each server.
+
+        </div>
 
     2.  Select **Virtual Media** → **CD-Rom Image**.
 
@@ -530,8 +507,11 @@ Procedure
     \<backend_insecure_ip_address\>:\<backend_insecure_port\>
     The back end IP address and port used for HTTP traffic for hosted applications.
 
-    > [!NOTE]
-    > Replace the example values with values applicable to your network configuration.
+    <div class="note">
+
+    Replace the example values with values applicable to your network configuration.
+
+    </div>
 
 15. Save the `haproxy` configuration.
 
@@ -553,15 +533,7 @@ Procedure
     \<cluster_domain\>
     The domain assigned to the cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Perform the following tasks to verify cluster access using command line access:
 
@@ -582,8 +554,11 @@ Verification
         $ oc get nodes
         ```
 
-        > [!NOTE]
-        > The command output should show all nodes as `Ready` in the `STATUS` column and the `ROLES` column should show that control plane and compute nodes are present.
+        <div class="note">
+
+        The command output should show all nodes as `Ready` in the `STATUS` column and the `ROLES` column should show that control plane and compute nodes are present.
+
+        </div>
 
     3.  Check the cluster version:
 
@@ -591,18 +566,22 @@ Verification
         $ oc get clusterversion
         ```
 
-        > [!NOTE]
-        > The command output should say `Condition: Available`.
+        <div class="note">
+
+        The command output should say `Condition: Available`.
+
+        </div>
 
 2.  Perform the following tasks to verify cluster access using the web console:
 
     1.  Paste the access URL provided by Assisted Installer into your web browser.
 
-        > [!NOTE]
-        > By default, clusters use self-signed certificates. This may cause your browser to display a message that says **Connection not private** or a similar warning. You can close this warning and continue.
+        <div class="note">
+
+        By default, clusters use self-signed certificates. This may cause your browser to display a message that says **Connection not private** or a similar warning. You can close this warning and continue.
+
+        </div>
 
     2.  Navigate to the URL.
 
     3.  Log in to the cluster with the username `kubeadmin` and the `kubeadmin` password provided in the **Cluster Credentials** section.
-
-</div>

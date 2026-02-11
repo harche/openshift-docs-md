@@ -8,11 +8,17 @@ Pods have a lifecycle; they are defined, then they are assigned to run on a node
 
 OpenShift Container Platform treats pods as largely immutable; changes cannot be made to a pod definition while it is running. OpenShift Container Platform implements changes by terminating an existing pod and recreating it with modified configuration, base image(s), or both. Pods are also treated as expendable, and do not maintain state when recreated. Therefore pods should usually be managed by higher-level controllers, rather than directly by users.
 
-> [!NOTE]
-> For the maximum number of pods per OpenShift Container Platform node host, see the Cluster Limits.
+<div class="note">
 
-> [!WARNING]
-> Bare pods that are not managed by a replication controller will be not rescheduled upon node disruption.
+For the maximum number of pods per OpenShift Container Platform node host, see the Cluster Limits.
+
+</div>
+
+<div class="warning">
+
+Bare pods that are not managed by a replication controller will be not rescheduled upon node disruption.
+
+</div>
 
 # Example pod configurations
 
@@ -20,11 +26,9 @@ OpenShift Container Platform leverages the Kubernetes concept of a *pod*, which 
 
 The following is an example definition of a pod. It demonstrates many features of pods, most of which are discussed in other topics and thus only briefly mentioned here:
 
-<div id="example-pod-definition_nodes-pods-using-ssy" class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-`Pod` object definition (YAML)
+**`Pod` object definition (YAML)**
 
 </div>
 
@@ -69,8 +73,6 @@ spec:
       sizeLimit: 500Mi
 ```
 
-</div>
-
 - Pods can be "tagged" with one or more labels, which can then be used to select and manage groups of pods in a single operation. The labels are stored in key/value format in the `metadata` hash.
 
 - The pod restart policy with possible values `Always`, `OnFailure`, and `Never`. The default value is `Always`.
@@ -89,8 +91,11 @@ spec:
 
   If you attach persistent volumes that have high file counts to pods, those pods can fail or can take a long time to start. For more information, see [When using Persistent Volumes with high file counts in OpenShift, why do pods fail to start or take an excessive amount of time to achieve "Ready" state?](https://access.redhat.com/solutions/6221251).
 
-> [!NOTE]
-> This pod definition does not include attributes that are filled by OpenShift Container Platform automatically after the pod is created and its lifecycle begins. The [Kubernetes pod documentation](https://kubernetes.io/docs/concepts/workloads/pods/pod/) has details about the functionality and purpose of pods.
+<div class="note">
+
+This pod definition does not include attributes that are filled by OpenShift Container Platform automatically after the pod is created and its lifecycle begins. The [Kubernetes pod documentation](https://kubernetes.io/docs/concepts/workloads/pods/pod/) has details about the functionality and purpose of pods.
+
+</div>
 
 # Understanding resource requests and limits
 
@@ -106,8 +111,11 @@ CPU and memory requests and limits are processed by using the following principl
 
   CPU limits and requests are measured in CPU units. One CPU unit is equivalent to 1 physical CPU core or 1 virtual core, depending on whether the node is a physical host or a virtual machine running inside a physical machine. Fractional requests are allowed. For example, when you define a container with a CPU request of `0.5`, you are requesting half as much CPU time than if you asked for `1.0` CPU. For CPU units, `0.1` is equivalent to the `100m`, which can be read as *one hundred millicpu* or *one hundred millicores*. A CPU resource is always an absolute amount of resource, and is never a relative amount.
 
-  > [!NOTE]
-  > By default, the smallest amount of CPU that can be allocated to a pod is 10 mCPU. You can request resource limits lower than 10 mCPU in a pod spec. However, the pod would still be allocated 10 mCPU.
+  <div class="note">
+
+  By default, the smallest amount of CPU that can be allocated to a pod is 10 mCPU. You can request resource limits lower than 10 mCPU in a pod spec. However, the pod would still be allocated 10 mCPU.
+
+  </div>
 
 - Memory limits are enforced by the kernel by using out of memory (OOM) kills. When a container uses more than its memory limit, the kernel can terminate that container. However, terminations happen only when the kernel detects memory pressure. As such, a container that over allocates memory might not be immediately killed. This means memory limits are enforced reactively. A container can use more memory than its memory limit. If it does, the container can get killed.
 

@@ -6,11 +6,9 @@ In-place pod resizing allows you to change the CPU and memory resources for cont
 
 When using in-place pod resizing to change CPU or memory resources, you can control whether a pod is restarted by configuring a resize policy in the pod specification. The following example resize policy requires a pod restart upon changing the memory resources, but prevents a restart for CPU resource changes.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example resource policy
+**Example resource policy**
 
 </div>
 
@@ -34,30 +32,27 @@ spec:
       restartPolicy: RestartContainer
 ```
 
-</div>
-
 - Specifies a resize policy.
 
-> [!NOTE]
-> Memory limits cannot be decreased unless the resize policy for `memory` is `RestartContainer`.
+<div class="note">
+
+Memory limits cannot be decreased unless the resize policy for `memory` is `RestartContainer`.
+
+</div>
 
 You cannot add or modify a resize policy to an existing pod, but you can add or edit the policy in the pod’s owner object, such as a deployment, if the pod has an owner object.
 
 Using in-place pod resizing requires that you use the `--subresource resize` flag when editing a pod in the OpenShift CLI (`oc`), as shown in the following examples:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example commands
+**Example commands**
 
 </div>
 
 ``` terminal
 $ oc edit pod <pod_name>  --subresource resize
 ```
-
-</div>
 
 ``` terminal
 $ oc apply -f <file_name>.yaml --subresource resize
@@ -76,11 +71,9 @@ If the resize policy is `NotRequired` and you change the request or limits, the 
 $ oc get pods
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -89,19 +82,15 @@ NAME                          READY   STATUS    RESTARTS     AGE
 resize-pod                    1/1     Running   0            5s
 ```
 
-</div>
-
 If the resize policy is `RestartContainer` and you change the request or limits, the pod is restarted.
 
 ``` terminal
 $ oc get pods
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -109,8 +98,6 @@ Example output
 NAME                         READY   STATUS    RESTARTS    AGE
 resize-pod                   1/1     Running   1 (5s ago)  5s
 ```
-
-</div>
 
 After making the resource changes, the pod status conditions indicate the state of a resize request by using the following messages:
 
@@ -124,11 +111,9 @@ After making the resource changes, the pod status conditions indicate the state 
 
 - `Error`: The kubelet is experiencing an error during the resource allocation and reports the reason for the error in the message field.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example status for an infeasible change
+**Example status for an infeasible change**
 
 </div>
 
@@ -149,8 +134,6 @@ status:
     type: PodResizePending
 ```
 
-</div>
-
 Note the following limitations:
 
 - In-place pod resizing is not supported for non-restartable init containers and ephemeral containers.
@@ -166,14 +149,6 @@ Note the following limitations:
 In-place pod resizing requires that you add a resize policy to a pod specification.
 
 You cannot add or modify a resize policy in an existing pod, but you can add or edit the policy in the pod’s owner object, such as a deployment, if the pod has an owner object.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a pod spec with a resize policy or add a resize policy to the owner object of an existing pod:
 
@@ -208,16 +183,6 @@ Procedure
         $ oc create -f <file_name>.yaml
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Check that the resize policy is applied by modifying the CPU or memory requests or limits by running a command similar to the following. You must include the `--subresource resize` flag. If the pod has a owner object, such as a deployment, you must edit the owner object.
 
   ``` terminal
@@ -232,11 +197,9 @@ Verification
 
   If the resize policy is `NotRequired`, the pod is not restarted.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -245,15 +208,11 @@ Verification
   resize-pod                    1/1     Running   0            5s
   ```
 
-  </div>
-
   If the resize policy is `RestartContainer`, the pod is restarted.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -261,10 +220,6 @@ Verification
   NAME                         READY   STATUS    RESTARTS    AGE
   resize-pod                   1/1     Running   1 (5s ago)  5s
   ```
-
-  </div>
-
-</div>
 
 # Additional resources
 

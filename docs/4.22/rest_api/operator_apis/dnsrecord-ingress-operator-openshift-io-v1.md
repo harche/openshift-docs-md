@@ -12,13 +12,13 @@ Type
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | spec is the specification of the desired behavior of the dnsRecord. |
-| `status` | `object` | status is the most recently observed status of the dnsRecord. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | spec is the specification of the desired behavior of the dnsRecord.                                                                                                                                                                                                                                  |
+| `status`     | `object`                                                                             | status is the most recently observed status of the dnsRecord.                                                                                                                                                                                                                                        |
 
 ## .spec
 
@@ -46,35 +46,35 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>dnsManagementPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>dnsManagementPolicy denotes the current policy applied on the DNS record. Records that have policy set as "Unmanaged" are ignored by the ingress operator. This means that the DNS record on the cloud provider is not managed by the operator, and the "Published" status condition will be updated to "Unknown" status, since it is externally managed. Any existing record on the cloud provider can be deleted at the discretion of the cluster admin.</p>
 <p>This field defaults to Managed. Valid values are "Managed" and "Unmanaged".</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>dnsName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>dnsName is the hostname of the DNS record</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>recordTTL</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>recordTTL is the record TTL in seconds. If zero, the default is 30. RecordTTL will not be used in AWS regions Alias targets, but will be used in CNAME targets, per AWS API contract.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>recordType</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>recordType is the DNS record type. For example, "A" or "CNAME".</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>targets</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>targets are record targets.</p></td>
@@ -90,11 +90,11 @@ status is the most recently observed status of the dnsRecord.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property             | Type      | Description                                                                                                                                                                                                                                                                                                                                                                               |
+|----------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `observedGeneration` | `integer` | observedGeneration is the most recently observed generation of the DNSRecord. When the DNSRecord is updated, the controller updates the corresponding record in each managed zone. If an update for a particular zone fails, that failure is recorded in the status condition for the zone so that the controller can determine that it needs to retry the update for that specific zone. |
-| `zones` | `array` | zones are the status of the record in each zone. |
-| `zones[]` | `object` | DNSZoneStatus is the status of a record within a specific zone. |
+| `zones`              | `array`   | zones are the status of the record in each zone.                                                                                                                                                                                                                                                                                                                                          |
+| `zones[]`            | `object`  | DNSZoneStatus is the status of a record within a specific zone.                                                                                                                                                                                                                                                                                                                           |
 
 ## .status.zones
 
@@ -119,25 +119,25 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>conditions</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>conditions are any conditions associated with the record in the zone.</p>
 <p>If publishing the record succeeds, the "Published" condition will be set with status "True" and upon failure it will be set to "False" along with the reason and message describing the cause of the failure.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>conditions[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>DNSZoneCondition is just the standard condition fields.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>dnsZone</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>dnsZone is the zone where the record is published.</p></td>
@@ -191,21 +191,21 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>id</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>id is the identifier that can be used to find the DNS hosted zone.</p>
 <p>on AWS zone can be fetched using <code>ID</code> as id in [1] on Azure zone can be fetched using <code>ID</code> as a pre-determined name in [2], on GCP zone can be fetched using <code>ID</code> as a pre-determined name in [3].</p>
 <p>[1]: <a href="https://docs.aws.amazon.com/cli/latest/reference/route53/get-hosted-zone.html#options">https://docs.aws.amazon.com/cli/latest/reference/route53/get-hosted-zone.html#options</a> [2]: <a href="https://docs.microsoft.com/en-us/cli/azure/network/dns/zone?view=azure-cli-latest#az-network-dns-zone-show">https://docs.microsoft.com/en-us/cli/azure/network/dns/zone?view=azure-cli-latest#az-network-dns-zone-show</a> [3]: <a href="https://cloud.google.com/dns/docs/reference/v1/managedZones/get">https://cloud.google.com/dns/docs/reference/v1/managedZones/get</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tags</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p>tags can be used to query the DNS hosted zone.</p>
@@ -257,10 +257,10 @@ HTTP method
 Description
 list objects of kind DNSRecord
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`DNSRecordList`](../objects/index.xml#io-openshift-operator-ingress-v1-DNSRecordList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                  |
+|--------------------|-----------------------------------------------------------------------------------------------|
+| 200 - OK           | [`DNSRecordList`](../objects/index.xml#io-openshift-operator-ingress-v1-DNSRecordList) schema |
+| 401 - Unauthorized | Empty                                                                                         |
 
 HTTP responses
 
@@ -272,10 +272,10 @@ HTTP method
 Description
 delete collection of DNSRecord
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -285,10 +285,10 @@ HTTP method
 Description
 list objects of kind DNSRecord
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`DNSRecordList`](../objects/index.xml#io-openshift-operator-ingress-v1-DNSRecordList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                  |
+|--------------------|-----------------------------------------------------------------------------------------------|
+| 200 - OK           | [`DNSRecordList`](../objects/index.xml#io-openshift-operator-ingress-v1-DNSRecordList) schema |
+| 401 - Unauthorized | Empty                                                                                         |
 
 HTTP responses
 
@@ -298,25 +298,25 @@ HTTP method
 Description
 create a DNSRecord
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                             | Description |
+|-----------|----------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
-| 201 - Created | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
-| 202 - Accepted | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                     |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
+| 201 - Created      | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
+| 202 - Accepted     | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                            |
 
 HTTP responses
 
@@ -334,17 +334,17 @@ HTTP method
 Description
 delete a DNSRecord
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -354,10 +354,10 @@ HTTP method
 Description
 read the specified DNSRecord
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                     |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                            |
 
 HTTP responses
 
@@ -367,17 +367,17 @@ HTTP method
 Description
 partially update the specified DNSRecord
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                     |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                            |
 
 HTTP responses
 
@@ -387,24 +387,24 @@ HTTP method
 Description
 replace the specified DNSRecord
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                             | Description |
+|-----------|----------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
-| 201 - Created | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                     |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
+| 201 - Created      | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                            |
 
 HTTP responses
 
@@ -422,10 +422,10 @@ HTTP method
 Description
 read status of the specified DNSRecord
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                     |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                            |
 
 HTTP responses
 
@@ -435,17 +435,17 @@ HTTP method
 Description
 partially update status of the specified DNSRecord
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                     |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                            |
 
 HTTP responses
 
@@ -455,23 +455,23 @@ HTTP method
 Description
 replace status of the specified DNSRecord
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                             | Description |
+|-----------|----------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
-| 201 - Created | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                     |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
+| 201 - Created      | [`DNSRecord`](../operator_apis/dnsrecord-ingress-operator-openshift-io-v1.xml#dnsrecord-ingress-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                            |
 
 HTTP responses

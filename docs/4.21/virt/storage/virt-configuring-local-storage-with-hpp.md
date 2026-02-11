@@ -6,30 +6,15 @@ When you install the OpenShift Virtualization Operator, the Hostpath Provisioner
 
 You configure a hostpath provisioner (HPP) with a basic storage pool by creating an HPP custom resource (CR) with a `storagePools` stanza. The storage pool specifies the name and path used by the CSI driver.
 
-> [!IMPORTANT]
-> Do not create storage pools in the same partition as the operating system. Otherwise, the operating system partition might become filled to capacity, which will impact performance or cause the node to become unstable or unusable.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Do not create storage pools in the same partition as the operating system. Otherwise, the operating system partition might become filled to capacity, which will impact performance or cause the node to become unstable or unusable.
 
 </div>
 
 - The directories specified in `spec.storagePools.path` must have read/write access.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an `hpp_cr.yaml` file with a `storagePools` stanza as in the following example:
 
@@ -60,18 +45,19 @@ Procedure
     $ oc create -f hpp_cr.yaml
     ```
 
-</div>
-
 ## About creating storage classes
 
 When you create a storage class, you set parameters that affect the dynamic provisioning of persistent volumes (PVs) that belong to that storage class. You cannot update a `StorageClass` object’s parameters after you create it.
 
 In order to use the hostpath provisioner (HPP) you must create an associated storage class for the CSI driver with the `storagePools` stanza.
 
-> [!NOTE]
-> Virtual machines use data volumes that are based on local PVs. Local PVs are bound to specific nodes. While the disk image is prepared for consumption by the virtual machine, it is possible that the virtual machine cannot be scheduled to the node where the local storage PV was previously pinned.
->
-> To solve this problem, use the Kubernetes pod scheduler to bind the persistent volume claim (PVC) to a PV on the correct node. By using the `StorageClass` value with `volumeBindingMode` parameter set to `WaitForFirstConsumer`, the binding and provisioning of the PV is delayed until a pod is created using the PVC.
+<div class="note">
+
+Virtual machines use data volumes that are based on local PVs. Local PVs are bound to specific nodes. While the disk image is prepared for consumption by the virtual machine, it is possible that the virtual machine cannot be scheduled to the node where the local storage PV was previously pinned.
+
+To solve this problem, use the Kubernetes pod scheduler to bind the persistent volume claim (PVC) to a PV on the correct node. By using the `StorageClass` value with `volumeBindingMode` parameter set to `WaitForFirstConsumer`, the binding and provisioning of the PV is delayed until a pod is created using the PVC.
+
+</div>
 
 ## Creating a storage class for the CSI driver with the storagePools stanza
 
@@ -79,16 +65,11 @@ To use the hostpath provisioner (HPP) you must create an associated storage clas
 
 When you create a storage class, you set parameters that affect the dynamic provisioning of persistent volumes (PVs) that belong to that storage class. You cannot update a `StorageClass` object’s parameters after you create it.
 
-> [!NOTE]
-> Virtual machines use data volumes that are based on local PVs. Local PVs are bound to specific nodes. While a disk image is prepared for consumption by the virtual machine, it is possible that the virtual machine cannot be scheduled to the node where the local storage PV was previously pinned.
->
-> To solve this problem, use the Kubernetes pod scheduler to bind the persistent volume claim (PVC) to a PV on the correct node. By using the `StorageClass` value with `volumeBindingMode` parameter set to `WaitForFirstConsumer`, the binding and provisioning of the PV is delayed until a pod is created using the PVC.
+<div class="note">
 
-<div>
+Virtual machines use data volumes that are based on local PVs. Local PVs are bound to specific nodes. While a disk image is prepared for consumption by the virtual machine, it is possible that the virtual machine cannot be scheduled to the node where the local storage PV was previously pinned.
 
-<div class="title">
-
-Procedure
+To solve this problem, use the Kubernetes pod scheduler to bind the persistent volume claim (PVC) to a PV on the correct node. By using the `StorageClass` value with `volumeBindingMode` parameter set to `WaitForFirstConsumer`, the binding and provisioning of the PV is delayed until a pod is created using the PVC.
 
 </div>
 
@@ -119,8 +100,6 @@ Procedure
     ``` terminal
     $ oc create -f storageclass_csi.yaml
     ```
-
-</div>
 
 # About storage pools created with PVC templates
 
@@ -155,30 +134,15 @@ You can combine basic storage pools with storage pools created from PVC template
 
 You can create a storage pool for multiple hostpath provisioner (HPP) volumes by specifying a PVC template in the HPP custom resource (CR).
 
-> [!IMPORTANT]
-> Do not create storage pools in the same partition as the operating system. Otherwise, the operating system partition might become filled to capacity, which will impact performance or cause the node to become unstable or unusable.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Do not create storage pools in the same partition as the operating system. Otherwise, the operating system partition might become filled to capacity, which will impact performance or cause the node to become unstable or unusable.
 
 </div>
 
 - The directories specified in `spec.storagePools.path` must have read/write access.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an `hpp_pvc_template_pool.yaml` file for the HPP CR that specifies a persistent volume (PVC) template in the `storagePools` stanza according to the following example:
 
@@ -222,5 +186,3 @@ Procedure
     ``` terminal
     $ oc create -f hpp_pvc_template_pool.yaml
     ```
-
-</div>

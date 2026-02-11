@@ -10,12 +10,15 @@ Live migration has the following requirements:
 
 - The cluster must have sufficient RAM and network bandwidth.
 
-  > [!NOTE]
-  > You must ensure that there is enough memory request capacity in the cluster to support node drains that result in live migrations. You can determine the approximate required spare memory by using the following calculation:
-  >
-  >     Product of (Maximum number of nodes that can drain in parallel) and (Highest total VM memory request allocations across nodes)
-  >
-  > The default number of migrations that can run in parallel in the cluster is 5.
+  <div class="note">
+
+  You must ensure that there is enough memory request capacity in the cluster to support node drains that result in live migrations. You can determine the approximate required spare memory by using the following calculation:
+
+      Product of (Maximum number of nodes that can drain in parallel) and (Highest total VM memory request allocations across nodes)
+
+  The default number of migrations that can run in parallel in the cluster is 5.
+
+  </div>
 
 - If a VM uses a host model CPU, the nodes must support the CPU.
 
@@ -35,27 +38,9 @@ As a cluster administrator, you can preserve the old behavior by creating a temp
 
 Before you update to OpenShift Virtualization 4.21, you can create a temporary cluster role to preserve the previous live migration permissions until you are ready for the more restrictive default permissions to take effect.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The OpenShift CLI (`oc`) is installed.
 
 - You have cluster administrator permissions.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Before updating to OpenShift Virtualization 4.21, create a temporary `ClusterRole` object. For example:
 
@@ -120,33 +105,15 @@ Procedure
 
     After you delete the temporary cluster role, only users with the `kubevirt.io:migrate` role can create, delete, and update live migration requests.
 
-</div>
-
 # Granting live migration permissions
 
 You can grant trusted users or groups the ability to create, delete, and update live migration instances.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - The OpenShift CLI (`oc`) is installed.
 
 - You have cluster administrator permissions.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - (Optional) To change the default behavior so that namespace administrators always have permission to create, delete, and update live migrations, aggregate the `kubevirt.io:migrate` role into the `admin` cluster role by running the following command:
 
@@ -168,8 +135,6 @@ Procedure
     $ oc create clusterrolebinding kvmigrate --clusterrole=kubevirt.io:migrate --user=<first_user> --user=<second_user> --group=<group_name>
     ```
 
-</div>
-
 # VM migration tuning
 
 You can adjust your cluster-wide live migration settings based on the type of workload and migration scenario.
@@ -180,10 +145,13 @@ If you are migrating multiple VMs per node at the same time, set a `bandwidthPer
 
 A large VM running a heavy workload (for example, database processing), with higher memory dirty rates, requires a higher bandwidth to complete the migration.
 
-> [!NOTE]
-> Post copy mode, when enabled, triggers if the initial pre-copy phase does not complete within the defined timeout. During post copy, the VM CPUs pause on the source host while transferring the minimum required memory pages. Then the VM CPUs activate on the destination host, and the remaining memory pages transfer into the destination node at runtime. This can impact performance during the transfer.
->
-> Post copy mode should not be used for critical data, or with unstable networks.
+<div class="note">
+
+Post copy mode, when enabled, triggers if the initial pre-copy phase does not complete within the defined timeout. During post copy, the VM CPUs pause on the source host while transferring the minimum required memory pages. Then the VM CPUs activate on the destination host, and the remaining memory pages transfer into the destination node at runtime. This can impact performance during the transfer.
+
+Post copy mode should not be used for critical data, or with unstable networks.
+
+</div>
 
 # Common live migration tasks
 

@@ -1,18 +1,16 @@
 Insights Operator periodically imports your simple content access entitlements from [OpenShift Cluster Manager](https://console.redhat.com/openshift) and stores them in the `etc-pki-entitlement` secret in the `openshift-config-managed` namespace. Simple content access is a capability in Red Hat subscription tools that simplifies the behavior of the entitlement tooling. This feature makes it easier to consume the content provided by your Red Hat subscriptions without the complexity of configuring subscription tooling.
 
-> [!NOTE]
-> Previously, a cluster administrator would create or edit the Insights Operator configuration using a **support secret** in the `openshift-config` namespace. Red Hat Lightspeed now supports the creation of a `ConfigMap` object to configure the Insights Operator. The Insights Operator gives preference to the config map configuration over the support secret if both exist.
+<div class="note">
+
+Previously, a cluster administrator would create or edit the Insights Operator configuration using a **support secret** in the `openshift-config` namespace. Red Hat Lightspeed now supports the creation of a `ConfigMap` object to configure the Insights Operator. The Insights Operator gives preference to the config map configuration over the support secret if both exist.
+
+</div>
 
 The Insights Operator imports simple content access entitlements every eight hours, but can be configured or disabled using the **insights-config** `ConfigMap` object in the `openshift-insights` namespace.
 
-> [!NOTE]
-> Simple content access must be enabled in Red Hat Subscription Management for the importing to function.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+Simple content access must be enabled in Red Hat Subscription Management for the importing to function.
 
 </div>
 
@@ -20,37 +18,17 @@ Additional resources
 
 - [Using Red Hat subscriptions in builds](../../cicd/builds/running-entitled-builds.xml)
 
-</div>
-
 # Configuring simple content access import interval
 
 You can configure how often the Insights Operator imports the simple content access (sca) entitlements by using the **insights-config** `ConfigMap` object in the `openshift-insights` namespace. The entitlement import normally occurs every eight hours, but you can shorten this sca interval if you update your simple content access configuration in the **insights-config** `ConfigMap` object.
 
 This procedure describes how to update the import interval to two hours (2h). You can specify hours (h) or hours and minutes, for example: 2h30m.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Remote health reporting is enabled, which is the default.
 
 - You are logged in to the OpenShift Container Platform web console as a user with the `cluster-admin` role.
 
 - The **insights-config** `ConfigMap` object exists in the `openshift-insights` namespace.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to **Workloads** → **ConfigMaps** and select **Project: openshift-insights**.
 
@@ -77,35 +55,15 @@ Procedure
 
 7.  Verify that the value of the `config.yaml` `sca` attribute is set to `interval: 2h`.
 
-</div>
-
 # Disabling simple content access import
 
 You can disable the importing of simple content access entitlements by using the **insights-config** `ConfigMap` object in the `openshift-insights` namespace.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Remote health reporting is enabled, which is the default.
 
 - You are logged in to the OpenShift Container Platform web console as `cluster-admin`.
 
 - The **insights-config** `ConfigMap` object exists in the `openshift-insights` namespace.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to **Workloads** → **ConfigMaps** and select **Project: openshift-insights**.
 
@@ -132,35 +90,15 @@ Procedure
 
 7.  Verify that the value of the `config.yaml` `sca` attribute is set to `disabled: true`.
 
-</div>
-
 # Enabling a previously disabled simple content access import
 
 If the importing of simple content access entitlements is disabled, the Insights Operator does not import simple content access entitlements. You can change this behavior.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Remote health reporting is enabled, which is the default.
 
 - You are logged in to the OpenShift Container Platform web console as a user with the `cluster-admin` role.
 
 - The **insights-config** `ConfigMap` object exists in the `openshift-insights` namespace.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to **Workloads** → **ConfigMaps** and select **Project: openshift-insights**.
 
@@ -186,5 +124,3 @@ Procedure
 6.  Click **Save**. The **insights-config** config-map details page opens.
 
 7.  Verify that the value of the `config.yaml` `sca` attribute is set to `disabled: false`.
-
-</div>

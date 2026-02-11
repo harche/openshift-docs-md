@@ -68,10 +68,6 @@ To accomplish these tasks, you can augment the `openshift-install` process to in
 
 <div class="note">
 
-<div class="title">
-
-</div>
-
 - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
 - It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
@@ -190,11 +186,9 @@ To decode the contents of a file listed in the `bootstrap.ign` file, pipe the b
 $ echo VGhpcyBpcyB0aGUgYm9vdHN0cmFwIG5vZGU7IGl0IHdpbGwgYmUgZGVzdHJveWVkIHdoZW4gdGhlIG1hc3RlciBpcyBmdWxseSB1cC4KClRoZSBwcmltYXJ5IHNlcnZpY2VzIGFyZSByZWxlYXNlLWltYWdlLnNlcnZpY2UgZm9sbG93ZWQgYnkgYm9vdGt1YmUuc2VydmljZS4gVG8gd2F0Y2ggdGhlaXIgc3RhdHVzLCBydW4gZS5nLgoKICBqb3VybmFsY3RsIC1iIC1mIC11IHJlbGVhc2UtaW1hZ2Uuc2VydmljZSAtdSBib290a3ViZS5zZXJ2aWNlCg== | base64 --decode
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -205,8 +199,6 @@ The primary services are release-image.service followed by bootkube.service. To 
 
   journalctl -b -f -u release-image.service -u bootkube.service
 ```
-
-</div>
 
 Repeat those commands on the `master.ign` and `worker.ign` files to see the source of Ignition config files for each of those machine types.  You should see a line like the following for the `worker.ign`, identifying how it gets its Ignition config from the bootstrap machine:
 
@@ -242,11 +234,9 @@ Machine config pools manage a cluster of nodes and their corresponding machine c
 $ oc get machineconfigpools
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -256,19 +246,15 @@ master master-1638c1aea398413bb918e76632f20799 False   False    False
 worker worker-2feef4f8288936489a5a832ca8efe953 False   False    False
 ```
 
-</div>
-
 To list all machine configs:
 
 ``` terminal
 $ oc get machineconfig
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -285,8 +271,6 @@ master-1638c1aea398413bb918e76632f20799   4.0.0-0.150.0.0-dirty   3.5.0     
 worker-2feef4f8288936489a5a832ca8efe953   4.0.0-0.150.0.0-dirty   3.5.0             16m
 ```
 
-</div>
-
 The Machine Config Operator acts somewhat differently than Ignition when it comes to applying these machine configs. The machine configs are read in order (from 00\* to 99\*). Labels inside the machine configs identify the type of node each is for (master or worker). If the same file appears in multiple machine config files, the last one wins. So, for example, any file that appears in a 99\* file would replace the same file that appeared in a 00\* file. The input `MachineConfig` objects are unioned into a "rendered" `MachineConfig` object, which will be used as a target by the operator and is the value you can see in the machine config pool.
 
 To see what files are being managed from a machine config, look for "Path:" inside a particular `MachineConfig` object. For example:
@@ -295,11 +279,9 @@ To see what files are being managed from a machine config, look for "Path:" insi
 $ oc describe machineconfigs 01-worker-container-runtime | grep Path:
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -308,7 +290,5 @@ Example output
             Path:            /etc/containers/storage.conf
             Path:            /etc/crio/crio.conf
 ```
-
-</div>
 
 Be sure to give the machine config file a later name (such as 10-worker-container-runtime). Keep in mind that the content of each file is in URL-style data. Then apply the new machine config to the cluster.

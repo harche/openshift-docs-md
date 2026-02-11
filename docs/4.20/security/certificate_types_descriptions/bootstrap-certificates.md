@@ -14,8 +14,11 @@ This bootstrap certificate is valid for 10 years.
 
 The kubelet-managed certificate is valid for one year and rotates automatically at around the 80 percent mark of that one year.
 
-> [!NOTE]
-> OpenShift Lifecycle Manager (OLM) does not update the bootstrap certificate.
+<div class="note">
+
+OpenShift Lifecycle Manager (OLM) does not update the bootstrap certificate.
+
+</div>
 
 # Customization
 

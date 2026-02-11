@@ -1,7 +1,10 @@
 In OpenShift Container Platform version 4.17, you can install a cluster on any infrastructure that you provision, including virtualization and cloud environments.
 
-> [!IMPORTANT]
-> Review the information in the [guidelines for deploying OpenShift Container Platform on non-tested platforms](https://access.redhat.com/articles/4207611) before you attempt to install an OpenShift Container Platform cluster in virtualized or cloud environments.
+<div class="important">
+
+Review the information in the [guidelines for deploying OpenShift Container Platform on non-tested platforms](https://access.redhat.com/articles/4207611) before you attempt to install an OpenShift Container Platform cluster in virtualized or cloud environments.
+
+</div>
 
 # Prerequisites
 
@@ -11,8 +14,11 @@ In OpenShift Container Platform version 4.17, you can install a cluster on any i
 
 - If you use a firewall, you [configured it to allow the sites](../../installing/install_config/configuring-firewall.xml#configuring-firewall) that your cluster requires access to.
 
-  > [!NOTE]
-  > Be sure to also review this site list if you are configuring a proxy.
+  <div class="note">
+
+  Be sure to also review this site list if you are configuring a proxy.
+
+  </div>
 
 # Internet access for OpenShift Container Platform
 
@@ -26,8 +32,11 @@ You must have internet access to perform the following actions:
 
 - Obtain the packages that are required to perform cluster updates.
 
-> [!IMPORTANT]
-> If your cluster cannot have direct internet access, you can perform a restricted network installation on some types of infrastructure that you provision. During that process, you download the required content and use it to populate a mirror registry with the installation packages. With some installation types, the environment that you install your cluster in will not require internet access. Before you update the cluster, you update the content of the mirror registry.
+<div class="important">
+
+If your cluster cannot have direct internet access, you can perform a restricted network installation on some types of infrastructure that you provision. During that process, you download the required content and use it to populate a mirror registry with the installation packages. With some installation types, the environment that you install your cluster in will not require internet access. Before you update the cluster, you update the content of the mirror registry.
+
+</div>
 
 # Requirements for a cluster with user-provisioned infrastructure
 
@@ -41,19 +50,25 @@ You must specify the minimum required machines or hosts for your cluster so that
 
 The smallest OpenShift Container Platform clusters require the following hosts:
 
-> [!IMPORTANT]
-> For a cluster that contains user-provisioned infrastructure, you must deploy all of the required machines.
+<div class="important">
 
-| Hosts | Description |
-|----|----|
-| One temporary bootstrap machine | The cluster requires the bootstrap machine to deploy the OpenShift Container Platform cluster on the three control plane machines. You can remove the bootstrap machine after you install the cluster. |
-| Three control plane machines | The control plane machines run the Kubernetes and OpenShift Container Platform services that form the control plane. |
-| At least two compute machines, which are also known as worker machines. | The workloads requested by OpenShift Container Platform users run on the compute machines. |
+For a cluster that contains user-provisioned infrastructure, you must deploy all of the required machines.
+
+</div>
+
+| Hosts                                                                   | Description                                                                                                                                                                                            |
+|-------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| One temporary bootstrap machine                                         | The cluster requires the bootstrap machine to deploy the OpenShift Container Platform cluster on the three control plane machines. You can remove the bootstrap machine after you install the cluster. |
+| Three control plane machines                                            | The control plane machines run the Kubernetes and OpenShift Container Platform services that form the control plane.                                                                                   |
+| At least two compute machines, which are also known as worker machines. | The workloads requested by OpenShift Container Platform users run on the compute machines.                                                                                                             |
 
 Minimum required hosts
 
-> [!IMPORTANT]
-> To maintain high availability of your cluster, use separate physical hosts for these cluster machines.
+<div class="important">
+
+To maintain high availability of your cluster, use separate physical hosts for these cluster machines.
+
+</div>
 
 The bootstrap and control plane machines must use Red Hat Enterprise Linux CoreOS (RHCOS) as the operating system. However, the compute machines can choose between Red Hat Enterprise Linux CoreOS (RHCOS), Red Hat Enterprise Linux (RHEL) 8.6 and later.
 
@@ -63,11 +78,11 @@ Note that RHCOS is based on Red Hat Enterprise Linux (RHEL) 9.2 and inherits al
 
 Each created cluster must meet minimum requirements so that the cluster runs as expected.
 
-| Machine | Operating System | vCPU <sup>\[1\]</sup> | Virtual RAM | Storage | Input/Output Per Second (IOPS)<sup>\[2\]</sup> |
-|----|----|----|----|----|----|
-| Bootstrap | RHCOS | 4 | 16 GB | 100 GB | 300 |
-| Control plane | RHCOS | 4 | 16 GB | 100 GB | 300 |
-| Compute | RHCOS | 2 | 8 GB | 100 GB | 300 |
+| Machine       | Operating System | vCPU <sup>\[1\]</sup> | Virtual RAM | Storage | Input/Output Per Second (IOPS)<sup>\[2\]</sup> |
+|---------------|------------------|-----------------------|-------------|---------|------------------------------------------------|
+| Bootstrap     | RHCOS            | 4                     | 16 GB       | 100 GB  | 300                                            |
+| Control plane | RHCOS            | 4                     | 16 GB       | 100 GB  | 300                                            |
+| Compute       | RHCOS            | 2                     | 8 GB        | 100 GB  | 300                                            |
 
 Minimum resource requirements
 
@@ -77,18 +92,21 @@ Minimum resource requirements
 
 3.  As with all user-provisioned installations, if you choose to use RHEL compute machines in your cluster, you take responsibility for all operating system life cycle management and maintenance, including performing system updates, applying patches, and completing all other required tasks. Use of RHEL 7 compute machines is deprecated and has been removed in OpenShift Container Platform 4.10 and later.
 
-> [!NOTE]
-> For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.6, which updates the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
->
-> - x86-64 architecture requires x86-64-v2 ISA
->
-> - ARM64 architecture requires ARMv8.0-A ISA
->
-> - IBM Power architecture requires Power 9 ISA
->
-> - s390x architecture requires z14 ISA
->
-> For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures) (RHEL documentation).
+<div class="note">
+
+For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.6, which updates the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
+
+- x86-64 architecture requires x86-64-v2 ISA
+
+- ARM64 architecture requires ARMv8.0-A ISA
+
+- IBM Power architecture requires Power 9 ISA
+
+- s390x architecture requires z14 ISA
+
+For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures) (RHEL documentation).
+
+</div>
 
 If an instance type for your platform meets the minimum requirements for cluster machines, it is supported to use in OpenShift Container Platform.
 
@@ -102,16 +120,15 @@ The `kube-controller-manager` only approves the kubelet client CSRs. The `machin
 
 You must configure networking for all the Red Hat Enterprise Linux CoreOS (RHCOS) machines in `initramfs` during boot, so that they can fetch their Ignition config files.
 
-> [!IMPORTANT]
-> Ensure you enable the `disk.EnableUUID` parameter on all virtual machines in your cluster.
+<div class="important">
+
+Ensure you enable the `disk.EnableUUID` parameter on all virtual machines in your cluster.
+
+</div>
 
 During the initial boot, the machines require an IP address configuration that is set either through a DHCP server or statically by providing the required boot options. After a network connection is established, the machines download their Ignition config files from an HTTP or HTTPS server. The Ignition config files are then used to set the exact state of each machine. The Machine Config Operator completes more changes to the machines, such as the application of new certificates or keys, after installation.
 
 <div class="note">
-
-<div class="title">
-
-</div>
 
 - Consider using a DHCP server for long-term management of the cluster machines. Ensure that the DHCP server is configured to provide persistent IP addresses, DNS server information, and hostnames to the cluster machines.
 
@@ -133,78 +150,28 @@ You must configure the network connectivity between machines to allow OpenShift 
 
 This section provides details about the ports that are required.
 
-> [!IMPORTANT]
-> In connected OpenShift Container Platform environments, all nodes are required to have internet access to pull images for platform containers and provide telemetry data to Red Hat.
+<div class="important">
 
-<table>
-<caption>Ports used for all-machine to all-machine communications</caption>
-<colgroup>
-<col style="width: 22%" />
-<col style="width: 22%" />
-<col style="width: 55%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Protocol</th>
-<th style="text-align: left;">Port</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><p>ICMP</p></td>
-<td style="text-align: left;"><p>N/A</p></td>
-<td style="text-align: left;"><p>Network reachability tests</p></td>
-</tr>
-<tr>
-<td rowspan="4" style="text-align: left;"><p>TCP</p></td>
-<td style="text-align: left;"><p><code>1936</code></p></td>
-<td style="text-align: left;"><p>Metrics</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>9000</code>-<code>9999</code></p></td>
-<td style="text-align: left;"><p>Host level services, including the node exporter on ports <code>9100</code>-<code>9101</code> and the Cluster Version Operator on port <code>9099</code>.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>10250</code>-<code>10259</code></p></td>
-<td style="text-align: left;"><p>The default ports that Kubernetes reserves</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>22623</code></p></td>
-<td style="text-align: left;"><p>The port handles traffic from the Machine Config Server and directs the traffic to the control plane machines.</p></td>
-</tr>
-<tr>
-<td rowspan="6" style="text-align: left;"><p>UDP</p></td>
-<td style="text-align: left;"><p><code>6081</code></p></td>
-<td style="text-align: left;"><p>Geneve</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>9000</code>-<code>9999</code></p></td>
-<td style="text-align: left;"><p>Host level services, including the node exporter on ports <code>9100</code>-<code>9101</code>.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>500</code></p></td>
-<td style="text-align: left;"><p>IPsec IKE packets</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>4500</code></p></td>
-<td style="text-align: left;"><p>IPsec NAT-T packets</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>123</code></p></td>
-<td style="text-align: left;"><p>Network Time Protocol (NTP) on UDP port <code>123</code>. If an external NTP time server is configured, you must open UDP port <code>123</code>.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>TCP/UDP</p></td>
-<td style="text-align: left;"><p><code>30000</code>-<code>32767</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Kubernetes node port</p></td>
-<td style="text-align: left;"><p>ESP</p></td>
-<td style="text-align: left;"><p>N/A</p></td>
-</tr>
-</tbody>
-</table>
+In connected OpenShift Container Platform environments, all nodes are required to have internet access to pull images for platform containers and provide telemetry data to Red Hat.
+
+</div>
+
+| Protocol             | Port                                                                                                                       | Description                |
+|----------------------|----------------------------------------------------------------------------------------------------------------------------|----------------------------|
+| ICMP                 | N/A                                                                                                                        | Network reachability tests |
+| TCP                  | `1936`                                                                                                                     | Metrics                    |
+| `9000`-`9999`        | Host level services, including the node exporter on ports `9100`-`9101` and the Cluster Version Operator on port `9099`.   |                            |
+| `10250`-`10259`      | The default ports that Kubernetes reserves                                                                                 |                            |
+| `22623`              | The port handles traffic from the Machine Config Server and directs the traffic to the control plane machines.             |                            |
+| UDP                  | `6081`                                                                                                                     | Geneve                     |
+| `9000`-`9999`        | Host level services, including the node exporter on ports `9100`-`9101`.                                                   |                            |
+| `500`                | IPsec IKE packets                                                                                                          |                            |
+| `4500`               | IPsec NAT-T packets                                                                                                        |                            |
+| `123`                | Network Time Protocol (NTP) on UDP port `123`. If an external NTP time server is configured, you must open UDP port `123`. |                            |
+| TCP/UDP              | `30000`-`32767`                                                                                                            |                            |
+| Kubernetes node port | ESP                                                                                                                        | N/A                        |
+
+Ports used for all-machine to all-machine communications
 
 | Protocol | Port   | Description    |
 |----------|--------|----------------|
@@ -224,17 +191,7 @@ OpenShift Container Platform clusters are configured to use a public Network Tim
 
 If a DHCP server provides NTP server information, the chrony time service on the Red Hat Enterprise Linux CoreOS (RHCOS) machines read the information and can sync the clock with the NTP servers.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring chrony time service](../../installing/install_config/installing-customizing.xml#installation-special-config-chrony_installing-customizing)
-
-</div>
 
 ## User-provisioned DNS requirements
 
@@ -254,8 +211,11 @@ Reverse DNS resolution is also required for the Kubernetes API, the bootstrap ma
 
 DNS A/AAAA or CNAME records are used for name resolution and PTR records are used for reverse name resolution. The reverse records are important because Red Hat Enterprise Linux CoreOS (RHCOS) uses the reverse records to set the hostnames for all the nodes, unless the hostnames are provided by DHCP. Additionally, the reverse records are used to generate the certificate signing requests (CSR) that OpenShift Container Platform needs to operate.
 
-> [!NOTE]
-> It is recommended to use a DHCP server to provide the hostnames to each cluster node. See the *DHCP recommendations for user-provisioned infrastructure* section for more information.
+<div class="note">
+
+It is recommended to use a DHCP server to provide the hostnames to each cluster node. See the *DHCP recommendations for user-provisioned infrastructure* section for more information.
+
+</div>
 
 The following DNS records are required for a user-provisioned OpenShift Container Platform cluster and they must be in place before installation. In each record, `<cluster_name>` is the cluster name and `<base_domain>` is the base domain that you specify in the `install-config.yaml` file. A complete DNS record takes the form: `<component>.<cluster_name>.<base_domain>.`.
 
@@ -267,44 +227,43 @@ The following DNS records are required for a user-provisioned OpenShift Containe
 <col style="width: 55%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Component</th>
 <th style="text-align: left;">Record</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td rowspan="2" style="text-align: left;"><p>Kubernetes API</p></td>
+<tr class="odd">
+<td style="text-align: left;"><p>Kubernetes API</p></td>
 <td style="text-align: left;"><p><code>api.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code></p></td>
 <td style="text-align: left;"><p>A DNS A/AAAA or CNAME record, and a DNS PTR record, to identify the API load balancer. These records must be resolvable by both clients external to the cluster and from all the nodes within the cluster.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>api-int.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code></p></td>
 <td style="text-align: left;"><p>A DNS A/AAAA or CNAME record, and a DNS PTR record, to internally identify the API load balancer. These records must be resolvable from all the nodes within the cluster.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>The API server must be able to resolve the worker nodes by the hostnames that are recorded in Kubernetes. If the API server cannot resolve the node names, then proxied API calls can fail, and you cannot retrieve logs from pods.</p>
 </div></td>
+<td></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Routes</p></td>
 <td style="text-align: left;"><p><code>*.apps.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code></p></td>
 <td style="text-align: left;"><p>A wildcard DNS A/AAAA or CNAME record that refers to the application ingress load balancer. The application ingress load balancer targets the machines that run the Ingress Controller pods. The Ingress Controller pods run on the compute machines by default. These records must be resolvable by both clients external to the cluster and from all the nodes within the cluster.</p>
 <p>For example, <code>console-openshift-console.apps.&lt;cluster_name&gt;.&lt;base_domain&gt;</code> is used as a wildcard route to the OpenShift Container Platform console.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Bootstrap machine</p></td>
 <td style="text-align: left;"><p><code>bootstrap.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code></p></td>
 <td style="text-align: left;"><p>A DNS A/AAAA or CNAME record, and a DNS PTR record, to identify the bootstrap machine. These records must be resolvable by the nodes within the cluster.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Control plane machines</p></td>
 <td style="text-align: left;"><p><code>&lt;control_plane&gt;&lt;n&gt;.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code></p></td>
 <td style="text-align: left;"><p>DNS A/AAAA or CNAME records and DNS PTR records to identify each machine for the control plane nodes. These records must be resolvable by the nodes within the cluster.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Compute machines</p></td>
 <td style="text-align: left;"><p><code>&lt;compute&gt;&lt;n&gt;.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code></p></td>
 <td style="text-align: left;"><p>DNS A/AAAA or CNAME records and DNS PTR records to identify each machine for the worker nodes. These records must be resolvable by the nodes within the cluster.</p></td>
@@ -312,11 +271,19 @@ The following DNS records are required for a user-provisioned OpenShift Containe
 </tbody>
 </table>
 
-> [!NOTE]
-> In OpenShift Container Platform 4.4 and later, you do not need to specify etcd host and SRV records in your DNS configuration.
+Required DNS records
 
-> [!TIP]
-> You can use the `dig` command to verify name and reverse name resolution. See the section on *Validating DNS resolution for user-provisioned infrastructure* for detailed validation steps.
+<div class="note">
+
+In OpenShift Container Platform 4.4 and later, you do not need to specify etcd host and SRV records in your DNS configuration.
+
+</div>
+
+<div class="tip">
+
+You can use the `dig` command to verify name and reverse name resolution. See the section on *Validating DNS resolution for user-provisioned infrastructure* for detailed validation steps.
+
+</div>
 
 ### Example DNS configuration for user-provisioned clusters
 
@@ -328,8 +295,11 @@ In the examples, the cluster name is `ocp4` and the base domain is `example.com`
 
 The following example is a BIND zone file that shows sample DNS A records for name resolution in a user-provisioned cluster.
 
-> [!NOTE]
-> In the example, the same load balancer is used for the Kubernetes API and application ingress traffic. In production scenarios, you can deploy the API and application ingress load balancers separately so that you can scale the load balancer infrastructure for each in isolation.
+<div class="note">
+
+In the example, the same load balancer is used for the Kubernetes API and application ingress traffic. In production scenarios, you can deploy the API and application ingress load balancers separately so that you can scale the load balancer infrastructure for each in isolation.
+
+</div>
 
 ``` text
 $TTL 1W
@@ -432,15 +402,21 @@ Provides rebootstrap.ocp4.example.com.verse DNS resolution for the control plane
 `compute0.ocp4.example.com.`
 Provides reverse DNS resolution for the compute machines.
 
-> [!NOTE]
-> A PTR record is not required for the OpenShift Container Platform application wildcard.
+<div class="note">
+
+A PTR record is not required for the OpenShift Container Platform application wildcard.
+
+</div>
 
 ## Load balancing requirements for user-provisioned infrastructure
 
 Before you install OpenShift Container Platform, you must provision the API and application Ingress load balancing infrastructure. In production scenarios, you can deploy the API and application Ingress load balancers separately so that you can scale the load balancer infrastructure for each in isolation.
 
-> [!NOTE]
-> If you want to deploy the API and application Ingress load balancers with a Red Hat Enterprise Linux (RHEL) instance, you must purchase the RHEL subscription separately.
+<div class="note">
+
+If you want to deploy the API and application Ingress load balancers with a Red Hat Enterprise Linux (RHEL) instance, you must purchase the RHEL subscription separately.
+
+</div>
 
 The load balancing infrastructure must meet the following requirements:
 
@@ -450,18 +426,24 @@ The load balancing infrastructure must meet the following requirements:
 
   - A stateless load balancing algorithm. The options vary based on the load balancer implementation.
 
-> [!IMPORTANT]
-> Do not configure session persistence for an API load balancer. Configuring session persistence for a Kubernetes API server might cause performance issues from excess application traffic for your OpenShift Container Platform cluster and the Kubernetes API that runs inside the cluster.
+<div class="important">
+
+Do not configure session persistence for an API load balancer. Configuring session persistence for a Kubernetes API server might cause performance issues from excess application traffic for your OpenShift Container Platform cluster and the Kubernetes API that runs inside the cluster.
+
+</div>
 
 Configure the following ports on both the front and back of the API load balancers:
 
-| Port | Back-end machines (pool members) | Internal | External | Description |
-|----|----|----|----|----|
-| `6443` | Bootstrap and control plane. You remove the bootstrap machine from the load balancer after the bootstrap machine initializes the cluster control plane. You must configure the `/readyz` endpoint for the API server health check probe. | X | X | Kubernetes API server |
-| `22623` | Bootstrap and control plane. You remove the bootstrap machine from the load balancer after the bootstrap machine initializes the cluster control plane. | X |  | Machine config server |
+| Port    | Back-end machines (pool members)                                                                                                                                                                                                         | Internal | External | Description           |
+|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|----------|-----------------------|
+| `6443`  | Bootstrap and control plane. You remove the bootstrap machine from the load balancer after the bootstrap machine initializes the cluster control plane. You must configure the `/readyz` endpoint for the API server health check probe. | X        | X        | Kubernetes API server |
+| `22623` | Bootstrap and control plane. You remove the bootstrap machine from the load balancer after the bootstrap machine initializes the cluster control plane.                                                                                  | X        |          | Machine config server |
 
-> [!NOTE]
-> The load balancer must be configured to take a maximum of 30 seconds from the time the API server turns off the `/readyz` endpoint to the removal of the API server instance from the pool. Within the time frame after `/readyz` returns an error or becomes healthy, the endpoint must have been removed or added. Probing every 5 or 10 seconds, with two successful requests to become healthy and three to become unhealthy, are well-tested values.
+<div class="note">
+
+The load balancer must be configured to take a maximum of 30 seconds from the time the API server turns off the `/readyz` endpoint to the removal of the API server instance from the pool. Within the time frame after `/readyz` returns an error or becomes healthy, the endpoint must have been removed or added. Probing every 5 or 10 seconds, with two successful requests to become healthy and three to become unhealthy, are well-tested values.
+
+</div>
 
 - Application Ingress load balancer: Provides an ingress point for application traffic flowing in from outside the cluster. A working configuration for the Ingress router is required for an OpenShift Container Platform cluster. Configure the following conditions:
 
@@ -469,20 +451,26 @@ Configure the following ports on both the front and back of the API load balance
 
   - A connection-based or session-based persistence is recommended, based on the options available and types of applications that will be hosted on the platform.
 
-> [!TIP]
-> If the true IP address of the client can be seen by the application Ingress load balancer, enabling source IP-based session persistence can improve performance for applications that use end-to-end TLS encryption.
+<div class="tip">
+
+If the true IP address of the client can be seen by the application Ingress load balancer, enabling source IP-based session persistence can improve performance for applications that use end-to-end TLS encryption.
+
+</div>
 
 Configure the following ports on both the front and back of the load balancers:
 
-| Port | Back-end machines (pool members) | Internal | External | Description |
-|----|----|----|----|----|
-| `443` | The machines that run the Ingress Controller pods, compute, or worker, by default. | X | X | HTTPS traffic |
-| `80` | The machines that run the Ingress Controller pods, compute, or worker, by default. | X | X | HTTP traffic |
+| Port  | Back-end machines (pool members)                                                   | Internal | External | Description   |
+|-------|------------------------------------------------------------------------------------|----------|----------|---------------|
+| `443` | The machines that run the Ingress Controller pods, compute, or worker, by default. | X        | X        | HTTPS traffic |
+| `80`  | The machines that run the Ingress Controller pods, compute, or worker, by default. | X        | X        | HTTP traffic  |
 
 Application Ingress load balancer
 
-> [!NOTE]
-> If you are deploying a three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
+<div class="note">
+
+If you are deploying a three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
+
+</div>
 
 ### Example load balancer configuration for user-provisioned clusters
 
@@ -490,19 +478,23 @@ Reference the example API and application Ingress load balancer configuration so
 
 The sample is an `/etc/haproxy/haproxy.cfg` configuration for an HAProxy load balancer. The example is not meant to provide advice for choosing one load balancing solution over another.
 
-> [!TIP]
-> If you are using HAProxy as a load balancer, you can check that the `haproxy` process is listening on ports `6443`, `22623`, `443`, and `80` by running `netstat -nltupe` on the HAProxy node.
+<div class="tip">
+
+If you are using HAProxy as a load balancer, you can check that the `haproxy` process is listening on ports `6443`, `22623`, `443`, and `80` by running `netstat -nltupe` on the HAProxy node.
+
+</div>
 
 In the example, the same load balancer is used for the Kubernetes API and application ingress traffic. In production scenarios, you can deploy the API and application ingress load balancers separately so that you can scale the load balancer infrastructure for each in isolation.
 
-> [!NOTE]
-> If you are using HAProxy as a load balancer and SELinux is set to `enforcing`, you must ensure that the HAProxy service can bind to the configured TCP port by running `setsebool -P haproxy_connect_any=1`.
+<div class="note">
 
-<div class="formalpara">
+If you are using HAProxy as a load balancer and SELinux is set to `enforcing`, you must ensure that the HAProxy service can bind to the configured TCP port by running `setsebool -P haproxy_connect_any=1`.
 
-<div class="title">
+</div>
 
-Sample API and application Ingress load balancer configuration
+<div class="formalpara-title">
+
+**Sample API and application Ingress load balancer configuration**
 
 </div>
 
@@ -558,8 +550,6 @@ listen ingress-router-80
   server compute1 compute1.ocp4.example.com:80 check inter 1s
 ```
 
-</div>
-
 where:
 
 `listen api-server-6443`
@@ -577,8 +567,11 @@ Port `443` handles the HTTPS traffic and points to the machines that run the Ing
 `listen ingress-router-80`
 Port `80` handles the HTTP traffic and points to the machines that run the Ingress Controller pods. The Ingress Controller pods run on the compute machines by default.
 
-> [!NOTE]
-> If you are deploying a three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
+<div class="note">
+
+If you are deploying a three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
+
+</div>
 
 # Preparing the user-provisioned infrastructure
 
@@ -588,27 +581,9 @@ This section provides details about the high-level steps required to set up your
 
 After preparation, your cluster infrastructure must meet the requirements outlined in the *Requirements for a cluster with user-provisioned infrastructure* section.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have reviewed the [OpenShift Container Platform 4.x Tested Integrations](https://access.redhat.com/articles/4128421) page.
 
 - You have reviewed the infrastructure requirements detailed in the *Requirements for a cluster with user-provisioned infrastructure* section.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  If you are using DHCP to provide the IP networking configuration to your cluster nodes, configure your DHCP service.
 
@@ -616,22 +591,31 @@ Procedure
 
     2.  When you use DHCP to configure IP addressing for the cluster machines, the machines also obtain the DNS server information through DHCP. Define the persistent DNS server address that is used by the cluster nodes through your DHCP server configuration.
 
-        > [!NOTE]
-        > If you are not using a DHCP service, you must provide the IP networking configuration and the address of the DNS server to the nodes at RHCOS install time. These can be passed as boot arguments if you are installing from an ISO image. See the *Installing RHCOS and starting the OpenShift Container Platform bootstrap process* section for more information about static IP provisioning and advanced networking options.
+        <div class="note">
+
+        If you are not using a DHCP service, you must provide the IP networking configuration and the address of the DNS server to the nodes at RHCOS install time. These can be passed as boot arguments if you are installing from an ISO image. See the *Installing RHCOS and starting the OpenShift Container Platform bootstrap process* section for more information about static IP provisioning and advanced networking options.
+
+        </div>
 
     3.  Define the hostnames of your cluster nodes in your DHCP server configuration. See the *Setting the cluster node hostnames through DHCP* section for details about hostname considerations.
 
-        > [!NOTE]
-        > If you are not using a DHCP service, the cluster nodes obtain their hostname through a reverse DNS lookup.
+        <div class="note">
+
+        If you are not using a DHCP service, the cluster nodes obtain their hostname through a reverse DNS lookup.
+
+        </div>
 
 2.  Ensure that your network infrastructure provides the required network connectivity between the cluster components. See the *Networking requirements for user-provisioned infrastructure* section for details about the requirements.
 
 3.  Configure your firewall to enable the ports required for the OpenShift Container Platform cluster components to communicate. See *Networking requirements for user-provisioned infrastructure* section for details about the ports that are required.
 
-    > [!IMPORTANT]
-    > By default, port `1936` is accessible for an OpenShift Container Platform cluster, because each control plane node needs access to this port.
-    >
-    > Avoid using the Ingress load balancer to expose this port, because doing so might result in the exposure of sensitive information, such as statistics and metrics, related to Ingress Controllers.
+    <div class="important">
+
+    By default, port `1936` is accessible for an OpenShift Container Platform cluster, because each control plane node needs access to this port.
+
+    Avoid using the Ingress load balancer to expose this port, because doing so might result in the exposure of sensitive information, such as statistics and metrics, related to Ingress Controllers.
+
+    </div>
 
 4.  Setup the required DNS infrastructure for your cluster.
 
@@ -651,37 +635,23 @@ Procedure
 
 6.  Provision the required API and application ingress load balancing infrastructure. See the *Load balancing requirements for user-provisioned infrastructure* section for more information about the requirements.
 
-    > [!NOTE]
-    > Some load balancing solutions require the DNS name resolution for the cluster nodes to be in place before the load balancing is initialized.
+    <div class="note">
 
-</div>
+    Some load balancing solutions require the DNS name resolution for the cluster nodes to be in place before the load balancing is initialized.
+
+    </div>
 
 # Validating DNS resolution for user-provisioned infrastructure
 
 To prevent network-related installation failures and ensure node connectivity in OpenShift Container Platform, validate your DNS configuration before deploying on user-provisioned infrastructure. This verification confirms that all required records resolve correctly, providing the stable foundation necessary for cluster communication.
 
-> [!IMPORTANT]
-> The validation steps detailed in this section must succeed before you install your cluster.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The validation steps detailed in this section must succeed before you install your cluster.
 
 </div>
 
 - You have configured the required DNS records for your user-provisioned infrastructure.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  From your installation node, run DNS lookups against the record names of the Kubernetes API, the wildcard routes, and the cluster nodes. Validate that the IP addresses contained in the responses correspond to the correct components.
 
@@ -693,11 +663,9 @@ Procedure
 
         Replace `<nameserver_ip>` with the IP address of the name server, `<cluster_name>` with your cluster name, and `<base_domain>` with your base domain name.
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -705,19 +673,15 @@ Procedure
         api.ocp4.example.com.        604800  IN  A   192.168.1.5
         ```
 
-        </div>
-
     2.  Perform a lookup against the Kubernetes internal API record name. Check that the result points to the IP address of the API load balancer:
 
         ``` terminal
         $ dig +noall +answer @<nameserver_ip> api-int.<cluster_name>.<base_domain>
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -725,19 +689,15 @@ Procedure
         api-int.ocp4.example.com.        604800  IN  A   192.168.1.5
         ```
 
-        </div>
-
     3.  Test an example `*.apps.<cluster_name>.<base_domain>` DNS wildcard lookup. All of the application wildcard lookups must resolve to the IP address of the application ingress load balancer:
 
         ``` terminal
         $ dig +noall +answer @<nameserver_ip> random.apps.<cluster_name>.<base_domain>
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -745,10 +705,11 @@ Procedure
         random.apps.ocp4.example.com.        604800  IN  A   192.168.1.5
         ```
 
-        </div>
+        <div class="note">
 
-        > [!NOTE]
-        > In the example outputs, the same load balancer is used for the Kubernetes API and application ingress traffic. In production scenarios, you can deploy the API and application ingress load balancers separately so that you can scale the load balancer infrastructure for each in isolation.
+        In the example outputs, the same load balancer is used for the Kubernetes API and application ingress traffic. In production scenarios, you can deploy the API and application ingress load balancers separately so that you can scale the load balancer infrastructure for each in isolation.
+
+        </div>
 
         You can replace `random` with another wildcard value. For example, you can query the route to the OpenShift Container Platform console:
 
@@ -756,11 +717,9 @@ Procedure
         $ dig +noall +answer @<nameserver_ip> console-openshift-console.apps.<cluster_name>.<base_domain>
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -768,27 +727,21 @@ Procedure
         console-openshift-console.apps.ocp4.example.com. 604800 IN   A 192.168.1.5
         ```
 
-        </div>
-
     4.  Run a lookup against the bootstrap DNS record name. Check that the result points to the IP address of the bootstrap node:
 
         ``` terminal
         $ dig +noall +answer @<nameserver_ip> bootstrap.<cluster_name>.<base_domain>
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
         ``` terminal
         bootstrap.ocp4.example.com.      604800  IN  A   192.168.1.96
         ```
-
-        </div>
 
     5.  Use this method to perform lookups against the DNS record names for the control plane and compute nodes. Check that the results correspond to the IP addresses of each node.
 
@@ -800,11 +753,9 @@ Procedure
         $ dig +noall +answer @<nameserver_ip> -x 192.168.1.5
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -812,8 +763,6 @@ Procedure
         5.1.168.192.in-addr.arpa. 604800 IN  PTR api-int.ocp4.example.com.
         5.1.168.192.in-addr.arpa. 604800    IN  PTR api.ocp4.example.com.
         ```
-
-        </div>
 
         where:
 
@@ -823,8 +772,11 @@ Procedure
         `api.ocp4.example.com`
         Specifies the record name for the Kubernetes API.
 
-        > [!NOTE]
-        > A PTR record is not required for the OpenShift Container Platform application wildcard. No validation step is needed for reverse DNS resolution against the IP address of the application ingress load balancer.
+        <div class="note">
+
+        A PTR record is not required for the OpenShift Container Platform application wildcard. No validation step is needed for reverse DNS resolution against the IP address of the application ingress load balancer.
+
+        </div>
 
     2.  Perform a reverse lookup against the IP address of the bootstrap node. Check that the result points to the DNS record name of the bootstrap node:
 
@@ -832,11 +784,9 @@ Procedure
         $ dig +noall +answer @<nameserver_ip> -x 192.168.1.96
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -844,11 +794,7 @@ Procedure
         96.1.168.192.in-addr.arpa. 604800    IN  PTR bootstrap.ocp4.example.com.
         ```
 
-        </div>
-
     3.  Use this method to perform reverse lookups against the IP addresses for the control plane and compute nodes. Check that the results correspond to the DNS record names of each node.
-
-</div>
 
 # Generating a key pair for cluster node SSH access
 
@@ -858,17 +804,15 @@ The SSH public key gets added to the `~/.ssh/authorized_keys` list for the `core
 
 If you want to SSH in to your cluster nodes to perform installation debugging or disaster recovery, you must provide the SSH public key during the installation process. The `./openshift-install gather` command also requires the SSH public key to be in place on the cluster nodes.
 
-> [!IMPORTANT]
-> Do not skip this procedure in production environments, where disaster recovery and debugging is required.
+<div class="important">
 
-> [!NOTE]
-> You must use a local key, not one that you configured with platform-specific approaches.
+Do not skip this procedure in production environments, where disaster recovery and debugging is required.
 
-<div>
+</div>
 
-<div class="title">
+<div class="note">
 
-Procedure
+You must use a local key, not one that you configured with platform-specific approaches.
 
 </div>
 
@@ -880,8 +824,11 @@ Procedure
 
     Specifies the path and file name, such as `~/.ssh/id_ed25519`, of the new SSH key. If you have an existing key pair, ensure your public key is in the your `~/.ssh` directory.
 
-    > [!NOTE]
-    > If you plan to install an OpenShift Container Platform cluster that uses the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the `x86_64`, `ppc64le`, and `s390x` architectures, do not create a key that uses the `ed25519` algorithm. Instead, create a key that uses the `rsa` or `ecdsa` algorithm.
+    <div class="note">
+
+    If you plan to install an OpenShift Container Platform cluster that uses the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the `x86_64`, `ppc64le`, and `s390x` architectures, do not create a key that uses the `ed25519` algorithm. Instead, create a key that uses the `rsa` or `ecdsa` algorithm.
+
+    </div>
 
 2.  View the public SSH key:
 
@@ -897,8 +844,11 @@ Procedure
 
 3.  Add the SSH private key identity to the SSH agent for your local user, if it has not already been added. SSH agent management of the key is required for password-less SSH authentication onto your cluster nodes, or if you want to use the `./openshift-install gather` command.
 
-    > [!NOTE]
-    > On some distributions, default SSH private key identities such as `~/.ssh/id_rsa` and `~/.ssh/id_dsa` are managed automatically.
+    <div class="note">
+
+    On some distributions, default SSH private key identities such as `~/.ssh/id_rsa` and `~/.ssh/id_dsa` are managed automatically.
+
+    </div>
 
     1.  If the `ssh-agent` process is not already running for your local user, start it as a background task:
 
@@ -906,11 +856,9 @@ Procedure
         $ eval "$(ssh-agent -s)"
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -918,10 +866,11 @@ Procedure
         Agent pid 31874
         ```
 
-        </div>
+        <div class="note">
 
-        > [!NOTE]
-        > If your cluster is in FIPS mode, only use FIPS-compliant algorithms to generate the SSH key. The key must be either RSA or ECDSA.
+        If your cluster is in FIPS mode, only use FIPS-compliant algorithms to generate the SSH key. The key must be either RSA or ECDSA.
+
+        </div>
 
 4.  Add your SSH private key to the `ssh-agent`:
 
@@ -931,11 +880,9 @@ Procedure
 
     Specifies the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -943,50 +890,21 @@ Procedure
     Identity added: /home/<you>/<path>/<file_name> (<computer_name>)
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - When you install OpenShift Container Platform, provide the SSH public key to the installation program. If you install a cluster on infrastructure that you provision, you must provide the key to the installation program.
-
-</div>
 
 # Obtaining the installation program
 
 Before you install OpenShift Container Platform, download the installation file on the host you are using for installation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have a computer that runs Linux or macOS, with 500 MB of local disk space.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to the [Cluster Type](https://console.redhat.com/openshift/install) page on the Red Hat Hybrid Cloud Console. If you have a Red Hat account, log in with your credentials. If you do not, create an account.
 
-    > [!TIP]
-    > You can also [download the binaries for a specific OpenShift Container Platform release](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/).
+    <div class="tip">
+
+    You can also [download the binaries for a specific OpenShift Container Platform release](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/).
+
+    </div>
 
 2.  Select your infrastructure provider from the **Run it yourself** section of the page.
 
@@ -995,10 +913,6 @@ Procedure
 4.  Place the downloaded file in the directory where you want to store the installation configuration files.
 
     <div class="important">
-
-    <div class="title">
-
-    </div>
 
     - The installation program creates several files on the computer that you use to install your cluster. You must keep the installation program and the files that the installation program creates after you finish installing the cluster. Both of the files are required to delete the cluster.
 
@@ -1014,25 +928,21 @@ Procedure
 
 6.  Download your installation [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret). This pull secret allows you to authenticate with the services that are provided by the included authorities, including Quay.io, which serves the container images for OpenShift Container Platform components.
 
-    > [!TIP]
-    > Alternatively, you can retrieve the installation program from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/290/), where you can specify a version of the installation program to download. However, you must have an active subscription to access this page.
+    <div class="tip">
 
-</div>
+    Alternatively, you can retrieve the installation program from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/290/), where you can specify a version of the installation program to download. However, you must have an active subscription to access this page.
+
+    </div>
 
 # Installing the OpenShift CLI on Linux
 
 To manage your cluster and deploy applications from the command line, install the OpenShift CLI (`oc`) binary on Linux.
 
-> [!IMPORTANT]
-> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
->
-> Download and install the new version of `oc`.
+<div class="important">
 
-<div>
+If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
 
-<div class="title">
-
-Procedure
+Download and install the new version of `oc`.
 
 </div>
 
@@ -1058,38 +968,21 @@ Procedure
     $ echo $PATH
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - After you install the OpenShift CLI, it is available using the `oc` command:
 
   ``` terminal
   $ oc <command>
   ```
 
-</div>
-
 # Installing the OpenShift CLI on Windows
 
 To manage your cluster and deploy applications from the command line, install OpenShift CLI (`oc`) binary on Windows.
 
-> [!IMPORTANT]
-> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
->
-> Download and install the new version of `oc`.
+<div class="important">
 
-<div>
+If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
 
-<div class="title">
-
-Procedure
+Download and install the new version of `oc`.
 
 </div>
 
@@ -1109,38 +1002,21 @@ Procedure
     C:\> path
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - After you install the OpenShift CLI, it is available using the `oc` command:
 
   ``` terminal
   C:\> oc <command>
   ```
 
-</div>
-
 # Installing the OpenShift CLI on macOS
 
 To manage your cluster and deploy applications from the command line, install the OpenShift CLI (`oc`) binary on macOS.
 
-> [!IMPORTANT]
-> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
->
-> Download and install the new version of `oc`.
+<div class="important">
 
-<div>
+If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
 
-<div class="title">
-
-Procedure
+Download and install the new version of `oc`.
 
 </div>
 
@@ -1152,8 +1028,11 @@ Procedure
 
 4.  Click **Download Now** next to the **OpenShift v4.17 macOS Clients** entry and save the file.
 
-    > [!NOTE]
-    > For macOS arm64, choose the **OpenShift v4.17 macOS arm64 Client** entry.
+    <div class="note">
+
+    For macOS arm64, choose the **OpenShift v4.17 macOS arm64 Client** entry.
+
+    </div>
 
 5.  Unpack and unzip the archive.
 
@@ -1165,49 +1044,19 @@ Procedure
     $ echo $PATH
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify your installation by using an `oc` command:
 
   ``` terminal
   $ oc <command>
   ```
 
-</div>
-
 # Manually creating the installation configuration file
 
 To customise your OpenShift Container Platform deployment and meet specific network requirements, manually create the installation configuration file. This ensures that the installation program uses your tailored settings rather than default values during the setup process.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have an SSH public key on your local machine for use with the installation program. You can use the key for SSH authentication onto your cluster nodes for debugging and disaster recovery.
 
 - You have obtained the OpenShift Container Platform installation program and the pull secret for your cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an installation directory to store your required installation assets in:
 
@@ -1215,20 +1064,27 @@ Procedure
     $ mkdir <installation_directory>
     ```
 
-    > [!IMPORTANT]
-    > You must create a directory. Some installation assets, such as bootstrap X.509 certificates have short expiration intervals, so you must not reuse an installation directory. If you want to reuse individual files from another cluster installation, you can copy them into your directory. However, the file names for the installation assets might change between releases. Use caution when copying installation files from an earlier OpenShift Container Platform version.
+    <div class="important">
+
+    You must create a directory. Some installation assets, such as bootstrap X.509 certificates have short expiration intervals, so you must not reuse an installation directory. If you want to reuse individual files from another cluster installation, you can copy them into your directory. However, the file names for the installation assets might change between releases. Use caution when copying installation files from an earlier OpenShift Container Platform version.
+
+    </div>
 
 2.  Customize the provided sample `install-config.yaml` file template and save the file in the `<installation_directory>`.
 
-    > [!NOTE]
-    > You must name this configuration file `install-config.yaml`.
+    <div class="note">
+
+    You must name this configuration file `install-config.yaml`.
+
+    </div>
 
 3.  Back up the `install-config.yaml` file so that you can use it to install many clusters.
 
-    > [!IMPORTANT]
-    > Back up the `install-config.yaml` file now, because the installation process consumes the file in the next step.
+    <div class="important">
 
-</div>
+    Back up the `install-config.yaml` file now, because the installation process consumes the file in the next step.
+
+    </div>
 
 ## Sample install-config.yaml file for other platforms
 
@@ -1275,17 +1131,26 @@ Specifies the `controlPlane` node configurations, which is a single mapping. To 
 `hyperthreading`
 Specifies whether to enable or disable simultaneous multithreading (SMT), or hyperthreading. By default, SMT is enabled to increase the performance of the cores in your machines. You can disable it by setting the parameter value to `Disabled`. If you disable SMT, you must disable it in all cluster machines; this includes both control plane and compute machines.
 
-> [!NOTE]
-> Simultaneous multithreading (SMT) is enabled by default. If SMT is not enabled in your BIOS settings, the `hyperthreading` parameter has no effect.
+<div class="note">
 
-> [!IMPORTANT]
-> If you disable `hyperthreading`, whether in the BIOS or in the `install-config.yaml` file, ensure that your capacity planning accounts for the dramatically decreased machine performance.
+Simultaneous multithreading (SMT) is enabled by default. If SMT is not enabled in your BIOS settings, the `hyperthreading` parameter has no effect.
+
+</div>
+
+<div class="important">
+
+If you disable `hyperthreading`, whether in the BIOS or in the `install-config.yaml` file, ensure that your capacity planning accounts for the dramatically decreased machine performance.
+
+</div>
 
 `compute.replicas`
 Specifies the number of compute machines that the cluster creates and manages for you on installer-provisioned installations. You must set this value to `0` when you install OpenShift Container Platform on user-provisioned infrastructure. Additionally for user-provisioned installations, you must manually deploy the compute machines before you finish installing the cluster.
 
-> [!NOTE]
-> If you are installing a three-node cluster, do not deploy any compute machines when you install the Red Hat Enterprise Linux CoreOS (RHCOS) machines.
+<div class="note">
+
+If you are installing a three-node cluster, do not deploy any compute machines when you install the Red Hat Enterprise Linux CoreOS (RHCOS) machines.
+
+</div>
 
 `controlPlane.replicas`
 Specifies the number of control plane machines that you add to the cluster. Because the cluster uses these values as the number of etcd endpoints in the cluster, the value must match the number of control plane machines that you deploy.
@@ -1296,8 +1161,11 @@ Specifies the cluster name that you specified in your DNS records.
 `clusterNetwork.cidr`
 Specifies a block of IP addresses from which pod IP addresses are allocated. This block must not overlap with existing physical networks. These IP addresses are used for the pod network. If you need to access the pods from an external network, you must configure load balancers and routers to manage the traffic.
 
-> [!NOTE]
-> Class E CIDR range is reserved for a future use. To use the Class E CIDR range, you must ensure your networking environment accepts the IP addresses within the Class E CIDR range.
+<div class="note">
+
+Class E CIDR range is reserved for a future use. To use the Class E CIDR range, you must ensure your networking environment accepts the IP addresses within the Class E CIDR range.
+
+</div>
 
 `cidr.hostPrefix`
 Specifies the subnet prefix length to assign to each individual node. For example, if `hostPrefix` is set to `23`, then each node is assigned a `/23` subnet out of the given `cidr`, which allows for 510 (2^(32 - 23) - 2) pod IP addresses. If you are required to provide access to nodes from an external network, configure load balancers and routers to manage the traffic.
@@ -1311,16 +1179,22 @@ Specifies the IP address pool to use for service IP addresses. You can enter onl
 `platform`
 Specifies the platform. You must set the platform to `none`. You cannot provide additional platform configuration variables for your platform.
 
-> [!IMPORTANT]
-> Clusters that are installed with the platform type `none` are unable to use some features, such as managing compute machines with the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that would normally support the feature. This parameter cannot be changed after installation.
+<div class="important">
+
+Clusters that are installed with the platform type `none` are unable to use some features, such as managing compute machines with the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that would normally support the feature. This parameter cannot be changed after installation.
+
+</div>
 
 `fips`
 Specifies either enabling or disabling FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
 
-> [!IMPORTANT]
-> To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Switching RHEL to FIPS mode](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening).
->
-> When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
+<div class="important">
+
+To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Switching RHEL to FIPS mode](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening).
+
+When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
+
+</div>
 
 `pullSecret`
 Specifies the [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret). This pull secret allows you to authenticate with the services that are provided by the included authorities, including Quay.io, which serves the container images for OpenShift Container Platform components.
@@ -1328,39 +1202,27 @@ Specifies the [pull secret from Red Hat OpenShift Cluster Manager](https://conso
 `sshKey`
 Specifies the SSH public key for the `core` user in Red Hat Enterprise Linux CoreOS (RHCOS).
 
-> [!NOTE]
-> For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+<div class="note">
+
+For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+
+</div>
 
 ## Configuring the cluster-wide proxy during installation
 
 To enable internet access in environments that deny direct connections, configure a cluster-wide proxy in the `install-config.yaml` file. This configuration ensures that the new OpenShift Container Platform cluster routes traffic through the specified HTTP or HTTPS proxy.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have an existing `install-config.yaml` file.
 
 - You have reviewed the sites that your cluster requires access to and determined whether any of them need to bypass the proxy. By default, all cluster egress traffic is proxied, including calls to hosting cloud provider APIs. You added sites to the `Proxy` object’s `spec.noProxy` field to bypass the proxy if necessary.
 
-  > [!NOTE]
-  > The `Proxy` object `status.noProxy` field is populated with the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
-  >
-  > For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field is also populated with the instance metadata endpoint (`169.254.169.254`).
+  <div class="note">
 
-</div>
+  The `Proxy` object `status.noProxy` field is populated with the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
 
-<div>
+  For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field is also populated with the instance metadata endpoint (`169.254.169.254`).
 
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  Edit your `install-config.yaml` file and add the proxy settings. For example:
 
@@ -1396,26 +1258,33 @@ Procedure
     `additionalTrustBundlePolicy`
     Specifies the policy that determines the configuration of the `Proxy` object to reference the `user-ca-bundle` config map in the `trustedCA` field. The allowed values are `Proxyonly` and `Always`. Use `Proxyonly` to reference the `user-ca-bundle` config map only when `http/https` proxy is configured. Use `Always` to always reference the `user-ca-bundle` config map. The default value is `Proxyonly`. Optional parameter.
 
-    > [!NOTE]
-    > The installation program does not support the proxy `readinessEndpoints` field.
+    <div class="note">
 
-    > [!NOTE]
-    > If the installer times out, restart and then complete the deployment by using the `wait-for` command of the installer. For example:
-    >
-    > \+
-    >
-    > ``` terminal
-    > $ ./openshift-install wait-for install-complete --log-level debug
-    > ```
+    The installation program does not support the proxy `readinessEndpoints` field.
+
+    </div>
+
+    <div class="note">
+
+    If the installer times out, restart and then complete the deployment by using the `wait-for` command of the installer. For example:
+
+    \+
+
+    ``` terminal
+    $ ./openshift-install wait-for install-complete --log-level debug
+    ```
+
+    </div>
 
 2.  Save the file and reference it when installing OpenShift Container Platform.
 
     The installation program creates a cluster-wide proxy that is named `cluster` that uses the proxy settings in the provided `install-config.yaml` file. If no proxy settings are provided, a `cluster` `Proxy` object is still created, but it will have a nil `spec`.
 
-    > [!NOTE]
-    > Only the `Proxy` object named `cluster` is supported, and no additional proxies can be created.
+    <div class="note">
 
-</div>
+    Only the `Proxy` object named `cluster` is supported, and no additional proxies can be created.
+
+    </div>
 
 ## Configuring a three-node cluster
 
@@ -1423,25 +1292,9 @@ To create smaller, resource-efficient clusters for testing and production, deplo
 
 In three-node OpenShift Container Platform environments, the three control plane machines are schedulable, which means that your application workloads are scheduled to run on them.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have an existing `install-config.yaml` file.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Ensure that the number of compute replicas is set to `0` in your `install-config.yaml` file, as shown in the following `compute` stanza:
 
@@ -1453,10 +1306,11 @@ Procedure
   # ...
   ```
 
-  > [!NOTE]
-  > You must set the value of the `replicas` parameter for the compute machines to `0` when you install OpenShift Container Platform on user-provisioned infrastructure, regardless of the number of compute machines you are deploying. In installer-provisioned installations, the parameter controls the number of compute machines that the cluster creates and manages for you. This does not apply to user-provisioned installations, where the compute machines are deployed manually.
+  <div class="note">
 
-</div>
+  You must set the value of the `replicas` parameter for the compute machines to `0` when you install OpenShift Container Platform on user-provisioned infrastructure, regardless of the number of compute machines you are deploying. In installer-provisioned installations, the parameter controls the number of compute machines that the cluster creates and manages for you. This does not apply to user-provisioned installations, where the compute machines are deployed manually.
+
+  </div>
 
 For three-node cluster installations, follow these next steps:
 
@@ -1474,37 +1328,15 @@ The installation configuration file transforms into the Kubernetes manifests. Th
 
 <div class="important">
 
-<div class="title">
-
-</div>
-
 - The Ignition config files that the OpenShift Container Platform installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
 - It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
 
 </div>
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You obtained the OpenShift Container Platform installation program.
 
 - You created the `install-config.yaml` installation configuration file.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Change to the directory that contains the OpenShift Container Platform installation program and generate the Kubernetes manifests for the cluster:
 
@@ -1517,13 +1349,19 @@ Procedure
     `<installation_directory>`
     Specifies the installation directory that contains the `install-config.yaml` file you created.
 
-    > [!WARNING]
-    > If you are installing a three-node cluster, skip the following step to allow the control plane nodes to be schedulable.
+    <div class="warning">
+
+    If you are installing a three-node cluster, skip the following step to allow the control plane nodes to be schedulable.
+
+    </div>
 
     \+
 
-    > [!IMPORTANT]
-    > When you configure control plane nodes from the default unschedulable to schedulable, additional subscriptions are required. This is because control plane nodes then become compute nodes.
+    <div class="important">
+
+    When you configure control plane nodes from the default unschedulable to schedulable, additional subscriptions are required. This is because control plane nodes then become compute nodes.
+
+    </div>
 
 2.  Check that the `mastersSchedulable` parameter in the `<installation_directory>/manifests/cluster-scheduler-02-config.yml` Kubernetes manifest file is set to `false`. This setting prevents pods from being scheduled on the control plane machines:
 
@@ -1555,8 +1393,6 @@ Procedure
         ├── metadata.json
         └── worker.ign
 
-</div>
-
 # Installing RHCOS and starting the OpenShift Container Platform bootstrap process
 
 To install OpenShift Container Platform on bare-metal infrastructure that you provision, install Red Hat Enterprise Linux CoreOS (RHCOS) by using the generated Ignition config files. Providing these files ensures the bootstrap process begins automatically after the machines reboot.
@@ -1565,8 +1401,11 @@ If you have configured suitable networking, DNS, and load balancing infrastructu
 
 To install RHCOS on the machines, follow either the steps to use an ISO image or network PXE booting.
 
-> [!NOTE]
-> The compute node deployment steps included in this installation document are RHCOS-specific. If you choose instead to deploy RHEL-based compute nodes, you take responsibility for all operating system life cycle management and maintenance, including performing system updates, applying patches, and completing all other required tasks. Only RHEL 8 compute machines are supported.
+<div class="note">
+
+The compute node deployment steps included in this installation document are RHCOS-specific. If you choose instead to deploy RHEL-based compute nodes, you take responsibility for all operating system life cycle management and maintenance, including performing system updates, applying patches, and completing all other required tasks. Only RHEL 8 compute machines are supported.
+
+</div>
 
 You can configure RHCOS during ISO and PXE installations by using the following methods:
 
@@ -1576,22 +1415,17 @@ You can configure RHCOS during ISO and PXE installations by using the following 
 
 - `coreos-installer`: You can boot the live ISO installer to a shell prompt, which allows you to prepare the permanent system in a variety of ways before first boot. In particular, you can run the `coreos-installer` command to identify various artifacts to include, work with disk partitions, and set up networking. In some cases, you can configure features on the live system and copy them to the installed system.
 
-  > [!NOTE]
-  > As of version `0.17.0-3`, `coreos-installer` requires RHEL 9 or later to run the program. You can still use older versions of `coreos-installer` to customize RHCOS artifacts of newer OpenShift Container Platform releases and install metal images to disk. You can download older versions of the `coreos-installer` binary from the [`coreos-installer` image mirror](https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/coreos-installer/) page.
+  <div class="note">
+
+  As of version `0.17.0-3`, `coreos-installer` requires RHEL 9 or later to run the program. You can still use older versions of `coreos-installer` to customize RHCOS artifacts of newer OpenShift Container Platform releases and install metal images to disk. You can download older versions of the `coreos-installer` binary from the [`coreos-installer` image mirror](https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/coreos-installer/) page.
+
+  </div>
 
 Whether to use an ISO or PXE install depends on your situation. A PXE install requires an available DHCP service and more preparation, but can make the installation process more automated. An ISO install is a more manual process and can be inconvenient if you are setting up more than a few machines.
 
 ## Installing RHCOS by using an ISO image
 
 To provision physical or virtual machines, install RHCOS by using a bootable ISO image. By using this method, you can deploy the operating system directly from local media or a virtual drive.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have created the Ignition config files for your cluster.
 
@@ -1600,16 +1434,6 @@ Prerequisites
 - You have an HTTP server that can be accessed from your computer, and from the machines that you create.
 
 - You have reviewed the *Advanced RHCOS installation configuration* section for different ways to configure features, such as networking and disk partitioning.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Obtain the SHA512 digest for each of your Ignition config files. For example, you can use the following on a system running Linux to get the SHA512 digest for your `bootstrap.ign` Ignition config file:
 
@@ -1621,8 +1445,11 @@ Procedure
 
 2.  Upload the bootstrap, control plane, and compute node Ignition config files that the installation program created to your HTTP server. Note the URLs of these files.
 
-    > [!IMPORTANT]
-    > You can add or change configuration settings in your Ignition configs before saving them to your HTTP server. If you plan to add more compute machines to your cluster after you finish installation, do not delete these files.
+    <div class="important">
+
+    You can add or change configuration settings in your Ignition configs before saving them to your HTTP server. If you plan to add more compute machines to your cluster after you finish installation, do not delete these files.
+
+    </div>
 
 3.  From the installation host, validate that the Ignition config files are available on the URLs. The following example gets the Ignition config file for the bootstrap node:
 
@@ -1632,11 +1459,9 @@ Procedure
 
     - \<HTTP_server\>: Replace `bootstrap.ign` with `master.ign` or `worker.ign` in the command to validate that the Ignition config files for the control plane and compute nodes are also available.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -1646,19 +1471,15 @@ Procedure
         0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0{"ignition":{"version":"3.2.0"},"passwd":{"users":[{"name":"core","sshAuthorizedKeys":["ssh-rsa...
       ```
 
-      </div>
-
 4.  Although it is possible to obtain the RHCOS images that are required for your preferred method of installing operating system instances from the [RHCOS image mirror](https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/) page, the recommended way to obtain the correct version of your RHCOS images are from the output of `openshift-install` command:
 
     ``` terminal
     $ openshift-install coreos print-stream-json | grep '\.iso[^.]'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1669,10 +1490,11 @@ Procedure
     "location": "<url>/art/storage/releases/rhcos-4.20/<release>/x86_64/rhcos-<release>-live.x86_64.iso",
     ```
 
-    </div>
+    <div class="important">
 
-    > [!IMPORTANT]
-    > The RHCOS images might not change with every release of OpenShift Container Platform. You must download images with the highest version that is less than or equal to the OpenShift Container Platform version that you install. Use the image versions that match your OpenShift Container Platform version if they are available. Use only ISO images for this procedure. RHCOS qcow2 images are not supported for this installation type.
+    The RHCOS images might not change with every release of OpenShift Container Platform. You must download images with the highest version that is less than or equal to the OpenShift Container Platform version that you install. Use the image versions that match your OpenShift Container Platform version if they are available. Use only ISO images for this procedure. RHCOS qcow2 images are not supported for this installation type.
+
+    </div>
 
     ISO file names resemble the following example:
 
@@ -1686,8 +1508,11 @@ Procedure
 
 6.  Boot the RHCOS ISO image without specifying any options or interrupting the live boot sequence. Wait for the installer to boot into a shell prompt in the RHCOS live environment.
 
-    > [!NOTE]
-    > It is possible to interrupt the RHCOS installation boot process to add kernel arguments. However, for this ISO procedure you should use the `coreos-installer` command as outlined in the following steps, instead of adding kernel arguments.
+    <div class="note">
+
+    It is possible to interrupt the RHCOS installation boot process to add kernel arguments. However, for this ISO procedure you should use the `coreos-installer` command as outlined in the following steps, instead of adding kernel arguments.
+
+    </div>
 
 7.  Run the `coreos-installer` command and specify the options that meet your installation requirements. At a minimum, you must specify the URL that points to the Ignition config file for the node type, and the device that you are installing to:
 
@@ -1700,8 +1525,11 @@ Procedure
 
     - `<digest>`: The `--ignition-hash` option is required when the Ignition config file is obtained through an HTTP URL to validate the authenticity of the Ignition config file on the cluster node. `<digest>` is the Ignition config file SHA512 digest obtained in a preceding step.
 
-      > [!NOTE]
-      > If you want to provide your Ignition config files through an HTTPS server that uses TLS, you can add the internal certificate authority (CA) to the system trust store before running `coreos-installer`.
+      <div class="note">
+
+      If you want to provide your Ignition config files through an HTTPS server that uses TLS, you can add the internal certificate authority (CA) to the system trust store before running `coreos-installer`.
+
+      </div>
 
       The following example initializes a bootstrap node installation to the `/dev/sda` device. The Ignition config file for the bootstrap node is obtained from an HTTP web server with the IP address 192.168.1.2:
 
@@ -1712,18 +1540,19 @@ Procedure
 
 8.  Monitor the progress of the RHCOS installation on the console of the machine.
 
-    > [!IMPORTANT]
-    > Be sure that the installation is successful on each node before commencing with the OpenShift Container Platform installation. Observing the installation process can also help to determine the cause of RHCOS installation issues that might arise.
+    <div class="important">
+
+    Be sure that the installation is successful on each node before commencing with the OpenShift Container Platform installation. Observing the installation process can also help to determine the cause of RHCOS installation issues that might arise.
+
+    </div>
 
 9.  After RHCOS installs, you must reboot the system. During the system reboot, it applies the Ignition config file that you specified.
 
 10. Check the console output to verify that Ignition ran.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example command
+    **Example command**
 
     </div>
 
@@ -1732,31 +1561,25 @@ Procedure
     Ignition: user-provided config was applied
     ```
 
-    </div>
-
 11. Continue to create the other machines for your cluster.
 
-    > [!IMPORTANT]
-    > You must create the bootstrap and control plane machines at this time. If the control plane machines are not made schedulable, also create at least two compute machines before you install OpenShift Container Platform.
+    <div class="important">
+
+    You must create the bootstrap and control plane machines at this time. If the control plane machines are not made schedulable, also create at least two compute machines before you install OpenShift Container Platform.
+
+    </div>
 
     If the required network, DNS, and load balancer infrastructure are in place, the OpenShift Container Platform bootstrap process begins automatically after the RHCOS nodes have rebooted.
 
-    > [!NOTE]
-    > RHCOS nodes do not include a default password for the `core` user. You can access the nodes by running `ssh core@<node>.<cluster_name>.<base_domain>` as a user with access to the SSH private key that is paired to the public key that you specified in your `install_config.yaml` file. OpenShift Container Platform 4 cluster nodes running RHCOS are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. However, when investigating installation issues, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on a target node, SSH access might be required for debugging or disaster recovery.
+    <div class="note">
 
-</div>
+    RHCOS nodes do not include a default password for the `core` user. You can access the nodes by running `ssh core@<node>.<cluster_name>.<base_domain>` as a user with access to the SSH private key that is paired to the public key that you specified in your `install_config.yaml` file. OpenShift Container Platform 4 cluster nodes running RHCOS are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. However, when investigating installation issues, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on a target node, SSH access might be required for debugging or disaster recovery.
+
+    </div>
 
 ## Installing RHCOS by using PXE or iPXE booting
 
 You can use PXE or iPXE booting to install RHCOS on the machines.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have created the Ignition config files for your cluster.
 
@@ -1768,20 +1591,13 @@ Prerequisites
 
 - You have reviewed the *Advanced RHCOS installation configuration* section for different ways to configure features, such as networking and disk partitioning.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Upload the bootstrap, control plane, and compute node Ignition config files that the installation program created to your HTTP server. Note the URLs of these files.
 
-    > [!IMPORTANT]
-    > You can add or change configuration settings in your Ignition configs before saving them to your HTTP server. If you plan to add more compute machines to your cluster after you finish installation, do not delete these files.
+    <div class="important">
+
+    You can add or change configuration settings in your Ignition configs before saving them to your HTTP server. If you plan to add more compute machines to your cluster after you finish installation, do not delete these files.
+
+    </div>
 
 2.  From the installation host, validate that the Ignition config files are available on the URLs. The following example gets the Ignition config file for the bootstrap node:
 
@@ -1791,11 +1607,9 @@ Procedure
 
     - `<HTTP_server>`: Replace `bootstrap.ign` with `master.ign` or `worker.ign` in the command to validate that the Ignition config files for the control plane and compute nodes are also available.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -1805,19 +1619,15 @@ Procedure
         0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0{"ignition":{"version":"3.2.0"},"passwd":{"users":[{"name":"core","sshAuthorizedKeys":["ssh-rsa...
       ```
 
-      </div>
-
 3.  Although it is possible to obtain the RHCOS `kernel`, `initramfs` and `rootfs` files that are required for your preferred method of installing operating system instances from the [RHCOS image mirror](https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/) page, the recommended way to obtain the correct version of your RHCOS files are from the output of `openshift-install` command:
 
     ``` terminal
     $ openshift-install coreos print-stream-json | grep -Eo '"https.*(kernel-|initramfs.|rootfs.)\w+(\.img)?"'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1836,10 +1646,11 @@ Procedure
     "<url>/art/storage/releases/rhcos-4.20/<release>/x86_64/rhcos-<release>-live-rootfs.x86_64.img"
     ```
 
-    </div>
+    <div class="important">
 
-    > [!IMPORTANT]
-    > The RHCOS artifacts might not change with every release of OpenShift Container Platform. You must download images with the highest version that is less than or equal to the OpenShift Container Platform version that you install. Only use the appropriate `kernel`, `initramfs`, and `rootfs` artifacts described below for this procedure. RHCOS QCOW2 images are not supported for this installation type.
+    The RHCOS artifacts might not change with every release of OpenShift Container Platform. You must download images with the highest version that is less than or equal to the OpenShift Container Platform version that you install. Only use the appropriate `kernel`, `initramfs`, and `rootfs` artifacts described below for this procedure. RHCOS QCOW2 images are not supported for this installation type.
+
+    </div>
 
     The file names contain the OpenShift Container Platform version number. They resemble the following examples:
 
@@ -1851,8 +1662,11 @@ Procedure
 
 4.  Upload the `rootfs`, `kernel`, and `initramfs` files to your HTTP server.
 
-    > [!IMPORTANT]
-    > If you plan to add more compute machines to your cluster after you finish installation, do not delete these files.
+    <div class="important">
+
+    If you plan to add more compute machines to your cluster after you finish installation, do not delete these files.
+
+    </div>
 
 5.  Configure the network boot infrastructure so that the machines boot from their local disks after RHCOS is installed on them.
 
@@ -1877,8 +1691,11 @@ Procedure
       `initrd=main`
       If you use multiple NICs, specify a single interface in the `ip` option. For example, to use DHCP on a NIC that is named `eno1`, set `ip=eno1:dhcp`. Specify the locations of the RHCOS files that you uploaded to your HTTP server. The `initrd` parameter value is the location of the `initramfs` file, the `coreos.live.rootfs_url` parameter value is the location of the `rootfs` file, and the `coreos.inst.ignition_url` parameter value is the location of the bootstrap Ignition config file. You can also add more kernel arguments to the `APPEND` line to configure networking or other boot options.
 
-      > [!NOTE]
-      > This configuration does not enable serial console access on machines with a graphical console. To configure a different console, add one or more `console=` arguments to the `APPEND` line. For example, add `console=tty0 console=ttyS0` to set the first PC serial port as the primary console and the graphical console as a secondary console. For more information, see [How does one set up a serial terminal and/or console in Red Hat Enterprise Linux?](https://access.redhat.com/articles/7212) and "Enabling the serial console for PXE and ISO installation" in the "Advanced RHCOS installation configuration" section.
+      <div class="note">
+
+      This configuration does not enable serial console access on machines with a graphical console. To configure a different console, add one or more `console=` arguments to the `APPEND` line. For example, add `console=tty0 console=ttyS0` to set the first PC serial port as the primary console and the graphical console as a secondary console. For more information, see [How does one set up a serial terminal and/or console in Red Hat Enterprise Linux?](https://access.redhat.com/articles/7212) and "Enabling the serial console for PXE and ISO installation" in the "Advanced RHCOS installation configuration" section.
+
+      </div>
 
     - For iPXE (`x86_64` + `aarch64` ):
 
@@ -1892,11 +1709,17 @@ Procedure
       `initrd`
       Specify the location of the `initramfs` file that you uploaded to your HTTP server.
 
-      > [!NOTE]
-      > This configuration does not enable serial console access on machines with a graphical console. To configure a different console, add one or more `console=` arguments to the `kernel` line. For example, add `console=tty0 console=ttyS0` to set the first PC serial port as the primary console and the graphical console as a secondary console. For more information, see [How does one set up a serial terminal and/or console in Red Hat Enterprise Linux?](https://access.redhat.com/articles/7212) and "Enabling the serial console for PXE and ISO installation" in the "Advanced RHCOS installation configuration" section.
+      <div class="note">
 
-      > [!NOTE]
-      > To network boot the CoreOS `kernel` on `aarch64` architecture, you need to use a version of iPXE build with the `IMAGE_GZIP` option enabled. See [`IMAGE_GZIP` option in iPXE](https://ipxe.org/buildcfg/image_gzip).
+      This configuration does not enable serial console access on machines with a graphical console. To configure a different console, add one or more `console=` arguments to the `kernel` line. For example, add `console=tty0 console=ttyS0` to set the first PC serial port as the primary console and the graphical console as a secondary console. For more information, see [How does one set up a serial terminal and/or console in Red Hat Enterprise Linux?](https://access.redhat.com/articles/7212) and "Enabling the serial console for PXE and ISO installation" in the "Advanced RHCOS installation configuration" section.
+
+      </div>
+
+      <div class="note">
+
+      To network boot the CoreOS `kernel` on `aarch64` architecture, you need to use a version of iPXE build with the `IMAGE_GZIP` option enabled. See [`IMAGE_GZIP` option in iPXE](https://ipxe.org/buildcfg/image_gzip).
+
+      </div>
 
     - For PXE (with UEFI and Grub as second stage) on `aarch64`:
 
@@ -1918,18 +1741,19 @@ Procedure
 
 8.  Monitor the progress of the RHCOS installation on the console of the machine.
 
-    > [!IMPORTANT]
-    > Be sure that the installation is successful on each node before commencing with the OpenShift Container Platform installation. Observing the installation process can also help to determine the cause of RHCOS installation issues that might arise.
+    <div class="important">
+
+    Be sure that the installation is successful on each node before commencing with the OpenShift Container Platform installation. Observing the installation process can also help to determine the cause of RHCOS installation issues that might arise.
+
+    </div>
 
 9.  After RHCOS installs, the system reboots. During reboot, the system applies the Ignition config file that you specified.
 
 10. Check the console output to verify that Ignition ran.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example command
+    **Example command**
 
     </div>
 
@@ -1938,19 +1762,21 @@ Procedure
     Ignition: user-provided config was applied
     ```
 
-    </div>
-
 11. Continue to create the machines for your cluster.
 
-    > [!IMPORTANT]
-    > You must create the bootstrap and control plane machines at this time. If the control plane machines are not made schedulable, also create at least two compute machines before you install the cluster.
+    <div class="important">
+
+    You must create the bootstrap and control plane machines at this time. If the control plane machines are not made schedulable, also create at least two compute machines before you install the cluster.
+
+    </div>
 
     If the required network, DNS, and load balancer infrastructure are in place, the OpenShift Container Platform bootstrap process begins automatically after the RHCOS nodes have rebooted.
 
-    > [!NOTE]
-    > RHCOS nodes do not include a default password for the `core` user. You can access the nodes by running `ssh core@<node>.<cluster_name>.<base_domain>` as a user with access to the SSH private key that is paired to the public key that you specified in your `install_config.yaml` file. OpenShift Container Platform 4 cluster nodes running RHCOS are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. However, when investigating installation issues, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on a target node, SSH access might be required for debugging or disaster recovery.
+    <div class="note">
 
-</div>
+    RHCOS nodes do not include a default password for the `core` user. You can access the nodes by running `ssh core@<node>.<cluster_name>.<base_domain>` as a user with access to the SSH private key that is paired to the public key that you specified in your `install_config.yaml` file. OpenShift Container Platform 4 cluster nodes running RHCOS are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. However, when investigating installation issues, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on a target node, SSH access might be required for debugging or disaster recovery.
+
+    </div>
 
 ## Advanced RHCOS installation configuration
 
@@ -1970,27 +1796,23 @@ You can configure advanced options so that you can modify the Red Hat Enterpris
 
 If you install RHCOS from an ISO image, you can add kernel arguments manually when you boot the image to configure networking for a node. If no networking arguments are specified, DHCP is activated in the initramfs when RHCOS detects that networking is required to fetch the Ignition config file.
 
-> [!IMPORTANT]
-> When adding networking arguments manually, you must also add the `rd.neednet=1` kernel argument to bring the network up in the initramfs.
+<div class="important">
+
+When adding networking arguments manually, you must also add the `rd.neednet=1` kernel argument to bring the network up in the initramfs.
+
+</div>
 
 The following information provides examples for configuring networking and bonding on your RHCOS nodes for ISO installations. The examples describe how to use the `ip=`, `nameserver=`, and `bond=` kernel arguments.
 
-> [!NOTE]
-> Ordering is important when adding the kernel arguments: `ip=`, `nameserver=`, and then `bond=`.
+<div class="note">
+
+Ordering is important when adding the kernel arguments: `ip=`, `nameserver=`, and then `bond=`.
+
+</div>
 
 The networking options are passed to the `dracut` tool during system boot. For more information about the networking options supported by `dracut`, see `dracut.cmdline` manual page.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [`dracut.cmdline` manual page](https://www.man7.org/linux/man-pages/man7/dracut.cmdline.7.html)
-
-</div>
 
 ### Configuring DHCP or static IP addresses
 
@@ -2010,14 +1832,6 @@ The configuration examples in the procedure, update the IP addresses for the fol
 
 - The auto-configuration value to `none`. No auto-configuration is required when IP networking is configured statically.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Enter a command like the following command to configure a static IP address:
 
     ``` terminal
@@ -2031,8 +1845,11 @@ Procedure
     ip=enp1s0:dhcp
     ```
 
-    > [!NOTE]
-    > When you use DHCP to configure IP addressing for the RHCOS machines, the machines also obtain the DNS server information through DHCP. For DHCP-based deployments, you can define the DNS server address that is used by the RHCOS nodes through your DHCP server configuration.
+    <div class="note">
+
+    When you use DHCP to configure IP addressing for the RHCOS machines, the machines also obtain the DNS server information through DHCP. For DHCP-based deployments, you can define the DNS server address that is used by the RHCOS nodes through your DHCP server configuration.
+
+    </div>
 
 3.  If two or more network interfaces and only one interface exists, disable DHCP on a single interface. In the example, the `enp1s0` interface has a static networking configuration and DHCP is disabled for `enp2s0`, which is not used:
 
@@ -2047,8 +1864,6 @@ Procedure
     ip=enp1s0:dhcp
     ip=10.10.10.2::10.10.10.254:255.255.255.0:core0.example.com:enp2s0:none
     ```
-
-</div>
 
 ### Configuring an IP address without a static hostname
 
@@ -2066,13 +1881,7 @@ The configuration examples in the procedure, update the IP addresses for the fol
 
 - The auto-configuration value to `none`. No auto-configuration is required when IP networking is configured statically.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To configure an IP address without a static hostname, enter a command like the following command:
 
@@ -2081,19 +1890,9 @@ Procedure
   nameserver=4.4.4.41
   ```
 
-</div>
-
 ### Specifying multiple network interfaces and DNS servers
 
 You can specify multiple network interfaces by setting multiple `ip=` entries. You can provide multiple DNS servers by adding a `nameserver=` entry for each server,
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To specify multiple network interfaces for your interfaces, you can enter a command like the following command:
 
@@ -2109,20 +1908,13 @@ Procedure
   nameserver=8.8.8.8
   ```
 
-</div>
-
 ### Configuring default gateway and route
 
 As an optional task, you can configure routes to additional networks by setting an `rd.route=` value.
 
-> [!NOTE]
-> When you configure one or multiple networks, one default gateway is required. If the additional network gateway is different from the primary network gateway, the default gateway must be the primary network gateway.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+When you configure one or multiple networks, one default gateway is required. If the additional network gateway is different from the primary network gateway, the default gateway must be the primary network gateway.
 
 </div>
 
@@ -2138,19 +1930,9 @@ Procedure
   rd.route=20.20.20.0/24:20.20.20.254:enp2s0
   ```
 
-</div>
-
 ### Configuring VLANs on individual interfaces
 
 As an optional task, you can configure VLANs on individual interfaces by using the `vlan=` parameter.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To configure a VLAN on a network interface and use a static IP address, run the following command:
 
@@ -2165,8 +1947,6 @@ Procedure
   ip=enp2s0.100:dhcp
   vlan=enp2s0.100:enp2s0
   ```
-
-</div>
 
 ### Bonding multiple network interfaces to a single interface
 
@@ -2186,14 +1966,6 @@ bond=<name>[:<network_interfaces>][:<options>]
 
 When you create a bonded interface using the `bond=` command, you must specify how the IP address is assigned and other information for the bonded interface.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - To configure the bonded interface to use DHCP, edit the `/etc/config/network` file by setting the IP address for the bond to `dhcp`. For example:
 
   ``` terminal
@@ -2208,19 +1980,9 @@ Procedure
   ip=10.10.10.2::10.10.10.254:255.255.255.0:core0.example.com:bond0:none
   ```
 
-</div>
-
 ### Bonding multiple SR-IOV network interfaces to a dual port NIC interface
 
 You can bond multiple SR-IOV network interfaces to a dual port NIC interface by using the `bond=` option. This task provides high availability capabilities to your network by preventing a single physical port from becoming a single point of failure. Ensure you apply the procedure tasks to each node.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the SR-IOV virtual functions (VFs) following the guidance in [Managing SR-IOV devices](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_and_managing_virtualization/managing-virtual-devices_configuring-and-managing-virtualization#managing-sr-iov-devices_managing-virtual-devices). Follow the procedure in the "Attaching SR-IOV networking devices to virtual machines" section.
 
@@ -2254,8 +2016,11 @@ Procedure
 
       *name* is the team device name (`team0`) and *network_interfaces* represents a comma-separated list of physical (ethernet) interfaces (`em1, em2`).
 
-      > [!NOTE]
-      > Teaming is planned to be deprecated when RHCOS switches to an upcoming version of RHEL. For more information, see this [Red Hat Knowledgebase Article](https://access.redhat.com/solutions/6509691).
+      <div class="note">
+
+      Teaming is planned to be deprecated when RHCOS switches to an upcoming version of RHEL. For more information, see this [Red Hat Knowledgebase Article](https://access.redhat.com/solutions/6509691).
+
+      </div>
 
       Use the following example to configure a network team:
 
@@ -2263,8 +2028,6 @@ Procedure
       team=team0:em1,em2
       ip=team0:dhcp
       ```
-
-</div>
 
 ### `coreos-installer` and boot options for ISO and PXE installations
 
@@ -2279,289 +2042,287 @@ The following table shows the subcommands, options, and arguments you can pass t
 <col style="width: 50%" />
 </colgroup>
 <tbody>
-<tr>
+<tr class="odd">
 <td colspan="2" style="text-align: left;"><p><strong>coreos-installer install subcommand</strong></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><strong><em>Subcommand</em></strong></p></td>
 <td style="text-align: left;"><p><strong><em>Description</em></strong></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>$ coreos-installer install &lt;options&gt; &lt;device&gt;</code></p></td>
 <td style="text-align: left;"><p>Embed an Ignition config in an ISO image.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td colspan="2" style="text-align: left;"><p><strong>coreos-installer install subcommand options</strong></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><strong><em>Option</em></strong></p></td>
 <td style="text-align: left;"><p><strong><em>Description</em></strong></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>-u</code>, <code>--image-url &lt;url&gt;</code></p></td>
 <td style="text-align: left;"><p>Specify the image URL manually.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>-f</code>, <code>--image-file &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Specify a local image file manually. Used for debugging.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>-i,</code> <code>--ignition-file &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Embed an Ignition config from a file.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>-I</code>, <code>--ignition-url &lt;URL&gt;</code></p></td>
 <td style="text-align: left;"><p>Embed an Ignition config from a URL.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--ignition-hash &lt;digest&gt;</code></p></td>
 <td style="text-align: left;"><p>Digest <code>type-value</code> of the Ignition config.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>-p</code>, <code>--platform &lt;name&gt;</code></p></td>
 <td style="text-align: left;"><p>Override the Ignition platform ID for the installed system.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--console &lt;spec&gt;</code></p></td>
 <td style="text-align: left;"><p>Set the kernel and boot loader console for the installed system. For more information about the format of <code>&lt;spec&gt;</code>, see the <a href="https://www.kernel.org/doc/html/latest/admin-guide/serial-console.html">Linux kernel serial console</a> documentation.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--append-karg &lt;arg&gt;…​</code></p></td>
 <td style="text-align: left;"><p>Append a default kernel argument to the installed system.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--delete-karg &lt;arg&gt;…​</code></p></td>
 <td style="text-align: left;"><p>Delete a default kernel argument from the installed system.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>-n</code>, <code>--copy-network</code></p></td>
 <td style="text-align: left;"><p>Copy the network configuration from the install environment.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>The <code>--copy-network</code> option only copies networking configuration found under <code>/etc/NetworkManager/system-connections</code>. In particular, it does not copy the system hostname.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--network-dir &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>For use with <code>-n</code>. Default is <code>/etc/NetworkManager/system-connections/</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--save-partlabel &lt;lx&gt;..</code></p></td>
 <td style="text-align: left;"><p>Save partitions with this label glob.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--save-partindex &lt;id&gt;…​</code></p></td>
 <td style="text-align: left;"><p>Save partitions with this number or range.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--insecure</code></p></td>
 <td style="text-align: left;"><p>Skip RHCOS image signature verification.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--insecure-ignition</code></p></td>
 <td style="text-align: left;"><p>Allow Ignition URL without HTTPS or hash.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--architecture &lt;name&gt;</code></p></td>
 <td style="text-align: left;"><p>Target CPU architecture. Valid values are <code>x86_64</code> and <code>aarch64</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--preserve-on-error</code></p></td>
 <td style="text-align: left;"><p>Do not clear partition table on error.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>-h</code>, <code>--help</code></p></td>
 <td style="text-align: left;"><p>Print help information.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td colspan="2" style="text-align: left;"><p><strong>coreos-installer install subcommand argument</strong></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><strong><em>Argument</em></strong></p></td>
 <td style="text-align: left;"><p><strong><em>Description</em></strong></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>&lt;device&gt;</code></p></td>
 <td style="text-align: left;"><p>The destination device.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td colspan="2" style="text-align: left;"><p><strong>coreos-installer ISO subcommands</strong></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><strong><em>Subcommand</em></strong></p></td>
 <td style="text-align: left;"><p><strong><em>Description</em></strong></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>$ coreos-installer iso customize &lt;options&gt; &lt;ISO_image&gt;</code></p></td>
 <td style="text-align: left;"><p>Customize a RHCOS live ISO image.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>coreos-installer iso reset &lt;options&gt; &lt;ISO_image&gt;</code></p></td>
 <td style="text-align: left;"><p>Restore a RHCOS live ISO image to default settings.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>coreos-installer iso ignition remove &lt;options&gt; &lt;ISO_image&gt;</code></p></td>
 <td style="text-align: left;"><p>Remove the embedded Ignition config from an ISO image.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td colspan="2" style="text-align: left;"><p><strong>coreos-installer ISO customize subcommand options</strong></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><strong><em>Option</em></strong></p></td>
 <td style="text-align: left;"><p><strong><em>Description</em></strong></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--dest-ignition &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Merge the specified Ignition config file into a new configuration fragment for the destination system.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--dest-console &lt;spec&gt;</code></p></td>
 <td style="text-align: left;"><p>Specify the kernel and boot loader console for the destination system.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--dest-device &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Install and overwrite the specified destination device.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--dest-karg-append &lt;arg&gt;</code></p></td>
 <td style="text-align: left;"><p>Add a kernel argument to each boot of the destination system.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--dest-karg-delete &lt;arg&gt;</code></p></td>
 <td style="text-align: left;"><p>Delete a kernel argument from each boot of the destination system.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--network-keyfile &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Configure networking by using the specified NetworkManager keyfile for live and destination systems.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--ignition-ca &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Specify an additional TLS certificate authority to be trusted by Ignition.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--pre-install &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Run the specified script before installation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--post-install &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Run the specified script after installation.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--installer-config &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Apply the specified installer configuration file.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--live-ignition &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Merge the specified Ignition config file into a new configuration fragment for the live environment.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--live-karg-append &lt;arg&gt;</code></p></td>
 <td style="text-align: left;"><p>Add a kernel argument to each boot of the live environment.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--live-karg-delete &lt;arg&gt;</code></p></td>
 <td style="text-align: left;"><p>Delete a kernel argument from each boot of the live environment.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--live-karg-replace &lt;k=o=n&gt;</code></p></td>
 <td style="text-align: left;"><p>Replace a kernel argument in each boot of the live environment, in the form <code>key=old=new</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>-f</code>, <code>--force</code></p></td>
 <td style="text-align: left;"><p>Overwrite an existing Ignition config.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>-o</code>, <code>--output &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Write the ISO to a new output file.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>-h</code>, <code>--help</code></p></td>
 <td style="text-align: left;"><p>Print help information.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td colspan="2" style="text-align: left;"><p><strong>coreos-installer PXE subcommands</strong></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><strong><em>Subcommand</em></strong></p></td>
 <td style="text-align: left;"><p><strong><em>Description</em></strong></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td colspan="2" style="text-align: left;"><p>Note that not all of these options are accepted by all subcommands.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>coreos-installer pxe customize &lt;options&gt; &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Customize a RHCOS live PXE boot config.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>coreos-installer pxe ignition wrap &lt;options&gt;</code></p></td>
 <td style="text-align: left;"><p>Wrap an Ignition config in an image.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>coreos-installer pxe ignition unwrap &lt;options&gt; &lt;image_name&gt;</code></p></td>
 <td style="text-align: left;"><p>Show the wrapped Ignition config in an image.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td colspan="2" style="text-align: left;"><p><strong>coreos-installer PXE customize subcommand options</strong></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><strong><em>Option</em></strong></p></td>
 <td style="text-align: left;"><p><strong><em>Description</em></strong></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td colspan="2" style="text-align: left;"><p>Note that not all of these options are accepted by all subcommands.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--dest-ignition &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Merge the specified Ignition config file into a new configuration fragment for the destination system.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--dest-console &lt;spec&gt;</code></p></td>
 <td style="text-align: left;"><p>Specify the kernel and boot loader console for the destination system.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--dest-device &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Install and overwrite the specified destination device.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--network-keyfile &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Configure networking by using the specified NetworkManager keyfile for live and destination systems.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--ignition-ca &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Specify an additional TLS certificate authority to be trusted by Ignition.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--pre-install &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Run the specified script before installation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>post-install &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Run the specified script after installation.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--installer-config &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Apply the specified installer configuration file.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--live-ignition &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Merge the specified Ignition config file into a new configuration fragment for the live environment.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>-o,</code> <code>--output &lt;path&gt;</code></p></td>
 <td style="text-align: left;"><p>Write the initramfs to a new output file.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>This option is required for PXE environments.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>-h</code>, <code>--help</code></p></td>
 <td style="text-align: left;"><p>Print help information.</p></td>
 </tr>
 </tbody>
 </table>
+
+`coreos-installer` subcommands, command-line options, and arguments
 
 You can automatically start `coreos-installer` options at boot time by passing `coreos.inst` boot arguments to the RHCOS live installer. These are provided in addition to the standard boot arguments.
 
@@ -2578,38 +2339,36 @@ The following table shows the RHCOS live installer `coreos.inst` boot options fo
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Argument</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>coreos.inst.install_dev</code></p></td>
 <td style="text-align: left;"><p>Required. The block device on the system to install to.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>It is recommended to use the full path, such as <code>/dev/sda</code>, although <code>sda</code> is allowed.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>coreos.inst.ignition_url</code></p></td>
 <td style="text-align: left;"><p>Optional: The URL of the Ignition config to embed into the installed system. If no URL is specified, no Ignition config is embedded. Only HTTP and HTTPS protocols are supported.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>coreos.inst.save_partlabel</code></p></td>
 <td style="text-align: left;"><p>Optional: Comma-separated labels of partitions to preserve during the install. Glob-style wildcards are permitted. The specified partitions do not need to exist.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>coreos.inst.save_partindex</code></p></td>
 <td style="text-align: left;"><p>Optional: Comma-separated indexes of partitions to preserve during the install. Ranges <code>m-n</code> are permitted, and either <code>m</code> or <code>n</code> can be omitted. The specified partitions do not need to exist.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>coreos.inst.insecure</code></p></td>
 <td style="text-align: left;"><p>Optional: Permits the OS image that is specified by <code>coreos.inst.image_url</code> to be unsigned.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>coreos.inst.image_url</code></p></td>
 <td style="text-align: left;"><p>Optional: Download and install the specified RHCOS image.</p>
 <ul>
@@ -2619,32 +2378,26 @@ The following table shows the RHCOS live installer `coreos.inst` boot options fo
 <li><p>Only HTTP and HTTPS protocols are supported.</p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>coreos.inst.skip_reboot</code></p></td>
 <td style="text-align: left;"><p>Optional: The system will not reboot after installing. After the install finishes, you will receive a prompt that allows you to inspect what is happening during installation. This argument should not be used in production environments and is intended for debugging purposes only.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>coreos.inst.platform_id</code></p></td>
 <td style="text-align: left;"><p>Optional: The Ignition platform ID of the platform the RHCOS image is being installed on. Default is <code>metal</code>. This option determines whether or not to request an Ignition config from the cloud provider, such as VMware. For example: <code>coreos.inst.platform_id=vmware</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ignition.config.url</code></p></td>
 <td style="text-align: left;"><p>Optional: The URL of the Ignition config for the live boot. For example, this can be used to customize how <code>coreos-installer</code> is invoked, or to run code before or after the installation. This is different from <code>coreos.inst.ignition_url</code>, which is the Ignition config for the installed system.</p></td>
 </tr>
 </tbody>
 </table>
 
+`coreos.inst` boot options
+
 # Waiting for the bootstrap process to complete
 
 To install OpenShift Container Platform, use Ignition configuration files to initialize the bootstrap process after the cluster nodes boot into RHCOS. You must wait for this process to complete to ensure the cluster is fully installed.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have created the Ignition config files for your cluster.
 
@@ -2655,16 +2408,6 @@ Prerequisites
 - You installed RHCOS on your cluster machines and provided the Ignition config files that the OpenShift Container Platform installation program generated.
 
 - Your machines have direct internet access or have an HTTP or HTTPS proxy available.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Monitor the bootstrap process:
 
@@ -2681,11 +2424,9 @@ Procedure
     `--log-level=info`
     Specifies `warn`, `debug`, or `error` instead of `info` to view different installation details.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2696,16 +2437,15 @@ Procedure
     INFO It is now safe to remove the bootstrap resources
     ```
 
-    </div>
-
     The command succeeds when the Kubernetes API server signals that it has been bootstrapped on the control plane machines.
 
 2.  After the bootstrap process is complete, remove the bootstrap machine from the load balancer.
 
-    > [!IMPORTANT]
-    > You must remove the bootstrap machine from the load balancer at this point. You can also remove or reformat the bootstrap machine itself.
+    <div class="important">
 
-</div>
+    You must remove the bootstrap machine from the load balancer at this point. You can also remove or reformat the bootstrap machine itself.
+
+    </div>
 
 # Logging in to the cluster by using the CLI
 
@@ -2713,27 +2453,9 @@ To log in to your cluster as the default system user, export the `kubeconfig` fi
 
 The `kubeconfig` file is specific to a cluster and is created during OpenShift Container Platform installation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You deployed an OpenShift Container Platform cluster.
 
 - You installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Export the `kubeadmin` credentials by running the following command:
 
@@ -2752,11 +2474,9 @@ Procedure
     $ oc whoami
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2764,33 +2484,11 @@ Procedure
     system:admin
     ```
 
-    </div>
-
-</div>
-
 # Approving the certificate signing requests for your machines
 
 To add machines to a cluster, verify the status of the certificate signing requests (CSRs) generated for each machine. If manual approval is required, approve the client requests first, followed by the server requests.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You added machines to your cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Confirm that the cluster recognizes the machines:
 
@@ -2798,11 +2496,9 @@ Procedure
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2813,12 +2509,13 @@ Procedure
     master-2  Ready     master  64m  v1.33.4
     ```
 
-    </div>
-
     The output lists all of the machines that you created.
 
-    > [!NOTE]
-    > The preceding output might not include the compute nodes, also known as worker nodes, until some CSRs are approved.
+    <div class="note">
+
+    The preceding output might not include the compute nodes, also known as worker nodes, until some CSRs are approved.
+
+    </div>
 
 2.  Review the pending CSRs and ensure that you see the client requests with the `Pending` or `Approved` status for each machine that you added to the cluster:
 
@@ -2826,11 +2523,9 @@ Procedure
     $ oc get csr
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2841,17 +2536,21 @@ Procedure
     ...
     ```
 
-    </div>
-
     In this example, two machines are joining the cluster. You might see more approved CSRs in the list.
 
 3.  If the CSRs were not approved, after all of the pending CSRs for the machines you added are in `Pending` status, approve the CSRs for your cluster machines:
 
-    > [!NOTE]
-    > Because the CSRs rotate automatically, approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    <div class="note">
 
-    > [!NOTE]
-    > For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If a request is not approved, then the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because a serving certificate is required when the API server connects to the kubelet. Any operation that contacts the Kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the CSR was submitted by the `node-bootstrapper` service account in the `system:node` or `system:admin` groups, and confirm the identity of the node.
+    Because the CSRs rotate automatically, approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+
+    </div>
+
+    <div class="note">
+
+    For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If a request is not approved, then the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because a serving certificate is required when the API server connects to the kubelet. Any operation that contacts the Kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the CSR was submitted by the `node-bootstrapper` service account in the `system:node` or `system:admin` groups, and confirm the identity of the node.
+
+    </div>
 
     - To approve them individually, run the following command for each valid CSR:
 
@@ -2870,8 +2569,11 @@ Procedure
       $ oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs --no-run-if-empty oc adm certificate approve
       ```
 
-      > [!NOTE]
-      > Some Operators might not become available until some CSRs are approved.
+      <div class="note">
+
+      Some Operators might not become available until some CSRs are approved.
+
+      </div>
 
 4.  Now that your client requests are approved, you must review the server requests for each machine that you added to the cluster:
 
@@ -2879,11 +2581,9 @@ Procedure
     $ oc get csr
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2893,8 +2593,6 @@ Procedure
     csr-c57lv   5m26s   system:node:ip-10-0-95-157.us-east-2.compute.internal                       Pending
     ...
     ```
-
-    </div>
 
 5.  If the remaining CSRs are not approved, and are in the `Pending` status, approve the CSRs for your cluster machines:
 
@@ -2921,11 +2619,9 @@ Procedure
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2938,36 +2634,17 @@ Procedure
     worker-1  Ready     worker  11m  v1.33.4
     ```
 
+    <div class="note">
+
+    It can take a few minutes after approval of the server CSRs for the machines to transition to the `Ready` status.
+
     </div>
-
-    > [!NOTE]
-    > It can take a few minutes after approval of the server CSRs for the machines to transition to the `Ready` status.
-
-</div>
 
 # Initial Operator configuration
 
 To ensure all Operators become available, configure the required Operators immediately after the control plane initialises. This configuration is essential for stabilizing the cluster environment following the installation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Your control plane has initialized.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Watch the cluster components come online:
 
@@ -2975,11 +2652,9 @@ Procedure
     $ watch -n5 oc get clusteroperators
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -3018,23 +2693,11 @@ Procedure
     storage                                    4.17.0    True        False         False      37m
     ```
 
-    </div>
-
 2.  Configure the Operators that are not available.
-
-</div>
 
 ## Disabling the default software catalog sources
 
 Operator catalogs that source content provided by Red Hat and community projects are configured for the software catalog by default during an OpenShift Container Platform installation. In a restricted network environment, you must disable the default catalogs as a cluster administrator.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Disable the sources for the default catalogs by adding `disableAllDefaultSources: true` to the `OperatorHub` object:
 
@@ -3043,10 +2706,11 @@ Procedure
       -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
   ```
 
-</div>
+<div class="tip">
 
-> [!TIP]
-> Alternatively, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
+Alternatively, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
+
+</div>
 
 ## Image registry removed during installation
 
@@ -3066,39 +2730,27 @@ You can also allow the image registry to use block storage types by using the `R
 
 To ensure the registry is fully operational, configure the registry to use storage immediately after the cluster installation. This configuration is a mandatory step to enable the registry to store data.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have a cluster that uses manually-provisioned Red Hat Enterprise Linux CoreOS (RHCOS) nodes, such as bare metal.
 
 - You have provisioned persistent storage for your cluster, such as Red Hat OpenShift Data Foundation.
 
-  > [!IMPORTANT]
-  > OpenShift Container Platform supports `ReadWriteOnce` access for image registry storage when you have only one replica. `ReadWriteOnce` access also requires that the registry uses the `Recreate` rollout strategy. To deploy an image registry that supports high availability with two or more replicas, `ReadWriteMany` access is required.
+  <div class="important">
+
+  OpenShift Container Platform supports `ReadWriteOnce` access for image registry storage when you have only one replica. `ReadWriteOnce` access also requires that the registry uses the `Recreate` rollout strategy. To deploy an image registry that supports high availability with two or more replicas, `ReadWriteMany` access is required.
+
+  </div>
 
 - You must have a system with at least 100Gi capacity.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To configure your registry to use storage, change the `spec.storage.pvc` in the `configs.imageregistry/cluster` resource.
 
-    > [!NOTE]
-    > When you use shared storage, review your security settings to prevent outside access.
+    <div class="note">
+
+    When you use shared storage, review your security settings to prevent outside access.
+
+    </div>
 
 2.  Verify that you do not have a registry pod:
 
@@ -3106,11 +2758,9 @@ Procedure
     $ oc get pod -n openshift-image-registry -l docker-registry=default
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -3118,10 +2768,11 @@ Procedure
     No resources found in openshift-image-registry namespace
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > If you do have a registry pod in your output, you do not need to continue with this procedure.
+    If you do have a registry pod in your output, you do not need to continue with this procedure.
+
+    </div>
 
 3.  Check the registry configuration:
 
@@ -3129,11 +2780,9 @@ Procedure
     $ oc edit configs.imageregistry.operator.openshift.io
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -3143,8 +2792,6 @@ Procedure
         claim:
     ```
 
-    </div>
-
     Leave the `claim` field blank to allow the automatic creation of an `image-registry-storage` PVC.
 
 4.  Check the `clusteroperator` status:
@@ -3153,11 +2800,9 @@ Procedure
     $ oc get clusteroperator image-registry
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -3165,8 +2810,6 @@ Procedure
     NAME             VERSION              AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
     image-registry   4.17                 True        False         False      6h50m
     ```
-
-    </div>
 
 5.  Ensure that your registry is set to managed to enable building and pushing of images.
 
@@ -3182,19 +2825,9 @@ Procedure
 
           managementState: Managed
 
-</div>
-
 ### Configuring storage for the image registry in non-production clusters
 
 You must configure storage for the Image Registry Operator. For non-production clusters, you can set the image registry to an empty directory. If you do so, all images are lost if you restart the registry.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To set the image registry storage to an empty directory:
 
@@ -3202,8 +2835,11 @@ Procedure
   $ oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"storage":{"emptyDir":{}}}}'
   ```
 
-  > [!WARNING]
-  > Configure this option only for non-production clusters.
+  <div class="warning">
+
+  Configure this option only for non-production clusters.
+
+  </div>
 
   If you run this command before the Image Registry Operator initializes its components, the `oc patch` command fails with the following error:
 
@@ -3213,22 +2849,15 @@ Procedure
 
   Wait a few minutes and run the command again.
 
-</div>
-
 ### Configuring block registry storage for bare metal
 
 To allow the image registry to use block storage types during upgrades as a cluster administrator, you can use the `Recreate` rollout strategy.
 
-> [!IMPORTANT]
-> Block storage volumes, or block persistent volumes, are supported but not recommended for use with the image registry on production clusters. An installation where the registry is configured on block storage is not highly available because the registry cannot have more than one replica.
->
-> If you choose to use a block storage volume with the image registry, you must use a filesystem persistent volume claim (PVC).
+<div class="important">
 
-<div>
+Block storage volumes, or block persistent volumes, are supported but not recommended for use with the image registry on production clusters. An installation where the registry is configured on block storage is not highly available because the registry cannot have more than one replica.
 
-<div class="title">
-
-Procedure
+If you choose to use a block storage volume with the image registry, you must use a filesystem persistent volume claim (PVC).
 
 </div>
 
@@ -3282,11 +2911,9 @@ Procedure
     $ oc edit config.imageregistry.operator.openshift.io -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -3296,37 +2923,15 @@ Procedure
         claim:
     ```
 
-    </div>
-
     By creating a custom PVC, you can leave the `claim` field blank for the default automatic creation of an `image-registry-storage` PVC.
-
-</div>
 
 # Completing installation on user-provisioned infrastructure
 
 To finalize the installation on user-provisioned infrastructure, complete the cluster deployment after configuring the Operators. This ensures the cluster is fully operational on the infrastructure that you provide.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Your control plane has initialized.
 
 - You have completed the initial Operator configuration.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Confirm that all the cluster components are online with the following command:
 
@@ -3334,11 +2939,9 @@ Procedure
     $ watch -n5 oc get clusteroperators
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -3377,8 +2980,6 @@ Procedure
     storage                                    4.17.0    True        False         False      37m
     ```
 
-    </div>
-
     Alternatively, the following command notifies you when all of the clusters are available. The command also retrieves and displays credentials:
 
     ``` terminal
@@ -3390,11 +2991,9 @@ Procedure
     `<installation_directory>`
     Specifies the path to the directory that you stored the installation files in.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -3402,15 +3001,9 @@ Procedure
     INFO Waiting up to 30m0s for the cluster to initialize...
     ```
 
-    </div>
-
     The command succeeds when the Cluster Version Operator finishes deploying the OpenShift Container Platform cluster from Kubernetes API server.
 
     <div class="important">
-
-    <div class="title">
-
-    </div>
 
     - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
@@ -3426,11 +3019,9 @@ Procedure
         $ oc get pods --all-namespaces
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -3442,8 +3033,6 @@ Procedure
         openshift-apiserver               apiserver-z25h4                                 1/1     Running     0          2m
         openshift-authentication-operator authentication-operator-69d5d8bf84-vh2n8        1/1     Running     0          5m
         ```
-
-        </div>
 
     2.  View the logs for a pod that is listed in the output of the previous command by using the following command:
 
@@ -3462,25 +3051,13 @@ Procedure
 
     See "Enabling multipathing with kernel arguments on RHCOS" in the *Postinstallation machine configuration tasks* documentation for more information.
 
-</div>
-
 # Telemetry access for OpenShift Container Platform
 
 To provide metrics about cluster health and the success of updates, the Telemetry service requires internet access. When connected, this service runs automatically by default and registers your cluster to [OpenShift Cluster Manager](https://console.redhat.com/openshift).
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - See [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring) for more information about the Telemetry service
-
-</div>
 
 # Next steps
 

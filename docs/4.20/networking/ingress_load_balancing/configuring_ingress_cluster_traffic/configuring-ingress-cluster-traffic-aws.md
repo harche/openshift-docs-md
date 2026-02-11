@@ -22,28 +22,15 @@ If the timeout period of the CLB is shorter than the route timeout or Ingress Co
 
 You can configure the default timeouts for an existing route when you have services in need of a low timeout, which is required for Service Level Availability (SLA) purposes, or a high timeout, for cases with a slow back end.
 
-> [!IMPORTANT]
-> If you configured a user-managed external load balancer in front of your OpenShift Container Platform cluster, ensure that the timeout value for the user-managed external load balancer is higher than the timeout value for the route. This configuration prevents network congestion issues over the network that your cluster uses.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you configured a user-managed external load balancer in front of your OpenShift Container Platform cluster, ensure that the timeout value for the user-managed external load balancer is higher than the timeout value for the route. This configuration prevents network congestion issues over the network that your cluster uses.
 
 </div>
 
 - You deployed an Ingress Controller on a running cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Using the `oc annotate` command, add the timeout to the route:
 
@@ -60,31 +47,11 @@ Procedure
   $ oc annotate route myroute --overwrite haproxy.router.openshift.io/timeout=2s
   ```
 
-</div>
-
 ## Configuring Classic Load Balancer timeouts
 
 You can configure the default timeouts for a Classic Load Balancer (CLB) to extend idle connections.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have a deployed Ingress Controller on a running cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Set an Amazon Web Services connection idle timeout of five minutes for the default `ingresscontroller` by running the following command:
 
@@ -106,10 +73,11 @@ Procedure
         {"connectionIdleTimeout":null}}}}}}}'
     ```
 
-    > [!NOTE]
-    > You must specify the `scope` field when you change the connection timeout value unless the current scope is already set. When you set the `scope` field, you do not need to do so again if you restore the default timeout value.
+    <div class="note">
 
-</div>
+    You must specify the `scope` field when you change the connection timeout value unless the current scope is already set. When you set the `scope` field, you do not need to do so again if you restore the default timeout value.
+
+    </div>
 
 # Configuring ingress cluster traffic on AWS using a Network Load Balancer
 
@@ -121,28 +89,21 @@ To improve performance and reduce latency for cluster traffic in OpenShift Conta
 
 Switching between these load balancers does not delete the `IngressController` object.
 
-> [!WARNING]
-> This procedure might cause the following issues:
->
-> - An outage that can last several minutes due to new DNS records propagation, new load balancers provisioning, and other factors. IP addresses and canonical names of the Ingress Controller load balancer might change after applying this procedure.
->
-> - Leaked load balancer resources due to a change in the annotation of the service.
+<div class="warning">
 
-<div>
+This procedure might cause the following issues:
 
-<div class="title">
+- An outage that can last several minutes due to new DNS records propagation, new load balancers provisioning, and other factors. IP addresses and canonical names of the Ingress Controller load balancer might change after applying this procedure.
 
-Procedure
+- Leaked load balancer resources due to a change in the annotation of the service.
 
 </div>
 
 1.  Modify the existing Ingress Controller that you want to switch to by using an NLB. This example assumes that your default Ingress Controller has an `External` scope and no other customizations:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `ingresscontroller.yaml` file
+    **Example `ingresscontroller.yaml` file**
 
     </div>
 
@@ -164,13 +125,17 @@ Procedure
         type: LoadBalancerService
     ```
 
+    <div class="note">
+
+    If you do not specify a value for the `spec.endpointPublishingStrategy.loadBalancer.providerParameters.aws.type` field, the Ingress Controller uses the `spec.loadBalancer.platform.aws.type` value from the cluster `Ingress` configuration that was set during installation.
+
     </div>
 
-    > [!NOTE]
-    > If you do not specify a value for the `spec.endpointPublishingStrategy.loadBalancer.providerParameters.aws.type` field, the Ingress Controller uses the `spec.loadBalancer.platform.aws.type` value from the cluster `Ingress` configuration that was set during installation.
+    <div class="tip">
 
-    > [!TIP]
-    > If your Ingress Controller has other customizations that you want to update, such as changing the domain, consider force replacing the Ingress Controller definition file instead.
+    If your Ingress Controller has other customizations that you want to update, such as changing the domain, consider force replacing the Ingress Controller definition file instead.
+
+    </div>
 
 2.  Apply the changes to the Ingress Controller YAML file by running the command:
 
@@ -180,32 +145,23 @@ Procedure
 
     Expect several minutes of outages while the Ingress Controller updates.
 
-</div>
-
 ## Switching the Ingress Controller from using a Network Load Balancer to a Classic Load Balancer
 
 To support specific networking configurations in OpenShift Container Platform on Amazon Web Services, switch an Ingress Controller using a Network Load Balancer (NLB) to one that uses a Classic Load Balancer (CLB).
 
 Switching between these load balancers does not delete the `IngressController` object.
 
-> [!WARNING]
-> This procedure might cause an outage that can last several minutes due to new DNS records propagation, new load balancers provisioning, and other factors. IP addresses and canonical names of the Ingress Controller load balancer might change after applying this procedure.
+<div class="warning">
 
-<div>
-
-<div class="title">
-
-Procedure
+This procedure might cause an outage that can last several minutes due to new DNS records propagation, new load balancers provisioning, and other factors. IP addresses and canonical names of the Ingress Controller load balancer might change after applying this procedure.
 
 </div>
 
 1.  Modify the existing Ingress Controller that you want to switch to using a CLB. This example assumes that your default Ingress Controller has an `External` scope and no other customizations:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `ingresscontroller.yaml` file
+    **Example `ingresscontroller.yaml` file**
 
     </div>
 
@@ -227,13 +183,17 @@ Procedure
         type: LoadBalancerService
     ```
 
+    <div class="note">
+
+    If you do not specify a value for the `spec.endpointPublishingStrategy.loadBalancer.providerParameters.aws.type` field, the Ingress Controller uses the `spec.loadBalancer.platform.aws.type` value from the cluster `Ingress` configuration that was set during installation.
+
     </div>
 
-    > [!NOTE]
-    > If you do not specify a value for the `spec.endpointPublishingStrategy.loadBalancer.providerParameters.aws.type` field, the Ingress Controller uses the `spec.loadBalancer.platform.aws.type` value from the cluster `Ingress` configuration that was set during installation.
+    <div class="tip">
 
-    > [!TIP]
-    > If your Ingress Controller has other customizations that you want to update, such as changing the domain, consider force replacing the Ingress Controller definition file instead.
+    If your Ingress Controller has other customizations that you want to update, such as changing the domain, consider force replacing the Ingress Controller definition file instead.
+
+    </div>
 
 2.  Apply the changes to the Ingress Controller YAML file by running the command:
 
@@ -243,34 +203,25 @@ Procedure
 
     Expect several minutes of outages while the Ingress Controller updates.
 
-</div>
-
 ## Replacing Ingress Controller Classic Load Balancer with Network Load Balancer
 
 To improve performance and reduce latency for traffic in OpenShift Container Platform on Amazon Web Services, replace an Ingress Controller using a Classic Load Balancer (CLB) with one that uses a Network Load Balancer (NLB).
 
-> [!WARNING]
-> This procedure might cause the following issues:
->
-> - An outage that can last several minutes due to new DNS records propagation, new load balancers provisioning, and other factors. IP addresses and canonical names of the Ingress Controller load balancer might change after applying this procedure.
->
-> - Leaked load balancer resources due to a change in the annotation of the service.
+<div class="warning">
 
-<div>
+This procedure might cause the following issues:
 
-<div class="title">
+- An outage that can last several minutes due to new DNS records propagation, new load balancers provisioning, and other factors. IP addresses and canonical names of the Ingress Controller load balancer might change after applying this procedure.
 
-Procedure
+- Leaked load balancer resources due to a change in the annotation of the service.
 
 </div>
 
 1.  Create a file with a new default Ingress Controller. The following example assumes that your default Ingress Controller has an `External` scope and no other customizations:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `ingresscontroller.yml` file
+    **Example `ingresscontroller.yml` file**
 
     </div>
 
@@ -292,12 +243,13 @@ Procedure
         type: LoadBalancerService
     ```
 
-    </div>
-
     If your default Ingress Controller has other customizations, ensure that you modify the file accordingly.
 
-    > [!TIP]
-    > If your Ingress Controller has no other customizations and you are only updating the load balancer type, consider following the procedure detailed in "Switching the Ingress Controller from using a Classic Load Balancer to a Network Load Balancer".
+    <div class="tip">
+
+    If your Ingress Controller has no other customizations and you are only updating the load balancer type, consider following the procedure detailed in "Switching the Ingress Controller from using a Classic Load Balancer to a Network Load Balancer".
+
+    </div>
 
 2.  Force replace the Ingress Controller YAML file:
 
@@ -307,21 +259,11 @@ Procedure
 
     Wait until the Ingress Controller is replaced. Expect several of minutes of outages.
 
-</div>
-
 ## Configuring an Ingress Controller Network Load Balancer on an existing AWS cluster
 
 To improve performance for high-traffic workloads in OpenShift Container Platform, configure an Ingress Controller backed by an Amazon Web Services Network Load Balancer (NLB) on an existing cluster.
 
 You can create an Ingress Controller backed by an Amazon Web Services Network Load Balancer (NLB) on an existing cluster.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You installed an AWS cluster.
 
@@ -334,27 +276,15 @@ Prerequisites
     AWS
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the Ingress Controller manifest:
 
     ``` terminal
      $ cat ingresscontroller-aws-nlb.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -376,8 +306,6 @@ Procedure
               type: NLB
     ```
 
-    </div>
-
     where:
 
     `<ingress_controller_name>`
@@ -395,10 +323,11 @@ Procedure
     $ oc create -f ingresscontroller-aws-nlb.yaml
     ```
 
-    > [!IMPORTANT]
-    > Before you can configure an Ingress Controller NLB on a new AWS cluster, you must complete the creating the installation configuration file procedure. For more information, see "Creating the installation configuration file".
+    <div class="important">
 
-</div>
+    Before you can configure an Ingress Controller NLB on a new AWS cluster, you must complete the creating the installation configuration file procedure. For more information, see "Creating the installation configuration file".
+
+    </div>
 
 # Additional resources
 
@@ -408,25 +337,7 @@ Procedure
 
 You can create an Ingress Controller backed by an Amazon Web Services Network Load Balancer (NLB) on a new cluster in situations where you need more transparent networking capabilities.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Create and edit the `install-config.yaml` file. For instructions, see "Creating the installation configuration file" in the *Additonal resources* section.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Change to the directory that contains the installation program and create the manifests:
 
@@ -451,19 +362,15 @@ Procedure
     $ ls <installation_directory>/manifests/cluster-ingress-default-ingresscontroller.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     cluster-ingress-default-ingresscontroller.yaml
     ```
-
-    </div>
 
 4.  Open the `cluster-ingress-default-ingresscontroller.yaml` file in an editor and enter a custom resource (CR) that describes the Operator configuration you want:
 
@@ -489,33 +396,13 @@ Procedure
 
 6.  Optional: Back up the `manifests/cluster-ingress-default-ingresscontroller.yaml` file because the installation program deletes the `manifests/` directory during cluster creation.
 
-</div>
-
 ## Choosing subnets while creating a LoadBalancerService Ingress Controller
 
 To manually control network placement for Ingress Controllers in an existing cluster, specify the load balancer subnets in your configuration. This method provides precise control over your infrastructure by overriding the default automatic subnet discovery method used by Amazon Web Services.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have an installed AWS cluster.
 
 - You must know the names or IDs of the subnets to which you intend to map your `IngressController`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a custom resource (CR) YAML file, such as `sample-ingress.yaml`, and specifying the following content for the file:
 
@@ -579,8 +466,11 @@ Procedure
     `<subnet>`
     Specifies the subnet IDs (or names if you using `names`).
 
-    > [!IMPORTANT]
-    > You can specify a maximum of one subnet per availability zone. Only provide public subnets for external Ingress Controllers and private subnets for internal Ingress Controllers.
+    <div class="important">
+
+    You can specify a maximum of one subnet per availability zone. Only provide public subnets for external Ingress Controllers and private subnets for internal Ingress Controllers.
+
+    </div>
 
 3.  Save and apply the CR file by using the OpenShift CLI (`oc`):
 
@@ -594,22 +484,15 @@ Procedure
     $ oc get ingresscontroller -n openshift-ingress-operator <name> -o jsonpath="{.status.conditions}" | yq -PC
     ```
 
-</div>
-
 ## Updating the subnets on an existing Ingress Controller
 
 You can update an `IngressController` with manually specified load balancer subnets in OpenShift Container Platform to avoid any disruptions, to maintain the stability of your services, and to ensure that your network configuration aligns with your specific requirements.
 
 The example in the procedure shows you how to select and apply new subnets, verify the configuration changes, and confirm successful load balancer provisioning.
 
-> [!WARNING]
-> This procedure may cause an outage that can last several minutes due to new DNS records propagation, new load balancers provisioning, and other factors. IP addresses and canonical names of the Ingress Controller load balancer might change after applying this procedure.
+<div class="warning">
 
-<div>
-
-<div class="title">
-
-Procedure
+This procedure may cause an outage that can last several minutes due to new DNS records propagation, new load balancers provisioning, and other factors. IP addresses and canonical names of the Ingress Controller load balancer might change after applying this procedure.
 
 </div>
 
@@ -660,8 +543,11 @@ Procedure
     `<updated_subnet>`
     Specifies the updated subnet IDs (or names if you are using `names`).
 
-    > [!IMPORTANT]
-    > You can specify a maximum of one subnet per availability zone. Only provide public subnets for external Ingress Controllers and private subnets for internal Ingress Controllers.
+    <div class="important">
+
+    You can specify a maximum of one subnet per availability zone. Only provide public subnets for external Ingress Controllers and private subnets for internal Ingress Controllers.
+
+    </div>
 
 2.  Examine the `Progressing` condition on the `IngressController` for instructions on how to apply the subnet updates by running the following command:
 
@@ -669,11 +555,9 @@ Procedure
     $ oc get ingresscontroller -n openshift-ingress-operator subnets -o jsonpath="{.status.conditions[?(@.type==\"Progressing\")]}" | yq -PC
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -685,23 +569,11 @@ Procedure
     type: Progressing
     ```
 
-    </div>
-
 3.  To apply the update, delete the service associated with the Ingress controller by running the following command:
 
     ``` terminal
     $ oc -n openshift-ingress delete svc/router-<name>
     ```
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - To confirm that the load balancer was provisioned successfully, check the `IngressController` conditions by running the following command:
 
@@ -709,33 +581,13 @@ Verification
   $ oc get ingresscontroller -n openshift-ingress-operator <name> -o jsonpath="{.status.conditions}" | yq -PC
   ```
 
-</div>
-
 ## Configuring AWS Elastic IP (EIP) addresses for a Network Load Balancer (NLB)
 
 You can specify static IPs, otherwise known as elastic IPs, for your network load balancer (NLB) in the Ingress Controller. This is useful in situations where you want to configure appropriate firewall rules for your cluster network.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have an installed Amazon Web Services cluster.
 
 - You must know the names or IDs of the subnets to which you intend to map your `IngressController`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file that contains the following example content:
 
@@ -785,8 +637,11 @@ Procedure
     `eipAllocations`
     Specifies the EIP addresses.
 
-    > [!IMPORTANT]
-    > You can specify a maximum of one subnet per availability zone. Only provide public subnets for external Ingress Controllers. You can associate one EIP address per subnet.
+    <div class="important">
+
+    You can specify a maximum of one subnet per availability zone. Only provide public subnets for external Ingress Controllers. You can associate one EIP address per subnet.
+
+    </div>
 
 2.  Save and apply the CR file by entering the following command:
 
@@ -794,23 +649,13 @@ Procedure
     $  oc apply -f sample-ingress.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Confirm the load balancer was provisioned successfully by checking the `IngressController` conditions by running the following command:
 
     ``` terminal
     $ oc get ingresscontroller -n openshift-ingress-operator <name> -o jsonpath="{.status.conditions}" | yq -PC
     ```
-
-</div>
 
 # Additional resources
 

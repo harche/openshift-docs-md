@@ -4,14 +4,6 @@ You can deploy the plugin to an OpenShift Container Platform cluster.
 
 To deploy your plugin on a cluster, you need to build an image and push it to an image registry first.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Build the image with the following command:
 
     ``` terminal
@@ -30,34 +22,17 @@ Procedure
     $ docker push quay.io/my-repository/my-plugin:latest
     ```
 
-</div>
-
 # Deploy your plugin on a cluster
 
 After pushing an image with your changes to a registry, you can deploy the plugin to a cluster using a Helm chart.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have the location of the image containing the plugin that was previously pushed.
 
-  > [!NOTE]
-  > You can specify additional parameters based on the needs of your plugin. The [`values.yaml`](https://github.com/openshift/console-plugin-template/blob/main/charts/openshift-console-plugin/values.yaml) file provides a full set of supported parameters.
+  <div class="note">
 
-</div>
+  You can specify additional parameters based on the needs of your plugin. The [`values.yaml`](https://github.com/openshift/console-plugin-template/blob/main/charts/openshift-console-plugin/values.yaml) file provides a full set of supported parameters.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  To deploy your plugin to a cluster, install a Helm chart with the name of the plugin as the Helm release name into a new namespace or an existing namespace as specified by the `-n` command-line option. Provide the location of the image within the `plugin.image` parameter by using the following command:
 
@@ -76,8 +51,11 @@ Procedure
     `--set plugin.image=my-plugin-image-location`
     Specifies the location of the image within the `plugin.image` parameter.
 
-    > [!NOTE]
-    > If you are deploying on OpenShift Container Platform 4.10 and later, it is recommended to exclude configurations related to pod security by adding the parameter `--set plugin.securityContext.enabled=false`.
+    <div class="note">
+
+    If you are deploying on OpenShift Container Platform 4.10 and later, it is recommended to exclude configurations related to pod security by adding the parameter `--set plugin.securityContext.enabled=false`.
+
+    </div>
 
 2.  Optional: You can specify any additional parameters by using the set of supported parameters in the `charts/openshift-console-plugin/values.yaml` file.
 
@@ -137,37 +115,29 @@ Procedure
               memory: 50Mi
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - View the list of enabled plugins by navigating from **Administration** → **Cluster Settings** → **Configuration** → **Console** `operator.openshift.io` → **Console plugins** or by visiting the **Overview** page.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> It can take a few minutes for the new plugin configuration to appear. If you do not see your plugin, you might need to refresh your browser if the plugin was recently enabled. If you receive any errors at runtime, check the JS console in browser developer tools to look for any errors in your plugin code.
+It can take a few minutes for the new plugin configuration to appear. If you do not see your plugin, you might need to refresh your browser if the plugin was recently enabled. If you receive any errors at runtime, check the JS console in browser developer tools to look for any errors in your plugin code.
+
+</div>
 
 # Plugin service proxy
 
 If you need to make HTTP requests to an in-cluster service from your plugin, you can declare a service proxy in its `ConsolePlugin` resource by using the `spec.proxy` array field. The console backend exposes the `/api/proxy/plugin/<plugin-name>/<proxy-alias>/<request-path>?<optional-query-parameters>` endpoint to proxy the communication between the plugin and the service. A proxied request uses a *service CA bundle* by default. The service must use HTTPS.
 
-> [!NOTE]
-> The plugin must use the `consolefetch` API to make requests from its JavaScript code or some requests might fail. For more information, see "Dynamic plugin API".
+<div class="note">
+
+The plugin must use the `consolefetch` API to make requests from its JavaScript code or some requests might fail. For more information, see "Dynamic plugin API".
+
+</div>
 
 For each entry, you must specify an endpoint and alias of the proxy under the `endpoint` and `alias` fields. For the Service proxy type, you must set the endpoint `type` field to `Service` and the `service` must include values for the `name`, `namespace`, and `port` fields. For example, `/api/proxy/plugin/helm/helm-charts/releases?limit=10` is a proxy request path from the `helm` plugin with a `helm-charts` service that lists ten helm releases.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example service proxy
+**Example service proxy**
 
 </div>
 
@@ -189,8 +159,6 @@ spec:
       type: Service
 ```
 
-</div>
-
 where:
 
 `spec.proxy.alias.helm-charts`
@@ -199,8 +167,11 @@ Alias of the proxy.
 `spec.proxy.authorization.UserToken`
 If the service proxy request must contain the logged-in user’s OpenShift Container Platform access token, you must set the authorization field to `UserToken`.
 
-> [!NOTE]
-> If the service proxy request does not contain the logged-in user’s OpenShift Container Platform access token, set the authorization field to `None`.
+<div class="note">
+
+If the service proxy request does not contain the logged-in user’s OpenShift Container Platform access token, set the authorization field to `None`.
+
+</div>
 
 `spec.proxy.caCertificate.'-----BEGIN CERTIFICATE-----\nMIID....'en`
 If the service uses a custom service CA, the `caCertificate` field must contain the certificate bundle.
@@ -208,42 +179,25 @@ If the service uses a custom service CA, the `caCertificate` field must contain 
 `spec.proxy.endpoint`
 Endpoint of the proxy.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Service CA certificates](../../security/certificate_types_descriptions/service-ca-certificates.xml#service-ca-certificates)
 
 - [Securing service traffic using service serving certificate secrets](../../security/certificates/service-serving-certificate.xml#service-serving-certificate)
 
 - [Dynamic plugin API](../../web_console/dynamic-plugin/dynamic-plugins-reference.xml#dynamic-plugin-api_dynamic-plugins-reference)
 
-</div>
-
 # Disabling your plugin in the browser
 
 Console users can use the `disable-plugins` query parameter to disable specific or all dynamic plugins that would normally get loaded at run-time.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To disable a specific plugin(s), remove the plugin you want to disable from the comma-separated list of plugin names.
 
 - To disable all plugins, leave an empty string in the `disable-plugins` query parameter.
 
-  > [!NOTE]
-  > Cluster administrators can disable plugins in the **Cluster Settings** page of the web console.
+  <div class="note">
 
-</div>
+  Cluster administrators can disable plugins in the **Cluster Settings** page of the web console.
+
+  </div>
 
 # Additional resources
 

@@ -8,8 +8,11 @@ The following factors can affect your cluster update duration:
 
   - The value of `MaxUnavailable` in the machine config pool
 
-    > [!WARNING]
-    > The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
+    <div class="warning">
+
+    The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
+
+    </div>
 
   - The minimum number or percentages of replicas set in pod disruption budget (PDB)
 
@@ -29,8 +32,11 @@ In OpenShift Container Platform, the cluster update happens in two phases:
 
 The Cluster Version Operator (CVO) retrieves the target update release image and applies to the cluster. All components which run as pods are updated during this phase, whereas the host components are updated by the Machine Config Operator (MCO). This process might take 60 to 120 minutes.
 
-> [!NOTE]
-> The CVO phase of the update does not restart the nodes.
+<div class="note">
+
+The CVO phase of the update does not restart the nodes.
+
+</div>
 
 ## Machine Config Operator node updates
 
@@ -44,8 +50,11 @@ The Machine Config Operator (MCO) applies a new machine configuration to each co
 
 4.  Uncordon all nodes and schedule workloads on the node
 
-> [!NOTE]
-> When a node is cordoned, workloads cannot be scheduled to it.
+<div class="note">
+
+When a node is cordoned, workloads cannot be scheduled to it.
+
+</div>
 
 The time to complete this process depends on several factors including the node and infrastructure configuration. This process might take 5 or more minutes to complete per node.
 
@@ -65,11 +74,9 @@ In addition to MCO, you should consider the impact of the following parameters:
   $ oc get node
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example Output
+  **Example Output**
 
   </div>
 
@@ -83,25 +90,15 @@ In addition to MCO, you should consider the impact of the following parameters:
   ip-10-0-207-224.us-east-2.compute.internal  Ready                       worker  12d     v1.23.5+3afdacb
   ```
 
-  </div>
-
   If the status of the node is `NotReady` or `SchedulingDisabled`, then the node is not available and this impacts the update duration.
 
   You can check the status of nodes from the **Administrator** perspective in the web console by expanding **Compute** → **Nodes**.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Machine Config Overview](../../machine_configuration/index.xml#machine-config-overview)
 
 - [Pod disruption budget](../../nodes/pods/nodes-pods-configuring.xml#nodes-pods-configuring-pod-distruption-about_nodes-pods-configuring)
-
-</div>
 
 ## Example update duration of cluster Operators
 
@@ -112,10 +109,6 @@ Additional resources
 The previous diagram shows an example of the time that cluster Operators might take to update to their new versions. The example is based on a three-node AWS OVN cluster, which has a healthy compute `MachineConfigPool` and no workloads that take long to drain, updating from 4.13 to 4.14.
 
 <div class="note">
-
-<div class="title">
-
-</div>
 
 - The specific update duration of a cluster and its Operators can vary based on several cluster characteristics, such as the target version, the amount of nodes, and the types of workloads scheduled to the nodes.
 
@@ -129,22 +122,15 @@ Another characteristic that affects the update duration of an Operator is whethe
 
 The update duration for some Operators is heavily dependent on characteristics of the cluster itself. For instance, the Machine Config Operator update applies machine configuration changes to each node in the cluster. A cluster with many nodes has a longer update duration for the Machine Config Operator compared to a cluster with fewer nodes.
 
-> [!NOTE]
-> Each cluster Operator is assigned a stage during which it can be updated. Operators within the same stage can update simultaneously, and Operators in a given stage cannot begin updating until all previous stages have been completed. For more information, see "Understanding how manifests are applied during an update" in the "Additional resources" section.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+Each cluster Operator is assigned a stage during which it can be updated. Operators within the same stage can update simultaneously, and Operators in a given stage cannot begin updating until all previous stages have been completed. For more information, see "Understanding how manifests are applied during an update" in the "Additional resources" section.
 
 </div>
 
 - [Introduction to OpenShift updates](../../updating/understanding_updates/intro-to-updates.xml#understanding-openshift-updates)
 
 - [Understanding how manifests are applied during an update](../../updating/understanding_updates/how-updates-work.xml#update-manifest-application_how-updates-work)
-
-</div>
 
 # Estimating cluster update time
 
@@ -154,44 +140,45 @@ Historical update duration of similar clusters provides you the best estimate fo
 
 A node update iteration consists of one or more nodes updated in parallel. The control plane nodes are always updated in parallel with the compute nodes. In addition, one or more compute nodes can be updated in parallel based on the `maxUnavailable` value.
 
-> [!WARNING]
-> The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
+<div class="warning">
+
+The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
+
+</div>
 
 For example, to estimate the update time, consider an OpenShift Container Platform cluster with three control plane nodes and six compute nodes and each host takes about 5 minutes to reboot.
 
-> [!NOTE]
-> The time it takes to reboot a particular node varies significantly. In cloud instances, the reboot might take about 1 to 2 minutes, whereas in physical bare metal hosts the reboot might take more than 15 minutes.
+<div class="note">
 
-<div class="formalpara">
+The time it takes to reboot a particular node varies significantly. In cloud instances, the reboot might take about 1 to 2 minutes, whereas in physical bare metal hosts the reboot might take more than 15 minutes.
 
-<div class="title">
+</div>
 
-Scenario-1
+<div class="formalpara-title">
+
+**Scenario-1**
 
 </div>
 
 When you set `maxUnavailable` to `1` for both the control plane and compute nodes Machine Config Pool (MCP), then all the six compute nodes will update one after another in each iteration:
 
-</div>
-
     Cluster update time = 60 + (6 x 5) = 90 minutes
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Scenario-2
+**Scenario-2**
 
 </div>
 
 When you set `maxUnavailable` to `2` for the compute node MCP, then two compute nodes will update in parallel in each iteration. Therefore it takes total three iterations to update all the nodes.
 
-</div>
-
     Cluster update time = 60 + (3 x 5) = 75 minutes
 
-> [!IMPORTANT]
-> The default setting for `maxUnavailable` is `1` for all the MCPs in OpenShift Container Platform. It is recommended that you do not change the `maxUnavailable` in the control plane MCP.
+<div class="important">
+
+The default setting for `maxUnavailable` is `1` for all the MCPs in OpenShift Container Platform. It is recommended that you do not change the `maxUnavailable` in the control plane MCP.
+
+</div>
 
 # Additional resources
 

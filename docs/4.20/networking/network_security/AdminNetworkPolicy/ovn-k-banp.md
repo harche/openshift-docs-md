@@ -14,14 +14,6 @@ A BANP allows administrators to specify:
 
 ## BaselineAdminNetworkPolicy example
 
-<div class="example">
-
-<div class="title">
-
-Example YAML file for BANP
-
-</div>
-
 ``` yaml
 apiVersion: policy.networking.k8s.io/v1alpha1
 kind: BaselineAdminNetworkPolicy
@@ -68,19 +60,9 @@ spec:
 
 - Specify `podSelector.matchLabels` name of the pods to apply the BANP resource.
 
-</div>
-
 ## BaselineAdminNetworkPolicy Deny example
 
 The following BANP singleton ensures that the administrator has set up a default deny policy for all ingress monitoring traffic coming into the tenants at `internal` security level. When combined with the "AdminNetworkPolicy Pass example", this deny policy acts as a guardrail policy for all ingress traffic that is passed by the ANP `pass-monitoring` policy.
-
-<div class="example">
-
-<div class="title">
-
-Example YAML file for a guardrail `Deny` rule
-
-</div>
 
 ``` yaml
 apiVersion: policy.networking.k8s.io/v1alpha1
@@ -102,21 +84,11 @@ spec:
 # ...
 ```
 
-</div>
-
 You can use an `AdminNetworkPolicy` resource with a `Pass` value for the `action` field in conjunction with the `BaselineAdminNetworkPolicy` resource to create a multi-tenant policy. This multi-tenant policy allows one tenant to collect monitoring data on their application while simultaneously not collecting data from a second tenant.
 
 As an administrator, if you apply both the "AdminNetworkPolicy `Pass` action example" and the "BaselineAdminNetwork Policy `Deny` example", tenants are then left with the ability to choose to create a `NetworkPolicy` resource that will be evaluated before the BANP.
 
 For example, Tenant 1 can set up the following `NetworkPolicy` resource to monitor ingress traffic:
-
-<div class="example">
-
-<div class="title">
-
-Example `NetworkPolicy`
-
-</div>
 
 ``` yaml
 apiVersion: networking.k8s.io/v1
@@ -135,7 +107,5 @@ spec:
           kubernetes.io/metadata.name: monitoring
 # ...
 ```
-
-</div>
 
 In this scenario, Tenant 1’s policy would be evaluated after the "AdminNetworkPolicy `Pass` action example" and before the "BaselineAdminNetwork Policy `Deny` example", which denies all ingress monitoring traffic coming into tenants with `security` level `internal`. With Tenant 1’s `NetworkPolicy` object in place, they will be able to collect data on their application. Tenant 2, however, who does not have any `NetworkPolicy` objects in place, will not be able to collect data. As an administrator, you have not by default monitored internal tenants, but instead, you created a BANP that allows tenants to use `NetworkPolicy` objects to override the default behavior of your BANP.

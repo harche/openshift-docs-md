@@ -1,12 +1,18 @@
 You can deploy hosted control planes by configuring a cluster to function as a hosting cluster. The hosting cluster is an OpenShift Container Platform cluster where the control planes are hosted. The hosting cluster is also known as the management cluster.
 
-> [!IMPORTANT]
-> Hosted control planes on non-bare-metal agent machines is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-> [!NOTE]
-> The management cluster is not the same thing as the *managed* cluster. A managed cluster is a cluster that the hub cluster manages.
+Hosted control planes on non-bare-metal agent machines is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
+
+<div class="note">
+
+The management cluster is not the same thing as the *managed* cluster. A managed cluster is a cluster that the hub cluster manages.
+
+</div>
 
 The hosted control planes feature is enabled by default.
 
@@ -50,26 +56,21 @@ Before you deploy hosted control planes on non-bare-metal agent machines, ensure
 
 - You are running the management cluster and workers on the same infrastructure.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Advanced configuration](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#advanced-config-engine)
 
 - [Enabling the central infrastructure management service](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#enable-cim)
 
-</div>
-
 ## Firewall, port, and service requirements for non-bare-metal agent machines
 
 You must meet the firewall and port requirements so that ports can communicate between the management cluster, the control plane, and hosted clusters.
 
-> [!NOTE]
-> Services run on their default ports. However, if you use the `NodePort` publishing strategy, services run on the port that is assigned by the `NodePort` service.
+<div class="note">
+
+Services run on their default ports. However, if you use the `NodePort` publishing strategy, services run on the port that is assigned by the `NodePort` service.
+
+</div>
 
 Use firewall rules, security groups, or other access controls to restrict access to only required sources. Avoid exposing ports publicly unless necessary. For production deployments, use a load balancer to simplify access through a single IP address.
 
@@ -117,13 +118,7 @@ The Agent platform does not create any infrastructure, but it has the following 
 
 - DNS: The API and ingress endpoints must be routable.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Recommended etcd practices](../../etcd/etcd-practices.xml#recommended-etcd-practices)
 
@@ -136,8 +131,6 @@ Additional resources
 - [Disabling the hosted control planes feature](../../hosted_control_planes/hcp-prepare/hcp-enable-disable.xml#hcp-disable_hcp-enable-disable)
 
 - [Configuring Ansible Automation Platform jobs to run on hosted clusters](4/html/clusters/cluster_mce_overview#ansible-config-hosted-cluster)
-
-</div>
 
 # Configuring DNS on non-bare-metal agent machines
 
@@ -203,27 +196,11 @@ As a cluster administrator, you can create a hosted cluster with an external API
 
 You can define a DNS name either during your initial setup or during postinstallation operations, by entering a domain name in the `kubeAPIServerDNSName` parameter of a `HostedCluster` object.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have a valid TLS certificate that covers the DNS name that you set in the `kubeAPIServerDNSName` parameter.
 
 - You have a resolvable DNS name URI that can reach and point to the correct address.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - In the specification for the `HostedCluster` object, add the `kubeAPIServerDNSName` parameter and the address for the domain and specify which certificate to use, as shown in the following example:
 
@@ -244,16 +221,17 @@ Procedure
 
   - The value for the `kubeAPIServerDNSName` parameter must be a valid and addressable domain.
 
-</div>
-
 After you define the `kubeAPIServerDNSName` parameter and specify the certificate, the Control Plane Operator controllers create a `kubeconfig` file named `custom-admin-kubeconfig`, where the file gets stored in the `HostedControlPlane` namespace. The generation of certificates happen from the root CA, and the `HostedControlPlane` namespace manages their expiration and renewal.
 
 The Control Plane Operator reports a new `kubeconfig` file named `CustomKubeconfig` in the `HostedControlPlane` namespace. That file uses the defined new server in the `kubeAPIServerDNSName` parameter.
 
 A reference for the custom `kubeconfig` file exists in the `status` parameter as `CustomKubeconfig` of the `HostedCluster` object. The `CustomKubeConfig` parameter is optional, and you can add the parameter only if the `kubeAPIServerDNSName` parameter is not empty. After you set the `CustomKubeConfig` parameter, the parameter triggers the generation of a secret named `<hosted_cluster_name>-custom-admin-kubeconfig` in the `HostedCluster` namespace. You can use the secret to access the `HostedCluster` API server. If you remove the `CustomKubeConfig` parameter during postinstallation operations, deletion of all related secrets and status references occur.
 
-> [!NOTE]
-> Defining a custom DNS name does not directly impact the data plane, so no expected rollouts occur. The `HostedControlPlane` namespace receives the changes from the HyperShift Operator and deletes the corresponding parameters.
+<div class="note">
+
+Defining a custom DNS name does not directly impact the data plane, so no expected rollouts occur. The `HostedControlPlane` namespace receives the changes from the HyperShift Operator and deletes the corresponding parameters.
+
+</div>
 
 If you remove the `kubeAPIServerDNSName` parameter from the specification for the `HostedCluster` object, all newly generated secrets and the `CustomKubeconfig` reference are removed from the cluster and from the `status` parameter.
 
@@ -268,14 +246,6 @@ As you create a hosted cluster, review the following guidelines:
 - Do not use `clusters` as a hosted cluster name.
 
 - A hosted cluster cannot be created in the namespace of a multicluster engine Operator managed cluster.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the hosted control plane namespace by entering the following command:
 
@@ -324,27 +294,15 @@ Procedure
 
     - Specify the node pool replica count, for example, `3`. You must specify the replica count as `0` or greater to create the same number of replicas. Otherwise, no node pools are created.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - After a few moments, verify that your hosted control plane pods are up and running by entering the following command:
 
   ``` terminal
   $ oc -n <hosted_cluster_namespace>-<hosted_cluster_name> get pods
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -354,47 +312,17 @@ Verification
   control-plane-operator-f6b4c8465-4k5dh           1/1     Running   0          4m32s
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Manually importing a hosted cluster](../../hosted_control_planes/hcp-import.xml#hcp-import-manual_hcp-import)
-
-</div>
 
 ## Creating a hosted cluster on non-bare-metal agent machines by using the web console
 
 You can create a hosted cluster on non-bare-metal agent machines by using the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open the OpenShift Container Platform web console and log in by entering your administrator credentials.
 
@@ -407,8 +335,6 @@ Procedure
     The **Create cluster** page is displayed.
 
 5.  On the **Create cluster** page, follow the prompts to enter details about the cluster, node pools, networking, and automation.
-
-</div>
 
 As you enter details about the cluster, you might find the following tips useful:
 
@@ -428,29 +354,13 @@ As you enter details about the cluster, you might find the following tips useful
 
   2.  To view the node pool status, scroll to the **NodePool** section. The process to install the nodes takes about 10 minutes. You can also click **Nodes** to confirm whether the nodes joined the hosted cluster.
 
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
+<!-- -->
 
 - To access the web console, see [Accessing the web console](../../web_console/web-console.xml#web-console-overview).
-
-</div>
 
 ## Creating a hosted cluster on non-bare-metal agent machines by using a mirror registry
 
 You can use a mirror registry to create a hosted cluster on non-bare-metal agent machines by specifying the `--image-content-sources` flag in the `hcp create cluster` command.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file to define Image Content Source Policies (ICSP). See the following example:
 
@@ -501,16 +411,6 @@ Procedure
 
     - Specify the supported OpenShift Container Platform version that you want to use, for example, `4.20.0-multi`. If you are using a disconnected environment, replace `<ocp_release_image>` with the digest image. To extract the OpenShift Container Platform release image digest, see *Extracting the OpenShift Container Platform release image digest*.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - To create credentials that you can reuse when you create a hosted cluster with the console, see [Creating a credential for an on-premises environment](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#creating-a-credential-for-an-on-premises-environment).
 
 - To access a hosted cluster, see [Accessing the hosted cluster](../../hosted_control_planes/hcp-manage/hcp-manage-bm.xml#hcp-bm-access_hcp-manage-bm).
@@ -519,19 +419,9 @@ Next steps
 
 - To extract the OpenShift Container Platform release image digest, see [Extracting the OpenShift Container Platform release image digest](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#configure-hosted-disconnected-digest-image).
 
-</div>
-
 # Verifying hosted cluster creation on non-bare-metal agent machines
 
 After the deployment process is complete, you can verify that the hosted cluster was created successfully. Follow these steps a few minutes after you create the hosted cluster.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Obtain the `kubeconfig` file for your new hosted cluster by entering the following command:
 
@@ -547,11 +437,9 @@ Procedure
     $ oc get co --kubeconfig=kubeconfig-<hosted_cluster_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -562,19 +450,15 @@ Procedure
     dns                                        4.10.26   True        False         False      2m52s
     ```
 
-    </div>
-
 3.  View the running pods on your hosted cluster by entering the following command:
 
     ``` terminal
     $ oc get pods -A --kubeconfig=kubeconfig-<hosted_cluster_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -586,23 +470,11 @@ Procedure
     openshift-monitoring                               openshift-state-metrics-677b9fb74f-qqp6g                  3/3     Running            0               104s
     ```
 
-    </div>
-
-</div>
-
 # Configuring a custom API server certificate in a hosted cluster
 
 To configure a custom certificate for the API server, specify the certificate details in the `spec.configuration.apiServer` section of your `HostedCluster` configuration.
 
 You can configure a custom certificate during either day-1 or day-2 operations. However, because the service publishing strategy is immutable after you set it during hosted cluster creation, you must know what the hostname is for the Kubernetes API server that you plan to configure.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You created a Kubernetes secret that contains your custom certificate in the management cluster. The secret contains the following keys:
 
@@ -615,16 +487,6 @@ Prerequisites
 - The certificate must be valid for the external API endpoint.
 
 - The validity period of the certificate aligns with your cluster’s expected life cycle.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a secret with your custom certificate by entering the following command:
 
@@ -659,20 +521,8 @@ Procedure
     $ oc apply -f <hosted_cluster_config>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Check the API server pods to ensure that the new certificate is mounted.
 
 - Test the connection to the API server by using the custom domain name.
 
 - Verify the certificate details in your browser or by using tools such as `openssl`.
-
-</div>

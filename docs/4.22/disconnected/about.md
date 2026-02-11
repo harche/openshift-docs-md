@@ -15,29 +15,31 @@ The following table describes the different terms used to refer to environments 
 <col style="width: 66%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Term</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Air-gapped network</p></td>
 <td style="text-align: left;"><p>An environment or network that is completely isolated from an external network.</p>
 <p>This isolation depends on a physical separation, or an "air gap", between machines on the internal network and any other part of an external network. Air-gapped environments are often used in industries with strict security or regulatory requirements.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Disconnected environment</p></td>
 <td style="text-align: left;"><p>An environment or network that has some level of isolation from an external network.</p>
 <p>This isolation could be enabled by physical or logical separation between machines on the internal network and an external network. Regardless of the level of isolation from the external network, a cluster in a disconnected environment does not have access to public services hosted by Red Hat and requires additional setup to maintain full cluster functionality.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Restricted Network</p></td>
 <td style="text-align: left;"><p>An environment or network with limited connection to an external network.</p>
 <p>A physical connection may exist between machines on the internal network and an external network, but network traffic is limited by additional configurations, such as with firewalls and proxies.</p></td>
 </tr>
 </tbody>
 </table>
+
+Disconnected environment terms
 
 # Preferred methods for working with disconnected environments
 

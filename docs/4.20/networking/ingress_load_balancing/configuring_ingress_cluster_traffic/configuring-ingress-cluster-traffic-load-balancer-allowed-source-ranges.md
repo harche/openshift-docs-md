@@ -6,28 +6,15 @@ You can enable and configure the `spec.endpointPublishingStrategy.loadBalancer.a
 
 The Ingress Operator reconciles the load balancer Service and sets the `spec.loadBalancerSourceRanges` parameter based on `AllowedSourceRanges`.
 
-> [!NOTE]
-> If you have already set the `spec.loadBalancerSourceRanges` parameter or the load balancer service anotation `service.beta.kubernetes.io/load-balancer-source-ranges` in a previous version of OpenShift Container Platform, Ingress Controller starts reporting `Progressing=True` after an upgrade. To fix this, set `AllowedSourceRanges` that overwrites the `spec.loadBalancerSourceRanges` parameter and clears the `service.beta.kubernetes.io/load-balancer-source-ranges` annotation. Ingress Controller starts reporting `Progressing=False` again.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you have already set the `spec.loadBalancerSourceRanges` parameter or the load balancer service anotation `service.beta.kubernetes.io/load-balancer-source-ranges` in a previous version of OpenShift Container Platform, Ingress Controller starts reporting `Progressing=True` after an upgrade. To fix this, set `AllowedSourceRanges` that overwrites the `spec.loadBalancerSourceRanges` parameter and clears the `service.beta.kubernetes.io/load-balancer-source-ranges` annotation. Ingress Controller starts reporting `Progressing=False` again.
 
 </div>
 
 - You have a deployed Ingress Controller on a running cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Set the allowed source ranges API for the Ingress Controller by running the following command:
 
@@ -43,36 +30,19 @@ Procedure
   `allowedSourceRanges`
   The example value `0.0.0.0/0` specifies the allowed source range.
 
-</div>
-
 # Migrating to load balancer allowed source ranges
 
 To ensure long-term compatibility and use stable API parameters in OpenShift Container Platform, migrate from the legacy `service.beta.kubernetes.io/load-balancer-source-ranges` annotation to load balancer allowed source ranges.
 
 When you set the `AllowedSourceRanges`, the Ingress Controller sets the `spec.loadBalancerSourceRanges` parameter based on the `AllowedSourceRanges` value and unsets the `service.beta.kubernetes.io/load-balancer-source-ranges` annotation.
 
-> [!NOTE]
-> If you have already set the `spec.loadBalancerSourceRanges` parameter or the load balancer service anotation `service.beta.kubernetes.io/load-balancer-source-ranges` in a previous version of OpenShift Container Platform, the Ingress Controller starts reporting `Progressing=True` after an upgrade. To fix this, set `AllowedSourceRanges` that overwrites the `spec.loadBalancerSourceRanges` parameter and clears the `service.beta.kubernetes.io/load-balancer-source-ranges` annotation. The Ingress Controller starts reporting `Progressing=False` again.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you have already set the `spec.loadBalancerSourceRanges` parameter or the load balancer service anotation `service.beta.kubernetes.io/load-balancer-source-ranges` in a previous version of OpenShift Container Platform, the Ingress Controller starts reporting `Progressing=True` after an upgrade. To fix this, set `AllowedSourceRanges` that overwrites the `spec.loadBalancerSourceRanges` parameter and clears the `service.beta.kubernetes.io/load-balancer-source-ranges` annotation. The Ingress Controller starts reporting `Progressing=False` again.
 
 </div>
 
 - You have set the `service.beta.kubernetes.io/load-balancer-source-ranges` annotation.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Check that the `service.beta.kubernetes.io/load-balancer-source-ranges` is set by entering the following command:
 
@@ -80,11 +50,9 @@ Procedure
     $ oc get svc router-default -n openshift-ingress -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -96,19 +64,15 @@ Procedure
         service.beta.kubernetes.io/load-balancer-source-ranges: 192.168.0.1/32
     ```
 
-    </div>
-
 2.  Check that the `spec.loadBalancerSourceRanges` parameter is unset by entering the following command:
 
     ``` terminal
     $ oc get svc router-default -n openshift-ingress -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -119,8 +83,6 @@ Procedure
       - 0.0.0.0/0
     ...
     ```
-
-    </div>
 
 3.  Update your cluster to OpenShift Container Platform 4.17.
 
@@ -136,8 +98,6 @@ Procedure
 
     `allowedSourceRanges`
     The example value `0.0.0.0/0` specifies the allowed source range.
-
-</div>
 
 # Additional resources
 

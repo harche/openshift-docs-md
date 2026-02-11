@@ -14,28 +14,13 @@ The IP address is provisioned with cloud-init.
 
 You can configure a static IP address when you create a virtual machine (VM) by using the web console. The IP address is provisioned with cloud-init.
 
-> [!NOTE]
-> If the VM is connected to the pod network, the pod network interface is the default route unless you update it.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If the VM is connected to the pod network, the pod network interface is the default route unless you update it.
 
 </div>
 
 - The virtual machine is connected to a secondary network.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **Catalog** in the web console.
 
@@ -55,20 +40,13 @@ Procedure
 
 9.  Click **Create VirtualMachine**.
 
-</div>
-
 ## Configuring an IP address when creating a virtual machine by using the CLI
 
 You can configure a static or dynamic IP address when you create a virtual machine (VM). The IP address is provisioned with cloud-init.
 
-> [!NOTE]
-> If the VM is connected to the pod network, the pod network interface is the default route unless you update it.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If the VM is connected to the pod network, the pod network interface is the default route unless you update it.
 
 </div>
 
@@ -76,15 +54,7 @@ Prerequisites
 
 - You have a DHCP server available on the secondary network to configure a dynamic IP for the virtual machine.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Edit the `spec.template.spec.volumes.cloudInitNoCloud.networkData` stanza of the virtual machine configuration:
 
@@ -131,8 +101,6 @@ Procedure
 
     - Specify the static IP address.
 
-</div>
-
 # Viewing IP addresses of virtual machines
 
 You can view the IP address of a VM by using the OpenShift Container Platform web console or the command line.
@@ -143,14 +111,9 @@ The network information is collected by the QEMU guest agent.
 
 You can view the IP address of a virtual machine (VM) by using the OpenShift Container Platform web console.
 
-> [!NOTE]
-> You must install the QEMU guest agent on a VM to view the IP address of a secondary network interface. A pod network interface does not require the QEMU guest agent.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+You must install the QEMU guest agent on a VM to view the IP address of a secondary network interface. A pod network interface does not require the QEMU guest agent.
 
 </div>
 
@@ -160,34 +123,19 @@ Procedure
 
 3.  Click the **Details** tab to view the IP address.
 
-</div>
-
 ## Viewing the IP address of a virtual machine by using the CLI
 
 You can view the IP address of a virtual machine (VM) by using the command line.
 
-> [!NOTE]
-> You must install the QEMU guest agent on a VM to view the IP address of a secondary network interface. A pod network interface does not require the QEMU guest agent.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You must install the QEMU guest agent on a VM to view the IP address of a secondary network interface. A pod network interface does not require the QEMU guest agent.
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Obtain the virtual machine instance configuration by running the following command:
 
@@ -224,8 +172,6 @@ Procedure
        fe80::1420:84ff:fe10:17aa/64
      Mac:             16:20:84:10:17:aa
   ```
-
-</div>
 
 # Additional resources
 

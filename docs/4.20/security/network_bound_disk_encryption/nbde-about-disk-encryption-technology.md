@@ -6,14 +6,14 @@ To understand the merits of Network-Bound Disk Encryption (NBDE) for securing da
 
 The following table presents some tradeoffs to consider around the threat model and the complexity of each encryption solution.
 
-| Scenario | Key escrow | TPM disk encryption (without Clevis) | NBDE |
-|----|----|----|----|
-| Protects against single-disk theft | X | X | X |
-| Protects against entire-server theft | X |  | X |
-| Systems can reboot independently from the network |  | X |  |
-| No periodic rekeying |  | X |  |
-| Key is never transmitted over a network |  | X | X |
-| Supported by OpenShift |  | X | X |
+| Scenario                                          | Key escrow | TPM disk encryption (without Clevis) | NBDE |
+|---------------------------------------------------|------------|--------------------------------------|------|
+| Protects against single-disk theft                | X          | X                                    | X    |
+| Protects against entire-server theft              | X          |                                      | X    |
+| Systems can reboot independently from the network |            | X                                    |      |
+| No periodic rekeying                              |            | X                                    |      |
+| Key is never transmitted over a network           |            | X                                    | X    |
+| Supported by OpenShift                            |            | X                                    | X    |
 
 ## Key escrow
 

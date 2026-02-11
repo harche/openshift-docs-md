@@ -4,14 +4,6 @@ The hosted control planes feature, as well as the `hypershift-addon` managed clu
 
 If you need to manually enable hosted control planes, complete the following steps.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Run the following command to enable the feature:
 
     ``` terminal
@@ -29,11 +21,9 @@ Procedure
 
     - The default `MultiClusterEngine` resource instance name is `multiclusterengine`, but you can get the `MultiClusterEngine` name from your cluster by running the following command: `$ oc get mce`.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -51,21 +41,9 @@ Procedure
             enabled: true
       ```
 
-      </div>
-
-</div>
-
 ## Manually enabling the hypershift-addon managed cluster add-on for local-cluster
 
 Enabling the hosted control planes feature automatically enables the `hypershift-addon` managed cluster add-on. If you need to enable the `hypershift-addon` managed cluster add-on manually, complete the following steps to use the `hypershift-addon` to install the HyperShift Operator on `local-cluster`.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `ManagedClusterAddon` add-on named `hypershift-addon` by creating a file that resembles the following example:
 
@@ -100,8 +78,6 @@ Procedure
     hypershift-addon   True
     ```
 
-</div>
-
 Your `hypershift-addon` managed cluster add-on is installed and the hosting cluster is available to create and manage hosted clusters.
 
 # Disabling the hosted control planes feature
@@ -112,22 +88,17 @@ You can uninstall the HyperShift Operator and disable the hosted control planes 
 
 To uninstall the HyperShift Operator and disable the `hypershift-addon` from the `local-cluster`, complete the following steps:
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Run the following command to ensure that there is no hosted cluster running:
 
     ``` terminal
     $ oc get hostedcluster -A
     ```
 
-    > [!IMPORTANT]
-    > If a hosted cluster is running, the HyperShift Operator does not uninstall, even if the `hypershift-addon` is disabled.
+    <div class="important">
+
+    If a hosted cluster is running, the HyperShift Operator does not uninstall, even if the `hypershift-addon` is disabled.
+
+    </div>
 
 2.  Disable the `hypershift-addon` by running the following command:
 
@@ -138,34 +109,17 @@ Procedure
 
     - The default `MultiClusterEngine` resource instance name is `multiclusterengine`, but you can get the `MultiClusterEngine` name from your cluster by running the following command: `$ oc get mce`.
 
-      > [!NOTE]
-      > You can also disable the `hypershift-addon` for the `local-cluster` from the multicluster engine Operator console after disabling the `hypershift-addon`.
+      <div class="note">
 
-</div>
+      You can also disable the `hypershift-addon` for the `local-cluster` from the multicluster engine Operator console after disabling the `hypershift-addon`.
+
+      </div>
 
 ## Disabling the hosted control planes feature
 
 To disable the hosted control planes feature, complete the following steps.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You uninstalled the HyperShift Operator. For more information, see "Uninstalling the HyperShift Operator".
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the following command to disable the hosted control planes feature:
 
@@ -199,5 +153,3 @@ Procedure
           - name: hypershift-local-hosting
             enabled: false
       ```
-
-</div>

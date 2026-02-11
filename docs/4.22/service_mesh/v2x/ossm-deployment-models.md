@@ -24,8 +24,11 @@ You can grant a team permission to deploy its workloads only to a given namespac
 
 In a cluster-wide mesh, one `ServiceMeshControlPlane` (SMCP) watches all of the namespaces for an entire cluster. You can migrate an existing cluster from a multitenant mesh to a cluster-wide mesh using Red Hat OpenShift Service Mesh version 2.5 or later.
 
-> [!NOTE]
-> If a cluster must have more than one SMCP, then you cannot migrate to a cluster-wide mesh.
+<div class="note">
+
+If a cluster must have more than one SMCP, then you cannot migrate to a cluster-wide mesh.
+
+</div>
 
 By default, a cluster-wide mesh discovers all of the namespaces that comprise a cluster. However, you can configure the mesh to access a limited set of namespaces. Namespaces do not receive sidecar injection by default. You must specify which namespaces receive sidecar injection.
 
@@ -37,14 +40,9 @@ If you change the Istio version when migrating to a cluster-wide mesh, then you 
 
 Using the OpenShift Container Platform web console, you can add discovery selectors to the `ServiceMeshControlPlane` resource in a cluster-wide mesh. Discovery selectors define the namespaces that the control plane can discover. The control plane ignores any namespace that does not match one of the discovery selectors, which excludes the namespace from the mesh.
 
-> [!NOTE]
-> If you install ingress or egress gateways in the control plane namespace, you must include the control plane namespace in the discovery selectors.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you install ingress or egress gateways in the control plane namespace, you must include the control plane namespace in the discovery selectors.
 
 </div>
 
@@ -53,16 +51,6 @@ Prerequisites
 - You have deployed a `ServiceMeshControlPlane` resource.
 
 - You are logged in as a user with the `cluster-admin` role. If you use Red Hat OpenShift Dedicated, you are logged in as a user with the `dedicated-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -78,8 +66,11 @@ Procedure
 
 7.  Modify the YAML file so that the `spec.meshConfig` field of the `ServiceMeshControlPlane` resource includes the discovery selector.
 
-    > [!NOTE]
-    > When configuring namespaces that the `Istiod` service can discover, exclude namespaces that might contain sensitive services that should not be exposed to the rest of the mesh.
+    <div class="note">
+
+    When configuring namespaces that the `Istiod` service can discover, exclude namespaces that might contain sensitive services that should not be exposed to the rest of the mesh.
+
+    </div>
 
     In the following example, the `Istiod` service discovers any namespace that is labeled `istio-discovery: enabled` or any namespace that has the name `bookinfo`, `httpbin` or `istio-system`:
 
@@ -111,20 +102,13 @@ Procedure
 
 8.  Save the file.
 
-</div>
-
 ### Including and excluding namespaces from a cluster-wide mesh by using the CLI
 
 Using the OpenShift Container Platform CLI, you can add discovery selectors to the `ServiceMeshControlPlane` resource in a cluster-wide mesh. Discovery selectors define the namespaces that the control plane can discover. The control plane ignores any namespace that does not match one of the discovery selectors, which excludes the namespace from the mesh.
 
-> [!NOTE]
-> If you install ingress or egress gateways in the control plane namespace, you must include the control plane namespace in the discovery selectors.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you install ingress or egress gateways in the control plane namespace, you must include the control plane namespace in the discovery selectors.
 
 </div>
 
@@ -133,16 +117,6 @@ Prerequisites
 - You have deployed a `ServiceMeshControlPlane` resource.
 
 - You are logged in as a user with the `cluster-admin` role. If you use Red Hat OpenShift Dedicated, you are logged in as a user with the `dedicated-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform CLI.
 
@@ -156,8 +130,11 @@ Procedure
 
 3.  Modify the YAML file so that the `spec.meshConfig` field of the `ServiceMeshControlPlane` resource includes the discovery selector.
 
-    > [!NOTE]
-    > When configuring namespaces that the `Istiod` service can discover, exclude namespaces that might contain sensitive services that should not be exposed to the rest of the mesh.
+    <div class="note">
+
+    When configuring namespaces that the `Istiod` service can discover, exclude namespaces that might contain sensitive services that should not be exposed to the rest of the mesh.
+
+    </div>
 
     In the following example, the `Istiod` service discovers any namespace that is labeled `istio-discovery: enabled` or any namespace that has the name `bookinfo`, `httpbin` or `istio-system`:
 
@@ -189,20 +166,13 @@ Procedure
 
 4.  Save the file and exit the editor.
 
-</div>
-
 ### Defining which namespaces receive sidecar injection in a cluster-wide mesh by using the web console
 
 By default, the Red Hat OpenShift Service Mesh Operator uses member selectors to identify which namespaces receive sidecar injection. Namespaces that do not match the `istio-injection=enabled` label as defined in the `ServiceMeshMemberRoll` resource do not receive sidecar injection.
 
-> [!NOTE]
-> Using discovery selectors to determine which namespaces the mesh can discover has no effect on sidecar injection. Discovering namespaces and configuring sidecar injection are separate operations.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Using discovery selectors to determine which namespaces the mesh can discover has no effect on sidecar injection. Discovering namespaces and configuring sidecar injection are separate operations.
 
 </div>
 
@@ -211,16 +181,6 @@ Prerequisites
 - You have deployed a `ServiceMeshControlPlanae` resource with the `mode: ClusterWide` annotation.
 
 - You are logged in as a user with the `cluster-admin` role. If you use Red Hat OpenShift Dedicated, you are logged in as a user with the `dedicated-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -251,20 +211,13 @@ Procedure
 
 8.  Save the file.
 
-</div>
-
 ### Defining which namespaces receive sidecar injection in a cluster-wide mesh by using the CLI
 
 By default, the Red Hat OpenShift Service Mesh Operator uses member selectors to identify which namespaces receive sidecar injection. Namespaces that do not match the `istio-injection=enabled` label as defined in the `ServiceMeshMemberRoll` resource do not receive sidecar injection.
 
-> [!NOTE]
-> Using discovery selectors to determine which namespaces the mesh can discover has no effect on sidecar injection. Discovering namespaces and configuring sidecar injection are separate operations.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Using discovery selectors to determine which namespaces the mesh can discover has no effect on sidecar injection. Discovering namespaces and configuring sidecar injection are separate operations.
 
 </div>
 
@@ -273,16 +226,6 @@ Prerequisites
 - You have deployed a `ServiceMeshControlPlanae` resource with the `mode: ClusterWide` annotation.
 
 - You are logged in as a user with the `cluster-admin` role. If you use Red Hat OpenShift Dedicated, you are logged in as a user with the `dedicated-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform CLI.
 
@@ -309,37 +252,17 @@ Procedure
 
 4.  Save the file and exit the editor.
 
-</div>
-
 ### Excluding individual pods from a cluster-wide mesh by using the web console
 
 A pod receives sidecar injection if it has the `sidecar.istio.io/inject: true` annotation applied, and the pod exists in a namespace that matches either the label selector or the members list defined in the `ServiceMeshMemberRoll` resource.
 
 If a pod does not have the `sidecar.istio.io/inject` annotation applied, it cannot receive sidecar injection.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the Red Hat OpenShift Service Mesh Operator.
 
 - You have deployed a `ServiceMeshControlPlane` resource with the `mode: ClusterWide` annotation.
 
 - You are logged in as a user with the `cluster-admin` role. If you use Red Hat OpenShift Dedicated, you are logged in as a user with the `dedicated-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -399,37 +322,17 @@ Procedure
 
 6.  Save the file.
 
-</div>
-
 ### Excluding individual pods from a cluster-wide mesh by using the CLI
 
 A pod receives sidecar injection if it has the `sidecar.istio.io/inject: true` annotation applied, and the pod exists in a namespace that matches either the label selector or the members list defined in the `ServiceMeshMemberRoll` resource.
 
 If a pod does not have the `sidecar.istio.io/inject` annotation applied, it cannot receive sidecar injection.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the Red Hat OpenShift Service Mesh Operator.
 
 - You have deployed a `ServiceMeshControlPlane` resource with the `mode: ClusterWide` annotation.
 
 - You are logged in as a user with the `cluster-admin` role. If you use Red Hat OpenShift Dedicated, you are logged in as a user with the `dedicated-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform CLI.
 
@@ -488,8 +391,6 @@ Procedure
     - This pod does not have the annotation, so it does not receive sidecar injection.
 
 4.  Save the file.
-
-</div>
 
 # Multimesh or federated deployment model
 

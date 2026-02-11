@@ -6,14 +6,6 @@ You can configure clusters and virtual machines (VMs) to run DPDK workloads over
 
 You can configure an OpenShift Container Platform cluster to run Data Plane Development Kit (DPDK) workloads for improved network performance.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
@@ -21,16 +13,6 @@ Prerequisites
 - You have installed the SR-IOV Network Operator.
 
 - You have installed the Node Tuning Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Map your compute nodes topology to determine which Non-Uniform Memory Access (NUMA) CPUs are isolated for DPDK applications and which ones are reserved for the operating system (OS).
 
@@ -94,8 +76,11 @@ Procedure
         topologyPolicy: single-numa-node
     ```
 
-    > [!NOTE]
-    > The compute nodes automatically restart after you apply the `MachineConfigPool` and `PerformanceProfile` manifests.
+    <div class="note">
+
+    The compute nodes automatically restart after you apply the `MachineConfigPool` and `PerformanceProfile` manifests.
+
+    </div>
 
 4.  Retrieve the name of the generated `RuntimeClass` resource from the `status.runtimeClass` field of the `PerformanceProfile` object:
 
@@ -110,8 +95,11 @@ Procedure
         --type='json' -p='[{"op": "add", "path": "/spec/defaultRuntimeClass", "value":"<runtimeclass-name>"}]'
     ```
 
-    > [!NOTE]
-    > Editing the `HyperConverged` CR changes a global setting that affects all VMs that are created after the change is applied.
+    <div class="note">
+
+    Editing the `HyperConverged` CR changes a global setting that affects all VMs that are created after the change is applied.
+
+    </div>
 
 6.  If your DPDK-enabled compute nodes use Simultaneous multithreading (SMT), enable the `AlignCPUs` enabler by editing the `HyperConverged` CR:
 
@@ -120,8 +108,11 @@ Procedure
         --type='json' -p='[{"op": "replace", "path": "/spec/featureGates/alignCPUs", "value": true}]'
     ```
 
-    > [!NOTE]
-    > Enabling `AlignCPUs` allows OpenShift Virtualization to request up to two additional dedicated CPUs to bring the total CPU count to an even parity when using emulator thread isolation.
+    <div class="note">
+
+    Enabling `AlignCPUs` allows OpenShift Virtualization to request up to two additional dedicated CPUs to bring the total CPU count to an even parity when using emulator thread isolation.
+
+    </div>
 
 7.  Create an `SriovNetworkNodePolicy` object with the `spec.deviceType` field set to `vfio-pci`.
 
@@ -150,51 +141,21 @@ Procedure
         feature.node.kubernetes.io/network-sriov.capable: "true"
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Using CPU Manager and Topology Manager](../../scalability_and_performance/using-cpu-manager.xml#using-cpu-manager)
 
 - [Configuring huge pages](../../scalability_and_performance/what-huge-pages-do-and-how-they-are-consumed-by-apps.xml#configuring-huge-pages_huge-pages)
 
 - [Creating a custom machine config pool](https://access.redhat.com/solutions/5688941)
 
-</div>
-
 ## Removing a custom machine config pool for high-availability clusters
 
 You can delete a custom machine config pool that you previously created for your high-availability cluster.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster as a user with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have created a custom machine config pool by labeling a subset of the compute nodes with a custom role and creating a `MachineConfigPool` manifest with that label.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Remove the `worker-dpdk` label from the compute nodes by running the following command:
 
@@ -208,33 +169,13 @@ Procedure
     $ oc delete mcp worker-dpdk
     ```
 
-</div>
-
 # Configuring a project for DPDK workloads
 
 You can configure the project to run DPDK workloads on SR-IOV hardware.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Your cluster is configured to run DPDK workloads.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a namespace for your DPDK applications:
 
@@ -277,49 +218,19 @@ Procedure
 
 3.  Optional: Run the virtual machine latency checkup to verify that the network is properly configured.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Working with projects](../../applications/projects/working-with-projects.xml#working-with-projects)
 
 - [Virtual machine latency checkup](../../virt/monitoring/virt-running-cluster-checkups.xml#virt-measuring-latency-vm-secondary-network_virt-running-cluster-checkups)
 
-</div>
-
 # Configuring a virtual machine for DPDK workloads
 
 You can run Data Packet Development Kit (DPDK) workloads on virtual machines (VMs) to achieve lower latency and higher throughput for faster packet processing in the user space. DPDK uses the SR-IOV network for hardware-based I/O sharing.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Your cluster is configured to run DPDK workloads.
 
 - You have created and configured the project in which the VM will run.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `VirtualMachine` manifest to include information about the SR-IOV network interface, CPU topology, CRI-O annotations, and huge pages.
 
@@ -425,5 +336,3 @@ Procedure
         ```
 
 5.  Restart the VM to apply the changes.
-
-</div>

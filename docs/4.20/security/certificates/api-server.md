@@ -1,19 +1,14 @@
 The default API server certificate is issued by an internal OpenShift Container Platform cluster CA. Clients outside of the cluster will not be able to verify the API server’s certificate by default. This certificate can be replaced by one that is issued by a CA that clients trust.
 
-> [!NOTE]
-> In hosted control plane clusters, you can add as many custom certificates to your Kubernetes API Server as you need. However, do not add a certificate for the endpoint that worker nodes use to communicate with the control plane. For more information, see [Configuring a custom API server certificate in a hosted cluster](../../hosted_control_planes/hcp-deploy/hcp-deploy-bm.xml#hcp-custom-cert_hcp-deploy-bm).
+<div class="note">
+
+In hosted control plane clusters, you can add as many custom certificates to your Kubernetes API Server as you need. However, do not add a certificate for the endpoint that worker nodes use to communicate with the control plane. For more information, see [Configuring a custom API server certificate in a hosted cluster](../../hosted_control_planes/hcp-deploy/hcp-deploy-bm.xml#hcp-custom-cert_hcp-deploy-bm).
+
+</div>
 
 # Add an API server named certificate
 
 The default API server certificate is issued by an internal OpenShift Container Platform cluster CA. You can add one or more alternative certificates that the API server will return based on the fully qualified domain name (FQDN) requested by the client, for example when a reverse proxy or load balancer is used.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You must have a certificate for the FQDN and its corresponding private key. Each should be in a separate PEM format file.
 
@@ -23,16 +18,9 @@ Prerequisites
 
 - The certificate file can contain one or more certificates in a chain. The certificate for the API server FQDN must be the first certificate in the file. It can then be followed with any intermediate certificates, and the file should end with the root CA certificate.
 
-</div>
+<div class="warning">
 
-> [!WARNING]
-> Do not provide a named certificate for the internal load balancer (host name `api-int.<cluster_name>.<base_domain>`). Doing so will leave your cluster in a degraded state.
-
-<div>
-
-<div class="title">
-
-Procedure
+Do not provide a named certificate for the internal load balancer (host name `api-int.<cluster_name>.<base_domain>`). Doing so will leave your cluster in a degraded state.
 
 </div>
 
@@ -87,11 +75,9 @@ Procedure
     $ oc get apiserver cluster -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -107,8 +93,6 @@ Procedure
     ...
     ```
 
-    </div>
-
 6.  Check the `kube-apiserver` operator, and verify that a new revision of the Kubernetes API server rolls out. It may take a minute for the operator to detect the configuration change and trigger a new deployment. While the new revision is rolling out, `PROGRESSING` will report `True`.
 
     ``` terminal
@@ -117,11 +101,9 @@ Procedure
 
     Do not continue to the next step until `PROGRESSING` is listed as `False`, as shown in the following output:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -130,11 +112,10 @@ Procedure
     kube-apiserver   4.17.0     True        False         False      145m
     ```
 
-    </div>
-
     If `PROGRESSING` is showing `True`, wait a few minutes and try again.
 
-    > [!NOTE]
-    > A new revision of the Kubernetes API server only rolls out if the API server named certificate is added for the first time. When the API server named certificate is renewed, a new revision of the Kubernetes API server does not roll out because the `kube-apiserver` pods dynamically reload the updated certificate.
+    <div class="note">
 
-</div>
+    A new revision of the Kubernetes API server only rolls out if the API server named certificate is added for the first time. When the API server named certificate is renewed, a new revision of the Kubernetes API server does not roll out because the `kube-apiserver` pods dynamically reload the updated certificate.
+
+    </div>

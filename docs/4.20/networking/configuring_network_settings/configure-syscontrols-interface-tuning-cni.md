@@ -8,14 +8,6 @@ To modify kernel parameters and interface attributes at runtime in OpenShift Con
 
 To configure interface-level network sysctls in OpenShift Container Platform, you can use the tuning CNI meta plugin in a network attachment definition. Configure the `net.ipv4.conf.IFNAME.accept_redirects` sysctl to enable accepting and sending ICMP-redirected packets.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a network attachment definition, such as `tuning-example.yaml`, with the following content:
 
     ``` yaml
@@ -64,11 +56,9 @@ Procedure
     `sysctl`
     Specifies the sysctl to set. The interface name is represented by the `IFNAME` token and is replaced with the actual name of the interface at runtime.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example network attachment definition
+    **Example network attachment definition**
 
     </div>
 
@@ -95,27 +85,21 @@ Procedure
     }'
     ```
 
-    </div>
-
 2.  Apply the YAML by running the following command:
 
     ``` terminal
     $ oc apply -f tuning-example.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     networkattachmentdefinition.k8.cni.cncf.io/tuningnad created
     ```
-
-    </div>
 
 3.  Create a pod such as `examplepod.yaml` with the network attachment definition similar to the following:
 
@@ -179,11 +163,9 @@ Procedure
     $ oc get pod
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -191,8 +173,6 @@ Procedure
     NAME      READY   STATUS    RESTARTS   AGE
     tunepod   1/1     Running   0          47s
     ```
-
-    </div>
 
 6.  Log in to the pod by running the following command:
 
@@ -206,11 +186,9 @@ Procedure
     sh-4.4# sysctl net.ipv4.conf.net1.accept_redirects
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Expected output
+    **Expected output**
 
     </div>
 
@@ -218,21 +196,9 @@ Procedure
     net.ipv4.conf.net1.accept_redirects = 1
     ```
 
-    </div>
-
-</div>
-
 # Enabling all-multicast mode by using the tuning CNI
 
 To enable all-multicast mode on network interfaces in OpenShift Container Platform, you can use the tuning Container Network Interface (CNI) meta plugin in a network attachment definition. When enabled, the interface receives all multicast packets on the network.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a network attachment definition, such as `tuning-example.yaml`, with the following content:
 
@@ -281,11 +247,9 @@ Procedure
     `allmulti`
     Specifies the all-multicast mode of interface. If enabled, all multicast packets on the network will be received by the interface.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example network attachment definition
+    **Example network attachment definition**
 
     </div>
 
@@ -311,27 +275,21 @@ Procedure
       }'
     ```
 
-    </div>
-
 2.  Apply the settings specified in the YAML file by running the following command:
 
     ``` terminal
     $ oc apply -f tuning-allmulti.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     networkattachmentdefinition.k8s.cni.cncf.io/setallmulti created
     ```
-
-    </div>
 
 3.  Create a pod with a network attachment definition similar to that specified in the following `examplepod.yaml` sample file:
 
@@ -395,11 +353,9 @@ Procedure
     $ oc get pod
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -407,8 +363,6 @@ Procedure
     NAME          READY   STATUS    RESTARTS   AGE
     allmultipod   1/1     Running   0          23s
     ```
-
-    </div>
 
 6.  Log in to the pod by running the following command:
 
@@ -422,11 +376,9 @@ Procedure
     sh-4.4# ip link
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -439,8 +391,6 @@ Procedure
         link/ether ee:9b:66:a4:ec:1d brd ff:ff:ff:ff:ff:ff link-netnsid 0
     ```
 
-    </div>
-
     where:
 
     `eth0@if22`
@@ -448,8 +398,6 @@ Procedure
 
     `net1@if24`
     Specifies the secondary interface configured with the network-attachment-definition that supports the all-multicast mode (ALLMULTI flag).
-
-</div>
 
 # Additional resources
 

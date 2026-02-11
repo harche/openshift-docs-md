@@ -99,14 +99,6 @@ As a cluster administrator, you can manually pre-provision a number of `VolumeSn
 
 When you create a `VolumeSnapshot` object, OpenShift Container Platform creates a volume snapshot.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Logged in to a running OpenShift Container Platform cluster.
 
 - A PVC created using a CSI driver that supports `VolumeSnapshot` objects.
@@ -115,30 +107,25 @@ Prerequisites
 
 - No pods are using the persistent volume claim (PVC) that you want to take a snapshot of.
 
-  > [!WARNING]
-  > Creating a volume snapshot of a PVC that is in use by a pod can cause unwritten data and cached data to be excluded from the snapshot. To ensure that all data is written to the disk, delete the pod that is using the PVC before creating the snapshot.
+  <div class="warning">
 
-</div>
+  Creating a volume snapshot of a PVC that is in use by a pod can cause unwritten data and cached data to be excluded from the snapshot. To ensure that all data is written to the disk, delete the pod that is using the PVC before creating the snapshot.
 
-<div class="formalpara">
+  </div>
 
-<div class="title">
+<div class="formalpara-title">
 
-Procedure
+**Procedure**
 
 </div>
 
 To dynamically create a volume snapshot:
 
-</div>
-
 1.  Create a file with the `VolumeSnapshotClass` object described by the following YAML:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    volumesnapshotclass.yaml
+    **volumesnapshotclass.yaml**
 
     </div>
 
@@ -151,12 +138,13 @@ To dynamically create a volume snapshot:
     deletionPolicy: Delete
     ```
 
-    </div>
-
     - The name of the CSI driver that is used to create snapshots of this `VolumeSnapshotClass` object. The name must be the same as the `Provisioner` field of the storage class that is responsible for the PVC that is being snapshotted.
 
-      > [!NOTE]
-      > Depending on the driver that you used to configure persistent storage, additional parameters might be required. You can also use an existing `VolumeSnapshotClass` object.
+      <div class="note">
+
+      Depending on the driver that you used to configure persistent storage, additional parameters might be required. You can also use an existing `VolumeSnapshotClass` object.
+
+      </div>
 
 2.  Create the object you saved in the previous step by entering the following command:
 
@@ -166,11 +154,9 @@ To dynamically create a volume snapshot:
 
 3.  Create a `VolumeSnapshot` object:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    volumesnapshot-dynamic.yaml
+    **volumesnapshot-dynamic.yaml**
 
     </div>
 
@@ -184,8 +170,6 @@ To dynamically create a volume snapshot:
       source:
         persistentVolumeClaimName: myclaim
     ```
-
-    </div>
 
     - The request for a particular class by the volume snapshot. If the `volumeSnapshotClassName` setting is absent and there is a default volume snapshot class, a snapshot is created with the default volume snapshot class name. But if the field is absent and no default volume snapshot class exists, then no snapshot is created.
 
@@ -201,11 +185,9 @@ To manually provision a snapshot:
 
 1.  Provide a value for the `volumeSnapshotContentName` parameter as the source for the snapshot, in addition to defining volume snapshot class as shown above.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    volumesnapshot-manual.yaml
+    **volumesnapshot-manual.yaml**
 
     </div>
 
@@ -219,8 +201,6 @@ To manually provision a snapshot:
         volumeSnapshotContentName: mycontent
     ```
 
-    </div>
-
     - The `volumeSnapshotContentName` parameter is required for pre-provisioned snapshots.
 
 2.  Create the object you saved in the previous step by entering the following command:
@@ -229,17 +209,13 @@ To manually provision a snapshot:
     $ oc create -f volumesnapshot-manual.yaml
     ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 After the snapshot has been created in the cluster, additional details about the snapshot are available.
-
-</div>
 
 1.  To display details about the volume snapshot that was created, enter the following command:
 
@@ -249,11 +225,9 @@ After the snapshot has been created in the cluster, additional details about the
 
     The following example displays details about the `mysnap` volume snapshot:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    volumesnapshot.yaml
+    **volumesnapshot.yaml**
 
     </div>
 
@@ -272,8 +246,6 @@ After the snapshot has been created in the cluster, additional details about the
       readyToUse: true
       restoreSize: 500Mi
     ```
-
-    </div>
 
     - The pointer to the actual storage content that was created by the controller.
 
@@ -296,21 +268,11 @@ After the snapshot has been created in the cluster, additional details about the
 
 You can configure how OpenShift Container Platform deletes volume snapshots.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Specify the deletion policy that you require in the `VolumeSnapshotClass` object, as shown in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    volumesnapshotclass.yaml
+    **volumesnapshotclass.yaml**
 
     </div>
 
@@ -323,8 +285,6 @@ Procedure
     deletionPolicy: Delete
     ```
 
-    </div>
-
     - When deleting the volume snapshot, if the `Delete` value is set, the underlying snapshot is deleted along with the `VolumeSnapshotContent` object. If the `Retain` value is set, both the underlying snapshot and `VolumeSnapshotContent` object remain.
       If the `Retain` value is set and the `VolumeSnapshot` object is deleted without deleting the corresponding `VolumeSnapshotContent` object, the content remains. The snapshot itself is also retained in the storage back end.
 
@@ -336,19 +296,15 @@ Procedure
 
     - Replace *\<volumesnapshot_name\>* with the name of the volume snapshot you want to delete.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
       ``` terminal
       volumesnapshot.snapshot.storage.k8s.io "mysnapshot" deleted
       ```
-
-      </div>
 
 3.  If the deletion policy is set to `Retain`, delete the volume snapshot content by entering the following command:
 
@@ -360,18 +316,19 @@ Procedure
 
 4.  Optional: If the `VolumeSnapshot` object is not successfully deleted, enter the following command to remove any finalizers for the leftover resource so that the delete operation can continue:
 
-    > [!IMPORTANT]
-    > Only remove the finalizers if you are confident that there are no existing references from either persistent volume claims or volume snapshot contents to the `VolumeSnapshot` object. Even with the `--force` option, the delete operation does not delete snapshot objects until all finalizers are removed.
+    <div class="important">
+
+    Only remove the finalizers if you are confident that there are no existing references from either persistent volume claims or volume snapshot contents to the `VolumeSnapshot` object. Even with the `--force` option, the delete operation does not delete snapshot objects until all finalizers are removed.
+
+    </div>
 
     ``` terminal
     $ oc patch -n $PROJECT volumesnapshot/$NAME --type=merge -p '{"metadata": {"finalizers":null}}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -379,25 +336,13 @@ Procedure
     volumesnapshotclass.snapshot.storage.k8s.io "csi-ocs-rbd-snapclass" deleted
     ```
 
-    </div>
-
     The finalizers are removed and the volume snapshot is deleted.
-
-</div>
 
 # Restoring a volume snapshot
 
 The `VolumeSnapshot` CRD content can be used to restore the existing volume to a previous state.
 
 After your `VolumeSnapshot` CRD is bound and the `readyToUse` value is set to `true`, you can use that resource to provision a new volume that is pre-populated with data from the snapshot.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Logged in to a running OpenShift Container Platform cluster.
 
@@ -407,23 +352,11 @@ Prerequisites
 
 - A volume snapshot has been created and is ready to use.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Specify a `VolumeSnapshot` data source on a PVC as shown in the following:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    pvc-restore.yaml
+    **pvc-restore.yaml**
 
     </div>
 
@@ -445,8 +378,6 @@ Procedure
           storage: 1Gi
     ```
 
-    </div>
-
     - Name of the `VolumeSnapshot` object representing the snapshot to use as source.
 
     - Must be set to the `VolumeSnapshot` value.
@@ -467,8 +398,6 @@ Procedure
 
     A new PVC such as `myclaim-restore` is displayed.
 
-</div>
-
 # Changing the maximum number of snapshots for vSphere
 
 The default maximum number of snapshots per volume in vSphere Container Storage Interface (CSI) is 3. You can change the maximum number up to 32 per volume.
@@ -477,25 +406,7 @@ However, be aware that increasing the snapshot maximum involves a performance tr
 
 For more VMware snapshot performance recommendations, see ***Additional resources***.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the cluster with administrator rights.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Check the current secret by the running the following command:
 
@@ -503,11 +414,9 @@ Procedure
     $ oc -n openshift-cluster-csi-drivers get secret/vsphere-csi-config-secret -o jsonpath='{.data.cloud\.conf}' | base64 -d
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -524,8 +433,6 @@ Procedure
     user                    = "xxxxxxxx@devcluster.openshift.com"
     migration-datastore-url = ds:///vmfs/volumes/vsan:52c842f232751e0d-3253aadeac21ca82/
     ```
-
-    </div>
 
     In this example, the global maximum number of snapshots is not configured, so the default value of 3 is applied.
 
@@ -563,27 +470,15 @@ Procedure
 
       In this example, the vSAN limit is being changed to 7 (`granularMaxSnapshotsPerBlockVolumeInVSAN` set to 7).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that any changes you made are reflected in the config map by running the following command:
 
   ``` terminal
   $ oc -n openshift-cluster-csi-drivers get secret/vsphere-csi-config-secret -o jsonpath='{.data.cloud\.conf}' | base64 -d
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -604,11 +499,7 @@ Verification
   global-max-snapshots-per-block-volume = 10
   ```
 
-  </div>
-
   - `global-max-snapshots-per-block-volume` is now set to 10.
-
-</div>
 
 # Additional resources
 

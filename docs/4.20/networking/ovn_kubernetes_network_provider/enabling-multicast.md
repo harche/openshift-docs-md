@@ -4,10 +4,6 @@ With IP multicast, data is broadcast to many IP addresses simultaneously.
 
 <div class="important">
 
-<div class="title">
-
-</div>
-
 - At this time, multicast is best used for low-bandwidth coordination or service discovery and not a high-bandwidth solution.
 
 - By default, network policies affect all connections in a namespace. However, multicast is unaffected by network policies. If multicast is enabled in the same namespace as your network policies, it is always allowed, even if there is a `deny-all` network policy.
@@ -22,27 +18,11 @@ Multicast traffic between OpenShift Container Platform pods is disabled by defau
 
 You can enable multicast between pods for your project.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - You must log in to the cluster with a user that has the `cluster-admin` role.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Run the following command to enable multicast for a project. Replace `<namespace>` with the namespace for the project you want to enable multicast for.
 
@@ -51,31 +31,28 @@ Procedure
       k8s.ovn.org/multicast-enabled=true
   ```
 
-  > [!TIP]
-  > You can alternatively apply the following YAML to add the annotation:
-  >
-  > ``` yaml
-  > apiVersion: v1
-  > kind: Namespace
-  > metadata:
-  >   name: <namespace>
-  >   annotations:
-  >     k8s.ovn.org/multicast-enabled: "true"
-  > ```
+  <div class="tip">
 
-</div>
+  You can alternatively apply the following YAML to add the annotation:
 
-<div class="formalpara">
+  ``` yaml
+  apiVersion: v1
+  kind: Namespace
+  metadata:
+    name: <namespace>
+    annotations:
+      k8s.ovn.org/multicast-enabled: "true"
+  ```
 
-<div class="title">
+  </div>
 
-Verification
+<div class="formalpara-title">
+
+**Verification**
 
 </div>
 
 To verify that multicast is enabled for a project, complete the following procedure:
-
-</div>
 
 1.  Change your current project to the project that you enabled multicast for. Replace `<project>` with the project name.
 

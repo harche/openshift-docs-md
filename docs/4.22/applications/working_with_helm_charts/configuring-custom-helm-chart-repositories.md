@@ -20,27 +20,9 @@ In the **Developer** perspective of the web console, you can use the **Helm** pa
 
 # Installing a Helm chart on an OpenShift Container Platform cluster
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have a running OpenShift Container Platform cluster and you have logged into it.
 
 - You have installed Helm.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a new project:
 
@@ -54,19 +36,15 @@ Procedure
     $ helm repo add openshift-helm-charts https://charts.openshift.io/
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     "openshift-helm-charts" has been added to your repositories
     ```
-
-    </div>
 
 3.  Update the repository:
 
@@ -80,11 +58,9 @@ Procedure
     $ helm install example-vault openshift-helm-charts/hashicorp-vault
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -98,19 +74,15 @@ Procedure
     Thank you for installing HashiCorp Vault!
     ```
 
-    </div>
-
 5.  Verify that the chart has installed successfully:
 
     ``` terminal
     $ helm list
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -119,37 +91,19 @@ Procedure
     example-vault   vault       1           2022-03-11 12:02:12.296226673 +0530 IST deployed    vault-0.19.0    1.9.2
     ```
 
-    </div>
-
-</div>
-
 # Creating Helm releases using the Developer perspective
 
 You can use either the **Developer** perspective in the web console or the CLI to select and create a release from the Helm charts listed in the **Developer Catalog**. You can create Helm releases by installing Helm charts and see them in the **Developer** perspective of the web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have logged in to the web console and have switched to [the **Developer** perspective](../../web_console/web-console-overview.xml#about-developer-perspective_web-console-overview).
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To create Helm releases from the Helm charts provided in the **Developer Catalog**:
-
-</div>
 
 1.  In the **Developer** perspective, navigate to the **+Add** view and select a project. Then click **Helm Chart** option to see all the Helm Charts in the **Developer Catalog**.
 
@@ -170,8 +124,11 @@ To create Helm releases from the Helm charts provided in the **Developer Catalog
 
     3.  Configure your Helm chart by using the **Form View** or the **YAML View**.
 
-        > [!NOTE]
-        > Where available, you can switch between the **YAML View** and **Form View**. The data is persisted when switching between the views.
+        <div class="note">
+
+        Where available, you can switch between the **YAML View** and **Form View**. The data is persisted when switching between the views.
+
+        </div>
 
     4.  Click **Create** to create a Helm release. The web console displays the new release in the **Topology** view.
 
@@ -188,14 +145,6 @@ You can upgrade, rollback, or delete a Helm release by using the **Actions** but
 You can use Helm by [Accessing the web terminal](../../web_console/web_terminal/odc-using-web-terminal.xml#odc-access-web-terminal_odc-using-web-terminal) in the **Developer** perspective of the web console.
 
 # Creating a custom Helm chart on OpenShift Container Platform
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a new project:
 
@@ -241,11 +190,9 @@ Procedure
     $ helm lint
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -254,8 +201,6 @@ Procedure
 
     1 chart(s) linted, 0 chart(s) failed
     ```
-
-    </div>
 
 6.  Navigate to the previous directory level:
 
@@ -275,11 +220,9 @@ Procedure
     $ helm list
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -288,29 +231,15 @@ Procedure
     nodejs-chart nodejs-ex-k 1 2019-12-05 15:06:51.379134163 -0500 EST deployed nodejs-0.1.0  1.16.0
     ```
 
-    </div>
-
-</div>
-
 # Adding custom Helm chart repositories
 
 As a cluster administrator, you can add custom Helm chart repositories to your cluster and enable access to the Helm charts from these repositories in the **Developer Catalog**.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To add a new Helm Chart Repository, you must add the Helm Chart Repository custom resource (CR) to your cluster.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample Helm Chart Repository CR
+    **Sample Helm Chart Repository CR**
 
     </div>
 
@@ -325,8 +254,6 @@ Procedure
       connectionConfig:
         url: <helm-chart-repository-url>
     ```
-
-    </div>
 
     For example, to add an Azure sample chart repository, run:
 
@@ -352,20 +279,17 @@ Procedure
     <figcaption>Chart repositories filter</figcaption>
     </figure>
 
-    > [!NOTE]
-    > If a cluster administrator removes all of the chart repositories, then you cannot view the Helm option in the **+Add** view, **Developer Catalog**, and left navigation panel.
+    <div class="note">
 
-</div>
+    If a cluster administrator removes all of the chart repositories, then you cannot view the Helm option in the **+Add** view, **Developer Catalog**, and left navigation panel.
+
+    </div>
 
 # Adding namespace-scoped custom Helm chart repositories
 
 The cluster-scoped `HelmChartRepository` custom resource definition (CRD) for Helm repository provides the ability for administrators to add Helm repositories as custom resources. The namespace-scoped `ProjectHelmChartRepository` CRD allows project members with the appropriate role-based access control (RBAC) permissions to create Helm repository resources of their choice but scoped to their namespace. Such project members can see charts from both cluster-scoped and namespace-scoped Helm repository resources.
 
 <div class="note">
-
-<div class="title">
-
-</div>
 
 - Administrators can limit users from creating namespace-scoped Helm repository resources. By limiting users, administrators have the flexibility to control the RBAC through a namespace role instead of a cluster role. This avoids unnecessary permission elevation for the user and prevents access to unauthorized services or applications.
 
@@ -375,21 +299,11 @@ The cluster-scoped `HelmChartRepository` custom resource definition (CRD) for He
 
 As a regular user or project member with the appropriate RBAC permissions, you can add custom namespace-scoped Helm chart repositories to your cluster and enable access to the Helm charts from these repositories in the **Developer Catalog**.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To add a new namespace-scoped Helm Chart Repository, you must add the Helm Chart Repository custom resource (CR) to your namespace.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample Namespace-scoped Helm Chart Repository CR
+    **Sample Namespace-scoped Helm Chart Repository CR**
 
     </div>
 
@@ -412,8 +326,6 @@ Procedure
         url: <helm-chart-repository-url>
     ```
 
-    </div>
-
     For example, to add an Azure sample chart repository scoped to your `my-namespace` namespace, run:
 
     ``` terminal
@@ -431,17 +343,13 @@ Procedure
 
     The output verifies that the namespace-scoped Helm Chart Repository CR is created:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
         projecthelmchartrepository.helm.openshift.io/azure-sample-repo created
-
-    </div>
 
 2.  Navigate to the **Developer Catalog** in the web console to verify that the Helm charts from the chart repository are displayed in your `my-namespace` namespace.
 
@@ -458,39 +366,32 @@ Procedure
     $ oc get projecthelmchartrepositories --namespace my-namespace
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
         NAME                     AGE
         azure-sample-repo        1m
 
+    <div class="note">
+
+    If a cluster administrator or a regular user with appropriate RBAC permissions removes all of the chart repositories in a specific namespace, then you cannot view the Helm option in the **+Add** view, **Developer Catalog**, and left navigation panel for that specific namespace.
+
     </div>
-
-    > [!NOTE]
-    > If a cluster administrator or a regular user with appropriate RBAC permissions removes all of the chart repositories in a specific namespace, then you cannot view the Helm option in the **+Add** view, **Developer Catalog**, and left navigation panel for that specific namespace.
-
-</div>
 
 # Creating credentials and CA certificates to add Helm chart repositories
 
 Some Helm chart repositories need credentials and custom certificate authority (CA) certificates to connect to it. You can use the web console as well as the CLI to add credentials and certificates.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To configure the credentials and certificates, and then add a Helm chart repository using the CLI:
-
-</div>
 
 1.  In the `openshift-config` namespace, create a `ConfigMap` object with a custom CA certificate in PEM encoded format, and store it under the `ca-bundle.crt` key within the config map:
 
@@ -571,14 +472,6 @@ To configure the credentials and certificates, and then add a Helm chart reposit
 
 You can filter Helm charts based on their certification level in the **Developer Catalog**.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  In the **Developer** perspective, navigate to the **+Add** view and select a project.
 
 2.  From the **Developer Catalog** tile, select the **Helm Chart** option to see all the Helm charts in the **Developer Catalog**.
@@ -589,24 +482,17 @@ Procedure
 
     - Use the **Source** filter to filter charts sourced from **Partners**, **Community**, or **Red Hat**. Certified charts are indicated with the (![odc verified icon](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAPCAYAAADtc08vAAAABHNCSVQICAgIfAhkiAAAABl0RVh0U29mdHdhcmUAZ25vbWUtc2NyZWVuc2hvdO8Dvz4AAAAtdEVYdENyZWF0aW9uIFRpbWUARnJpIDI1IEp1biAyMDIxIDA4OjM3OjIxIFBNIElTVHv+COAAAAIiSURBVCiRXZNLaxRBFIW/W10z3RkjTojkYUaIyBAMIRqICL4IqLhRceHKpSK6cCeu8if8BW7c+MCVG3URF4IPslEXSQwIJhpIyEzeTiYz3XVddNc4WFBNNX3PuafOPS3qVAEQAFAFyc7t76rgFEz2LQECwACof2jGoxnatZEJqCfKSpwn8EUKxKSFAK5NiQBWUgWi6TYC1nfz4I0YYlV+ruww0NVBV2gJA8gJCAqqGEnlCGB9h0RheVd58m6WasPyeqbKucEiR4sBE2MlRg8VCJGWWcakOOvbV+rKs+k1JqdWoW6BgJnfm5Brcms34sHlAYb3B7Q4MuXGu/t0epWHr75AA5AEjAVrweR4/OE7j55/pOGN/GcNRgzUYljacuBCcE2wCbDNWK/jxplByOVYbHSyVnM0AcVlM8imUF3f4fP0V6g7ho+UuH3yMJf6Eu5dHWFttQZ/hE/zi3yb+5FNO2ndwYDS293JxdPjEEb8qm5R7u/m5pVTvHw/z9TsEhBy9liZ0ZEygiJtZloFIguDB2KKUY2NTZh8M0epAAvVPdAAojrl/QWK+dR18SYIWHECBq6P91AXuPtilmQ3x8J2DJKHfJM7E0Pcv9BH5FGiWZgN1tPts8K1472sV5apNELezlSYGOqhv1M5f6LIQEeb/dKKD6LOZT+T4BSawJ5TFlZqlA5GFPIBRjPpPtNtS1RV+X8pqEtjK4FJQbEDf/bZB/4C9/DXN2Sq1nsAAAAASUVORK5CYII=)) icon.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The **Source** filter will not be visible when there is only one provider type.
+The **Source** filter will not be visible when there is only one provider type.
+
+</div>
 
 You can now select the required chart and install it.
 
 # Disabling Helm Chart repositories
 
 You can disable Helm Charts from a particular Helm Chart Repository in the catalog by setting the `disabled` property in the `HelmChartRepository` custom resource to `true`.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To disable a Helm Chart repository by using CLI, add the `disabled: true` flag to the custom resource. For example, to remove an Azure sample chart repository, run:
 
@@ -629,11 +515,9 @@ Procedure
 
   3.  Go to the **YAML** tab, add the `disabled: true` flag in the `spec` section, and click `Save`.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example
+      **Example**
 
       </div>
 
@@ -642,8 +526,4 @@ Procedure
               url: <url-of-the-repositoru-to-be-disabled>
             disabled: true
 
-      </div>
-
       The repository is now disabled and will not appear in the catalog.
-
-</div>

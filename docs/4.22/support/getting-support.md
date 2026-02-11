@@ -24,25 +24,7 @@ The [Red Hat Knowledgebase](https://access.redhat.com/knowledgebase) provides ri
 
 In the event of an OpenShift Container Platform issue, you can perform an initial search to determine if a solution already exists within the Red Hat Knowledgebase.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have a Red Hat Customer Portal account.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the [Red Hat Customer Portal](http://access.redhat.com).
 
@@ -62,19 +44,9 @@ Procedure
 
 6.  Optional: Select the **Documentation** content type filter.
 
-</div>
-
 # Submitting a support case
 
 Submit a support case to Red Hat Support to get help with issues you encounter with OpenShift Container Platform.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -83,16 +55,6 @@ Prerequisites
 - You have a Red Hat Customer Portal account.
 
 - You have a Red Hat Standard or Premium subscription.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to [the **Customer Support** page](https://access.redhat.com/support/cases/#/case/list) of the Red Hat Customer Portal.
 
@@ -153,8 +115,6 @@ Procedure
 11. Input relevant case management details and click **Continue**.
 
 12. Preview the case details and click **Submit**.
-
-</div>
 
 # Additional resources
 

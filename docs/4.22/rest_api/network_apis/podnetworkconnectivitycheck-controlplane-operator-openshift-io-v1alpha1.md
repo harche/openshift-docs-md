@@ -11,13 +11,13 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | spec defines the source and target of the connectivity check |
-| `status` | `object` | status contains the observed status of the connectivity check |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | spec defines the source and target of the connectivity check                                                                                                                                                                                                                                         |
+| `status`     | `object`                                                                             | status contains the observed status of the connectivity check                                                                                                                                                                                                                                        |
 
 ## .spec
 
@@ -32,11 +32,11 @@ Required
 
 - `targetEndpoint`
 
-| Property | Type | Description |
-|----|----|----|
-| `sourcePod` | `string` | sourcePod names the pod from which the condition will be checked |
-| `targetEndpoint` | `string` | EndpointAddress to check. A TCP address of the form host:port. Note that if host is a DNS name, then the check would fail if the DNS name cannot be resolved. Specify an IP address for host to bypass DNS name lookup. |
-| `tlsClientCert` | `object` | TLSClientCert, if specified, references a kubernetes.io/tls type secret with 'tls.crt' and 'tls.key' entries containing an optional TLS client certificate and key to be used when checking endpoints that require a client certificate in order to gracefully preform the scan without causing excessive logging in the endpoint process. The secret must exist in the same namespace as this resource. |
+| Property         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                              |
+|------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `sourcePod`      | `string` | sourcePod names the pod from which the condition will be checked                                                                                                                                                                                                                                                                                                                                         |
+| `targetEndpoint` | `string` | EndpointAddress to check. A TCP address of the form host:port. Note that if host is a DNS name, then the check would fail if the DNS name cannot be resolved. Specify an IP address for host to bypass DNS name lookup.                                                                                                                                                                                  |
+| `tlsClientCert`  | `object` | TLSClientCert, if specified, references a kubernetes.io/tls type secret with 'tls.crt' and 'tls.key' entries containing an optional TLS client certificate and key to be used when checking endpoints that require a client certificate in order to gracefully preform the scan without causing excessive logging in the endpoint process. The secret must exist in the same namespace as this resource. |
 
 ## .spec.tlsClientCert
 
@@ -61,16 +61,16 @@ status contains the observed status of the connectivity check
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `conditions` | `array` | conditions summarize the status of the check |
+| Property       | Type     | Description                                                                                         |
+|----------------|----------|-----------------------------------------------------------------------------------------------------|
+| `conditions`   | `array`  | conditions summarize the status of the check                                                        |
 | `conditions[]` | `object` | PodNetworkConnectivityCheckCondition represents the overall status of the pod network connectivity. |
-| `failures` | `array` | failures contains logs of unsuccessful check actions |
-| `failures[]` | `object` | LogEntry records events |
-| `outages` | `array` | outages contains logs of time periods of outages |
-| `outages[]` | `object` | OutageEntry records time period of an outage |
-| `successes` | `array` | successes contains logs successful check actions |
-| `successes[]` | `object` | LogEntry records events |
+| `failures`     | `array`  | failures contains logs of unsuccessful check actions                                                |
+| `failures[]`   | `object` | LogEntry records events                                                                             |
+| `outages`      | `array`  | outages contains logs of time periods of outages                                                    |
+| `outages[]`    | `object` | OutageEntry records time period of an outage                                                        |
+| `successes`    | `array`  | successes contains logs successful check actions                                                    |
+| `successes[]`  | `object` | LogEntry records events                                                                             |
 
 ## .status.conditions
 
@@ -93,13 +93,13 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastTransitionTime` | \`\` | Last time the condition transitioned from one status to another. |
-| `message` | `string` | message indicating details about last transition in a human readable format. |
-| `reason` | `string` | reason for the condition’s last status transition in a machine readable format. |
-| `status` | `string` | status of the condition |
-| `type` | `string` | type of the condition |
+| Property             | Type     | Description                                                                     |
+|----------------------|----------|---------------------------------------------------------------------------------|
+| `lastTransitionTime` | \`\`     | Last time the condition transitioned from one status to another.                |
+| `message`            | `string` | message indicating details about last transition in a human readable format.    |
+| `reason`             | `string` | reason for the condition’s last status transition in a machine readable format. |
+| `status`             | `string` | status of the condition                                                         |
+| `type`               | `string` | type of the condition                                                           |
 
 ## .status.failures
 
@@ -120,13 +120,13 @@ Type
 Required
 - `success`
 
-| Property | Type | Description |
-|----|----|----|
-| `latency` | \`\` | latency records how long the action mentioned in the entry took. |
-| `message` | `string` | message explaining status in a human readable format. |
-| `reason` | `string` | reason for status in a machine readable format. |
+| Property  | Type      | Description                                                        |
+|-----------|-----------|--------------------------------------------------------------------|
+| `latency` | \`\`      | latency records how long the action mentioned in the entry took.   |
+| `message` | `string`  | message explaining status in a human readable format.              |
+| `reason`  | `string`  | reason for status in a machine readable format.                    |
 | `success` | `boolean` | success indicates if the log entry indicates a success or failure. |
-| `time` | \`\` | Start time of check action. |
+| `time`    | \`\`      | Start time of check action.                                        |
 
 ## .status.outages
 
@@ -144,15 +144,15 @@ OutageEntry records time period of an outage
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `end` | \`\` | end of outage detected |
-| `endLogs` | `array` | endLogs contains log entries related to the end of this outage. Should contain the success entry that resolved the outage and possibly a few of the failure log entries that preceded it. |
-| `endLogs[]` | `object` | LogEntry records events |
-| `message` | `string` | message summarizes outage details in a human readable format. |
-| `start` | \`\` | start of outage detected |
-| `startLogs` | `array` | startLogs contains log entries related to the start of this outage. Should contain the original failure, any entries where the failure mode changed. |
-| `startLogs[]` | `object` | LogEntry records events |
+| Property      | Type     | Description                                                                                                                                                                               |
+|---------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `end`         | \`\`     | end of outage detected                                                                                                                                                                    |
+| `endLogs`     | `array`  | endLogs contains log entries related to the end of this outage. Should contain the success entry that resolved the outage and possibly a few of the failure log entries that preceded it. |
+| `endLogs[]`   | `object` | LogEntry records events                                                                                                                                                                   |
+| `message`     | `string` | message summarizes outage details in a human readable format.                                                                                                                             |
+| `start`       | \`\`     | start of outage detected                                                                                                                                                                  |
+| `startLogs`   | `array`  | startLogs contains log entries related to the start of this outage. Should contain the original failure, any entries where the failure mode changed.                                      |
+| `startLogs[]` | `object` | LogEntry records events                                                                                                                                                                   |
 
 ## .status.outages\[\].endLogs
 
@@ -173,13 +173,13 @@ Type
 Required
 - `success`
 
-| Property | Type | Description |
-|----|----|----|
-| `latency` | \`\` | latency records how long the action mentioned in the entry took. |
-| `message` | `string` | message explaining status in a human readable format. |
-| `reason` | `string` | reason for status in a machine readable format. |
+| Property  | Type      | Description                                                        |
+|-----------|-----------|--------------------------------------------------------------------|
+| `latency` | \`\`      | latency records how long the action mentioned in the entry took.   |
+| `message` | `string`  | message explaining status in a human readable format.              |
+| `reason`  | `string`  | reason for status in a machine readable format.                    |
 | `success` | `boolean` | success indicates if the log entry indicates a success or failure. |
-| `time` | \`\` | Start time of check action. |
+| `time`    | \`\`      | Start time of check action.                                        |
 
 ## .status.outages\[\].startLogs
 
@@ -200,13 +200,13 @@ Type
 Required
 - `success`
 
-| Property | Type | Description |
-|----|----|----|
-| `latency` | \`\` | latency records how long the action mentioned in the entry took. |
-| `message` | `string` | message explaining status in a human readable format. |
-| `reason` | `string` | reason for status in a machine readable format. |
+| Property  | Type      | Description                                                        |
+|-----------|-----------|--------------------------------------------------------------------|
+| `latency` | \`\`      | latency records how long the action mentioned in the entry took.   |
+| `message` | `string`  | message explaining status in a human readable format.              |
+| `reason`  | `string`  | reason for status in a machine readable format.                    |
 | `success` | `boolean` | success indicates if the log entry indicates a success or failure. |
-| `time` | \`\` | Start time of check action. |
+| `time`    | \`\`      | Start time of check action.                                        |
 
 ## .status.successes
 
@@ -227,13 +227,13 @@ Type
 Required
 - `success`
 
-| Property | Type | Description |
-|----|----|----|
-| `latency` | \`\` | latency records how long the action mentioned in the entry took. |
-| `message` | `string` | message explaining status in a human readable format. |
-| `reason` | `string` | reason for status in a machine readable format. |
+| Property  | Type      | Description                                                        |
+|-----------|-----------|--------------------------------------------------------------------|
+| `latency` | \`\`      | latency records how long the action mentioned in the entry took.   |
+| `message` | `string`  | message explaining status in a human readable format.              |
+| `reason`  | `string`  | reason for status in a machine readable format.                    |
 | `success` | `boolean` | success indicates if the log entry indicates a success or failure. |
-| `time` | \`\` | Start time of check action. |
+| `time`    | \`\`      | Start time of check action.                                        |
 
 # API endpoints
 
@@ -277,10 +277,10 @@ HTTP method
 Description
 list objects of kind PodNetworkConnectivityCheck
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PodNetworkConnectivityCheckList`](../objects/index.xml#io-openshift-operator-controlplane-v1alpha1-PodNetworkConnectivityCheckList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                 |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PodNetworkConnectivityCheckList`](../objects/index.xml#io-openshift-operator-controlplane-v1alpha1-PodNetworkConnectivityCheckList) schema |
+| 401 - Unauthorized | Empty                                                                                                                                        |
 
 HTTP responses
 
@@ -292,10 +292,10 @@ HTTP method
 Description
 delete collection of PodNetworkConnectivityCheck
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -305,10 +305,10 @@ HTTP method
 Description
 list objects of kind PodNetworkConnectivityCheck
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PodNetworkConnectivityCheckList`](../objects/index.xml#io-openshift-operator-controlplane-v1alpha1-PodNetworkConnectivityCheckList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                 |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PodNetworkConnectivityCheckList`](../objects/index.xml#io-openshift-operator-controlplane-v1alpha1-PodNetworkConnectivityCheckList) schema |
+| 401 - Unauthorized | Empty                                                                                                                                        |
 
 HTTP responses
 
@@ -318,25 +318,25 @@ HTTP method
 Description
 create a PodNetworkConnectivityCheck
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |  |
+| Parameter | Type                                                                                                                                                                                                        | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
-| 201 - Created | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
-| 202 - Accepted | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                                                |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
+| 201 - Created      | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
+| 202 - Accepted     | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                                       |
 
 HTTP responses
 
@@ -354,17 +354,17 @@ HTTP method
 Description
 delete a PodNetworkConnectivityCheck
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -374,10 +374,10 @@ HTTP method
 Description
 read the specified PodNetworkConnectivityCheck
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                                                |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                                       |
 
 HTTP responses
 
@@ -387,17 +387,17 @@ HTTP method
 Description
 partially update the specified PodNetworkConnectivityCheck
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                                                |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                                       |
 
 HTTP responses
 
@@ -407,24 +407,24 @@ HTTP method
 Description
 replace the specified PodNetworkConnectivityCheck
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |  |
+| Parameter | Type                                                                                                                                                                                                        | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
-| 201 - Created | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                                                |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
+| 201 - Created      | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                                       |
 
 HTTP responses
 
@@ -442,10 +442,10 @@ HTTP method
 Description
 read status of the specified PodNetworkConnectivityCheck
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                                                |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                                       |
 
 HTTP responses
 
@@ -455,17 +455,17 @@ HTTP method
 Description
 partially update status of the specified PodNetworkConnectivityCheck
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                                                |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                                       |
 
 HTTP responses
 
@@ -475,23 +475,23 @@ HTTP method
 Description
 replace status of the specified PodNetworkConnectivityCheck
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |  |
+| Parameter | Type                                                                                                                                                                                                        | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
-| 201 - Created | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                                                |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
+| 201 - Created      | [`PodNetworkConnectivityCheck`](../network_apis/podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1.xml#podnetworkconnectivitycheck-controlplane-operator-openshift-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                                       |
 
 HTTP responses

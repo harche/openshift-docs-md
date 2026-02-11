@@ -4,27 +4,9 @@ Following is a use case for using OADP to restore a backup to a different namesp
 
 Restore a backup of an application by using OADP to a new target namespace, `test-restore-application`. To restore a backup, you create a restore custom resource (CR) as shown in the following example. In the restore CR, the source namespace refers to the application namespace that you included in the backup. You then verify the restore by changing your project to the new restored namespace and verifying the resources.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You installed the OADP Operator.
 
 - You have the backup of an application to be restored.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a restore CR as shown in the following example:
 
@@ -58,15 +40,7 @@ Procedure
     $ oc apply -f <restore_cr_filename>
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the restore is in the `Completed` phase by running the following command:
 
@@ -86,11 +60,9 @@ Verification
     $ oc get pvc,svc,deployment,secret,configmap
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -115,7 +87,3 @@ Verification
     configmap/kube-root-ca.crt           1      2m57s
     configmap/openshift-service-ca.crt   1      2m57s
     ```
-
-    </div>
-
-</div>

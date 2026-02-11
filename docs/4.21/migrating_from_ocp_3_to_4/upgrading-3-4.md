@@ -2,21 +2,19 @@ You can upgrade the Migration Toolkit for Containers (MTC) on OpenShift Containe
 
 You can upgrade MTC on OpenShift Container Platform 3 by reinstalling the legacy Migration Toolkit for Containers Operator.
 
-> [!IMPORTANT]
-> If you are upgrading from MTC version 1.3, you must perform an additional procedure to update the `MigPlan` custom resource (CR).
+<div class="important">
+
+If you are upgrading from MTC version 1.3, you must perform an additional procedure to update the `MigPlan` custom resource (CR).
+
+</div>
 
 # Upgrading the Migration Toolkit for Containers on OpenShift Container Platform 4.17
 
 You can upgrade the Migration Toolkit for Containers (MTC) on OpenShift Container Platform 4.17 by using the Operator Lifecycle Manager.
 
-> [!IMPORTANT]
-> When upgrading the MTC by using the Operator Lifecycle Manager, you must use a supported migration path.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Migration paths
+When upgrading the MTC by using the Operator Lifecycle Manager, you must use a supported migration path.
 
 </div>
 
@@ -38,27 +36,9 @@ Migration paths
 
   - Migration from source MTC 1.8.x to destination MTC 1.8.x is supported
 
-</div>
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - You must be logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -76,35 +56,15 @@ Procedure
 
 7.  Click **Workloads** → **Pods** to verify that the MTC pods are running.
 
-</div>
-
 # Upgrading the Migration Toolkit for Containers on OpenShift Container Platform 3
 
 You can upgrade Migration Toolkit for Containers (MTC) on OpenShift Container Platform 3 by manually installing the legacy Migration Toolkit for Containers Operator.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You must be logged in as a user with `cluster-admin` privileges.
 
 - You must have access to `registry.redhat.io`.
 
 - You must have `podman` installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to `registry.redhat.io` with your Red Hat Customer Portal credentials by entering the following command:
 
@@ -176,8 +136,6 @@ Procedure
     $ oc get pods -n openshift-migration
     ```
 
-</div>
-
 # Upgrading MTC 1.3 to 1.8
 
 If you are upgrading Migration Toolkit for Containers (MTC) version 1.3.x to 1.8, you must update the `MigPlan` custom resource (CR) manifest on the cluster on which the `MigrationController` pod is running.
@@ -186,35 +144,13 @@ Because the `indirectImageMigration` and `indirectVolumeMigration` parameters do
 
 <div class="important">
 
-<div class="title">
-
-</div>
-
 - Migrating from OpenShift Container Platform 3 to OpenShift Container Platform 4 requires a legacy MTC Operator and MTC 1.7.x.
 
 - Upgrading MTC 1.7.x to 1.8.x requires manually updating the OADP channel from `stable-1.0` to `stable-1.2` in order to successfully complete the upgrade from 1.7.x to 1.8.x.
 
 </div>
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must be logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the cluster on which the `MigrationController` pod is running.
 
@@ -244,5 +180,3 @@ Procedure
     ``` terminal
     $ oc get migplan <migplan> -o yaml -n openshift-migration
     ```
-
-</div>

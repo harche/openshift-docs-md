@@ -4,27 +4,11 @@ Troubleshoot the Security Profiles Operator to diagnose a problem or provide inf
 
 Corrupted `seccomp` profiles can disrupt your workloads. Ensure that the user cannot abuse the system by not allowing other workloads to map any part of the path `/var/lib/kubelet/seccomp/operator`.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Confirm that the profile is reconciled by running the following command:
 
     ``` terminal
     $ oc -n openshift-security-profiles logs openshift-security-profiles-<id>
     ```
-
-    <div class="example">
-
-    <div class="title">
-
-    Example output
-
-    </div>
 
     ``` terminal
     I1019 19:34:14.942464       1 main.go:90] setup "msg"="starting openshift-security-profiles"  "buildDate"="2020-10-19T19:31:24Z" "compiler"="gc" "gitCommit"="a3ef0e1ea6405092268c18f240b62015c247dd9d" "gitTreeState"="dirty" "goVersion"="go1.15.1" "platform"="linux/amd64" "version"="0.2.0-dev"
@@ -38,8 +22,6 @@ Procedure
     I1019 19:34:15.453618       1 profile.go:148] profile "msg"="Reconciled profile from SeccompProfile" "namespace"="openshift-security-profiles" "profile"="openshift-security-profiles" "name"="openshift-security-profiles" "resource version"="729"
     ```
 
-    </div>
-
 2.  Confirm that the `seccomp` profiles are saved into the correct path by running the following command:
 
     ``` terminal
@@ -47,11 +29,9 @@ Procedure
         -- ls /var/lib/kubelet/seccomp/operator/my-namespace/my-workload
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -59,7 +39,3 @@ Procedure
     profile-block.json
     profile-complain.json
     ```
-
-    </div>
-
-</div>

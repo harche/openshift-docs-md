@@ -18,8 +18,11 @@ Operators that run in the control plane need to access external services through
 
 In a hosted cluster, you must send traffic that originates from the Control Plane Operator, Ingress Operator, OAuth server, and OpenShift API server pods through the data plane to the configured proxy and then to its final destination.
 
-> [!NOTE]
-> Some operations are not possible when a hosted cluster is reduced to zero compute nodes; for example, when you import OpenShift image streams from a registry that requires proxy access.
+<div class="note">
+
+Some operations are not possible when a hosted cluster is reduced to zero compute nodes; for example, when you import OpenShift image streams from a registry that requires proxy access.
+
+</div>
 
 # Compute nodes that need to access an ignition endpoint
 

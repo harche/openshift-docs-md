@@ -18,18 +18,13 @@ The following certificates must be renewed by a cluster administrator:
 
 Proxy certificates allow users to specify one or more custom certificate authority (CA) certificates that are used by platform components when making egress connections.
 
-> [!NOTE]
-> Certain CAs set expiration dates and you might need to renew these certificates every two years.
+<div class="note">
 
-If you did not originally set the requested certificates, you can determine the certificate expiration in several ways. Most Cloud-native Network Functions (CNFs) use certificates that are not specifically designed for browser-based connectivity. Therefore, you need to pull the certificate from the `ConfigMap` object of your deployment.
-
-<div>
-
-<div class="title">
-
-Procedure
+Certain CAs set expiration dates and you might need to renew these certificates every two years.
 
 </div>
+
+If you did not originally set the requested certificates, you can determine the certificate expiration in several ways. Most Cloud-native Network Functions (CNFs) use certificates that are not specifically designed for browser-based connectivity. Therefore, you need to pull the certificate from the `ConfigMap` object of your deployment.
 
 - To get the expiration date, run the following command against the certificate file:
 
@@ -37,21 +32,9 @@ Procedure
   $ openssl x509 -enddate -noout -in <cert_file_name>.pem
   ```
 
-</div>
-
 For more information about determining how and when to renew your proxy certificates, see "Proxy certificates" in *Security and compliance*.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Proxy certificates](../../../security/certificate_types_descriptions/proxy-certificates.xml#cert-types-proxy-certificates)
-
-</div>
 
 ## User-provisioned API server certificates
 
@@ -59,17 +42,7 @@ The API server is accessible by clients that are external to the cluster at `api
 
 For more information, see "User-provided certificates for the API server" in *Security and compliance*
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [User-provisioned certificates for the API server](../../../security/certificate_types_descriptions/user-provided-certificates-for-api-server.xml#cert-types-user-provided-certificates-for-the-api-server)
-
-</div>
 
 # Certificates managed by the cluster
 
@@ -93,13 +66,7 @@ You only need to check cluster-managed certificates if you detect an issue in th
 
 - Ingress certificates
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Service CA certificates](../../../security/certificate_types_descriptions/service-ca-certificates.xml#cert-types-service-ca-certificates_cert-types-service-ca-certificates)
 
@@ -119,8 +86,6 @@ Additional resources
 
 - [Ingress certificates](../../../security/certificate_types_descriptions/ingress-certificates.xml#cert-types-ingress-certificates_cert-types-ingress-certificates)
 
-</div>
-
 ## Certificates managed by etcd
 
 The etcd certificates are used for encrypted communication between etcd member peers as well as encrypted client traffic. The certificates are renewed automatically within the cluster provided that communication between all nodes and all services is current. Therefore, if your cluster might lose communication between components during a specific period of time, which is close to the end of the etcd certificate lifetime, it is recommended to renew the certificate in advance. For example, communication can be lost during an upgrade due to nodes rebooting at different times.
@@ -135,17 +100,7 @@ The etcd certificates are used for encrypted communication between etcd member p
 
 For more information about updating etcd certificates, see [Checking etcd certificate expiry in OpenShift 4](https://access.redhat.com/solutions/7000968). For more information about etcd certificates, see "etcd certificates" in *Security and compliance*.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [etcd certificates](../../../security/certificate_types_descriptions/etcd-certificates.xml#cert-types-etcd-certificates_cert-types-etcd-certificates)
-
-</div>
 
 ## Node certificates
 
@@ -155,17 +110,7 @@ After the cluster is installed, the cluster automatically renews the node certif
 
 For more information, see "Node certificates" in *Security and compliance*.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Node certificates](../../../security/certificate_types_descriptions/node-certificates.xml#cert-types-node-certificates_cert-types-node-certificates)
-
-</div>
 
 ## Service CA certificates
 
@@ -173,14 +118,4 @@ The `service-ca` is an Operator that creates a self-signed certificate authority
 
 For more information, see "Service CA certificates" in *Security and compliance*.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Service CA certificates](../../../security/certificate_types_descriptions/service-ca-certificates.xml#cert-types-service-ca-certificates_cert-types-service-ca-certificates)
-
-</div>

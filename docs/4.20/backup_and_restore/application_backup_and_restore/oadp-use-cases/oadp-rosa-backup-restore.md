@@ -6,14 +6,6 @@ The following example `hello-world` application has no persistent volumes (PVs) 
 
 Either Data Protection Application (DPA) configuration will work.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a workload to back up by running the following commands:
 
     ``` terminal
@@ -148,22 +140,15 @@ Procedure
     Hello OpenShift!
     ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> For troubleshooting tips, see the [troubleshooting documentation](https://access.redhat.com/articles/5456281).
+For troubleshooting tips, see the [troubleshooting documentation](https://access.redhat.com/articles/5456281).
+
+</div>
 
 # Cleaning up a cluster after a backup with OADP and ROSA STS
 
 If you need to uninstall the OpenShift API for Data Protection (OADP) Operator together with the backups and the S3 bucket from this example, follow these instructions.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Delete the workload by running the following command:
 
@@ -183,12 +168,15 @@ Procedure
     $ oc -n openshift-adp delete cloudstorage ${CLUSTER_NAME}-oadp
     ```
 
-    > [!WARNING]
-    > If this command hangs, you might need to delete the finalizer by running the following command:
-    >
-    > ``` terminal
-    > $ oc -n openshift-adp patch cloudstorage ${CLUSTER_NAME}-oadp -p '{"metadata":{"finalizers":null}}' --type=merge
-    > ```
+    <div class="warning">
+
+    If this command hangs, you might need to delete the finalizer by running the following command:
+
+    ``` terminal
+    $ oc -n openshift-adp patch cloudstorage ${CLUSTER_NAME}-oadp -p '{"metadata":{"finalizers":null}}' --type=merge
+    ```
+
+    </div>
 
 4.  If the Operator is no longer required, remove it by running the following command:
 
@@ -241,5 +229,3 @@ Procedure
     ``` terminal
     $ aws iam delete-role --role-name "${ROLE_NAME}"
     ```
-
-</div>

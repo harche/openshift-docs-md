@@ -6,25 +6,15 @@ However, you must manually approve the pending `node-bootstrapper` certificate s
 
 Use the following steps to approve the pending CSRs:
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Get the list of current CSRs:
 
     ``` terminal
     $ oc get csr
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -34,8 +24,6 @@ Procedure
         csr-4hl85   13m    kubernetes.io/kube-apiserver-client-kubelet   system:serviceaccount:openshift-machine-config-operator:node-bootstrapper   Pending
         csr-zhhhp   3m8s   kubernetes.io/kube-apiserver-client-kubelet   system:serviceaccount:openshift-machine-config-operator:node-bootstrapper   Pending
         ...
-
-    </div>
 
     - A pending kubelet service CSR (for user-provisioned installations).
 
@@ -60,5 +48,3 @@ Procedure
     ``` terminal
     $ oc adm certificate approve <csr_name>
     ```
-
-</div>

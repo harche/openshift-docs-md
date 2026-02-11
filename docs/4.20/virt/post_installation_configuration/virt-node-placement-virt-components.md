@@ -1,7 +1,10 @@
 The default scheduling for virtual machines (VMs) on bare-metal nodes is appropriate. Optionally, you can specify the nodes where you want to deploy OpenShift Virtualization Operators, workloads, and controllers by configuring node placement rules.
 
-> [!NOTE]
-> You can configure node placement rules for some components after installing OpenShift Virtualization, but virtual machines cannot be present if you want to configure node placement rules for workloads.
+<div class="note">
+
+You can configure node placement rules for some components after installing OpenShift Virtualization, but virtual machines cannot be present if you want to configure node placement rules for workloads.
+
+</div>
 
 # About node placement rules for OpenShift Virtualization components
 
@@ -22,27 +25,9 @@ Allows pods to be scheduled on nodes that have matching taints. If a taint is ap
 
 You can apply node placement rules by editing a `Subscription`, `HyperConverged`, or `HostPathProvisioner` object using the command line.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You are logged in with cluster administrator permissions.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the object in your default editor by running the following command:
 
@@ -51,8 +36,6 @@ Procedure
     ```
 
 2.  Save the file to apply the changes.
-
-</div>
 
 # Node placement rule examples
 
@@ -209,8 +192,11 @@ Nodes reserved for OpenShift Virtualization components are labeled with the `key
 
 You can edit the `HostPathProvisioner` object directly or by using the web console.
 
-> [!WARNING]
-> You must schedule the hostpath provisioner (HPP) and the OpenShift Virtualization components on the same nodes. Otherwise, virtualization pods that use the hostpath provisioner cannot run. You cannot run virtual machines.
+<div class="warning">
+
+You must schedule the hostpath provisioner (HPP) and the OpenShift Virtualization components on the same nodes. Otherwise, virtualization pods that use the hostpath provisioner cannot run. You cannot run virtual machines.
+
+</div>
 
 After you deploy a virtual machine (VM) with the HPP storage class, you can remove the hostpath provisioner pod from the same node by using the node selector. However, you must first revert that change, at least for that specific node, and wait for the pod to run before trying to delete the VM.
 

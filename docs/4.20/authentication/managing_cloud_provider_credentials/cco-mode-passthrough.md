@@ -2,8 +2,11 @@ Passthrough mode is supported for Amazon Web Services (AWS), Microsoft Azure, Go
 
 In passthrough mode, the Cloud Credential Operator (CCO) passes the provided cloud credential to the components that request cloud credentials. The credential must have permissions to perform the installation and complete the operations that are required by components in the cluster, but does not need to be able to create new credentials. The CCO does not attempt to create additional limited-scoped credentials in passthrough mode.
 
-> [!NOTE]
-> [Manual mode](../../authentication/managing_cloud_provider_credentials/cco-mode-manual.xml#cco-mode-manual) is the only supported CCO configuration for Microsoft Azure Stack Hub.
+<div class="note">
+
+[Manual mode](../../authentication/managing_cloud_provider_credentials/cco-mode-manual.xml#cco-mode-manual) is the only supported CCO configuration for Microsoft Azure Stack Hub.
+
+</div>
 
 # Passthrough mode permissions requirements
 
@@ -54,11 +57,9 @@ Each cloud provider uses a credentials root secret in the `kube-system` namespac
 
 The format for the secret varies by cloud, and is also used for each `CredentialsRequest` secret.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Amazon Web Services (AWS) secret format
+**Amazon Web Services (AWS) secret format**
 
 </div>
 
@@ -73,13 +74,9 @@ stringData:
   aws_secret_access_key: <base64-encoded_secret_access_key>
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Microsoft Azure secret format
+**Microsoft Azure secret format**
 
 </div>
 
@@ -99,27 +96,21 @@ stringData:
   azure_region: <base64-encoded_region>
 ```
 
-</div>
-
 On Microsoft Azure, the credentials secret format includes two properties that must contain the cluster’s infrastructure ID, generated randomly for each cluster installation. This value can be found after running create manifests:
 
 ``` terminal
 $ cat .openshift_install_state.json | jq '."*installconfig.ClusterID".InfraID' -r
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
 ``` terminal
 mycluster-2mpcn
 ```
-
-</div>
 
 This value would be used in the secret data as follows:
 
@@ -128,11 +119,9 @@ azure_resource_prefix: mycluster-2mpcn
 azure_resourcegroup: mycluster-2mpcn-rg
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Google Cloud secret format
+**Google Cloud secret format**
 
 </div>
 
@@ -146,13 +135,9 @@ stringData:
   service_account.json: <base64-encoded_service_account>
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Red Hat OpenStack Platform (RHOSP) secret format
+**Red Hat OpenStack Platform (RHOSP) secret format**
 
 </div>
 
@@ -167,13 +152,9 @@ data:
   clouds.conf: <base64-encoded_cloud_creds_init>
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-VMware vSphere secret format
+**VMware vSphere secret format**
 
 </div>
 
@@ -188,8 +169,6 @@ data:
  vsphere.openshift.example.com.password: <base64-encoded_password>
 ```
 
-</div>
-
 # Passthrough mode credential maintenance
 
 If `CredentialsRequest` CRs change over time as the cluster is upgraded, you must manually update the passthrough mode credential to meet the requirements. To avoid credentials issues during an upgrade, check the `CredentialsRequest` CRs in the release image for the new version of OpenShift Container Platform before upgrading. To locate the `CredentialsRequest` CRs that are required for your cloud provider, see *Manually creating long-term credentials* for [AWS](../../installing/installing_aws/ipi/installing-aws-customizations.xml#manually-create-iam_installing-aws-customizations), [Azure](../../installing/installing_azure/ipi/installing-azure-customizations.xml#manually-create-iam_installing-azure-customizations), or [Google Cloud](../../installing/installing_gcp/installing-gcp-customizations.xml#manually-create-iam_installing-gcp-customizations).
@@ -200,14 +179,6 @@ If your cloud provider credentials are changed for any reason, you must manually
 
 The process for rotating cloud credentials depends on the mode that the CCO is configured to use. After you rotate credentials for a cluster that is using mint mode, you must manually remove the component credentials that were created by the removed credential.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Your cluster is installed on a platform that supports rotating cloud credentials manually with the CCO mode that you are using:
 
   - For passthrough mode, Amazon Web Services (AWS), Microsoft Azure, Google Cloud, Red Hat OpenStack Platform (RHOSP), and VMware vSphere are supported.
@@ -215,16 +186,6 @@ Prerequisites
 - You have changed the credentials that are used to interface with your cloud provider.
 
 - The new credentials have sufficient permissions for the mode CCO is configured to use in your cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the **Administrator** perspective of the web console, navigate to **Workloads** → **Secrets**.
 
@@ -246,8 +207,11 @@ Procedure
 
 6.  If you are updating the credentials for a vSphere cluster that does not have the vSphere CSI Driver Operator enabled, you must force a rollout of the Kubernetes controller manager to apply the updated credentials.
 
-    > [!NOTE]
-    > If the vSphere CSI Driver Operator is enabled, this step is not required.
+    <div class="note">
+
+    If the vSphere CSI Driver Operator is enabled, this step is not required.
+
+    </div>
 
     To apply the updated vSphere credentials, log in to the OpenShift Container Platform CLI as a user with the `cluster-admin` role and run the following command:
 
@@ -263,35 +227,19 @@ Procedure
     $ oc get co kube-controller-manager
     ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 To verify that the credentials have changed:
 
-</div>
-
 1.  In the **Administrator** perspective of the web console, navigate to **Workloads** → **Secrets**.
 
 2.  Verify that the contents of the **Value** field or fields have changed.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [vSphere CSI Driver Operator](../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml)
-
-</div>
 
 # Reducing permissions after installation
 

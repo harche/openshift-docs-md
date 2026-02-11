@@ -4,14 +4,6 @@ Create your OADP resources, extra manifests, and custom catalog sources wrapped 
 
 Prepare your OADP resources to restore your application after an upgrade.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have provisioned one or more managed clusters with GitOps ZTP.
 
 - You have logged in as a user with `cluster-admin` privileges.
@@ -28,16 +20,6 @@ Prerequisites
 
 - The `openshift-adp` namespace for the OADP `ConfigMap` object must exist on all managed clusters and the hub for the OADP `ConfigMap` to be generated and copied to the clusters.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Ensure that your Git repository that you use with the ArgoCD policies application contains the following directory structure:
 
     ``` terminal
@@ -53,11 +35,9 @@ Procedure
 
     The `source-crs/ibu/PlatformBackupRestoreWithIBGU.yaml` file is provided in the ZTP container image.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    PlatformBackupRestoreWithIBGU.yaml
+    **PlatformBackupRestoreWithIBGU.yaml**
 
     </div>
 
@@ -99,20 +79,19 @@ Procedure
         acm-klusterlet
     ```
 
-    </div>
-
     - If your `multiclusterHub` CR does not have `.spec.imagePullSecret` defined and the secret does not exist on the `open-cluster-management-agent` namespace in your hub cluster, remove `v1/secrets/open-cluster-management-agent/open-cluster-management-image-pull-credentials`.
 
-    > [!NOTE]
-    > If you perform the image-based upgrade directly on managed clusters, use the `PlatformBackupRestore.yaml` file.
+    <div class="note">
+
+    If you perform the image-based upgrade directly on managed clusters, use the `PlatformBackupRestore.yaml` file.
+
+    </div>
 
     If you use LVM Storage to create persistent volumes, you can use the `source-crs/ibu/PlatformBackupRestoreLvms.yaml` provided in the ZTP container image to back up your LVM Storage resources.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    PlatformBackupRestoreLvms.yaml
+    **PlatformBackupRestoreLvms.yaml**
 
     </div>
 
@@ -146,19 +125,15 @@ Procedure
         lvmcluster
     ```
 
-    </div>
-
     - The `lca.openshift.io/apply-wave` value must be lower than the values specified in the application `Restore` CRs.
 
 2.  If you need to restore applications after the upgrade, create the OADP `Backup` and `Restore` CRs for your application in the `openshift-adp` namespace:
 
     1.  Create the OADP CRs for cluster-scoped application artifacts in the `openshift-adp` namespace:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example OADP CRs for cluster-scoped application artifacts for LSO and LVM Storage
+        **Example OADP CRs for cluster-scoped application artifacts for LSO and LVM Storage**
 
         </div>
 
@@ -195,19 +170,15 @@ Procedure
             backup-app-cluster-resources
         ```
 
-        </div>
-
         - Replace the example resource name with your actual resources.
 
         - The `lca.openshift.io/apply-wave` value must be higher than the value in the platform `Restore` CRs and lower than the value in the application namespace-scoped `Restore` CR.
 
     2.  Create the OADP CRs for your namespace-scoped application artifacts in the `source-crs/custom-crs` directory:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example OADP CRs namespace-scoped application artifacts when LSO is used
+        **Example OADP CRs namespace-scoped application artifacts when LSO is used**
 
         </div>
 
@@ -250,15 +221,11 @@ Procedure
             backup-app
         ```
 
-        </div>
-
         - Define custom resources for your application.
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example OADP CRs namespace-scoped application artifacts when LVM Storage is used
+        **Example OADP CRs namespace-scoped application artifacts when LVM Storage is used**
 
         </div>
 
@@ -307,8 +274,6 @@ Procedure
             - logicalvolumes
         ```
 
-        </div>
-
         - Define custom resources for your application.
 
         - Required field.
@@ -319,8 +284,11 @@ Procedure
 
         - Required field.
 
-        > [!IMPORTANT]
-        > The same version of the applications must function on both the current and the target release of OpenShift Container Platform.
+        <div class="important">
+
+        The same version of the applications must function on both the current and the target release of OpenShift Container Platform.
+
+        </div>
 
 3.  Create a `kustomization.yaml` with the following content:
 
@@ -345,33 +313,13 @@ Procedure
 
 4.  Push the changes to your Git repository.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring a shared container partition between ostree stateroots when using GitOps ZTP](../../../edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-shared-container-partition.xml#ztp-image-based-upgrade-shared-container-partition_shared-container-partition)
 
 - [Installing and configuring the OADP Operator with GitOps ZTP](../../../edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-install-operators.xml#ztp-image-based-upgrade-installing-oadp_install-operators)
 
-</div>
-
 # Labeling extra manifests for the image-based upgrade with GitOps ZTP
 
 Label your extra manifests so that the Lifecycle Agent can extract resources that are labeled with the `lca.openshift.io/target-ocp-version: <target_version>` label.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have provisioned one or more managed clusters with GitOps ZTP.
 
@@ -382,16 +330,6 @@ Prerequisites
 - You have created a separate partition on the target cluster for the container images that is shared between stateroots. For more information, see "Configuring a shared container directory between ostree stateroots when using GitOps ZTP".
 
 - You have deployed a version of Lifecycle Agent that is compatible with the version used with the seed image.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Label your required extra manifests with the `lca.openshift.io/target-ocp-version: <target_version>` label in your existing site `PolicyGenTemplate` CR:
 
@@ -470,18 +408,6 @@ Procedure
 
 2.  Push the changes to your Git repository.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring a shared container partition between ostree stateroots when using GitOps ZTP](../../../edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-shared-container-partition.xml#ztp-image-based-upgrade-shared-container-partition_shared-container-partition)
 
 - [Performing an image-based upgrade for single-node OpenShift clusters using GitOps ZTP](../../../edge_computing/image_based_upgrade/ztp-image-based-upgrade.xml#ztp-image-based-upgrade)
-
-</div>

@@ -8,22 +8,15 @@ When an Operator Lifecycle Manager (OLM) catalog source of source type `grpc` de
 
 As an administrator, you can override these values by modifying fields in the `CatalogSource` object’s optional `spec.grpcPodConfig` section.
 
-> [!IMPORTANT]
-> The Marketplace Operator, `openshift-marketplace`, manages the default `OperatorHub` custom resource’s (CR). This CR manages `CatalogSource` objects. If you attempt to modify fields in the `CatalogSource` object’s `spec.grpcPodConfig` section, the Marketplace Operator automatically reverts these modifications. By default, if you modify fields in the `spec.grpcPodConfig` section of the `CatalogSource` object, the Marketplace Operator automatically reverts these changes.
->
-> To apply persistent changes to `CatalogSource` object, you must first disable a default `CatalogSource` object.
+<div class="important">
 
-<div>
+The Marketplace Operator, `openshift-marketplace`, manages the default `OperatorHub` custom resource’s (CR). This CR manages `CatalogSource` objects. If you attempt to modify fields in the `CatalogSource` object’s `spec.grpcPodConfig` section, the Marketplace Operator automatically reverts these modifications. By default, if you modify fields in the `spec.grpcPodConfig` section of the `CatalogSource` object, the Marketplace Operator automatically reverts these changes.
 
-<div class="title">
-
-Additional resources
+To apply persistent changes to `CatalogSource` object, you must first disable a default `CatalogSource` object.
 
 </div>
 
 - [OLM concepts and resources → Catalog source](../../operators/understanding/olm/olm-understanding-olm.xml#olm-catalogsource_olm-understanding-olm)
-
-</div>
 
 # Disabling default CatalogSource objects at a local level
 
@@ -33,60 +26,29 @@ The Marketplace Operator, `openshift-marketplace`, manages the default custom re
 
 To apply persistent changes to `CatalogSource` object, you must first disable a default `CatalogSource` object.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - To disable all the default `CatalogSource` objects at a local level, enter the following command:
 
   ``` terminal
   $ oc patch operatorhub cluster -p '{"spec": {"disableAllDefaultSources": true}}' --type=merge
   ```
 
-  > [!NOTE]
-  > You can also configure the default `OperatorHub` CR to either disable all `CatalogSource` objects or disable a specific object.
+  <div class="note">
 
-</div>
+  You can also configure the default `OperatorHub` CR to either disable all `CatalogSource` objects or disable a specific object.
 
-<div>
+  </div>
 
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [OperatorHub custom resource](../../operators/understanding/olm-understanding-software-catalog.xml#olm-software-catalog-arch-operatorhub-crd_olm-understanding-software-catalog)
 
 - [Disabling the default OperatorHub catalog sources](../../disconnected/using-olm.xml#olm-restricted-networks-operatorhub_olm-restricted-networks)
 
-</div>
-
 # Overriding the node selector for catalog source pods
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - A `CatalogSource` object of source type `grpc` with `spec.image` is defined.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Edit the `CatalogSource` object and add or modify the `spec.grpcPodConfig` section to include the following:
 
@@ -98,41 +60,15 @@ Procedure
 
   where `<label>` is the label for the node selector that you want catalog source pods to use for scheduling.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Placing pods on specific nodes using node selectors](../../nodes/scheduling/nodes-scheduler-node-selectors.xml#nodes-scheduler-node-selectors)
 
-</div>
-
 # Overriding the priority class name for catalog source pods
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - A `CatalogSource` object of source type `grpc` with `spec.image` is defined.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Edit the `CatalogSource` object and add or modify the `spec.grpcPodConfig` section to include the following:
 
@@ -149,56 +85,31 @@ Procedure
 
   - A pre-existing and custom defined priority class
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> Previously, the only pod scheduling parameter that could be overriden was `priorityClassName`. This was done by adding the `operatorframework.io/priorityclass` annotation to the `CatalogSource` object. For example:
->
-> ``` yaml
-> apiVersion: operators.coreos.com/v1alpha1
-> kind: CatalogSource
-> metadata:
->   name: example-catalog
->   namespace: openshift-marketplace
->   annotations:
->     operatorframework.io/priorityclass: system-cluster-critical
-> ```
->
-> If a `CatalogSource` object defines both the annotation and `spec.grpcPodConfig.priorityClassName`, the annotation takes precedence over the configuration parameter.
+Previously, the only pod scheduling parameter that could be overriden was `priorityClassName`. This was done by adding the `operatorframework.io/priorityclass` annotation to the `CatalogSource` object. For example:
 
-<div>
+``` yaml
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: example-catalog
+  namespace: openshift-marketplace
+  annotations:
+    operatorframework.io/priorityclass: system-cluster-critical
+```
 
-<div class="title">
-
-Additional resources
+If a `CatalogSource` object defines both the annotation and `spec.grpcPodConfig.priorityClassName`, the annotation takes precedence over the configuration parameter.
 
 </div>
 
 - [Pod priority classes](../../nodes/pods/nodes-pods-priority.xml#admin-guide-priority-preemption-priority-class_nodes-pods-priority)
 
-</div>
-
 # Overriding tolerations for catalog source pods
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - A `CatalogSource` object of source type `grpc` with `spec.image` is defined.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Edit the `CatalogSource` object and add or modify the `spec.grpcPodConfig` section to include the following:
 
@@ -211,16 +122,6 @@ Procedure
           effect: "<effect>"
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Understanding taints and tolerations](../../nodes/scheduling/nodes-scheduler-taints-tolerations.xml#nodes-scheduler-taints-tolerations-about_nodes-scheduler-taints-tolerations)
-
-</div>

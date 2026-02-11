@@ -29,25 +29,15 @@ All methods of NVIDIA GPUDirect RDMA configuration require the installation of s
 
 On some systems, including the DellR750xa, the IRDMA kernel module creates problems for the NVIDIA Network Operator when unloading and loading the DOCA drivers. Use the following procedure to disable the module.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Generate the following machine configuration file by running the following command:
 
     ``` terminal
     $ cat <<EOF > 99-machine-config-blacklist-irdma.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -63,27 +53,21 @@ Procedure
         - "module_blacklist=irdma"
     ```
 
-    </div>
-
 2.  Create the machine configuration on the cluster and wait for the nodes to reboot by running the following command:
 
     ``` terminal
     $ oc create -f 99-machine-config-blacklist-irdma.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     machineconfig.machineconfiguration.openshift.io/99-worker-blacklist-irdma created
     ```
-
-    </div>
 
 3.  Validate in a debug pod on each node that the module has not loaded by running the following command:
 
@@ -98,19 +82,9 @@ Procedure
     sh-5.1#
     ```
 
-</div>
-
 # Creating persistent naming rules
 
 In some cases, device names won’t persist following a reboot. For example, on R760xa systems Mellanox devices might be renamed after a reboot. You can avoid this problem by using a `MachineConfig` to set persistence.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Gather the MAC address names from the worker nodes for the node into a file and provide names for the interfaces that need to persist. This example uses the file `70-persistent-net.rules` and stashes the details in it.
 
@@ -175,11 +149,9 @@ Procedure
     $ oc get mcp
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -189,35 +161,13 @@ Procedure
     worker   rendered-worker-4568f1b174066b4b1a4de794cf538fee   False     True       False      2              0                   0                     0                      6h21m
     ```
 
-    </div>
-
-</div>
-
 The nodes will reboot and when the updating field returns to `false`, you can validate on the nodes by looking at the devices in a debug pod.
 
 # Configuring the NFD Operator
 
 The Node Feature Discovery (NFD) Operator manages the detection of hardware features and configuration in an OpenShift Container Platform cluster by labeling the nodes with hardware-specific information. NFD labels the host with node-specific attributes, such as PCI cards, kernel, operating system version, and so on.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the NFD Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Validate that the Operator is installed and running by looking at the pods in the `openshift-nfd` namespace by running the following command:
 
@@ -225,11 +175,9 @@ Procedure
     $ oc get pods -n openshift-nfd
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -237,8 +185,6 @@ Procedure
     NAME                                      READY   STATUS    RESTARTS   AGE
     nfd-controller-manager-8698c88cdd-t8gbc   2/2     Running   0          2m
     ```
-
-    </div>
 
 2.  With the NFD controller running, generate the `NodeFeatureDiscovery` instance and add it to the cluster.
 
@@ -285,11 +231,9 @@ Procedure
     $ oc create -f nfd-instance.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -297,19 +241,15 @@ Procedure
     nodefeaturediscovery.nfd.openshift.io/nfd-instance created
     ```
 
-    </div>
-
 5.  Validate that the instance is up and running by looking at the pods under the `openshift-nfd` namespace by running the following command:
 
     ``` terminal
     $ oc get pods -n openshift-nfd
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -324,8 +264,6 @@ Procedure
     nfd-worker-cswf4                        1/1     Running   0          21s
     nfd-worker-kp6gg                        1/1     Running   0          21s
     ```
-
-    </div>
 
 6.  Wait a short period of time and then verify that NFD has added labels to the node. The NFD labels are prefixed with `feature.node.kubernetes.io`, so you can easily filter them.
 
@@ -458,31 +396,11 @@ Procedure
                         feature.node.kubernetes.io/pci-15b3.sriov.capable=true
     ```
 
-</div>
-
 # Configuring the SR-IOV Operator
 
 Single root I/O virtualization (SR-IOV) enhances the performance of NVIDIA GPUDirect RDMA by providing sharing across multiple pods from a single device.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the SR-IOV Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Validate that the Operator is installed and running by looking at the pods in the `openshift-sriov-network-operator` namespace by running the following command:
 
@@ -490,11 +408,9 @@ Procedure
     $ oc get pods -n openshift-sriov-network-operator
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -502,8 +418,6 @@ Procedure
     NAME                                      READY   STATUS    RESTARTS   AGE
     sriov-network-operator-7cb6c49868-89486   1/1     Running   0          22s
     ```
-
-    </div>
 
 2.  For the default `SriovOperatorConfig` CR to work with the MLNX_OFED container, run this command to update the following values:
 
@@ -525,11 +439,9 @@ Procedure
     $ oc create -f sriov-operator-config.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -537,19 +449,15 @@ Procedure
     sriovoperatorconfig.sriovnetwork.openshift.io/default created
     ```
 
-    </div>
-
 4.  Patch the sriov-operator so the MOFED container can work with it by running the following command:
 
     ``` terminal
     $ oc patch sriovoperatorconfig default   --type=merge -n openshift-sriov-network-operator   --patch '{ "spec": { "configDaemonNodeSelector": { "network.nvidia.com/operator.mofed.wait": "false", "node-role.kubernetes.io/worker": "", "feature.node.kubernetes.io/pci-15b3.sriov.capable": "true" } } }'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -557,33 +465,11 @@ Procedure
     sriovoperatorconfig.sriovnetwork.openshift.io/default patched
     ```
 
-    </div>
-
-</div>
-
 # Configuring the NVIDIA network Operator
 
 The NVIDIA network Operator manages NVIDIA networking resources and networking related components such as drivers and device plugins to enable NVIDIA GPUDirect RDMA workloads.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the NVIDIA network Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Validate that the network Operator is installed and running by confirming the controller is running in the `nvidia-network-operator` namespace by running the following command:
 
@@ -591,11 +477,9 @@ Procedure
     $ oc get pods -n nvidia-network-operator
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -603,8 +487,6 @@ Procedure
     NAME                                                          READY   STATUS             RESTARTS        AGE
     nvidia-network-operator-controller-manager-6f7d6956cd-fw5wg   1/1     Running            0                5m
     ```
-
-    </div>
 
 2.  With the Operator running, create the `NicClusterPolicy` custom resource file. The device you choose depends on your system configuration. In this example, the Infiniband interface `ibs2f0` is hard coded and is used as the shared NVIDIA GPUDirect RDMA device.
 
@@ -697,11 +579,9 @@ Procedure
     $ oc create -f network-sharedrdma-nic-cluster-policy.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -709,19 +589,15 @@ Procedure
     nicclusterpolicy.mellanox.com/nic-cluster-policy created
     ```
 
-    </div>
-
 4.  Validate the `NicClusterPolicy` by running the following command in the DOCA/MOFED container:
 
     ``` terminal
     $ oc get pods -n nvidia-network-operator
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -738,8 +614,6 @@ Procedure
     rdma-shared-dp-ds-p9vvg                                       1/1     Running   0          85m
     ```
 
-    </div>
-
 5.  `rsh` into the `mofed` container to check the status by running the following command:
 
     ``` terminal
@@ -748,11 +622,9 @@ Procedure
     sh-5.1# ofed_info -s
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -760,17 +632,13 @@ Procedure
     OFED-internal-24.07-0.6.1:
     ```
 
-    </div>
-
     ``` terminal
     sh-5.1# ibdev2netdev -v
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -778,8 +646,6 @@ Procedure
     0000:0d:00.0 mlx5_0 (MT41692 - 900-9D3B4-00EN-EA0) BlueField-3 E-series SuperNIC 400GbE/NDR single port QSFP112, PCIe Gen5.0 x16 FHHL, Crypto Enabled, 16GB DDR5, BMC, Tall Bracket                                                       fw 32.42.1000 port 1 (ACTIVE) ==> ibs2f0 (Up)
     0000:a0:00.0 mlx5_1 (MT41692 - 900-9D3B4-00EN-EA0) BlueField-3 E-series SuperNIC 400GbE/NDR single port QSFP112, PCIe Gen5.0 x16 FHHL, Crypto Enabled, 16GB DDR5, BMC, Tall Bracket                                                       fw 32.42.1000 port 1 (ACTIVE) ==> ens8f0np0 (Up)
     ```
-
-    </div>
 
 6.  Create a `IPoIBNetwork` custom resource file:
 
@@ -808,19 +674,15 @@ Procedure
     $ oc create -f ipoib-network.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     ipoibnetwork.mellanox.com/example-ipoibnetwork created
     ```
-
-    </div>
 
 8.  Create a `MacvlanNetwork` custom resource file for your other interface:
 
@@ -843,11 +705,9 @@ Procedure
     $ oc create -f macvlan-network.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -855,33 +715,11 @@ Procedure
     macvlannetwork.mellanox.com/rdmashared-net created
     ```
 
-    </div>
-
-</div>
-
 # Configuring the GPU Operator
 
 The GPU Operator automates the management of the NVIDIA drivers, device plugins for GPUs, the NVIDIA Container Toolkit, and other components required for GPU provisioning.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the GPU Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Check that the Operator pod is running to look at the pods under the namespace by running the following command:
 
@@ -889,11 +727,9 @@ Procedure
     $ oc get pods -n nvidia-gpu-operator
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -901,8 +737,6 @@ Procedure
     NAME                          READY   STATUS    RESTARTS   AGE
     gpu-operator-b4cb7d74-zxpwq   1/1     Running   0          32s
     ```
-
-    </div>
 
 2.  Create a GPU cluster policy custom resource file similar to the following example:
 
@@ -1021,11 +855,9 @@ Procedure
     $ oc create -f gpu-cluster-policy.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1033,19 +865,15 @@ Procedure
     clusterpolicy.nvidia.com/gpu-cluster-policy created
     ```
 
-    </div>
-
 4.  Validate that the Operator is installed and running by running the following command:
 
     ``` terminal
     $ oc get pods -n nvidia-gpu-operator
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1072,8 +900,6 @@ Procedure
     nvidia-operator-validator-n44nn                       1/1     Running     0          3m23s
     ```
 
-    </div>
-
 5.  Optional: When you have verified the pods are running, remote shell into the NVIDIA driver daemonset pod and confirm that the NVIDIA modules are loaded. Specifically, ensure the `nvidia_peermem` is loaded.
 
     ``` terminal
@@ -1081,11 +907,9 @@ Procedure
     sh-4.4# lsmod|grep nvidia
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1100,11 +924,9 @@ Procedure
     drm                   741376  5 drm_kms_helper,drm_shmem_helper,nvidia,mgag200
     ```
 
-    </div>
-
 6.  Optional: Run the `nvidia-smi` utility to show the details about the driver and the hardware:
 
-</div>
+<!-- -->
 
     sh-4.4# nvidia-smi
 
@@ -1144,11 +966,9 @@ Wed Nov  6 22:03:53 2024
     sh-4.4# nvidia-smi -i 0 -lgc $(nvidia-smi -i 0 --query-supported-clocks=graphics --format=csv,noheader,nounits | sort -h | tail -n 1)
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1157,17 +977,13 @@ Wed Nov  6 22:03:53 2024
     All done.
     ```
 
-    </div>
-
     ``` terminal
     sh-4.4# nvidia-smi -i 1 -lgc $(nvidia-smi -i 1 --query-supported-clocks=graphics --format=csv,noheader,nounits | sort -h | tail -n 1)
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1176,19 +992,15 @@ Wed Nov  6 22:03:53 2024
     All done.
     ```
 
-    </div>
-
 2.  Validate the resource is available from a node describe perspective by running the following command:
 
     ``` terminal
     $ oc describe node -l node-role.kubernetes.io/worker=| grep -E 'Capacity:|Allocatable:' -A9
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1236,19 +1048,9 @@ Wed Nov  6 22:03:53 2024
       rdma/rdma_shared_device_ib:   63
     ```
 
-    </div>
-
 # Creating the machine configuration
 
 Before you create the resource pods, you need to create the `machineconfig.yaml` custom resource (CR) that provides access to the GPU and networking resources without the need for user privileges.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Generate a `Machineconfig` CR:
 
@@ -1272,8 +1074,6 @@ Procedure
             path: /etc/crio/crio.conf.d/10-custom
     ```
 
-</div>
-
 # Creating the workload pods
 
 Use the procedures in this section to create the workload pods for the shared and host devices.
@@ -1284,27 +1084,9 @@ Create the workload pods for a shared device RDMA on RDMA over Converged Etherne
 
 The NVIDIA GPUDirect RDMA device is shared among pods on the OpenShift Container Platform worker node where the device is exposed.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Ensure that the Operator is running.
 
 - Delete the `NicClusterPolicy` custom resource (CR), if it exists.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Generate custom pod resources:
 
@@ -1366,11 +1148,9 @@ Procedure
     $ oc create -f rdma-eth-32-workload.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1378,17 +1158,13 @@ Procedure
     pod/rdma-eth-32-workload created
     ```
 
-    </div>
-
     ``` terminal
     $ oc create -f rdma-eth-33-workload.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1396,19 +1172,15 @@ Procedure
     pod/rdma-eth-33-workload created
     ```
 
-    </div>
-
 3.  Verify that the pods are running by using the following command:
 
     ``` terminal
     $ oc get pods -n default
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1418,35 +1190,13 @@ Procedure
     rdma-eth-33-workload   1/1     Running   0          22s
     ```
 
-    </div>
-
-</div>
-
 ## Creating a host device RDMA on RoCE
 
 Create the workload pods for a host device Remote Direct Memory Access (RDMA) for the NVIDIA Network Operator and test the pod configuration.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Ensure that the Operator is running.
 
 - Delete the `NicClusterPolicy` custom resource (CR), if it exists.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Generate a new host device `NicClusterPolicy` (CR), as shown below:
 
@@ -1503,11 +1253,9 @@ Procedure
     $ oc create -f network-hostdev-nic-cluster-policy.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1515,19 +1263,15 @@ Procedure
     nicclusterpolicy.mellanox.com/nic-cluster-policy created
     ```
 
-    </div>
-
 3.  Verify that the host device `NicClusterPolicy` CR by using the following command in the DOCA/MOFED container:
 
     ``` terminal
     $ oc get pods -n nvidia-network-operator
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1540,19 +1284,15 @@ Procedure
     sriov-device-plugin-hc4t8                                     1/1     Running   0          2m14s
     ```
 
-    </div>
-
 4.  Confirm that the resources appear in the cluster `oc describe node` section by using the following command:
 
     ``` terminal
     $ oc describe node -l node-role.kubernetes.io/worker=| grep -E 'Capacity:|Allocatable:' -A7
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1592,8 +1332,6 @@ Procedure
       pods:                250
     ```
 
-    </div>
-
 5.  Create a `HostDeviceNetwork` CR file:
 
     ``` yaml
@@ -1623,11 +1361,9 @@ Procedure
     $ oc create -f hostdev-network.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1635,19 +1371,15 @@ Procedure
     hostdevicenetwork.mellanox.com/hostdev-net created
     ```
 
-    </div>
-
 7.  Confirm that the resources appear in the cluster `oc describe node` section by using the following command:
 
     ``` terminal
     $ oc describe node -l node-role.kubernetes.io/worker=| grep -E 'Capacity:|Allocatable:' -A8
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1691,21 +1423,9 @@ Procedure
       pods:                250
     ```
 
-    </div>
-
-</div>
-
 ## Creating a SR-IOV legacy mode RDMA on RoCE
 
 Configure a Single Root I/O Virtualization (SR-IOV) legacy mode host device RDMA on RoCE.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Generate a new host device `NicClusterPolicy` custom resource (CR):
 
@@ -1745,11 +1465,9 @@ Procedure
     $ oc create -f network-sriovleg-nic-cluster-policy.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1757,19 +1475,15 @@ Procedure
     nicclusterpolicy.mellanox.com/nic-cluster-policy created
     ```
 
-    </div>
-
 3.  Verify the pods by using the following command in the DOCA/MOFED container:
 
     ``` terminal
     $ oc get pods -n nvidia-network-operator
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1779,8 +1493,6 @@ Procedure
     mofed-rhcos4.16-696886fcb4-ds-8knwq                           2/2     Running   0             40s
     nvidia-network-operator-controller-manager-68d547dbbd-qsdkf   1/1     Running   13 (4d ago)   4d21h
     ```
-
-    </div>
 
 4.  Create an `SriovNetworkNodePolicy` CR that generates the Virtual Functions (VFs) for the device you want to operate in SR-IOV legacy mode. See the following example:
 
@@ -1808,18 +1520,19 @@ Procedure
 
 5.  Create the CR on the cluster by using the following command:
 
-    > [!NOTE]
-    > Ensure that SR-IOV Global Enable is enabled. For more information, see [Unable to enable SR-IOV and receiving the message "not enough MMIO resources for SR-IOV" in Red Hat Enterprise Linux](https://access.redhat.com/solutions/37376).
+    <div class="note">
+
+    Ensure that SR-IOV Global Enable is enabled. For more information, see [Unable to enable SR-IOV and receiving the message "not enough MMIO resources for SR-IOV" in Red Hat Enterprise Linux](https://access.redhat.com/solutions/37376).
+
+    </div>
 
     ``` terminal
     $ oc create -f sriov-network-node-policy.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1827,19 +1540,15 @@ Procedure
     sriovnetworknodepolicy.sriovnetwork.openshift.io/sriov-legacy-policy created
     ```
 
-    </div>
-
 6.  Each node has scheduling disabled. The nodes reboot to apply the configuration. You can view the nodes by using the following command:
 
     ``` terminal
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1850,19 +1559,15 @@ Procedure
     nvd-srv-33.nvidia.eng.rdu2.dc.redhat.com   NotReady,SchedulingDisabled   worker                        4d22h   v1.29.8+632b078
     ```
 
-    </div>
-
 7.  After the nodes have rebooted, verify that the VF interfaces exist by opening up a debug pod on each node. Run the following command:
 
     ``` terminal
     a$ oc debug node/nvd-srv-33.nvidia.eng.rdu2.dc.redhat.com
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1884,8 +1589,6 @@ Procedure
     49: ens8f0v7: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
     ```
 
-    </div>
-
 8.  Repeat the previous steps on the second node, if necessary.
 
 9.  Optional: Confirm that the resources appear in the cluster `oc describe node` section by using the following command:
@@ -1894,11 +1597,9 @@ Procedure
     $ oc describe node -l node-role.kubernetes.io/worker=| grep -E 'Capacity:|Allocatable:' -A8
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1944,8 +1645,6 @@ Procedure
       openshift.io/sriovlegacy:  8
     ```
 
-    </div>
-
 10. After the VFs for SR-IOV legacy mode are in place, generate the `SriovNetwork` CR file. See the following example:
 
     ``` yaml
@@ -1977,11 +1676,9 @@ Procedure
     $ oc create -f sriov-network.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1989,21 +1686,9 @@ Procedure
     sriovnetwork.sriovnetwork.openshift.io/sriov-network created
     ```
 
-    </div>
-
-</div>
-
 ## Creating a shared device RDMA on Infiniband
 
 Create the workload pods for a shared device Remote Direct Memory Access (RDMA) for an Infiniband installation.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Generate custom pod resources:
 
@@ -2064,11 +1749,9 @@ Procedure
     $ oc create -f rdma-ib-32-workload.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2076,17 +1759,13 @@ Procedure
     pod/rdma-ib-32-workload created
     ```
 
-    </div>
-
     ``` terminal
     $ oc create -f rdma-ib-33-workload.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2094,19 +1773,15 @@ Procedure
     pod/rdma-ib-33-workload created
     ```
 
-    </div>
-
 3.  Verify that the pods are running by using the following command:
 
     ``` terminal
     $ oc get pods
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2116,21 +1791,9 @@ Procedure
     rdma-ib-33-workload   1/1     Running   0          3s
     ```
 
-    </div>
-
-</div>
-
 # Verifying RDMA connectivity
 
 Confirm Remote Direct Memory Access (RDMA) connectivity is working between the systems, specifically for Legacy Single Root I/O Virtualization (SR-IOV) Ethernet.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Connect to each `rdma-workload-client` pod by using the following command:
 
@@ -2138,11 +1801,9 @@ Procedure
     $ oc rsh -n default rdma-sriov-32-workload
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2150,19 +1811,15 @@ Procedure
     sh-5.1#
     ```
 
-    </div>
-
 2.  Check the IP address assigned to the first workload pod by using the following command. In this example, the first workload pod is the RDMA test server.
 
     ``` terminal
     sh-5.1# ip a
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2189,8 +1846,6 @@ Procedure
     sh-5.1#
     ```
 
-    </div>
-
     The IP address of the RDMA server assigned to this pod is the `net1` interface. In this example, the IP address is `192.168.4.225`.
 
 3.  Run the `ibstatus` command to get the `link_layer` type, Ethernet or Infiniband, associated with each RDMA device `mlx5_x`. The output also shows the status of all of the RDMA devices by checking the `state` field, which shows either `ACTIVE` or `DOWN`.
@@ -2199,11 +1854,9 @@ Procedure
     sh-5.1# ibstatus
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2301,19 +1954,15 @@ Procedure
     sh-5.1#
     ```
 
-    </div>
-
 4.  To get the `link_layer` for each RDMA `mlx5` device on your worker node, run the `ibstat` command:
 
     ``` terminal
     sh-5.1# ibstat | egrep "Port|Base|Link"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2364,19 +2013,15 @@ Procedure
     sh-5.1#
     ```
 
-    </div>
-
 5.  For RDMA Shared Device or Host Device workload pods, the RDMA device named `mlx5_x` is already known and is typically `mlx5_0` or `mlx5_1`. For RDMA Legacy SR-IOV workload pods, you need to determine which RDMA device is associated with which Virtual Function (VF) subinterface. Provide this information by using the following command:
 
     ``` terminal
     sh-5.1# rdma link show
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2392,8 +2037,6 @@ Procedure
     link mlx5_8/1 state DOWN physical_state DISABLED
     link mlx5_9/1 state DOWN physical_state DISABLED
     ```
-
-    </div>
 
     In this example, the RDMA device names `mlx5_7` is associated with the `net1` interface. This output is used in the next command to perform the RDMA bandwidth test, which also verifies RDMA connectivity between worker nodes.
 
@@ -2411,11 +2054,9 @@ Procedure
 
     - The `--use_cuda=0`, `--use_cuda_dmabuf` switches indicate that the use of GPUDirect RDMA.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2428,19 +2069,15 @@ Procedure
     ************************************
     ```
 
-    </div>
-
 7.  Open another terminal window and run `oc rsh` command on the second workload pod that acts as the RDMA test client pod:
 
     ``` terminal
     $ oc rsh -n default rdma-sriov-33-workload
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2448,19 +2085,15 @@ Procedure
     sh-5.1#
     ```
 
-    </div>
-
 8.  Obtain the RDMA test client pod IP address from the `net1` interface by using the following command:
 
     ``` terminal
     sh-5.1# ip a
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2487,19 +2120,15 @@ Procedure
     sh-5.1#
     ```
 
-    </div>
-
 9.  Obtain the `link_layer` type associated with each RDMA device `mlx5_x` by using the following command:
 
     ``` terminal
     sh-5.1# ibstatus
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2595,19 +2224,15 @@ Procedure
         link_layer:  Ethernet
     ```
 
-    </div>
-
 10. Optional: Obtain the firmware version of Mellanox cards by using the `ibstat` command:
 
     ``` terminal
     sh-5.1# ibstat
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2785,19 +2410,15 @@ Procedure
     sh-5.1#
     ```
 
-    </div>
-
 11. To determine which RDMA device is associated with the Virtual Function subinterface that the client workload pod uses, run the following command. In this example, the `net1` interface is using the RDMA device `mlx5_2`.
 
     ``` terminal
     sh-5.1# rdma link show
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2815,8 +2436,6 @@ Procedure
     sh-5.1#
     ```
 
-    </div>
-
 12. Run the following `ib_write_bw` RDMA bandwidth test command:
 
     ``` terminal
@@ -2831,11 +2450,9 @@ Procedure
 
     - The `--use_cuda=0`, `--use_cuda_dmabuf` switches indicate that the use of GPUDirect RDMA.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -2946,17 +2563,13 @@ Procedure
       sh-5.1#
       ```
 
-      </div>
-
       A positive test is seeing an expected BW average and MsgRate in Mpps.
 
       Upon completion of the `ib_write_bw` command, the server side output also appears on the server pod. See the following example:
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -3071,7 +2684,3 @@ Procedure
       deallocating GPU buffer 00007f447a600000
       destroying current CUDA Ctx
       ```
-
-      </div>
-
-</div>

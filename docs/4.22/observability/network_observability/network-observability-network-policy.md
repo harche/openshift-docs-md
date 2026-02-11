@@ -16,14 +16,6 @@ If you have installed Loki, Kafka or any exporter in a different namespace that 
 
 - If you are using Loki and including it in the policy target, connection to an external object storage (as defined in your `LokiStack` related secret)
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  In the web console, go to **Ecosystem** → **Installed Operators** page.
 
 2.  Under the **Provided APIs** heading for **Network Observability**, select **Flow Collector**.
@@ -32,11 +24,9 @@ Procedure
 
 4.  Configure the `FlowCollector` CR. A sample configuration is as follows:
 
-    <div id="network-observability-flowcollector-configuring-network-policy_network_observability" class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `FlowCollector` CR for network policy
+    **Example `FlowCollector` CR for network policy**
 
     </div>
 
@@ -53,22 +43,8 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - By default, the `enable` value is `true`.
 
     - Default values are `["openshift-console", "openshift-monitoring"]`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Creating a network policy using the CLI](../../networking/network_security/network_policy/creating-network-policy.xml#nw-networkpolicy-object_creating-network-policy)
-
-</div>

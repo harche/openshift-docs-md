@@ -4,32 +4,17 @@ As a cluster administrator, you can manage Operator conditions by using Operator
 
 As a cluster administrator, you might want to ignore a supported Operator condition reported by an Operator. When present, Operator conditions in the `Spec.Overrides` array override the conditions in the `Spec.Conditions` array, allowing cluster administrators to deal with situations where an Operator is incorrectly reporting a state to Operator Lifecycle Manager (OLM).
 
-> [!NOTE]
-> By default, the `Spec.Overrides` array is not present in an `OperatorCondition` object until it is added by a cluster administrator . The `Spec.Conditions` array is also not present until it is either added by a user or as a result of custom Operator logic.
+<div class="note">
 
-For example, consider a known version of an Operator that always communicates that it is not upgradeable. In this instance, you might want to upgrade the Operator despite the Operator communicating that it is not upgradeable. This could be accomplished by overriding the Operator condition by adding the condition `type` and `status` to the `Spec.Overrides` array in the `OperatorCondition` object.
-
-<div>
-
-<div class="title">
-
-Prerequisites
+By default, the `Spec.Overrides` array is not present in an `OperatorCondition` object until it is added by a cluster administrator . The `Spec.Conditions` array is also not present until it is either added by a user or as a result of custom Operator logic.
 
 </div>
+
+For example, consider a known version of an Operator that always communicates that it is not upgradeable. In this instance, you might want to upgrade the Operator despite the Operator communicating that it is not upgradeable. This could be accomplished by overriding the Operator condition by adding the condition `type` and `status` to the `Spec.Overrides` array in the `OperatorCondition` object.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - An Operator with an `OperatorCondition` object, installed using OLM.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `OperatorCondition` object for the Operator:
 
@@ -39,11 +24,9 @@ Procedure
 
 2.  Add a `Spec.Overrides` array to the object:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example Operator condition override
+    **Example Operator condition override**
 
     </div>
 
@@ -67,11 +50,7 @@ Procedure
         lastTransitionTime: "2020-08-24T23:15:55Z"
     ```
 
-    </div>
-
     - Allows the cluster administrator to change the upgrade readiness to `True`.
-
-</div>
 
 # Updating your Operator to use Operator conditions
 

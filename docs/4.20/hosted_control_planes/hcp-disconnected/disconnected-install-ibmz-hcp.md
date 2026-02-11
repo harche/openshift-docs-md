@@ -18,31 +18,15 @@ To work with disconnected registries in the hosted control planes, you must firs
 
 - A mirrored image for a disconnected installation. For more information, see "Mirroring images for a disconnected installation using the oc-mirror plugin".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Creating a mirror registry with mirror registry for Red Hat OpenShift](../../disconnected/installing-mirroring-creating-registry.xml#mirror-registry-introduction_installing-mirroring-creating-registry)
 
 - [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
-</div>
-
 # Adding credentials and the registry certificate authority to the management cluster
 
 To pull the mirror registry images from the management cluster, you must first add credentials and the certificate authority of the mirror registry to the management cluster. Use the following procedure:
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `ConfigMap` with the certificate of the mirror registry by running the following command:
 
@@ -50,11 +34,9 @@ Procedure
     $ oc apply -f registry-config.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example registry-config.yaml file
+    **Example registry-config.yaml file**
 
     </div>
 
@@ -69,8 +51,6 @@ Procedure
         -----BEGIN CERTIFICATE-----
         -----END CERTIFICATE-----
     ```
-
-    </div>
 
 2.  Patch the `image.config.openshift.io` cluster-wide object to include the following entries:
 
@@ -112,39 +92,17 @@ Procedure
           --from-file=.dockerconfigjson=authfile
         ```
 
-</div>
-
 # Update the registry certificate authority in the AgentServiceConfig resource with the mirror registry
 
 When you use a mirror registry for images, agents need to trust the registry’s certificate to securely pull images. You can add the certificate authority of the mirror registry to the `AgentServiceConfig` custom resource by creating a `ConfigMap`.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have installed multicluster engine for Kubernetes Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the same namespace where you installed multicluster engine Operator, create a `ConfigMap` resource with the mirror registry details. This `ConfigMap` resource ensures that you grant the hosted cluster workers the capability to retrieve images from the mirror registry.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example ConfigMap file
+    **Example ConfigMap file**
 
     </div>
 
@@ -185,8 +143,6 @@ Procedure
             insecure = false
     ```
 
-    </div>
-
     - Where: `<mirror_registry>` is the name of the mirror registry.
 
 2.  Patch the `AgentServiceConfig` resource to include the `ConfigMap` resource that you created. If the `AgentServiceConfig` resource is not present, create the `AgentServiceConfig` resource with the following content embedded into it:
@@ -197,8 +153,6 @@ Procedure
         name: mirror-config
     ```
 
-</div>
-
 # Adding the registry certificate authority to the hosted cluster
 
 When you are deploying hosted control planes on IBM Z in a disconnected environment, include the `additional-trust-bundle` and `image-content-sources` resources. Those resources allow the hosted cluster to inject the certificate authority into the data plane workers so that the images are pulled from the registry.
@@ -207,11 +161,9 @@ When you are deploying hosted control planes on IBM Z in a disconnected environm
 
     The `image-content-sources` information is available in the `ImageContentSourcePolicy` YAML file that is generated after you mirror the images by using `oc-mirror`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example ImageContentSourcePolicy file
+    **Example ImageContentSourcePolicy file**
 
     </div>
 
@@ -224,8 +176,6 @@ When you are deploying hosted control planes on IBM Z in a disconnected environm
       - <mirror_registry>/openshift/release-images
       source: quay.io/openshift-release-dev/ocp-release
     ```
-
-    </div>
 
 2.  Create a hosted cluster and provide the `additional-trust-bundle` certificate to update the compute nodes with the certificates as in the following example:
 

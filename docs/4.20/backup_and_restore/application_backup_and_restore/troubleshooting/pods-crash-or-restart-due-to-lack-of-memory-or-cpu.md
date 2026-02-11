@@ -8,37 +8,17 @@ requests:
   memory: 128Mi
 ```
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Velero CPU and memory requirements based on collected data](../../../backup_and_restore/application_backup_and_restore/installing/about-installing-oadp.xml#oadp-velero-cpu-memory-requirements_about-installing-oadp)
-
-</div>
 
 # Setting resource requests for a Velero pod
 
 You can use the `configuration.velero.podConfig.resourceAllocations` specification field in the `oadp_v1alpha1_dpa.yaml` file to set specific resource requests for a `Velero` pod.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Set the `cpu` and `memory` resource requests in the YAML file:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example Velero file
+  **Example Velero file**
 
   </div>
 
@@ -55,34 +35,23 @@ Procedure
             memory: 256Mi
   ```
 
-  </div>
-
   - The `resourceAllocations` listed are for average usage.
-
-</div>
 
 # Setting resource requests for a Restic pod
 
 You can use the `configuration.restic.podConfig.resourceAllocations` specification field to set specific resource requests for a `Restic` pod.
 
-> [!NOTE]
-> With OADP 1.5.0, the `configuration.restic.podConfig.resourceAllocations` specification field is removed from Data Protection Application (DPA). Use the `nodeAgent` section with the `uploaderType` field set to `Kopia` instead of `Restic` .
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+With OADP 1.5.0, the `configuration.restic.podConfig.resourceAllocations` specification field is removed from Data Protection Application (DPA). Use the `nodeAgent` section with the `uploaderType` field set to `Kopia` instead of `Restic` .
 
 </div>
 
 - Set the `cpu` and `memory` resource requests in the YAML file:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example Restic file
+  **Example Restic file**
 
   </div>
 
@@ -99,34 +68,23 @@ Procedure
             memory: 16Gi
   ```
 
-  </div>
-
   - The `resourceAllocations` listed are for average usage.
-
-</div>
 
 # Setting resource requests for a nodeAgent pod
 
 You can use the `configuration.nodeAgent.podConfig.resourceAllocations` specification field to set specific resource requests for a `nodeAgent` pod.
 
-> [!NOTE]
-> With OADP 1.5.0, the `configuration.restic.podConfig.resourceAllocations` specification field is removed from Data Protection Application (DPA). Use the `nodeAgent` section with the `uploaderType` field set to `Kopia` instead of `Restic` .
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+With OADP 1.5.0, the `configuration.restic.podConfig.resourceAllocations` specification field is removed from Data Protection Application (DPA). Use the `nodeAgent` section with the `uploaderType` field set to `Kopia` instead of `Restic` .
 
 </div>
 
 1.  Set the `cpu` and `memory` resource requests in the YAML file:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `nodeAgent.yaml` file
+    **Example `nodeAgent.yaml` file**
 
     </div>
 
@@ -162,8 +120,6 @@ Procedure
                 memory: 16Gi
     ```
 
-    </div>
-
     - The resource allocation examples shown are for average usage.
 
     - You can modify this parameter depending on your infrastructure and usage.
@@ -174,15 +130,7 @@ Procedure
     $ oc create -f nodeAgent.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the `nodeAgent` pods are running by using the following command:
 
@@ -190,11 +138,9 @@ Verification
     $ oc get pods
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -207,19 +153,15 @@ Verification
     velero-7b6c7fb8d7-ppc8m                                     1/1     Running     0          4m2s
     ```
 
-    </div>
-
 2.  Check the resource requests by describing one of the `nodeAgent` pod:
 
     ``` terminal
     $ oc describe pod node-agent-hbj9l | grep -C 5 Requests
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -236,7 +178,3 @@ Verification
           NODE_NAME:            (v1:spec.nodeName)
           VELERO_NAMESPACE:    openshift-adp (v1:metadata.namespace)
     ```
-
-    </div>
-
-</div>

@@ -2,29 +2,25 @@ OpenShift Container Platform allows use of VMware vSphere’s Virtual Machine Di
 
 VMware vSphere volumes can be provisioned dynamically. OpenShift Container Platform creates the disk in vSphere and attaches this disk to the correct image.
 
-> [!NOTE]
-> OpenShift Container Platform provisions new volumes as independent persistent disks that can freely attach and detach the volume on any node in the cluster. Consequently, you cannot back up volumes that use snapshots, or restore volumes from snapshots. See [Snapshot Limitations](https://docs.vmware.com/en/VMware-vSphere/6.7/com.vmware.vsphere.vm_admin.doc/GUID-53F65726-A23B-4CF0-A7D5-48E584B88613.html) for more information.
+<div class="note">
+
+OpenShift Container Platform provisions new volumes as independent persistent disks that can freely attach and detach the volume on any node in the cluster. Consequently, you cannot back up volumes that use snapshots, or restore volumes from snapshots. See [Snapshot Limitations](https://docs.vmware.com/en/VMware-vSphere/6.7/com.vmware.vsphere.vm_admin.doc/GUID-53F65726-A23B-4CF0-A7D5-48E584B88613.html) for more information.
+
+</div>
 
 The Kubernetes persistent volume framework allows administrators to provision a cluster with persistent storage and gives users a way to request those resources without having any knowledge of the underlying infrastructure.
 
 Persistent volumes are not bound to a single project or namespace; they can be shared across the OpenShift Container Platform cluster. Persistent volume claims are specific to a project or namespace and can be requested by users.
 
-> [!IMPORTANT]
-> For new installations, OpenShift Container Platform 4.13 and later provides automatic migration for the vSphere in-tree volume plugin to its equivalent CSI driver. Updating to OpenShift Container Platform 4.15 and later also provides automatic migration. For more information about updating and migration, see [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration).
->
-> CSI automatic migration should be seamless. Migration does not change how you use all existing API objects, such as persistent volumes, persistent volume claims, and storage classes.
+<div class="important">
 
-<div>
+For new installations, OpenShift Container Platform 4.13 and later provides automatic migration for the vSphere in-tree volume plugin to its equivalent CSI driver. Updating to OpenShift Container Platform 4.15 and later also provides automatic migration. For more information about updating and migration, see [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration).
 
-<div class="title">
-
-Additional resources
+CSI automatic migration should be seamless. Migration does not change how you use all existing API objects, such as persistent volumes, persistent volume claims, and storage classes.
 
 </div>
 
 - [VMware vSphere](https://www.vmware.com/au/products/vsphere.html)
-
-</div>
 
 # Dynamically provisioning VMware vSphere volumes
 
@@ -40,25 +36,7 @@ You can use either of the following procedures to dynamically provision these vo
 
 OpenShift Container Platform installs a default storage class, named `thin`, that uses the `thin` disk format for provisioning volumes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Storage must exist in the underlying infrastructure before it can be mounted as a volume in OpenShift Container Platform.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform console, click **Storage** → **Persistent Volume Claims**.
 
@@ -76,31 +54,11 @@ Procedure
 
 4.  Click **Create** to create the persistent volume claim and generate a persistent volume.
 
-</div>
-
 ## Dynamically provisioning VMware vSphere volumes using the CLI
 
 OpenShift Container Platform installs a default StorageClass, named `thin`, that uses the `thin` disk format for provisioning volumes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Storage must exist in the underlying infrastructure before it can be mounted as a volume in OpenShift Container Platform.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure (CLI)
-
-</div>
 
 1.  You can define a VMware vSphere PersistentVolumeClaim by creating a file, `pvc.yaml`, with the following contents:
 
@@ -129,31 +87,11 @@ Procedure (CLI)
     $ oc create -f pvc.yaml
     ```
 
-</div>
-
 # Statically provisioning VMware vSphere volumes
 
 To statically provision VMware vSphere volumes you must create the virtual machine disks for reference by the persistent volume framework.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Storage must exist in the underlying infrastructure before it can be mounted as a volume in OpenShift Container Platform.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the virtual machine disks. Virtual machine disks (VMDKs) must be created manually before statically provisioning VMware vSphere volumes. Use either of the following methods:
 
@@ -197,8 +135,11 @@ Procedure
 
     - The file system type to mount. For example, ext4, xfs, or other file systems.
 
-      > [!IMPORTANT]
-      > Changing the value of the fsType parameter after the volume is formatted and provisioned can result in data loss and pod failure.
+      <div class="important">
+
+      Changing the value of the fsType parameter after the volume is formatted and provisioned can result in data loss and pod failure.
+
+      </div>
 
 3.  Create the `PersistentVolume` object from the file:
 
@@ -235,8 +176,6 @@ Procedure
     ``` terminal
     $ oc create -f pvc1.yaml
     ```
-
-</div>
 
 ## Formatting VMware vSphere volumes
 

@@ -54,8 +54,11 @@ If this plugin finds and can read in that config map, you can define the role to
 
 - If you want to add the `Overall Jenkins Administer` permission to both the default `admin` and `edit` roles, as well as a new Jenkins role you have created, the value for the key `Overall-Administer` would be `admin,edit,jenkins`.
 
-> [!NOTE]
-> The `admin` user that is pre-populated in the OpenShift Container Platform Jenkins image with administrative privileges is not given those privileges when OpenShift Container Platform OAuth is used. To grant these permissions the OpenShift Container Platform cluster administrator must explicitly define that user in the OpenShift Container Platform identity provider and assign the `admin` role to the user.
+<div class="note">
+
+The `admin` user that is pre-populated in the OpenShift Container Platform Jenkins image with administrative privileges is not given those privileges when OpenShift Container Platform OAuth is used. To grant these permissions the OpenShift Container Platform cluster administrator must explicitly define that user in the OpenShift Container Platform identity provider and assign the `admin` role to the user.
+
+</div>
 
 Jenkins users' permissions that are stored can be changed after the users are initially established. The OpenShift Container Platform Login plugin polls the OpenShift Container Platform API server for permissions and updates the permissions stored in Jenkins for each user with the permissions retrieved from OpenShift Container Platform. If the Jenkins UI is used to update permissions for a Jenkins user, the permission changes are overwritten the next time the plugin polls OpenShift Container Platform.
 
@@ -69,14 +72,6 @@ Jenkins authentication is used by default if the image is run directly, without 
 
 The first time Jenkins starts, the configuration is created along with the administrator user and password. The default user credentials are `admin` and `password`. Configure the default password by setting the `JENKINS_PASSWORD` environment variable when using, and only when using, standard Jenkins authentication.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Create a Jenkins application that uses standard Jenkins authentication by entering the following command:
 
   ``` terminal
@@ -84,8 +79,6 @@ Procedure
       JENKINS_PASSWORD=<password> \
       ocp-tools-4/jenkins-rhel8
   ```
-
-</div>
 
 # Jenkins environment variables
 
@@ -98,24 +91,24 @@ The Jenkins server can be configured with the following environment variables:
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Variable</th>
 <th style="text-align: left;">Definition</th>
 <th style="text-align: left;">Example values and settings</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>OPENSHIFT_ENABLE_OAUTH</code></p></td>
 <td style="text-align: left;"><p>Determines whether the OpenShift Container Platform Login plugin manages authentication when logging in to Jenkins. To enable, set to <code>true</code>.</p></td>
 <td style="text-align: left;"><p>Default: <code>false</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>JENKINS_PASSWORD</code></p></td>
 <td style="text-align: left;"><p>The password for the <code>admin</code> user when using standard Jenkins authentication. Not applicable when <code>OPENSHIFT_ENABLE_OAUTH</code> is set to <code>true</code>.</p></td>
 <td style="text-align: left;"><p>Default: <code>password</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>JAVA_MAX_HEAP_PARAM</code>, <code>CONTAINER_HEAP_PERCENT</code>, <code>JENKINS_MAX_HEAP_UPPER_BOUND_MB</code></p></td>
 <td style="text-align: left;"><p>These values control the maximum heap size of the Jenkins JVM. If <code>JAVA_MAX_HEAP_PARAM</code> is set, its value takes precedence. Otherwise, the maximum heap size is dynamically calculated as <code>CONTAINER_HEAP_PERCENT</code> of the container memory limit, optionally capped at <code>JENKINS_MAX_HEAP_UPPER_BOUND_MB</code> MiB.</p>
 <p>By default, the maximum heap size of the Jenkins JVM is set to 50% of the container memory limit with no cap.</p></td>
@@ -123,74 +116,74 @@ The Jenkins server can be configured with the following environment variables:
 <p><code>CONTAINER_HEAP_PERCENT</code> default: <code>0.5</code>, or 50%</p>
 <p><code>JENKINS_MAX_HEAP_UPPER_BOUND_MB</code> example setting: <code>512 MiB</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>JAVA_INITIAL_HEAP_PARAM</code>, <code>CONTAINER_INITIAL_PERCENT</code></p></td>
 <td style="text-align: left;"><p>These values control the initial heap size of the Jenkins JVM. If <code>JAVA_INITIAL_HEAP_PARAM</code> is set, its value takes precedence. Otherwise, the initial heap size is dynamically calculated as <code>CONTAINER_INITIAL_PERCENT</code> of the dynamically calculated maximum heap size.</p>
 <p>By default, the JVM sets the initial heap size.</p></td>
 <td style="text-align: left;"><p><code>JAVA_INITIAL_HEAP_PARAM</code> example setting: <code>-Xms32m</code></p>
 <p><code>CONTAINER_INITIAL_PERCENT</code> example setting: <code>0.1</code>, or 10%</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>CONTAINER_CORE_LIMIT</code></p></td>
 <td style="text-align: left;"><p>If set, specifies an integer number of cores used for sizing numbers of internal JVM threads.</p></td>
 <td style="text-align: left;"><p>Example setting: <code>2</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>JAVA_TOOL_OPTIONS</code></p></td>
 <td style="text-align: left;"><p>Specifies options to apply to all JVMs running in this container. It is not recommended to override this value.</p></td>
 <td style="text-align: left;"><p>Default: <code>-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dsun.zip.disableMemoryMapping=true</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>JAVA_GC_OPTS</code></p></td>
 <td style="text-align: left;"><p>Specifies Jenkins JVM garbage collection parameters. It is not recommended to override this value.</p></td>
 <td style="text-align: left;"><p>Default: <code>-XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>JENKINS_JAVA_OVERRIDES</code></p></td>
 <td style="text-align: left;"><p>Specifies additional options for the Jenkins JVM. These options are appended to all other options, including the Java options above, and may be used to override any of them if necessary. Separate each additional option with a space; if any option contains space characters, escape them with a backslash.</p></td>
 <td style="text-align: left;"><p>Example settings: <code>-Dfoo -Dbar</code>; <code>-Dfoo=first\ value -Dbar=second\ value</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>JENKINS_OPTS</code></p></td>
 <td style="text-align: left;"><p>Specifies arguments to Jenkins.</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>INSTALL_PLUGINS</code></p></td>
 <td style="text-align: left;"><p>Specifies additional Jenkins plugins to install when the container is first run or when <code>OVERRIDE_PV_PLUGINS_WITH_IMAGE_PLUGINS</code> is set to <code>true</code>. Plugins are specified as a comma-delimited list of name:version pairs.</p></td>
 <td style="text-align: left;"><p>Example setting: <code>git:3.7.0,subversion:2.10.2</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>OPENSHIFT_PERMISSIONS_POLL_INTERVAL</code></p></td>
 <td style="text-align: left;"><p>Specifies the interval in milliseconds that the OpenShift Container Platform Login plugin polls OpenShift Container Platform for the permissions that are associated with each user that is defined in Jenkins.</p></td>
 <td style="text-align: left;"><p>Default: <code>300000</code> - 5 minutes</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>OVERRIDE_PV_CONFIG_WITH_IMAGE_CONFIG</code></p></td>
 <td style="text-align: left;"><p>When running this image with an OpenShift Container Platform persistent volume (PV) for the Jenkins configuration directory, the transfer of configuration from the image to the PV is performed only the first time the image starts because the PV is assigned when the persistent volume claim (PVC) is created. If you create a custom image that extends this image and updates the configuration in the custom image after the initial startup, the configuration is not copied over unless you set this environment variable to <code>true</code>.</p></td>
 <td style="text-align: left;"><p>Default: <code>false</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>OVERRIDE_PV_PLUGINS_WITH_IMAGE_PLUGINS</code></p></td>
 <td style="text-align: left;"><p>When running this image with an OpenShift Container Platform PV for the Jenkins configuration directory, the transfer of plugins from the image to the PV is performed only the first time the image starts because the PV is assigned when the PVC is created. If you create a custom image that extends this image and updates plugins in the custom image after the initial startup, the plugins are not copied over unless you set this environment variable to <code>true</code>.</p></td>
 <td style="text-align: left;"><p>Default: <code>false</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>ENABLE_FATAL_ERROR_LOG_FILE</code></p></td>
 <td style="text-align: left;"><p>When running this image with an OpenShift Container Platform PVC for the Jenkins configuration directory, this environment variable allows the fatal error log file to persist when a fatal error occurs. The fatal error file is saved at <code>/var/lib/jenkins/logs</code>.</p></td>
 <td style="text-align: left;"><p>Default: <code>false</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>AGENT_BASE_IMAGE</code></p></td>
 <td style="text-align: left;"><p>Setting this value overrides the image used for the <code>jnlp</code> container in the sample Kubernetes plugin pod templates provided with this image. Otherwise, the image from the <code>jenkins-agent-base-rhel8:latest</code> image stream tag in the <code>openshift</code> namespace is used.</p></td>
 <td style="text-align: left;"><p>Default: <code>image-registry.openshift-image-registry.svc:5000/openshift/jenkins-agent-base-rhel8:latest</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>JAVA_BUILDER_IMAGE</code></p></td>
 <td style="text-align: left;"><p>Setting this value overrides the image used for the <code>java-builder</code> container in the <code>java-builder</code> sample Kubernetes plugin pod templates provided with this image. Otherwise, the image from the <code>java:latest</code> image stream tag in the <code>openshift</code> namespace is used.</p></td>
 <td style="text-align: left;"><p>Default: <code>image-registry.openshift-image-registry.svc:5000/openshift/java:latest</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>JAVA_FIPS_OPTIONS</code></p></td>
 <td style="text-align: left;"><p>Setting this value controls how the JVM operates when running on a FIPS node. For more information, see <a href="https://access.redhat.com/documentation/en-us/red_hat_build_of_openjdk/11/html-single/configuring_red_hat_build_of_openjdk_11_on_rhel_with_fips/index#config-fips-in-openjdk">Configure Red Hat build of OpenJDK 11 in FIPS mode</a>.</p></td>
 <td style="text-align: left;"><p>Default: <code>-Dcom.redhat.fips=false</code></p></td>
@@ -202,25 +195,15 @@ The Jenkins server can be configured with the following environment variables:
 
 If you are going to run Jenkins somewhere other than your same project, you must provide an access token to Jenkins to access your project.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Identify the secret for the service account that has appropriate permissions to access the project that Jenkins must access by entering the following command:
 
     ``` terminal
     $ oc describe serviceaccount jenkins
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -233,8 +216,6 @@ Procedure
                 jenkins-token-uyswp
     ```
 
-    </div>
-
     In this case the secret is named `jenkins-token-uyswp`.
 
 2.  Retrieve the token from the secret by entering the following command:
@@ -243,11 +224,9 @@ Procedure
     $ oc describe secret <secret name from above>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -262,11 +241,7 @@ Procedure
     token:  eyJhbGc..<content cut>....wRA
     ```
 
-    </div>
-
     The token parameter contains the token value Jenkins requires to access the project.
-
-</div>
 
 # Jenkins cross volume mount points
 
@@ -300,11 +275,9 @@ This file contains your custom Jenkins configuration.
 
 The contents of the `configuration/` directory is copied to the `/var/lib/jenkins/` directory, so you can also include additional files, such as `credentials.xml`, there.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample build configuration to customize the Jenkins image in OpenShift Container Platform
+**Sample build configuration to customize the Jenkins image in OpenShift Container Platform**
 
 </div>
 
@@ -331,8 +304,6 @@ spec:
       name: custom-jenkins:latest
 ```
 
-</div>
-
 - The `source` parameter defines the source Git repository with the layout described above.
 
 - The `strategy` parameter defines the original Jenkins image to use as a source image for the build.
@@ -345,17 +316,23 @@ The OpenShift Jenkins image includes the preinstalled [Kubernetes plugin for Jen
 
 To use the Kubernetes plugin, OpenShift Container Platform provides an OpenShift Agent Base image that is suitable for use as a Jenkins agent.
 
-> [!IMPORTANT]
-> OpenShift Container Platform 4.11 moves the OpenShift Jenkins and OpenShift Agent Base images to the `ocp-tools-4` repository at `registry.redhat.io` so that Red Hat can produce and update the images outside the OpenShift Container Platform lifecycle. Previously, these images were in the OpenShift Container Platform install payload and the `openshift4` repository at `registry.redhat.io`.
->
-> The OpenShift Jenkins Maven and NodeJS Agent images were removed from the OpenShift Container Platform 4.11 payload. Red Hat no longer produces these images, and they are not available from the `ocp-tools-4` repository at `registry.redhat.io`. Red Hat maintains the 4.10 and earlier versions of these images for any significant bug fixes or security CVEs, following the [OpenShift Container Platform lifecycle policy](https://access.redhat.com/support/policy/updates/openshift).
->
-> For more information, see the "Important changes to OpenShift Jenkins images" link in the following "Additional resources" section.
+<div class="important">
+
+OpenShift Container Platform 4.11 moves the OpenShift Jenkins and OpenShift Agent Base images to the `ocp-tools-4` repository at `registry.redhat.io` so that Red Hat can produce and update the images outside the OpenShift Container Platform lifecycle. Previously, these images were in the OpenShift Container Platform install payload and the `openshift4` repository at `registry.redhat.io`.
+
+The OpenShift Jenkins Maven and NodeJS Agent images were removed from the OpenShift Container Platform 4.11 payload. Red Hat no longer produces these images, and they are not available from the `ocp-tools-4` repository at `registry.redhat.io`. Red Hat maintains the 4.10 and earlier versions of these images for any significant bug fixes or security CVEs, following the [OpenShift Container Platform lifecycle policy](https://access.redhat.com/support/policy/updates/openshift).
+
+For more information, see the "Important changes to OpenShift Jenkins images" link in the following "Additional resources" section.
+
+</div>
 
 The Maven and Node.js agent images are automatically configured as Kubernetes pod template images within the OpenShift Container Platform Jenkins image configuration for the Kubernetes plugin. That configuration includes labels for each image that you can apply to any of your Jenkins jobs under their `Restrict where this project can be run` setting. If the label is applied, jobs run under an OpenShift Container Platform pod running the respective agent image.
 
-> [!IMPORTANT]
-> In OpenShift Container Platform 4.10 and later, the recommended pattern for running Jenkins agents using the Kubernetes plugin is to use pod templates with both `jnlp` and `sidecar` containers. The `jnlp` container uses the OpenShift Container Platform Jenkins Base agent image to facilitate launching a separate pod for your build. The `sidecar` container image has the tools needed to build in a particular language within the separate pod that was launched. Many container images from the Red Hat Container Catalog are referenced in the sample image streams in the `openshift` namespace. The OpenShift Container Platform Jenkins image has a pod template named `java-build` with sidecar containers that demonstrate this approach. This pod template uses the latest Java version provided by the `java` image stream in the `openshift` namespace.
+<div class="important">
+
+In OpenShift Container Platform 4.10 and later, the recommended pattern for running Jenkins agents using the Kubernetes plugin is to use pod templates with both `jnlp` and `sidecar` containers. The `jnlp` container uses the OpenShift Container Platform Jenkins Base agent image to facilitate launching a separate pod for your build. The `sidecar` container image has the tools needed to build in a particular language within the separate pod that was launched. Many container images from the Red Hat Container Catalog are referenced in the sample image streams in the `openshift` namespace. The OpenShift Container Platform Jenkins image has a pod template named `java-build` with sidecar containers that demonstrate this approach. This pod template uses the latest Java version provided by the `java` image stream in the `openshift` namespace.
+
+</div>
 
 The Jenkins image also provides auto-discovery and auto-configuration of additional agent images for the Kubernetes plugin.
 
@@ -371,18 +348,19 @@ When the Jenkins image finds an image stream with the appropriate label, or an i
 
 The name and image references of the image stream, or image stream tag, are mapped to the name and image fields in the Kubernetes plugin pod template. You can control the label field of the Kubernetes plugin pod template by setting an annotation on the image stream, or image stream tag object, with the key `agent-label`. Otherwise, the name is used as the label.
 
-> [!NOTE]
-> Do not log in to the Jenkins console and change the pod template configuration. If you do so after the pod template is created, and the OpenShift Container Platform Sync plugin detects that the image associated with the image stream or image stream tag has changed, it replaces the pod template and overwrites those configuration changes. You cannot merge a new configuration with the existing configuration.
->
-> Consider the config map approach if you have more complex configuration needs.
+<div class="note">
+
+Do not log in to the Jenkins console and change the pod template configuration. If you do so after the pod template is created, and the OpenShift Container Platform Sync plugin detects that the image associated with the image stream or image stream tag has changed, it replaces the pod template and overwrites those configuration changes. You cannot merge a new configuration with the existing configuration.
+
+Consider the config map approach if you have more complex configuration needs.
+
+</div>
 
 When it finds a config map with the appropriate label, the Jenkins image assumes that any values in the key-value data payload of the config map contain Extensible Markup Language (XML) consistent with the configuration format for Jenkins and the Kubernetes plugin pod templates. One key advantage of config maps over image streams and image stream tags is that you can control all the Kubernetes plugin pod template parameters.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample config map for `jenkins-agent`
+**Sample config map for `jenkins-agent`**
 
 </div>
 
@@ -427,8 +405,6 @@ data:
       <nodeProperties/>
     </org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
 ```
-
-</div>
 
 The following example shows two containers that reference image streams in the `openshift` namespace. One container handles the JNLP contract for launching Pods as Jenkins Agents. The other container uses an image with tools for building code in a particular coding language:
 
@@ -489,10 +465,13 @@ data:
         </org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
 ```
 
-> [!NOTE]
-> Do not log in to the Jenkins console and change the pod template configuration. If you do so after the pod template is created, and the OpenShift Container Platform Sync plugin detects that the image associated with the image stream or image stream tag has changed, it replaces the pod template and overwrites those configuration changes. You cannot merge a new configuration with the existing configuration.
->
-> Consider the config map approach if you have more complex configuration needs.
+<div class="note">
+
+Do not log in to the Jenkins console and change the pod template configuration. If you do so after the pod template is created, and the OpenShift Container Platform Sync plugin detects that the image associated with the image stream or image stream tag has changed, it replaces the pod template and overwrites those configuration changes. You cannot merge a new configuration with the existing configuration.
+
+Consider the config map approach if you have more complex configuration needs.
+
+</div>
 
 After it is installed, the OpenShift Container Platform Sync plugin monitors the API server of OpenShift Container Platform for updates to image streams, image stream tags, and config maps and adjusts the configuration of the Kubernetes plugin.
 
@@ -508,17 +487,7 @@ The following rules apply:
 
 To use a container image as a Jenkins agent, the image must run the agent as an entry point. For more details, see the official [Jenkins documentation](https://wiki.jenkins-ci.org/display/JENKINS/Distributed+builds#Distributedbuilds-Launchslaveagentheadlessly).
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Important changes to OpenShift Jenkins images](../../cicd/jenkins/important-changes-to-openshift-jenkins-images.xml#important-changes-to-openshift-jenkins-images)
-
-</div>
 
 # Jenkins permissions
 
@@ -544,8 +513,11 @@ Templates provide parameter fields to define all the environment variables with 
 
 The two available templates both define deployment configuration and a service. The templates differ in their storage strategy, which affects whether the Jenkins content persists across a pod restart.
 
-> [!NOTE]
-> A pod might be restarted when it is moved to another node or when an update of the deployment configuration triggers a redeployment.
+<div class="note">
+
+A pod might be restarted when it is moved to another node or when an update of the deployment configuration triggers a redeployment.
+
+</div>
 
 - `jenkins-ephemeral` uses ephemeral storage. On pod restart, all data is lost. This template is only useful for development or testing.
 
@@ -554,14 +526,6 @@ The two available templates both define deployment configuration and a service. 
 To use a PV store, the cluster administrator must define a PV pool in the OpenShift Container Platform deployment.
 
 After you select which template you want, you must instantiate the template to be able to use Jenkins.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Create a new Jenkins application using one of the following methods:
 
@@ -577,8 +541,6 @@ Procedure
     $ oc new-app jenkins-ephemeral
     ```
 
-</div>
-
 With both templates, you can run `oc describe` on them to see all the parameters available for overriding.
 
 For example:
@@ -591,16 +553,17 @@ $ oc describe jenkins-ephemeral
 
 In the following example, the `openshift-jee-sample` `BuildConfig` object causes a Jenkins Maven agent pod to be dynamically provisioned. The pod clones some Java source code, builds a WAR file, and causes a second `BuildConfig`, `openshift-jee-sample-docker` to run. The second `BuildConfig` layers the new WAR file into a container image.
 
-> [!IMPORTANT]
-> OpenShift Container Platform 4.11 removed the OpenShift Jenkins Maven and NodeJS Agent images from its payload. Red Hat no longer produces these images, and they are not available from the `ocp-tools-4` repository at `registry.redhat.io`. Red Hat maintains the 4.10 and earlier versions of these images for any significant bug fixes or security CVEs, following the [OpenShift Container Platform lifecycle policy](https://access.redhat.com/support/policy/updates/openshift).
->
-> For more information, see the "Important changes to OpenShift Jenkins images" link in the following "Additional resources" section.
+<div class="important">
 
-<div class="formalpara">
+OpenShift Container Platform 4.11 removed the OpenShift Jenkins Maven and NodeJS Agent images from its payload. Red Hat no longer produces these images, and they are not available from the `ocp-tools-4` repository at `registry.redhat.io`. Red Hat maintains the 4.10 and earlier versions of these images for any significant bug fixes or security CVEs, following the [OpenShift Container Platform lifecycle policy](https://access.redhat.com/support/policy/updates/openshift).
 
-<div class="title">
+For more information, see the "Important changes to OpenShift Jenkins images" link in the following "Additional resources" section.
 
-Sample `BuildConfig` that uses the Jenkins Kubernetes plugin
+</div>
+
+<div class="formalpara-title">
+
+**Sample `BuildConfig` that uses the Jenkins Kubernetes plugin**
 
 </div>
 
@@ -649,15 +612,11 @@ items:
     - type: ConfigChange
 ```
 
-</div>
-
 It is also possible to override the specification of the dynamically created Jenkins agent pod. The following is a modification to the preceding example, which overrides the container memory and specifies an environment variable.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample `BuildConfig` that uses the Jenkins Kubernetes plugin, specifying memory limit and environment variable
+**Sample `BuildConfig` that uses the Jenkins Kubernetes plugin, specifying memory limit and environment variable**
 
 </div>
 
@@ -692,8 +651,6 @@ spec:
   triggers:
   - type: ConfigChange
 ```
-
-</div>
 
 - A new pod template called `mypod` is defined dynamically. The new pod template name is referenced in the node stanza.
 
@@ -761,17 +718,7 @@ spec:
 }
 ```
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Important changes to OpenShift Jenkins images](../../cicd/jenkins/important-changes-to-openshift-jenkins-images.xml#important-changes-to-openshift-jenkins-images)
-
-</div>
 
 # Jenkins memory requirements
 

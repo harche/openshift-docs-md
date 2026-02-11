@@ -10,21 +10,11 @@ After installation, you must edit the Image Registry Operator configuration to s
 
 To start the image registry, you must change the Image Registry Operator configuration’s `managementState` from `Removed` to `Managed`.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Change `managementState` Image Registry Operator configuration from `Removed` to `Managed`. For example:
 
   ``` terminal
   $ oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"managementState":"Managed"}}'
   ```
-
-</div>
 
 # Image registry storage configuration
 
@@ -38,39 +28,27 @@ You can also allow the image registry to use block storage types by using the `R
 
 As a cluster administrator, following installation you must configure your registry to use storage.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have a cluster on Nutanix.
 
 - You have provisioned persistent storage for your cluster, such as Red Hat OpenShift Data Foundation.
 
-  > [!IMPORTANT]
-  > OpenShift Container Platform supports `ReadWriteOnce` access for image registry storage when you have only one replica. `ReadWriteOnce` access also requires that the registry uses the `Recreate` rollout strategy. To deploy an image registry that supports high availability with two or more replicas, `ReadWriteMany` access is required.
+  <div class="important">
+
+  OpenShift Container Platform supports `ReadWriteOnce` access for image registry storage when you have only one replica. `ReadWriteOnce` access also requires that the registry uses the `Recreate` rollout strategy. To deploy an image registry that supports high availability with two or more replicas, `ReadWriteMany` access is required.
+
+  </div>
 
 - You must have 100 Gi capacity.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To configure your registry to use storage, change the `spec.storage.pvc` in the `configs.imageregistry/cluster` resource.
 
-    > [!NOTE]
-    > When you use shared storage, review your security settings to prevent outside access.
+    <div class="note">
+
+    When you use shared storage, review your security settings to prevent outside access.
+
+    </div>
 
 2.  Verify that you do not have a registry pod:
 
@@ -78,11 +56,9 @@ Procedure
     $ oc get pod -n openshift-image-registry -l docker-registry=default
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -90,10 +66,11 @@ Procedure
     No resourses found in openshift-image-registry namespace
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > If you do have a registry pod in your output, you do not need to continue with this procedure.
+    If you do have a registry pod in your output, you do not need to continue with this procedure.
+
+    </div>
 
 3.  Check the registry configuration:
 
@@ -101,11 +78,9 @@ Procedure
     $ oc edit configs.imageregistry.operator.openshift.io
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -115,8 +90,6 @@ Procedure
         claim:
     ```
 
-    </div>
-
     Leave the `claim` field blank to allow the automatic creation of an `image-registry-storage` persistent volume claim (PVC). The PVC is generated based on the default storage class. However, be aware that the default storage class might provide ReadWriteOnce (RWO) volumes, such as a RADOS Block Device (RBD), which can cause issues when you replicate to more than one replica.
 
 4.  Check the `clusteroperator` status:
@@ -125,11 +98,9 @@ Procedure
     $ oc get clusteroperator image-registry
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -138,21 +109,9 @@ Procedure
     image-registry   4.13                                  True        False         False      6h50m
     ```
 
-    </div>
-
-</div>
-
 ## Configuring storage for the image registry in non-production clusters
 
 You must configure storage for the Image Registry Operator. For non-production clusters, you can set the image registry to an empty directory. If you do so, all images are lost if you restart the registry.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To set the image registry storage to an empty directory:
 
@@ -160,8 +119,11 @@ Procedure
   $ oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"storage":{"emptyDir":{}}}}'
   ```
 
-  > [!WARNING]
-  > Configure this option only for non-production clusters.
+  <div class="warning">
+
+  Configure this option only for non-production clusters.
+
+  </div>
 
   If you run this command before the Image Registry Operator initializes its components, the `oc patch` command fails with the following error:
 
@@ -171,22 +133,15 @@ Procedure
 
   Wait a few minutes and run the command again.
 
-</div>
-
 ## Configuring block registry storage for Nutanix volumes
 
 To allow the image registry to use block storage types such as Nutanix volumes during upgrades as a cluster administrator, you can use the `Recreate` rollout strategy.
 
-> [!IMPORTANT]
-> Block storage volumes, or block persistent volumes, are supported but not recommended for use with the image registry on production clusters. An installation where the registry is configured on block storage is not highly available because the registry cannot have more than one replica.
->
-> If you choose to use a block storage volume with the image registry, you must use a filesystem persistent volume claim (PVC).
+<div class="important">
 
-<div>
+Block storage volumes, or block persistent volumes, are supported but not recommended for use with the image registry on production clusters. An installation where the registry is configured on block storage is not highly available because the registry cannot have more than one replica.
 
-<div class="title">
-
-Procedure
+If you choose to use a block storage volume with the image registry, you must use a filesystem persistent volume claim (PVC).
 
 </div>
 
@@ -240,11 +195,9 @@ Procedure
     $ oc edit config.imageregistry.operator.openshift.io -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -254,11 +207,7 @@ Procedure
         claim:
     ```
 
-    </div>
-
     By creating a custom PVC, you can leave the `claim` field blank for the default automatic creation of an `image-registry-storage` PVC.
-
-</div>
 
 ## Configuring the Image Registry Operator to use Ceph RGW storage with Red Hat OpenShift Data Foundation
 
@@ -270,14 +219,6 @@ Red Hat OpenShift Data Foundation integrates multiple storage types that you can
 
 Use the following, procedure to configure the image registry to use Ceph RGW storage.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have access to the OpenShift Container Platform web console.
@@ -285,16 +226,6 @@ Prerequisites
 - You installed the `oc` CLI.
 
 - You installed the [OpenShift Data Foundation Operator](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/latest) to provide object storage and Ceph RGW object storage.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the object bucket claim using the `ocs-storagecluster-ceph-rgw` storage class. For example:
 
@@ -357,8 +288,6 @@ Procedure
     $ oc patch config.image/cluster -p '{"spec":{"managementState":"Managed","replicas":2,"storage":{"managementState":"Unmanaged","s3":{"bucket":'\"${bucket_name}\"',"region":"us-east-1","regionEndpoint":'\"https://${route_host}\"',"virtualHostedStyle":false,"encrypt":false,"trustedCA":{"name":"image-registry-s3-bundle"}}}}}' --type=merge
     ```
 
-</div>
-
 ## Configuring the Image Registry Operator to use Noobaa storage with Red Hat OpenShift Data Foundation
 
 Red Hat OpenShift Data Foundation integrates multiple storage types that you can use with the OpenShift image registry:
@@ -369,14 +298,6 @@ Red Hat OpenShift Data Foundation integrates multiple storage types that you can
 
 Use the following the procedure to configure the image registry to use Noobaa storage.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have access to the OpenShift Container Platform web console.
@@ -384,16 +305,6 @@ Prerequisites
 - You installed the `oc` CLI.
 
 - You installed the [OpenShift Data Foundation Operator](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/latest) to provide object storage and Noobaa object storage.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the object bucket claim using the `openshift-storage.noobaa.io` storage class. For example:
 
@@ -456,8 +367,6 @@ Procedure
     $ oc patch config.image/cluster -p '{"spec":{"managementState":"Managed","replicas":2,"storage":{"managementState":"Unmanaged","s3":{"bucket":'\"${bucket_name}\"',"region":"us-east-1","regionEndpoint":'\"https://${route_host}\"',"virtualHostedStyle":false,"encrypt":false,"trustedCA":{"name":"image-registry-s3-bundle"}}}}}' --type=merge
     ```
 
-</div>
-
 # Configuring the Image Registry Operator to use CephFS storage with Red Hat OpenShift Data Foundation
 
 Red Hat OpenShift Data Foundation integrates multiple storage types that you can use with the OpenShift image registry:
@@ -468,14 +377,9 @@ Red Hat OpenShift Data Foundation integrates multiple storage types that you can
 
 Use the following procedure to configure the image registry to use CephFS storage.
 
-> [!NOTE]
-> CephFS uses persistent volume claim (PVC) storage. It is not recommended to use PVCs for image registry storage if there are other options are available, such as Ceph RGW or Noobaa.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+CephFS uses persistent volume claim (PVC) storage. It is not recommended to use PVCs for image registry storage if there are other options are available, such as Ceph RGW or Noobaa.
 
 </div>
 
@@ -486,16 +390,6 @@ Prerequisites
 - You installed the `oc` CLI.
 
 - You installed the [OpenShift Data Foundation Operator](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/latest) to provide object storage and CephFS file storage.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a PVC to use the `cephfs` storage class. For example:
 
@@ -521,8 +415,6 @@ Procedure
     ``` terminal
     $ oc patch config.image/cluster -p '{"spec":{"managementState":"Managed","replicas":2,"storage":{"managementState":"Unmanaged","pvc":{"claim":"registry-storage-pvc"}}}}' --type=merge
     ```
-
-</div>
 
 # Additional resources
 

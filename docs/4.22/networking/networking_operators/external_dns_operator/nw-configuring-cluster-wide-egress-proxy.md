@@ -4,14 +4,6 @@ To propagate proxy settings to your deployed Operators, configure the cluster-wi
 
 To enable the External DNS Operator to authenticate with the cluster-wide proxy, configure the Operator to trust the certificate authority (CA) of the proxy. This ensures secure communication when routing DNS traffic through the proxy.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the config map to contain the CA bundle in the `external-dns-operator` namespace by running the following command:
 
     ``` terminal
@@ -30,20 +22,8 @@ Procedure
     $ oc -n external-dns-operator patch subscription external-dns-operator --type='json' -p='[{"op": "add", "path": "/spec/config", "value":{"env":[{"name":"TRUSTED_CA_CONFIGMAP_NAME","value":"trusted-ca"}]}}]'
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - After deploying the External DNS Operator, verify that the trusted CA environment variable is added by running the following command. The output must show `trusted-ca` for the `external-dns-operator` deployment.
 
   ``` terminal
   $ oc -n external-dns-operator exec deploy/external-dns-operator -c external-dns-operator -- printenv TRUSTED_CA_CONFIGMAP_NAME
   ```
-
-</div>

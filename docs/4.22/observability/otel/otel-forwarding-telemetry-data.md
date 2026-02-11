@@ -4,37 +4,17 @@ You can use the OpenTelemetry Collector to forward your telemetry data.
 
 To configure forwarding traces to a TempoStack instance, you can deploy and configure the OpenTelemetry Collector. You can deploy the OpenTelemetry Collector in the deployment mode by using the specified processors, receivers, and exporters. For other modes, see the OpenTelemetry Collector documentation linked in *Additional resources*.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The Red Hat build of OpenTelemetry Operator is installed.
 
 - The Tempo Operator is installed.
 
 - A TempoStack instance is deployed on the cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a service account for the OpenTelemetry Collector.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example ServiceAccount
+    **Example ServiceAccount**
 
     </div>
 
@@ -45,15 +25,11 @@ Procedure
       name: otel-collector-deployment
     ```
 
-    </div>
-
 2.  Create a cluster role for the service account.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example ClusterRole
+    **Example ClusterRole**
 
     </div>
 
@@ -74,8 +50,6 @@ Procedure
       verbs: ["get", "watch", "list"]
     ```
 
-    </div>
-
     - This example uses the Kubernetes Attributes Processor, which requires these permissions for the `pods` and `namespaces` resources.
 
     - Also due to the Kubernetes Attributes Processor, these permissions are required for the `replicasets` resources.
@@ -84,11 +58,9 @@ Procedure
 
 3.  Bind the cluster role to the service account.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example ClusterRoleBinding
+    **Example ClusterRoleBinding**
 
     </div>
 
@@ -107,15 +79,11 @@ Procedure
       apiGroup: rbac.authorization.k8s.io
     ```
 
-    </div>
-
 4.  Create the YAML file to define the `OpenTelemetryCollector` custom resource (CR).
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example OpenTelemetryCollector
+    **Example OpenTelemetryCollector**
 
     </div>
 
@@ -163,43 +131,34 @@ Procedure
               exporters: [otlp]
     ```
 
-    </div>
-
     - The Collector exporter is configured to export OTLP and points to the Tempo distributor endpoint, `"tempo-simplest-distributor:4317"` in this example, which is already created.
 
     - The Collector is configured with a receiver for Jaeger traces, OpenCensus traces over the OpenCensus protocol, Zipkin traces over the Zipkin protocol, and OTLP traces over the gRPC protocol.
 
-</div>
+<div class="tip">
 
-> [!TIP]
-> You can deploy `telemetrygen` as a test:
->
-> ``` yaml
-> apiVersion: batch/v1
-> kind: Job
-> metadata:
->   name: telemetrygen
-> spec:
->   template:
->     spec:
->       containers:
->         - name: telemetrygen
->           image: ghcr.io/open-telemetry/opentelemetry-collector-contrib/telemetrygen:latest
->           args:
->             - traces
->             - --otlp-endpoint=otel-collector:4317
->             - --otlp-insecure
->             - --duration=30s
->             - --workers=1
->       restartPolicy: Never
->   backoffLimit: 4
-> ```
+You can deploy `telemetrygen` as a test:
 
-<div>
-
-<div class="title">
-
-Additional resources
+``` yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: telemetrygen
+spec:
+  template:
+    spec:
+      containers:
+        - name: telemetrygen
+          image: ghcr.io/open-telemetry/opentelemetry-collector-contrib/telemetrygen:latest
+          args:
+            - traces
+            - --otlp-endpoint=otel-collector:4317
+            - --otlp-insecure
+            - --duration=30s
+            - --workers=1
+      restartPolicy: Never
+  backoffLimit: 4
+```
 
 </div>
 
@@ -207,19 +166,9 @@ Additional resources
 
 - [Deployment examples on GitHub](https://github.com/os-observability/redhat-rhosdt-samples) (GitHub)
 
-</div>
-
 # Forwarding logs to a LokiStack instance
 
 You can deploy the OpenTelemetry Collector to forward logs to a `LokiStack` instance by using the `openshift-logging` tenants mode.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - The Red Hat build of OpenTelemetry Operator is installed.
 
@@ -227,23 +176,11 @@ Prerequisites
 
 - A supported `LokiStack` instance is deployed on the cluster. For more information about the supported `LokiStack` configuration, see *Logging*.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a service account for the OpenTelemetry Collector.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `ServiceAccount` object
+    **Example `ServiceAccount` object**
 
     </div>
 
@@ -255,15 +192,11 @@ Procedure
       namespace: openshift-logging
     ```
 
-    </div>
-
 2.  Create a cluster role that grants the Collector’s service account the permissions to push logs to the `LokiStack` application tenant.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `ClusterRole` object
+    **Example `ClusterRole` object**
 
     </div>
 
@@ -288,15 +221,11 @@ Procedure
        verbs: ["get", "list", "watch"]
     ```
 
-    </div>
-
 3.  Bind the cluster role to the service account.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `ClusterRoleBinding` object
+    **Example `ClusterRoleBinding` object**
 
     </div>
 
@@ -315,15 +244,11 @@ Procedure
         namespace: openshift-logging
     ```
 
-    </div>
-
 4.  Create an `OpenTelemetryCollector` custom resource (CR) object.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `OpenTelemetryCollector` CR object
+    **Example `OpenTelemetryCollector` CR object**
 
     </div>
 
@@ -388,68 +313,54 @@ Procedure
               exporters: [debug]
     ```
 
-    </div>
-
     - Provides the following resource attributes to be used by the web console: `kubernetes.namespace_name`, `kubernetes.pod_name`, `kubernetes.container_name`, and `log_type`.
 
     - Enables the BearerTokenAuth Extension that is required by the OTLP HTTP Exporter.
 
     - Enables the OTLP HTTP Exporter to export logs from the Collector.
 
-</div>
+<div class="tip">
 
-> [!TIP]
-> You can deploy `telemetrygen` as a test:
->
-> ``` yaml
-> apiVersion: batch/v1
-> kind: Job
-> metadata:
->   name: telemetrygen
-> spec:
->   template:
->     spec:
->       containers:
->         - name: telemetrygen
->           image: ghcr.io/open-telemetry/opentelemetry-collector-contrib/telemetrygen:v0.106.1
->           args:
->             - logs
->             - --otlp-endpoint=otel-collector.openshift-logging.svc.cluster.local:4317
->             - --otlp-insecure
->             - --duration=180s
->             - --workers=1
->             - --logs=10
->             - --otlp-attributes=k8s.container.name="telemetrygen"
->       restartPolicy: Never
->   backoffLimit: 4
-> ```
+You can deploy `telemetrygen` as a test:
+
+``` yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: telemetrygen
+spec:
+  template:
+    spec:
+      containers:
+        - name: telemetrygen
+          image: ghcr.io/open-telemetry/opentelemetry-collector-contrib/telemetrygen:v0.106.1
+          args:
+            - logs
+            - --otlp-endpoint=otel-collector.openshift-logging.svc.cluster.local:4317
+            - --otlp-insecure
+            - --duration=180s
+            - --workers=1
+            - --logs=10
+            - --otlp-attributes=k8s.container.name="telemetrygen"
+      restartPolicy: Never
+  backoffLimit: 4
+```
+
+</div>
 
 # Forwarding telemetry data to third-party systems
 
 The OpenTelemetry Collector exports telemetry data by using the OTLP exporter via the OpenTelemetry Protocol (OTLP) that is implemented over the gRPC or HTTP transports. If you need to forward telemetry data to your third-party system and it does not support the OTLP or other supported protocol in the Red Hat build of OpenTelemetry, then you can deploy an unsupported custom OpenTelemetry Collector that can receive telemetry data via the OTLP and export it to your third-party system by using a custom exporter.
 
-> [!WARNING]
-> Red Hat does not support custom deployments.
+<div class="warning">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Red Hat does not support custom deployments.
 
 </div>
 
 - You have developed your own unsupported custom exporter that can export telemetry data via the OTLP to your third-party system.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Deploy a custom Collector either through the OperatorHub or manually:
 
@@ -457,11 +368,9 @@ Procedure
 
   - Deploy the custom Collector manually by using a config map, deployment, and service.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example of a custom Collector deployment
+    **Example of a custom Collector deployment**
 
     </div>
 
@@ -534,47 +443,23 @@ Procedure
         component: otel-collector
     ```
 
-    </div>
-
     - Replace `debug` with the required exporter for your third-party system.
 
     - Replace the image with the required version of the OpenTelemetry Collector that has the required exporter for your third-party system.
 
     - The service name is used in the Red Hat build of OpenTelemetry Collector CR to configure the OTLP exporter.
 
-</div>
-
 # Forwarding telemetry data to AWS
 
 To forward telemetry data to AWS, use the OpenTelemetry Collector with the following exporters: AWS CloudWatch Logs Exporter for logs, AWS EMF Exporter for metrics, and AWS X-Ray Exporter for traces.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Exporters](../../observability/otel/otel-collector/otel-collector-exporters.xml#otel-collector-exporters)
-
-</div>
 
 # Forwarding telemetry data to Google Cloud
 
 To forward telemetry data to Google Cloud Operations Suite, use the OpenTelemetry Collector with the Google Cloud Exporter. The exporter sends metrics to Google Cloud Monitoring, logs to Google Cloud Logging, and traces to Google Cloud Trace.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Exporters](../../observability/otel/otel-collector/otel-collector-exporters.xml#otel-collector-exporters)
-
-</div>
 
 # Additional resources
 

@@ -73,27 +73,11 @@ You can find the phase of a machine by using the OpenShift CLI (`oc`) or by usin
 
 You can find the phase of a machine by using the OpenShift CLI (`oc`).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
 
 - You have installed the `oc` CLI.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - List the machines on the cluster by running the following command:
 
@@ -101,11 +85,9 @@ Procedure
   $ oc get machine -n openshift-machine-api
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -119,35 +101,13 @@ Procedure
   mycluster-5kbsp-worker-us-west-1b-c8qzm   Running   m6i.xlarge   us-west-1   us-west-1b   4h51m
   ```
 
-  </div>
-
   The `PHASE` column of the output contains the phase of each machine.
-
-</div>
 
 ## Determining the phase of a machine by using the web console
 
 You can find the phase of a machine by using the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the web console as a user with the `cluster-admin` role.
 
@@ -159,11 +119,9 @@ Procedure
 
 5.  In the YAML block, find the value of the `status.phase` field.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example YAML snippet
+    **Example YAML snippet**
 
     </div>
 
@@ -177,11 +135,7 @@ Procedure
       phase: Running
     ```
 
-    </div>
-
     - In this example, the phase is `Running`.
-
-</div>
 
 # Additional resources
 

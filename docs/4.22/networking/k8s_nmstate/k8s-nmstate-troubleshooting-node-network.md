@@ -14,27 +14,9 @@ The example attempts to apply a Linux bridge policy to a cluster that has three 
 
 To find an error, you need to investigate the available NMState resources. You can then update the policy with the correct configuration.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You installed the OpenShift CLI (`oc`).
 
 - You ensured that an `ens01` interface does not exist on your Linux system.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a policy on your cluster. The following example creates a simple bridge, `br1` that has `ens01` as its member:
 
@@ -165,26 +147,19 @@ Procedure
 
     The updated policy is successfully configured on all nodes in the cluster.
 
-</div>
-
 # Troubleshooting DNS connectivity issues in a disconnected environment
 
 If you experience health check probe issues when configuring `nmstate` in a disconnected environment, you can configure the DNS server to resolve the custom domain name instead of the default `root-servers.net` domain.
 
-> [!IMPORTANT]
-> Ensure that the DNS server includes a name server (NS) entry for the `root-servers.net` zone. The DNS server does not need to forward a query to an upstream resolver, but the server must return a correct answer for the NS query.
+<div class="important">
+
+Ensure that the DNS server includes a name server (NS) entry for the `root-servers.net` zone. The DNS server does not need to forward a query to an upstream resolver, but the server must return a correct answer for the NS query.
+
+</div>
 
 ## Configuring the bind9 DNS named server
 
 For a cluster configured to query a `bind9` DNS server, you can add the `root-servers.net` zone to a configuration file that contains at least one DNS record. For example you can use the `/var/named/named.localhost` as a zone file that already matches this criteria.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Add the `root-servers.net` zone at the end of the `/etc/named.conf` configuration file by running the following command:
 
@@ -209,11 +184,9 @@ Procedure
     $ journalctl -u named|grep root-servers.net
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -222,19 +195,15 @@ Procedure
     Jul 03 15:16:26 rhel-8-10 named[xxxx]: zone root-servers.net/IN: loaded serial 0
     ```
 
-    </div>
-
 4.  Verify that the DNS server can resolve the NS record for the `root-servers.net` domain by running the following command:
 
     ``` terminal
     $ host -t NS root-servers.net. 127.0.0.1
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -246,21 +215,9 @@ Procedure
     root-servers.net name server root-servers.net.
     ```
 
-    </div>
-
-</div>
-
 ## Configuring the dnsmasq DNS server
 
 If you are using `dnsmasq` as the DNS server, you can delegate resolution of the `root-servers.net` domain to another DNS server, for example, by creating a new configuration file that resolves `root-servers.net` using a DNS server that you specify.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a configuration file that delegates the domain `root-servers.net` to another DNS server by running the following command:
 
@@ -280,11 +237,9 @@ Procedure
     $ journalctl -u dnsmasq|grep root-servers.net
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -292,19 +247,15 @@ Procedure
     Jul 03 15:31:25 rhel-8-10 dnsmasq[1342]: using nameserver 192.168.1.1#53 for domain root-servers.net
     ```
 
-    </div>
-
 4.  Verify that the DNS server can resolve the NS record for the `root-servers.net` domain by running the following command:
 
     ``` terminal
     $ host -t NS root-servers.net. 127.0.0.1
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -316,21 +267,9 @@ Procedure
     root-servers.net name server root-servers.net.
     ```
 
-    </div>
-
-</div>
-
 ## Creating a custom DNS host name to resolve DNS connectivity issues
 
 In a disconnected environment where the external DNS server cannot be reached, you can resolve Kubernetes NMState Operator health probe issues by specifying a custom DNS host name in the `NMState` custom resource definition (CRD).
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Add the DNS host name configuration to the `NMState` CRD of your cluster:
 
@@ -351,5 +290,3 @@ Procedure
     ``` yaml
     $ oc apply -f <filename>.yaml
     ```
-
-</div>

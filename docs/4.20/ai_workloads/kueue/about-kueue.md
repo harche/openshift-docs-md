@@ -1,7 +1,10 @@
 Red Hat build of Kueue is a Kubernetes-native system that manages access to resources for jobs. Red Hat build of Kueue can determine when a job waits, is admitted to start by creating pods, or should be *preempted*, meaning that active pods for that job are deleted.
 
-> [!NOTE]
-> In the context of Red Hat build of Kueue, a job can be defined as a one-time or on-demand task that runs to completion.
+<div class="note">
+
+In the context of Red Hat build of Kueue, a job can be defined as a one-time or on-demand task that runs to completion.
+
+</div>
 
 Red Hat build of Kueue is based on the [Kueue](https://kueue.sigs.k8s.io/docs/) open source project.
 

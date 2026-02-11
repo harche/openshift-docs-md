@@ -8,14 +8,6 @@ To uninstall Service Mesh from an existing OpenShift Container Platform instance
 
 You can remove the Red Hat OpenShift Service Mesh control plane by using the web console.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Log in to the OpenShift Container Platform web console.
 
 2.  Click the **Project** menu and select the project where you installed the Service Mesh control plane, for example **istio-system**.
@@ -30,19 +22,9 @@ Procedure
 
 7.  Click **Delete** on the confirmation dialog window to remove the `ServiceMeshControlPlane`.
 
-</div>
-
 ## Removing the Service Mesh control plane using the CLI
 
 You can remove the Red Hat OpenShift Service Mesh control plane by using the CLI. In this example, `istio-system` is the name of the control plane project.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform CLI.
 
@@ -64,8 +46,6 @@ Procedure
     $ oc delete smcp -n istio-system <name_of_custom_resource>
     ```
 
-</div>
-
 # Removing the installed Operators
 
 You must remove the Operators to successfully remove Red Hat OpenShift Service Mesh. After you remove the Red Hat OpenShift Service Mesh Operator, you must remove the Kiali Operator, the Red Hat OpenShift Distributed Tracing Platform (Jaeger) Operator, and the OpenShift Elasticsearch Operator.
@@ -82,54 +62,29 @@ Follow this procedure to remove the Operators that make up Red Hat OpenShift Se
 
 - OpenShift Elasticsearch
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Log in to the OpenShift Container Platform web console.
 
 2.  From the **Ecosystem** → **Installed Operators** page, scroll or type a keyword into the **Filter by name** to find each Operator. Then, click the Operator name.
 
 3.  On the **Operator Details** page, select **Uninstall Operator** from the **Actions** menu. Follow the prompts to uninstall each Operator.
 
-</div>
-
 # Clean up Operator resources
 
 You can manually remove resources left behind after removing the Red Hat OpenShift Service Mesh Operator using the OpenShift Container Platform web console.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - An account with cluster administration access. If you use Red Hat OpenShift Dedicated, you must have an account with the `dedicated-admin` role.
 
 - Access to the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Log in to the OpenShift Container Platform CLI as a cluster administrator.
 
 2.  Run the following commands to clean up resources after uninstalling the Operators. If you intend to keep using Distributed Tracing Platform (Jaeger) as a stand-alone service without service mesh, do not delete the Jaeger resources.
 
-    > [!NOTE]
-    > The OpenShift Elasticsearch Operator is installed in `openshift-operators-redhat` by default. The other Operators are installed in the `openshift-operators` namespace by default. If you installed the Operators in another namespace, replace `openshift-operators` with the name of the project where the Red Hat OpenShift Service Mesh Operator was installed.
+    <div class="note">
+
+    The OpenShift Elasticsearch Operator is installed in `openshift-operators-redhat` by default. The other Operators are installed in the `openshift-operators` namespace by default. If you installed the Operators in another namespace, replace `openshift-operators` with the name of the project where the Red Hat OpenShift Service Mesh Operator was installed.
+
+    </div>
 
     ``` terminal
     $ oc -n openshift-operators delete ds -lmaistra-version
@@ -170,5 +125,3 @@ Procedure
     ``` terminal
     $ oc delete sa -n openshift-operators -lmaistra-version
     ```
-
-</div>

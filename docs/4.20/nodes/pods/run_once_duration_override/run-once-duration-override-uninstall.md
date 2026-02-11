@@ -4,29 +4,11 @@ You can remove the Run Once Duration Override Operator from OpenShift Container 
 
 You can use the web console to uninstall the Run Once Duration Override Operator. Uninstalling the Run Once Duration Override Operator does not unset the `activeDeadlineSeconds` field for run-once pods, but it will no longer apply the override value to future run-once pods.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
 
 - You have installed the Run Once Duration Override Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -50,35 +32,15 @@ Procedure
 
     3.  In the confirmation dialog, click **Uninstall**.
 
-</div>
-
 # Uninstalling Run Once Duration Override Operator resources
 
 Optionally, after uninstalling the Run Once Duration Override Operator, you can remove its related resources from your cluster.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
 
 - You have uninstalled the Run Once Duration Override Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -111,5 +73,3 @@ Procedure
     3.  Click **Edit** next to the **Labels** field.
 
     4.  Remove the **runoncedurationoverrides.admission.runoncedurationoverride.openshift.io/enabled=true** label and click **Save**.
-
-</div>

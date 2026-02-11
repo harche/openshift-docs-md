@@ -2,8 +2,11 @@ OpenShift Container Platform provides best practices and tools to help you optim
 
 To contact Red Hat support, see [Getting support](../support/getting-support.xml#getting-support).
 
-> [!NOTE]
-> Some performance and scalability Operators have release cycles that are independent from OpenShift Container Platform release cycles. For more information, see [OpenShift Operators](access.redhat.com/support/policy/updates/openshift_operators).
+<div class="note">
+
+Some performance and scalability Operators have release cycles that are independent from OpenShift Container Platform release cycles. For more information, see [OpenShift Operators](access.redhat.com/support/policy/updates/openshift_operators).
+
+</div>
 
 # Recommended performance and scalability practices
 

@@ -171,35 +171,13 @@ Based upon your use case, create your request by using either the `cluster-layer
 
 <div class="important">
 
-<div class="title">
-
-</div>
-
 - The `ClusterUserDefinedNetwork` CR is intended for use by cluster administrators and should not be used by non-administrators. If used incorrectly, it might result in security issues with your deployment, cause disruptions, or break the cluster network.
 
 - OpenShift Virtualization only supports the `Layer2` and `Localnet` topologies.
 
 </div>
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Optional: For a `ClusterUserDefinedNetwork` CR that uses a primary network, create a namespace with the `k8s.ovn.org/primary-user-defined-network` label by entering the following command:
 
@@ -339,11 +317,9 @@ Procedure
 
     Where `<cudn_name>` is the name you created of your cluster-wide user-defined network.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -383,35 +359,13 @@ Procedure
         type: NetworkCreated
     ```
 
-    </div>
-
-</div>
-
 ## Creating a ClusterUserDefinedNetwork CR for a Localnet topology
 
 You deploy a `Localnet` topology to connect the secondary network to the physical underlay. This enables both east-west cluster traffic and access to services running outside the cluster. This topology type requires the additional configuration of the underlying Open vSwitch (OVS) system on cluster nodes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in as a user with `cluster-admin` privileges.
 
 - You created and configured the Open vSwitch (OVS) bridge mapping to associate the logical OVN-Kubernetes network with the physical node network through the OVS bridge. For more information, see "Configuration for a localnet switched topology".
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a cluster-wide user-defined network with a `Localnet` topology:
 
@@ -489,16 +443,6 @@ Procedure
     `<cudn_name>`
     Is the name you created of your cluster-wide user-defined network.
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Example output
-
-</div>
-
 ``` yaml
 apiVersion: k8s.ovn.org/v1
 kind: ClusterUserDefinedNetwork
@@ -535,48 +479,21 @@ status:
     type: NetworkCreated
 ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuration for a localnet switched topology](../../../networking/multiple_networks/secondary_networks/creating-secondary-nwt-ovnk.xml#configuration-localnet-switched-topology_configuring-additional-network-ovnk)
-
-</div>
 
 ## Creating a ClusterUserDefinedNetwork CR by using the web console
 
 To implement isolated network segments with layer 2 connectivity in OpenShift Container Platform, create a `ClusterUserDefinedNetwork` custom resource (CR) by using the web console. Defining this resource ensures that your cluster workloads can communicate directly at the data link layer.
 
-> [!NOTE]
-> Currently, creation of a `ClusterUserDefinedNetwork` CR with a `Layer3` topology is not supported when using the OpenShift Container Platform web console.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Currently, creation of a `ClusterUserDefinedNetwork` CR with a `Layer3` topology is not supported when using the OpenShift Container Platform web console.
 
 </div>
 
 - You have access to the OpenShift Container Platform web console as a user with `cluster-admin` permissions.
 
 - You have created a namespace and applied the `k8s.ovn.org/primary-user-defined-network` label.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  From the **Administrator** perspective, click **Networking** → **UserDefinedNetworks**.
 
@@ -590,19 +507,7 @@ Procedure
 
 6.  Click **Create**. The cluster-scoped UDN serves as the default primary network for pods located in namespaces that contain the labels that you specified in step 5.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring pods with a static IP address](../../../networking/multiple_networks/secondary_networks/creating-secondary-nwt-ovnk.xml#configuring-pods-static-ip_configuring-additional-network-ovnk)
-
-</div>
 
 # About the UserDefinedNetwork CR
 
@@ -639,10 +544,6 @@ The following details provide a best practice for designing a UDN CR:
 
   <div class="important">
 
-  <div class="title">
-
-  </div>
-
   - For OpenShift Container Platform 4.17 and later, clusters use `169.254.0.0/17` for IPv4 and `fd69::/112` for IPv6 as the default masquerade subnet. These ranges should be avoided by users. For updated clusters, there is no change to the default masquerade subnet.
 
   - Changing the cluster’s masquerade subnet is unsupported after a user-defined network has been configured for a project. Attempting to modify the masquerade subnet after a `UserDefinedNetwork` CR has been set up can disrupt the network connectivity and cause configuration issues.
@@ -661,28 +562,13 @@ Create a `UserDefinedNetwork` CR by using the CLI to enable namespace-scoped net
 
 The following procedure creates a `UserDefinedNetwork` CR that is namespace scoped. Based upon your use case, create your request by using either the `my-layer-two-udn.yaml` example for a `Layer2` topology type or the `my-layer-three-udn.yaml` example for a `Layer3` topology type.
 
-> [!NOTE]
-> When deploying a `UserDefinedNetwork` custom resource (CR) on IBM Power® Virtual Server with installer-provisioned infrastructure (IPI), you must set the MTU size to `1300` or `1250`.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+When deploying a `UserDefinedNetwork` custom resource (CR) on IBM Power® Virtual Server with installer-provisioned infrastructure (IPI), you must set the MTU size to `1300` or `1250`.
 
 </div>
 
 - You have logged in with `cluster-admin` privileges, or you have `view` and `edit` role-based access control (RBAC).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Optional: For a `UserDefinedNetwork` CR that uses a primary network, create a namespace with the `k8s.ovn.org/primary-user-defined-network` label by entering the following command:
 
@@ -800,11 +686,9 @@ Procedure
 
     Where `some_custom_namespace` is the namespace you created for your user-defined network.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -836,50 +720,21 @@ Procedure
         type: NetworkCreated
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Default cluster roles](../../../authentication/using-rbac.xml#authorization-overview_using-rbac)
-
-</div>
 
 ## Creating a UserDefinedNetwork CR by using the web console
 
 To implement isolated network segments with layer 2 connectivity in OpenShift Container Platform, create a `UserDefinedNetwork` custom resource (CR) by using the web console. Defining this resource ensures that your cluster workloads can communicate directly at the data link layer.
 
-> [!NOTE]
-> Currently, creation of a `UserDefinedNetwork` CR with a `Layer3` topology or a `Secondary` role are not supported when using the OpenShift Container Platform web console.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Currently, creation of a `UserDefinedNetwork` CR with a `Layer3` topology or a `Secondary` role are not supported when using the OpenShift Container Platform web console.
 
 </div>
 
 - You have access to the OpenShift Container Platform web console as a user with `cluster-admin` permissions.
 
 - You have created a namespace and applied the `k8s.ovn.org/primary-user-defined-network` label.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  From the **Administrator** perspective, click **Networking** → **UserDefinedNetworks**.
 
@@ -890,8 +745,6 @@ Procedure
 4.  Specify a value in the **Subnet** field.
 
 5.  Click **Create**. The user-defined network serves as the default primary network for pods that you create in this namespace.
-
-</div>
 
 # Additional configuration details for user-defined networks
 
@@ -909,76 +762,76 @@ It is not recommended to set these fields without explicit need and understandin
 <col style="width: 25%" />
 </colgroup>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><strong>CUDN field</strong></p></td>
 <td style="text-align: left;"><p><strong>UDN field</strong></p></td>
 <td style="text-align: left;"><p><strong>Type</strong></p></td>
 <td style="text-align: left;"><p><strong>Description</strong></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.network.&lt;topology&gt;.joinSubnets</code></p></td>
 <td style="text-align: left;"><p><code>spec.&lt;topology&gt;.joinSubnets</code></p></td>
 <td style="text-align: left;"><p>object</p></td>
 <td style="text-align: left;"><p>When omitted, the platform sets default values for the <code>joinSubnets</code> field of <code>100.65.0.0/16</code> for IPv4 and <code>fd99::/64</code> for IPv6. If the default address values are used anywhere in the cluster’s network you must override it by setting the <code>joinSubnets</code> field. If you choose to set this field, ensure it does not conflict with other subnets in the cluster such as the cluster subnet, the <code>default</code> network cluster subnet, and the masquerade subnet.</p>
 <p>The <code>joinSubnets</code> field configures the routing between different segments within a user-defined network. Dual-stack clusters can set 2 subnets, one for each IP family; otherwise, only 1 subnet is allowed. This field is only allowed for the <code>Primary</code> network.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.network.&lt;topology&gt;.excludeSubnets</code></p></td>
 <td style="text-align: left;"><p><code>spec.&lt;topology&gt;.excludeSubnets</code></p></td>
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>Specifies a list of CIDRs to be removed from the CIDRs specified in the <code>subnets</code> field. The CIDRs in this list must be in range of at least one subnet specified in the <code>subnets</code> field. When omitted, OVN-Kubernetes assigns all IP addresses specified in the <code>subnets</code> field. You must use standard CIDR notation. For example, <code>10.128.0.0/16</code>. You must omit this field if the <code>subnets</code> field is not set or if the <code>ipam.mode</code> field is set to <code>Disabled</code>. You can only set 25 values for the <code>excludeSubnets</code> field.</p>
 <p>When deploying a secondary network with <code>Localnet</code> topology, the IP ranges used in your physical network must be explicitly listed in the <code>excludeSubnets</code> field to prevent IP duplication in your subnet.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.network.layer2.reservedSubnets</code></p></td>
 <td style="text-align: left;"><p><code>spec.layer2.reservedSubnets</code></p></td>
 <td style="text-align: left;"><p>object</p></td>
 <td style="text-align: left;"><p>This optional field specifies a list of CIDRs reserved for static IP assignment, which therefore excludes it from automatic allocation. When omitted, all IP addresses in the <code>subnets</code> field are available for automatic assignment. All IP addresses in the listed ranges are available to request through static IP assignment in pod annotations. Each address must be in the CIDR range specified in the <code>subnets</code> field. The field only accepts 25 entries. The format should match standard CIDR notation (for example, <code>10.128.0.0/16</code>). You must omit this field if the <code>subnets</code> field is unset or the <code>ipam.mode</code> field is <code>Disabled</code>. Specifies a reserved list of addresses for workloads. You can set this field to reserve IP addresses that pods can then request in the future.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.network.layer2.infrastructureSubnets</code></p></td>
 <td style="text-align: left;"><p><code>spec.layer2.infrastructureSubnets</code></p></td>
 <td style="text-align: left;"><p>object</p></td>
 <td style="text-align: left;"><p>This optional field specifies addresses used for OVN-Kubernetes internal network infrastructure. You cannot assign any IP addresses within these ranges to workloads. When omitted, OVN-Kubernetes automatically assigns IP addresses from the <code>subnets</code> field for its infrastructure needs. When the <code>reservedSubnets</code> field are also specified, the CIDRs cannot overlap. Additionally when the <code>defaultGatewayIPs</code> field are also specified, the default gateway IP addresses must belong to one of the CIDRs. Each address must be in the CIDR range specified in <code>subnets</code>. The maximum number of entries allowed is 10. The format should match standard CIDR notation (for example, <code>10.128.0.0/16</code>). You must omit this field if the <code>subnets</code> field is unset or the <code>ipam.mode</code> field is <code>Disabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.network.layer2.defaultGatewayIPs</code></p></td>
 <td style="text-align: left;"><p><code>spec.layer2.defaultGatewayIPs</code></p></td>
 <td style="text-align: left;"><p>object</p></td>
 <td style="text-align: left;"><p>This field is optional and specifies an IP address that overrides the addresses assigned by default for the gateway. Acceptable values are both IPv4 and IPv6 addresses for dual stack clusters. Specifies the default gateway IP address used in the internal OVN-Kubernetes topology. Dual-stack clusters can set two IP addresses (one for each IP family), otherwise only one IP address can be used. This field is only allowed when the <code>role</code> field is set to <code>Primary</code>. It is not recommended to set this field without explicit need and understanding of the OVN-Kubernetes network topology. When omitted, OVN-Kubernetes assigns the first IP address from the network’s <code>subnet</code> field.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.network.&lt;topology&gt;.ipam.lifecycle</code></p></td>
 <td style="text-align: left;"><p><code>spec.layer2.ipam.lifecycle</code></p></td>
 <td style="text-align: left;"><p>object</p></td>
 <td style="text-align: left;"><p>The <code>spec.ipam.lifecycle</code> field configures the IP address management system (IPAM). You might use this field for virtual workloads to ensure persistent IP addresses. The only allowed value is <code>Persistent</code>, which ensures that your virtual workloads have persistent IP addresses across reboots and migration. These are assigned by the container network interface (CNI) and used by OVN-Kubernetes to program pod IP addresses. You must not change this for pod annotations.</p>
 <p>Setting a value of Persistent is only supported when <code>ipam.mode</code> parameter is set to <code>Enabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.network.&lt;topology&gt;.ipam.mode</code></p></td>
 <td style="text-align: left;"><p><code>spec.&lt;topology&gt;`ipam.mode</code></p></td>
 <td style="text-align: left;"><p>object</p></td>
 <td style="text-align: left;"><p>The <code>mode</code> parameter controls how much of the IP configuration is managed by OVN-Kubernetes. The following options are available: * <code>Enabled</code>: When enabled, OVN-Kubernetes applies the IP configuration to the SDN infrastructure and assigns IP addresses from the selected subnet to the individual pods. This is the default setting. When set to <code>Enabled</code>, the <code>subnets</code> field must be defined. <code>Enabled</code> is the default configuration. * <code>Disabled</code>: When disabled, OVN-Kubernetes only assigns MAC addresses and provides layer 2 communication, which allows users to configure IP addresses. <code>Disabled</code> is only available for layer 2 (secondary) networks. By disabling IPAM, features that rely on selecting pods by IP, for example, network policy, services, and so on, no longer function. Additionally, IP port security is also disabled for interfaces attached to this network. The <code>subnets</code> field must be empty when <code>spec.ipam.mode</code> is set to <code>Disabled.</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.network.&lt;topology&gt;.mtu</code></p></td>
 <td style="text-align: left;"><p><code>spec.&lt;topology&gt;.mtu</code></p></td>
 <td style="text-align: left;"><p>integer</p></td>
 <td style="text-align: left;"><p>The maximum transmission units (MTU). The default value is <code>1400</code>. The boundary for IPv4 is <code>576</code>, and for IPv6 it is <code>1280</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.network.localnet.vlan</code></p></td>
 <td style="text-align: left;"><p>N/A</p></td>
 <td style="text-align: left;"><p>object</p></td>
 <td style="text-align: left;"><p>This field is optional and configures the virtual local area network (VLAN) tagging and allows you to segment the physical network into multiple independent broadcast domains.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.network.localnet.vlan.mode</code></p></td>
 <td style="text-align: left;"><p>N/A</p></td>
 <td style="text-align: left;"><p>object</p></td>
 <td style="text-align: left;"><p>Acceptable values are <code>Access</code>. A value of <code>Access</code> specifies that the network interface belongs to a single VLAN and all traffic will be labelled with an <code>id</code> that is configured in the <code>spec.network.localnet.vlan.mode.access.id</code> field. The <code>id</code> specifies the VLAN <code>id</code> (VID) for access ports. Values must be an integer between 1 and 4094.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.network.localnet.physicalNetworkName</code></p></td>
 <td style="text-align: left;"><p>N/A</p></td>
 <td style="text-align: left;"><p>string</p></td>
@@ -996,364 +849,90 @@ Can be either `layer2` or `layer3` for the `UserDefinedNetwork` CR. For the `Clu
 
 To troubleshoot your network deployment in OpenShift Container Platform, evaluate the status condition types returned for `ClusterUserDefinedNetwork` and `UserDefinedNetwork` custom resources (CRs). Reviewing these conditions ensures that you can identify and resolve configuration errors.
 
-<table>
-<caption>NetworkCreated condition types (<code>ClusterDefinedNetwork</code> and <code>UserDefinedNetwork</code> CRs)</caption>
-<colgroup>
-<col style="width: 15%" />
-<col style="width: 15%" />
-<col style="width: 23%" />
-<col style="width: 46%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Condition type</th>
-<th style="text-align: left;">Status</th>
-<th colspan="2" style="text-align: left;">Reason and Message</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td rowspan="3" style="text-align: left;"><p><code>NetworkCreated</code></p></td>
-<td rowspan="3" style="text-align: left;"><p><code>True</code></p></td>
-<td colspan="2" style="text-align: left;"><p>When <code>True</code>, the following reason and message is returned:</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><strong>Reason</strong></p></td>
-<td style="text-align: left;"><p><strong>Message</strong></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>NetworkAttachmentDefinitionCreated</code></p></td>
-<td style="text-align: left;"><p>'NetworkAttachmentDefinition has been created in following namespaces: [example-namespace-1, example-namespace-2, example-namespace-3]'`</p></td>
-</tr>
-<tr>
-<td rowspan="9" style="text-align: left;"><p><code>NetworkCreated</code></p></td>
-<td rowspan="9" style="text-align: left;"><p><code>False</code></p></td>
-<td colspan="2" style="text-align: left;"><p>When <code>False</code>, one of the following messages is returned:</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><strong>Reason</strong></p></td>
-<td style="text-align: left;"><p><strong>Message</strong></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>SyncError</code></p></td>
-<td style="text-align: left;"><p><code>failed to generate NetworkAttachmentDefinition</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>SyncError</code></p></td>
-<td style="text-align: left;"><p><code>failed to update NetworkAttachmentDefinition</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>SyncError</code></p></td>
-<td style="text-align: left;"><p><code>primary network already exist in namespace "&lt;namespace_name&gt;": "&lt;primary_network_name&gt;"</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>SyncError</code></p></td>
-<td style="text-align: left;"><p><code>failed to create NetworkAttachmentDefinition: create NAD error</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>SyncError</code></p></td>
-<td style="text-align: left;"><p><code>foreign NetworkAttachmentDefinition with the desired name already exist</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>SyncError</code></p></td>
-<td style="text-align: left;"><p><code>failed to add finalizer to UserDefinedNetwork</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>NetworkAttachmentDefinitionDeleted</code></p></td>
-<td style="text-align: left;"><p><code>NetworkAttachmentDefinition is being deleted: [&lt;namespace&gt;/&lt;nad_name&gt;]</code></p></td>
-</tr>
-</tbody>
-</table>
+| Condition type                       | Status                                                                                                                                      | Reason and Message                                         |     |
+|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|-----|
+| `NetworkCreated`                     | `True`                                                                                                                                      | When `True`, the following reason and message is returned: |     |
+| **Reason**                           | **Message**                                                                                                                                 |                                                            |     |
+| `NetworkAttachmentDefinitionCreated` | 'NetworkAttachmentDefinition has been created in following namespaces: \[example-namespace-1, example-namespace-2, example-namespace-3\]'\` |                                                            |     |
+| `NetworkCreated`                     | `False`                                                                                                                                     | When `False`, one of the following messages is returned:   |     |
+| **Reason**                           | **Message**                                                                                                                                 |                                                            |     |
+| `SyncError`                          | `failed to generate NetworkAttachmentDefinition`                                                                                            |                                                            |     |
+| `SyncError`                          | `failed to update NetworkAttachmentDefinition`                                                                                              |                                                            |     |
+| `SyncError`                          | `primary network already exist in namespace "<namespace_name>": "<primary_network_name>"`                                                   |                                                            |     |
+| `SyncError`                          | `failed to create NetworkAttachmentDefinition: create NAD error`                                                                            |                                                            |     |
+| `SyncError`                          | `foreign NetworkAttachmentDefinition with the desired name already exist`                                                                   |                                                            |     |
+| `SyncError`                          | `failed to add finalizer to UserDefinedNetwork`                                                                                             |                                                            |     |
+| `NetworkAttachmentDefinitionDeleted` | `NetworkAttachmentDefinition is being deleted: [<namespace>/<nad_name>]`                                                                    |                                                            |     |
 
-<table>
-<caption>NetworkAllocationSucceeded condition types (<code>UserDefinedNetwork</code> CRs)</caption>
-<colgroup>
-<col style="width: 15%" />
-<col style="width: 15%" />
-<col style="width: 23%" />
-<col style="width: 46%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Condition type</th>
-<th style="text-align: left;">Status</th>
-<th colspan="2" style="text-align: left;">Reason and Message</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td rowspan="3" style="text-align: left;"><p><code>NetworkAllocationSucceeded</code></p></td>
-<td rowspan="3" style="text-align: left;"><p><code>True</code></p></td>
-<td colspan="2" style="text-align: left;"><p>When <code>True</code>, the following reason and message is returned:</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><strong>Reason</strong></p></td>
-<td style="text-align: left;"><p><strong>Message</strong></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>NetworkAllocationSucceeded</code></p></td>
-<td style="text-align: left;"><p><code>Network allocation succeeded for all synced nodes.</code></p></td>
-</tr>
-<tr>
-<td rowspan="3" style="text-align: left;"><p><code>NetworkAllocationSucceeded</code></p></td>
-<td rowspan="3" style="text-align: left;"><p><code>False</code></p></td>
-<td colspan="2" style="text-align: left;"><p>When <code>False</code>, the following message is returned:</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><strong>Reason</strong></p></td>
-<td style="text-align: left;"><p><strong>Message</strong></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>InternalError</code></p></td>
-<td style="text-align: left;"><p><code>Network allocation failed for at least one node: [&lt;node_name&gt;], check UDN events for more info.</code></p></td>
-</tr>
-</tbody>
-</table>
+NetworkCreated condition types (`ClusterDefinedNetwork` and `UserDefinedNetwork` CRs)
 
-<table>
-<caption>Invalid <code>mtu</code> scenarios types for the <code>ClusterUserDefinedNetwork</code> CR</caption>
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 30%" />
-<col style="width: 30%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Condition type</th>
-<th colspan="3" style="text-align: left;">Reason, Message, Resolution</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td rowspan="5" style="text-align: left;"><p><code>invalid mtu</code></p></td>
-<td colspan="3" style="text-align: left;"><p>One of the following messages is returned when the <code>mtu</code> is set incorrect:</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><strong>Reason</strong></p></td>
-<td style="text-align: left;"><p><strong>Message</strong></p></td>
-<td style="text-align: left;"><p><strong>Resolution</strong></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>The <code>mtu</code> field is set higher than <code>65536</code>.</p></td>
-<td style="text-align: left;"><p><code>spec.network.localnet.mtu</code> in body should be less than <code>65536</code>.</p></td>
-<td style="text-align: left;"><p>You must set the <code>mtu</code> field lower than <code>65536</code>.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>The <code>mtu</code> field is set lower than <code>576</code>.</p></td>
-<td style="text-align: left;"><p><code>spec.network.localnet.mtu</code> in body should be greater than or equal to <code>576</code>.</p></td>
-<td style="text-align: left;"><p>You must set the <code>mtu</code> field greater than or equal to <code>576</code>.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>The <code>mtu</code> field must be at least <code>1280</code> when using the IPv6 subnet.</p></td>
-<td style="text-align: left;"><p><code>MTU should be greater than or equal to 1280 when an IPv6 subnet is used</code></p></td>
-<td style="text-align: left;"><p>You must set the <code>mtu</code> field higher than or equal to <code>1280</code> when you have an IPv6 subnet defined on your user-defined network configuration.</p></td>
-</tr>
-</tbody>
-</table>
+| Condition type               | Status                                                                                            | Reason and Message                                         |     |
+|------------------------------|---------------------------------------------------------------------------------------------------|------------------------------------------------------------|-----|
+| `NetworkAllocationSucceeded` | `True`                                                                                            | When `True`, the following reason and message is returned: |     |
+| **Reason**                   | **Message**                                                                                       |                                                            |     |
+| `NetworkAllocationSucceeded` | `Network allocation succeeded for all synced nodes.`                                              |                                                            |     |
+| `NetworkAllocationSucceeded` | `False`                                                                                           | When `False`, the following message is returned:           |     |
+| **Reason**                   | **Message**                                                                                       |                                                            |     |
+| `InternalError`              | `Network allocation failed for at least one node: [<node_name>], check UDN events for more info.` |                                                            |     |
 
-<table>
-<caption>Invalid <code>PhysicalNetworkName</code> scenarios types for the <code>ClusterUserDefinedNetwork</code> CR</caption>
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 30%" />
-<col style="width: 30%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Condition type</th>
-<th colspan="3" style="text-align: left;">Reason, Message, Resolution</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td rowspan="6" style="text-align: left;"><p><code>invalid PhysicalNetworkName</code></p></td>
-<td colspan="3" style="text-align: left;"><p>One of the following messages is returned when the <code>PhysicalNetworkName</code> is set incorrect:</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><strong>Reason</strong></p></td>
-<td style="text-align: left;"><p><strong>Message</strong></p></td>
-<td style="text-align: left;"><p><strong>Resolution</strong></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>The name of the physical network is not set.</p></td>
-<td style="text-align: left;"><p><code>spec.network.localnet.physicalNetworkName: Required value</code></p></td>
-<td style="text-align: left;"><p>You must set the <code>physicalNetworkName</code> field.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>The name of the physical network does not meet minimum length requirements.</p></td>
-<td style="text-align: left;"><p><code>spec.network.localnet.physicalNetworkName in body should be at least 1 chars long</code></p></td>
-<td style="text-align: left;"><p>You must set physical network name to be at least one character in length.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>The name of the physical network exceeds the maximum character limit of 253.</p></td>
-<td style="text-align: left;"><p><code>spec.network.localnet.physicalNetworkName: Too long: may not be more than 253 bytes</code></p></td>
-<td style="text-align: left;"><p>You must set physical network name to not exceed the 253 character in length.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>The name of the physical network must not contain <code>,</code> or <code>:</code>.</p></td>
-<td style="text-align: left;"><p><code>physicalNetworkName cannot contain "," or ":" characters</code>.</p></td>
-<td style="text-align: left;"><p>You must remove the <code>,</code> or <code>:</code> from the physical network name.</p></td>
-</tr>
-</tbody>
-</table>
+NetworkAllocationSucceeded condition types (`UserDefinedNetwork` CRs)
 
-<table>
-<caption>Invalid <code>role</code> scenarios types for the <code>ClusterUserDefinedNetwork</code> CR</caption>
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 30%" />
-<col style="width: 30%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Condition type</th>
-<th colspan="3" style="text-align: left;">Reason, Message, Resolution</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td rowspan="4" style="text-align: left;"><p><code>role unset</code> or <code>role is primary</code></p></td>
-<td colspan="3" style="text-align: left;"><p>One of the following messages is returned when the <code>spec.network.localnet.role</code> is set incorrect:</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><strong>Reason</strong></p></td>
-<td style="text-align: left;"><p><strong>Message</strong></p></td>
-<td style="text-align: left;"><p><strong>Resolution</strong></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>The <code>role</code> field must be set for your localnet topology.</p></td>
-<td style="text-align: left;"><p><code>spec.network.localnet.role: Required value</code></p></td>
-<td style="text-align: left;"><p>You must set the <code>role</code> field.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>Primary</code> is not a supported value for the Localnet topology.</p></td>
-<td style="text-align: left;"><p><code>spec.network.localnet.role: Unsupported value: "Primary": supported values: "Secondary"</code></p></td>
-<td style="text-align: left;"><p>You must set the <code>role</code> field for your Localnet topology to <code>Secondary</code>-the accepted value.</p></td>
-</tr>
-</tbody>
-</table>
+| Condition type                                                      | Reason, Message, Resolution                                                   |                                                                                                                                              |     |
+|---------------------------------------------------------------------|-------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|-----|
+| `invalid mtu`                                                       | One of the following messages is returned when the `mtu` is set incorrect:    |                                                                                                                                              |     |
+| **Reason**                                                          | **Message**                                                                   | **Resolution**                                                                                                                               |     |
+| The `mtu` field is set higher than `65536`.                         | `spec.network.localnet.mtu` in body should be less than `65536`.              | You must set the `mtu` field lower than `65536`.                                                                                             |     |
+| The `mtu` field is set lower than `576`.                            | `spec.network.localnet.mtu` in body should be greater than or equal to `576`. | You must set the `mtu` field greater than or equal to `576`.                                                                                 |     |
+| The `mtu` field must be at least `1280` when using the IPv6 subnet. | `MTU should be greater than or equal to 1280 when an IPv6 subnet is used`     | You must set the `mtu` field higher than or equal to `1280` when you have an IPv6 subnet defined on your user-defined network configuration. |     |
 
-<table>
-<caption>Invalid <code>subnets</code> and <code>ipam</code> scenarios types for the <code>ClusterUserDefinedNetwork</code> CR</caption>
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 30%" />
-<col style="width: 30%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Condition type</th>
-<th colspan="3" style="text-align: left;">Reason, Message, Resolution</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td rowspan="10" style="text-align: left;"><p><code>LocalnetInvalidSubnets</code></p></td>
-<td colspan="3" style="text-align: left;"><p>One of the following messages is returned when either the <code>spec.network.localnet.subnets</code> or <code>spec.network.localnet.ipam</code> is set incorrect:</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><strong>Reason</strong></p></td>
-<td style="text-align: left;"><p><strong>Message</strong></p></td>
-<td style="text-align: left;"><p><strong>Resolution</strong></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>The optional fields, <code>subnets</code> and <code>ipam.mode</code>, have to be set together.</p></td>
-<td style="text-align: left;"><p><code>Subnets is required with ipam.mode is Enabled or unset, and forbidden otherwise</code></p></td>
-<td style="text-align: left;"><p>You must set the <code>subnets</code> field unless the <code>spec.network.localnet.ipam.mode</code> is explicitly disabled.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>The <code>spec.network.localnet.subnets</code> must have an acceptable value when using this optional field.</p></td>
-<td style="text-align: left;"><p><code>The ClusterUserDefinedNetwork "localnet-empty-subnets-fail" is invalid: spec.network.localnet.subnets: Invalid value: 0: spec.network.localnet.subnets in body should have at least 1 items</code></p></td>
-<td style="text-align: left;"><p>You must set an acceptable value for <code>spec.network.localnet.subnets</code>. Acceptable values are IPv4 and IPv6 Classless Inter-Domain Routing (CIDR) ranges that do not overlap with any CIDR ranges used by OpenShift Container Platform.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>The <code>subnet</code> field must be set when using the optional <code>spec.network.localnet.excludeSubnets</code> field.</p></td>
-<td style="text-align: left;"><p><code>excludeSubnets must be unset when subnets is unset</code></p></td>
-<td style="text-align: left;"><p>You must set the <code>spec.network.localnet.subnets</code> field when using the <code>spec.network.localnet.excludeSubnet</code> field.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>The <code>excludeSubnets</code> must be a value within the <code>subnets</code> field.</p></td>
-<td style="text-align: left;"><p><code>excludeSubnets must be subnetworks of the networks specified in the subnets field</code></p></td>
-<td style="text-align: left;"><p>You must set the value for the <code>excludeSubnets</code> field to be within the <code>subnets</code> field. For example, a <code>subnets</code> value of <code>192.168.100.0/24</code> and an <code>excludeSubnets</code> value of <code>192.168.200.1/32</code> is invalid.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>The CIDR range is invalid.</p></td>
-<td style="text-align: left;"><p><code>The ClusterUserDefinedNetwork "localnet-subnets-invalid-ipv4-cidr-fail" is invalid: spec.network.localnet.subnets[0]: Invalid value: "string": CIDR is invalid</code></p></td>
-<td style="text-align: left;"><p>You must set an acceptable CIDR range for <code>spec.network.localnet.subnets</code> field. Acceptable values are IPv4 and IPv6 CIDR ranges which are not in use or reserved by OpenShift Container Platform.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>You must set the <code>subnets</code> field when the <code>ipam.mode</code> is <code>Enabled</code> or when the IPAM mode is unset because the default value is <code>Enabled</code>.</p></td>
-<td style="text-align: left;"><p><code>Subnets is required with ipam.mode is Enabled or unset, and forbidden otherwise</code>.</p></td>
-<td style="text-align: left;"><p>You must set the <code>spec.network.localnet.subnets</code> field unless the <code>spec.network.localnet.ipam.mode</code> is explicitly disabled.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Setting two CIDR ranges for <code>spec.network.localnet.subnets</code> field requires that one be IPv4 and the other be IPv6.</p></td>
-<td style="text-align: left;"><p><code>Invalid value…​When 2 CIDRs are set, they must be from different IP families</code>.</p></td>
-<td style="text-align: left;"><p>You must change one of your CIDR ranges to a different IP family.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>The <code>spec.network.localnet.ipam.mode</code> is <code>Disabled</code> but the <code>spec.network.localnet.lifecycle</code> has a value of <code>Persistent</code>.</p></td>
-<td style="text-align: left;"><p><code>lifecycle Persistent is only supported when ipam.mode is Enabled</code></p></td>
-<td style="text-align: left;"><p>You must set the <code>ipam.mode</code> to <code>Enabled</code> when the optional field <code>lifecycle</code> has a value of <code>Persistent</code>.</p></td>
-</tr>
-</tbody>
-</table>
+Invalid `mtu` scenarios types for the `ClusterUserDefinedNetwork` CR
 
-<table>
-<caption>Invalid <code>vlan</code> scenarios types for the <code>ClusterUserDefinedNetwork</code> CR</caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 16%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Condition type</th>
-<th colspan="3" style="text-align: left;">Reason, Message, Resolution</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td rowspan="7" style="text-align: left;"><p><code>invalid vlan</code> or <code>invalid mode</code></p></td>
-<td colspan="3" style="text-align: left;"><p>One of the following messages is returned when the <code>spec.network.localnet.vlan</code> is set incorrect:</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><strong>Reason</strong></p></td>
-<td style="text-align: left;"><p><strong>Message</strong></p></td>
-<td style="text-align: left;"><p><strong>Resolution</strong></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>The <code>spec.network.localnet.vlan.mode</code> field must be set.</p></td>
-<td style="text-align: left;"><p><code>spec.network.localnet.vlan.mode: Unsupported value: "Disabled": supported values: "Access</code></p></td>
-<td style="text-align: left;"><p>You must set the <code>spec.network.localnet.vlan.mode</code> field to <code>Access</code> mode.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>The <code>spec.network.localnet.vlan</code> field must be set when <code>spec.network.localnet.vlan.mode</code> is set to <code>Access</code> mode.</p></td>
-<td style="text-align: left;"><p><code>vlan access config is required when vlan mode is 'Access', and forbidden otherwise</code>.</p></td>
-<td style="text-align: left;"><p>You must set <code>spec.network.localnet.vlan.mode.access</code> field when using <code>Access</code> mode.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>The <code>spec.network.localnet.vlan.access.id</code> value must be set when using <code>Access</code> mode.</p></td>
-<td style="text-align: left;"><p><code>spec.network.localnet.vlan.access.id: Required value</code></p></td>
-<td style="text-align: left;"><p>You must set a value for <code>spec.network.localnet.mode.access.id</code>.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Acceptable values for <code>access.id</code> are greater than or equal to 1.</p></td>
-<td style="text-align: left;"><p><code>spec.network.localnet.vlan.access.id in body should be greater than or equal to 1</code></p></td>
-<td style="text-align: left;"><p>You must set a value of 1 or greater for <code>access.id</code> field.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Acceptable values for <code>access.id</code> are less than or equal to 4094.</p></td>
-<td style="text-align: left;"><p><code>spec.network.localnet.vlan.access.id in body should be less than or equal to 4094</code></p></td>
-<td style="text-align: left;"><p>You must set a value of 4094 or less for <code>access.id</code> field.</p></td>
-</tr>
-</tbody>
-</table>
+| Condition type                                                               | Reason, Message, Resolution                                                                |                                                                               |     |
+|------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|-----|
+| `invalid PhysicalNetworkName`                                                | One of the following messages is returned when the `PhysicalNetworkName` is set incorrect: |                                                                               |     |
+| **Reason**                                                                   | **Message**                                                                                | **Resolution**                                                                |     |
+| The name of the physical network is not set.                                 | `spec.network.localnet.physicalNetworkName: Required value`                                | You must set the `physicalNetworkName` field.                                 |     |
+| The name of the physical network does not meet minimum length requirements.  | `spec.network.localnet.physicalNetworkName in body should be at least 1 chars long`        | You must set physical network name to be at least one character in length.    |     |
+| The name of the physical network exceeds the maximum character limit of 253. | `spec.network.localnet.physicalNetworkName: Too long: may not be more than 253 bytes`      | You must set physical network name to not exceed the 253 character in length. |     |
+| The name of the physical network must not contain `,` or `:`.                | `physicalNetworkName cannot contain "," or ":" characters`.                                | You must remove the `,` or `:` from the physical network name.                |     |
+
+Invalid `PhysicalNetworkName` scenarios types for the `ClusterUserDefinedNetwork` CR
+
+| Condition type                                                | Reason, Message, Resolution                                                                       |                                                                                             |     |
+|---------------------------------------------------------------|---------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|-----|
+| `role unset` or `role is primary`                             | One of the following messages is returned when the `spec.network.localnet.role` is set incorrect: |                                                                                             |     |
+| **Reason**                                                    | **Message**                                                                                       | **Resolution**                                                                              |     |
+| The `role` field must be set for your localnet topology.      | `spec.network.localnet.role: Required value`                                                      | You must set the `role` field.                                                              |     |
+| `Primary` is not a supported value for the Localnet topology. | `spec.network.localnet.role: Unsupported value: "Primary": supported values: "Secondary"`         | You must set the `role` field for your Localnet topology to `Secondary`-the accepted value. |     |
+
+Invalid `role` scenarios types for the `ClusterUserDefinedNetwork` CR
+
+| Condition type                                                                                                                            | Reason, Message, Resolution                                                                                                                                                                   |                                                                                                                                                                                                                                       |     |
+|-------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|
+| `LocalnetInvalidSubnets`                                                                                                                  | One of the following messages is returned when either the `spec.network.localnet.subnets` or `spec.network.localnet.ipam` is set incorrect:                                                   |                                                                                                                                                                                                                                       |     |
+| **Reason**                                                                                                                                | **Message**                                                                                                                                                                                   | **Resolution**                                                                                                                                                                                                                        |     |
+| The optional fields, `subnets` and `ipam.mode`, have to be set together.                                                                  | `Subnets is required with ipam.mode is Enabled or unset, and forbidden otherwise`                                                                                                             | You must set the `subnets` field unless the `spec.network.localnet.ipam.mode` is explicitly disabled.                                                                                                                                 |     |
+| The `spec.network.localnet.subnets` must have an acceptable value when using this optional field.                                         | `The ClusterUserDefinedNetwork "localnet-empty-subnets-fail" is invalid: spec.network.localnet.subnets: Invalid value: 0: spec.network.localnet.subnets in body should have at least 1 items` | You must set an acceptable value for `spec.network.localnet.subnets`. Acceptable values are IPv4 and IPv6 Classless Inter-Domain Routing (CIDR) ranges that do not overlap with any CIDR ranges used by OpenShift Container Platform. |     |
+| The `subnet` field must be set when using the optional `spec.network.localnet.excludeSubnets` field.                                      | `excludeSubnets must be unset when subnets is unset`                                                                                                                                          | You must set the `spec.network.localnet.subnets` field when using the `spec.network.localnet.excludeSubnet` field.                                                                                                                    |     |
+| The `excludeSubnets` must be a value within the `subnets` field.                                                                          | `excludeSubnets must be subnetworks of the networks specified in the subnets field`                                                                                                           | You must set the value for the `excludeSubnets` field to be within the `subnets` field. For example, a `subnets` value of `192.168.100.0/24` and an `excludeSubnets` value of `192.168.200.1/32` is invalid.                          |     |
+| The CIDR range is invalid.                                                                                                                | `The ClusterUserDefinedNetwork "localnet-subnets-invalid-ipv4-cidr-fail" is invalid: spec.network.localnet.subnets[0]: Invalid value: "string": CIDR is invalid`                              | You must set an acceptable CIDR range for `spec.network.localnet.subnets` field. Acceptable values are IPv4 and IPv6 CIDR ranges which are not in use or reserved by OpenShift Container Platform.                                    |     |
+| You must set the `subnets` field when the `ipam.mode` is `Enabled` or when the IPAM mode is unset because the default value is `Enabled`. | `Subnets is required with ipam.mode is Enabled or unset, and forbidden otherwise`.                                                                                                            | You must set the `spec.network.localnet.subnets` field unless the `spec.network.localnet.ipam.mode` is explicitly disabled.                                                                                                           |     |
+| Setting two CIDR ranges for `spec.network.localnet.subnets` field requires that one be IPv4 and the other be IPv6.                        | `Invalid value…​When 2 CIDRs are set, they must be from different IP families`.                                                                                                                | You must change one of your CIDR ranges to a different IP family.                                                                                                                                                                     |     |
+| The `spec.network.localnet.ipam.mode` is `Disabled` but the `spec.network.localnet.lifecycle` has a value of `Persistent`.                | `lifecycle Persistent is only supported when ipam.mode is Enabled`                                                                                                                            | You must set the `ipam.mode` to `Enabled` when the optional field `lifecycle` has a value of `Persistent`.                                                                                                                            |     |
+
+Invalid `subnets` and `ipam` scenarios types for the `ClusterUserDefinedNetwork` CR
+
+| Condition type                                                                                                     | Reason, Message, Resolution                                                                       |                                                                                       |     |
+|--------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|-----|
+| `invalid vlan` or `invalid mode`                                                                                   | One of the following messages is returned when the `spec.network.localnet.vlan` is set incorrect: |                                                                                       |     |
+| **Reason**                                                                                                         | **Message**                                                                                       | **Resolution**                                                                        |     |
+| The `spec.network.localnet.vlan.mode` field must be set.                                                           | `spec.network.localnet.vlan.mode: Unsupported value: "Disabled": supported values: "Access`       | You must set the `spec.network.localnet.vlan.mode` field to `Access` mode.            |     |
+| The `spec.network.localnet.vlan` field must be set when `spec.network.localnet.vlan.mode` is set to `Access` mode. | `vlan access config is required when vlan mode is 'Access', and forbidden otherwise`.             | You must set `spec.network.localnet.vlan.mode.access` field when using `Access` mode. |     |
+| The `spec.network.localnet.vlan.access.id` value must be set when using `Access` mode.                             | `spec.network.localnet.vlan.access.id: Required value`                                            | You must set a value for `spec.network.localnet.mode.access.id`.                      |     |
+| Acceptable values for `access.id` are greater than or equal to 1.                                                  | `spec.network.localnet.vlan.access.id in body should be greater than or equal to 1`               | You must set a value of 1 or greater for `access.id` field.                           |     |
+| Acceptable values for `access.id` are less than or equal to 4094.                                                  | `spec.network.localnet.vlan.access.id in body should be less than or equal to 4094`               | You must set a value of 4094 or less for `access.id` field.                           |     |
+
+Invalid `vlan` scenarios types for the `ClusterUserDefinedNetwork` CR
 
 # Opening default network ports on user-defined network pods
 
@@ -1376,5 +955,8 @@ metadata:
 # ...
 ```
 
-> [!NOTE]
-> Open ports are accessible on the pod’s default network IP, not its UDN network IP.
+<div class="note">
+
+Open ports are accessible on the pod’s default network IP, not its UDN network IP.
+
+</div>

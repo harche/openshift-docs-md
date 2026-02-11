@@ -4,26 +4,25 @@ On bare-metal hardware, you often must update the firmware to take on important 
 
 You are responsible for the firmware versions that you run in your clusters. Updating host firmware is not a part of the OpenShift Container Platform update process. It is not recommended to update firmware in conjunction with the OpenShift Container Platform version.
 
-> [!IMPORTANT]
-> Hardware vendors advise that it is best to apply the latest certified firmware version for the specific hardware that you are running. For each different use case, always verify firmware updates in test environments before applying them in production. For example, workloads with high throughput requirements can be negatively affected outdated host firmware.
->
-> You should thoroughly test new firmware updates to ensure that they work as expected with the current version of OpenShift Container Platform. For best results, test the latest firmware version with the target OpenShift Container Platform update version.
+<div class="important">
+
+Hardware vendors advise that it is best to apply the latest certified firmware version for the specific hardware that you are running. For each different use case, always verify firmware updates in test environments before applying them in production. For example, workloads with high throughput requirements can be negatively affected outdated host firmware.
+
+You should thoroughly test new firmware updates to ensure that they work as expected with the current version of OpenShift Container Platform. For best results, test the latest firmware version with the target OpenShift Container Platform update version.
+
+</div>
 
 # Ensuring that layered products are compatible with the update
 
 Verify that all layered products run on the version of OpenShift Container Platform that you are updating to before you begin the update. This generally includes all Operators.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 \+ . Verify the currently installed Operators in the cluster. For example, run the following command:
-
-</div>
 
 \+
 
@@ -45,8 +44,11 @@ openshift-operator-lifecycle-manager   packageserver   Package Server   0.19.0  
 
     Use the [Operator Update Information Checker](https://access.redhat.com/labs/ocpouic/?upgrade_path=4.14%20to%204.16) to understand if you must update an Operator after each y-stream update or if you can wait until you have fully updated to the next EUS release.
 
-    > [!TIP]
-    > You can also use the [Operator Update Information Checker](https://access.redhat.com/labs/ocpouic/?upgrade_path=4.14%20to%204.16) to see what versions of OpenShift Container Platform are compatible with specific releases of an Operator.
+    <div class="tip">
+
+    You can also use the [Operator Update Information Checker](https://access.redhat.com/labs/ocpouic/?upgrade_path=4.14%20to%204.16) to see what versions of OpenShift Container Platform are compatible with specific releases of an Operator.
+
+    </div>
 
 2.  Check that Operators that you install outside of OLM are compatible with the update version.
 
@@ -58,19 +60,9 @@ openshift-operator-lifecycle-manager   packageserver   Package Server   0.19.0  
 
     - See "Updating all the OLM Operators" for information about updating an Operator after performing the first y-stream control plane update.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Updating the worker nodes](../../../edge_computing/day_2_core_cnf_clusters/updating/update-completing-the-control-plane-only-update.xml#update-updating-the-worker-nodes_completing-the-update)
 
 - [Updating all the OLM Operators](../../../edge_computing/day_2_core_cnf_clusters/updating/update-completing-the-control-plane-only-update.xml#update-updating-all-the-olm-operators_completing-the-update)
-
-</div>
 
 # Applying MachineConfigPool labels to nodes before the update
 
@@ -88,8 +80,11 @@ How you divide worker nodes into MCPs can vary depending on how many nodes are i
 
 You can also move nodes between MCP groups if both groups have the same machine config, which is important if you have too many nodes in one large machine config pool. For more information about MCP groups, see *Additional resources*.
 
-> [!NOTE]
-> Larger clusters can have as many as 100 worker nodes. No matter how many nodes there are in the cluster, keep each `MachineConfigPool` group to around 10 nodes. This allows you to control how many nodes are taken down at a time. With multiple `MachineConfigPool` groups, you can unpause several groups at a time to accelerate the update, or separate the update over two or more maintenance windows.
+<div class="note">
+
+Larger clusters can have as many as 100 worker nodes. No matter how many nodes there are in the cluster, keep each `MachineConfigPool` group to around 10 nodes. This allows you to control how many nodes are taken down at a time. With multiple `MachineConfigPool` groups, you can unpause several groups at a time to accelerate the update, or separate the update over two or more maintenance windows.
+
+</div>
 
 Example cluster with 15 worker nodes
 Consider a cluster with 15 worker nodes:
@@ -107,38 +102,27 @@ Consider a cluster with 6 worker nodes:
 
 Upgrade one of the MCP groups. Allow the updated nodes to sit through a day to allow for verification of application compatibility before completing the update on the other 4 nodes.
 
-> [!IMPORTANT]
-> The process and pace at which you unpause the MCP groups is determined by your applications and configuration.
->
-> If your pod can handle being scheduled across nodes in a cluster, you can unpause several MCP groups at a time and set the `MaxUnavailable` field in the MCP custom resource (CR) to as high as 50%. This allows up to half of the nodes in an MCP group to restart and get updated.
+<div class="important">
 
-<div>
+The process and pace at which you unpause the MCP groups is determined by your applications and configuration.
 
-<div class="title">
-
-Additional resources
+If your pod can handle being scheduled across nodes in a cluster, you can unpause several MCP groups at a time and set the `MaxUnavailable` field in the MCP custom resource (CR) to as high as 50%. This allows up to half of the nodes in an MCP group to restart and get updated.
 
 </div>
 
 - [Node configuration management with machine config pools](../../../machine_configuration/index.xml#architecture-machine-config-pools_machine-config-overview)
 
-</div>
-
 ## Reviewing configured cluster MachineConfigPool roles
 
 Review the currently configured `MachineConfigPool` roles in the cluster.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 \+ . Get the currently configured `mcp` groups in the cluster:
-
-</div>
 
 \+
 
@@ -160,11 +144,9 @@ worker   rendered-worker-245c4f   True      False      False      2             
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -177,10 +159,11 @@ worker   rendered-worker-245c4f   True      False      False      2             
     worker-1       Ready    worker                 39d   v1.27.15+6147456
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > When you apply an `mcp` group change, the node roles are updated.
+    When you apply an `mcp` group change, the node roles are updated.
+
+    </div>
 
     Determine how you want to separate the worker nodes into `mcp` groups.
 
@@ -192,13 +175,7 @@ Creating `mcp` groups is a 2-step process:
 
 2.  Apply an `mcp` CR to the cluster that organizes the nodes based on their labels
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 1.  Label the nodes so that they can be put into `mcp` groups. Run the following commands:
 
@@ -212,11 +189,9 @@ Procedure
 
     The `mcp-1` and `mcp-2` labels are applied to the nodes. For example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -228,8 +203,6 @@ Procedure
     worker-0       Ready    mcp-1,worker           39d   v1.27.15+6147456
     worker-1       Ready    mcp-2,worker           39d   v1.27.15+6147456
     ```
-
-    </div>
 
 2.  Create YAML custom resources (CRs) that apply the labels as `mcp` CRs in the cluster. Save the following YAML in the `mcps.yaml` file:
 
@@ -274,11 +247,9 @@ Procedure
     $ oc apply -f mcps.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -286,24 +257,19 @@ Procedure
     machineconfigpool.machineconfiguration.openshift.io/mcp-2 created
     ```
 
-    </div>
+<div class="formalpara-title">
 
-</div>
-
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 Monitor the `MachineConfigPool` resources as they are applied in the cluster. After you apply the `mcp` resources, the nodes are added into the new machine config pools. This takes a few minutes.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The nodes do not reboot while being added into the `mcp` groups. The original worker and master `mcp` groups remain unchanged.
+The nodes do not reboot while being added into the `mcp` groups. The original worker and master `mcp` groups remain unchanged.
+
+</div>
 
 - Check the status of the new `mcp` resources:
 
@@ -311,11 +277,9 @@ Monitor the `MachineConfigPool` resources as they are applied in the cluster. Af
   $ oc get mcp
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -327,8 +291,6 @@ Monitor the `MachineConfigPool` resources as they are applied in the cluster. Af
   worker   rendered-worker-23fc4f   False     True       True       0              0                 0                     2                      25d
   ```
 
-  </div>
-
   Eventually, the resources are fully applied:
 
   ``` terminal
@@ -339,13 +301,7 @@ Monitor the `MachineConfigPool` resources as they are applied in the cluster. Af
   worker   rendered-worker-23fc4f   True      False      False      0              0                 0                     0                      25d
   ```
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Performing a Control Plane Only update](../../../updating/updating_a_cluster/control-plane-only-update.xml#control-plane-only-update)
 
@@ -355,41 +311,25 @@ Additional resources
 
 - [Ensuring that pods do not run on the same cluster node](../../../edge_computing/day_2_core_cnf_clusters/updating/update-cnf-update-prep.xml#update-pod-anti-affinity_update-cnf-update-prep)
 
-</div>
-
 # Disconnected environment considerations
 
 To update clusters in disconnected environments, you must update your offline image repository.
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [API compatibility guidelines](../../../rest_api/overview/understanding-compatibility-guidelines.xml#api-compatibility-guidelines_compatibility-guidelines)
 
 - [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
-</div>
-
 # Preparing the cluster platform for update
 
 Before you update the cluster, perform basic checks and verifications to ensure that the cluster is ready for the update.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 \+ . Verify that there are no failed or in progress pods in the cluster by running the following command:
-
-</div>
 
 \+
 
@@ -399,8 +339,11 @@ $ oc get pods -A | grep -E -vi 'complete|running'
 
 \+
 
-> [!NOTE]
-> You might have to run this command more than once if there are pods that are in a pending state.
+<div class="note">
+
+You might have to run this command more than once if there are pods that are in a pending state.
+
+</div>
 
 1.  Verify that all nodes in the cluster are available:
 
@@ -408,11 +351,9 @@ $ oc get pods -A | grep -E -vi 'complete|running'
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -425,19 +366,15 @@ $ oc get pods -A | grep -E -vi 'complete|running'
     worker-1       Ready    mcp-2,worker           32d   v1.27.15+6147456
     ```
 
-    </div>
-
 2.  Verify that all bare-metal nodes are provisioned and ready.
 
     ``` terminal
     $ oc get bmh -n openshift-machine-api
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -450,21 +387,15 @@ $ oc get pods -A | grep -E -vi 'complete|running'
     worker-1       progressing   cnf-58879-worker-0-dszsh   false            1d
     ```
 
-    </div>
-
     An error occurred while provisioning the `worker-1` node.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 \+ \* Verify that all cluster Operators are ready:
-
-</div>
 
 \+
 
@@ -485,14 +416,4 @@ service-ca                                 4.14.34   True        False         F
 storage                                    4.14.34   True        False         False      32d
 ```
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Investigating pod issues](../../../support/troubleshooting/investigating-pod-issues.xml#investigating-pod-issues)
-
-</div>

@@ -1,13 +1,5 @@
 You back up Kubernetes resources, internal images, and persistent volumes (PVs) by creating a `Backup` custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must install the OpenShift API for Data Protection (OADP) Operator.
 
 - The `DataProtectionApplication` CR must be in a `Ready` state.
@@ -26,27 +18,15 @@ Prerequisites
 
   - You must have a volume location configured in the `DataProtectionApplication` CR.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Retrieve the `backupStorageLocations` CRs by entering the following command:
 
     ``` terminal
     $ oc get backupstoragelocations.velero.io -n openshift-adp
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -54,8 +34,6 @@ Procedure
     NAMESPACE       NAME              PHASE       LAST VALIDATED   AGE   DEFAULT
     openshift-adp   velero-sample-1   Available   11s              31m
     ```
-
-    </div>
 
 2.  Create a `Backup` CR, as in the following example:
 
@@ -104,5 +82,3 @@ Procedure
     ``` terminal
     $ oc get backups.velero.io -n openshift-adp <backup> -o jsonpath='{.status.phase}'
     ```
-
-</div>

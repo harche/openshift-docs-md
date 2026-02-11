@@ -2,8 +2,11 @@ To optimize performance on mainframe infrastructure, apply host practices, so th
 
 The s390x architecture is unique in many aspects. Some host practice recommendations might not apply to other platforms.
 
-> [!NOTE]
-> Unless stated otherwise, the host practices apply to both z/VM and Red Hat Enterprise Linux (RHEL) KVM installations on IBM Z® and IBM® LinuxONE.
+<div class="note">
+
+Unless stated otherwise, the host practices apply to both z/VM and Red Hat Enterprise Linux (RHEL) KVM installations on IBM Z® and IBM® LinuxONE.
+
+</div>
 
 # Managing CPU overcommitment
 
@@ -23,21 +26,13 @@ Depending on your setup, consider the following best practices regarding CPU ove
 
 - Not all workloads are suitable for high overcommitment ratios. If the workload is CPU intensive, you might experience performance problems with high overcommitment ratios. Workloads that are more I/O intensive can keep consistent performance even with high overcommitment ratios.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [z/VM Common Performance Problems and Solutions](https://www.vm.ibm.com/perf/tips/prgcom.html)
 
 - [z/VM overcommitment considerations](https://www.ibm.com/docs/en/linux-on-systems?topic=overcommitment-considerations)
 
 - [LPAR CPU management](https://www.ibm.com/docs/en/zos/2.2.0?topic=director-lpar-cpu-management)
-
-</div>
 
 # Disable Transparent Huge Pages
 
@@ -50,14 +45,6 @@ Transparent Huge Pages (THP) tries to automate most aspects of creating, managin
 To boost networking performance, activate Receive Flow Steering (RFS) by using the Machine Config Operator (MCO). This configuration improves packet processing efficiency by directing network traffic to specific CPUs.
 
 RFS extends Receive Packet Steering (RPS) by further reducing network latency. RFS is technically based on RPS, and improves the efficiency of packet processing by increasing the CPU cache hit rate. RFS achieves this, while considering queue length, by determining the most convenient CPU for computation so that cache hits are more likely to occur within the CPU. This means that the CPU cache is invalidated less and requires fewer cycles to rebuild the cache, which reduces packet processing run time.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Copy the following MCO sample profile into a YAML file. For example, `enable-rfs.yaml`:
 
@@ -104,23 +91,11 @@ Procedure
     $ oc delete mc 50-enable-rfs
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [OpenShift Container Platform on IBM Z®: Tune your network performance with RFS](https://developer.ibm.com/tutorials/red-hat-openshift-on-ibm-z-tune-your-network-performance-with-rfs/)
 
 - [Configuring Receive Flow Steering (RFS)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/performance_tuning_guide/sect-red_hat_enterprise_linux-performance_tuning_guide-networking-configuration_tools#sect-Red_Hat_Enterprise_Linux-Performance_Tuning_Guide-Configuration_tools-Configuring_Receive_Flow_Steering_RFS)
 
 - [Scaling in the Linux Networking Stack](https://www.kernel.org/doc/Documentation/networking/scaling.txt)
-
-</div>
 
 # Choose your networking setup
 
@@ -142,21 +117,13 @@ Depending on your setup, consider these best practices:
 
 - Balance the trade-off between performance and functionality.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [OpenShift Container Platform on IBM Z® - Performance Experiences, Hints and Tips](https://www.ibm.com/docs/en/linux-on-systems?topic=openshift-performance#openshift_perf__ocp_eval)
 
 - [OpenShift Container Platform on IBM Z® Networking Performance](https://www.ibm.com/docs/en/linux-on-systems?topic=openshift-performance#openshift_perf__ocp_net)
 
 - [Controlling pod placement on nodes using node affinity rules](../nodes/scheduling/nodes-scheduler-node-affinity.xml)
-
-</div>
 
 # Ensure high disk performance with HyperPAV on z/VM
 
@@ -165,14 +132,6 @@ To improve I/O performance for Direct Access Storage Devices (DASD) disks in z/V
 DASD and Extended Count Key Data (ECKD) devices are commonly used disk types in IBM Z® environments. In a typical OpenShift Container Platform setup in z/VM environments, DASD disks are commonly used to support the local storage for the nodes. You can set up HyperPAV alias devices to provide more throughput and overall better I/O performance for the DASD disks that support the z/VM guests.
 
 Using HyperPAV for the local storage devices leads to a significant performance benefit. However, be aware of the trade-off between throughput and CPU costs.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Copy the following MCO sample profile into a YAML file for the control plane node. For example, `05-master-kernelarg-hpav.yaml`:
 
@@ -212,8 +171,11 @@ Procedure
     # ...
     ```
 
-    > [!NOTE]
-    > You must modify the `rd.dasd` arguments to fit the device IDs.
+    <div class="note">
+
+    You must modify the `rd.dasd` arguments to fit the device IDs.
+
+    </div>
 
 3.  Create the MCO profiles by entering the following commands:
 
@@ -235,21 +197,9 @@ Procedure
     $ oc delete -f 05-worker-kernelarg-hpav.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Using HyperPAV for ECKD DASD](https://www.ibm.com/docs/en/linux-on-systems?topic=io-using-hyperpav-eckd-dasd)
 
 - [Scaling HyperPAV alias devices on Linux guests on z/VM](https://public.dhe.ibm.com/software/dw/linux390/perf/zvm_hpav00.pdf)
-
-</div>
 
 # RHEL KVM on IBM Z host recommendations
 
@@ -263,11 +213,9 @@ To make virtual block devices use I/O threads, you must configure one or more I/
 
 The following example specifies `<iothreads>3</iothreads>` to configure three I/O threads, with consecutive decimal thread IDs 1, 2, and 3. The `iothread="2"` parameter specifies the driver element of the disk device to use the I/O thread with ID 2.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample I/O thread specification
+**Sample I/O thread specification**
 
 </div>
 
@@ -286,8 +234,6 @@ Sample I/O thread specification
    ...
 </domain>
 ```
-
-</div>
 
 where:
 
@@ -319,11 +265,9 @@ To ensure that the guest manages caching instead of the host, configure your dis
 
 Ensure that the driver element of the disk device includes the `cache="none"` and `io="native"` parameters.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example configuration
+**Example configuration**
 
 </div>
 
@@ -334,19 +278,9 @@ Example configuration
 </disk>
 ```
 
-</div>
-
 ## Excluding the memory balloon device
 
 Unless you need a dynamic memory size, do not define a memory balloon device and ensure that libvirt does not create one for you. Include the `memballoon` parameter as a child of the devices element in your domain configuration file.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To disable the memory balloon driver, add the following configuration setting to your domain configuration file:
 
@@ -354,26 +288,19 @@ Procedure
   <memballoon model="none"/>
   ```
 
-</div>
-
 ## Tuning the CPU migration algorithm of the host scheduler
 
 To optimize task distribution and reduce latency, tune the CPU migration algorithm of the host scheduler. With this configuration, you can adjust how the kernel balances processes across available CPUs, ensuring efficient resource usage for your specific workloads.
 
-> [!IMPORTANT]
-> Do not change the scheduler settings unless you are an expert who understands the implications. Do not apply changes to production systems without testing them and confirming that they have the intended effect.
+<div class="important">
+
+Do not change the scheduler settings unless you are an expert who understands the implications. Do not apply changes to production systems without testing them and confirming that they have the intended effect.
+
+</div>
 
 The `kernel.sched_migration_cost_ns` parameter specifies a time interval in nanoseconds. After the last execution of a task, the CPU cache is considered to have useful content until this interval expires. Increasing this interval results in fewer task migrations. The default value is `500000` ns.
 
 If the CPU idle time is higher than expected when there are runnable processes, try reducing this interval. If tasks bounce between CPUs or nodes too often, try increasing it.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To dynamically set the interval to `60000` ns, enter the following command:
 
@@ -387,20 +314,13 @@ Procedure
   kernel.sched_migration_cost_ns=60000
   ```
 
-</div>
-
 ## Disabling the cpuset cgroup controller
 
 To allow the kernel scheduler to freely distribute processes across all available resources, disable the `cpuset` cgroup controller. This configuration prevents the system from enforcing processor affinity constraints, ensuring that tasks can use any available CPU or memory node.
 
-> [!NOTE]
-> This setting applies only to KVM hosts with cgroups version 1. To enable CPU hotplug on the host, disable the cgroup controller.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+This setting applies only to KVM hosts with cgroups version 1. To enable CPU hotplug on the host, disable the cgroup controller.
 
 </div>
 
@@ -430,21 +350,11 @@ Procedure
 
         This setting persists across host reboots.
 
-</div>
-
 ## Tuning the polling period for idle virtual CPUs
 
 When a virtual CPU becomes idle, KVM polls for wakeup conditions for the virtual CPU before allocating the host resource. You can specify the time interval, during which polling takes place in sysfs at `/sys/module/kvm/parameters/halt_poll_ns`.
 
 During the specified time, polling reduces the wakeup latency for the virtual CPU at the expense of resource usage. Depending on the workload, a longer or shorter time for polling can be beneficial. The time interval is specified in nanoseconds. The default is `50000` ns.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To optimize for low CPU consumption, enter a small value or write `0` to disable polling:
 
@@ -458,18 +368,8 @@ Procedure
   # echo 80000 > /sys/module/kvm/parameters/halt_poll_ns
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Linux on IBM Z® Performance Tuning for KVM](https://www.ibm.com/docs/en/linux-on-systems?topic=v-kvm)
 
 - [Getting started with virtualization on IBM Z®](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_virtualization/getting-started-with-virtualization-in-rhel-8-on-ibm-z_configuring-and-managing-virtualization)
-
-</div>

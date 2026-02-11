@@ -6,12 +6,12 @@ Type
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | FirmwareSchemaSpec defines the desired state of FirmwareSchema. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | FirmwareSchemaSpec defines the desired state of FirmwareSchema.                                                                                                                                                                                                                                      |
 
 ## .spec
 
@@ -47,16 +47,16 @@ Additional data describing the firmware setting.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `allowable_values` | `array (string)` | The allowable value for an Enumeration type setting. |
-| `attribute_type` | `string` | The type of setting. |
-| `lower_bound` | `integer` | The lowest value for an Integer type setting. |
-| `max_length` | `integer` | Maximum length for a String type setting. |
-| `min_length` | `integer` | Minimum length for a String type setting. |
-| `read_only` | `boolean` | Whether or not this setting is read only. |
-| `unique` | `boolean` | Whether or not this setting’s value is unique to this node, e.g. a serial number. |
-| `upper_bound` | `integer` | The highest value for an Integer type setting. |
+| Property           | Type             | Description                                                                       |
+|--------------------|------------------|-----------------------------------------------------------------------------------|
+| `allowable_values` | `array (string)` | The allowable value for an Enumeration type setting.                              |
+| `attribute_type`   | `string`         | The type of setting.                                                              |
+| `lower_bound`      | `integer`        | The lowest value for an Integer type setting.                                     |
+| `max_length`       | `integer`        | Maximum length for a String type setting.                                         |
+| `min_length`       | `integer`        | Minimum length for a String type setting.                                         |
+| `read_only`        | `boolean`        | Whether or not this setting is read only.                                         |
+| `unique`           | `boolean`        | Whether or not this setting’s value is unique to this node, e.g. a serial number. |
+| `upper_bound`      | `integer`        | The highest value for an Integer type setting.                                    |
 
 # API endpoints
 
@@ -92,10 +92,10 @@ HTTP method
 Description
 list objects of kind FirmwareSchema
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`FirmwareSchemaList`](../objects/index.xml#io-metal3-v1alpha1-FirmwareSchemaList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                              |
+|--------------------|-------------------------------------------------------------------------------------------|
+| 200 - OK           | [`FirmwareSchemaList`](../objects/index.xml#io-metal3-v1alpha1-FirmwareSchemaList) schema |
+| 401 - Unauthorized | Empty                                                                                     |
 
 HTTP responses
 
@@ -107,10 +107,10 @@ HTTP method
 Description
 delete collection of FirmwareSchema
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -120,10 +120,10 @@ HTTP method
 Description
 list objects of kind FirmwareSchema
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`FirmwareSchemaList`](../objects/index.xml#io-metal3-v1alpha1-FirmwareSchemaList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                              |
+|--------------------|-------------------------------------------------------------------------------------------|
+| 200 - OK           | [`FirmwareSchemaList`](../objects/index.xml#io-metal3-v1alpha1-FirmwareSchemaList) schema |
+| 401 - Unauthorized | Empty                                                                                     |
 
 HTTP responses
 
@@ -133,25 +133,25 @@ HTTP method
 Description
 create a FirmwareSchema
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`FirmwareSchema`](../provisioning_apis/firmwareschema-metal3-io-v1alpha1.xml#firmwareschema-metal3-io-v1alpha1) schema |  |
+| Parameter | Type                                                                                                                    | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`FirmwareSchema`](../provisioning_apis/firmwareschema-metal3-io-v1alpha1.xml#firmwareschema-metal3-io-v1alpha1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`FirmwareSchema`](../provisioning_apis/firmwareschema-metal3-io-v1alpha1.xml#firmwareschema-metal3-io-v1alpha1) schema |
-| 201 - Created | [`FirmwareSchema`](../provisioning_apis/firmwareschema-metal3-io-v1alpha1.xml#firmwareschema-metal3-io-v1alpha1) schema |
-| 202 - Accepted | [`FirmwareSchema`](../provisioning_apis/firmwareschema-metal3-io-v1alpha1.xml#firmwareschema-metal3-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                            |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`FirmwareSchema`](../provisioning_apis/firmwareschema-metal3-io-v1alpha1.xml#firmwareschema-metal3-io-v1alpha1) schema |
+| 201 - Created      | [`FirmwareSchema`](../provisioning_apis/firmwareschema-metal3-io-v1alpha1.xml#firmwareschema-metal3-io-v1alpha1) schema |
+| 202 - Accepted     | [`FirmwareSchema`](../provisioning_apis/firmwareschema-metal3-io-v1alpha1.xml#firmwareschema-metal3-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                                   |
 
 HTTP responses
 
@@ -169,17 +169,17 @@ HTTP method
 Description
 delete a FirmwareSchema
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -189,10 +189,10 @@ HTTP method
 Description
 read the specified FirmwareSchema
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`FirmwareSchema`](../provisioning_apis/firmwareschema-metal3-io-v1alpha1.xml#firmwareschema-metal3-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                            |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`FirmwareSchema`](../provisioning_apis/firmwareschema-metal3-io-v1alpha1.xml#firmwareschema-metal3-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                                   |
 
 HTTP responses
 
@@ -202,17 +202,17 @@ HTTP method
 Description
 partially update the specified FirmwareSchema
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`FirmwareSchema`](../provisioning_apis/firmwareschema-metal3-io-v1alpha1.xml#firmwareschema-metal3-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                            |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`FirmwareSchema`](../provisioning_apis/firmwareschema-metal3-io-v1alpha1.xml#firmwareschema-metal3-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                                   |
 
 HTTP responses
 
@@ -222,23 +222,23 @@ HTTP method
 Description
 replace the specified FirmwareSchema
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`FirmwareSchema`](../provisioning_apis/firmwareschema-metal3-io-v1alpha1.xml#firmwareschema-metal3-io-v1alpha1) schema |  |
+| Parameter | Type                                                                                                                    | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`FirmwareSchema`](../provisioning_apis/firmwareschema-metal3-io-v1alpha1.xml#firmwareschema-metal3-io-v1alpha1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`FirmwareSchema`](../provisioning_apis/firmwareschema-metal3-io-v1alpha1.xml#firmwareschema-metal3-io-v1alpha1) schema |
-| 201 - Created | [`FirmwareSchema`](../provisioning_apis/firmwareschema-metal3-io-v1alpha1.xml#firmwareschema-metal3-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                            |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`FirmwareSchema`](../provisioning_apis/firmwareschema-metal3-io-v1alpha1.xml#firmwareschema-metal3-io-v1alpha1) schema |
+| 201 - Created      | [`FirmwareSchema`](../provisioning_apis/firmwareschema-metal3-io-v1alpha1.xml#firmwareschema-metal3-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                                   |
 
 HTTP responses

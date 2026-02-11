@@ -115,8 +115,11 @@ Explicitly defining volumes in your `Dockerfile` makes it easy for consumers of 
 
 See the [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/volumes/) for more information on how volumes are used in OpenShift Container Platform.
 
-> [!NOTE]
-> Even with persistent volumes, each instance of your image has its own volume, and the filesystem is not shared between instances. This means the volume cannot be used to share state in a cluster.
+<div class="note">
+
+Even with persistent volumes, each instance of your image has its own volume, and the filesystem is not shared between instances. This means the volume cannot be used to share state in a cluster.
+
+</div>
 
 ## OpenShift Container Platform-specific guidelines
 
@@ -141,15 +144,21 @@ RUN chgrp -R 0 /some/directory && \
 
 Because the container user is always a member of the root group, the container user can read and write these files.
 
-> [!WARNING]
-> Care must be taken when altering the directories and file permissions of the sensitive areas of a container. If applied to sensitive areas, such as the `/etc/passwd` file, such changes can allow the modification of these files by unintended users, potentially exposing the container or host. CRI-O supports the insertion of arbitrary user IDs into a container’s `/etc/passwd` file. As such, changing permissions is never required.
->
-> Additionally, the `/etc/passwd` file should not exist in any container image. If it does, the CRI-O container runtime will fail to inject a random UID into the `/etc/passwd` file. In such cases, the container might face challenges in resolving the active UID. Failing to meet this requirement could impact the functionality of certain containerized applications.
+<div class="warning">
+
+Care must be taken when altering the directories and file permissions of the sensitive areas of a container. If applied to sensitive areas, such as the `/etc/passwd` file, such changes can allow the modification of these files by unintended users, potentially exposing the container or host. CRI-O supports the insertion of arbitrary user IDs into a container’s `/etc/passwd` file. As such, changing permissions is never required.
+
+Additionally, the `/etc/passwd` file should not exist in any container image. If it does, the CRI-O container runtime will fail to inject a random UID into the `/etc/passwd` file. In such cases, the container might face challenges in resolving the active UID. Failing to meet this requirement could impact the functionality of certain containerized applications.
+
+</div>
 
 In addition, the processes running in the container must not listen on privileged ports, ports below 1024, since they are not running as a privileged user.
 
-> [!IMPORTANT]
-> If your S2I image does not include a `USER` declaration with a numeric user, your builds fail by default. To allow images that use either named users or the root `0` user to build in OpenShift Container Platform, you can add the project’s builder service account, `system:serviceaccount:<your-project>:builder`, to the `anyuid` security context constraint (SCC). Alternatively, you can allow all images to run as any user.
+<div class="important">
+
+If your S2I image does not include a `USER` declaration with a numeric user, your builds fail by default. To allow images that use either named users or the root `0` user to build in OpenShift Container Platform, you can add the project’s builder service account, `system:serviceaccount:<your-project>:builder`, to the `anyuid` security context constraint (SCC). Alternatively, you can allow all images to run as any user.
+
+</div>
 
 ### Use services for inter-image communication
 
@@ -163,8 +172,11 @@ For images that are intended to run application code provided by a third party, 
 
 Users of your image are able to configure it without having to create a downstream image based on your image. This means that the runtime configuration is handled using environment variables. For a simple configuration, the running process can consume the environment variables directly. For a more complicated configuration or for runtimes which do not support this, configure the runtime by defining a template configuration file that is processed during startup. During this processing, values supplied using environment variables can be substituted into the configuration file or used to make decisions about what options to set in the configuration file.
 
-> [!NOTE]
-> It is also possible and recommended to pass secrets such as certificates and keys into the container using environment variables. This ensures that the secret values do not end up committed in an image and leaked into a container image registry.
+<div class="note">
+
+It is also possible and recommended to pass secrets such as certificates and keys into the container using environment variables. This ensures that the secret values do not end up committed in an image and leaked into a container image registry.
+
+</div>
 
 Providing environment variables allows consumers of your image to customize behavior, such as database settings, passwords, and performance tuning, without having to introduce a new layer on top of your image. Instead, they can simply define environment variable values when defining a pod and change those settings without rebuilding the image.
 
@@ -223,33 +235,33 @@ See the [Docker custom metadata](https://docs.docker.com/engine/userguide/labels
 <col style="width: 72%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Variable</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>io.openshift.tags</code></p></td>
 <td style="text-align: left;"><p>This label contains a list of tags represented as a list of comma-separated string values. The tags are the way to categorize the container images into broad areas of functionality. Tags help UI and generation tools to suggest relevant container images during the application creation process.</p>
 <pre><code>LABEL io.openshift.tags   mongodb,mongodb24,nosql</code></pre></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>io.openshift.wants</code></p></td>
 <td style="text-align: left;"><p>Specifies a list of tags that the generation tools and the UI uses to provide relevant suggestions if you do not have the container images with specified tags already. For example, if the container image wants <code>mysql</code> and <code>redis</code> and you do not have the container image with <code>redis</code> tag, then UI can suggest you to add this image into your deployment.</p>
 <pre><code>LABEL io.openshift.wants   mongodb,redis</code></pre></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>io.k8s.description</code></p></td>
 <td style="text-align: left;"><p>This label can be used to give the container image consumers more detailed information about the service or functionality this image provides. The UI can then use this description together with the container image name to provide more human friendly information to end users.</p>
 <pre><code>LABEL io.k8s.description The MySQL 5.5 Server with master-slave replication support</code></pre></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>io.openshift.non-scalable</code></p></td>
 <td style="text-align: left;"><p>An image can use this variable to suggest that it does not support scaling. The UI then communicates this to consumers of that image. Being not-scalable means that the value of <code>replicas</code> should initially not be set higher than <code>1</code>.</p>
 <pre><code>LABEL io.openshift.non-scalable     true</code></pre></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>io.openshift.min-memory</code> and <code>io.openshift.min-cpu</code></p></td>
 <td style="text-align: left;"><p>This label suggests how much resources the container image needs to work properly. The UI can warn the user that deploying this container image may exceed their user quota. The values must be compatible with Kubernetes quantity.</p>
 <pre><code>LABEL io.openshift.min-memory 16Gi
@@ -257,6 +269,8 @@ LABEL io.openshift.min-cpu     4</code></pre></td>
 </tr>
 </tbody>
 </table>
+
+Supported Metadata
 
 # Creating images from source code with source-to-image
 
@@ -305,13 +319,13 @@ Both the `io.openshift.s2i.scripts-url` label specified in the image and the scr
 <col style="width: 72%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Script</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>assemble</code></p></td>
 <td style="text-align: left;"><p>The <code>assemble</code> script builds the application artifacts from a source and places them into appropriate directories inside the image. This script is required. The workflow for this script is:</p>
 <ol type="1">
@@ -321,11 +335,11 @@ Both the `io.openshift.s2i.scripts-url` label specified in the image and the scr
 <li><p>Install the artifacts into locations appropriate for them to run.</p></li>
 </ol></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>run</code></p></td>
 <td style="text-align: left;"><p>The <code>run</code> script executes your application. This script is required.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>save-artifacts</code></p></td>
 <td style="text-align: left;"><p>The <code>save-artifacts</code> script gathers all dependencies that can speed up the build processes that follow. This script is optional. For example:</p>
 <ul>
@@ -334,11 +348,11 @@ Both the `io.openshift.s2i.scripts-url` label specified in the image and the scr
 </ul>
 <p>These dependencies are gathered into a <code>tar</code> file and streamed to the standard output.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>usage</code></p></td>
 <td style="text-align: left;"><p>The <code>usage</code> script allows you to inform the user how to properly use your image. This script is optional.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>test/run</code></p></td>
 <td style="text-align: left;"><p>The <code>test/run</code> script allows you to create a process to check if the image is working correctly. This script is optional. The proposed flow of that process is:</p>
 <ol type="1">
@@ -349,23 +363,21 @@ Both the `io.openshift.s2i.scripts-url` label specified in the image and the scr
 <li><p>Run the image to verify the test application is working.</p></li>
 </ol>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>The suggested location to put the test application built by your <code>test/run</code> script is the <code>test/test-app</code> directory in your image repository.</p>
 </div></td>
 </tr>
 </tbody>
 </table>
 
+S2I scripts
+
 **Example S2I scripts**
 
 The following example S2I scripts are written in Bash. Each example assumes its `tar` contents are unpacked into the `/tmp/s2i` directory.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-`assemble` script:
+**`assemble` script:**
 
 </div>
 
@@ -389,13 +401,9 @@ make install
 popd
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-`run` script:
+**`run` script:**
 
 </div>
 
@@ -406,13 +414,9 @@ popd
 /opt/application/run.sh
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-`save-artifacts` script:
+**`save-artifacts` script:**
 
 </div>
 
@@ -427,13 +431,9 @@ fi
 popd
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-`usage` script:
+**`usage` script:**
 
 </div>
 
@@ -447,19 +447,7 @@ https://github.com/openshift/source-to-image
 EOF
 ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [S2I Image Creation Tutorial](https://blog.openshift.com/create-s2i-builder-image/)
-
-</div>
 
 # About testing source-to-image images
 
@@ -489,8 +477,11 @@ $ s2i create <image_name> <destination_directory>
 
 The generated `test/run` script must be adjusted to be useful, but it provides a good starting point to begin developing.
 
-> [!NOTE]
-> The `test/run` script produced by the `s2i create` command requires that the sample application sources are inside the `test/test-app` directory.
+<div class="note">
+
+The `test/run` script produced by the `s2i create` command requires that the sample application sources are inside the `test/test-app` directory.
+
+</div>
 
 ## Testing locally
 
@@ -498,11 +489,9 @@ The easiest way to run the S2I image tests locally is to use the generated `Make
 
 If you did not use the `s2i create` command, you can copy the following `Makefile` template and replace the `IMAGE_NAME` parameter with your image name.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample `Makefile`
+**Sample `Makefile`**
 
 </div>
 
@@ -516,8 +505,6 @@ Sample `Makefile`
     test:
         ${CONTAINER_ENGINE} build -t $(IMAGE_NAME)-candidate .
         IMAGE_NAME=$(IMAGE_NAME)-candidate test/run
-
-</div>
 
 ## Basic testing workflow
 

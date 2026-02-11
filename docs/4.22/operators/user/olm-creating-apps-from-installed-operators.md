@@ -4,38 +4,23 @@ This guide walks developers through an example of creating applications from an 
 
 This procedure walks through creating a new etcd cluster using the etcd Operator, managed by Operator Lifecycle Manager (OLM).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to an OpenShift Container Platform 4.17 cluster.
 
 - The etcd Operator already installed cluster-wide by an administrator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a new project in the OpenShift Container Platform web console for this procedure. This example uses a project called `my-etcd`.
 
 2.  Navigate to the **Ecosystem** → **Installed Operators** page. The Operators that have been installed to the cluster by the cluster administrator and are available for use are shown here as a list of cluster service versions (CSVs). CSVs are used to launch and manage the software provided by the Operator.
 
-    > [!TIP]
-    > You can get this list from the CLI using:
-    >
-    > ``` terminal
-    > $ oc get csv
-    > ```
+    <div class="tip">
+
+    You can get this list from the CLI using:
+
+    ``` terminal
+    $ oc get csv
+    ```
+
+    </div>
 
 3.  On the **Installed Operators** page, click the etcd Operator to view more details and available actions.
 
@@ -56,7 +41,5 @@ Procedure
     ``` terminal
     $ oc policy add-role-to-user edit <user> -n <target_project>
     ```
-
-</div>
 
 You now have an etcd cluster that will react to failures and rebalance data as pods become unhealthy or are migrated between nodes in the cluster. Most importantly, cluster administrators or developers with proper access can now easily use the database with their applications.

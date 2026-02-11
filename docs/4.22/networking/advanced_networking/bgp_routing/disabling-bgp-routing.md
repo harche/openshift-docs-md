@@ -8,29 +8,13 @@ As a cluster administrator, you can disable Border Gateway Protocol (BGP) routin
 
 As a cluster administrator, you can disable BGP routing support for your cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster as a user with the `cluster-admin` role.
 
 - The cluster is installed on compatible infrastructure.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To disable dynamic routing, enter the following command:
 
@@ -39,5 +23,3 @@ Procedure
     "spec": { "additionalRoutingCapabilities": null }
   }'
   ```
-
-</div>

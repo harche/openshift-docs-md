@@ -18,14 +18,6 @@ The KMM Operator is supported on OpenShift Container Platform 4.12 and later. In
 
 As a cluster administrator, you can install the Kernel Module Management (KMM) Operator using the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Log in to the OpenShift Container Platform web console.
 
 2.  Install the Kernel Module Management Operator:
@@ -38,34 +30,25 @@ Procedure
 
     4.  Click **Install**.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 To verify that KMM Operator installed successfully:
 
-</div>
-
 1.  Navigate to the **Ecosystem** → **Installed Operators** page.
 
 2.  Ensure that **Kernel Module Management Operator** is listed in the **openshift-kmm** project with a **Status** of **InstallSucceeded**.
 
-    > [!NOTE]
-    > During installation, an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
+    <div class="note">
 
-<div>
+    During installation, an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
 
-<div class="title">
+    </div>
 
-Troubleshooting
-
-</div>
+<!-- -->
 
 1.  To troubleshoot issues with Operator installation:
 
@@ -73,35 +56,15 @@ Troubleshooting
 
     2.  Navigate to the **Workloads** → **Pods** page and check the logs for pods in the `openshift-kmm` project.
 
-</div>
-
 ## Installing the Kernel Module Management Operator by using the CLI
 
 As a cluster administrator, you can install the Kernel Module Management (KMM) Operator by using the OpenShift CLI.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have a running OpenShift Container Platform cluster.
 
 - You installed the OpenShift CLI (`oc`).
 
 - You are logged into the OpenShift CLI as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Install KMM in the `openshift-kmm` namespace:
 
@@ -147,16 +110,6 @@ Procedure
         $ oc create -f kmm-sub.yaml
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - To verify that the Operator deployment is successful, run the following command:
 
   ``` terminal
@@ -172,35 +125,15 @@ Verification
 
   The Operator is available.
 
-</div>
-
 ## Installing the Kernel Module Management Operator on earlier versions of OpenShift Container Platform
 
 The KMM Operator is supported on OpenShift Container Platform 4.12 and later. For version 4.10 and earlier, you must create a new `SecurityContextConstraint` object and bind it to the Operator’s `ServiceAccount`. As a cluster administrator, you can install the Kernel Module Management (KMM) Operator by using the OpenShift CLI.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have a running OpenShift Container Platform cluster.
 
 - You installed the OpenShift CLI (`oc`).
 
 - You are logged into the OpenShift CLI as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Install KMM in the `openshift-kmm` namespace:
 
@@ -298,16 +231,6 @@ Procedure
         $ oc create -f kmm-sub.yaml
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - To verify that the Operator deployment is successful, run the following command:
 
   ``` terminal
@@ -323,19 +246,9 @@ Verification
 
   The Operator is available.
 
-</div>
-
 # Configuring the Kernel Module Management Operator
 
 In most cases, the default configuration for the Kernel Module Management (KMM) Operator does not need to be modified. However, you can modify the Operator settings to suit your environment.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To modify any setting, create a `ConfigMap` with the name `kmm-operator-manager-config` in the Operator namespace with the relevant data and restart the controller using the following command:
 
@@ -357,8 +270,11 @@ Procedure
     namespace: openshift-kmm
   ```
 
-  > [!NOTE]
-  > If you want to configure `KMM Hub`, create the `ConfigMap` using the name `kmm-operator-hub-manager-config` in the KMM Hub controller’s namespace.
+  <div class="note">
+
+  If you want to configure `KMM Hub`, create the `ConfigMap` using the name `kmm-operator-hub-manager-config` in the KMM Hub controller’s namespace.
+
+  </div>
 
   <table>
   <caption>Operator configuration parameters</caption>
@@ -367,37 +283,37 @@ Procedure
   <col style="width: 80%" />
   </colgroup>
   <thead>
-  <tr>
+  <tr class="header">
   <th style="text-align: left;">Parameter</th>
   <th style="text-align: left;">Description</th>
   </tr>
   </thead>
   <tbody>
-  <tr>
+  <tr class="odd">
   <td style="text-align: left;"><p><code>healthProbeBindAddress</code></p></td>
   <td style="text-align: left;"><p>Defines the address on which the Operator monitors for kubelet health probes. The recommended value is <code>:8081</code>.</p></td>
   </tr>
-  <tr>
+  <tr class="even">
   <td style="text-align: left;"><p><code>job.gcDelay</code></p></td>
   <td style="text-align: left;"><p>Defines the duration for which successful build pods should be preserved before they are deleted. For information about the valid values for this setting, see <a href="https://pkg.go.dev/time#ParseDuration">ParseDuration</a>. The default value is <code>0s</code>.</p></td>
   </tr>
-  <tr>
+  <tr class="odd">
   <td style="text-align: left;"><p><code>leaderElection.enabled</code></p></td>
   <td style="text-align: left;"><p>Determines whether leader election is used to ensure that only one replica of the KMM Operator is running at any time. For more information, see <a href="https://kubernetes.io/docs/concepts/architecture/leases/">Leases</a>. The default value is <code>true</code>.</p></td>
   </tr>
-  <tr>
+  <tr class="even">
   <td style="text-align: left;"><p><code>leaderElection.resourceID</code></p></td>
   <td style="text-align: left;"><p>Determines the name of the resource that leader election uses for holding the leader lock. The default value for KMM is <code>kmm.sigs.x-k8s.io</code>. The default value for KMM-hub is <code>kmm-hub.sigs.x-k8s.io</code>.</p></td>
   </tr>
-  <tr>
+  <tr class="odd">
   <td style="text-align: left;"><p><code>metrics.bindAddress</code></p></td>
   <td style="text-align: left;"><p>Determines the bind address for the metrics server. Set this to "0" to disable the metrics server. The default value is <code>0.0.0.0:8443</code>.</p></td>
   </tr>
-  <tr>
+  <tr class="even">
   <td style="text-align: left;"><p><code>metrics.disableHTTP2</code></p></td>
   <td style="text-align: left;"><p>If <code>true</code>, disables HTTP/2 for the metrics server as a mitigation for <a href="https://access.redhat.com/security/cve/cve-2023-44487">CVE-2023-44487</a>. The default value is <code>true</code>.</p></td>
   </tr>
-  <tr>
+  <tr class="odd">
   <td style="text-align: left;"><p><code>metrics.enableAuthnAuthz</code></p></td>
   <td style="text-align: left;"><p>Determines if metrics are authenticated using <code>TokenReviews</code> and authorized using <code>SubjectAccessReviews</code> with the kube-apiserver.</p>
   <p>For authentication and authorization, the controller needs a <code>ClusterRole</code> with the following rules:</p>
@@ -411,67 +327,52 @@ Procedure
   </ul>
   <p>The default value is <code>true</code>.</p></td>
   </tr>
-  <tr>
+  <tr class="even">
   <td style="text-align: left;"><p><code>metrics.secureServing</code></p></td>
   <td style="text-align: left;"><p>Determines whether the metrics are served over HTTPS instead of HTTP. The default value is <code>true</code>.</p></td>
   </tr>
-  <tr>
+  <tr class="odd">
   <td style="text-align: left;"><p><code>webhook.disableHTTP2</code></p></td>
   <td style="text-align: left;"><p>If <code>true</code>, disables HTTP/2 for the webhook server, as a mitigation for <a href="https://access.redhat.com/security/cve/cve-2023-44487">CVE-2023-44487</a>. The default value is <code>true</code>.</p></td>
   </tr>
-  <tr>
+  <tr class="even">
   <td style="text-align: left;"><p><code>webhook.port</code></p></td>
   <td style="text-align: left;"><p>Defines the port on which the Operator monitors webhook requests. The default value is <code>9443</code>.</p></td>
   </tr>
-  <tr>
+  <tr class="odd">
   <td style="text-align: left;"><p><code>worker.runAsUser</code></p></td>
   <td style="text-align: left;"><p>Determines the value of the <code>runAsUser</code> field of the worker container’s security context. For more information, see <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/">SecurityContext</a>. The default value is <code>9443</code>.</p></td>
   </tr>
-  <tr>
+  <tr class="even">
   <td style="text-align: left;"><p><code>worker.seLinuxType</code></p></td>
   <td style="text-align: left;"><p>Determines the value of the <code>seLinuxOptions.type</code> field of the worker container’s security context. For more information, see <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/">SecurityContext</a>. The default value is <code>spc_t</code>.</p></td>
   </tr>
-  <tr>
+  <tr class="odd">
   <td style="text-align: left;"><p><code>worker.firmwareHostPath</code></p></td>
   <td style="text-align: left;"><p>If set, the value of this field is written by the worker container into the /sys/module/firmware_class/parameters/path file on the node. For more information see <a href="https://openshift-kmm.netlify.app/documentation/firmwares/#setting-the-kernels-firmware-search-path">Setting the kernel’s firmware search path</a>. The default value is <code>/var/lib/firmware</code>.</p></td>
   </tr>
   </tbody>
   </table>
 
-</div>
+  Operator configuration parameters
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - For more information, see [Installing the Kernel Module Management Operator](../hardware_enablement/kmm-kernel-module-management.xml#kmm-install_kernel-module-management-operator).
-
-</div>
 
 ## Unloading the kernel module
 
 You must unload the kernel modules when moving to a newer version or if they introduce some undesirable side effect on the node.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - To unload a module loaded with KMM from nodes, delete the corresponding `Module` resource. KMM then creates worker pods, where required, to run `modprobe -r` and unload the kernel module from the nodes.
 
-  > [!WARNING]
-  > When unloading worker pods, KMM needs all the resources it uses when loading the kernel module. This includes the `ServiceAccount` referenced in the `Module` as well as any RBAC defined to allow privileged KMM worker Pods to run. It also includes any pull secret referenced in `.spec.imageRepoSecret`.
-  >
-  > To avoid situations where KMM is unable to unload the kernel module from nodes, make sure those resources are not deleted while the `Module` resource is still present in the cluster in any state, including `Terminating`. KMM includes a validating admission webhook that rejects the deletion of namespaces that contain at least one `Module` resource.
+  <div class="warning">
 
-</div>
+  When unloading worker pods, KMM needs all the resources it uses when loading the kernel module. This includes the `ServiceAccount` referenced in the `Module` as well as any RBAC defined to allow privileged KMM worker Pods to run. It also includes any pull secret referenced in `.spec.imageRepoSecret`.
+
+  To avoid situations where KMM is unable to unload the kernel module from nodes, make sure those resources are not deleted while the `Module` resource is still present in the cluster in any state, including `Terminating`. KMM includes a validating admission webhook that rejects the deletion of namespaces that contain at least one `Module` resource.
+
+  </div>
 
 ## Setting the kernel firmware search path
 
@@ -479,29 +380,11 @@ The Linux kernel accepts the `firmware_class.path` parameter as a search path fo
 
 KMM worker pods can set this value on nodes by writing to sysfs before attempting to load kmods.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - To define a firmware search path, set `worker.setFirmwareClassPath` to `/var/lib/firmware` in the Operator configuration.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - For more information about the `worker.setFirmwareClassPath` path, see [Configuring the Kernel Module Management Operator](../hardware_enablement/kmm-kernel-module-management.xml#kmm-configuring-kmmo_kernel-module-management-operator).
-
-</div>
 
 # Uninstalling the Kernel Module Management Operator
 
@@ -511,32 +394,17 @@ Use one of the following procedures to uninstall the Kernel Module Management (K
 
 Use this procedure if KMM was installed from the Red Hat catalog.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Use the OpenShift console under **Operators** -→ **Installed Operators** to locate and uninstall the Operator.
 
-  > [!NOTE]
-  > Alternatively, you can delete the `Subscription` resource in the KMM namespace.
+  <div class="note">
 
-</div>
+  Alternatively, you can delete the `Subscription` resource in the KMM namespace.
+
+  </div>
 
 ## Uninstalling a CLI installation
 
 Use this command if the KMM Operator was installed using the OpenShift CLI.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Run the following command to uninstall the KMM Operator:
 
@@ -544,10 +412,11 @@ Procedure
   $ oc delete -k https://github.com/rh-ecosystem-edge/kernel-module-management/config/default
   ```
 
-  > [!NOTE]
-  > Using this command deletes the `Module` CRD and all `Module` instances in the cluster.
+  <div class="note">
 
-</div>
+  Using this command deletes the `Module` CRD and all `Module` instances in the cluster.
+
+  </div>
 
 # Kernel module deployment
 
@@ -623,13 +492,19 @@ spec:
 
 In the configuration above, the worker pod will first try to unload the in-tree `mod_b` before loading `mod_a` from the kmod image. When the worker pod is terminated and `mod_a` is unloaded, `mod_b` will not be loaded again.
 
-> [!NOTE]
-> The first value in the list, to be loaded last, must be equivalent to the `moduleName`.
+<div class="note">
+
+The first value in the list, to be loaded last, must be equivalent to the `moduleName`.
+
+</div>
 
 # Security and permissions
 
-> [!IMPORTANT]
-> Loading kernel modules is a highly sensitive operation. After they are loaded, kernel modules have all possible permissions to do any kind of operation on the node.
+<div class="important">
+
+Loading kernel modules is a highly sensitive operation. After they are loaded, kernel modules have all possible permissions to do any kind of operation on the node.
+
+</div>
 
 ## ServiceAccounts and SecurityContextConstraints
 
@@ -645,10 +520,13 @@ The authorization model for that workload depends on the namespace of the `Modul
 
   - If the `Module` resource is created in any other namespace, then KMM runs the pods with the namespace’s `default` `ServiceAccount`. The `Module` resource cannot run a privileged workload unless you manually enable it to use the `privileged` SCC.
 
-> [!IMPORTANT]
-> `openshift-kmm` is a trusted namespace.
->
-> When setting up RBAC permissions, remember that any user or `ServiceAccount` creating a `Module` resource in the `openshift-kmm` namespace results in KMM automatically running privileged workloads on potentially all nodes in the cluster.
+<div class="important">
+
+`openshift-kmm` is a trusted namespace.
+
+When setting up RBAC permissions, remember that any user or `ServiceAccount` creating a `Module` resource in the `openshift-kmm` namespace results in KMM automatically running privileged workloads on potentially all nodes in the cluster.
+
+</div>
 
 To allow any `ServiceAccount` to use the `privileged` SCC and run worker or device plugin pods, you can use the `oc adm policy` command, as in the following example:
 
@@ -660,17 +538,7 @@ $ oc adm policy add-scc-to-user privileged -z "${serviceAccountName}" [ -n "${na
 
 OpenShift runs a synchronization mechanism that sets the namespace Pod Security level automatically based on the security contexts in use. No action is needed.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Understanding and managing pod security admission](../authentication/understanding-and-managing-pod-security-admission.xml#understanding-and-managing-pod-security-admission)
-
-</div>
 
 # Replacing in-tree modules with out-of-tree modules
 
@@ -706,17 +574,7 @@ spec:
           inTreeModulesToRemove: [<module_name>, <module_name>]
 ```
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Building a linux kernel module](https://fastbitlab.com/building-a-linux-kernel-module/)
-
-</div>
 
 ## Example Module CR
 
@@ -835,29 +693,13 @@ spec:
 
 - Optional: Used to pull module loader and device plugin images.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Replacing the CA Bundle certificate](../security/certificates/updating-ca-bundle.xml#ca-bundle-replacing_updating-ca-bundle)
-
-</div>
 
 # Using in-tree modules with the device plugin
 
 In some cases, you might need to configure the KMM Module to avoid loading an out-of-tree kernel module and instead use the in-tree module, running only the device plugin. In such cases, you can omit the `moduleLoader` parameter from the `Module` custom resource (CR), and leave only the `devicePlugin` section, as shown in the following example.
-
-<div class="example">
-
-<div class="title">
-
-Example `Module` CR
-
-</div>
 
 ``` yaml
 apiVersion: kmm.sigs.x-k8s.io/v1beta1
@@ -871,8 +713,6 @@ spec:
     container:
       image: some.registry/org/my-device-plugin:latest
 ```
-
-</div>
 
 # Symbolic links for in-tree dependencies
 
@@ -908,10 +748,13 @@ RUN ln -s /lib/modules/${KERNEL_FULL_VERSION} /opt/lib/modules/${KERNEL_FULL_VER
 RUN depmod -b /opt ${KERNEL_FULL_VERSION}
 ```
 
-> [!NOTE]
-> `depmod` generates dependency files based on the kernel modules present on the node that runs the kmod image build.
->
-> On the node on which KMM loads the kernel modules, `modprobe` expects the files to be present under `/usr/lib/modules/<kernel_version>`, and the same filesystem layout. It is highly recommended that the build and the target nodes share the same operating system and release.
+<div class="note">
+
+`depmod` generates dependency files based on the kernel modules present on the node that runs the kmod image build.
+
+On the node on which KMM loads the kernel modules, `modprobe` expects the files to be present under `/usr/lib/modules/<kernel_version>`, and the same filesystem layout. It is highly recommended that the build and the target nodes share the same operating system and release.
+
+</div>
 
 # Creating a kmod image
 
@@ -929,14 +772,9 @@ In addition to the `.ko` files, the kmod image also requires the `cp` binary to 
 
 It is recommended to run `depmod` at the end of the build process to generate `modules.dep` and `.map` files. This is especially useful if your kmod image contains several kernel modules and if one of the modules depends on another module.
 
-> [!NOTE]
-> You must have a Red Hat subscription to download the `kernel-devel` package.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+You must have a Red Hat subscription to download the `kernel-devel` package.
 
 </div>
 
@@ -946,17 +784,13 @@ Procedure
   $ depmod -b /opt ${KERNEL_FULL_VERSION}+`.
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example Dockerfile
+  **Example Dockerfile**
 
   </div>
 
   If you are building your image on OpenShift Container Platform, consider using the Driver Toolkit (DTK).
-
-  </div>
 
   For further information, see [using an entitled build](https://cloud.redhat.com/blog/how-to-use-entitled-image-builds-to-build-drivercontainers-with-ubi-on-openshift).
 
@@ -982,19 +816,9 @@ Procedure
       RUN depmod -b /opt ${KERNEL_FULL_VERSION}
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Driver Toolkit](../hardware_enablement/psap-driver-toolkit.xml#driver-toolkit)
-
-</div>
 
 ## Building in the cluster
 
@@ -1048,33 +872,15 @@ Otherwise, KMM creates a `Build` resource to build your image. After the image i
 
 Successful build pods are garbage collected immediately, unless the `job.gcDelay` parameter is set in the Operator configuration. Failed build pods are always preserved and must be deleted manually by the administrator for the build to be restarted.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Build configuration resources](../cicd/builds/build-configuration.xml#build-configuration)
 
 - [Preflight validation for Kernel Module Management (KMM) Modules](../updating/preparing_for_updates/kmm-preflight-validation.xml)
-
-</div>
 
 ## Using the Driver Toolkit
 
 The Driver Toolkit (DTK) is a convenient base image for building build kmod loader images. It contains tools and libraries for the OpenShift version currently running in the cluster.
 
 Use DTK as the first stage of a multi-stage Dockerfile.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Build the kernel modules.
 
@@ -1098,19 +904,7 @@ Procedure
     RUN depmod -b /opt ${KERNEL_FULL_VERSION}
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Driver Toolkit](../hardware_enablement/psap-driver-toolkit.xml#driver-toolkit)
-
-</div>
 
 # Using signing with Kernel Module Management (KMM)
 
@@ -1131,14 +925,6 @@ For more details on using Secure Boot, see [Generating a public and private key 
 To use KMM Kernel Module Management (KMM) to sign kernel modules, a certificate and private key are required. For details on how to create these, see [Generating a public and private key pair](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_monitoring_and_updating_the_kernel/signing-a-kernel-and-modules-for-secure-boot_managing-monitoring-and-updating-the-kernel#generating-a-public-and-private-key-pair_signing-a-kernel-and-modules-for-secure-boot).
 
 For details on how to extract the public and private key pair, see [Signing kernel modules with the private key](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_monitoring_and_updating_the_kernel/signing-a-kernel-and-modules-for-secure-boot_managing-monitoring-and-updating-the-kernel#signing-kernel-modules-with-the-private-key_signing-a-kernel-and-modules-for-secure-boot). Use steps 1 through 4 to extract the keys into files.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `sb_cert.cer` file that contains the certificate and the `sb_cert.priv` file that contains the private key:
 
@@ -1199,19 +985,9 @@ Procedure
     $ oc apply -f <yaml_filename>
     ```
 
-</div>
-
 ## Checking the keys
 
 After you have added the keys, you must check them to ensure they are set correctly.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Check to ensure the public key secret is set correctly:
 
@@ -1229,8 +1005,6 @@ Procedure
 
     This should display the key enclosed in the `-----BEGIN PRIVATE KEY-----` and `-----END PRIVATE KEY-----` lines.
 
-</div>
-
 # Signing kmods in a pre-built image
 
 Use this procedure if you have a pre-built image, such as an image either distributed by a hardware vendor or built elsewhere.
@@ -1239,25 +1013,9 @@ The following YAML file adds the public/private key-pair as secrets with the req
 
 KMM then loads the signed kmods onto all the nodes with that match the selector. The kmods are successfully loaded on any nodes that have the public key in their MOK database, and any nodes that are not secure-boot enabled, which will ignore the signature.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The `keySecret` and `certSecret` secrets have been created in the same namespace as the rest of the resources.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Apply the YAML file:
 
@@ -1300,8 +1058,6 @@ Procedure
 
   - The name of the unsigned image. For example, `quay.io/myuser/my-driver:<kernelversion`.
 
-</div>
-
 # Building and signing a kmod image
 
 Use this procedure if you have source code and must build your image first.
@@ -1314,25 +1070,9 @@ For example, using the following YAML file, Kernel Module Management (KMM) build
 
 After it is signed, you can safely delete the temporary image from the registry. It will be rebuilt, if needed.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The `keySecret` and `certSecret` secrets have been created in the same namespace as the rest of the resources.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Apply the YAML file:
 
@@ -1395,19 +1135,9 @@ Procedure
 
   - Used as `imagePullSecrets` in the `DaemonSet` object and to pull and push for the build and sign features.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Creating service accounts](../authentication/understanding-and-creating-service-accounts.xml#service-accounts-managing_understanding-service-accounts).
-
-</div>
 
 # Using tolerations for kernel module scheduling
 
@@ -1454,14 +1184,6 @@ Toleration values must match the taint that is added to the nodes. A toleration 
 
   - the `effect` parameters are the same.
 
-<div class="example">
-
-<div class="title">
-
-Example taint in a node specification
-
-</div>
-
 ``` yaml
 apiVersion: v1
 kind: Node
@@ -1475,16 +1197,6 @@ spec:
     value: value1
 #...
 ```
-
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Example toleration in a module specification
-
-</div>
 
 ``` yaml
 apiVersion: kmm.sigs.x-k8s.io/v1beta1
@@ -1501,19 +1213,7 @@ spec:
     value: value1
 ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Understanding taints and tolerations](https://docs.openshift.com/container-platform/4.17/nodes/scheduling/nodes-scheduler-taints-tolerations.html#nodes-scheduler-taints-tolerations-about_nodes-scheduler-taints-tolerations)
-
-</div>
 
 # KMM hub and spoke
 
@@ -1525,17 +1225,7 @@ In hub and spoke setups, spokes are focused, resource-constrained clusters that 
 
 Building kernel module images and signing the `.ko` files, should run on the hub. The scheduling of the Module Loader and Device Plugin `DaemonSets` can only happen on the spokes.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Red Hat Advanced Cluster Management (RHACM)](https://www.redhat.com/en/technologies/management/advanced-cluster-management)
-
-</div>
 
 ## KMM-Hub
 
@@ -1543,20 +1233,13 @@ The KMM project provides KMM-Hub, an edition of KMM dedicated to hub clusters. K
 
 KMM-Hub runs all compute-intensive tasks such as image builds and kmod signing, and prepares the trimmed-down `Module` to be transferred to the spokes through RHACM.
 
-> [!NOTE]
-> KMM-Hub cannot be used to load kernel modules on the hub cluster. Install the regular edition of KMM to load kernel modules.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+KMM-Hub cannot be used to load kernel modules on the hub cluster. Install the regular edition of KMM to load kernel modules.
 
 </div>
 
 - [Installing KMM](https://openshift-kmm.netlify.app/documentation/install/)
-
-</div>
 
 ## Installing KMM-Hub
 
@@ -1566,31 +1249,15 @@ You can use one of the following methods to install KMM-Hub:
 
 - Creating KMM resources
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [KMM Operator bundle](https://catalog.redhat.com/software/containers/kmm/kernel-module-management-hub-operator-bundle/63d84cc33862da54bb19b8c6?architecture=amd64&image=654273ac86f7e537ae452f6ehttps://catalog.redhat.com/software/containers/kmm/kernel-module-management-hub-operator-bundle/63d84cc33862da54bb19b8c6?architecture=amd64&image=654273ac86f7e537ae452f6e)
-
-</div>
 
 ### Installing KMM-Hub using the Operator Lifecycle Manager
 
 Use the **Operators** section of the OpenShift console to install KMM-Hub.
 
 ### Installing KMM-Hub by creating KMM resources
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - If you want to install KMM-Hub programmatically, you can use the following resources to create the `Namespace`, `OperatorGroup` and `Subscription` resources:
 
@@ -1619,8 +1286,6 @@ Procedure
     source: redhat-operators
     sourceNamespace: openshift-marketplace
   ```
-
-</div>
 
 ## Using the `ManagedClusterModule` CRD
 
@@ -1660,14 +1325,6 @@ When the `.spec.selector matches` one or more `ManagedCluster` resources, then K
 After installing Kernel Module Management (KMM) on the spoke, no further action is required. Create a `ManagedClusterModule` object from the hub to deploy kernel modules on spoke clusters.
 
 You can install KMM on the spokes cluster through a RHACM `Policy` object. In addition to installing KMM from the software catalog and running it in a lightweight spoke mode, the `Policy` configures additional RBAC required for the RHACM agent to be able to manage `Module` resources.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Use the following RHACM policy to install KMM on spoke clusters:
 
@@ -1770,22 +1427,15 @@ Procedure
 
   - The `spec.clusterSelector` field can be customized to target select clusters only.
 
-</div>
-
 # Customizing upgrades for kernel modules
 
 The Kernel Module Management (KMM) Operator periodically upgrades `Module` resources in the cluster, typically during a cluster upgrade.
 
 Use this procedure to upgrade the kernel module while running maintenance operations on the node, including rebooting the node, if needed. To minimize the impact on the workloads running in the cluster, run the kernel upgrade process sequentially, one node at a time.
 
-> [!NOTE]
-> This procedure requires knowledge of the workload using the kernel module and must be managed by the cluster administrator.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+This procedure requires knowledge of the workload using the kernel module and must be managed by the cluster administrator.
 
 </div>
 
@@ -1796,16 +1446,6 @@ Prerequisites
 - Unload the currently loaded kernel module.
 
 - Ensure that the user workload (the application running in the cluster that is accessing kernel module) is not running on the node before the kernel module unloads and that the workload is back running on the node after the new kernel module version has been loaded.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Ensure that the device plugin managed by KMM on the node is unloaded.
 
@@ -1835,16 +1475,17 @@ Procedure
     $ oc label node/<node_name> kmm.node.kubernetes.io/version-module.<module_namespace>.<module_name>=<desired_version>
     ```
 
-    > [!NOTE]
-    > Because of Kubernetes limitations in label names, the combined length of `Module` name and namespace must not exceed 39 characters.
+    <div class="note">
+
+    Because of Kubernetes limitations in label names, the combined length of `Module` name and namespace must not exceed 39 characters.
+
+    </div>
 
     The Operator labels the node with a `version.ready` label to indicate that the new version of the kernel module is loaded and is ready to be used:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1852,29 +1493,15 @@ Procedure
     `kmm.node.kubernetes.io/<module-namespace>.<module-name>.version.ready=<module-version>`
     ```
 
-    </div>
-
 7.  Restore any workload that leverages the kernel module on the node.
 
 8.  Reload the device plugin managed by KMM on the node.
-
-</div>
 
 # Day 1 kernel module loading
 
 Kernel Module Management (KMM) is typically a Day 2 Operator. Kernel modules are loaded only after the complete initialization of a Linux (RHCOS) server. However, in some scenarios the kernel module must be loaded at an earlier stage. Day 1 functionality allows you to use the Machine Config Operator (MCO) to load kernel modules during the Linux `systemd` initialization stage.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Machine Config Operator](../machine_configuration/index.xml#machine-config-index)
-
-</div>
 
 ## Day 1 supported use cases
 
@@ -1892,14 +1519,6 @@ The following are the conditions needed for Day 1 functionality:
 
 The loading of the out-of-tree (OOT) kernel module leverages the Machine Config Operator (MCO). The flow sequence is as follows:
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Apply a `MachineConfig` resource to the existing running cluster. In order to identify the necessary nodes that need to be updated, you must create an appropriate `MachineConfigPool` resource.
 
 2.  MCO applies the reboots node by node. On any rebooted node, two new `systemd` services are deployed: `pull` service and `load` service.
@@ -1908,23 +1527,11 @@ Procedure
 
 4.  The `pull` service is configured to run after NetworkManager service. The service checks if the preconfigured kernel module image is located on the node’s filesystem. If it is, the service exists normally, and the server continues with the boot process. If not, it pulls the image onto the node and reboots the node afterwards.
 
-</div>
-
 ## The kernel module image
 
 The Day 1 functionality uses the same DTK based image leveraged by Day 2 KMM builds. The out-of-tree kernel module should be located under `/opt/lib/modules/${kernelVersion}`.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Driver Toolkit](../hardware_enablement/psap-driver-toolkit.xml#driver-toolkit)
-
-</div>
 
 ## In-tree module replacement
 
@@ -2001,17 +1608,7 @@ metadata:
     machineconfiguration.opensfhit.io/role: worker
 ```
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [About MachineConfigPool](https://www.redhat.com/en/blog/openshift-container-platform-4-how-does-machine-config-pool-work)
-
-</div>
 
 # Managing Day 1 kmod images
 
@@ -2086,14 +1683,6 @@ All files and empty directories are removed from that location before running th
 
 On OpenShift Container Platform nodes, the set of default lookup paths for firmwares does not include the `/var/lib/firmware` path.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Use the Machine Config Operator to create a `MachineConfig` custom resource (CR) that contains the `/var/lib/firmware` path:
 
     ``` yaml
@@ -2112,29 +1701,9 @@ Procedure
 
 2.  By applying the `MachineConfig` CR, the nodes are automatically rebooted.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Machine Config Operator](../machine_configuration/index.xml#machine-config-operator_machine-config-overview).
 
-</div>
-
 ## Building a kmod image
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - In addition to building the kernel module itself, include the binary firmware in the builder image:
 
@@ -2153,17 +1722,7 @@ Procedure
   COPY --from=builder /firmware /firmware
   ```
 
-</div>
-
 ## Tuning the Module resource
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Set `.spec.moduleLoader.container.modprobe.firmwarePath` in the `Module` custom resource (CR):
 
@@ -2182,8 +1741,6 @@ Procedure
   ```
 
   - Optional: Copies `/firmware/*` into `/var/lib/firmware/` on the node.
-
-</div>
 
 # Day 0 through Day 2 kmod installation
 
@@ -2224,8 +1781,11 @@ You only need to recompile the driver if you add new features to it, because the
 
 You can leverage KMM to manage the Day 0 through Day 2 lifecycle of kmods without a reboot when the driver allows it.
 
-> [!NOTE]
-> This will not work if the upgrade requires a node reboot, for example, when rebuilding `initramfs` files is needed.
+<div class="note">
+
+This will not work if the upgrade requires a node reboot, for example, when rebuilding `initramfs` files is needed.
+
+</div>
 
 Use one of the following options for lifecycle management.
 
@@ -2316,27 +1876,9 @@ Events:
 
 The `oc adm must-gather` command is the preferred way to collect a support bundle and provide debugging information to Red Hat Support. Collect specific information by running the command with the appropriate arguments as described in the following sections.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [About the must-gather tool](../support/gathering-cluster-data.xml#about-must-gather_gathering-cluster-data)
 
-</div>
-
 ### Gathering data for KMM
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Gather the data for the KMM Operator controller manager:
 
@@ -2350,8 +1892,11 @@ Procedure
         $ oc adm must-gather --image="${MUST_GATHER_IMAGE}" -- /usr/bin/gather
         ```
 
-        > [!NOTE]
-        > Use the `-n <namespace>` switch to specify a namespace if you installed KMM in a custom namespace.
+        <div class="note">
+
+        Use the `-n <namespace>` switch to specify a namespace if you installed KMM in a custom namespace.
+
+        </div>
 
     2.  Run the `must-gather` tool:
 
@@ -2397,17 +1942,7 @@ Procedure
     I0228 09:36:40.786489       1 controller.go:193] kmm "msg"="Starting Controller" "controller"="PodNodeModule" "controllerGroup"="" "controllerKind"="Pod"
     ```
 
-</div>
-
 ### Gathering data for KMM-Hub
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Gather the data for the KMM Operator hub controller manager:
 
@@ -2421,8 +1956,11 @@ Procedure
         $ oc adm must-gather --image="${MUST_GATHER_IMAGE}" -- /usr/bin/gather -u
         ```
 
-        > [!NOTE]
-        > Use the `-n <namespace>` switch to specify a namespace if you installed KMM in a custom namespace.
+        <div class="note">
+
+        Use the `-n <namespace>` switch to specify a namespace if you installed KMM in a custom namespace.
+
+        </div>
 
     2.  Run the `must-gather` tool:
 
@@ -2465,5 +2003,3 @@ Procedure
     I0417 11:34:12.501948       1 controller.go:227] kmm-hub "msg"="Starting workers" "controller"="ManagedClusterModule" "controllerGroup"="hub.kmm.sigs.x-k8s.io" "controllerKind"="ManagedClusterModule" "worker count"=1
     I0417 11:34:12.502285       1 imagestream_reconciler.go:50] kmm-hub "msg"="registered imagestream info mapping" "ImageStream"={"name":"driver-toolkit","namespace":"openshift"} "controller"="imagestream" "controllerGroup"="image.openshift.io" "controllerKind"="ImageStream" "dtkImage"="quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:df42b4785a7a662b30da53bdb0d206120cf4d24b45674227b16051ba4b7c3934" "name"="driver-toolkit" "namespace"="openshift" "osImageVersion"="412.86.202302211547-0" "reconcileID"="e709ff0a-5664-4007-8270-49b5dff8bae9"
     ```
-
-</div>

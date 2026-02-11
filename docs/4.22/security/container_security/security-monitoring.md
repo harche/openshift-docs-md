@@ -12,19 +12,15 @@ The master API and `oc` command do not provide parameters to scope a listing of 
 $ oc get event -n default | grep Node
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
 ``` terminal
 1h         20h         3         origin-node-1.example.local   Node      Normal    NodeHasDiskPressure   ...
 ```
-
-</div>
 
 A more flexible approach is to output the events in a form that other tools can process. For example, the following example uses the `jq` tool against JSON output to extract only `NodeHasDiskPressure` events:
 
@@ -33,11 +29,9 @@ $ oc get events -n default -o json \
   | jq '.items[] | select(.involvedObject.kind == "Node" and .reason == "NodeHasDiskPressure")'
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -56,8 +50,6 @@ Example output
 }
 ```
 
-</div>
-
 Events related to resource creation, modification, or deletion can also be good candidates for detecting misuse of the cluster. The following query, for example, can be used to look for excessive pulling of images:
 
 ``` terminal
@@ -65,11 +57,9 @@ $ oc get events --all-namespaces -o json \
   | jq '[.items[] | select(.involvedObject.kind == "Pod" and .reason == "Pulling")] | length'
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -77,10 +67,11 @@ Example output
 4
 ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> When a namespace is deleted, its events are deleted as well. Events can also expire and are deleted to prevent filling up etcd storage. Events are not stored as a permanent record and frequent polling is necessary to capture statistics over time.
+When a namespace is deleted, its events are deleted as well. Events can also expire and are deleted to prevent filling up etcd storage. Events are not stored as a permanent record and frequent polling is necessary to capture statistics over time.
+
+</div>
 
 # Logging
 
@@ -96,16 +87,6 @@ To save your logs for further audit and analysis, you can enable the `cluster-lo
 
 With *audit logs*, you can follow a sequence of activities associated with how a user, administrator, or other OpenShift Container Platform component is behaving. API audit logging is done on each server.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [List of system events](../../nodes/clusters/nodes-containers-events.xml#nodes-containers-events)
 
 - [Viewing audit logs](../../security/audit-log-view.xml#audit-log-view)
-
-</div>

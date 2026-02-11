@@ -2,8 +2,11 @@ Running your cluster in a restricted network without direct internet connectivit
 
 You can use the oc-mirror OpenShift CLI (`oc`) plugin to mirror images to a mirror registry in your fully or partially disconnected environments. You must run oc-mirror from a system with internet connectivity in order to download the required images from the official Red Hat registries.
 
-> [!IMPORTANT]
-> The oc-mirror v1 plugin is deprecated. Specify the `--v1` flag to continue using the v1 plugin, or migrate to the supported v2 plugin and use the `--v2` flag. Transition to the [oc-mirror v2 plugin](../disconnected/about-installing-oc-mirror-v2.xml#installation-oc-mirror-v2-about_about-installing-oc-mirror-v2) for continued support and improvements.
+<div class="important">
+
+The oc-mirror v1 plugin is deprecated. Specify the `--v1` flag to continue using the v1 plugin, or migrate to the supported v2 plugin and use the `--v2` flag. Transition to the [oc-mirror v2 plugin](../disconnected/about-installing-oc-mirror-v2.xml#installation-oc-mirror-v2-about_about-installing-oc-mirror-v2) for continued support and improvements.
+
+</div>
 
 # About the oc-mirror plugin
 
@@ -41,29 +44,25 @@ The following steps outline the high-level workflow on how to use the oc-mirror 
 
 4.  Repeat these steps to update your target mirror registry as necessary.
 
-> [!IMPORTANT]
-> When using the oc-mirror CLI plugin to populate a mirror registry, any further updates to the target mirror registry must be made by using the oc-mirror plugin.
+<div class="important">
+
+When using the oc-mirror CLI plugin to populate a mirror registry, any further updates to the target mirror registry must be made by using the oc-mirror plugin.
+
+</div>
 
 # oc-mirror plugin compatibility and support
 
 The oc-mirror plugin supports mirroring OpenShift Container Platform payload images and Operator catalogs for OpenShift Container Platform versions 4.12 and later.
 
-> [!NOTE]
-> On `aarch64`, `ppc64le`, and `s390x` architectures the oc-mirror plugin is only supported for OpenShift Container Platform versions 4.14 and later.
+<div class="note">
+
+On `aarch64`, `ppc64le`, and `s390x` architectures the oc-mirror plugin is only supported for OpenShift Container Platform versions 4.14 and later.
+
+</div>
 
 Use the latest available version of the oc-mirror plugin regardless of which versions of OpenShift Container Platform you need to mirror.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - For information on updating oc-mirror, see [Viewing the image pull source](../installing/validation_and_troubleshooting/validating-an-installation.xml#viewing-the-image-pull-source_validating-an-installation).
-
-</div>
 
 # About the mirror registry
 
@@ -73,8 +72,11 @@ You can mirror the images that are required for OpenShift Container Platform ins
 
 Regardless of your chosen registry, the procedure to mirror content from Red Hat hosted sites on the internet to an isolated image registry is the same. After you mirror the content, you configure each cluster to retrieve this content from your mirror registry.
 
-> [!IMPORTANT]
-> The OpenShift image registry cannot be used as the target registry because it does not support pushing without a tag, which is required during the mirroring process.
+<div class="important">
+
+The OpenShift image registry cannot be used as the target registry because it does not support pushing without a tag, which is required during the mirroring process.
+
+</div>
 
 If choosing a container registry that is not the *mirror registry for Red Hat OpenShift*, it must be reachable by every machine in the clusters that you provision. If the registry is unreachable, installation, updating, or normal operations such as workload relocation might fail. For that reason, you must run mirror registries in a highly available way, and the mirror registries must at least match the production availability of your OpenShift Container Platform clusters.
 
@@ -82,27 +84,23 @@ When you populate your mirror registry with OpenShift Container Platform images,
 
 For mirrored registries, to view the source of pulled images, you must review the `Trying to access` log entry in the CRI-O logs. Other methods to view the image pull source, such as using the `crictl images` command on a node, show the non-mirrored image name, even though the image is pulled from the mirrored location.
 
-> [!NOTE]
-> Red Hat does not test third party registries with OpenShift Container Platform.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+Red Hat does not test third party registries with OpenShift Container Platform.
 
 </div>
 
 - [Viewing the image pull source](../installing/validation_and_troubleshooting/validating-an-installation.xml#viewing-the-image-pull-source_validating-an-installation).
 
-</div>
-
 # Prerequisites
 
 - You must have a container image registry that supports [Docker v2-2](https://docs.docker.com/registry/spec/manifest-v2-2) in the location that will host the OpenShift Container Platform cluster, such as Red Hat Quay.
 
-  > [!NOTE]
-  > If you use Red Hat Quay, you must use version 3.6 or later with the oc-mirror plugin. If you have an entitlement to Red Hat Quay, see the documentation on deploying Red Hat Quay [for proof-of-concept purposes](https://docs.redhat.com/en/documentation/red_hat_quay/3/html/proof_of_concept_-_deploying_red_hat_quay/index) or [by using the Red Hat Quay Operator](https://access.redhat.com/documentation/en-us/red_hat_quay/3/html/deploying_the_red_hat_quay_operator_on_openshift_container_platform/index). If you need additional assistance selecting and installing a registry, contact your sales representative or Red Hat Support.
+  <div class="note">
+
+  If you use Red Hat Quay, you must use version 3.6 or later with the oc-mirror plugin. If you have an entitlement to Red Hat Quay, see the documentation on deploying Red Hat Quay [for proof-of-concept purposes](https://docs.redhat.com/en/documentation/red_hat_quay/3/html/proof_of_concept_-_deploying_red_hat_quay/index) or [by using the Red Hat Quay Operator](https://access.redhat.com/documentation/en-us/red_hat_quay/3/html/deploying_the_red_hat_quay_operator_on_openshift_container_platform/index). If you need additional assistance selecting and installing a registry, contact your sales representative or Red Hat Support.
+
+  </div>
 
   If you do not already have an existing solution for a container image registry, subscribers of OpenShift Container Platform are provided a [mirror registry for Red Hat OpenShift](../disconnected/installing-mirroring-creating-registry.xml#installing-mirroring-creating-registry). The *mirror registry for Red Hat OpenShift* is included with your subscription and is a small-scale container registry that can be used to mirror the required container images of OpenShift Container Platform in disconnected installations.
 
@@ -114,14 +112,6 @@ Before you can use the oc-mirror plugin to mirror images, you must install the p
 
 Install the oc-mirror OpenShift CLI plugin to manage image sets in disconnected environments.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`). If you are mirroring image sets in a fully disconnected environment, ensure the following:
 
   - You have installed the oc-mirror plugin on the host that has internet access.
@@ -131,16 +121,6 @@ Prerequisites
 - You have set the `umask` parameter to `0022` on the operating system that uses oc-mirror.
 
 - You have installed the correct binary for the RHEL version that you are using.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Download the oc-mirror CLI plugin:
 
@@ -162,8 +142,11 @@ Procedure
     $ chmod +x oc-mirror
     ```
 
-    > [!NOTE]
-    > Do not rename the `oc-mirror` file.
+    <div class="note">
+
+    Do not rename the `oc-mirror` file.
+
+    </div>
 
 4.  Install the oc-mirror CLI plugin by placing the file in your `PATH`, for example `/usr/local/bin`, by running the following command:
 
@@ -171,48 +154,23 @@ Procedure
     $ sudo mv oc-mirror /usr/local/bin/.
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the oc-mirror plugin v1 is successfully installed by running the following command:
 
   ``` terminal
   $ oc mirror help --v1
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Installing and using CLI plugins](../cli_reference/openshift_cli/extending-cli-plugins.xml#cli-installing-plugins_cli-extend-plugins)
-
-</div>
 
 ## Configuring credentials that allow images to be mirrored
 
 Create a container image registry credentials file so that you can mirror images from Red Hat to your mirror. Complete the following steps on the installation host.
 
-> [!WARNING]
-> Do not use this image registry credentials file as the pull secret when you install a cluster. If you provide this file when you install cluster, all of the machines in the cluster will have write access to your mirror registry.
+<div class="warning">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Do not use this image registry credentials file as the pull secret when you install a cluster. If you provide this file when you install cluster, all of the machines in the cluster will have write access to your mirror registry.
 
 </div>
 
@@ -224,16 +182,6 @@ Prerequisites
 
 - You have write access to the mirror registry.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Download your `registry.redhat.io` [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret).
 
 2.  Make a copy of your pull secret in JSON format by running the following command:
@@ -244,11 +192,9 @@ Procedure
 
     Specify the path to the directory to store the pull secret in and a name for the JSON file that you create.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example pull secret
+    **Example pull secret**
 
     </div>
 
@@ -275,8 +221,6 @@ Procedure
     }
     ```
 
-    </div>
-
 3.  Save the file as either `~/.docker/config.json` or `$XDG_RUNTIME_DIR/containers/auth.json`:
 
     1.  If the `.docker` or `$XDG_RUNTIME_DIR/containers` directories do not exist, create one by entering the following command:
@@ -295,7 +239,7 @@ Procedure
 
         The `<directory_name>` is either `~/.docker` or `$XDG_RUNTIME_DIR/containers`, and `<auth_file>` is either `config.json` or `auth.json`
 
-</div>
+<!-- -->
 
 1.  Generate the base64-encoded user name and password or token for your mirror registry by running the following command:
 
@@ -305,19 +249,15 @@ Procedure
 
     For `<user_name>` and `<password>`, specify the user name and password that you configured for your registry.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     BGVtbYk3ZHAtqXs=
     ```
-
-    </div>
 
 2.  Edit the JSON file and add a section that describes your registry to it:
 
@@ -334,11 +274,9 @@ Procedure
 
     - For the `<credentials>` value, specify the base64-encoded user name and password for the mirror registry.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example modified pull secret
+      **Example modified pull secret**
 
       </div>
 
@@ -369,36 +307,19 @@ Procedure
       }
       ```
 
-      </div>
-
 # Creating the image set configuration
 
 Before you can use the oc-mirror plugin to mirror image sets, you must create an image set configuration file. This image set configuration file defines which OpenShift Container Platform releases, Operators, and other images to mirror, along with other configuration settings for the oc-mirror plugin.
 
 You must specify a storage backend in the image set configuration file. This storage backend can be a local directory or a registry that supports [Docker v2-2](https://docs.docker.com/registry/spec/manifest-v2-2). The oc-mirror plugin stores metadata in this storage backend during image set creation.
 
-> [!IMPORTANT]
-> Do not delete or modify the metadata that is generated by the oc-mirror plugin. You must use the same storage backend every time you run the oc-mirror plugin for the same mirror registry.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Do not delete or modify the metadata that is generated by the oc-mirror plugin. You must use the same storage backend every time you run the oc-mirror plugin for the same mirror registry.
 
 </div>
 
 - You have created a container image registry credentials file. For instructions, see "Configuring credentials that allow images to be mirrored".
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Use the `oc mirror init` command to create a template for the image set configuration and save it to a file called `imageset-config.yaml`:
 
@@ -467,12 +388,15 @@ Procedure
     `additionalImages.name`
     Specifies any additional images to include in image set.
 
-    > [!NOTE]
-    > The `graph: true` field also mirrors the `ubi-micro` image along with other mirrored images.
-    >
-    > When upgrading OpenShift Container Platform Extended Update Support (EUS) versions, an intermediate version might be required between the current and target versions. For example, if the current version is `4.14` and target version is `4.16`, you might need to include a version such as `4.15.8` in the `ImageSetConfiguration` when using the oc-mirror plugin v1.
-    >
-    > The oc-mirror plugin v1 might not always detect this automatically, so check the [Cincinnati graph web page](https://access.redhat.com/labs/ocpupgradegraph/update_path) to confirm any required intermediate versions and add them manually to your configuration.
+    <div class="note">
+
+    The `graph: true` field also mirrors the `ubi-micro` image along with other mirrored images.
+
+    When upgrading OpenShift Container Platform Extended Update Support (EUS) versions, an intermediate version might be required between the current and target versions. For example, if the current version is `4.14` and target version is `4.16`, you might need to include a version such as `4.15.8` in the `ImageSetConfiguration` when using the oc-mirror plugin v1.
+
+    The oc-mirror plugin v1 might not always detect this automatically, so check the [Cincinnati graph web page](https://access.redhat.com/labs/ocpupgradegraph/update_path) to confirm any required intermediate versions and add them manually to your configuration.
+
+    </div>
 
     See "Image set configuration parameters" for the full list of parameters and "Image set configuration examples" for various mirroring use cases.
 
@@ -480,23 +404,11 @@ Procedure
 
     This image set configuration file is required by the `oc mirror` command when mirroring content.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Image set configuration parameters](../disconnected/installing-mirroring-disconnected.xml#oc-mirror-imageset-config-params_installing-mirroring-disconnected)
 
 - [Image set configuration examples](../disconnected/installing-mirroring-disconnected.xml#oc-mirror-image-set-examples_installing-mirroring-disconnected)
 
 - [Using the OpenShift Update Service in a disconnected environment](../disconnected/updating/disconnected-update-osus.xml#updating-disconnected-cluster-osus)
-
-</div>
 
 # Mirroring an image set to a mirror registry
 
@@ -514,14 +426,9 @@ You can use the oc-mirror plugin to mirror an image set directly to a target mir
 
 You are required to specify a storage backend in the image set configuration file. This storage backend can be a local directory or a Docker v2 registry. The oc-mirror plugin stores metadata in this storage backend during image set creation.
 
-> [!IMPORTANT]
-> Do not delete or modify the metadata that is generated by the oc-mirror plugin. You must use the same storage backend every time you run the oc-mirror plugin for the same mirror registry.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Do not delete or modify the metadata that is generated by the oc-mirror plugin. You must use the same storage backend every time you run the oc-mirror plugin for the same mirror registry.
 
 </div>
 
@@ -533,15 +440,7 @@ Prerequisites
 
 - You created the image set configuration file.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Run the `oc mirror` command to mirror the images from the specified image set configuration to a specified registry:
 
@@ -554,32 +453,15 @@ Procedure
 
   - Specify the registry to mirror the image set file to. The registry must start with `docker://`. If you specify a top-level namespace for the mirror registry, you must also use this same namespace on subsequent executions.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 1.  Navigate into the `oc-mirror-workspace/` directory that was generated.
 
 2.  Navigate into the results directory, for example, `results-1639608409/`.
 
 3.  Verify that YAML files are present for the `ImageContentSourcePolicy` and `CatalogSource` resources.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The `repositoryDigestMirrors` section of the `ImageContentSourcePolicy` YAML file is used for the `install-config.yaml` file during installation.
-
-<div>
-
-<div class="title">
-
-Next steps
+The `repositoryDigestMirrors` section of the `ImageContentSourcePolicy` YAML file is used for the `install-config.yaml` file during installation.
 
 </div>
 
@@ -589,19 +471,9 @@ Next steps
 
 - Configure your cluster to use the resources generated by oc-mirror.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Troubleshooting
-
-</div>
+<!-- -->
 
 - [Unable to retrieve source image](https://access.redhat.com/solutions/7032017).
-
-</div>
 
 ## Mirroring an image set in a fully disconnected environment
 
@@ -611,21 +483,19 @@ To mirror an image set in a fully disconnected environment, you must first [mirr
 
 You can use the oc-mirror plugin to generate an image set and save the contents to disk. The generated image set can then be transferred to the disconnected environment and mirrored to the target registry.
 
-> [!IMPORTANT]
-> Depending on the configuration specified in the image set configuration file, using oc-mirror to mirror images might download several hundreds of gigabytes of data to disk.
->
-> The initial image set download when you populate the mirror registry is often the largest. Because you only download the images that changed since the last time you ran the command, when you run the oc-mirror plugin again, the generated image set is often smaller.
+<div class="important">
+
+Depending on the configuration specified in the image set configuration file, using oc-mirror to mirror images might download several hundreds of gigabytes of data to disk.
+
+The initial image set download when you populate the mirror registry is often the largest. Because you only download the images that changed since the last time you ran the command, when you run the oc-mirror plugin again, the generated image set is often smaller.
+
+</div>
 
 You are required to specify a storage backend in the image set configuration file. This storage backend can be a local directory or a docker v2 registry. The oc-mirror plugin stores metadata in this storage backend during image set creation.
 
-> [!IMPORTANT]
-> Do not delete or modify the metadata that is generated by the oc-mirror plugin. You must use the same storage backend every time you run the oc-mirror plugin for the same mirror registry.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Do not delete or modify the metadata that is generated by the oc-mirror plugin. You must use the same storage backend every time you run the oc-mirror plugin for the same mirror registry.
 
 </div>
 
@@ -637,15 +507,7 @@ Prerequisites
 
 - You have created the image set configuration file.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Run the `oc mirror` command to mirror the images from the specified image set configuration to disk:
 
@@ -657,16 +519,6 @@ Procedure
   - Pass in the image set configuration file that was created. This procedure assumes that it is named `imageset-config.yaml`.
 
   - Specify the target directory where you want to output the image set file. The target directory path must start with `file://`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 1.  Navigate to your output directory:
 
@@ -680,11 +532,9 @@ Verification
     $ ls
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -692,45 +542,15 @@ Verification
     mirror_seq1_000000.tar
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - Transfer the image set .tar file to the disconnected environment.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Troubleshooting
-
-</div>
+<!-- -->
 
 - [Unable to retrieve source image](https://access.redhat.com/solutions/7032017).
-
-</div>
 
 ### Mirroring from disk to mirror
 
 To mirror the contents of a generated image set to a target mirror registry, use the `oc-mirror` plugin. This action ensures that the required images are successfully transferred to your target environment
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift CLI (`oc`) in the disconnected environment.
 
@@ -740,15 +560,7 @@ Prerequisites
 
 - You have transferred the image set file to the disconnected environment.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Run the `oc mirror` command to process the image set file on disk and mirror the contents to a target mirror registry:
 
@@ -767,47 +579,17 @@ Procedure
 
   This command updates the mirror registry with the image set and generates the `ImageContentSourcePolicy` and `CatalogSource` resources.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 1.  Navigate into the `oc-mirror-workspace/` directory that was generated.
 
 2.  Navigate into the results directory, for example, `results-1639608409/`.
 
 3.  Verify that YAML files are present for the `ImageContentSourcePolicy` and `CatalogSource` resources.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - Configure your cluster to use the resources generated by oc-mirror.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Troubleshooting
-
-</div>
+<!-- -->
 
 - [Unable to retrieve source image](https://access.redhat.com/solutions/7032017).
-
-</div>
 
 # Configuring your cluster to use the resources generated by oc-mirror
 
@@ -815,32 +597,17 @@ After you have mirrored your image set to the mirror registry, you must apply th
 
 The `ImageContentSourcePolicy` resource associates the mirror registry with the source registry and redirects image pull requests from the online registries to the mirror registry. The `CatalogSource` resource is used by Operator Lifecycle Manager (OLM) Classic to retrieve information about the available Operators in the mirror registry. The release image signatures are used to verify the mirrored release images.
 
-> [!NOTE]
-> OLM v1 uses the `ClusterCatalog` resource to retrieve information about the available cluster extensions in the mirror registry.
->
-> The oc-mirror plugin v1 does not generate `ClusterCatalog` resources automatically; you must manually create them. For more information on creating and applying `ClusterCatalog` resources, see "Adding a catalog to a cluster" in "Extensions".
+<div class="note">
 
-<div>
+OLM v1 uses the `ClusterCatalog` resource to retrieve information about the available cluster extensions in the mirror registry.
 
-<div class="title">
-
-Prerequisites
+The oc-mirror plugin v1 does not generate `ClusterCatalog` resources automatically; you must manually create them. For more information on creating and applying `ClusterCatalog` resources, see "Adding a catalog to a cluster" in "Extensions".
 
 </div>
 
 - You have mirrored the image set to the registry mirror in the disconnected environment.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to OpenShift CLI (`oc`) as a user with the `cluster-admin` role.
 
@@ -856,18 +623,13 @@ Procedure
     $ oc apply -f ./oc-mirror-workspace/results-1639608409/release-signatures/
     ```
 
-    > [!NOTE]
-    > If you are mirroring Operators instead of clusters, you do not need to run `$ oc apply -f ./oc-mirror-workspace/results-1639608409/release-signatures/`. Running that command will return an error, as there are no release image signatures to apply.
+    <div class="note">
 
-</div>
+    If you are mirroring Operators instead of clusters, you do not need to run `$ oc apply -f ./oc-mirror-workspace/results-1639608409/release-signatures/`. Running that command will return an error, as there are no release image signatures to apply.
 
-<div>
+    </div>
 
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the `ImageContentSourcePolicy` resources were successfully installed by running the following command:
 
@@ -881,19 +643,7 @@ Verification
     $ oc get catalogsource -n openshift-marketplace
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Adding a catalog to a cluster](../extensions/catalogs/managing-catalogs.xml#olmv1-adding-a-catalog-to-a-cluster_managing-catalogs) in "Extensions"
-
-</div>
 
 # Updating your mirror registry content
 
@@ -923,11 +673,9 @@ For more information about the workflow to update the mirror registry content, s
 
 This section covers the use cases for updating the mirror registry from disk to mirror.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `ImageSetConfiguration` file that was previously used for mirroring
+**Example `ImageSetConfiguration` file that was previously used for mirroring**
 
 </div>
 
@@ -951,15 +699,11 @@ mirror:
           - name: stable
 ```
 
-</div>
-
 ### Mirroring a specific OpenShift Container Platform version by pruning the existing images
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Updated `ImageSetConfiguration` file
+**Updated `ImageSetConfiguration` file**
 
 </div>
 
@@ -981,17 +725,13 @@ mirror:
           - name: stable
 ```
 
-</div>
-
 - Replacing by `stable-4.13` prunes all the images of `stable-4.12`.
 
 ### Updating to the latest version of an Operator by pruning the existing images
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Updated `ImageSetConfiguration` file
+**Updated `ImageSetConfiguration` file**
 
 </div>
 
@@ -1015,17 +755,13 @@ mirror:
           - name: stable
 ```
 
-</div>
-
 - Using the same channel without specifying a version prunes the existing images and updates with the latest version of images.
 
 ### Mirroring a new Operator by pruning the existing Operator
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Updated `ImageSetConfiguration` file
+**Updated `ImageSetConfiguration` file**
 
 </div>
 
@@ -1049,17 +785,13 @@ mirror:
           - name: stable
 ```
 
-</div>
-
 - Replacing `rhacs-operator` with `new_operator_name` prunes the Red Hat Advanced Cluster Security for Kubernetes Operator.
 
 ### Pruning all the OpenShift Container Platform images
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Updated `ImageSetConfiguration` file
+**Updated `ImageSetConfiguration` file**
 
 </div>
 
@@ -1077,16 +809,6 @@ mirror:
       packages:
 ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Image set configuration examples](../disconnected/installing-mirroring-disconnected.xml#oc-mirror-image-set-examples_installing-mirroring-disconnected)
 
 - [Mirroring an image set in a partially disconnected environment](../disconnected/installing-mirroring-disconnected.xml#mirroring-image-set-partial)
@@ -1095,19 +817,9 @@ Additional resources
 
 - [Configuring your cluster to use the resources generated by oc-mirror](../disconnected/installing-mirroring-disconnected.xml#oc-mirror-updating-cluster-manifests_installing-mirroring-disconnected)
 
-</div>
-
 # Performing a dry run
 
 You can use `oc-mirror` to perform a dry run, without actually mirroring any images. By doing this task, you can review the list of images that would be mirrored and any images that would be pruned from the mirror registry. By doing a dry run, you can catch any errors with your image set configuration early or use the generated list of images with other tools to carry out the mirroring operation.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the internet to obtain the necessary container images.
 
@@ -1116,16 +828,6 @@ Prerequisites
 - You have installed the oc-mirror CLI plugin.
 
 - You have created the image set configuration file.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the `oc mirror` command with the `--dry-run` flag to perform a dry run:
 
@@ -1147,11 +849,9 @@ Procedure
     `--dry-run`
     Specifies using the `--dry-run` flag to generate the dry run artifacts and not an actual image set file.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1171,8 +871,6 @@ Procedure
     Writing image mapping to oc-mirror-workspace/mapping.txt
     ```
 
-    </div>
-
 2.  Navigate into the workspace directory that was generated:
 
     ``` terminal
@@ -1187,10 +885,11 @@ Procedure
 
     This file contains a list of all images that would be pruned from the mirror registry when the image set is published.
 
-    > [!NOTE]
-    > The `pruning-plan.json` file is only generated if your oc-mirror command points to your mirror registry and there are images to be pruned.
+    <div class="note">
 
-</div>
+    The `pruning-plan.json` file is only generated if your oc-mirror command points to your mirror registry and there are images to be pruned.
+
+    </div>
 
 # Including local OCI Operator catalogs
 
@@ -1198,21 +897,19 @@ While mirroring OpenShift Container Platform releases, Operator catalogs, and ad
 
 The local catalog and its contents are mirrored to your target mirror registry based on the filtering information in the image set configuration file.
 
-> [!IMPORTANT]
-> When mirroring local OCI catalogs, any OpenShift Container Platform releases or additional images that you want to mirror along with the local OCI-formatted catalog must be pulled from a registry.
->
-> You cannot mirror OCI catalogs along with an oc-mirror image set file on disk.
+<div class="important">
+
+When mirroring local OCI catalogs, any OpenShift Container Platform releases or additional images that you want to mirror along with the local OCI-formatted catalog must be pulled from a registry.
+
+You cannot mirror OCI catalogs along with an oc-mirror image set file on disk.
+
+</div>
 
 One example use case for using the OCI feature is if you have a CI/CD system building an OCI catalog to a location on disk, and you want to mirror that OCI catalog along with an OpenShift Container Platform release to your mirror registry.
 
-> [!NOTE]
-> If you used the Technology Preview OCI local catalogs feature for the oc-mirror plugin for OpenShift Container Platform 4.12, you can no longer use the OCI local catalogs feature of the oc-mirror plugin to copy a catalog locally and convert it to OCI format as a first step to mirroring to a fully disconnected cluster.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you used the Technology Preview OCI local catalogs feature for the oc-mirror plugin for OpenShift Container Platform 4.12, you can no longer use the OCI local catalogs feature of the oc-mirror plugin to copy a catalog locally and convert it to OCI format as a first step to mirroring to a fully disconnected cluster.
 
 </div>
 
@@ -1221,16 +918,6 @@ Prerequisites
 - You have installed the OpenShift CLI (`oc`).
 
 - You have installed the oc-mirror CLI plugin.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the image set configuration file and adjust the settings as necessary.
 
@@ -1272,8 +959,11 @@ Procedure
 
     - Optionally, specify additional images to pull from a registry.
 
-      > [!NOTE]
-      > In oc-mirror plugin v2, you must use explicit registry hostnames for all images listed under `additionalImages`. Otherwise, images are mirrored to incorrect target paths.
+      <div class="note">
+
+      In oc-mirror plugin v2, you must use explicit registry hostnames for all images listed under `additionalImages`. Otherwise, images are mirrored to incorrect target paths.
+
+      </div>
 
 2.  Run the `oc mirror` command to mirror the OCI catalog to a target mirror registry:
 
@@ -1294,11 +984,9 @@ Procedure
       `--oci-registries-config`
       Specify the path to a TOML-formatted `registries.conf` file. You can use this to mirror from a different registry, such as a pre-production location for testing, without having to change the image set configuration file. This flag only affects local OCI catalogs, not any other mirrored content.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example registries.conf file
+      **Example registries.conf file**
 
       </div>
 
@@ -1314,33 +1002,11 @@ Procedure
           insecure = false
       ```
 
-      </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - Configure your cluster to use the resources generated by oc-mirror.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Configuring your cluster to use the resources generated by oc-mirror](../disconnected/installing-mirroring-disconnected.xml#oc-mirror-updating-cluster-manifests_installing-mirroring-disconnected)
-
-</div>
 
 # Image set configuration parameters
 
@@ -1354,51 +1020,51 @@ The oc-mirror plugin requires an image set configuration file that defines what 
 <col style="width: 20%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Values</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>apiVersion</code></p></td>
 <td style="text-align: left;"><p>The API version for the <code>ImageSetConfiguration</code> content.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>mirror.openshift.io/v1alpha2</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>archiveSize</code></p></td>
 <td style="text-align: left;"><p>The maximum size, in GiB, of each archive file within the image set.</p></td>
 <td style="text-align: left;"><p>Integer. For example: <code>4</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror</code></p></td>
 <td style="text-align: left;"><p>The configuration of the image set.</p></td>
 <td style="text-align: left;"><p>Object</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.additionalImages</code></p></td>
 <td style="text-align: left;"><p>The additional images configuration of the image set.</p></td>
 <td style="text-align: left;"><p>Array of objects. For example:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">additionalImages</span><span class="kw">:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> registry.redhat.io/ubi8/ubi:latest</span></span></code></pre></div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.additionalImages.name</code></p></td>
 <td style="text-align: left;"><p>The tag or digest of the image to mirror.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>registry.redhat.io/ubi8/ubi:latest</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.blockedImages</code></p></td>
 <td style="text-align: left;"><p>The full tag, digest, or pattern of images to block from mirroring.</p></td>
 <td style="text-align: left;"><p>Array of strings. For example: <code>docker.io/library/alpine</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.helm</code></p></td>
 <td style="text-align: left;"><p>The helm configuration of the image set. Note that the oc-mirror plugin supports only helm charts that do not require user input when rendered.</p></td>
 <td style="text-align: left;"><p>Object</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.helm.local</code></p></td>
 <td style="text-align: left;"><p>The local helm charts to mirror.</p></td>
 <td style="text-align: left;"><p>Array of objects. For example:</p>
@@ -1406,17 +1072,17 @@ The oc-mirror plugin requires an image set configuration file that defines what 
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> podinfo</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">path</span><span class="kw">:</span><span class="at"> /test/podinfo-5.0.0.tar.gz</span></span></code></pre></div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.helm.local.name</code></p></td>
 <td style="text-align: left;"><p>The name of the local helm chart to mirror.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>podinfo</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.helm.local.path</code></p></td>
 <td style="text-align: left;"><p>The path of the local helm chart to mirror.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>/test/podinfo-5.0.0.tar.gz</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.helm.repositories</code></p></td>
 <td style="text-align: left;"><p>The remote helm repositories to mirror from.</p></td>
 <td style="text-align: left;"><p>Array of objects. For example:</p>
@@ -1427,32 +1093,32 @@ The oc-mirror plugin requires an image set configuration file that defines what 
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> podinfo</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">version</span><span class="kw">:</span><span class="at"> </span><span class="fl">5.0.0</span></span></code></pre></div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.helm.repositories.name</code></p></td>
 <td style="text-align: left;"><p>The name of the helm repository to mirror from.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>podinfo</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.helm.repositories.url</code></p></td>
 <td style="text-align: left;"><p>The URL of the helm repository to mirror from.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>https://example.github.io/podinfo</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.helm.repositories.charts</code></p></td>
 <td style="text-align: left;"><p>The remote helm charts to mirror.</p></td>
 <td style="text-align: left;"><p>Array of objects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.helm.repositories.charts.name</code></p></td>
 <td style="text-align: left;"><p>The name of the helm chart to mirror.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>podinfo</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.helm.repositories.charts.version</code></p></td>
 <td style="text-align: left;"><p>The version of the named helm chart to mirror.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>5.0.0</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.operators</code></p></td>
 <td style="text-align: left;"><p>The Operators configuration of the image set.</p></td>
 <td style="text-align: left;"><p>Array of objects. For example:</p>
@@ -1462,17 +1128,17 @@ The oc-mirror plugin requires an image set configuration file that defines what 
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> elasticsearch-operator</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">minVersion</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;2.4.0&#39;</span></span></code></pre></div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.operators.catalog</code></p></td>
 <td style="text-align: left;"><p>The Operator catalog to include in the image set.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>registry.redhat.io/redhat/redhat-operator-index:v4.17</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.operators.full</code></p></td>
 <td style="text-align: left;"><p>When <code>true</code>, downloads the full catalog, Operator package, or Operator channel.</p></td>
 <td style="text-align: left;"><p>Boolean. The default value is <code>false</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.operators.packages</code></p></td>
 <td style="text-align: left;"><p>The Operator packages configuration.</p></td>
 <td style="text-align: left;"><p>Array of objects. For example:</p>
@@ -1482,73 +1148,73 @@ The oc-mirror plugin requires an image set configuration file that defines what 
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> elasticsearch-operator</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">minVersion</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;5.2.3-31&#39;</span></span></code></pre></div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.operators.packages.name</code></p></td>
 <td style="text-align: left;"><p>The Operator package name to include in the image set</p></td>
 <td style="text-align: left;"><p>String. For example: <code>elasticsearch-operator</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.operators.packages.channels</code></p></td>
 <td style="text-align: left;"><p>The Operator package channel configuration.</p></td>
 <td style="text-align: left;"><p>Object</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.operators.packages.channels.name</code></p></td>
 <td style="text-align: left;"><p>The Operator channel name, unique within a package, to include in the image set.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>fast</code> or <code>stable-v4.17</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.operators.packages.channels.maxVersion</code></p></td>
 <td style="text-align: left;"><p>The highest version of the Operator mirror across all channels in which it exists. See the following note for further information.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>5.2.3-31</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.operators.packages.channels.minBundle</code></p></td>
 <td style="text-align: left;"><p>The name of the minimum bundle to include, plus all bundles in the update graph to the channel head. Set this field only if the named bundle has no semantic version metadata.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>bundleName</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.operators.packages.channels.minVersion</code></p></td>
 <td style="text-align: left;"><p>The lowest version of the Operator to mirror across all channels in which it exists. See the following note for further information.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>5.2.3-31</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.operators.packages.maxVersion</code></p></td>
 <td style="text-align: left;"><p>The highest version of the Operator to mirror across all channels in which it exists. See the following note for further information.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>5.2.3-31</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.operators.packages.minVersion</code></p></td>
 <td style="text-align: left;"><p>The lowest version of the Operator to mirror across all channels in which it exists. See the following note for further information.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>5.2.3-31</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.operators.skipDependencies</code></p></td>
 <td style="text-align: left;"><p>If <code>true</code>, dependencies of bundles are not included.</p></td>
 <td style="text-align: left;"><p>Boolean. The default value is <code>false</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.operators.targetCatalog</code></p></td>
 <td style="text-align: left;"><p>An alternative name and optional namespace hierarchy to mirror the referenced catalog as.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>my-namespace/my-operator-catalog</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.operators.targetName</code></p></td>
 <td style="text-align: left;"><p>An alternative name to mirror the referenced catalog as.</p>
 <p>The <code>targetName</code> parameter is deprecated. Use the <code>targetCatalog</code> parameter instead.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>my-operator-catalog</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.operators.targetTag</code></p></td>
 <td style="text-align: left;"><p>An alternative tag to append to the <code>targetName</code> or <code>targetCatalog</code>.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>v1</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.platform</code></p></td>
 <td style="text-align: left;"><p>The platform configuration of the image set.</p></td>
 <td style="text-align: left;"><p>Object</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.platform.architectures</code></p></td>
 <td style="text-align: left;"><p>The architecture of the platform release payload to mirror.</p></td>
 <td style="text-align: left;"><p>Array of strings. For example:</p>
@@ -1560,7 +1226,7 @@ The oc-mirror plugin requires an image set configuration file that defines what 
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> s390x</span></span></code></pre></div>
 <p>The default value is <code>amd64</code>. The value <code>multi</code> ensures that the mirroring is supported for all available architectures, eliminating the need to specify individual architectures.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.platform.channels</code></p></td>
 <td style="text-align: left;"><p>The platform channel configuration of the image set.</p></td>
 <td style="text-align: left;"><p>Array of objects. For example:</p>
@@ -1568,67 +1234,67 @@ The oc-mirror plugin requires an image set configuration file that defines what 
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> stable-4.10</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> stable-4.17</span></span></code></pre></div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.platform.channels.full</code></p></td>
 <td style="text-align: left;"><p>When <code>true</code>, sets the <code>minVersion</code> to the first release in the channel and the <code>maxVersion</code> to the last release in the channel.</p></td>
 <td style="text-align: left;"><p>Boolean. The default value is <code>false</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.platform.channels.name</code></p></td>
 <td style="text-align: left;"><p>The name of the release channel.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>stable-4.17</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.platform.channels.minVersion</code></p></td>
 <td style="text-align: left;"><p>The minimum version of the referenced platform to be mirrored.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>4.12.6</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.platform.channels.maxVersion</code></p></td>
 <td style="text-align: left;"><p>The highest version of the referenced platform to be mirrored.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>4.17.1</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.platform.channels.shortestPath</code></p></td>
 <td style="text-align: left;"><p>Toggles shortest path mirroring or full range mirroring.</p></td>
 <td style="text-align: left;"><p>Boolean. The default value is <code>false</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mirror.platform.channels.type</code></p></td>
 <td style="text-align: left;"><p>The type of the platform to be mirrored.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>ocp</code> or <code>okd</code>. The default is <code>ocp</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mirror.platform.graph</code></p></td>
 <td style="text-align: left;"><p>Indicates whether the OSUS graph is added to the image set and subsequently published to the mirror.</p></td>
 <td style="text-align: left;"><p>Boolean. The default value is <code>false</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>storageConfig</code></p></td>
 <td style="text-align: left;"><p>The back-end configuration of the image set.</p></td>
 <td style="text-align: left;"><p>Object</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>storageConfig.local</code></p></td>
 <td style="text-align: left;"><p>The local back-end configuration of the image set.</p></td>
 <td style="text-align: left;"><p>Object</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>storageConfig.local.path</code></p></td>
 <td style="text-align: left;"><p>The path of the directory to contain the image set metadata.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>./path/to/dir/</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>storageConfig.registry</code></p></td>
 <td style="text-align: left;"><p>The registry back-end configuration of the image set.</p></td>
 <td style="text-align: left;"><p>Object</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>storageConfig.registry.imageURL</code></p></td>
 <td style="text-align: left;"><p>The back-end registry URI. Can optionally include a namespace reference in the URI.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>quay.io/myuser/imageset:metadata</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>storageConfig.registry.skipTLS</code></p></td>
 <td style="text-align: left;"><p>Optionally skip TLS verification of the referenced back-end registry.</p></td>
 <td style="text-align: left;"><p>Boolean. The default value is <code>false</code>.</p></td>
@@ -1636,12 +1302,17 @@ The oc-mirror plugin requires an image set configuration file that defines what 
 </tbody>
 </table>
 
-> [!NOTE]
-> Using the `minVersion` and `maxVersion` properties to filter for a specific Operator version range can result in a multiple channel heads error. The error message states that there are `multiple channel heads`. This is because when the filter is applied, the update graph of the Operator is truncated.
->
-> Operator Lifecycle Manager requires that every Operator channel contains versions that form an update graph with exactly one end point, that is, the latest version of the Operator. When the filter range is applied, that graph can turn into two or more separate graphs or a graph that has more than one end point.
->
-> To avoid this error, do not filter out the latest version of an Operator. If you still run into the error, depending on the Operator, either the `maxVersion` property must be increased or the `minVersion` property must be decreased. Because every Operator graph can be different, you might need to adjust these values until the error resolves.
+`ImageSetConfiguration` parameters
+
+<div class="note">
+
+Using the `minVersion` and `maxVersion` properties to filter for a specific Operator version range can result in a multiple channel heads error. The error message states that there are `multiple channel heads`. This is because when the filter is applied, the update graph of the Operator is truncated.
+
+Operator Lifecycle Manager requires that every Operator channel contains versions that form an update graph with exactly one end point, that is, the latest version of the Operator. When the filter range is applied, that graph can turn into two or more separate graphs or a graph that has more than one end point.
+
+To avoid this error, do not filter out the latest version of an Operator. If you still run into the error, depending on the Operator, either the `maxVersion` property must be increased or the `minVersion` property must be decreased. Because every Operator graph can be different, you might need to adjust these values until the error resolves.
+
+</div>
 
 # Image set configuration examples
 
@@ -1651,11 +1322,9 @@ The following `ImageSetConfiguration` file examples show the configuration for v
 
 The following `ImageSetConfiguration` file uses a local storage backend and includes all OpenShift Container Platform versions along the shortest update path from the minimum version of `4.11.37` to the maximum version of `4.12.15`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `ImageSetConfiguration` file
+**Example `ImageSetConfiguration` file**
 
 </div>
 
@@ -1674,19 +1343,15 @@ mirror:
         shortestPath: true
 ```
 
-</div>
-
 ## Use case: Including all versions of OpenShift Container Platform from a minimum to the latest version for multi-architecture releases
 
 The following `ImageSetConfiguration` file uses a registry storage backend and includes all OpenShift Container Platform versions starting at a minimum version of `4.13.4` to the latest version in the channel. On every invocation of oc-mirror with this image set configuration, the latest release of the `stable-4.13` channel is evaluated, so running oc-mirror at regular intervals ensures that you automatically receive the latest releases of OpenShift Container Platform images.
 
 By setting the value of `platform.architectures` to `multi`, you can ensure that the mirroring is supported for multi-architecture releases.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `ImageSetConfiguration` file
+**Example `ImageSetConfiguration` file**
 
 </div>
 
@@ -1707,24 +1372,23 @@ mirror:
         maxVersion: 4.13.6
 ```
 
-</div>
-
 ## Use case: Including Operator versions from a minimum to the latest
 
 The following `ImageSetConfiguration` file uses a local storage backend and includes only the Red Hat Advanced Cluster Security for Kubernetes Operator, versions starting at 4.0.1 and later in the `stable` channel.
 
-> [!NOTE]
-> When you specify a minimum or maximum version range, you might not receive all Operator versions in that range.
->
-> By default, oc-mirror excludes any versions that are skipped or replaced by a newer version in the Operator Lifecycle Manager (OLM) specification. Operator versions that are skipped might be affected by a CVE or contain bugs. Use a newer version instead. For more information on skipped and replaced versions, see [Creating an update graph with OLM](https://olm.operatorframework.io/docs/concepts/olm-architecture/operator-catalog/creating-an-update-graph/).
->
-> To receive all Operator versions in a specified range, you can set the `mirror.operators.full` field to `true`.
+<div class="note">
 
-<div class="formalpara">
+When you specify a minimum or maximum version range, you might not receive all Operator versions in that range.
 
-<div class="title">
+By default, oc-mirror excludes any versions that are skipped or replaced by a newer version in the Operator Lifecycle Manager (OLM) specification. Operator versions that are skipped might be affected by a CVE or contain bugs. Use a newer version instead. For more information on skipped and replaced versions, see [Creating an update graph with OLM](https://olm.operatorframework.io/docs/concepts/olm-architecture/operator-catalog/creating-an-update-graph/).
 
-Example `ImageSetConfiguration` file
+To receive all Operator versions in a specified range, you can set the `mirror.operators.full` field to `true`.
+
+</div>
+
+<div class="formalpara-title">
+
+**Example `ImageSetConfiguration` file**
 
 </div>
 
@@ -1744,20 +1408,19 @@ mirror:
             minVersion: 4.0.1
 ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> To specify a maximum version instead of the latest, set the `mirror.operators.packages.channels.maxVersion` field.
+To specify a maximum version instead of the latest, set the `mirror.operators.packages.channels.maxVersion` field.
+
+</div>
 
 ## Use case: Including the Nutanix CSI Operator
 
 The following `ImageSetConfiguration` file uses a local storage backend and includes the Nutanix CSI Operator, the OpenShift Update Service (OSUS) graph image, and an additional Red Hat Universal Base Image (UBI).
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `ImageSetConfiguration` file
+**Example `ImageSetConfiguration` file**
 
 </div>
 
@@ -1784,20 +1447,19 @@ mirror:
   - name: registry.redhat.io/ubi9/ubi:latest
 ```
 
-</div>
-
 ## Use case: Including the default Operator channel
 
 The following `ImageSetConfiguration` file includes the `stable-5.7` and `stable` channels for the OpenShift Elasticsearch Operator. Even if only the packages from the `stable-5.7` channel are needed, the `stable` channel must also be included in the `ImageSetConfiguration` file, because it is the default channel for the Operator. You must always include the default channel for the Operator package even if you do not use the bundles in that channel.
 
-> [!TIP]
-> You can find the default channel by running the following command: `oc mirror list operators --catalog=<catalog_name> --package=<package_name> --v1`.
+<div class="tip">
 
-<div class="formalpara">
+You can find the default channel by running the following command: `oc mirror list operators --catalog=<catalog_name> --package=<package_name> --v1`.
 
-<div class="title">
+</div>
 
-Example `ImageSetConfiguration` file
+<div class="formalpara-title">
+
+**Example `ImageSetConfiguration` file**
 
 </div>
 
@@ -1818,17 +1480,13 @@ mirror:
       - name: stable
 ```
 
-</div>
-
 ## Use case: Including an entire catalog (all versions)
 
 The following `ImageSetConfiguration` file sets the `mirror.operators.full` field to `true` to include all versions for an entire Operator catalog.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `ImageSetConfiguration` file
+**Example `ImageSetConfiguration` file**
 
 </div>
 
@@ -1845,8 +1503,6 @@ mirror:
       full: true
 ```
 
-</div>
-
 ## Use case: Including an entire catalog (channel heads only)
 
 The following `ImageSetConfiguration` file includes the channel heads for an entire Operator catalog.
@@ -1855,11 +1511,9 @@ By default, for each Operator in the catalog, oc-mirror includes the latest Oper
 
 This example also uses the `targetCatalog` field to specify an alternative namespace and name to mirror the catalog as.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `ImageSetConfiguration` file
+**Example `ImageSetConfiguration` file**
 
 </div>
 
@@ -1876,17 +1530,13 @@ mirror:
     targetCatalog: my-namespace/my-operator-catalog
 ```
 
-</div>
-
 ## Use case: Including arbitrary images and helm charts
 
 The following `ImageSetConfiguration` file uses a registry storage backend and includes helm charts and an additional Red Hat Universal Base Image (UBI).
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `ImageSetConfiguration` file
+**Example `ImageSetConfiguration` file**
 
 </div>
 
@@ -1917,19 +1567,15 @@ mirror:
    - name: registry.redhat.io/ubi9/ubi:latest
 ```
 
-</div>
-
 ## Use case: Including the upgrade path for EUS releases
 
 The following `ImageSetConfiguration` file includes the `eus-<version>` channel, where the `maxVersion` value is at least two minor versions higher than the `minVersion` value.
 
 For example, in this `ImageSetConfiguration` file, the `minVersion` is set to `4.12.28`, while the `maxVersion` for the `eus-4.14` channel is `4.14.16`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `ImageSetConfiguration` file
+**Example `ImageSetConfiguration` file**
 
 </div>
 
@@ -1954,17 +1600,13 @@ mirror:
       type: ocp
 ```
 
-</div>
-
 ## Use case: Including the multi-arch OpenShift Container Platform images and catalog for multicluster engine Operator
 
 The following `ImageSetConfiguration` file includes multicluster engine for Kubernetes Operator and all OpenShift Container Platform versions starting at a minimum version of `4.17.0` in the channel.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `ImageSetConfiguration` file
+**Example `ImageSetConfiguration` file**
 
 </div>
 
@@ -1989,20 +1631,18 @@ mirror:
         - name: multicluster-engine
 ```
 
-</div>
-
 # Command reference for oc-mirror
 
 The following tables describe the `oc mirror` subcommands and flags:
 
-| Subcommand | Description |
-|----|----|
-| `completion` | Generate the autocompletion script for the specified shell. |
-| `describe` | Output the contents of an image set. |
-| `help` | Show help about any subcommand. |
-| `init` | Output an initial image set configuration template. |
-| `list` | List available platform and Operator content and their version. |
-| `version` | Output the oc-mirror version. |
+| Subcommand   | Description                                                     |
+|--------------|-----------------------------------------------------------------|
+| `completion` | Generate the autocompletion script for the specified shell.     |
+| `describe`   | Output the contents of an image set.                            |
+| `help`       | Show help about any subcommand.                                 |
+| `init`       | Output an initial image set configuration template.             |
+| `list`       | List available platform and Operator content and their version. |
+| `version`    | Output the oc-mirror version.                                   |
 
 oc mirror subcommands
 
@@ -2013,115 +1653,115 @@ oc mirror subcommands
 <col style="width: 66%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Flag</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--v1</code></p></td>
 <td style="text-align: left;"><p>Uses the oc-mirror v1 plugin implementation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--v2</code></p></td>
 <td style="text-align: left;"><p>Uses the oc-mirror v2 plugin implementation.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>-c</code>, <code>--config</code> <code>&lt;string&gt;</code></p></td>
 <td style="text-align: left;"><p>Specify the path to an image set configuration file.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--continue-on-error</code></p></td>
 <td style="text-align: left;"><p>If any non image-pull related error occurs, continue and attempt to mirror as much as possible.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--dest-skip-tls</code></p></td>
 <td style="text-align: left;"><p>Disable TLS validation for the target registry.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--dest-use-http</code></p></td>
 <td style="text-align: left;"><p>Use plain HTTP for the target registry.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--dry-run</code></p></td>
 <td style="text-align: left;"><p>Print actions without mirroring images. Generates <code>mapping.txt</code> and <code>pruning-plan.json</code> files.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--from &lt;string&gt;</code></p></td>
 <td style="text-align: left;"><p>Specify the path to an image set archive that was generated by an execution of oc-mirror to load into a target registry.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>-h</code>, <code>--help</code></p></td>
 <td style="text-align: left;"><p>Show the help.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--ignore-history</code></p></td>
 <td style="text-align: left;"><p>Ignore past mirrors when downloading images and packing layers. Disables incremental mirroring and might download more data.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--manifests-only</code></p></td>
 <td style="text-align: left;"><p>Generate manifests for <code>ImageContentSourcePolicy</code> objects to configure a cluster to use the mirror registry, but do not actually mirror any images. To use this flag, you must pass in an image set archive with the <code>--from</code> flag.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--max-nested-paths &lt;int&gt;</code></p></td>
 <td style="text-align: left;"><p>Specify the maximum number of nested paths for destination registries that limit nested paths. The default is <code>0</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--max-per-registry &lt;int&gt;</code></p></td>
 <td style="text-align: left;"><p>Specify the number of concurrent requests allowed per registry. The default is <code>6</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--oci-insecure-signature-policy</code></p></td>
 <td style="text-align: left;"><p>Do not push signatures when mirroring local OCI catalogs (with <code>--include-local-oci-catalogs</code>).</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--oci-registries-config</code></p></td>
 <td style="text-align: left;"><p>Provide a registries configuration file to specify an alternative registry location to copy from when mirroring local OCI catalogs (with <code>--include-local-oci-catalogs</code>).</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--skip-cleanup</code></p></td>
 <td style="text-align: left;"><p>Skip removal of artifact directories.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--skip-image-pin</code></p></td>
 <td style="text-align: left;"><p>Do not replace image tags with digest pins in Operator catalogs.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--skip-metadata-check</code></p></td>
 <td style="text-align: left;"><p>Skip metadata when publishing an image set.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>This is recommended only when the image set was created with the <code>--ignore-history</code> flag.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--skip-missing</code></p></td>
 <td style="text-align: left;"><p>If an image is not found, skip it instead of reporting an error and aborting execution. Does not apply to custom images explicitly specified in the image set configuration.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--skip-pruning</code></p></td>
 <td style="text-align: left;"><p>Disable automatic pruning of images from the target mirror registry.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--skip-verification</code></p></td>
 <td style="text-align: left;"><p>Skip digest verification.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--source-skip-tls</code></p></td>
 <td style="text-align: left;"><p>Disable TLS validation for the source registry.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--source-use-http</code></p></td>
 <td style="text-align: left;"><p>Use plain HTTP for the source registry.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>-v</code>, <code>--verbose</code> <code>&lt;int&gt;</code></p></td>
 <td style="text-align: left;"><p>Specify the number for the log level verbosity. Valid values are <code>0</code> - <code>9</code>. The default is <code>0</code>.</p></td>
 </tr>
 </tbody>
 </table>
+
+oc mirror flags
 
 # Additional resources
 

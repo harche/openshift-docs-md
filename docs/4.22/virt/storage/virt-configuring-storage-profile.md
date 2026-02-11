@@ -4,10 +4,13 @@ The Containerized Data Importer (CDI) recognizes a storage provider if it has be
 
 For recognized storage types, the CDI provides values that optimize the creation of PVCs. You can also configure automatic settings for the storage class by customizing the storage profile. If the CDI does not recognize your storage provider, you must configure storage profiles.
 
-> [!IMPORTANT]
-> When using OpenShift Virtualization with Red Hat OpenShift Data Foundation, specify RBD block mode persistent volume claims (PVCs) when creating virtual machine disks. RBD block mode volumes are more efficient and provide better performance than Ceph FS or RBD filesystem-mode PVCs.
->
-> To specify RBD block mode PVCs, use the 'ocs-storagecluster-ceph-rbd' storage class and `VolumeMode: Block`.
+<div class="important">
+
+When using OpenShift Virtualization with Red Hat OpenShift Data Foundation, specify RBD block mode persistent volume claims (PVCs) when creating virtual machine disks. RBD block mode volumes are more efficient and provide better performance than Ceph FS or RBD filesystem-mode PVCs.
+
+To specify RBD block mode PVCs, use the 'ocs-storagecluster-ceph-rbd' storage class and `VolumeMode: Block`.
+
+</div>
 
 # Customizing the storage profile
 
@@ -19,30 +22,15 @@ An empty `status` section in a storage profile indicates that a storage provisio
 
 If you are creating a snapshot of a VM, a warning appears if the storage class of the disk has more than one `VolumeSnapshotClass` associated with it. In this case, you must specify one volume snapshot class; otherwise, any disk that has more than one volume snapshot class is excluded from the snapshots list.
 
-> [!WARNING]
-> If you create a data volume and omit YAML attributes and these attributes are not defined in the storage profile, then the requested storage will not be allocated and the underlying persistent volume claim (PVC) will not be created.
+<div class="warning">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you create a data volume and omit YAML attributes and these attributes are not defined in the storage profile, then the requested storage will not be allocated and the underlying persistent volume claim (PVC) will not be created.
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - Ensure that your planned configuration is supported by the storage class and its provider. Specifying an incompatible configuration in a storage profile causes volume provisioning to fail.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the storage profile. In this example, the provisioner is not recognized by CDI.
 
@@ -52,11 +40,9 @@ Procedure
 
 2.  Specify the `accessModes` and `volumeMode` values you want to configure for the storage profile. For example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example storage profile
+    **Example storage profile**
 
     </div>
 
@@ -76,27 +62,15 @@ Procedure
       storageClass: <unknown_provisioner_class>
     ```
 
-    </div>
-
     - Specify the `accessModes`.
 
     - Specify the `volumeMode`.
-
-</div>
 
 ## Specifying a volume snapshot class by using the web console
 
 If you are creating a snapshot of a VM, a warning appears if the storage class of the disk has more than one volume snapshot class associated with it. In this case, you must specify one volume snapshot class; otherwise, any disk that has more than one volume snapshot class is excluded from the snapshots list.
 
 You can specify the default volume snapshot class in the OpenShift Container Platform web console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  From the **Virtualization** focused view, select **Storage**.
 
@@ -112,8 +86,6 @@ Procedure
 
 7.  Click **Save**.
 
-</div>
-
 ## Specifying a volume snapshot class by using the CLI
 
 If you are creating a snapshot of a VM, a warning appears if the storage class of the disk has more than one volume snapshot class associated with it. In this case, you must specify one volume snapshot class; otherwise, any disk that has more than one volume snapshot class is excluded from the snapshots list.
@@ -124,25 +96,11 @@ You can select which volume snapshot class to use by either:
 
 - Setting a default volume snapshot class.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Set the `VolumeSnapshotClass` you want to use. For example:
 
@@ -161,31 +119,11 @@ Procedure
   # oc patch VolumeSnapshotClass ocs-storagecluster-cephfsplugin-snapclass --type=merge -p '{"metadata":{"annotations":{"snapshot.storage.kubernetes.io/is-default-class":"true"}}}'
   ```
 
-</div>
-
 ## Viewing automatically created storage profiles
 
 The system creates storage profiles for each storage class automatically. You can view these storage class profiles by using the `oc` command.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To view the list of storage profiles, run the following command:
 
@@ -254,8 +192,6 @@ Procedure
     `status.dataImportCronSourceFormat`
     `Data Import Cron Source Format` indicates whether golden images on this storage are stored as PVCs or volume snapshots.
 
-</div>
-
 ## Setting a default cloning strategy by using a storage profile
 
 You can use storage profiles to set a default cloning method for a storage class by creating a cloning strategy. This can be helpful, for example, if your storage vendor supports only certain cloning methods. It also allows you to select a method that limits resource usage or maximizes performance.
@@ -268,8 +204,11 @@ Cloning strategies are specified by setting the `cloneStrategy` attribute in a s
 
 - `csi-clone` uses the CSI clone API to efficiently clone an existing volume without using an interim volume snapshot. Unlike `snapshot` or `copy`, which are used by default if no storage profile is defined, CSI volume cloning is only used when you specify it in the `StorageProfile` object for the provisioner’s storage class.
 
-> [!NOTE]
-> You can set clone strategies using the CLI without modifying the default `claimPropertySets` in your YAML `spec` section.
+<div class="note">
+
+You can set clone strategies using the CLI without modifying the default `claimPropertySets` in your YAML `spec` section.
+
+</div>
 
 Example storage profile:
 

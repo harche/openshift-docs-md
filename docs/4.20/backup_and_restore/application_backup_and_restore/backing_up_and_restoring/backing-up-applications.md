@@ -14,51 +14,35 @@ For more information about CSI volume snapshots, see [CSI volume snapshots](../.
 
 - If your cloud provider does not support snapshots or if your applications are on NFS data volumes, you can create backups by using Kopia or Restic. See [Backing up applications with File System Backup: Kopia or Restic](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-applications-restic-doc.xml#oadp-backing-up-applications-restic-doc).
 
-> [!IMPORTANT]
-> The `…​/.snapshot` directory is a snapshot copy directory, which is used by several NFS servers. This directory has read-only access by default, so Velero cannot restore to this directory.
->
-> Do not give Velero write access to the `.snapshot` directory, and disable client access to this directory.
->
-> <div>
->
-> <div class="title">
->
-> Additional resources
->
-> </div>
->
-> - [Enable or disable client access to Snapshot copy directory by editing a share](https://docs.netapp.com/us-en/ontap/enable-snapshot-dir-access-task.html#enable-or-disable-client-access-to-snapshot-copy-directory-by-editing-a-share)
->
-> - [Prerequisites for backup and restore with FlashBlade](https://docs.portworx.com/portworx-backup-on-prem/reference/restore-with-fb#prerequisites-for-backup-and-restore-with-flashblade)
->
-> </div>
+<div class="important">
 
-> [!IMPORTANT]
-> The OpenShift API for Data Protection (OADP) does not support backing up volume snapshots that were created by other software.
+<div class="title">
+
+PodVolumeRestore fails with a `…​/.snapshot: read-only file system` error
+
+</div>
+
+The `…​/.snapshot` directory is a snapshot copy directory, which is used by several NFS servers. This directory has read-only access by default, so Velero cannot restore to this directory.
+
+Do not give Velero write access to the `.snapshot` directory, and disable client access to this directory.
+
+- [Enable or disable client access to Snapshot copy directory by editing a share](https://docs.netapp.com/us-en/ontap/enable-snapshot-dir-access-task.html#enable-or-disable-client-access-to-snapshot-copy-directory-by-editing-a-share)
+
+- [Prerequisites for backup and restore with FlashBlade](https://docs.portworx.com/portworx-backup-on-prem/reference/restore-with-fb#prerequisites-for-backup-and-restore-with-flashblade)
+
+</div>
+
+<div class="important">
+
+The OpenShift API for Data Protection (OADP) does not support backing up volume snapshots that were created by other software.
+
+</div>
 
 # Previewing resources before running backup and restore
 
 OADP backs up application resources based on the type, namespace, or label. This means that you can view the resources after the backup is complete. Similarly, you can view the restored objects based on the namespace, persistent volume (PV), or label after a restore operation is complete. To preview the resources in advance, you can do a dry run of the backup and restore operations.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OADP Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To preview the resources included in the backup before running the actual backup, run the following command:
 
@@ -84,8 +68,11 @@ Procedure
 
     - Specify the name of the backup created to review the backup resources.
 
-      > [!IMPORTANT]
-      > The `velero restore create` command creates restore resources in the cluster. You must delete the resources created as part of the restore, after you review the resources.
+      <div class="important">
+
+      The `velero restore create` command creates restore resources in the cluster. You must delete the resources created as part of the restore, after you review the resources.
+
+      </div>
 
 4.  To know more details about the restore resources, run the following command:
 
@@ -94,8 +81,6 @@ Procedure
     ```
 
     - Specify the name of the restore.
-
-</div>
 
 You can create backup hooks to run commands before or after the backup operation. See [Creating backup hooks](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-creating-backup-hooks-doc.xml#oadp-creating-backup-hooks-doc).
 
@@ -109,16 +94,6 @@ This issue has been resolved in the OADP 1.1.6 and OADP 1.2.2 releases, therefor
 
 For more information, see [Restic restore partially failing on OCP 4.15 due to changed PSA policy](../../../backup_and_restore/application_backup_and_restore/troubleshooting/restic-issues.xml#oadp-restic-restore-failing-psa-policy_restic-issues).
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Installing Operators on clusters for administrators](../../../operators/admin/olm-adding-operators-to-cluster.xml#olm-installing-operators-from-software-catalog_olm-adding-operators-to-a-cluster)
 
 - [Installing Operators in namespaces for non-administrators](../../../operators/user/olm-installing-operators-in-namespace.xml#olm-installing-operators-in-namespace)
-
-</div>

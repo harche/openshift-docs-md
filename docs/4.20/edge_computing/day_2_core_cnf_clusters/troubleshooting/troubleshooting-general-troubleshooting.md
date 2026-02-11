@@ -12,14 +12,6 @@ When you encounter a problem, the first step is to find the specific area where 
 
 Get information about your cluster so that you can more accurately find potential problems.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Switch into a project by running the following command:
 
     ``` terminal
@@ -32,11 +24,9 @@ Procedure
     $ oc get clusterversion,clusteroperator,node
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -85,37 +75,15 @@ Procedure
     node/ctrl-plane-2   Ready    control-plane,master,worker   62d   v1.29.7
     ```
 
-    </div>
-
-</div>
-
 For more information, see "oc get" and "Reviewing pod status".
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [oc get](../../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-get)
 
 - [Reviewing pod status](../../../support/troubleshooting/investigating-pod-issues.xml#reviewing-pod-status_investigating-pod-issues)
 
-</div>
-
 # Checking pod logs
 
 Get logs from the pod so that you can review the logs for issues.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List the pods by running the following command:
 
@@ -123,11 +91,9 @@ Procedure
     $ oc get pod
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -139,25 +105,13 @@ Procedure
     busybox-4   1/1     Running   168 (43m ago)     7d
     ```
 
-    </div>
-
 2.  Check pod log files by running the following command:
 
     ``` terminal
     $ oc logs -n <namespace> busybox-1
     ```
 
-</div>
-
 For more information, see "oc logs", "Logging", and "Inspecting pod and container logs".
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [oc logs](../../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-logs)
 
@@ -165,19 +119,9 @@ Additional resources
 
 - [Inspecting pod and container logs](../../../support/troubleshooting/investigating-pod-issues.xml#inspecting-pod-and-container-logs_investigating-pod-issues)
 
-</div>
-
 # Describing a pod
 
 To troubleshoot pod issues and view detailed information about a pod in OpenShift Container Platform, you can describe a pod using the `oc describe pod` command. The **Events** section in the output provides detailed information about the pod and the containers inside of it.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Describe a pod by running the following command:
 
@@ -185,11 +129,9 @@ Procedure
   $ oc describe pod -n <namespace> busybox-1
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -212,33 +154,13 @@ Procedure
     Normal  Started  41m (x170 over 7d1h)  kubelet  Started container busybox
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [oc describe](../../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-describe)
-
-</div>
 
 # Reviewing events
 
 You can review the events in a given namespace to find potential issues.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Check for events in your namespace by running the following command:
 
@@ -264,11 +186,9 @@ Procedure
     $ oc get events -A | grep -Ei "warning|error"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -277,42 +197,23 @@ Procedure
     openshift    59s         Warning   FailedMount     pod/openshift-1     MountVolume.SetUp failed for volume "v4-0-config-user-idp-0-file-data" : references non-existent secret key: test
     ```
 
-    </div>
-
 4.  Optional: To clean up the events and see only recurring events, you can delete the events in the relevant namespace by running the following command:
 
     ``` terminal
     $ oc delete events -n <namespace> --all
     ```
 
-</div>
-
 For more information, see "Watching cluster events".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Watching cluster events](../../../security/container_security/security-monitoring.xml#security-monitoring-events_security-monitoring)
-
-</div>
 
 # Connecting to a pod
 
 You can directly connect to a currently running pod with the `oc rsh` command, which provides you with a shell on that pod.
 
-> [!WARNING]
-> In pods that run a low-latency application, latency issues can occur when you run the `oc rsh` command. Use the `oc rsh` command only if you cannot connect to the node by using the `oc debug` command.
+<div class="warning">
 
-<div>
-
-<div class="title">
-
-Procedure
+In pods that run a low-latency application, latency issues can occur when you run the `oc rsh` command. Use the `oc rsh` command only if you cannot connect to the node by using the `oc debug` command.
 
 </div>
 
@@ -322,23 +223,11 @@ Procedure
   $ oc rsh -n <namespace> busybox-1
   ```
 
-</div>
-
 For more information, see "oc rsh" and "Accessing running pods".
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [oc rsh](../../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-rsh)
 
 - [Accessing running pods](../../../support/troubleshooting/investigating-pod-issues.xml#accessing-running-pods_investigating-pod-issues)
-
-</div>
 
 # Debugging a pod
 
@@ -346,25 +235,15 @@ In certain cases, you do not want to directly interact with your pod that is in 
 
 To avoid interfering with running traffic, you can use a secondary pod that is a copy of your original pod. The secondary pod uses the same components as that of the original pod but does not have running traffic.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  List the pods by running the following command:
 
     ``` terminal
     $ oc get pod
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -376,19 +255,15 @@ Procedure
     busybox-4   1/1     Running   168 (43m ago)     7d
     ```
 
-    </div>
-
 2.  Debug a pod by running the following command:
 
     ``` terminal
     $ oc debug -n <namespace> busybox-1
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -397,40 +272,21 @@ Procedure
     Pod IP: 10.133.2.11
     ```
 
-    </div>
-
     If you do not see a shell prompt, press Enter.
 
-</div>
-
 For more information, see "oc debug" and "Starting debug pods with root access".
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [oc debug](../../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-debug)
 
 - [Starting debug pods with root access](../../../support/troubleshooting/investigating-pod-issues.xml#starting-debug-pods-with-root-access_investigating-pod-issues)
 
-</div>
-
 # Running a command on a pod
 
 If you want to run a command or set of commands on a pod without directly logging into it, you can use the `oc exec -it` command. You can interact with the pod quickly to get process or output information from the pod. A common use case is to run the `oc exec -it` command inside a script to run the same command on multiple pods in a replica set or deployment.
 
-> [!WARNING]
-> In pods that run a low-latency application, the `oc exec` command can cause latency issues.
+<div class="warning">
 
-<div>
-
-<div class="title">
-
-Procedure
+In pods that run a low-latency application, the `oc exec` command can cause latency issues.
 
 </div>
 
@@ -440,20 +296,8 @@ Procedure
   $ oc exec -it <pod> -- <command>
   ```
 
-</div>
-
 For more information, see "oc exec" and "Executing remote commands in containers".
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [oc exec](../../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-exec)
 
 - [Executing remote commands in containers](../../../nodes/containers/nodes-containers-remote-commands.xml#nodes-containers-remote-commands-about_nodes-containers-remote-commands)
-
-</div>

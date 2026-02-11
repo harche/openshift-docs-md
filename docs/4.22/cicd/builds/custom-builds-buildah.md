@@ -2,8 +2,11 @@ With OpenShift Container Platform 4.17, a docker socket will not be present on t
 
 If you require this capability in order to build and push images, add the Buildah tool your custom build image and use it to build and push the image within your custom build logic. The following is an example of how to run custom builds with Buildah.
 
-> [!NOTE]
-> Using the custom build strategy requires permissions that normal users do not have by default because it allows the user to execute arbitrary code inside a privileged container running on the cluster. This level of access can be used to compromise the cluster and therefore should be granted only to users who are trusted with administrative privileges on the cluster.
+<div class="note">
+
+Using the custom build strategy requires permissions that normal users do not have by default because it allows the user to execute arbitrary code inside a privileged container running on the cluster. This level of access can be used to compromise the cluster and therefore should be granted only to users who are trusted with administrative privileges on the cluster.
+
+</div>
 
 # Prerequisites
 
@@ -12,14 +15,6 @@ If you require this capability in order to build and push images, add the Builda
 # Creating custom build artifacts
 
 You must create the image you want to use as your custom build image.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Starting with an empty directory, create a file named `Dockerfile` with the following content:
 
@@ -66,31 +61,11 @@ Procedure
     buildah --storage-driver vfs push --tls-verify=false --authfile /tmp/.dockercfg ${TAG}
     ```
 
-</div>
-
 # Build custom builder image
 
 You can use OpenShift Container Platform to build and push custom builder images to use in a custom strategy.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Define all the inputs that will go into creating your new custom builder image.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Define a `BuildConfig` object that will build your custom builder image:
 
@@ -106,33 +81,13 @@ Procedure
 
     After the build completes, your new custom builder image is available in your project in an image stream tag that is named `custom-builder-image:latest`.
 
-</div>
-
 # Use custom builder image
 
 You can define a `BuildConfig` object that uses the custom strategy in conjunction with your custom builder image to execute your custom build logic.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Define all the required inputs for new custom builder image.
 
 - Build your custom builder image.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a file named `buildconfig.yaml`. This file defines the `BuildConfig` object that is created in your project and executed:
 
@@ -191,5 +146,3 @@ Procedure
     ```
 
     When the build runs, it launches a pod running the custom builder image that was built earlier. The pod runs the `build.sh` logic that is defined as the entrypoint for the custom builder image. The `build.sh` logic invokes Buildah to build the `dockerfile.sample` that was embedded in the custom builder image, and then uses Buildah to push the new image to the `sample-custom image stream`.
-
-</div>

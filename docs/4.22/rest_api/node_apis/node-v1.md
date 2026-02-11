@@ -6,13 +6,13 @@ Type
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | NodeSpec describes the attributes that a node is created with. |
-| `status` | `object` | NodeStatus is information about the current status of a node. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | NodeSpec describes the attributes that a node is created with.                                                                                                                                                                                                                                       |
+| `status`     | `object`                                                                             | NodeStatus is information about the current status of a node.                                                                                                                                                                                                                                        |
 
 ## .spec
 
@@ -22,16 +22,16 @@ NodeSpec describes the attributes that a node is created with.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `configSource` | `object` | NodeConfigSource specifies a source of node configuration. Exactly one subfield (excluding metadata) must be non-nil. This API is deprecated since 1.22 |
-| `externalID` | `string` | Deprecated. Not all kubelets will set this field. Remove field after 1.13. see: <https://issues.k8s.io/61966> |
-| `podCIDR` | `string` | PodCIDR represents the pod IP range assigned to the node. |
-| `podCIDRs` | `array (string)` | podCIDRs represents the IP ranges assigned to the node for usage by Pods on that node. If this field is specified, the 0th entry must match the podCIDR field. It may contain at most 1 value for each of IPv4 and IPv6. |
-| `providerID` | `string` | ID of the node assigned by the cloud provider in the format: \<ProviderName\>://\<ProviderSpecificNodeID\> |
-| `taints` | `array` | If specified, the node’s taints. |
-| `taints[]` | `object` | The node this Taint is attached to has the "effect" on any pod that does not tolerate the Taint. |
-| `unschedulable` | `boolean` | Unschedulable controls node schedulability of new pods. By default, node is schedulable. More info: <https://kubernetes.io/docs/concepts/nodes/node/#manual-node-administration> |
+| Property        | Type             | Description                                                                                                                                                                                                              |
+|-----------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `configSource`  | `object`         | NodeConfigSource specifies a source of node configuration. Exactly one subfield (excluding metadata) must be non-nil. This API is deprecated since 1.22                                                                  |
+| `externalID`    | `string`         | Deprecated. Not all kubelets will set this field. Remove field after 1.13. see: <https://issues.k8s.io/61966>                                                                                                            |
+| `podCIDR`       | `string`         | PodCIDR represents the pod IP range assigned to the node.                                                                                                                                                                |
+| `podCIDRs`      | `array (string)` | podCIDRs represents the IP ranges assigned to the node for usage by Pods on that node. If this field is specified, the 0th entry must match the podCIDR field. It may contain at most 1 value for each of IPv4 and IPv6. |
+| `providerID`    | `string`         | ID of the node assigned by the cloud provider in the format: \<ProviderName\>://\<ProviderSpecificNodeID\>                                                                                                               |
+| `taints`        | `array`          | If specified, the node’s taints.                                                                                                                                                                                         |
+| `taints[]`      | `object`         | The node this Taint is attached to has the "effect" on any pod that does not tolerate the Taint.                                                                                                                         |
+| `unschedulable` | `boolean`        | Unschedulable controls node schedulability of new pods. By default, node is schedulable. More info: <https://kubernetes.io/docs/concepts/nodes/node/#manual-node-administration>                                         |
 
 ## .spec.configSource
 
@@ -41,8 +41,8 @@ NodeConfigSource specifies a source of node configuration. Exactly one subfield 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type     | Description                                                                                                                                                                                                                       |
+|-------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `configMap` | `object` | ConfigMapNodeConfigSource contains the information to reference a ConfigMap as a config source for the Node. This API is deprecated since 1.22: <https://git.k8s.io/enhancements/keps/sig-node/281-dynamic-kubelet-configuration> |
 
 ## .spec.configSource.configMap
@@ -60,13 +60,13 @@ Required
 
 - `kubeletConfigKey`
 
-| Property | Type | Description |
-|----|----|----|
+| Property           | Type     | Description                                                                                                                                            |
+|--------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `kubeletConfigKey` | `string` | KubeletConfigKey declares which key of the referenced ConfigMap corresponds to the KubeletConfiguration structure This field is required in all cases. |
-| `name` | `string` | Name is the metadata.name of the referenced ConfigMap. This field is required in all cases. |
-| `namespace` | `string` | Namespace is the metadata.namespace of the referenced ConfigMap. This field is required in all cases. |
-| `resourceVersion` | `string` | ResourceVersion is the metadata.ResourceVersion of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status. |
-| `uid` | `string` | UID is the metadata.UID of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status. |
+| `name`             | `string` | Name is the metadata.name of the referenced ConfigMap. This field is required in all cases.                                                            |
+| `namespace`        | `string` | Namespace is the metadata.namespace of the referenced ConfigMap. This field is required in all cases.                                                  |
+| `resourceVersion`  | `string` | ResourceVersion is the metadata.ResourceVersion of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status.        |
+| `uid`              | `string` | UID is the metadata.UID of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status.                                |
 
 ## .spec.taints
 
@@ -96,30 +96,30 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>effect</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Required. The effect of the taint on pods that do not tolerate the taint. Valid effects are NoSchedule, PreferNoSchedule and NoExecute.</p>
 <p>Possible enum values: - <code>"NoExecute"</code> Evict any already-running pods that do not tolerate the taint. Currently enforced by NodeController. - <code>"NoSchedule"</code> Do not allow new pods to schedule onto the node unless they tolerate the taint, but allow all pods submitted to Kubelet without going through the scheduler to start, and allow all already-running pods to continue running. Enforced by the scheduler. - <code>"PreferNoSchedule"</code> Like TaintEffectNoSchedule, but the scheduler tries not to schedule new pods onto the node, rather than prohibiting new pods from scheduling onto the node entirely. Enforced by the scheduler.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>key</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Required. The taint key to be applied to a node.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>timeAdded</code></p></td>
 <td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time"><code>Time</code></a></p></td>
 <td style="text-align: left;"><p>TimeAdded represents the time at which the taint was added.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>value</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The taint value corresponding to the taint key.</p></td>
@@ -142,100 +142,100 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>addresses</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>List of addresses reachable to the node. Queried from cloud provider, if available. More info: <a href="https://kubernetes.io/docs/reference/node/node-status/#addresses">https://kubernetes.io/docs/reference/node/node-status/#addresses</a> Note: This field is declared as mergeable, but the merge key is not sufficiently unique, which can cause data corruption when it is merged. Callers should instead use a full-replacement patch. See <a href="https://pr.k8s.io/79391">https://pr.k8s.io/79391</a> for an example. Consumers should assume that addresses can change during the lifetime of a Node. However, there are some exceptions where this may not be possible, such as Pods that inherit a Node’s address in its own status or consumers of the downward API (status.hostIP).</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>addresses[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>NodeAddress contains information for the node’s address.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>allocatable</code></p></td>
 <td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity"><code>object (Quantity)</code></a></p></td>
 <td style="text-align: left;"><p>Allocatable represents the resources of a node that are available for scheduling. Defaults to Capacity.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>capacity</code></p></td>
 <td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity"><code>object (Quantity)</code></a></p></td>
 <td style="text-align: left;"><p>Capacity represents the total resources of a node. More info: <a href="https://kubernetes.io/docs/reference/node/node-status/#capacity">https://kubernetes.io/docs/reference/node/node-status/#capacity</a></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>conditions</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Conditions is an array of current observed node conditions. More info: <a href="https://kubernetes.io/docs/reference/node/node-status/#condition">https://kubernetes.io/docs/reference/node/node-status/#condition</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>conditions[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>NodeCondition contains condition information for a node.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>config</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>NodeConfigStatus describes the status of the config assigned by Node.Spec.ConfigSource.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>daemonEndpoints</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>NodeDaemonEndpoints lists ports opened by daemons running on the Node.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>features</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>NodeFeatures describes the set of features implemented by the CRI implementation. The features contained in the NodeFeatures should depend only on the cri implementation independent of runtime handlers.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>images</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>List of container images on this node</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>images[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Describe a container image</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>nodeInfo</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>NodeSystemInfo is a set of ids/uuids to uniquely identify the node.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>phase</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>NodePhase is the recently observed lifecycle phase of the node. More info: <a href="https://kubernetes.io/docs/concepts/nodes/node/#phase">https://kubernetes.io/docs/concepts/nodes/node/#phase</a> The field is never populated, and now is deprecated.</p>
 <p>Possible enum values: - <code>"Pending"</code> means the node has been created/added by the system, but not configured. - <code>"Running"</code> means the node has been configured and has Kubernetes components running. - <code>"Terminated"</code> means the node has been removed from the cluster.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>runtimeHandlers</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>The available runtime handlers.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>runtimeHandlers[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>NodeRuntimeHandler is a set of runtime handler information.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>volumesAttached</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>List of volumes that are attached to the node.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>volumesAttached[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>AttachedVolume describes a volume attached to a node</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>volumesInUse</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>List of attachable volumes in use (mounted) by the node.</p></td>
@@ -264,10 +264,10 @@ Required
 
 - `address`
 
-| Property | Type | Description |
-|----|----|----|
-| `address` | `string` | The node address. |
-| `type` | `string` | Node address type, one of Hostname, ExternalIP or InternalIP. |
+| Property  | Type     | Description                                                   |
+|-----------|----------|---------------------------------------------------------------|
+| `address` | `string` | The node address.                                             |
+| `type`    | `string` | Node address type, one of Hostname, ExternalIP or InternalIP. |
 
 ## .status.conditions
 
@@ -290,14 +290,14 @@ Required
 
 - `status`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastHeartbeatTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | Last time we got an update on a given condition. |
-| `lastTransitionTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | Last time the condition transit from one status to another. |
-| `message` | `string` | Human readable message indicating details about last transition. |
-| `reason` | `string` | (brief) reason for the condition’s last transition. |
-| `status` | `string` | Status of the condition, one of True, False, Unknown. |
-| `type` | `string` | Type of node condition. |
+| Property             | Type                                                                     | Description                                                      |
+|----------------------|--------------------------------------------------------------------------|------------------------------------------------------------------|
+| `lastHeartbeatTime`  | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | Last time we got an update on a given condition.                 |
+| `lastTransitionTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | Last time the condition transit from one status to another.      |
+| `message`            | `string`                                                                 | Human readable message indicating details about last transition. |
+| `reason`             | `string`                                                                 | (brief) reason for the condition’s last transition.              |
+| `status`             | `string`                                                                 | Status of the condition, one of True, False, Unknown.            |
+| `type`               | `string`                                                                 | Type of node condition.                                          |
 
 ## .status.config
 
@@ -307,12 +307,12 @@ NodeConfigStatus describes the status of the config assigned by Node.Spec.Config
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `active` | `object` | NodeConfigSource specifies a source of node configuration. Exactly one subfield (excluding metadata) must be non-nil. This API is deprecated since 1.22 |
-| `assigned` | `object` | NodeConfigSource specifies a source of node configuration. Exactly one subfield (excluding metadata) must be non-nil. This API is deprecated since 1.22 |
-| `error` | `string` | Error describes any problems reconciling the Spec.ConfigSource to the Active config. Errors may occur, for example, attempting to checkpoint Spec.ConfigSource to the local Assigned record, attempting to checkpoint the payload associated with Spec.ConfigSource, attempting to load or validate the Assigned config, etc. Errors may occur at different points while syncing config. Earlier errors (e.g. download or checkpointing errors) will not result in a rollback to LastKnownGood, and may resolve across Kubelet retries. Later errors (e.g. loading or validating a checkpointed config) will result in a rollback to LastKnownGood. In the latter case, it is usually possible to resolve the error by fixing the config assigned in Spec.ConfigSource. You can find additional information for debugging by searching the error message in the Kubelet log. Error is a human-readable description of the error state; machines can check whether or not Error is empty, but should not rely on the stability of the Error text across Kubelet versions. |
-| `lastKnownGood` | `object` | NodeConfigSource specifies a source of node configuration. Exactly one subfield (excluding metadata) must be non-nil. This API is deprecated since 1.22 |
+| Property        | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|-----------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `active`        | `object` | NodeConfigSource specifies a source of node configuration. Exactly one subfield (excluding metadata) must be non-nil. This API is deprecated since 1.22                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `assigned`      | `object` | NodeConfigSource specifies a source of node configuration. Exactly one subfield (excluding metadata) must be non-nil. This API is deprecated since 1.22                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `error`         | `string` | Error describes any problems reconciling the Spec.ConfigSource to the Active config. Errors may occur, for example, attempting to checkpoint Spec.ConfigSource to the local Assigned record, attempting to checkpoint the payload associated with Spec.ConfigSource, attempting to load or validate the Assigned config, etc. Errors may occur at different points while syncing config. Earlier errors (e.g. download or checkpointing errors) will not result in a rollback to LastKnownGood, and may resolve across Kubelet retries. Later errors (e.g. loading or validating a checkpointed config) will result in a rollback to LastKnownGood. In the latter case, it is usually possible to resolve the error by fixing the config assigned in Spec.ConfigSource. You can find additional information for debugging by searching the error message in the Kubelet log. Error is a human-readable description of the error state; machines can check whether or not Error is empty, but should not rely on the stability of the Error text across Kubelet versions. |
+| `lastKnownGood` | `object` | NodeConfigSource specifies a source of node configuration. Exactly one subfield (excluding metadata) must be non-nil. This API is deprecated since 1.22                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
 ## .status.config.active
 
@@ -322,8 +322,8 @@ NodeConfigSource specifies a source of node configuration. Exactly one subfield 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type     | Description                                                                                                                                                                                                                       |
+|-------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `configMap` | `object` | ConfigMapNodeConfigSource contains the information to reference a ConfigMap as a config source for the Node. This API is deprecated since 1.22: <https://git.k8s.io/enhancements/keps/sig-node/281-dynamic-kubelet-configuration> |
 
 ## .status.config.active.configMap
@@ -341,13 +341,13 @@ Required
 
 - `kubeletConfigKey`
 
-| Property | Type | Description |
-|----|----|----|
+| Property           | Type     | Description                                                                                                                                            |
+|--------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `kubeletConfigKey` | `string` | KubeletConfigKey declares which key of the referenced ConfigMap corresponds to the KubeletConfiguration structure This field is required in all cases. |
-| `name` | `string` | Name is the metadata.name of the referenced ConfigMap. This field is required in all cases. |
-| `namespace` | `string` | Namespace is the metadata.namespace of the referenced ConfigMap. This field is required in all cases. |
-| `resourceVersion` | `string` | ResourceVersion is the metadata.ResourceVersion of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status. |
-| `uid` | `string` | UID is the metadata.UID of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status. |
+| `name`             | `string` | Name is the metadata.name of the referenced ConfigMap. This field is required in all cases.                                                            |
+| `namespace`        | `string` | Namespace is the metadata.namespace of the referenced ConfigMap. This field is required in all cases.                                                  |
+| `resourceVersion`  | `string` | ResourceVersion is the metadata.ResourceVersion of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status.        |
+| `uid`              | `string` | UID is the metadata.UID of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status.                                |
 
 ## .status.config.assigned
 
@@ -357,8 +357,8 @@ NodeConfigSource specifies a source of node configuration. Exactly one subfield 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type     | Description                                                                                                                                                                                                                       |
+|-------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `configMap` | `object` | ConfigMapNodeConfigSource contains the information to reference a ConfigMap as a config source for the Node. This API is deprecated since 1.22: <https://git.k8s.io/enhancements/keps/sig-node/281-dynamic-kubelet-configuration> |
 
 ## .status.config.assigned.configMap
@@ -376,13 +376,13 @@ Required
 
 - `kubeletConfigKey`
 
-| Property | Type | Description |
-|----|----|----|
+| Property           | Type     | Description                                                                                                                                            |
+|--------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `kubeletConfigKey` | `string` | KubeletConfigKey declares which key of the referenced ConfigMap corresponds to the KubeletConfiguration structure This field is required in all cases. |
-| `name` | `string` | Name is the metadata.name of the referenced ConfigMap. This field is required in all cases. |
-| `namespace` | `string` | Namespace is the metadata.namespace of the referenced ConfigMap. This field is required in all cases. |
-| `resourceVersion` | `string` | ResourceVersion is the metadata.ResourceVersion of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status. |
-| `uid` | `string` | UID is the metadata.UID of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status. |
+| `name`             | `string` | Name is the metadata.name of the referenced ConfigMap. This field is required in all cases.                                                            |
+| `namespace`        | `string` | Namespace is the metadata.namespace of the referenced ConfigMap. This field is required in all cases.                                                  |
+| `resourceVersion`  | `string` | ResourceVersion is the metadata.ResourceVersion of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status.        |
+| `uid`              | `string` | UID is the metadata.UID of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status.                                |
 
 ## .status.config.lastKnownGood
 
@@ -392,8 +392,8 @@ NodeConfigSource specifies a source of node configuration. Exactly one subfield 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type     | Description                                                                                                                                                                                                                       |
+|-------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `configMap` | `object` | ConfigMapNodeConfigSource contains the information to reference a ConfigMap as a config source for the Node. This API is deprecated since 1.22: <https://git.k8s.io/enhancements/keps/sig-node/281-dynamic-kubelet-configuration> |
 
 ## .status.config.lastKnownGood.configMap
@@ -411,13 +411,13 @@ Required
 
 - `kubeletConfigKey`
 
-| Property | Type | Description |
-|----|----|----|
+| Property           | Type     | Description                                                                                                                                            |
+|--------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `kubeletConfigKey` | `string` | KubeletConfigKey declares which key of the referenced ConfigMap corresponds to the KubeletConfiguration structure This field is required in all cases. |
-| `name` | `string` | Name is the metadata.name of the referenced ConfigMap. This field is required in all cases. |
-| `namespace` | `string` | Namespace is the metadata.namespace of the referenced ConfigMap. This field is required in all cases. |
-| `resourceVersion` | `string` | ResourceVersion is the metadata.ResourceVersion of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status. |
-| `uid` | `string` | UID is the metadata.UID of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status. |
+| `name`             | `string` | Name is the metadata.name of the referenced ConfigMap. This field is required in all cases.                                                            |
+| `namespace`        | `string` | Namespace is the metadata.namespace of the referenced ConfigMap. This field is required in all cases.                                                  |
+| `resourceVersion`  | `string` | ResourceVersion is the metadata.ResourceVersion of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status.        |
+| `uid`              | `string` | UID is the metadata.UID of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status.                                |
 
 ## .status.daemonEndpoints
 
@@ -427,8 +427,8 @@ NodeDaemonEndpoints lists ports opened by daemons running on the Node.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property          | Type     | Description                                                         |
+|-------------------|----------|---------------------------------------------------------------------|
 | `kubeletEndpoint` | `object` | DaemonEndpoint contains information about a single Daemon endpoint. |
 
 ## .status.daemonEndpoints.kubeletEndpoint
@@ -454,8 +454,8 @@ NodeFeatures describes the set of features implemented by the CRI implementation
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property                   | Type      | Description                                                                                                 |
+|----------------------------|-----------|-------------------------------------------------------------------------------------------------------------|
 | `supplementalGroupsPolicy` | `boolean` | SupplementalGroupsPolicy is set to true if the runtime supports SupplementalGroupsPolicy and ContainerUser. |
 
 ## .status.images
@@ -474,10 +474,10 @@ Describe a container image
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `names` | `array (string)` | Names by which this image is known. e.g. \["kubernetes.example/hyperkube:v1.0.7", "cloud-vendor.registry.example/cloud-vendor/hyperkube:v1.0.7"\] |
-| `sizeBytes` | `integer` | The size of the image in bytes. |
+| Property    | Type             | Description                                                                                                                                       |
+|-------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| `names`     | `array (string)` | Names by which this image is known. e.g. \["kubernetes.example/hyperkube:v1.0.7", "cloud-vendor.registry.example/cloud-vendor/hyperkube:v1.0.7"\] |
+| `sizeBytes` | `integer`        | The size of the image in bytes.                                                                                                                   |
 
 ## .status.nodeInfo
 
@@ -508,19 +508,19 @@ Required
 
 - `architecture`
 
-| Property | Type | Description |
-|----|----|----|
-| `architecture` | `string` | The Architecture reported by the node |
-| `bootID` | `string` | Boot ID reported by the node. |
-| `containerRuntimeVersion` | `string` | ContainerRuntime Version reported by the node through runtime remote API (e.g. containerd://1.4.2). |
-| `kernelVersion` | `string` | Kernel Version reported by the node from 'uname -r' (e.g. 3.16.0-0.bpo.4-amd64). |
-| `kubeProxyVersion` | `string` | Deprecated: KubeProxy Version reported by the node. |
-| `kubeletVersion` | `string` | Kubelet Version reported by the node. |
-| `machineID` | `string` | MachineID reported by the node. For unique machine identification in the cluster this field is preferred. Learn more from man(5) machine-id: <http://man7.org/linux/man-pages/man5/machine-id.5.html> |
-| `operatingSystem` | `string` | The Operating System reported by the node |
-| `osImage` | `string` | OS Image reported by the node from /etc/os-release (e.g. Debian GNU/Linux 7 (wheezy)). |
-| `swap` | `object` | NodeSwapStatus represents swap memory information. |
-| `systemUUID` | `string` | SystemUUID reported by the node. For unique machine identification MachineID is preferred. This field is specific to Red Hat hosts <https://access.redhat.com/documentation/en-us/red_hat_subscription_management/1/html/rhsm/uuid> |
+| Property                  | Type     | Description                                                                                                                                                                                                                         |
+|---------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `architecture`            | `string` | The Architecture reported by the node                                                                                                                                                                                               |
+| `bootID`                  | `string` | Boot ID reported by the node.                                                                                                                                                                                                       |
+| `containerRuntimeVersion` | `string` | ContainerRuntime Version reported by the node through runtime remote API (e.g. containerd://1.4.2).                                                                                                                                 |
+| `kernelVersion`           | `string` | Kernel Version reported by the node from 'uname -r' (e.g. 3.16.0-0.bpo.4-amd64).                                                                                                                                                    |
+| `kubeProxyVersion`        | `string` | Deprecated: KubeProxy Version reported by the node.                                                                                                                                                                                 |
+| `kubeletVersion`          | `string` | Kubelet Version reported by the node.                                                                                                                                                                                               |
+| `machineID`               | `string` | MachineID reported by the node. For unique machine identification in the cluster this field is preferred. Learn more from man(5) machine-id: <http://man7.org/linux/man-pages/man5/machine-id.5.html>                               |
+| `operatingSystem`         | `string` | The Operating System reported by the node                                                                                                                                                                                           |
+| `osImage`                 | `string` | OS Image reported by the node from /etc/os-release (e.g. Debian GNU/Linux 7 (wheezy)).                                                                                                                                              |
+| `swap`                    | `object` | NodeSwapStatus represents swap memory information.                                                                                                                                                                                  |
+| `systemUUID`              | `string` | SystemUUID reported by the node. For unique machine identification MachineID is preferred. This field is specific to Red Hat hosts <https://access.redhat.com/documentation/en-us/red_hat_subscription_management/1/html/rhsm/uuid> |
 
 ## .status.nodeInfo.swap
 
@@ -550,10 +550,10 @@ NodeRuntimeHandler is a set of runtime handler information.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                         |
+|------------|----------|-------------------------------------------------------------------------------------|
 | `features` | `object` | NodeRuntimeHandlerFeatures is a set of features implemented by the runtime handler. |
-| `name` | `string` | Runtime handler name. Empty for the default runtime handler. |
+| `name`     | `string` | Runtime handler name. Empty for the default runtime handler.                        |
 
 ## .status.runtimeHandlers\[\].features
 
@@ -563,10 +563,10 @@ NodeRuntimeHandlerFeatures is a set of features implemented by the runtime handl
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `recursiveReadOnlyMounts` | `boolean` | RecursiveReadOnlyMounts is set to true if the runtime handler supports RecursiveReadOnlyMounts. |
-| `userNamespaces` | `boolean` | UserNamespaces is set to true if the runtime handler supports UserNamespaces, including for volumes. |
+| Property                  | Type      | Description                                                                                          |
+|---------------------------|-----------|------------------------------------------------------------------------------------------------------|
+| `recursiveReadOnlyMounts` | `boolean` | RecursiveReadOnlyMounts is set to true if the runtime handler supports RecursiveReadOnlyMounts.      |
+| `userNamespaces`          | `boolean` | UserNamespaces is set to true if the runtime handler supports UserNamespaces, including for volumes. |
 
 ## .status.volumesAttached
 
@@ -589,10 +589,10 @@ Required
 
 - `devicePath`
 
-| Property | Type | Description |
-|----|----|----|
+| Property     | Type     | Description                                                                |
+|--------------|----------|----------------------------------------------------------------------------|
 | `devicePath` | `string` | DevicePath represents the device path where the volume should be available |
-| `name` | `string` | Name of the attached volume |
+| `name`       | `string` | Name of the attached volume                                                |
 
 # API endpoints
 
@@ -640,16 +640,16 @@ HTTP method
 Description
 delete collection of Node
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -659,10 +659,10 @@ HTTP method
 Description
 list or watch objects of kind Node
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`NodeList`](../objects/index.xml#io-k8s-api-core-v1-NodeList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                          |
+|--------------------|-----------------------------------------------------------------------|
+| 200 - OK           | [`NodeList`](../objects/index.xml#io-k8s-api-core-v1-NodeList) schema |
+| 401 - Unauthorized | Empty                                                                 |
 
 HTTP responses
 
@@ -672,9 +672,9 @@ HTTP method
 Description
 create a Node
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
@@ -702,10 +702,10 @@ HTTP method
 Description
 watch individual changes to a list of Node. deprecated: use the 'watch' parameter with a list operation instead.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -723,17 +723,17 @@ HTTP method
 Description
 delete a Node
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -756,9 +756,9 @@ HTTP method
 Description
 partially update the specified Node
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
@@ -777,9 +777,9 @@ HTTP method
 Description
 replace the specified Node
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
@@ -812,10 +812,10 @@ HTTP method
 Description
 watch changes to an object of kind Node. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -846,9 +846,9 @@ HTTP method
 Description
 partially update status of the specified Node
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
@@ -867,9 +867,9 @@ HTTP method
 Description
 replace status of the specified Node
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters

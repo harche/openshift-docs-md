@@ -10,15 +10,21 @@ For the purposes of GCP Workload Identity, the CCO provides the following functi
 
 The CCO can semi-automate this process through an expanded use of `CredentialsRequest` objects, which can request the creation of `Secrets` that contain the information required for GCP Workload Identity workflows.
 
-> [!NOTE]
-> Subscriptions with automatic approvals for updates are not recommended because there might be permission changes to make before updating. Subscriptions with manual approvals for updates ensure that administrators have the opportunity to verify the permissions of the later version, take any necessary steps, and then update.
+<div class="note">
+
+Subscriptions with automatic approvals for updates are not recommended because there might be permission changes to make before updating. Subscriptions with manual approvals for updates ensure that administrators have the opportunity to verify the permissions of the later version, take any necessary steps, and then update.
+
+</div>
 
 As an Operator author preparing an Operator for use alongside the updated CCO in OpenShift Container Platform 4.17 and later, you should instruct users and add code to handle the divergence from earlier CCO versions, in addition to handling GCP Workload Identity token authentication (if your Operator is not already enabled). The recommended method is to provide a `CredentialsRequest` object with the correctly filled GCP Workload Identity fields and let the CCO create the `Secret` object for you.
 
-> [!IMPORTANT]
-> If you plan to support OpenShift Container Platform clusters earlier than version 4.17, consider providing users with instructions on how to manually create a secret with the GCP Workload Identity-enabling information by using the CCO utility (`ccoctl`). Earlier CCO versions are unaware of GCP Workload Identity mode on the cluster and cannot create secrets for you.
->
-> Your code should check for secrets that never appear and warn users to follow the fallback instructions you have provided.
+<div class="important">
+
+If you plan to support OpenShift Container Platform clusters earlier than version 4.17, consider providing users with instructions on how to manually create a secret with the GCP Workload Identity-enabling information by using the CCO utility (`ccoctl`). Earlier CCO versions are unaware of GCP Workload Identity mode on the cluster and cannot create secrets for you.
+
+Your code should check for secrets that never appear and warn users to follow the fallback instructions you have provided.
+
+</div>
 
 To authenticate with Google Cloud using short-lived tokens via Google Cloud Platform Workload Identity, Operators must provide the following information:
 
@@ -38,21 +44,11 @@ The `SERVICE_ACCOUNT_EMAIL` value is a Google Cloud service account email that i
 
 The **Install Operator** page in the web console allows cluster administrators to provide this information at installation time. This information is then propagated to the `Subscription` object as environment variables on the Operator pod.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [OLM-managed Operator support for authentication with GCP Workload Identity](../../../authentication/managing_cloud_provider_credentials/cco-short-term-creds.xml#cco-short-term-creds-gcp-olm_cco-short-term-creds)
 
 - [Installing from OperatorHub using the web console](../../../operators/admin/olm-adding-operators-to-cluster.xml#olm-installing-from-software-catalog-using-web-console_olm-adding-operators-to-a-cluster)
 
 - [Installing from OperatorHub using the CLI](../../../operators/admin/olm-adding-operators-to-cluster.xml#olm-installing-operator-from-software-catalog-using-cli_olm-adding-operators-to-a-cluster)
-
-</div>
 
 # Enabling Operators to support CCO-based workflows with GCP Workload Identity
 
@@ -60,14 +56,9 @@ As an Operator author designing your project to run on Operator Lifecycle Manage
 
 With this method, the Operator is responsible for and requires RBAC permissions for creating the `CredentialsRequest` object and reading the resulting `Secret` object.
 
-> [!NOTE]
-> By default, pods related to the Operator deployment mount a `serviceAccountToken` volume so that the service account token can be referenced in the resulting `Secret` object.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+By default, pods related to the Operator deployment mount a `serviceAccountToken` volume so that the service account token can be referenced in the resulting `Secret` object.
 
 </div>
 
@@ -77,27 +68,9 @@ Prerequisites
 
 - OLM-based Operator project
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Update your Operator project’s `ClusterServiceVersion` (CSV) object:
 
     1.  Ensure Operator deployment in the CSV has the following `volumeMounts` and `volumes` fields so that the Operator can assume the role with web identity:
-
-        <div class="example">
-
-        <div class="title">
-
-        Example `volumeMounts` and `volumes` fields
-
-        </div>
 
         ``` yaml
         # ...
@@ -116,17 +89,7 @@ Procedure
                        audience: openshift
         ```
 
-        </div>
-
     2.  Ensure your Operator has RBAC permission to create `CredentialsRequests` objects:
-
-        <div class="example">
-
-        <div class="title">
-
-        Example `clusterPermissions` list
-
-        </div>
 
         ``` yaml
         # ...
@@ -147,8 +110,6 @@ Procedure
                 - update
                 - watch
         ```
-
-        </div>
 
     3.  Add the following annotation to claim support for this method of CCO-based workflow with GCP Workload Identity:
 
@@ -172,18 +133,13 @@ Procedure
 
     2.  Ensure you have a `CredentialsRequest` object ready to be patched and applied.
 
-        > [!NOTE]
-        > Adding a `CredentialsRequest` object to the Operator bundle is not currently supported.
+        <div class="note">
 
-    3.  Add the GCP Workload Identity variables to the credentials request and apply it during Operator initialization:
-
-        <div class="example">
-
-        <div class="title">
-
-        Example applying `CredentialsRequest` object during Operator initialization
+        Adding a `CredentialsRequest` object to the Operator bundle is not currently supported.
 
         </div>
+
+    3.  Add the GCP Workload Identity variables to the credentials request and apply it during Operator initialization:
 
         ``` go
         // apply CredentialsRequest on install
@@ -200,17 +156,7 @@ Procedure
            }
         ```
 
-        </div>
-
     4.  Ensure your Operator can wait for a `Secret` object to show up from the CCO, as shown in the following example, which is called along with the other items you are reconciling in your Operator:
-
-        <div class="example">
-
-        <div class="title">
-
-        Example wait for `Secret` object
-
-        </div>
 
         ``` go
         // WaitForSecret is a function that takes a Kubernetes client, a namespace, and a v1 "k8s.io/api/core/v1" name as arguments
@@ -252,12 +198,8 @@ Procedure
 
         - The `timeout` value is based on an estimate of how fast the CCO might detect an added `CredentialsRequest` object and generate a `Secret` object. You might consider lowering the time or creating custom feedback for cluster administrators that could be wondering why the Operator is not yet accessing the cloud resources.
 
-        </div>
-
     5.  Read the `service_account.json` field from the secret and use it to authenticate your Google Cloud client:
 
         ``` go
         service_account_json := secret.StringData["service_account.json"]
         ```
-
-</div>

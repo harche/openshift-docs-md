@@ -20,14 +20,4 @@ Storage vendors have traditionally provided storage drivers as part of Kubernete
 
 CSI Operators give OpenShift Container Platform users storage options, such as volume snapshots, that are not possible with in-tree volume plugins.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
-
-</div>

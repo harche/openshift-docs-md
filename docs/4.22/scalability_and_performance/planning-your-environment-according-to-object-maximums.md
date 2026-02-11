@@ -4,33 +4,39 @@ These guidelines are based on the largest possible cluster. For smaller clusters
 
 In most cases, exceeding these numbers results in lower overall performance. It does not necessarily mean that the cluster will fail.
 
-> [!WARNING]
-> Clusters that experience rapid change, such as those with many starting and stopping pods, can have a lower practical maximum size than documented.
+<div class="warning">
+
+Clusters that experience rapid change, such as those with many starting and stopping pods, can have a lower practical maximum size than documented.
+
+</div>
 
 # OpenShift Container Platform tested cluster maximums for major releases
 
-> [!NOTE]
-> Red Hat does not provide direct guidance on sizing your OpenShift Container Platform cluster. This is because determining whether your cluster is within the supported bounds of OpenShift Container Platform requires careful consideration of all the multidimensional factors that limit the cluster scale.
+<div class="note">
+
+Red Hat does not provide direct guidance on sizing your OpenShift Container Platform cluster. This is because determining whether your cluster is within the supported bounds of OpenShift Container Platform requires careful consideration of all the multidimensional factors that limit the cluster scale.
+
+</div>
 
 OpenShift Container Platform supports tested cluster maximums rather than absolute cluster maximums. Not every combination of OpenShift Container Platform version, control plane workload, and network plugin are tested, so the following table does not represent an absolute expectation of scale for all deployments. It might not be possible to scale to a maximum on all dimensions simultaneously. The table contains tested maximums for specific workload and deployment configurations, and serves as a scale guide as to what can be expected with similar deployments.
 
-| Maximum type | 4.x tested maximum |
-|----|----|
-| Number of nodes | 2,000 <sup>\[1\]</sup> |
-| Number of pods <sup>\[2\]</sup> | 150,000 |
-| Number of pods per node | 2,500 <sup>\[3\]</sup> |
-| Number of namespaces <sup>\[4\]</sup> | 10,000 |
-| Number of builds | 10,000 (Default pod RAM 512 Mi) - Source-to-Image (S2I) build strategy |
-| Number of pods per namespace <sup>\[5\]</sup> | 25,000 |
-| Number of routes per default 2-router deployment | 9,000 |
-| Number of secrets | 80,000 |
-| Number of config maps | 90,000 |
-| Number of services <sup>\[6\]</sup> | 10,000 |
-| Number of services per namespace | 5,000 |
-| Number of back-ends per service | 5,000 |
-| Number of deployments per namespace <sup>\[5\]</sup> | 2,000 |
-| Number of build configs | 12,000 |
-| Number of custom resource definitions (CRD) | 1,024 <sup>\[7\]</sup> |
+| Maximum type                                         | 4.x tested maximum                                                     |
+|------------------------------------------------------|------------------------------------------------------------------------|
+| Number of nodes                                      | 2,000 <sup>\[1\]</sup>                                                 |
+| Number of pods <sup>\[2\]</sup>                      | 150,000                                                                |
+| Number of pods per node                              | 2,500 <sup>\[3\]</sup>                                                 |
+| Number of namespaces <sup>\[4\]</sup>                | 10,000                                                                 |
+| Number of builds                                     | 10,000 (Default pod RAM 512 Mi) - Source-to-Image (S2I) build strategy |
+| Number of pods per namespace <sup>\[5\]</sup>        | 25,000                                                                 |
+| Number of routes per default 2-router deployment     | 9,000                                                                  |
+| Number of secrets                                    | 80,000                                                                 |
+| Number of config maps                                | 90,000                                                                 |
+| Number of services <sup>\[6\]</sup>                  | 10,000                                                                 |
+| Number of services per namespace                     | 5,000                                                                  |
+| Number of back-ends per service                      | 5,000                                                                  |
+| Number of deployments per namespace <sup>\[5\]</sup> | 2,000                                                                  |
+| Number of build configs                              | 12,000                                                                 |
+| Number of custom resource definitions (CRD)          | 1,024 <sup>\[7\]</sup>                                                 |
 
 1.  Pause pods were deployed to stress the control plane components of OpenShift Container Platform at 2000 node scale. The ability to scale to similar numbers will vary depending upon specific deployment and workload parameters.
 
@@ -108,12 +114,12 @@ The following factors are known to affect cluster workload scaling, positively o
 
 ## AWS cloud platform
 
-| Node | Flavor | vCPU | RAM(GiB) | Disk type | Disk size(GiB)/IOS | Count | Region |
-|----|----|----|----|----|----|----|----|
-| Control plane/etcd <sup>\[1\]</sup> | r5.4xlarge | 16 | 128 | gp3 | 220 | 3 | us-west-2 |
-| Infra <sup>\[2\]</sup> | m5.12xlarge | 48 | 192 | gp3 | 100 | 3 | us-west-2 |
-| Workload <sup>\[3\]</sup> | m5.4xlarge | 16 | 64 | gp3 | 500 <sup>\[4\]</sup> | 1 | us-west-2 |
-| Compute | m5.2xlarge | 8 | 32 | gp3 | 100 | 3/25/250/500 <sup>\[5\]</sup> | us-west-2 |
+| Node                                | Flavor      | vCPU | RAM(GiB) | Disk type | Disk size(GiB)/IOS   | Count                         | Region    |
+|-------------------------------------|-------------|------|----------|-----------|----------------------|-------------------------------|-----------|
+| Control plane/etcd <sup>\[1\]</sup> | r5.4xlarge  | 16   | 128      | gp3       | 220                  | 3                             | us-west-2 |
+| Infra <sup>\[2\]</sup>              | m5.12xlarge | 48   | 192      | gp3       | 100                  | 3                             | us-west-2 |
+| Workload <sup>\[3\]</sup>           | m5.4xlarge  | 16   | 64       | gp3       | 500 <sup>\[4\]</sup> | 1                             | us-west-2 |
+| Compute                             | m5.2xlarge  | 8    | 32       | gp3       | 100                  | 3/25/250/500 <sup>\[5\]</sup> | us-west-2 |
 
 1.  gp3 disks with a baseline performance of 3000 IOPS and 125 MiB per second are used for control plane/etcd nodes because etcd is latency sensitive. gp3 volumes do not use burst performance.
 
@@ -127,12 +133,12 @@ The following factors are known to affect cluster workload scaling, positively o
 
 ## IBM Power platform
 
-| Node | vCPU | RAM(GiB) | Disk type | Disk size(GiB)/IOS | Count |
-|----|----|----|----|----|----|
-| Control plane/etcd <sup>\[1\]</sup> | 16 | 32 | io1 | 120 / 10 IOPS per GiB | 3 |
-| Infra <sup>\[2\]</sup> | 16 | 64 | gp2 | 120 | 2 |
-| Workload <sup>\[3\]</sup> | 16 | 256 | gp2 | 120 <sup>\[4\]</sup> | 1 |
-| Compute | 16 | 64 | gp2 | 120 | 2 to 100 <sup>\[5\]</sup> |
+| Node                                | vCPU | RAM(GiB) | Disk type | Disk size(GiB)/IOS    | Count                     |
+|-------------------------------------|------|----------|-----------|-----------------------|---------------------------|
+| Control plane/etcd <sup>\[1\]</sup> | 16   | 32       | io1       | 120 / 10 IOPS per GiB | 3                         |
+| Infra <sup>\[2\]</sup>              | 16   | 64       | gp2       | 120                   | 2                         |
+| Workload <sup>\[3\]</sup>           | 16   | 256      | gp2       | 120 <sup>\[4\]</sup>  | 1                         |
+| Compute                             | 16   | 64       | gp2       | 120                   | 2 to 100 <sup>\[5\]</sup> |
 
 1.  io1 disks with 120 / 10 IOPS per GiB are used for control plane/etcd nodes as etcd is I/O intensive and latency sensitive.
 
@@ -146,10 +152,10 @@ The following factors are known to affect cluster workload scaling, positively o
 
 ## IBM Z platform
 
-| Node | vCPU <sup>\[4\]</sup> | RAM(GiB)<sup>\[5\]</sup> | Disk type | Disk size(GiB)/IOS | Count |
-|----|----|----|----|----|----|
-| Control plane/etcd <sup>\[1,2\]</sup> | 8 | 32 | ds8k | 300 / LCU 1 | 3 |
-| Compute <sup>\[1,3\]</sup> | 8 | 32 | ds8k | 150 / LCU 2 | 4 nodes (scaled to 100/250/500 pods per node) |
+| Node                                  | vCPU <sup>\[4\]</sup> | RAM(GiB)<sup>\[5\]</sup> | Disk type | Disk size(GiB)/IOS | Count                                         |
+|---------------------------------------|-----------------------|--------------------------|-----------|--------------------|-----------------------------------------------|
+| Control plane/etcd <sup>\[1,2\]</sup> | 8                     | 32                       | ds8k      | 300 / LCU 1        | 3                                             |
+| Compute <sup>\[1,3\]</sup>            | 8                     | 32                       | ds8k      | 150 / LCU 2        | 4 nodes (scaled to 100/250/500 pods per node) |
 
 1.  Nodes are distributed between two logical control units (LCUs) to optimize disk I/O load of the control plane/etcd nodes as etcd is I/O intensive and latency sensitive. Etcd I/O demand should not interfere with other workloads.
 
@@ -163,12 +169,15 @@ The following factors are known to affect cluster workload scaling, positively o
 
 # How to plan your environment according to tested cluster maximums
 
-> [!IMPORTANT]
-> Oversubscribing the physical resources on a node affects resource guarantees the Kubernetes scheduler makes during pod placement. Learn what measures you can take to avoid memory swapping.
->
-> Some of the tested maximums are stretched only in a single dimension. They will vary when many objects are running on the cluster.
->
-> The numbers noted in this documentation are based on Red Hat’s test methodology, setup, configuration, and tunings. These numbers can vary based on your own individual setup and environments.
+<div class="important">
+
+Oversubscribing the physical resources on a node affects resource guarantees the Kubernetes scheduler makes during pod placement. Learn what measures you can take to avoid memory swapping.
+
+Some of the tested maximums are stretched only in a single dimension. They will vary when many objects are running on the cluster.
+
+The numbers noted in this documentation are based on Red Hat’s test methodology, setup, configuration, and tunings. These numbers can vary based on your own individual setup and environments.
+
+</div>
 
 While planning your environment, determine how many pods are expected to fit per node:
 
@@ -176,17 +185,13 @@ While planning your environment, determine how many pods are expected to fit per
 
 The default maximum number of pods per node is 250. However, the number of pods that fit on a node is dependent on the application itself. Consider the application’s memory, CPU, and storage requirements, as described in "How to plan your environment according to application requirements".
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example scenario
+**Example scenario**
 
 </div>
 
 If you want to scope your cluster for 2200 pods per cluster, you would need at least five nodes, assuming that there are 500 maximum pods per node:
-
-</div>
 
     2200 / 500 = 4.4
 

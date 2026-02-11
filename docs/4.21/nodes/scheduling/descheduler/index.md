@@ -16,8 +16,11 @@ You can benefit from descheduling running pods in situations such as the followi
 
 - Pods have been restarted too many times.
 
-> [!IMPORTANT]
-> The descheduler does not schedule replacement of evicted pods. The scheduler automatically performs this task for the evicted pods.
+<div class="important">
+
+The descheduler does not schedule replacement of evicted pods. The scheduler automatically performs this task for the evicted pods.
+
+</div>
 
 When the descheduler decides to evict pods from a node, it employs the following general mechanism:
 
@@ -65,8 +68,11 @@ It enables the following strategies:
 
 - `RemoveDuplicates`: ensures that there is only one pod associated with a replica set, replication controller, deployment, or job running on same node. If there are more, those duplicate pods are evicted for better pod distribution in a cluster.
 
-> [!WARNING]
-> Do not enable `TopologyAndDuplicates` with any of the following profiles: `SoftTopologyAndDuplicates` or `CompactAndScale`. Enabling these profiles together results in a conflict.
+<div class="warning">
+
+Do not enable `TopologyAndDuplicates` with any of the following profiles: `SoftTopologyAndDuplicates` or `CompactAndScale`. Enabling these profiles together results in a conflict.
+
+</div>
 
 `LifecycleAndUtilization`
 This profile evicts long-running pods and balances resource usage between nodes.
@@ -89,14 +95,20 @@ It enables the following strategies:
 
   By default, pods that are older than 24 hours are removed. You can customize the pod lifetime value.
 
-> [!WARNING]
-> Do not enable `LifecycleAndUtilization` with any of the following profiles: `LongLifecycle` or `CompactAndScale`. Enabling these profiles together results in a conflict.
+<div class="warning">
+
+Do not enable `LifecycleAndUtilization` with any of the following profiles: `LongLifecycle` or `CompactAndScale`. Enabling these profiles together results in a conflict.
+
+</div>
 
 `SoftTopologyAndDuplicates`
 This profile is the same as `TopologyAndDuplicates`, except that pods with soft topology constraints, such as `whenUnsatisfiable: ScheduleAnyway`, are also considered for eviction.
 
-> [!WARNING]
-> Do not enable both `SoftTopologyAndDuplicates` and `TopologyAndDuplicates`. Enabling both results in a conflict.
+<div class="warning">
+
+Do not enable both `SoftTopologyAndDuplicates` and `TopologyAndDuplicates`. Enabling both results in a conflict.
+
+</div>
 
 `EvictPodsWithLocalStorage`
 This profile allows pods with local storage to be eligible for eviction.
@@ -109,8 +121,11 @@ This profile enables the `HighNodeUtilization` strategy, which attempts to evict
 
 Optionally, you can adjust the underutilized percentage by setting the Technology Preview field `devHighNodeUtilizationThresholds` to one the following values: `Minimal` for 10%, `Modest` for 20%, or `Moderate` for 30%. The default value is `Modest`.
 
-> [!WARNING]
-> Do not enable `CompactAndScale` with any of the following profiles: `LifecycleAndUtilization`, `LongLifecycle`, or `TopologyAndDuplicates`. Enabling these profiles together results in a conflict.
+<div class="warning">
+
+Do not enable `CompactAndScale` with any of the following profiles: `LifecycleAndUtilization`, `LongLifecycle`, or `TopologyAndDuplicates`. Enabling these profiles together results in a conflict.
+
+</div>
 
 `KubeVirtRelieveAndMigrate`
 This profile is an enhanced version of the `LongLifeCycle` profile.
@@ -131,11 +146,9 @@ The profile enables the `LowNodeUtilization` strategy with the `EvictionsInBackg
 
 - `devEnableSoftTainter`: Enables the soft-tainting component to dynamically apply or remove soft taints as scheduling hints.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example configuration
+**Example configuration**
 
 </div>
 
@@ -157,15 +170,11 @@ spec:
     devActualUtilizationProfile: PrometheusCPUCombined
 ```
 
-</div>
-
 The `KubeVirtRelieveAndMigrate` profile requires PSI metrics to be enabled on all worker nodes. You can enable this by applying the following `MachineConfig` custom resource (CR):
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `MachineConfig` CR
+**Example `MachineConfig` CR**
 
 </div>
 
@@ -181,10 +190,11 @@ spec:
     - psi=1
 ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The name of the `MachineConfig` object is significant because machine configs are processed in lexicographical order. By default, a config that starts with `98-` disables PSI. To ensure that PSI is enabled, name your config with a higher prefix, such as `99-openshift-machineconfig-worker-psi-karg`.
+The name of the `MachineConfig` object is significant because machine configs are processed in lexicographical order. By default, a config that starts with `98-` disables PSI. To ensure that PSI is enabled, name your config with a higher prefix, such as `99-openshift-machineconfig-worker-psi-karg`.
+
+</div>
 
 You can use this profile with the `SoftTopologyAndDuplicates` profile to also rebalance pods based on soft topology constraints, which can be useful in hosted control plane environments.
 
@@ -201,5 +211,8 @@ This profile balances resource usage between nodes and enables the following str
 
   - A node is considered overutilized if its usage is above 50% for any of the thresholds (CPU, memory, and number of pods).
 
-> [!WARNING]
-> Do not enable `LongLifecycle` with any of the following profiles: `LifecycleAndUtilization` or `CompactAndScale`. Enabling these profiles together results in a conflict.
+<div class="warning">
+
+Do not enable `LongLifecycle` with any of the following profiles: `LifecycleAndUtilization` or `CompactAndScale`. Enabling these profiles together results in a conflict.
+
+</div>

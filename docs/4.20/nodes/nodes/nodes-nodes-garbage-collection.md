@@ -26,19 +26,19 @@ The following table lists the eviction thresholds:
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Node condition</th>
 <th style="text-align: left;">Eviction signal</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>MemoryPressure</p></td>
 <td style="text-align: left;"><p><code>memory.available</code></p></td>
 <td style="text-align: left;"><p>The available memory on the node.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>DiskPressure</p></td>
 <td style="text-align: left;"><ul>
 <li><p><code>nodefs.available</code></p></li>
@@ -51,15 +51,23 @@ The following table lists the eviction thresholds:
 </tbody>
 </table>
 
-> [!NOTE]
-> For `evictionHard` you must specify all of these parameters. If you do not specify all parameters, only the specified parameters are applied and the garbage collection will not function properly.
+Variables for configuring container garbage collection
+
+<div class="note">
+
+For `evictionHard` you must specify all of these parameters. If you do not specify all parameters, only the specified parameters are applied and the garbage collection will not function properly.
+
+</div>
 
 If a node is oscillating above and below a soft eviction threshold, but not exceeding its associated grace period, the corresponding node would constantly oscillate between `true` and `false`. As a consequence, the scheduler could make poor scheduling decisions.
 
 To protect against this oscillation, use the `evictionpressure-transition-period` flag to control how long OpenShift Container Platform must wait before transitioning out of a pressure condition. OpenShift Container Platform will not set an eviction threshold as being met for the specified pressure condition for the period specified before toggling the condition back to false.
 
-> [!NOTE]
-> Setting the `evictionPressureTransitionPeriod` parameter to `0` configures the default value of 5 minutes. You cannot set an eviction pressure transition period to zero seconds.
+<div class="note">
+
+Setting the `evictionPressureTransitionPeriod` parameter to `0` configures the default value of 5 minutes. You cannot set an eviction pressure transition period to zero seconds.
+
+</div>
 
 # Understanding how images are removed through garbage collection
 
@@ -75,11 +83,11 @@ The policy for image garbage collection is based on two conditions:
 
 For image garbage collection, you can modify any of the following variables using a custom resource.
 
-| Setting | Description |
-|----|----|
-| `imageMinimumGCAge` | The minimum age for an unused image before the image is removed by garbage collection. The default is **2m**. |
-| `imageGCHighThresholdPercent` | The percent of disk usage, expressed as an integer, which triggers image garbage collection. The default is **85**. This value must be greater than the `imageGCLowThresholdPercent` value. |
-| `imageGCLowThresholdPercent` | The percent of disk usage, expressed as an integer, to which image garbage collection attempts to free. The default is **80**. This value must be less than the `imageGCHighThresholdPercent` value. |
+| Setting                       | Description                                                                                                                                                                                          |
+|-------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `imageMinimumGCAge`           | The minimum age for an unused image before the image is removed by garbage collection. The default is **2m**.                                                                                        |
+| `imageGCHighThresholdPercent` | The percent of disk usage, expressed as an integer, which triggers image garbage collection. The default is **85**. This value must be greater than the `imageGCLowThresholdPercent` value.          |
+| `imageGCLowThresholdPercent`  | The percent of disk usage, expressed as an integer, to which image garbage collection attempts to free. The default is **80**. This value must be less than the `imageGCHighThresholdPercent` value. |
 
 Variables for configuring image garbage collection
 
@@ -97,8 +105,11 @@ Once the collection starts, the oldest images get deleted first until the stoppi
 
 As an administrator, you can configure how OpenShift Container Platform performs garbage collection by creating a `kubeletConfig` object for each machine config pool. Performing garbage collection helps ensure that your nodes are running efficiently.
 
-> [!NOTE]
-> OpenShift Container Platform supports only one `kubeletConfig` object for each machine config pool.
+<div class="note">
+
+OpenShift Container Platform supports only one `kubeletConfig` object for each machine config pool.
+
+</div>
 
 You can configure any combination of the following:
 
@@ -109,14 +120,6 @@ You can configure any combination of the following:
 - Eviction for images
 
 Container garbage collection removes terminated containers. Image garbage collection removes images that are not referenced by any running pods.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 1.  Obtain the label associated with the static `MachineConfigPool` CRD for the type of node you want to configure by entering the following command:
 
@@ -130,11 +133,9 @@ Prerequisites
     $ oc edit machineconfigpool worker
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -150,38 +151,32 @@ Prerequisites
     #...
     ```
 
-    </div>
-
     where:
 
     `metadata.labels`
     Specifies a label to use with the kubelet configuration.
 
-    > [!TIP]
-    > If the label is not present, add a key/value pair such as:
-    >
-    >     $ oc label machineconfigpool worker custom-kubelet=small-pods
+    <div class="tip">
 
-</div>
+    If the label is not present, add a key/value pair such as:
 
-<div>
+        $ oc label machineconfigpool worker custom-kubelet=small-pods
 
-<div class="title">
+    </div>
 
-Procedure
-
-</div>
+<!-- -->
 
 1.  Create a custom resource (CR) for your configuration change.
 
-    > [!IMPORTANT]
-    > If there is one file system, or if `/var/lib/kubelet` and `/var/lib/containers/` are in the same file system, the settings with the highest values trigger evictions, as those are met first. The file system triggers the eviction.
+    <div class="important">
 
-    <div class="formalpara">
+    If there is one file system, or if `/var/lib/kubelet` and `/var/lib/containers/` are in the same file system, the settings with the highest values trigger evictions, as those are met first. The file system triggers the eviction.
 
-    <div class="title">
+    </div>
 
-    Sample configuration for a container garbage collection CR
+    <div class="formalpara-title">
+
+    **Sample configuration for a container garbage collection CR**
 
     </div>
 
@@ -219,8 +214,6 @@ Procedure
         imageGCLowThresholdPercent: 75
     #...
     ```
-
-    </div>
 
     where:
 
@@ -263,11 +256,9 @@ Procedure
     $ oc create -f gc-container.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -275,29 +266,15 @@ Procedure
     kubeletconfig.machineconfiguration.openshift.io/gc-container created
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that garbage collection is active by entering the following command. The Machine Config Pool you specified in the custom resource appears with `UPDATING` as 'true\` until the change is fully implemented:
 
   ``` terminal
   $ oc get machineconfigpool
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -306,7 +283,3 @@ Verification
   master   rendered-master-546383f80705bd5aeaba93   True      False
   worker   rendered-worker-b4c51bb33ccaae6fc4a6a5   False     True
   ```
-
-  </div>
-
-</div>

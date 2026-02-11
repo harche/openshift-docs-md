@@ -18,27 +18,9 @@ If your cluster fails to recover, follow the steps to [restore to a previous clu
 
 You can restart your cluster after it has been shut down gracefully.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - This procedure assumes that you gracefully shut down the cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Turn on the control plane nodes.
 
@@ -195,16 +177,4 @@ Procedure
 
         If the cluster did not start properly, you might need to restore your cluster using an etcd backup. For more information, see "Restoring to a previous cluster state".
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - See [Restoring to a previous cluster state](../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state) for how to use an etcd backup to restore if your cluster failed to recover after restarting.
-
-</div>

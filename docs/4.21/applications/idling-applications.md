@@ -12,33 +12,15 @@ You can use the `oc idle` command to idle a single service, or use the `--resour
 
 ## Idling a single service
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To idle a single service, run:
 
     ``` terminal
     $ oc idle <service>
     ```
 
-</div>
-
 ## Idling multiple services
 
 Idling multiple services is helpful if an application spans across a set of services within a project, or when idling multiple services in conjunction with a script to idle multiple applications in bulk within the same project.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a file containing a list of the services, each on their own line.
 
@@ -48,10 +30,11 @@ Procedure
     $ oc idle --resource-names-file <filename>
     ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The `idle` command is limited to a single project. For idling applications across a cluster, run the `idle` command for each project individually.
+The `idle` command is limited to a single project. For idling applications across a cluster, run the `idle` command for each project individually.
+
+</div>
 
 # Unidling applications
 
@@ -59,21 +42,14 @@ Application services become active again when they receive network traffic and a
 
 Applications can also be manually unidled by scaling up the resources.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To scale up a DeploymentConfig, run:
 
     ``` terminal
     $ oc scale --replicas=1 dc <dc_name>
     ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> Automatic unidling by a router is currently only supported by the default HAProxy router.
+Automatic unidling by a router is currently only supported by the default HAProxy router.
+
+</div>

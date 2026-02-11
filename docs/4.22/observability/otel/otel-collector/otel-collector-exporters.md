@@ -6,11 +6,9 @@ Currently, the following General Availability and Technology Preview exporters a
 
 The OTLP gRPC Exporter exports traces and metrics by using the OpenTelemetry protocol (OTLP).
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector custom resource with the enabled OTLP Exporter
+**OpenTelemetry Collector custom resource with the enabled OTLP Exporter**
 
 </div>
 
@@ -39,8 +37,6 @@ OpenTelemetry Collector custom resource with the enabled OTLP Exporter
 # ...
 ```
 
-</div>
-
 - The OTLP gRPC endpoint. If the `https://` scheme is used, then client transport security is enabled and overrides the `insecure` setting in the `tls`.
 
 - The client-side TLS configuration. Defines paths to TLS certificates.
@@ -59,11 +55,9 @@ OpenTelemetry Collector custom resource with the enabled OTLP Exporter
 
 The OTLP HTTP Exporter exports traces and metrics by using the OpenTelemetry protocol (OTLP).
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector custom resource with the enabled OTLP Exporter
+**OpenTelemetry Collector custom resource with the enabled OTLP Exporter**
 
 </div>
 
@@ -87,8 +81,6 @@ OpenTelemetry Collector custom resource with the enabled OTLP Exporter
 # ...
 ```
 
-</div>
-
 - The OTLP HTTP endpoint. If the `https://` scheme is used, then client transport security is enabled and overrides the `insecure` setting in the `tls`.
 
 - The client side TLS configuration. Defines paths to TLS certificates.
@@ -101,11 +93,9 @@ OpenTelemetry Collector custom resource with the enabled OTLP Exporter
 
 The Debug Exporter prints traces and metrics to the standard output.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector custom resource with the enabled Debug Exporter
+**OpenTelemetry Collector custom resource with the enabled Debug Exporter**
 
 </div>
 
@@ -127,8 +117,6 @@ OpenTelemetry Collector custom resource with the enabled Debug Exporter
 # ...
 ```
 
-</div>
-
 - Verbosity of the debug export: `detailed`, `normal`, or `basic`. When set to `detailed`, pipeline data are verbosely logged. Defaults to `normal`.
 
 - Initial number of messages logged per second. The default value is `2` messages per second.
@@ -141,16 +129,17 @@ OpenTelemetry Collector custom resource with the enabled Debug Exporter
 
 The Load Balancing Exporter consistently exports spans, metrics, and logs according to the `routing_key` configuration.
 
-> [!IMPORTANT]
-> The Load Balancing Exporter is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Load Balancing Exporter is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with the enabled Load Balancing Exporter
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with the enabled Load Balancing Exporter**
 
 </div>
 
@@ -178,8 +167,6 @@ OpenTelemetry Collector custom resource with the enabled Load Balancing Exporter
 # ...
 ```
 
-</div>
-
 - The `routing_key: service` exports spans for the same service name to the same Collector instance to provide accurate aggregation. The `routing_key: traceID` exports spans based on their `traceID`. The implicit default is `traceID` based routing.
 
 - The OTLP is the only supported load balancing protocol. All options of the OTLP exporter are supported.
@@ -196,16 +183,17 @@ OpenTelemetry Collector custom resource with the enabled Load Balancing Exporter
 
 The Prometheus Exporter exports metrics in the Prometheus or OpenMetrics formats.
 
-> [!IMPORTANT]
-> The Prometheus Exporter is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Prometheus Exporter is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with the enabled Prometheus Exporter
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with the enabled Prometheus Exporter**
 
 </div>
 
@@ -234,8 +222,6 @@ OpenTelemetry Collector custom resource with the enabled Prometheus Exporter
 # ...
 ```
 
-</div>
-
 - The network endpoint where the metrics are exposed. The Red Hat build of OpenTelemetry Operator automatically exposes the port specified in the `endpoint` field to the `<instance_name>-collector` service.
 
 - The server-side TLS configuration. Defines paths to TLS certificates.
@@ -252,23 +238,27 @@ OpenTelemetry Collector custom resource with the enabled Prometheus Exporter
 
 - Adds the metrics types and units suffixes. Must be disabled if the monitor tab in the Jaeger console is enabled. The default is `true`.
 
-> [!NOTE]
-> When the `spec.observability.metrics.enableMetrics` field in the `OpenTelemetryCollector` custom resource (CR) is set to `true`, the `OpenTelemetryCollector` CR automatically creates a Prometheus `ServiceMonitor` or `PodMonitor` CR to enable Prometheus to scrape your metrics.
+<div class="note">
+
+When the `spec.observability.metrics.enableMetrics` field in the `OpenTelemetryCollector` custom resource (CR) is set to `true`, the `OpenTelemetryCollector` CR automatically creates a Prometheus `ServiceMonitor` or `PodMonitor` CR to enable Prometheus to scrape your metrics.
+
+</div>
 
 # Prometheus Remote Write Exporter
 
 The Prometheus Remote Write Exporter exports metrics to compatible back ends.
 
-> [!IMPORTANT]
-> The Prometheus Remote Write Exporter is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Prometheus Remote Write Exporter is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with the enabled Prometheus Remote Write Exporter
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with the enabled Prometheus Remote Write Exporter**
 
 </div>
 
@@ -292,8 +282,6 @@ OpenTelemetry Collector custom resource with the enabled Prometheus Remote Write
 # ...
 ```
 
-</div>
-
 - Endpoint for sending the metrics.
 
 - Server-side TLS configuration. Defines paths to TLS certificates.
@@ -306,10 +294,6 @@ OpenTelemetry Collector custom resource with the enabled Prometheus Remote Write
 
 <div class="warning">
 
-<div class="title">
-
-</div>
-
 - This exporter drops non-cumulative monotonic, histogram, and summary OTLP metrics.
 
 - You must enable the `--web.enable-remote-write-receiver` feature flag on the remote Prometheus instance. Without it, pushing the metrics to the instance using this exporter fails.
@@ -320,11 +304,9 @@ OpenTelemetry Collector custom resource with the enabled Prometheus Remote Write
 
 The Kafka Exporter exports logs, metrics, and traces to Kafka. This exporter uses a synchronous producer that blocks and does not batch messages. You must use it with batch and queued retry processors for higher throughput and resiliency.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector custom resource with the enabled Kafka Exporter
+**OpenTelemetry Collector custom resource with the enabled Kafka Exporter**
 
 </div>
 
@@ -353,8 +335,6 @@ OpenTelemetry Collector custom resource with the enabled Kafka Exporter
 # ...
 ```
 
-</div>
-
 - The list of Kafka brokers. The default is `localhost:9092`.
 
 - The Kafka protocol version. For example, `2.0.0`. This is a required field.
@@ -373,16 +353,17 @@ OpenTelemetry Collector custom resource with the enabled Kafka Exporter
 
 The AWS CloudWatch Logs Exporter sends logs data to the Amazon CloudWatch Logs service and signs requests by using the AWS SDK for Go and the default credential provider chain.
 
-> [!IMPORTANT]
-> The AWS CloudWatch Logs Exporter is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The AWS CloudWatch Logs Exporter is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with the enabled AWS CloudWatch Logs Exporter
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with the enabled AWS CloudWatch Logs Exporter**
 
 </div>
 
@@ -400,8 +381,6 @@ OpenTelemetry Collector custom resource with the enabled AWS CloudWatch Logs Exp
 # ...
 ```
 
-</div>
-
 - Required. If the log group does not exist yet, it is automatically created.
 
 - Required. If the log stream does not exist yet, it is automatically created.
@@ -414,21 +393,13 @@ OpenTelemetry Collector custom resource with the enabled AWS CloudWatch Logs Exp
 
 - Optional. The AWS Identity and Access Management (IAM) role for uploading the log segments to a different account.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Amazon CloudWatch Logs User Guide: What is Amazon CloudWatch Logs?](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html)
 
 - [AWS SDK for Go Developer Guide: Specifying Credentials](https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials)
 
 - [AWS General Reference: Amazon CloudWatch Logs endpoints and quotas](https://docs.aws.amazon.com/general/latest/gr/cwl_region.html)
-
-</div>
 
 # AWS EMF Exporter
 
@@ -444,16 +415,17 @@ The EMF metrics are then sent directly to the Amazon CloudWatch Logs service by 
 
 One of the benefits of using this exporter is the possibility to view logs and metrics in the Amazon CloudWatch console at <https://console.aws.amazon.com/cloudwatch/>.
 
-> [!IMPORTANT]
-> The AWS EMF Exporter is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The AWS EMF Exporter is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with the enabled AWS EMF Exporter
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with the enabled AWS EMF Exporter**
 
 </div>
 
@@ -473,8 +445,6 @@ OpenTelemetry Collector custom resource with the enabled AWS EMF Exporter
         role_arn: "<iam_role>"
 # ...
 ```
-
-</div>
 
 - You can use the `log_group_name` parameter to customize the log group name or set the default `/metrics/default` value or the following placeholders:
 
@@ -512,13 +482,7 @@ OpenTelemetry Collector custom resource with the enabled AWS EMF Exporter
 
 - Optional. The AWS Identity and Access Management (IAM) role for uploading the metric segments to a different account.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Amazon CloudWatch User Guide: Specification: Embedded metric format](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Embedded_Metric_Format_Specification.html)
 
@@ -526,22 +490,21 @@ Additional resources
 
 - [AWS General Reference: Amazon CloudWatch Logs endpoints and quotas](https://docs.aws.amazon.com/general/latest/gr/cwl_region.html)
 
-</div>
-
 # AWS X-Ray Exporter
 
 The AWS X-Ray Exporter converts OpenTelemetry spans to AWS X-Ray Segment Documents and then sends them directly to the AWS X-Ray service. The AWS X-Ray Exporter uses the `PutTraceSegments` API and signs requests by using the AWS SDK for Go and the default credential provider chain.
 
-> [!IMPORTANT]
-> The AWS X-Ray Exporter is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The AWS X-Ray Exporter is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with the enabled AWS X-Ray Exporter
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with the enabled AWS X-Ray Exporter**
 
 </div>
 
@@ -560,8 +523,6 @@ OpenTelemetry Collector custom resource with the enabled AWS X-Ray Exporter
 # ...
 ```
 
-</div>
-
 - The destination region for the X-Ray segments sent to the AWS X-Ray service. For example, `eu-west-1`.
 
 - Optional. You can override the default Amazon CloudWatch Logs service endpoint to which the requests are forwarded. You must include the protocol, such as `https://`, as part of the endpoint value. For the list of service endpoints by region, see [Amazon CloudWatch Logs endpoints and quotas](https://docs.aws.amazon.com/general/latest/gr/cwl_region.html) (AWS General Reference).
@@ -576,13 +537,7 @@ OpenTelemetry Collector custom resource with the enabled AWS X-Ray Exporter
 
 - Time duration in seconds before timing out a request. If omitted, the default value is `30`.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [AWS X-Ray Developer Guide: What is AWS X-Ray?](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray.html)
 
@@ -592,22 +547,21 @@ Additional resources
 
 - [AWS Identity and Access Management User Guide: IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)
 
-</div>
-
 # File Exporter
 
 The File Exporter writes telemetry data to files in persistent storage and supports file operations such as rotation, compression, and writing to multiple files. With this exporter, you can also use a resource attribute to control file naming. The only required setting is `path`, which specifies the destination path for telemetry files in the persistent-volume file system.
 
-> [!IMPORTANT]
-> The File Exporter is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The File Exporter is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with the enabled File Exporter
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with the enabled File Exporter**
 
 </div>
 
@@ -627,8 +581,6 @@ OpenTelemetry Collector custom resource with the enabled File Exporter
         flush_interval: 5
 # ...
 ```
-
-</div>
 
 - The file-system path where the data is to be written. There is no default.
 
@@ -652,16 +604,17 @@ OpenTelemetry Collector custom resource with the enabled File Exporter
 
 The Google Cloud Exporter sends telemetry data to Google Cloud Operations Suite. Using the Google Cloud Exporter, you can export metrics to Google Cloud Monitoring, logs to Google Cloud Logging, and traces to Google Cloud Trace.
 
-> [!IMPORTANT]
-> The Google Cloud Exporter is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Google Cloud Exporter is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with the enabled Google Cloud Exporter
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with the enabled Google Cloud Exporter**
 
 </div>
 
@@ -685,21 +638,13 @@ OpenTelemetry Collector custom resource with the enabled Google Cloud Exporter
 # ...
 ```
 
-</div>
-
 - The `GOOGLE_APPLICATION_CREDENTIALS` environment variable that points to the authentication `key.json` file. The `key.json` file is mounted as a secret volume to the OpenTelemetry Collector.
 
 - Optional. The project identifier. If not specified, the project is automatically determined from the credentials.
 
   By default, the exporter sends telemetry data to the project specified in the `project` field of the exporter’s configuration. You can have an override set up on a per-metric basis by using the `gcp.project.id` resource attribute. For example, if a metric has a label project, you can use the Group-by-Attributes Processor to promote it to a resource label, and then use the Resource Processor to rename the attribute from `project` to `gcp.project.id`.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Google Cloud Monitoring](https://cloud.google.com/monitoring)
 
@@ -708,8 +653,6 @@ Additional resources
 - [Google Cloud Trace](https://cloud.google.com/trace)
 
 - [Google Cloud Guides: Configure Workload Identity Federation with Kubernetes](https://cloud.google.com/iam/docs/workload-identity-federation-with-kubernetes#deploy)
-
-</div>
 
 # Additional resources
 

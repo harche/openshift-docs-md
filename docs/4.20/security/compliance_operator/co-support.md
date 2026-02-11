@@ -22,14 +22,9 @@ If you have a suggestion for improving this documentation or have found an error
 
 Starting in Compliance Operator v1.6.0, you can collect data about the Compliance Operator resources by running the `must-gather` command with the Compliance Operator image.
 
-> [!NOTE]
-> Consider using the `must-gather` tool when opening support cases or filing bug reports, as it provides additional details about the Operator configuration and logs.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+Consider using the `must-gather` tool when opening support cases or filing bug reports, as it provides additional details about the Operator configuration and logs.
 
 </div>
 
@@ -38,8 +33,6 @@ Procedure
   ``` terminal
   $ oc adm must-gather --image=$(oc get csv compliance-operator.v1.6.0 -o=jsonpath='{.spec.relatedImages[?(@.name=="must-gather")].image}')
   ```
-
-</div>
 
 # Additional resources
 

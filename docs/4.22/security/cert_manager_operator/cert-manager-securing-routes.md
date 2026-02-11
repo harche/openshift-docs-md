@@ -4,29 +4,11 @@ In the OpenShift Container Platform, the route API is extended to provide a conf
 
 To encrypt traffic between external clients and your applications, configure certificates for routes in your OpenShift Container Platform cluster. You can secure your routes by defining TLS termination types, such as edge, passthrough, or re-encrypt, to match your specific security policies.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed version 1.14.0 or later of the cert-manager Operator for Red Hat OpenShift.
 
 - You have `create` permission on the `routes/custom-host` sub-resource, which is used for both creating and updating routes.
 
 - You have a `Service` resource that you want to expose.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an `Issuer` to configure the HTTP-01 solver by running the following command. For other ACME issuer types, see "Configuring ACME an issuer".
 
@@ -159,15 +141,7 @@ Procedure
     `<secret_name>`
     Specifies the name of the secret that contains the certificate.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the certificate is created and ready to use by running the following command:
 
@@ -193,8 +167,6 @@ Verification
     ```
 
     Replace `<hostname>` with the hostname of your route. The route is now successfully secured by the certificate from the referenced secret issued by cert-manager. cert-manager will automatically manage the certificate’s lifecycle.
-
-</div>
 
 # Additional resources
 

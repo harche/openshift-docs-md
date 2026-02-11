@@ -1,9 +1,12 @@
 You can change the configuration of your Microsoft Azure Cluster API machines by updating values in the Cluster API custom resource manifests.
 
-> [!IMPORTANT]
-> Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 # Sample YAML for configuring Microsoft Azure clusters
 
@@ -49,10 +52,13 @@ spec:
 
 - Specify an image that is compatible with your instance type. The Hyper-V generation V2 images created by the installation program have a `-gen2` suffix, while V1 images have the same name without the suffix.
 
-  > [!NOTE]
-  > Default OpenShift Container Platform cluster names contain hyphens (`-`), which are not compatible with Azure gallery name requirements. The value of `<compliant_cluster_name>` in this configuration must use underscores (`_`) instead of hyphens to comply with these requirements. Other instances of `<cluster_name>` do not change.
-  >
-  > For example, a cluster name of `jdoe-test-2m2np` transforms to `jdoe_test_2m2np`. The full string for `gallery_<compliant_cluster_name>` in this example is `gallery_jdoe_test_2m2np`, not `gallery_jdoe-test-2m2np`. The complete value of `spec.template.spec.image.id` for this example value is `/subscriptions/<subscription_id>/resourceGroups/jdoe-test-2m2np-rg/providers/Microsoft.Compute/galleries/gallery_jdoe_test_2m2np/images/jdoe-test-2m2np-gen2/versions/latest`.
+  <div class="note">
+
+  Default OpenShift Container Platform cluster names contain hyphens (`-`), which are not compatible with Azure gallery name requirements. The value of `<compliant_cluster_name>` in this configuration must use underscores (`_`) instead of hyphens to comply with these requirements. Other instances of `<cluster_name>` do not change.
+
+  For example, a cluster name of `jdoe-test-2m2np` transforms to `jdoe_test_2m2np`. The full string for `gallery_<compliant_cluster_name>` in this example is `gallery_jdoe_test_2m2np`, not `gallery_jdoe-test-2m2np`. The complete value of `spec.template.spec.image.id` for this example value is `/subscriptions/<subscription_id>/resourceGroups/jdoe-test-2m2np-rg/providers/Microsoft.Compute/galleries/gallery_jdoe_test_2m2np/images/jdoe-test-2m2np-gen2/versions/latest`.
+
+  </div>
 
 ## Sample YAML for a Cluster API compute machine set resource on Microsoft Azure
 

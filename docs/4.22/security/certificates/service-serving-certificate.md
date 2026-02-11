@@ -10,15 +10,18 @@ The generated certificate and key are in PEM format, stored in `tls.crt` and `tl
 
 The service CA certificate, which issues the service certificates, is valid for 26 months and is automatically rotated when there is less than 13 months validity left. After rotation, the previous service CA configuration is still trusted until its expiration. This allows a grace period for all affected services to refresh their key material before the expiration. If you do not upgrade your cluster during this grace period, which restarts services and refreshes their key material, you might need to manually restart services to avoid failures after the previous service CA expires.
 
-> [!NOTE]
-> You can use the following command to manually restart all pods in the cluster. Be aware that running this command causes a service interruption, because it deletes every running pod in every namespace. These pods will automatically restart after they are deleted.
->
-> ``` terminal
-> $ for I in $(oc get ns -o jsonpath='{range .items[*]} {.metadata.name}{"\n"} {end}'); \
->       do oc delete pods --all -n $I; \
->       sleep 1; \
->       done
-> ```
+<div class="note">
+
+You can use the following command to manually restart all pods in the cluster. Be aware that running this command causes a service interruption, because it deletes every running pod in every namespace. These pods will automatically restart after they are deleted.
+
+``` terminal
+$ for I in $(oc get ns -o jsonpath='{range .items[*]} {.metadata.name}{"\n"} {end}'); \
+      do oc delete pods --all -n $I; \
+      sleep 1; \
+      done
+```
+
+</div>
 
 # Add a service certificate
 
@@ -26,32 +29,17 @@ To secure communication to your service, generate a signed serving certificate a
 
 The generated certificate is only valid for the internal service DNS name `<service.name>.<service.namespace>.svc`, and is only valid for internal communications. If your service is a headless service (no `clusterIP` value set), the generated certificate also contains a wildcard subject in the format of `*.<service.name>.<service.namespace>.svc`.
 
-> [!IMPORTANT]
-> Because the generated certificates contain wildcard subjects for headless services, you must not use the service CA if your client must differentiate between individual pods. In this case:
->
-> - Generate individual TLS certificates by using a different CA.
->
-> - Do not accept the service CA as a trusted CA for connections that are directed to individual pods and must not be impersonated by other pods. These connections must be configured to trust the CA that was used to generate the individual TLS certificates.
+<div class="important">
 
-<div>
+Because the generated certificates contain wildcard subjects for headless services, you must not use the service CA if your client must differentiate between individual pods. In this case:
 
-<div class="title">
+- Generate individual TLS certificates by using a different CA.
 
-Prerequisites
+- Do not accept the service CA as a trusted CA for connections that are directed to individual pods and must not be impersonated by other pods. These connections must be configured to trust the CA that was used to generate the individual TLS certificates.
 
 </div>
 
 - You must have a service defined.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Annotate the service with `service.beta.openshift.io/serving-cert-secret-name`:
 
@@ -64,8 +52,11 @@ Procedure
 
     - `<secret_name>` will be the name of the generated secret containing the certificate and key pair.
 
-      > [!NOTE]
-      > For convenience, it is recommended that this value be the same as `<service_name>`.
+      <div class="note">
+
+      For convenience, it is recommended that this value be the same as `<service_name>`.
+
+      </div>
 
     For example, use the following command to annotate the service `test1`:
 
@@ -79,11 +70,9 @@ Procedure
     $ oc describe service <service_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -94,36 +83,17 @@ Procedure
     ...
     ```
 
-    </div>
-
 3.  After the cluster generates a secret for your service, your `Pod` spec can mount it, and the pod will run after it becomes available.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - You can use a service certificate to configure a secure route using reencrypt TLS termination. For more information, see [Creating a re-encrypt route with a custom certificate](../../networking/ingress_load_balancing/routes/creating-advanced-routes.xml#nw-ingress-creating-a-reencrypt-route-with-a-custom-certificate_secured-routes).
-
-</div>
 
 # Add the service CA bundle to a config map
 
 A pod can access the service Certificate Authority (CA) certificate by mounting a `ConfigMap` object that has the `service.beta.openshift.io/inject-cabundle=true` annotation. After annotating the config map, the cluster automatically injects the service CA certificate into the `service-ca.crt` key on the config map. Access to this CA certificate allows TLS clients to verify connections to services by using service serving certificates.
 
-> [!IMPORTANT]
-> After adding this annotation to a config map, the OpenShift Service CA Operator deletes all the data in the config map. Consider using a separate config map to contain the `service-ca.crt`, instead of using the same config map that stores your pod configuration.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Procedure
+After adding this annotation to a config map, the OpenShift Service CA Operator deletes all the data in the config map. Consider using a separate config map to contain the `service-ca.crt`, instead of using the same config map that stores your pod configuration.
 
 </div>
 
@@ -136,8 +106,11 @@ Procedure
 
     - Replace `<config_map_name>` with the name of the config map to annotate.
 
-      > [!NOTE]
-      > Explicitly referencing the `service-ca.crt` key in a volume mount prevents a pod from starting until the config map has been injected with the CA bundle. You can override this behavior by setting the `optional` parameter to `true` in the serving certificate configuration of the volume.
+      <div class="note">
+
+      Explicitly referencing the `service-ca.crt` key in a volume mount prevents a pod from starting until the config map has been injected with the CA bundle. You can override this behavior by setting the `optional` parameter to `true` in the serving certificate configuration of the volume.
+
+      </div>
 
 2.  View the config map to ensure that the service CA bundle has been injected:
 
@@ -157,11 +130,9 @@ Procedure
 
 3.  Mount the config map as a volume to each container that exists in a pod by configuring your `Deployment` object.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example Deployment object that defines the volume for the mounted config map
+    **Example Deployment object that defines the volume for the mounted config map**
 
     </div>
 
@@ -191,27 +162,15 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - Specify the name of the config map that you annotated in an earlier step of the procedure.
 
     - `ca-bundle.crt` is required as the ConfigMap key.
 
     - `tls-ca-bundle.pem` is required as the ConfigMap path.
 
-</div>
-
 # Add the service CA bundle to an API service
 
 You can annotate an `APIService` object with `service.beta.openshift.io/inject-cabundle=true` to have its `spec.caBundle` field populated with the service CA bundle. This allows the Kubernetes API server to validate the service CA certificate used to secure the targeted endpoint.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Annotate the API service with `service.beta.openshift.io/inject-cabundle=true`:
 
@@ -248,20 +207,13 @@ Procedure
     ...
     ```
 
-</div>
-
 # Add the service CA bundle to a custom resource definition
 
 You can annotate a `CustomResourceDefinition` (CRD) object with `service.beta.openshift.io/inject-cabundle=true` to have its `spec.conversion.webhook.clientConfig.caBundle` field populated with the service CA bundle. This allows the Kubernetes API server to validate the service CA certificate used to secure the targeted endpoint.
 
-> [!NOTE]
-> The service CA bundle will only be injected into the CRD if the CRD is configured to use a webhook for conversion. It is only useful to inject the service CA bundle if a CRD’s webhook is secured with a service CA certificate.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+The service CA bundle will only be injected into the CRD if the CRD is configured to use a webhook for conversion. It is only useful to inject the service CA bundle if a CRD’s webhook is secured with a service CA certificate.
 
 </div>
 
@@ -304,20 +256,13 @@ Procedure
     ...
     ```
 
-</div>
-
 # Add the service CA bundle to a mutating webhook configuration
 
 You can annotate a `MutatingWebhookConfiguration` object with `service.beta.openshift.io/inject-cabundle=true` to have the `clientConfig.caBundle` field of each webhook populated with the service CA bundle. This allows the Kubernetes API server to validate the service CA certificate used to secure the targeted endpoint.
 
-> [!NOTE]
-> Do not set this annotation for admission webhook configurations that need to specify different CA bundles for different webhooks. If you do, then the service CA bundle will be injected for all webhooks.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+Do not set this annotation for admission webhook configurations that need to specify different CA bundles for different webhooks. If you do, then the service CA bundle will be injected for all webhooks.
 
 </div>
 
@@ -359,20 +304,13 @@ Procedure
     ...
     ```
 
-</div>
-
 # Add the service CA bundle to a validating webhook configuration
 
 You can annotate a `ValidatingWebhookConfiguration` object with `service.beta.openshift.io/inject-cabundle=true` to have the `clientConfig.caBundle` field of each webhook populated with the service CA bundle. This allows the Kubernetes API server to validate the service CA certificate used to secure the targeted endpoint.
 
-> [!NOTE]
-> Do not set this annotation for admission webhook configurations that need to specify different CA bundles for different webhooks. If you do, then the service CA bundle will be injected for all webhooks.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+Do not set this annotation for admission webhook configurations that need to specify different CA bundles for different webhooks. If you do, then the service CA bundle will be injected for all webhooks.
 
 </div>
 
@@ -414,31 +352,11 @@ Procedure
     ...
     ```
 
-</div>
-
 # Manually rotate the generated service certificate
 
 You can rotate the service certificate by deleting the associated secret. Deleting the secret results in a new one being automatically created, resulting in a new certificate.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - A secret containing the certificate and key pair must have been generated for the service.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Examine the service to determine the secret containing the certificate. This is found in the `serving-cert-secret-name` annotation, as seen below.
 
@@ -446,11 +364,9 @@ Procedure
     $ oc describe service <service_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -459,8 +375,6 @@ Procedure
     service.beta.openshift.io/serving-cert-secret-name: <secret>
     ...
     ```
-
-    </div>
 
 2.  Delete the generated secret for the service. This process will automatically recreate the secret.
 
@@ -476,11 +390,9 @@ Procedure
     $ oc get secret <service_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -489,38 +401,19 @@ Procedure
     <service.name>    kubernetes.io/tls   2      1s
     ```
 
-    </div>
-
-</div>
-
 # Manually rotate the service CA certificate
 
 The service CA is valid for 26 months and is automatically refreshed when there is less than 13 months validity left.
 
 If necessary, you can manually refresh the service CA by using the following procedure.
 
-> [!WARNING]
-> A manually-rotated service CA does not maintain trust with the previous service CA. You might experience a temporary service disruption until the pods in the cluster are restarted, which ensures that pods are using service serving certificates issued by the new service CA.
+<div class="warning">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+A manually-rotated service CA does not maintain trust with the previous service CA. You might experience a temporary service disruption until the pods in the cluster are restarted, which ensures that pods are using service serving certificates issued by the new service CA.
 
 </div>
 
 - You must be logged in as a cluster admin.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  View the expiration date of the current service CA certificate by using the following command.
 
@@ -546,7 +439,8 @@ Procedure
           done
     ```
 
-    > [!WARNING]
-    > This command will cause a service interruption, as it goes through and deletes every running pod in every namespace. These pods will automatically restart after they are deleted.
+    <div class="warning">
 
-</div>
+    This command will cause a service interruption, as it goes through and deletes every running pod in every namespace. These pods will automatically restart after they are deleted.
+
+    </div>

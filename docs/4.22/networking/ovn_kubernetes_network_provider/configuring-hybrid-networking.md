@@ -4,14 +4,9 @@ As a cluster administrator, you can configure the Red Hat OpenShift Networking O
 
 You can configure your cluster to use hybrid networking with the OVN-Kubernetes network plugin. This allows a hybrid cluster that supports different node networking configurations.
 
-> [!NOTE]
-> This configuration is necessary to run both Linux and Windows nodes in the same cluster.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+This configuration is necessary to run both Linux and Windows nodes in the same cluster.
 
 </div>
 
@@ -20,16 +15,6 @@ Prerequisites
 - Log in to the cluster as a user with `cluster-admin` privileges.
 
 - Ensure that the cluster uses the OVN-Kubernetes network plugin.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To configure the OVN-Kubernetes hybrid network overlay, enter the following command:
 
@@ -65,14 +50,15 @@ Procedure
     `hybridOverlayVXLANPort`
     Specify a custom VXLAN port for the additional overlay network. This is required for running Windows nodes in a cluster installed on vSphere, and must not be configured for any other cloud provider. The custom port can be any open port excluding the default `6081` port. For more information on this requirement, see [Pod-to-pod connectivity between hosts is broken](https://docs.microsoft.com/en-us/virtualization/windowscontainers/kubernetes/common-problems#pod-to-pod-connectivity-between-hosts-is-broken-on-my-kubernetes-cluster-running-on-vsphere) in the Microsoft documentation.
 
-    > [!NOTE]
-    > Windows Server Long-Term Servicing Channel (LTSC): Windows Server 2019 is not supported on clusters with a custom `hybridOverlayVXLANPort` value because this Windows server version does not support selecting a custom VXLAN port.
+    <div class="note">
 
-    <div class="formalpara">
+    Windows Server Long-Term Servicing Channel (LTSC): Windows Server 2019 is not supported on clusters with a custom `hybridOverlayVXLANPort` value because this Windows server version does not support selecting a custom VXLAN port.
 
-    <div class="title">
+    </div>
 
-    Example output
+    <div class="formalpara-title">
+
+    **Example output**
 
     </div>
 
@@ -80,15 +66,11 @@ Procedure
     network.operator.openshift.io/cluster patched
     ```
 
-    </div>
-
 2.  To confirm that the configuration is active, enter the following command. It can take several minutes for the update to apply.
 
     ``` terminal
     $ oc get network.operator.openshift.io -o jsonpath="{.items[0].spec.defaultNetwork.ovnKubernetesConfig}"
     ```
-
-</div>
 
 # Additional resources
 

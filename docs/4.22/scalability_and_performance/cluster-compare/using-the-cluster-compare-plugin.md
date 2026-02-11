@@ -6,14 +6,9 @@ You can use the `cluster-compare` plugin to compare a reference configuration wi
 
 Validate live cluster configurations to ensure compliance with reference configurations during design, development, or testing scenarios.
 
-> [!NOTE]
-> Use the `cluster-compare` plugin with live clusters in non-production environments only. For production environments, use the plugin with `must-gather` data.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Use the `cluster-compare` plugin with live clusters in non-production environments only. For production environments, use the plugin with `must-gather` data.
 
 </div>
 
@@ -25,15 +20,7 @@ Prerequisites
 
 - You have access to a reference configuration.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Run the `cluster-compare` plugin by using the following command:
 
@@ -43,11 +30,9 @@ Procedure
 
   - `-r` specifies a path to the `metadata.yaml` file of the reference configuration. You can specify a local directory or a URI.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -85,8 +70,6 @@ Procedure
     No patched CRs
     ```
 
-    </div>
-
     - The CR under comparison. The plugin displays each CR with a difference from the corresponding template.
 
     - The template matching with the CR for comparison.
@@ -107,22 +90,23 @@ Procedure
 
     - The list of patched CRs.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> Get the output in the `junit` format by adding `-o junit` to the command. For example:
->
-> ``` terminal
-> $ oc cluster-compare -r <path_to_reference_config>/metadata.yaml -o junit
-> ```
->
-> The `junit` output includes the following result types:
->
-> - Passed results for each fully matched template.
->
-> - Failed results for differences found or missing required custom resources (CRs).
->
-> - Skipped results for differences patched using the user override mechanism.
+Get the output in the `junit` format by adding `-o junit` to the command. For example:
+
+``` terminal
+$ oc cluster-compare -r <path_to_reference_config>/metadata.yaml -o junit
+```
+
+The `junit` output includes the following result types:
+
+- Passed results for each fully matched template.
+
+- Failed results for differences found or missing required custom resources (CRs).
+
+- Skipped results for differences patched using the user override mechanism.
+
+</div>
 
 # Using the cluster-compare plugin with must-gather data
 
@@ -130,8 +114,11 @@ You can use the `cluster-compare` plugin to compare a reference configuration wi
 
 Validate cluster configurations by using `must-gather` data to troubleshoot configuration issues in production environments.
 
-> [!NOTE]
-> For production environments, use the `cluster-compare` plugin with `must-gather` data only.
+<div class="note">
+
+For production environments, use the `cluster-compare` plugin with `must-gather` data only.
+
+</div>
 
 - You have access to `must-gather` data from a target cluster.
 
@@ -141,13 +128,7 @@ Validate cluster configurations by using `must-gather` data to troubleshoot conf
 
 - You have access to a reference configuration.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Compare the `must-gather` data to a reference configuration by running the following command:
 
@@ -161,11 +142,9 @@ Procedure
 
   - `-R` searches the target directories recursively.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -203,8 +182,6 @@ Procedure
     No patched CRs
     ```
 
-    </div>
-
     - The CR under comparison. The plugin displays each CR with a difference from the corresponding template.
 
     - The template matching with the CR for comparison.
@@ -225,34 +202,25 @@ Procedure
 
     - The list of patched CRs.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> Get the output in the `junit` format by adding `-o junit` to the command. For example:
->
-> ``` terminal
-> $ oc cluster-compare -r <path_to_reference_config>/metadata.yaml -f "must-gather*/*/cluster-scoped-resources","must-gather*/*/namespaces" -R -o junit
-> ```
->
-> The `junit` output includes the following result types:
->
-> - Passed results for each fully matched template.
->
-> - Failed results for differences found or missing required custom resources (CRs).
->
-> - Skipped results for differences patched using the user override mechanism.
+Get the output in the `junit` format by adding `-o junit` to the command. For example:
 
-<div>
+``` terminal
+$ oc cluster-compare -r <path_to_reference_config>/metadata.yaml -f "must-gather*/*/cluster-scoped-resources","must-gather*/*/namespaces" -R -o junit
+```
 
-<div class="title">
+The `junit` output includes the following result types:
 
-Additional resources
+- Passed results for each fully matched template.
+
+- Failed results for differences found or missing required custom resources (CRs).
+
+- Skipped results for differences patched using the user override mechanism.
 
 </div>
 
 - [Gathering data about your cluster](../../support/gathering-cluster-data.xml#about-must-gather_gathering-cluster-data)
-
-</div>
 
 # Reference cluster-compare plugin options
 
@@ -265,79 +233,79 @@ The following content describes the options for the `cluster-compare` plugin.
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Option</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>-A</code>, <code>--all-resources</code></p></td>
 <td style="text-align: left;"><p>When used with a live cluster, attempts to match all resources in the cluster that match a type in the reference configuration. When used with local files, attempts to match all resources in the local files that match a type in the reference configuration.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--concurrency</code></p></td>
 <td style="text-align: left;"><p>Specify an integer value for the number of templates to process in parallel when comparing with resources from the live version. A larger number increases speed but also memory, I/O, and CPU usage during that period. The default value is <code>4</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>-c</code>, <code>--diff-config</code></p></td>
 <td style="text-align: left;"><p>Specify the path to the user configuration file.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>-f</code>, <code>--filename</code></p></td>
 <td style="text-align: left;"><p>Specify a filename, directory, or URL for the configuration custom resources that you want to use for a comparison with a reference configuration.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>--generate-override-for</code></p></td>
 <td style="text-align: left;"><p>Specify the path for templates that requires a patch.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--show-template-functions</code></p></td>
 <td style="text-align: left;"><p>Displays the available template functions.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>You must use a file path for the target template that is relative to the <code>metadata.yaml</code> file. For example, if the file path for the <code>metadata.yaml</code> file is <code>./compare/metadata.yaml</code>, a relative file path for the template might be <code>optional/my-template.yaml</code>.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>-h</code>, <code>--help</code></p></td>
 <td style="text-align: left;"><p>Display help information.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>-k</code>, <code>--kustomize</code></p></td>
 <td style="text-align: left;"><p>Specify a path to process the <code>kustomization</code> directory. This flag cannot be used together with <code>-f</code> or <code>-R</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>-o</code>, <code>--output</code></p></td>
 <td style="text-align: left;"><p>Specify the output format. Options include <code>json</code>, <code>yaml</code>, <code>junit</code>, or <code>generate-patches</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--override-reason</code></p></td>
 <td style="text-align: left;"><p>Specify a reason for generating the override.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>-p</code>, <code>--overrides</code></p></td>
 <td style="text-align: left;"><p>Specify a path to a patch override file for the reference configuration.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>-R</code>, <code>--recursive</code></p></td>
 <td style="text-align: left;"><p>Processes the directory specified in <code>-f</code>, <code>--filename</code> recursively.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>-r</code>, <code>--reference</code></p></td>
 <td style="text-align: left;"><p>Specify the path to the reference configuration <code>metadata.yaml</code> file.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--show-managed-fields</code></p></td>
 <td style="text-align: left;"><p>Specify <code>true</code> to include managed fields in the comparison.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>-v</code>, <code>--verbose</code></p></td>
 <td style="text-align: left;"><p>Increases the verbosity of the plugin output.</p></td>
 </tr>
 </tbody>
 </table>
+
+Cluster-compare plugin options
 
 # Example: Comparing a cluster with the telco core reference configuration
 
@@ -349,29 +317,11 @@ The reference configuration is packaged in a container image with the telco core
 
 For further examples of using the `cluster-compare` plugin with the telco core and telco RAN distributed unit (DU) profiles, see the "Additional resources" section.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have credentials to access the `registry.redhat.io` container image registry.
 
 - You installed the `cluster-compare` plugin.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log on to the container image registry with your credentials by running the following command:
 
@@ -419,11 +369,9 @@ Procedure
     $ oc cluster-compare -r out/telco-core-rds/configuration/reference-crs-kube-compare/metadata.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -501,8 +449,6 @@ Procedure
     No patched CRs
     ```
 
-    </div>
-
     - The CR under comparison. The plugin displays each CR with a difference from the corresponding template.
 
     - The template matching with the CR for comparison.
@@ -523,22 +469,23 @@ Procedure
 
     - The list of patched CRs.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> Get the output in the `junit` format by adding `-o junit` to the command. For example:
->
-> ``` terminal
-> $ oc cluster-compare -r out/telco-core-rds/configuration/reference-crs-kube-compare/metadata.yaml -o junit
-> ```
->
-> The `junit` output includes the following result types:
->
-> - Passed results for each fully matched template.
->
-> - Failed results for differences found or missing required custom resources (CRs).
->
-> - Skipped results for differences patched using the user override mechanism.
+Get the output in the `junit` format by adding `-o junit` to the command. For example:
+
+``` terminal
+$ oc cluster-compare -r out/telco-core-rds/configuration/reference-crs-kube-compare/metadata.yaml -o junit
+```
+
+The `junit` output includes the following result types:
+
+- Passed results for each fully matched template.
+
+- Failed results for differences found or missing required custom resources (CRs).
+
+- Skipped results for differences patched using the user override mechanism.
+
+</div>
 
 # Additional resources
 

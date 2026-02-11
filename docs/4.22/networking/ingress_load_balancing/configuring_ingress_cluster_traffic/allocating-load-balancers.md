@@ -29,14 +29,6 @@ Subnet IDs define the subnets in an existing VPC and can optionally specify thei
 
 If roles are specified for subnets, each subnet must have at least one assigned role, and the `ClusterNode`, `BootstrapNode`, `IngressControllerLB`, `ControlPlaneExternalLB`, and `ControlPlaneInternalLB` roles must be assigned to at least one subnet. However, if the cluster scope is internal, `ControlPlaneExternalLB` is not required.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - An existing AWS virtual private cloud (VPC).
 
 - Pre-configured AWS subnets intended for use by the OpenShift Container Platform cluster, with the following considerations:
@@ -52,16 +44,6 @@ Prerequisites
 - You have the OpenShift Container Platform installation program binary for your target OpenShift Container Platform version.
 
 - You have an `install-config.yaml` file.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Generate the installation configuration file by using the OpenShift Container Platform installation program by entering the following command:
 
@@ -140,7 +122,8 @@ Procedure
 
     The installation program uses the subnet definitions and explicit role assignments from the `platform.aws.vpc.subnets` section of your `install-config.yaml` file to provision cluster resources. This includes placing the LoadBalancer of the Ingress Controller in the subnets you designated with the `IngressControllerLB` role.
 
-    > [!NOTE]
-    > The role assignment mechanism within `platform.aws.vpc.subnets`, such as specifying types like `IngressControllerLB`, `ClusterNode`, `ControlPlaneExternalLB`, `ControlPlaneInternalLB`, `BootstrapNode` is the comprehensive way the installation program identifies suitable subnets for various cluster services and components.
+    <div class="note">
 
-</div>
+    The role assignment mechanism within `platform.aws.vpc.subnets`, such as specifying types like `IngressControllerLB`, `ClusterNode`, `ControlPlaneExternalLB`, `ControlPlaneInternalLB`, `BootstrapNode` is the comprehensive way the installation program identifies suitable subnets for various cluster services and components.
+
+    </div>

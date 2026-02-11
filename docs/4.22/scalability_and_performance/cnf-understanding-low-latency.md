@@ -32,17 +32,10 @@ Hyper-Threading is an Intel processor technology that allows a physical CPU proc
 
 For telecommunications applications, it is important to design your application infrastructure to minimize latency as much as possible. Hyper-Threading can slow performance times and negatively affect throughput for compute-intensive workloads that require low latency. Disabling Hyper-Threading ensures predictable performance and can decrease processing times for these workloads.
 
-> [!NOTE]
-> Hyper-Threading implementation and configuration differs depending on the hardware you are running OpenShift Container Platform on. Consult the relevant host hardware tuning information for more details of the Hyper-Threading implementation specific to that hardware. Disabling Hyper-Threading can increase the cost per core of the cluster.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+Hyper-Threading implementation and configuration differs depending on the hardware you are running OpenShift Container Platform on. Consult the relevant host hardware tuning information for more details of the Hyper-Threading implementation specific to that hardware. Disabling Hyper-Threading can increase the cost per core of the cluster.
 
 </div>
 
 - [Configuring Hyper-Threading for a cluster](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-configuring-hyperthreading-for-a-cluster_cnf-low-latency-perf-profile)
-
-</div>

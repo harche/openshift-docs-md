@@ -1,12 +1,18 @@
 To ensure stable and accurate network routing in OpenShift Container Platform clusters that use OVN-Kubernetes, define non-overlapping Classless Inter-Domain Routing (CIDR) subnet ranges. Establishing unique ranges prevents IP address conflicts so that internal traffic reaches its intended destination without interference.
 
-> [!IMPORTANT]
-> For OpenShift Container Platform 4.17 and later versions, clusters use `169.254.0.0/17` for IPv4 and `fd69::/112` for IPv6 as the default masquerade subnet. You must avoid these ranges. For upgraded clusters, there is no change to the default masquerade subnet.
+<div class="important">
 
-> [!TIP]
-> You can use the [Red Hat OpenShift Network Calculator](https://access.redhat.com/labs/ocpnc/) to decide your networking needs before setting CIDR range during cluster creation.
->
-> You must have a Red Hat account to use the calculator.
+For OpenShift Container Platform 4.17 and later versions, clusters use `169.254.0.0/17` for IPv4 and `fd69::/112` for IPv6 as the default masquerade subnet. You must avoid these ranges. For upgraded clusters, there is no change to the default masquerade subnet.
+
+</div>
+
+<div class="tip">
+
+You can use the [Red Hat OpenShift Network Calculator](https://access.redhat.com/labs/ocpnc/) to decide your networking needs before setting CIDR range during cluster creation.
+
+You must have a Red Hat account to use the calculator.
+
+</div>
 
 The following subnet types are mandatory for a cluster that uses OVN-Kubernetes:
 
@@ -16,8 +22,11 @@ The following subnet types are mandatory for a cluster that uses OVN-Kubernetes:
 
 - Transit: A transit switch is a type of distributed switch that spans across all nodes in the cluster. A transit switch routes traffic between different zones. For a cluster that uses the OVN-Kubernetes plugin, an IP address from a dedicated subnet is assigned to any logical port that attaches to the transit switch.
 
-> [!NOTE]
-> You can change the join, masquerade, and transit CIDR ranges for your cluster as a postinstallation task.
+<div class="note">
+
+You can change the join, masquerade, and transit CIDR ranges for your cluster as a postinstallation task.
+
+</div>
 
 OVN-Kubernetes, the default network provider in OpenShift Container Platform 4.14 and later versions, internally uses the following IP address subnet ranges:
 
@@ -33,41 +42,27 @@ OVN-Kubernetes, the default network provider in OpenShift Container Platform 4.1
 
 - `defaultV6MasqueradeSubnet`: `fd69::/112`
 
-> [!IMPORTANT]
-> The earlier list includes join, transit, and masquerade IPv4 and IPv6 address subnets. If your cluster uses OVN-Kubernetes, do not include any of these IP address subnet ranges in any other CIDR definitions in your cluster or infrastructure.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Additional resources
+The earlier list includes join, transit, and masquerade IPv4 and IPv6 address subnets. If your cluster uses OVN-Kubernetes, do not include any of these IP address subnet ranges in any other CIDR definitions in your cluster or infrastructure.
 
 </div>
 
 - [Configuring OVN-Kubernetes internal IP address subnets](../../networking/ovn_kubernetes_network_provider/configure-ovn-kubernetes-subnets.xml#configure-ovn-kubernetes-subnets)
 
-</div>
-
 # Machine CIDR
 
 To establish the network scope for cluster nodes in OpenShift Container Platform, specify an IP address range in the Machine Classless Inter-Domain Routing (CIDR) parameter. Defining this range ensures that all machines within the environment have valid, routable addresses for internal cluster communication.
 
-> [!NOTE]
-> You cannot change Machine CIDR ranges after you create your cluster.
+<div class="note">
+
+You cannot change Machine CIDR ranges after you create your cluster.
+
+</div>
 
 The default is `10.0.0.0/16`. This range must not conflict with any connected networks.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Cluster Network Operator configuration](../../networking/networking_operators/cluster-network-operator.xml#nw-operator-cr_cluster-network-operator)
-
-</div>
 
 # Service CIDR
 
@@ -81,19 +76,9 @@ To allocate internal network addresses for cluster workloads in OpenShift Contai
 
 The pod CIDR is the same as the `clusterNetwork` CIDR and the cluster CIDR. The range must be large enough to accommodate your workload. The address block must not overlap with any external service accessed from within the cluster. The default is `10.128.0.0/14`. You can expand the range after cluster installation.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Cluster Network Operator configuration](../../networking/networking_operators/cluster-network-operator.xml#nw-operator-cr_cluster-network-operator)
 
 - [Configuring the cluster network range](../../networking/configuring_network_settings/configuring-cluster-network-range.xml#configuring-cluster-network-range)
-
-</div>
 
 # Host prefix
 

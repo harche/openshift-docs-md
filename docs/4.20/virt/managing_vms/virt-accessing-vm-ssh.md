@@ -22,8 +22,11 @@ You can configure SSH access to virtual machines (VMs) by using the following me
 
 Each method for configuring access to a virtual machine (VM) has advantages and limitations, depending on the traffic load and client requirements.
 
-> [!NOTE]
-> Services provide excellent performance and are recommended for applications that are accessed from outside the cluster.
+<div class="note">
+
+Services provide excellent performance and are recommended for applications that are accessed from outside the cluster.
+
+</div>
 
 If the internal cluster network cannot handle the traffic load, you can configure a secondary network.
 
@@ -76,8 +79,11 @@ This method is simple to configure. However, it is not recommended for high traf
 
 You can add public SSH keys to virtual machines (VMs) statically at first boot or dynamically at runtime.
 
-> [!NOTE]
-> Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
+<div class="note">
+
+Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
+
+</div>
 
 ### Static SSH key management
 
@@ -123,8 +129,11 @@ You can add a statically managed public SSH key when you create a virtual machin
 
 You can also add a public SSH key to a project when you create a VM by using the web console. The key is saved as a secret and is added automatically to all VMs that you create.
 
-> [!NOTE]
-> If you add a secret to a project and then delete the VM, the secret is retained because it is a namespace resource. You must delete the secret manually.
+<div class="note">
+
+If you add a secret to a project and then delete the VM, the secret is retained because it is a namespace resource. You must delete the secret manually.
+
+</div>
 
 ### Adding a key when creating a VM from a template
 
@@ -132,25 +141,7 @@ You can add a statically managed public SSH key when you create a virtual machin
 
 Optional: You can add a key to a project. Afterwards, this key is added automatically to VMs that you create in the project.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You generated an SSH key pair by running the `ssh-keygen` command.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **Catalog** in the web console.
 
@@ -182,40 +173,23 @@ Procedure
 
     The **VirtualMachine details** page displays the progress of the VM creation.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Click the **Scripts** tab on the **Configuration** tab.
 
   The secret name is displayed in the **Authorized SSH key** section.
-
-</div>
 
 ### Creating a VM from an instance type by using the web console
 
 You can add a statically managed SSH key when you create a virtual machine (VM) from an instance type by using the OpenShift Container Platform web console. The key is added to the VM as a cloud-init data source at first boot. This method does not affect cloud-init user data.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  In the web console, navigate to **Virtualization** → **Catalog**.
 
     The **InstanceTypes** tab opens by default.
 
-    > [!NOTE]
-    > When configuring a downward-metrics device on an IBM Z® system that uses a VM preference, set the `spec.preference.name` value to `rhel.9.s390x` or another available preference with the format `*.s390x`.
+    <div class="note">
+
+    When configuring a downward-metrics device on an IBM Z® system that uses a VM preference, set the `spec.preference.name` value to `rhel.9.s390x` or another available preference with the format `*.s390x`.
+
+    </div>
 
 2.  Heterogeneous clusters only: To filter the bootable volumes using the options provided, click **Architecture**.
 
@@ -223,8 +197,11 @@ Procedure
 
     - Select a suitable bootable volume from the list. If the list is truncated, click the **Show all** button to display the entire list.
 
-      > [!NOTE]
-      > The bootable volume table lists only those volumes in the `openshift-virtualization-os-images` namespace that have the `instancetype.kubevirt.io/default-preference` label.
+      <div class="note">
+
+      The bootable volume table lists only those volumes in the `openshift-virtualization-os-images` namespace that have the `instancetype.kubevirt.io/default-preference` label.
+
+      </div>
 
       - Optional: Click the star icon to designate a bootable volume as a favorite. Starred bootable volumes appear first in the volume list.
 
@@ -264,19 +241,13 @@ Procedure
 
 6.  Click **Create VirtualMachine**.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Result
+**Result**
 
 </div>
 
 After the VM is created, you can monitor the status on the **VirtualMachine details** page.
-
-</div>
 
 ### Adding a key when creating a VM by using the CLI
 
@@ -284,27 +255,9 @@ You can add a statically managed public SSH key when you create a virtual machin
 
 The key is added to the VM as a cloud-init data source. This method separates the access credentials from the application data in the cloud-init user data. This method does not affect cloud-init user data.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You generated an SSH key pair by running the `ssh-keygen` command.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a manifest file for a `VirtualMachine` object and a `Secret` object.
 
@@ -379,16 +332,6 @@ Procedure
     $ virtctl start vm example-vm -n example-namespace
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Get the VM configuration:
 
   ``` terminal
@@ -416,14 +359,15 @@ Verification
   # ...
   ```
 
-</div>
-
 ## Dynamic key management
 
 You can enable dynamic key injection for a virtual machine (VM) by using the OpenShift Container Platform web console or the command line. Then, you can update the key at runtime.
 
-> [!NOTE]
-> Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
+<div class="note">
+
+Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
+
+</div>
 
 If you disable dynamic key injection, the VM inherits the key management method of the image from which it was created.
 
@@ -431,30 +375,15 @@ If you disable dynamic key injection, the VM inherits the key management method 
 
 You can enable dynamic public SSH key injection when you create a virtual machine (VM) from a template by using the OpenShift Container Platform web console. Then, you can update the key at runtime.
 
-> [!NOTE]
-> Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
+<div class="note">
+
+Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
+
+</div>
 
 The key is added to the VM by the QEMU guest agent, which is installed with RHEL 9.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You generated an SSH key pair by running the `ssh-keygen` command.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **Catalog** in the web console.
 
@@ -486,45 +415,31 @@ Procedure
 
     The **VirtualMachine details** page displays the progress of the VM creation.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Click the **Scripts** tab on the **Configuration** tab.
 
   The secret name is displayed in the **Authorized SSH key** section.
-
-</div>
 
 ### Creating a VM from an instance type by using the web console
 
 You can enable dynamic SSH key injection when you create a virtual machine (VM) from an instance type by using the OpenShift Container Platform web console. Then, you can add or revoke the key at runtime.
 
-> [!NOTE]
-> Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
+<div class="note">
 
-The key is added to the VM by the QEMU guest agent, which is installed with RHEL 9.
-
-<div>
-
-<div class="title">
-
-Procedure
+Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
 
 </div>
+
+The key is added to the VM by the QEMU guest agent, which is installed with RHEL 9.
 
 1.  In the web console, navigate to **Virtualization** → **Catalog**.
 
     The **InstanceTypes** tab opens by default.
 
-    > [!NOTE]
-    > When configuring a downward-metrics device on an IBM Z® system that uses a VM preference, set the `spec.preference.name` value to `rhel.9.s390x` or another available preference with the format `*.s390x`.
+    <div class="note">
+
+    When configuring a downward-metrics device on an IBM Z® system that uses a VM preference, set the `spec.preference.name` value to `rhel.9.s390x` or another available preference with the format `*.s390x`.
+
+    </div>
 
 2.  Heterogeneous clusters only: To filter the bootable volumes using the options provided, click **Architecture**.
 
@@ -532,8 +447,11 @@ Procedure
 
     - Select a suitable bootable volume from the list. If the list is truncated, click the **Show all** button to display the entire list.
 
-      > [!NOTE]
-      > The bootable volume table lists only those volumes in the `openshift-virtualization-os-images` namespace that have the `instancetype.kubevirt.io/default-preference` label.
+      <div class="note">
+
+      The bootable volume table lists only those volumes in the `openshift-virtualization-os-images` namespace that have the `instancetype.kubevirt.io/default-preference` label.
+
+      </div>
 
       - Optional: Click the star icon to designate a bootable volume as a favorite. Starred bootable volumes appear first in the volume list.
 
@@ -577,19 +495,13 @@ Procedure
 
 8.  Click **Create VirtualMachine**.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Result
+**Result**
 
 </div>
 
 After the VM is created, you can monitor the status on the **VirtualMachine details** page.
-
-</div>
 
 ### Enabling dynamic SSH key injection by using the web console
 
@@ -597,25 +509,7 @@ You can enable dynamic key injection for a virtual machine (VM) by using the Ope
 
 The key is added to the VM by the QEMU guest agent, which is installed with Red Hat Enterprise Linux (RHEL) 9.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The guest operating system is RHEL 9.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
 
@@ -639,38 +533,21 @@ Procedure
 
 6.  Click **Save**.
 
-</div>
-
 ### Enabling dynamic key injection by using the CLI
 
 You can enable dynamic key injection for a virtual machine (VM) by using the command line. Then, you can update the public SSH key at runtime.
 
-> [!NOTE]
-> Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
+<div class="note">
 
-The key is added to the VM by the QEMU guest agent, which is installed automatically with RHEL 9.
-
-<div>
-
-<div class="title">
-
-Prerequisites
+Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
 
 </div>
+
+The key is added to the VM by the QEMU guest agent, which is installed automatically with RHEL 9.
 
 - You generated an SSH key pair by running the `ssh-keygen` command.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a manifest file for a `VirtualMachine` object and a `Secret` object.
 
@@ -747,16 +624,6 @@ Procedure
     $ virtctl start vm example-vm -n example-namespace
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Get the VM configuration:
 
   ``` terminal
@@ -785,19 +652,9 @@ Verification
   # ...
   ```
 
-</div>
-
 ## Using the virtctl ssh command
 
 You can use the `virtctl ssh` command to access a running virtual machine instance (VMI). The command accepts VM or VMI targets.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You installed the `virtctl` command-line tool.
 
@@ -806,16 +663,6 @@ Prerequisites
 - You have an SSH client installed.
 
 - The environment where you installed the `virtctl` tool has the cluster permissions required to access the VM. For example, you ran `oc login` or you set the `KUBECONFIG` environment variable.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the `virtctl ssh` command:
 
@@ -831,12 +678,13 @@ Procedure
     $ virtctl -n my-namespace ssh cloud-user@vm/example-vm -i my-key
     ```
 
-</div>
+<div class="tip">
 
-> [!TIP]
-> You can copy the `virtctl ssh` command in the web console by selecting **Copy SSH command** from the options ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) menu beside a VM on the **VirtualMachines** page.
->
-> Alternatively, right-click the VM in the tree view and select **Copy SSH command** from the pop-up menu to copy the `virtctl ssh` command.
+You can copy the `virtctl ssh` command in the web console by selecting **Copy SSH command** from the options ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) menu beside a VM on the **VirtualMachines** page.
+
+Alternatively, right-click the VM in the tree view and select **Copy SSH command** from the pop-up menu to copy the `virtctl ssh` command.
+
+</div>
 
 # Using the virtctl port-forward command
 
@@ -844,29 +692,11 @@ You can use your local OpenSSH client and the `virtctl port-forward` command to 
 
 This method is recommended for low-traffic applications because port-forwarding traffic is sent over the control plane. This method is not recommended for high-traffic applications such as Rsync or Remote Desktop Protocol because it places a heavy burden on the API server.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the `virtctl` client.
 
 - The virtual machine you want to access is running.
 
 - The environment where you installed the `virtctl` tool has the cluster permissions required to access the VM. For example, you ran `oc login` or you set the `KUBECONFIG` environment variable.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Add the following text to the `~/.ssh/config` file on your client machine:
 
@@ -881,14 +711,15 @@ Procedure
     $ ssh <user>@vm/<vm_name>.<namespace>
     ```
 
-</div>
-
 # Using a service for SSH access
 
 You can create a service for a virtual machine (VM) and connect to the IP address and port exposed by the service.
 
-> [!NOTE]
-> Services provide excellent performance and are recommended for applications that are accessed from outside the cluster or within the cluster. Ingress traffic is protected by firewalls.
+<div class="note">
+
+Services provide excellent performance and are recommended for applications that are accessed from outside the cluster or within the cluster. Ingress traffic is protected by firewalls.
+
+</div>
 
 If the cluster network cannot handle the traffic load, consider using a secondary network for VM access.
 
@@ -905,8 +736,11 @@ Exposes the service on the same port of each selected node in the cluster. `Node
 LoadBalancer
 Creates an external load balancer in the current cloud (if supported) and assigns a fixed, external IP address to the service.
 
-> [!NOTE]
-> For on-premise clusters, you can configure a load-balancing service by deploying the MetalLB Operator.
+<div class="note">
+
+For on-premise clusters, you can configure a load-balancing service by deploying the MetalLB Operator.
+
+</div>
 
 ## Creating a service
 
@@ -916,29 +750,11 @@ You can create a service to expose a virtual machine (VM) by using the OpenShift
 
 You can enable the creation of load balancer services for a virtual machine (VM) by using the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have configured a load balancer for the cluster.
 
 - You have logged in as a user with the `cluster-admin` role.
 
 - You created a network attachment definition for the network.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to **Virtualization** → **Overview**.
 
@@ -948,33 +764,13 @@ Procedure
 
 4.  Set **SSH over LoadBalancer service** to on.
 
-</div>
-
 ### Creating a service by using the web console
 
 You can create a node port or load balancer service for a virtual machine (VM) by using the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You configured the cluster network to support either a load balancer or a node port.
 
 - To create a load balancer service, you enabled the creation of load balancer services.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **VirtualMachines** and select a virtual machine to view the **VirtualMachine details** page.
 
@@ -982,31 +778,11 @@ Procedure
 
 3.  Optional: Click the copy icon to copy the `SSH` command to your clipboard.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Check the **Services** pane on the **Details** tab to view the new service.
-
-</div>
 
 ### Creating a service by using virtctl
 
 You can create a service for a virtual machine (VM) by using the `virtctl` command-line tool.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You installed the `virtctl` command-line tool.
 
@@ -1014,15 +790,7 @@ Prerequisites
 
 - The environment where you installed `virtctl` has the cluster permissions required to access the VM. For example, you ran `oc login` or you set the `KUBECONFIG` environment variable.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Create a service by running the following command:
 
@@ -1038,15 +806,7 @@ Procedure
     $ virtctl expose vm example-vm --name example-service --type NodePort --port 22
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - Verify the service by running the following command:
 
@@ -1054,45 +814,21 @@ Verification
   $ oc get service
   ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Next steps
+**Next steps**
 
 </div>
 
 After you create a service with `virtctl`, you must add `special: key` to the `spec.template.metadata.labels` stanza of the `VirtualMachine` manifest. See [Creating a service by using the command line](../../virt/managing_vms/virt-accessing-vm-ssh.xml#virt-creating-service-cli_virt-accessing-vm-ssh).
 
-</div>
-
 ### Creating a service by using the CLI
 
 You can create a service and associate it with a virtual machine (VM) by using the command line.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You configured the cluster network to support the service.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `VirtualMachine` manifest to add the label for service creation:
 
@@ -1113,8 +849,11 @@ Procedure
 
     - Add `special: key` to the `spec.template.metadata.labels` stanza.
 
-      > [!NOTE]
-      > Labels on a virtual machine are passed through to the pod. The `special: key` label must match the label in the `spec.selector` attribute of the `Service` manifest.
+      <div class="note">
+
+      Labels on a virtual machine are passed through to the pod. The `special: key` label must match the label in the `spec.selector` attribute of the `Service` manifest.
+
+      </div>
 
 2.  Save the `VirtualMachine` manifest file to apply your changes.
 
@@ -1154,35 +893,15 @@ Procedure
 
 6.  Restart the VM to apply the changes.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Query the `Service` object to verify that it is available:
 
   ``` terminal
   $ oc get service -n example-namespace
   ```
 
-</div>
-
 ## Connecting to a VM exposed by a service by using SSH
 
 You can connect to a virtual machine (VM) that is exposed by a service by using SSH.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You created a service to expose the VM.
 
@@ -1190,15 +909,7 @@ Prerequisites
 
 - You are logged in to the cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Run the following command to access the VM:
 
@@ -1208,54 +919,27 @@ Procedure
 
   - Specify the cluster IP for a cluster IP service, the node IP for a node port service, or the external IP address for a load balancer service.
 
-</div>
-
 # Using a secondary network for SSH access
 
 You can configure a secondary network, attach a virtual machine (VM) to the secondary network interface, and connect to the DHCP-allocated IP address by using SSH.
 
-> [!IMPORTANT]
-> Secondary networks provide excellent performance because the traffic is not handled by the cluster network stack. However, the VMs are exposed directly to the secondary network and are not protected by firewalls. If a VM is compromised, an intruder could gain access to the secondary network. You must configure appropriate security within the operating system of the VM if you use this method.
+<div class="important">
 
-See the [Multus](https://access.redhat.com/articles/6994974#networking-multus) and [SR-IOV](https://access.redhat.com/articles/6994974#networking-sriov) documentation in the [OpenShift Virtualization Tuning & Scaling Guide](https://access.redhat.com/articles/6994974) for additional information about networking options.
-
-<div>
-
-<div class="title">
-
-Prerequisites
+Secondary networks provide excellent performance because the traffic is not handled by the cluster network stack. However, the VMs are exposed directly to the secondary network and are not protected by firewalls. If a VM is compromised, an intruder could gain access to the secondary network. You must configure appropriate security within the operating system of the VM if you use this method.
 
 </div>
+
+See the [Multus](https://access.redhat.com/articles/6994974#networking-multus) and [SR-IOV](https://access.redhat.com/articles/6994974#networking-sriov) documentation in the [OpenShift Virtualization Tuning & Scaling Guide](https://access.redhat.com/articles/6994974) for additional information about networking options.
 
 - You configured a secondary network such as [Linux bridge](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-connecting-vm-to-linux-bridge) or [SR-IOV](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#virt-connecting-vm-to-sriov).
 
 - You created a network attachment definition for a [Linux bridge network](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-creating-linux-bridge-nad-web_virt-connecting-vm-to-linux-bridge) or the SR-IOV Network Operator created a [network attachment definition](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#nw-sriov-network-attachment_virt-connecting-vm-to-sriov) when you created an `SriovNetwork` object.
 
-</div>
-
 ## Configuring a VM network interface by using the web console
 
 You can configure a network interface for a virtual machine (VM) by using the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You created a network attachment definition for the network.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines**.
 
@@ -1271,35 +955,15 @@ Procedure
 
 7.  Restart or live migrate the VM to apply the changes.
 
-</div>
-
 ## Connecting to a VM attached to a secondary network by using SSH
 
 You can connect to a virtual machine (VM) attached to a secondary network by using SSH.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You attached a VM to a secondary network with a DHCP server.
 
 - You have an SSH client installed.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Obtain the IP address of the VM by running the following command:
 
@@ -1332,7 +996,8 @@ Procedure
     $ ssh cloud-user@10.244.0.37 -i ~/.ssh/id_rsa_cloud-user
     ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> You can also [access a VM attached to a secondary network interface by using the cluster FQDN](../../virt/vm_networking/virt-accessing-vm-secondary-network-fqdn.xml#virt-accessing-vm-secondary-network-fqdn).
+You can also [access a VM attached to a secondary network interface by using the cluster FQDN](../../virt/vm_networking/virt-accessing-vm-secondary-network-fqdn.xml#virt-accessing-vm-secondary-network-fqdn).
+
+</div>

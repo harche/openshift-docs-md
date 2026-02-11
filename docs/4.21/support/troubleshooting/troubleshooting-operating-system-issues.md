@@ -8,32 +8,33 @@ The `kdump` service, included in the `kexec-tools` package, provides a crash-dum
 
 RHCOS ships with the `kexec-tools` package, but manual configuration is required to enable the `kdump` service.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To reserve memory for the crash kernel during the first kernel booting, provide kernel arguments by entering the following command:
 
     ``` terminal
     # rpm-ostree kargs --append='crashkernel=256M'
     ```
 
-    > [!NOTE]
-    > For the `ppc64le` platform, the recommended value for `crashkernel` is `crashkernel=2G-4G:384M,4G-16G:512M,16G-64G:1G,64G-128G:2G,128G-:4G`.
+    <div class="note">
+
+    For the `ppc64le` platform, the recommended value for `crashkernel` is `crashkernel=2G-4G:384M,4G-16G:512M,16G-64G:1G,64G-128G:2G,128G-:4G`.
+
+    </div>
 
 2.  Optional: To write the crash dump over the network or to some other location, rather than to the default local `/var/crash` location, edit the `/etc/kdump.conf` configuration file.
 
-    > [!NOTE]
-    > If your node uses LUKS-encrypted devices, you must use network dumps as kdump does not support saving crash dumps to LUKS-encrypted devices.
+    <div class="note">
+
+    If your node uses LUKS-encrypted devices, you must use network dumps as kdump does not support saving crash dumps to LUKS-encrypted devices.
+
+    </div>
 
     For details on configuring the `kdump` service, see the comments in `/etc/sysconfig/kdump`, `/etc/kdump.conf`, and the `kdump.conf` manual page. Also refer to the [RHEL kdump documentation](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_monitoring_and_updating_the_kernel/configuring-kdump-on-the-command-line_managing-monitoring-and-updating-the-kernel#configuring-the-kdump-target_configuring-kdump-on-the-command-line) for further information on configuring the dump target.
 
-    > [!IMPORTANT]
-    > If you have multipathing enabled on your primary disk, the dump target must be either an NFS or SSH server and you must exclude the multipath module from your `/etc/kdump.conf` configuration file.
+    <div class="important">
+
+    If you have multipathing enabled on your primary disk, the dump target must be either an NFS or SSH server and you must exclude the multipath module from your `/etc/kdump.conf` configuration file.
+
+    </div>
 
 3.  Enable the `kdump` systemd service.
 
@@ -49,8 +50,6 @@ Procedure
 
 5.  Ensure that kdump has loaded a crash kernel by checking that the `kdump.service` systemd service has started and exited successfully and that the command, `cat /sys/kernel/kexec_crash_loaded`, prints the value `1`.
 
-</div>
-
 ## Enabling kdump on day-1
 
 The `kdump` service is intended to be enabled per node to debug kernel problems. Because there are costs to having kdump enabled, and these costs accumulate with each additional kdump-enabled node, it is recommended that the `kdump` service only be enabled on each node as needed. Potential costs of enabling the `kdump` service on each node include:
@@ -63,21 +62,19 @@ The `kdump` service is intended to be enabled per node to debug kernel problems.
 
 If you are aware of the downsides and trade-offs of having the `kdump` service enabled, it is possible to enable kdump in a cluster-wide fashion. Although machine-specific machine configs are not yet supported, you can use a `systemd` unit in a `MachineConfig` object as a day-1 customization and have kdump enabled on all nodes in the cluster. You can create a `MachineConfig` object and inject that object into the set of manifest files used by Ignition during cluster setup.
 
-> [!NOTE]
-> See "Customizing nodes" in the *Installing → Installation configuration* section for more information and examples on how to use Ignition configs.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+See "Customizing nodes" in the *Installing → Installation configuration* section for more information and examples on how to use Ignition configs.
 
 </div>
 
 1.  Create a Butane config file, `99-worker-kdump.bu`, that configures and enables kdump. This creates a `MachineConfig` object for cluster-wide configuration:
 
-    > [!NOTE]
-    > The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+    <div class="note">
+
+    The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+
+    </div>
 
     ``` yaml
     variant: openshift
@@ -126,27 +123,24 @@ Procedure
 
     - For the `ppc64le` platform, replace `nr_cpus=1` with `maxcpus=1`, which is not supported on this platform.
 
+<div class="note">
+
+To export the dumps to NFS targets, some kernel modules must be explicitly added to the configuration file:
+
+<div class="formalpara-title">
+
+**Example `/etc/kdump.conf` file**
+
 </div>
 
-> [!NOTE]
-> To export the dumps to NFS targets, some kernel modules must be explicitly added to the configuration file:
->
-> <div class="formalpara">
->
-> <div class="title">
->
-> Example `/etc/kdump.conf` file
->
-> </div>
->
-> ``` text
-> nfs server.example.com:/export/cores
-> core_collector makedumpfile -l --message-level 7 -d 31
-> extra_bins /sbin/mount.nfs
-> extra_modules nfs nfsv3 nfs_layout_nfsv41_files blocklayoutdriver nfs_layout_flexfiles nfs_layout_nfsv41_files
-> ```
->
-> </div>
+``` text
+nfs server.example.com:/export/cores
+core_collector makedumpfile -l --message-level 7 -d 31
+extra_bins /sbin/mount.nfs
+extra_modules nfs nfsv3 nfs_layout_nfsv41_files blocklayoutdriver nfs_layout_flexfiles nfs_layout_nfsv41_files
+```
+
+</div>
 
 1.  Use Butane to generate a machine config YAML file, `99-worker-kdump.yaml`, containing the configuration to be delivered to the nodes:
 
@@ -168,14 +162,9 @@ See the [Testing the kdump configuration](https://access.redhat.com/documentatio
 
 See the [Analyzing a core dump](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_monitoring_and_updating_the_kernel/analyzing-a-core-dump_managing-monitoring-and-updating-the-kernel) section in the RHEL documentation for kdump.
 
-> [!NOTE]
-> It is recommended to perform vmcore analysis on a separate RHEL system.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+It is recommended to perform vmcore analysis on a separate RHEL system.
 
 </div>
 
@@ -189,19 +178,9 @@ Additional resources
 
 - [Red Hat Knowledgebase article regarding kexec and kdump](https://access.redhat.com/site/solutions/6038)
 
-</div>
-
 # Debugging Ignition failures
 
 If a machine cannot be provisioned, Ignition fails and RHCOS will boot into the emergency shell. Use the following procedure to get debugging information.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the following command to show which service units failed:
 
@@ -214,5 +193,3 @@ Procedure
     ``` terminal
     $ journalctl -u <unit>.service
     ```
-
-</div>

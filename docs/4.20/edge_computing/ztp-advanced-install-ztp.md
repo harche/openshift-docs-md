@@ -1,33 +1,18 @@
 You can use `SiteConfig` custom resources (CRs) to deploy custom functionality and configurations in your managed clusters at installation time.
 
-> [!IMPORTANT]
-> SiteConfig v1 is deprecated starting with OpenShift Container Platform version 4.18. Equivalent and improved functionality is now available through the SiteConfig Operator using the `ClusterInstance` custom resource. For more information, see [Procedure to transition from SiteConfig CRs to the ClusterInstance API](https://access.redhat.com/articles/7105238).
->
-> For more information about the SiteConfig Operator, see [SiteConfig](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/multicluster_engine_operator_with_red_hat_advanced_cluster_management/index#siteconfig-intro).
+<div class="important">
+
+SiteConfig v1 is deprecated starting with OpenShift Container Platform version 4.18. Equivalent and improved functionality is now available through the SiteConfig Operator using the `ClusterInstance` custom resource. For more information, see [Procedure to transition from SiteConfig CRs to the ClusterInstance API](https://access.redhat.com/articles/7105238).
+
+For more information about the SiteConfig Operator, see [SiteConfig](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/multicluster_engine_operator_with_red_hat_advanced_cluster_management/index#siteconfig-intro).
+
+</div>
 
 # Customizing extra installation manifests in the GitOps ZTP pipeline
 
 You can define a set of extra manifests for inclusion in the installation phase of the GitOps Zero Touch Provisioning (ZTP) pipeline. These manifests are linked to the `SiteConfig` custom resources (CRs) and are applied to the cluster during installation. Including `MachineConfig` CRs at install time makes the installation process more efficient.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Create a Git repository where you manage your custom site configuration data. The repository must be accessible from the hub cluster and be defined as a source repository for the Argo CD application.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a set of extra manifest CRs that the GitOps ZTP pipeline uses to customize the cluster installs.
 
@@ -42,8 +27,11 @@ Procedure
         └── 01-example-machine-config.yaml
     ```
 
-    > [!NOTE]
-    > The subdirectory names `/custom-manifest` and `/extra-manifest` used throughout are example names only. There is no requirement to use these names and no restriction on how you name these subdirectories. In this example `/extra-manifest` refers to the Git subdirectory that stores the contents of `/extra-manifest` from the `ztp-site-generate` container.
+    <div class="note">
+
+    The subdirectory names `/custom-manifest` and `/extra-manifest` used throughout are example names only. There is no requirement to use these names and no restriction on how you name these subdirectories. In this example `/extra-manifest` refers to the Git subdirectory that stores the contents of `/extra-manifest` from the `ztp-site-generate` container.
+
+    </div>
 
 3.  Add your custom extra manifest CRs to the `siteconfig/custom-manifest` directory.
 
@@ -65,18 +53,19 @@ Procedure
 
 5.  Save the `SiteConfig`, `/extra-manifest`, and `/custom-manifest` CRs, and push them to the site configuration repo.
 
-</div>
-
 During cluster provisioning, the GitOps ZTP pipeline appends the CRs in the `/custom-manifest` directory to the default set of extra manifests stored in `extra-manifest/`.
 
-> [!NOTE]
-> As of version 4.14 `extraManifestPath` is subject to a deprecation warning.
->
-> While `extraManifestPath` is still supported, we recommend that you use `extraManifests.searchPaths`. If you define `extraManifests.searchPaths` in the `SiteConfig` file, the GitOps ZTP pipeline does not fetch manifests from the `ztp-site-generate` container during site installation.
->
-> If you define both `extraManifestPath` and `extraManifests.searchPaths` in the `Siteconfig` CR, the setting defined for `extraManifests.searchPaths` takes precedence.
->
-> It is strongly recommended that you extract the contents of `/extra-manifest` from the `ztp-site-generate` container and push it to the GIT repository.
+<div class="note">
+
+As of version 4.14 `extraManifestPath` is subject to a deprecation warning.
+
+While `extraManifestPath` is still supported, we recommend that you use `extraManifests.searchPaths`. If you define `extraManifests.searchPaths` in the `SiteConfig` file, the GitOps ZTP pipeline does not fetch manifests from the `ztp-site-generate` container during site installation.
+
+If you define both `extraManifestPath` and `extraManifests.searchPaths` in the `Siteconfig` CR, the setting defined for `extraManifests.searchPaths` takes precedence.
+
+It is strongly recommended that you extract the contents of `/extra-manifest` from the `ztp-site-generate` container and push it to the GIT repository.
+
+</div>
 
 # Filtering custom resources using SiteConfig filters
 
@@ -88,27 +77,9 @@ You can exclude individual CRs from the `/source-crs/extra-manifest` folder that
 
 Some additional optional filtering scenarios are also described.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You configured the hub cluster for generating the required installation and policy CRs.
 
 - You created a Git repository where you manage your custom site configuration data. The repository must be accessible from the hub cluster and be defined as a source repository for the Argo CD application.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To prevent the GitOps ZTP pipeline from applying the `03-sctp-machine-config-worker.yaml` CR file, apply the following YAML in the `SiteConfig` CR:
 
@@ -173,33 +144,13 @@ Procedure
               └── custom-sctp-machine-config-worker.yaml
       ```
 
-</div>
-
 # Deleting a node by using the SiteConfig CR
 
 By using a `SiteConfig` custom resource (CR), you can delete and reprovision a node. This method is more efficient than manually deleting the node.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have configured the hub cluster to generate the required installation and policy CRs.
 
 - You have created a Git repository in which you can manage your custom site configuration data. The repository must be accessible from the hub cluster and be defined as the source repository for the Argo CD application.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Update the `SiteConfig` CR to include the `bmac.agent-install.openshift.io/remove-agent-and-node-on-delete=true` annotation and push the changes to the Git repository:
 
@@ -227,19 +178,15 @@ Procedure
     oc get bmh -n <managed-cluster-namespace> <bmh-object> -ojsonpath='' | jq -r '.annotations["bmac.agent-install.openshift.io/remove-agent-and-node-on-delete"]'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     true
     ```
-
-    </div>
 
 3.  Suppress the generation of the `BareMetalHost` CR by updating the `SiteConfig` CR to include the `crSuppression.BareMetalHost` annotation:
 
@@ -261,15 +208,7 @@ Procedure
 
 4.  Push the changes to the Git repository and wait for deprovisioning to start. The status of the `BareMetalHost` CR should change to `deprovisioning`. Wait for the `BareMetalHost` to finish deprovisioning, and be fully deleted.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the `BareMetalHost` and `Agent` CRs for the worker node have been deleted from the hub cluster by running the following commands:
 
@@ -287,19 +226,16 @@ Verification
     $ oc get nodes
     ```
 
-    > [!NOTE]
-    > If you are working with secrets, deleting a secret too early can cause an issue because ArgoCD needs the secret to complete resynchronization after deletion. Delete the secret only after the node cleanup, when the current ArgoCD synchronization is complete.
+    <div class="note">
 
-</div>
+    If you are working with secrets, deleting a secret too early can cause an issue because ArgoCD needs the secret to complete resynchronization after deletion. Delete the secret only after the node cleanup, when the current ArgoCD synchronization is complete.
 
-<div class="formalpara">
+    </div>
 
-<div class="title">
+<div class="formalpara-title">
 
-Next steps
+**Next steps**
 
 </div>
 
 To reprovision a node, delete the changes previously added to the `SiteConfig`, push the changes to the Git repository, and wait for the synchronization to complete. This regenerates the `BareMetalHost` CR of the worker node and triggers the re-install of the node.
-
-</div>

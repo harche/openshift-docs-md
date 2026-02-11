@@ -6,5 +6,8 @@ These release notes track the development of the Run Once Duration Override Oper
 
 For an overview of the Run Once Duration Override Operator, see [About the Run Once Duration Override Operator](../../../nodes/pods/run_once_duration_override/index.xml#run-once-about_run-once-duration-override-about).
 
-> [!IMPORTANT]
-> The Run Once Duration Override Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
+<div class="important">
+
+The Run Once Duration Override Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
+
+</div>

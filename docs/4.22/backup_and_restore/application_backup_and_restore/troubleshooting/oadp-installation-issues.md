@@ -8,17 +8,7 @@ The object storage contains top-level directories that are not Velero directorie
 Backup storage contains invalid top-level directories.
 ```
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - If the object storage is not dedicated to Velero, you must specify a prefix for the bucket by setting the `spec.backupLocations.velero.objectStorage.prefix` parameter in the `DataProtectionApplication` manifest.
-
-</div>
 
 # Resolving incorrect AWS credentials
 
@@ -36,21 +26,13 @@ If the `credentials-velero` file that is used to create the `Secret` object is i
   NoCredentialProviders: no valid providers in chain.
   ```
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Ensure that the `credentials-velero` file is correctly formatted, as shown in the following example:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example `credentials-velero` file
+  **Example `credentials-velero` file**
 
   </div>
 
@@ -58,10 +40,6 @@ Procedure
       aws_access_key_id=AKIAIOSFODNN7EXAMPLE
       aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 
-  </div>
-
   - AWS default profile.
 
   - Do not enclose the values with quotation marks (`"`, `'`).
-
-</div>

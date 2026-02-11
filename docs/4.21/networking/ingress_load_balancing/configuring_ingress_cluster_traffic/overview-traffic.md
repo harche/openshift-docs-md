@@ -12,13 +12,13 @@ OpenShift Container Platform provides the following methods for communicating fr
 
 - Otherwise, use a Load Balancer, an External IP, or a `NodePort`.
 
-| Method | Purpose |
-|----|----|
-| Use an Ingress Controller | Allows access to HTTP/HTTPS traffic and TLS-encrypted protocols other than HTTPS (for example, TLS with the SNI header). |
-| Automatically assign an external IP using a load balancer service | Allows traffic to non-standard ports through an IP address assigned from a pool. Most cloud platforms offer a method to start a service with a load-balancer IP address. |
-| About MetalLB and the MetalLB Operator | Allows traffic to a specific IP address or address from a pool on the machine network. For bare-metal installations or platforms that are like bare metal, MetalLB provides a way to start a service with a load-balancer IP address. |
-| Manually assign an external IP to a service | Allows traffic to non-standard ports through a specific IP address. |
-| Configure a `NodePort` | Expose a service on all nodes in the cluster. |
+| Method                                                            | Purpose                                                                                                                                                                                                                               |
+|-------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Use an Ingress Controller                                         | Allows access to HTTP/HTTPS traffic and TLS-encrypted protocols other than HTTPS (for example, TLS with the SNI header).                                                                                                              |
+| Automatically assign an external IP using a load balancer service | Allows traffic to non-standard ports through an IP address assigned from a pool. Most cloud platforms offer a method to start a service with a load-balancer IP address.                                                              |
+| About MetalLB and the MetalLB Operator                            | Allows traffic to a specific IP address or address from a pool on the machine network. For bare-metal installations or platforms that are like bare metal, MetalLB provides a way to start a service with a load-balancer IP address. |
+| Manually assign an external IP to a service                       | Allows traffic to non-standard ports through a specific IP address.                                                                                                                                                                   |
+| Configure a `NodePort`                                            | Expose a service on all nodes in the cluster.                                                                                                                                                                                         |
 
 # Additional resources
 

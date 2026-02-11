@@ -2,11 +2,9 @@ A *job* executes a task in your OpenShift Container Platform cluster.
 
 A job tracks the overall progress of a task and updates its status with information about active, succeeded, and failed pods. Deleting a job will clean up any pod replicas it created. Jobs are part of the Kubernetes API, which can be managed with `oc` commands like other object types.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample Job specification
+**Sample Job specification**
 
 </div>
 
@@ -32,8 +30,6 @@ spec:
 #...
 ```
 
-</div>
-
 - The pod replicas a job should run in parallel.
 
 - Successful pod completions are needed to mark a job completed.
@@ -46,17 +42,9 @@ spec:
 
 - The restart policy of the pod.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Jobs (Kubernetes documentation)](https://kubernetes.io/docs/concepts/workloads/controllers/job/)
-
-</div>
 
 # Understanding jobs and cron jobs
 
@@ -104,8 +92,11 @@ A *cron job* builds on a regular job by allowing you to specify how the job shou
 
 Cron jobs are useful for creating periodic and recurring tasks, like running backups or sending emails. Cron jobs can also schedule individual tasks for a specific time, such as if you want to schedule a job for a low activity period. A cron job creates a `Job` object based on the timezone configured on the control plane node that runs the cronjob controller.
 
-> [!WARNING]
-> A cron job creates a `Job` object approximately once per execution time of its schedule, but there are circumstances in which it fails to create a job or two jobs might be created. Therefore, jobs must be idempotent and you must configure history limits.
+<div class="warning">
+
+A cron job creates a `Job` object approximately once per execution time of its schedule, but there are circumstances in which it fails to create a job or two jobs might be created. Therefore, jobs must be idempotent and you must configure history limits.
+
+</div>
 
 ## Understanding how to create jobs
 
@@ -147,10 +138,6 @@ Cron jobs can leave behind artifact resources such as jobs or pods. As a user it
 
 <div class="tip">
 
-<div class="title">
-
-</div>
-
 - Delete cron jobs that you no longer need:
 
   ``` terminal
@@ -177,17 +164,13 @@ With the `OnFailure` policy, *kubelet* performs the restart. Each attempt does n
 
 You create a job in OpenShift Container Platform by creating a job object.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To create a job:
-
-</div>
 
 1.  Create a YAML file similar to the following:
 
@@ -247,28 +230,27 @@ To create a job:
     $ oc create -f <file-name>.yaml
     ```
 
-> [!NOTE]
-> You can also create and launch a job from a single command using `oc create job`. The following command creates and launches a job similar to the one specified in the previous example:
->
-> ``` terminal
-> $ oc create job pi --image=perl -- perl -Mbignum=bpi -wle 'print bpi(2000)'
-> ```
+<div class="note">
+
+You can also create and launch a job from a single command using `oc create job`. The following command creates and launches a job similar to the one specified in the previous example:
+
+``` terminal
+$ oc create job pi --image=perl -- perl -Mbignum=bpi -wle 'print bpi(2000)'
+```
+
+</div>
 
 # Creating cron jobs
 
 You create a cron job in OpenShift Container Platform by creating a job object.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To create a cron job:
-
-</div>
 
 1.  Create a YAML file similar to the following:
 
@@ -332,11 +314,14 @@ To create a cron job:
     $ oc create -f <file-name>.yaml
     ```
 
-> [!NOTE]
-> You can also create and launch a cron job from a single command using `oc create cronjob`. The following command creates and launches a cron job similar to the one specified in the previous example:
->
-> ``` terminal
-> $ oc create cronjob pi --image=perl --schedule='*/1 * * * *' -- perl -Mbignum=bpi -wle 'print bpi(2000)'
-> ```
->
-> With `oc create cronjob`, the `--schedule` option accepts schedules in [cron format](https://en.wikipedia.org/wiki/Cron).
+<div class="note">
+
+You can also create and launch a cron job from a single command using `oc create cronjob`. The following command creates and launches a cron job similar to the one specified in the previous example:
+
+``` terminal
+$ oc create cronjob pi --image=perl --schedule='*/1 * * * *' -- perl -Mbignum=bpi -wle 'print bpi(2000)'
+```
+
+With `oc create cronjob`, the `--schedule` option accepts schedules in [cron format](https://en.wikipedia.org/wiki/Cron).
+
+</div>

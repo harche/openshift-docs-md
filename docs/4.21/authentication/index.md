@@ -43,8 +43,11 @@ In manual mode, a user manages cloud credentials instead of the Cloud Credential
 mint mode
 In mint mode, the Cloud Credential Operator (CCO) uses the provided administrator-level cloud credential to create new credentials for components in the cluster with only the specific permissions that are required.
 
-> [!NOTE]
-> Mint mode is the default and the preferred setting for the CCO to use on the platforms for which it is supported.
+<div class="note">
+
+Mint mode is the default and the preferred setting for the CCO to use on the platforms for which it is supported.
+
+</div>
 
 namespace
 A namespace isolates specific system resources that are visible to all processes. Inside a namespace, only processes that are members of that namespace can see those resources.
@@ -91,8 +94,11 @@ To control access to an OpenShift Container Platform cluster, a cluster administ
 
 To interact with an OpenShift Container Platform cluster, users must first authenticate to the OpenShift Container Platform API in some way. You can authenticate by providing an [OAuth access token or an X.509 client certificate](../authentication/understanding-authentication.xml#rbac-api-authentication_understanding-authentication) in your requests to the OpenShift Container Platform API.
 
-> [!NOTE]
-> If you do not present a valid access token or certificate, your request is unauthenticated and you receive an HTTP 401 error.
+<div class="note">
+
+If you do not present a valid access token or certificate, your request is unauthenticated and you receive an HTTP 401 error.
+
+</div>
 
 An administrator can configure authentication through the following tasks:
 
@@ -100,13 +106,19 @@ An administrator can configure authentication through the following tasks:
 
 - [Configuring the internal OAuth server](../authentication/configuring-internal-oauth.xml#configuring-internal-oauth): The OpenShift Container Platform control plane includes a built-in OAuth server that determines the user’s identity from the configured identity provider and creates an access token. You can configure the token duration and inactivity timeout, and customize the internal OAuth server URL.
 
-  > [!NOTE]
-  > Users can [view and manage OAuth tokens owned by them](../authentication/managing-oauth-access-tokens.xml#managing-oauth-access-tokens).
+  <div class="note">
+
+  Users can [view and manage OAuth tokens owned by them](../authentication/managing-oauth-access-tokens.xml#managing-oauth-access-tokens).
+
+  </div>
 
 - Registering an OAuth client: OpenShift Container Platform includes several [default OAuth clients](../authentication/configuring-oauth-clients.xml#oauth-default-clients_configuring-oauth-clients). You can [register and configure additional OAuth clients](../authentication/configuring-oauth-clients.xml#oauth-register-additional-client_configuring-oauth-clients).
 
-  > [!NOTE]
-  > When users send a request for an OAuth token, they must specify either a default or custom OAuth client that receives and uses the token.
+  <div class="note">
+
+  When users send a request for an OAuth token, they must specify either a default or custom OAuth client that receives and uses the token.
+
+  </div>
 
 - Managing cloud provider credentials using the [Cloud Credentials Operator](../authentication/managing_cloud_provider_credentials/about-cloud-credential-operator.xml#about-cloud-credential-operator): Cluster components use cloud provider credentials to get permissions required to perform cluster-related tasks.
 
@@ -132,8 +144,11 @@ You can manage authorization for OpenShift Container Platform through the follow
 
 - Creating a cluster-admin user: By default, your cluster has only one cluster administrator called `kubeadmin`. You can [create another cluster administrator](../authentication/using-rbac.xml#creating-cluster-admin_using-rbac). Before creating a cluster administrator, ensure that you have configured an identity provider.
 
-  > [!NOTE]
-  > After creating the cluster admin user, [delete the existing kubeadmin user](../authentication/remove-kubeadmin.xml#removing-kubeadmin_removing-kubeadmin) to improve cluster security.
+  <div class="note">
+
+  After creating the cluster admin user, [delete the existing kubeadmin user](../authentication/remove-kubeadmin.xml#removing-kubeadmin_removing-kubeadmin) to improve cluster security.
+
+  </div>
 
 - Creating service accounts: [Service accounts](../authentication/understanding-and-creating-service-accounts.xml#service-accounts-overview_understanding-service-accounts) provide a flexible way to control API access without sharing a regular user’s credentials. A user can [create and use a service account in applications](../authentication/understanding-and-creating-service-accounts.xml#service-accounts-managing_understanding-service-accounts) and also as [an OAuth client](../authentication/using-service-accounts-as-oauth-client.xml#using-service-accounts-as-oauth-client).
 

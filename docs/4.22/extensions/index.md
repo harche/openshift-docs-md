@@ -2,8 +2,11 @@ Extensions enable cluster administrators to extend capabilities for users on the
 
 Operator Lifecycle Manager (OLM) has been included with OpenShift Container Platform 4 since its initial release. OpenShift Container Platform 4.17 includes components for a next-generation iteration of OLM as a Generally Available (GA) feature, known during this phase as *OLM v1*. This updated framework evolves many of the concepts that have been part of previous versions of OLM and adds new capabilities.
 
-> [!NOTE]
-> For OpenShift Container Platform 4.17, documented procedures for OLM v1 are CLI-based only. Alternatively, administrators can create and view related objects in the web console by using normal methods, such as the **Import YAML** and **Search** pages. However, the existing **Software Catalog** and **Installed Operators** pages do not yet display OLM v1 components.
+<div class="note">
+
+For OpenShift Container Platform 4.17, documented procedures for OLM v1 are CLI-based only. Alternatively, administrators can create and view related objects in the web console by using normal methods, such as the **Import YAML** and **Search** pages. However, the existing **Software Catalog** and **Installed Operators** pages do not yet display OLM v1 components.
+
+</div>
 
 # Highlights
 
@@ -14,14 +17,17 @@ OLM v1 simplifies extension management through two key APIs:
 
 - A new `ClusterExtension` API streamlines management of installed extensions, which includes Operators via the `registry+v1` bundle format, by consolidating user-facing APIs into a single object. This API is provided as `clusterextension.olm.operatorframework.io` by the new Operator Controller component. Administrators and SREs can use the API to automate processes and define desired states by using GitOps principles.
 
-  > [!NOTE]
-  > Earlier Technology Preview phases of OLM v1 introduced a new `Operator` API; this API is renamed `ClusterExtension` in OpenShift Container Platform 4.16 to address the following improvements:
-  >
-  > - More accurately reflects the simplified functionality of extending a cluster’s capabilities
-  >
-  > - Better represents a more flexible packaging format
-  >
-  > - `Cluster` prefix clearly indicates that `ClusterExtension` objects are cluster-scoped, a change from OLM (Classic) where Operators could be either namespace-scoped or cluster-scoped
+  <div class="note">
+
+  Earlier Technology Preview phases of OLM v1 introduced a new `Operator` API; this API is renamed `ClusterExtension` in OpenShift Container Platform 4.16 to address the following improvements:
+
+  - More accurately reflects the simplified functionality of extending a cluster’s capabilities
+
+  - Better represents a more flexible packaging format
+
+  - `Cluster` prefix clearly indicates that `ClusterExtension` objects are cluster-scoped, a change from OLM (Classic) where Operators could be either namespace-scoped or cluster-scoped
+
+  </div>
 
 - The `Catalog` API, provided by the new catalogd component, serves as the foundation for OLM v1, unpacking catalogs for on-cluster clients so that users can discover installable content, such as Kubernetes extensions and Operators. This provides increased visibility into all available Operator bundle versions, including their details, channels, and update edges.
 

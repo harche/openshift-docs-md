@@ -4,56 +4,31 @@ Understanding the state of the system in Operator Lifecycle Manager (OLM) is imp
 
 Subscriptions can report the following condition types:
 
-| Condition | Description |
-|----|----|
+| Condition                 | Description                                                                |
+|---------------------------|----------------------------------------------------------------------------|
 | `CatalogSourcesUnhealthy` | Some or all of the catalog sources to be used in resolution are unhealthy. |
-| `InstallPlanMissing` | An install plan for a subscription is missing. |
-| `InstallPlanPending` | An install plan for a subscription is pending installation. |
-| `InstallPlanFailed` | An install plan for a subscription has failed. |
-| `ResolutionFailed` | The dependency resolution for a subscription has failed. |
+| `InstallPlanMissing`      | An install plan for a subscription is missing.                             |
+| `InstallPlanPending`      | An install plan for a subscription is pending installation.                |
+| `InstallPlanFailed`       | An install plan for a subscription has failed.                             |
+| `ResolutionFailed`        | The dependency resolution for a subscription has failed.                   |
 
 Subscription condition types
 
-> [!NOTE]
-> Default OpenShift Container Platform cluster Operators are managed by the Cluster Version Operator (CVO) and they do not have a `Subscription` object. Application Operators are managed by Operator Lifecycle Manager (OLM) and they have a `Subscription` object.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+Default OpenShift Container Platform cluster Operators are managed by the Cluster Version Operator (CVO) and they do not have a `Subscription` object. Application Operators are managed by Operator Lifecycle Manager (OLM) and they have a `Subscription` object.
 
 </div>
 
 - [Refreshing failing subscriptions](../../operators/admin/olm-deleting-operators-from-cluster.xml#olm-refresh-subs_olm-deleting-operators-from-a-cluster)
 
-</div>
-
 # Viewing Operator subscription status by using the CLI
 
 You can view Operator subscription status by using the CLI.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List Operator subscriptions:
 
@@ -69,11 +44,9 @@ Procedure
 
 3.  In the command output, find the `Conditions` section for the status of Operator subscription condition types. In the following example, the `CatalogSourcesUnhealthy` condition type has a status of `false` because all available catalog sources are healthy:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -94,38 +67,19 @@ Procedure
     # ...
     ```
 
+    <div class="note">
+
+    Default OpenShift Container Platform cluster Operators are managed by the Cluster Version Operator (CVO) and they do not have a `Subscription` object. Application Operators are managed by Operator Lifecycle Manager (OLM) and they have a `Subscription` object.
+
     </div>
-
-    > [!NOTE]
-    > Default OpenShift Container Platform cluster Operators are managed by the Cluster Version Operator (CVO) and they do not have a `Subscription` object. Application Operators are managed by Operator Lifecycle Manager (OLM) and they have a `Subscription` object.
-
-</div>
 
 # Viewing Operator catalog source status by using the CLI
 
 You can view the status of an Operator catalog source by using the CLI.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List the catalog sources in a namespace. For example, you can check the `openshift-marketplace` namespace, which is used for cluster-wide catalog sources:
 
@@ -133,11 +87,9 @@ Procedure
     $ oc get catalogsources -n openshift-marketplace
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -149,19 +101,15 @@ Procedure
     redhat-operators      Red Hat Operators     grpc   Red Hat     55m
     ```
 
-    </div>
-
 2.  Use the `oc describe` command to get more details and status about a catalog source:
 
     ``` terminal
     $ oc describe catalogsource example-catalog -n openshift-marketplace
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -188,8 +136,6 @@ Procedure
     # ...
     ```
 
-    </div>
-
     In the preceding example output, the last observed state is `TRANSIENT_FAILURE`. This state indicates that there is a problem establishing a connection for the catalog source.
 
 3.  List the pods in the namespace where your catalog source was created:
@@ -198,11 +144,9 @@ Procedure
     $ oc get pods -n openshift-marketplace
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -215,8 +159,6 @@ Procedure
     redhat-operators-smxx8                  1/1     Running            0          36m
     ```
 
-    </div>
-
     When a catalog source is created in a namespace, a pod for the catalog source is created in that namespace. In the preceding example output, the status for the `example-catalog-bwt8z` pod is `ImagePullBackOff`. This status indicates that there is an issue pulling the catalog source’s index image.
 
 4.  Use the `oc describe` command to inspect a pod for more detailed information:
@@ -225,11 +167,9 @@ Procedure
     $ oc describe pod example-catalog-bwt8z -n openshift-marketplace
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -251,24 +191,10 @@ Procedure
       Warning  Failed          8s (x3 over 47s)   kubelet            Error: ErrImagePull
     ```
 
-    </div>
-
     In the preceding example output, the error messages indicate that the catalog source’s index image is failing to pull successfully because of an authorization issue. For example, the index image might be stored in a registry that requires login credentials.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Operator Lifecycle Manager concepts and resources → Catalog source](../../operators/understanding/olm/olm-understanding-olm.xml#olm-catalogsource_olm-understanding-olm)
 
 - gRPC documentation: [States of Connectivity](https://grpc.github.io/grpc/core/md_doc_connectivity-semantics-and-api.html)
 
 - [Accessing images for Operators from private registries](../../operators/admin/olm-managing-custom-catalogs.xml#olm-accessing-images-private-registries_olm-managing-custom-catalogs)
-
-</div>

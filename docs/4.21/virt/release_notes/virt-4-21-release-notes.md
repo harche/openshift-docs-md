@@ -107,6 +107,11 @@ With this update, VM owners can force reboot their VMs by clicking **Reset** in 
 
 [CNV-51003](https://issues.redhat.com/browse/CNV-51003)
 
+VNC console now offers access to function keys F1-F12
+With this update, the VNC console now offers access to function keys F1-F12. This enhancement enables a smoother and more seamless experience for VM owners, by expanding the **Send key** functionality to include function keys.
+
+[CNV-71884](https://issues.redhat.com/browse/CNV-71884)
+
 <!-- -->
 
 New alerts in the OpenShift Virtualization runbooks
@@ -151,8 +156,11 @@ The following [alerts for the OpenShift Virtualization Operator](../../virt/moni
 The `HotplugVolume` feature gate is deprecated
 The `HotplugVolume` feature gate, which allows you to add storage without restarting your VM, is deprecated and will be removed in a future release. This feature gate will be replaced by `DeclarativeHotplugVolumes`.
 
-> [!NOTE]
-> `DeclarativeHotplugVolumes` does not support hot plugging ephemeral volumes. Ephemeral volumes are hot plugged to a VMI and do not persist in the owner VM. Existing ephemeral volumes that are hot plugged are automatically detached after you switch to the `DeclarativeHotplugVolumes` feature gate.
+<div class="note">
+
+`DeclarativeHotplugVolumes` does not support hot plugging ephemeral volumes. Ephemeral volumes are hot plugged to a VMI and do not persist in the owner VM. Existing ephemeral volumes that are hot plugged are automatically detached after you switch to the `DeclarativeHotplugVolumes` feature gate.
+
+</div>
 
 [CNV-73301](https://issues.redhat.com/browse/CNV-73301)
 

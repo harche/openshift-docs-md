@@ -12,8 +12,11 @@ In these scenarios, you can create multiple custom machine config pools (MCPs) t
 
 The following example describes a canary update strategy where you have a cluster with 100 nodes with 10% excess capacity, you have maintenance windows that must not exceed 4 hours, and you know that it takes no longer than 8 minutes to drain and reboot a worker node.
 
-> [!NOTE]
-> The previous values are an example only. The time it takes to drain a node might vary depending on factors such as workloads.
+<div class="note">
+
+The previous values are an example only. The time it takes to drain a node might vary depending on factors such as workloads.
+
+</div>
 
 ## Defining custom machine config pools
 
@@ -37,15 +40,21 @@ If for some reason you determine that your cluster or workload health was negati
 
 Managing worker node updates using custom MCPs provides flexibility, however it can be a time-consuming process that requires you execute multiple commands. This complexity can result in errors that might affect the entire cluster. It is recommended that you carefully consider your organizational needs and carefully plan the implementation of the process before you start.
 
-> [!IMPORTANT]
-> Pausing a machine config pool prevents the Machine Config Operator from applying any configuration changes on the associated nodes. Pausing an MCP also prevents any automatically rotated certificates from being pushed to the associated nodes, including the automatic CA rotation of the `kube-apiserver-to-kubelet-signer` CA certificate.
->
-> If the MCP is paused when the `kube-apiserver-to-kubelet-signer` CA certificate expires and the MCO attempts to automatically renew the certificate, the MCO cannot push the newly rotated certificates to those nodes. This causes failure in multiple `oc` commands, including `oc debug`, `oc logs`, `oc exec`, and `oc attach`. You receive alerts in the Alerting UI of the OpenShift Container Platform web console if an MCP is paused when the certificates are rotated.
->
-> Pausing an MCP should be done with careful consideration about the `kube-apiserver-to-kubelet-signer` CA certificate expiration and for short periods of time only.
+<div class="important">
 
-> [!NOTE]
-> It is not recommended to update the MCPs to different OpenShift Container Platform versions. For example, do not update one MCP from 4.y.10 to 4.y.11 and another to 4.y.12. This scenario has not been tested and might result in an undefined cluster state.
+Pausing a machine config pool prevents the Machine Config Operator from applying any configuration changes on the associated nodes. Pausing an MCP also prevents any automatically rotated certificates from being pushed to the associated nodes, including the automatic CA rotation of the `kube-apiserver-to-kubelet-signer` CA certificate.
+
+If the MCP is paused when the `kube-apiserver-to-kubelet-signer` CA certificate expires and the MCO attempts to automatically renew the certificate, the MCO cannot push the newly rotated certificates to those nodes. This causes failure in multiple `oc` commands, including `oc debug`, `oc logs`, `oc exec`, and `oc attach`. You receive alerts in the Alerting UI of the OpenShift Container Platform web console if an MCP is paused when the certificates are rotated.
+
+Pausing an MCP should be done with careful consideration about the `kube-apiserver-to-kubelet-signer` CA certificate expiration and for short periods of time only.
+
+</div>
+
+<div class="note">
+
+It is not recommended to update the MCPs to different OpenShift Container Platform versions. For example, do not update one MCP from 4.y.10 to 4.y.11 and another to 4.y.12. This scenario has not been tested and might result in an undefined cluster state.
+
+</div>
 
 # About the canary rollout update process and MCPs
 
@@ -61,11 +70,17 @@ To prevent specific nodes from being updated, you can create custom MCPs. Becaus
 
 Using one or more custom MCPs can give you more control over the sequence in which you update your worker nodes. For example, after you update the nodes in the first MCP, you can verify the application compatibility and then update the rest of the nodes gradually to the new version.
 
-> [!WARNING]
-> The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
+<div class="warning">
 
-> [!NOTE]
-> To ensure the stability of the control plane, creating a custom MCP from the control plane nodes is not supported. The Machine Config Operator (MCO) ignores any custom MCP created for the control plane nodes.
+The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
+
+</div>
+
+<div class="note">
+
+To ensure the stability of the control plane, creating a custom MCP from the control plane nodes is not supported. The Machine Config Operator (MCO) ignores any custom MCP created for the control plane nodes.
+
+</div>
 
 ## Considerations when using custom machine config pools
 
@@ -73,8 +88,11 @@ Give careful consideration to the number of MCPs that you create and the number 
 
 You must also consider how much extra capacity is available in your cluster to determine the number of custom MCPs and the amount of nodes within each MCP. In a case where your applications fail to work as expected on newly updated nodes, you can cordon and drain those nodes in the pool, which moves the application pods to other nodes. However, you must determine whether the available nodes in the remaining MCPs can provide sufficient quality-of-service (QoS) for your applications.
 
-> [!NOTE]
-> You can use this update process with all documented OpenShift Container Platform update processes. However, the process does not work with Red Hat Enterprise Linux (RHEL) machines, which are updated using Ansible playbooks.
+<div class="note">
+
+You can use this update process with all documented OpenShift Container Platform update processes. However, the process does not work with Red Hat Enterprise Linux (RHEL) machines, which are updated using Ansible playbooks.
+
+</div>
 
 # About performing a canary rollout update
 
@@ -82,16 +100,25 @@ The following steps outline the high-level workflow of the canary rollout update
 
 1.  Create custom machine config pools (MCP) based on the worker pool.
 
-    > [!NOTE]
-    > You can change the `maxUnavailable` setting in an MCP to specify the percentage or the number of machines that can be updating at any given time. The default is `1`.
+    <div class="note">
 
-    > [!WARNING]
-    > The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
+    You can change the `maxUnavailable` setting in an MCP to specify the percentage or the number of machines that can be updating at any given time. The default is `1`.
+
+    </div>
+
+    <div class="warning">
+
+    The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
+
+    </div>
 
 2.  Add a node selector to the custom MCPs. For each node that you do not want to update simultaneously with the rest of the cluster, add a matching label to the nodes. This label associates the node to the MCP.
 
-    > [!IMPORTANT]
-    > Do not remove the default worker label from the nodes. The nodes must have a role label to function properly in the cluster.
+    <div class="important">
+
+    Do not remove the default worker label from the nodes. The nodes must have a role label to function properly in the cluster.
+
+    </div>
 
 3.  Pause the MCPs you do not want to update as part of the update process.
 
@@ -107,25 +134,15 @@ The following steps outline the high-level workflow of the canary rollout update
 
 To perform a canary rollout update, you must first create one or more custom machine config pools (MCP).
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  List the worker nodes in your cluster by running the following command:
 
     ``` terminal
     $ oc get -l 'node-role.kubernetes.io/master!=' -o 'jsonpath={range .items[*]}{.metadata.name}{"\n"}{end}' nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -134,8 +151,6 @@ Procedure
     ci-ln-pwnll6b-f76d1-s8t9n-worker-b-dglj2
     ci-ln-pwnll6b-f76d1-s8t9n-worker-c-lldbm
     ```
-
-    </div>
 
 2.  For each node that you want to delay, add a custom label to the node by running the following command:
 
@@ -149,19 +164,15 @@ Procedure
     $ oc label node ci-ln-0qv1yp2-f76d1-kl2tq-worker-a-j2ssz node-role.kubernetes.io/workerpool-canary=
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     node/ci-ln-gtrwm8t-f76d1-spbl7-worker-a-xk76k labeled
     ```
-
-    </div>
 
 3.  Create the new MCP:
 
@@ -197,11 +208,9 @@ Procedure
         $ oc create -f <file_name>
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -209,19 +218,15 @@ Procedure
         machineconfigpool.machineconfiguration.openshift.io/workerpool-canary created
         ```
 
-        </div>
-
 4.  View the list of MCPs in the cluster and their current state by running the following command:
 
     ``` terminal
     $ oc get machineconfigpool
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -232,45 +237,21 @@ Procedure
     worker            rendered-worker-87ba3dec1ad78cb6aecebf7fbb476a36              True      False      False      2              2                   2                     0                      97m
     ```
 
-    </div>
-
     The new machine config pool, `workerpool-canary`, is created and the number of nodes to which you added the custom label are shown in the machine counts. The worker MCP machine counts are reduced by the same number. It can take several minutes to update the machine counts. In this example, one node was moved from the `worker` MCP to the `workerpool-canary` MCP.
-
-</div>
 
 # Managing machine configuration inheritance for a worker pool canary
 
 You can configure a machine config pool (MCP) canary to inherit any `MachineConfig` assigned to an existing MCP. This configuration is useful when you want to use an MCP canary to test as you update nodes one at a time for an existing MCP.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have created one or more MCPs.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a secondary MCP as described in the following two steps:
 
     1.  Save the following configuration file as `machineConfigPool.yaml`.
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `machineConfigPool` YAML
+        **Example `machineConfigPool` YAML**
 
         </div>
 
@@ -293,27 +274,21 @@ Procedure
         # ...
         ```
 
-        </div>
-
     2.  Create the new machine config pool by running the following command:
 
         ``` terminal
         $ oc create -f machineConfigPool.yaml
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
         ``` terminal
         machineconfigpool.machineconfiguration.openshift.io/worker-perf created
         ```
-
-        </div>
 
 2.  Add some machines to the secondary MCP. The following example labels the worker nodes `worker-a`, `worker-b`, and `worker-c` to the MCP `worker-perf`:
 
@@ -333,11 +308,9 @@ Procedure
 
     1.  Save the following `MachineConfig` example as a file called `new-machineconfig.yaml`:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `MachineConfig` YAML
+        **Example `MachineConfig` YAML**
 
         </div>
 
@@ -361,8 +334,6 @@ Procedure
         # ...
         ```
 
-        </div>
-
     2.  Apply the `MachineConfig` by running the following command:
 
         ``` terminal
@@ -385,11 +356,9 @@ Procedure
 
     3.  Save the following file as `machineConfigPool-Canary.yaml`.
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `machineConfigPool-Canary.yaml` file
+        **Example `machineConfigPool-Canary.yaml` file**
 
         </div>
 
@@ -411,8 +380,6 @@ Procedure
               node-role.kubernetes.io/worker-perf-canary: ""
         ```
 
-        </div>
-
         - Optional value. This example includes `worker-perf-canary` as an additional value. You can use a value in this way to configure members of an additional `MachineConfig`.
 
     4.  Create the new `worker-perf-canary` by running the following command:
@@ -421,19 +388,15 @@ Procedure
         $ oc create -f machineConfigPool-Canary.yaml
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
         ``` terminal
         machineconfigpool.machineconfiguration.openshift.io/worker-perf-canary created
         ```
-
-        </div>
 
 5.  Check if the `MachineConfig` is inherited in `worker-perf-canary`.
 
@@ -443,11 +406,9 @@ Procedure
         $ oc get mcp
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -459,19 +420,15 @@ Procedure
         worker-perf-canary   rendered-worker-perf-canary-b98a1f62485fa702c4329d17d9364f6a   True      False      False      1              1                   1                     0                      44m
         ```
 
-        </div>
-
     2.  Verify that the machines are inherited from `worker-perf` into `worker-perf-canary`.
 
         ``` terminal
         $ oc get nodes
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -483,19 +440,15 @@ Procedure
         worker-c   Ready    worker,worker-perf          5d15h   v1.27.13+e709aa5
         ```
 
-        </div>
-
     3.  Verify that `kdump` service is enabled on `worker-a` by running the following command:
 
         ``` terminal
         $ systemctl status kdump.service
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -509,8 +462,6 @@ Procedure
            Main PID: 4151139 (code=exited, status=0/SUCCESS)
         ```
 
-        </div>
-
     4.  Verify that the MCP has updated the `crashkernel` by running the following command:
 
         ``` terminal
@@ -519,19 +470,15 @@ Procedure
 
         The output should include the updated `crashekernel` value, for example:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
         ``` terminal
         crashkernel=512M
         ```
-
-        </div>
 
 6.  Optional: If you are satisfied with the upgrade, you can return `worker-a` to `worker-perf`.
 
@@ -547,19 +494,9 @@ Procedure
         $ oc label node worker-a node-role.kubernetes.io/worker-perf-canary-
         ```
 
-</div>
-
 # Pausing the machine config pools
 
 After you create your custom machine config pools (MCPs), you then pause those MCPs. Pausing an MCP prevents the Machine Config Operator (MCO) from updating the nodes associated with that MCP.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Patch the MCP that you want paused by running the following command:
 
@@ -573,21 +510,15 @@ Procedure
     $  oc patch mcp/workerpool-canary --patch '{"spec":{"paused":true}}' --type=merge
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     machineconfigpool.machineconfiguration.openshift.io/workerpool-canary patched
     ```
-
-    </div>
-
-</div>
 
 # Performing the cluster update
 
@@ -603,14 +534,6 @@ After the cluster update is complete, you can begin to unpause the MCPs one at a
 
 After the OpenShift Container Platform update is complete, unpause your custom machine config pools (MCP) one at a time. Unpausing an MCP allows the Machine Config Operator (MCO) to update the nodes associated with that MCP.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Patch the MCP that you want to unpause:
 
     ``` terminal
@@ -623,19 +546,15 @@ Procedure
     $  oc patch mcp/workerpool-canary --patch '{"spec":{"paused":false}}' --type=merge
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     machineconfigpool.machineconfiguration.openshift.io/workerpool-canary patched
     ```
-
-    </div>
 
 2.  Optional: Check the progress of the update by using one of the following options:
 
@@ -651,23 +570,19 @@ Procedure
 
 4.  Repeat this process for any other paused MCPs, one at a time.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> In case of a failure, such as your applications not working on the updated nodes, you can cordon and drain the nodes in the pool, which moves the application pods to other nodes to help maintain the quality-of-service for the applications. This first MCP should be no larger than the excess capacity.
+In case of a failure, such as your applications not working on the updated nodes, you can cordon and drain the nodes in the pool, which moves the application pods to other nodes to help maintain the quality-of-service for the applications. This first MCP should be no larger than the excess capacity.
+
+</div>
 
 # Moving a node to the original machine config pool
 
 After you update and verify applications on nodes in a custom machine config pool (MCP), move the nodes back to their original MCP by removing the custom label that you added to the nodes.
 
-> [!IMPORTANT]
-> A node must have a role to be properly functioning in the cluster.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Procedure
+A node must have a role to be properly functioning in the cluster.
 
 </div>
 
@@ -683,19 +598,15 @@ Procedure
     $ oc label node ci-ln-0qv1yp2-f76d1-kl2tq-worker-a-j2ssz node-role.kubernetes.io/workerpool-canary-
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     node/ci-ln-0qv1yp2-f76d1-kl2tq-worker-a-j2ssz labeled
     ```
-
-    </div>
 
     The Machine Config Operator moves the nodes back to the original MCP and reconciles the node to the MCP configuration.
 
@@ -705,11 +616,9 @@ Procedure
     $ oc get mcp
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -720,8 +629,6 @@ Procedure
     worker              rendered-worker-5ad4791166c468f3a35cd16e734c9028         True      False      False      3              3                   3                     0                      61m
     ```
 
-    </div>
-
     When the node is removed from the custom MCP and moved back to the original MCP, it can take several minutes to update the machine counts. In this example, one node was moved from the removed `workerpool-canary` MCP to the `worker` MCP.
 
 3.  Optional: Delete the custom MCP by running the following command:
@@ -729,5 +636,3 @@ Procedure
     ``` terminal
     $ oc delete mcp <mcp_name>
     ```
-
-</div>

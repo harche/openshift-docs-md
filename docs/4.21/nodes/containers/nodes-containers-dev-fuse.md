@@ -4,14 +4,6 @@ You can configure your pods with the `/dev/fuse` device to enable faster and mor
 
 By exposing the `/dev/fuse` device to an unprivileged pod, you grant it the capability to perform Filesystem in Userspace (FUSE) mounts. This is achieved by adding the `io.kubernetes.cri-o.Devices: "/dev/fuse"` annotation to your pod definition. This setup allows an unprivileged user within the pod to use tools like `podman` with storage drivers such as `fuse-overlayfs` by mimicking privileged build capabilities in a secure and efficient manner without granting full privileged access to the pod.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Define the pod with `/dev/fuse` access:
 
     1.  Create a YAML file named `fuse-builder-pod.yaml` with the following content:
@@ -47,8 +39,11 @@ Procedure
         `securityContext`
         This annotation specifies a `securityContext` that runs the container as an unprivileged user (for example, `runAsUser: 1000`).
 
-        > [!NOTE]
-        > Depending on your cluster’s Security Context Constraints (SCCs) or other policies, you might need to further adjust the `securityContext` specification, for example, by allowing specific capabilities if `/dev/fuse` alone is not sufficient for `fuse-overlayfs` to operate.
+        <div class="note">
+
+        Depending on your cluster’s Security Context Constraints (SCCs) or other policies, you might need to further adjust the `securityContext` specification, for example, by allowing specific capabilities if `/dev/fuse` alone is not sufficient for `fuse-overlayfs` to operate.
+
+        </div>
 
     2.  Create the pod by running the following command:
 
@@ -138,5 +133,3 @@ Procedure
         ``` terminal
         $ rm fuse-builder-pod.yaml
         ```
-
-</div>

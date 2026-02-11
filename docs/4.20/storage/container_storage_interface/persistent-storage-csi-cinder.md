@@ -10,8 +10,11 @@ To create CSI-provisioned PVs that mount to OpenStack Cinder storage assets, Ope
 
 - The *OpenStack Cinder CSI driver* enables you to create and mount OpenStack Cinder PVs.
 
-> [!NOTE]
-> OpenShift Container Platform provides automatic migration for the Cinder in-tree volume plugin to its equivalent CSI driver. For more information, see [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration).
+<div class="note">
+
+OpenShift Container Platform provides automatic migration for the Cinder in-tree volume plugin to its equivalent CSI driver. For more information, see [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration).
+
+</div>
 
 # About CSI
 
@@ -19,8 +22,11 @@ Storage vendors have traditionally provided storage drivers as part of Kubernete
 
 CSI Operators give OpenShift Container Platform users storage options, such as volume snapshots, that are not possible with in-tree volume plugins.
 
-> [!IMPORTANT]
-> OpenShift Container Platform defaults to using the CSI plugin to provision Cinder storage.
+<div class="important">
+
+OpenShift Container Platform defaults to using the CSI plugin to provision Cinder storage.
+
+</div>
 
 # Making OpenStack Cinder CSI the default storage class
 
@@ -30,17 +36,13 @@ To enable OpenStack Cinder CSI provisioning in OpenShift Container Platform, it 
 
 In OpenShift Container Platform, the default storage class references the in-tree Cinder driver. However, with CSI automatic migration enabled, volumes created using the default storage class actually use the CSI driver.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 Use the following steps to apply the `standard-csi` storage class by overwriting the default in-tree storage class.
-
-</div>
 
 1.  List the storage class:
 
@@ -48,11 +50,9 @@ Use the following steps to apply the `standard-csi` storage class by overwriting
     $ oc get storageclass
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -61,8 +61,6 @@ Use the following steps to apply the `standard-csi` storage class by overwriting
     standard(default)      cinder.csi.openstack.org   Delete          WaitForFirstConsumer   true                   46h
     standard-csi           kubernetes.io/cinder       Delete          WaitForFirstConsumer   true                   46h
     ```
-
-    </div>
 
 2.  Change the value of the annotation `storageclass.kubernetes.io/is-default-class` to `false` for the default storage class, as shown in the following example:
 
@@ -82,11 +80,9 @@ Use the following steps to apply the `standard-csi` storage class by overwriting
     $ oc get storageclass
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -95,8 +91,6 @@ Use the following steps to apply the `standard-csi` storage class by overwriting
     standard               kubernetes.io/cinder       Delete          WaitForFirstConsumer   true                   46h
     standard-csi(default)  cinder.csi.openstack.org   Delete          WaitForFirstConsumer   true                   46h
     ```
-
-    </div>
 
 5.  Optional: You can define a new PVC without having to specify the storage class:
 
@@ -121,14 +115,4 @@ Use the following steps to apply the `standard-csi` storage class by overwriting
     $ oc create -f cinder-claim.yaml
     ```
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
-
-</div>

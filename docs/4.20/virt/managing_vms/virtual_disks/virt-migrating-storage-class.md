@@ -4,16 +4,11 @@ You can migrate one or more virtual disks to a different storage class without s
 
 You can migrate one or more disks attached to a virtual machine (VM) to a different storage class by using the OpenShift Container Platform web console. When performing this action on a running VM, the operation of the VM is not interrupted and the data on the migrated disks remains accessible.
 
-> [!NOTE]
-> With the OpenShift Virtualization Operator, you can only start storage class migration for one VM at the time and the VM must be running. If you need to migrate more VMs at once or migrate a mix of running and stopped VMs, consider using the [Migration Toolkit for Containers (MTC)](https://docs.redhat.com/en/documentation/migration_toolkit_for_containers/1.8/html/migration_toolkit_for_containers/index).
->
-> Migration Toolkit for Containers is not part of OpenShift Virtualization and requires separate installation.
+<div class="note">
 
-<div>
+With the OpenShift Virtualization Operator, you can only start storage class migration for one VM at the time and the VM must be running. If you need to migrate more VMs at once or migrate a mix of running and stopped VMs, consider using the [Migration Toolkit for Containers (MTC)](https://docs.redhat.com/en/documentation/migration_toolkit_for_containers/1.8/html/migration_toolkit_for_containers/index).
 
-<div class="title">
-
-Prerequisites
+Migration Toolkit for Containers is not part of OpenShift Virtualization and requires separate installation.
 
 </div>
 
@@ -22,16 +17,6 @@ Prerequisites
 - The cluster must have a node available for live migration. As part of the storage class migration, the VM is live migrated to a different node.
 
 - The VM must be running.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
 
@@ -49,18 +34,8 @@ Procedure
 
 6.  Stay on the **Migrate VirtualMachine storage** page to watch the progress and wait for the confirmation that the migration completed successfully.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  From the **VirtualMachine details** page, navigate to **Configuration** → **Storage**.
 
 2.  Verify that all disks have the expected storage class listed in the **Storage class** column.
-
-</div>

@@ -8,31 +8,34 @@ To establish network connectivity and advertise routes for load-balancer service
 
 The following table describes the parameters for the BGP peer CR:
 
-| Parameter | Type | Description |
-|----|----|----|
-| `metadata.name` | `string` | Specifies the name for the BGP peer CR. |
-| `metadata.namespace` | `string` | Specifies the namespace for the BGP peer CR. |
-| `spec.myASN` | `integer` | Specifies the Autonomous System Number (ASN) for the local end of the BGP session. In all BGP peer CRs that you add, specify the same value. The range is `0` to `4294967295`. |
-| `spec.peerASN` | `integer` | Specifies the ASN for the remote end of the BGP session. The range is `0` to `4294967295`. If you use this parameter, you cannot specify a value in the `spec.dynamicASN` parameter. |
-| `spec.dynamicASN` | `string` | Detects the ASN to use for the remote end of the session without explicitly setting it. Specify `internal` for a peer with the same ASN, or `external` for a peer with a different ASN. If you use this parameter, you cannot specify a value in the `spec.peerASN` parameter. |
-| `spec.peerAddress` | `string` | Specifies the IP address of the peer to contact for establishing the BGP session. If you use this parameter, you cannot specify a value in the `spec.interface` parameter. |
-| `spec.interface` | `string` | Specifies the interface name to use when establishing a session. Use this parameter to configure unnumbered BGP peering. You must establish a point-to-point, layer 2 connection between the two BGP peers. You can use unnumbered BGP peering with IPv4, IPv6, or dual-stack, but you must enable IPv6 RAs (Router Advertisements). Each interface is limited to one BGP connection. If you use this parameter, you cannot specify a value in the `spec.peerAddress` parameter. |
-| `spec.sourceAddress` | `string` | Optional: Specifies the IP address to use when establishing the BGP session. The value must be an IPv4 address. |
-| `spec.peerPort` | `integer` | Optional: Specifies the network port of the peer to contact for establishing the BGP session. The range is `0` to `16384`. |
-| `spec.holdTime` | `string` | Optional: Specifies the duration for the hold time to propose to the BGP peer. The minimum value is 3 seconds (`3s`). The common units are seconds and minutes, such as `3s`, `1m`, and `5m30s`. To detect path failures more quickly, also configure BFD. |
-| `spec.keepaliveTime` | `string` | Optional: Specifies the maximum interval between sending keep-alive messages to the BGP peer. If you specify this parameter, you must also specify a value for the `holdTime` parameter. The specified value must be less than the value for the `holdTime` parameter. |
-| `spec.routerID` | `string` | Optional: Specifies the router ID to advertise to the BGP peer. If you specify this parameter, you must specify the same value in every BGP peer custom resource that you add. |
-| `spec.password` | `string` | Optional: Specifies the MD5 password to send to the peer for routers that enforce TCP MD5 authenticated BGP sessions. |
-| `spec.passwordSecret` | `string` | Optional: Specifies name of the authentication secret for the BGP peer. The secret must live in the `metallb` namespace and be of type basic-auth. |
-| `spec.bfdProfile` | `string` | Optional: Specifies the name of a BFD profile. |
-| `spec.nodeSelectors` | `object[]` | Optional: Specifies a selector, using match expressions and match labels, to control which nodes can connect to the BGP peer. |
-| `spec.ebgpMultiHop` | `boolean` | Optional: Specifies that the BGP peer is multiple network hops away. If the BGP peer is not directly connected to the same network, the speaker cannot establish a BGP session unless this parameter is set to `true`. This parameter applies to *external BGP*.External BGP is the term that is used to describe when a BGP peer belongs to a different Autonomous System. |
-| `connectTime` | `duration` | Specifies how long BGP waits between connection attempts to a neighbor. |
+| Parameter             | Type       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|-----------------------|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `metadata.name`       | `string`   | Specifies the name for the BGP peer CR.                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `metadata.namespace`  | `string`   | Specifies the namespace for the BGP peer CR.                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `spec.myASN`          | `integer`  | Specifies the Autonomous System Number (ASN) for the local end of the BGP session. In all BGP peer CRs that you add, specify the same value. The range is `0` to `4294967295`.                                                                                                                                                                                                                                                                                                   |
+| `spec.peerASN`        | `integer`  | Specifies the ASN for the remote end of the BGP session. The range is `0` to `4294967295`. If you use this parameter, you cannot specify a value in the `spec.dynamicASN` parameter.                                                                                                                                                                                                                                                                                             |
+| `spec.dynamicASN`     | `string`   | Detects the ASN to use for the remote end of the session without explicitly setting it. Specify `internal` for a peer with the same ASN, or `external` for a peer with a different ASN. If you use this parameter, you cannot specify a value in the `spec.peerASN` parameter.                                                                                                                                                                                                   |
+| `spec.peerAddress`    | `string`   | Specifies the IP address of the peer to contact for establishing the BGP session. If you use this parameter, you cannot specify a value in the `spec.interface` parameter.                                                                                                                                                                                                                                                                                                       |
+| `spec.interface`      | `string`   | Specifies the interface name to use when establishing a session. Use this parameter to configure unnumbered BGP peering. You must establish a point-to-point, layer 2 connection between the two BGP peers. You can use unnumbered BGP peering with IPv4, IPv6, or dual-stack, but you must enable IPv6 RAs (Router Advertisements). Each interface is limited to one BGP connection. If you use this parameter, you cannot specify a value in the `spec.peerAddress` parameter. |
+| `spec.sourceAddress`  | `string`   | Optional: Specifies the IP address to use when establishing the BGP session. The value must be an IPv4 address.                                                                                                                                                                                                                                                                                                                                                                  |
+| `spec.peerPort`       | `integer`  | Optional: Specifies the network port of the peer to contact for establishing the BGP session. The range is `0` to `16384`.                                                                                                                                                                                                                                                                                                                                                       |
+| `spec.holdTime`       | `string`   | Optional: Specifies the duration for the hold time to propose to the BGP peer. The minimum value is 3 seconds (`3s`). The common units are seconds and minutes, such as `3s`, `1m`, and `5m30s`. To detect path failures more quickly, also configure BFD.                                                                                                                                                                                                                       |
+| `spec.keepaliveTime`  | `string`   | Optional: Specifies the maximum interval between sending keep-alive messages to the BGP peer. If you specify this parameter, you must also specify a value for the `holdTime` parameter. The specified value must be less than the value for the `holdTime` parameter.                                                                                                                                                                                                           |
+| `spec.routerID`       | `string`   | Optional: Specifies the router ID to advertise to the BGP peer. If you specify this parameter, you must specify the same value in every BGP peer custom resource that you add.                                                                                                                                                                                                                                                                                                   |
+| `spec.password`       | `string`   | Optional: Specifies the MD5 password to send to the peer for routers that enforce TCP MD5 authenticated BGP sessions.                                                                                                                                                                                                                                                                                                                                                            |
+| `spec.passwordSecret` | `string`   | Optional: Specifies name of the authentication secret for the BGP peer. The secret must live in the `metallb` namespace and be of type basic-auth.                                                                                                                                                                                                                                                                                                                               |
+| `spec.bfdProfile`     | `string`   | Optional: Specifies the name of a BFD profile.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `spec.nodeSelectors`  | `object[]` | Optional: Specifies a selector, using match expressions and match labels, to control which nodes can connect to the BGP peer.                                                                                                                                                                                                                                                                                                                                                    |
+| `spec.ebgpMultiHop`   | `boolean`  | Optional: Specifies that the BGP peer is multiple network hops away. If the BGP peer is not directly connected to the same network, the speaker cannot establish a BGP session unless this parameter is set to `true`. This parameter applies to *external BGP*.External BGP is the term that is used to describe when a BGP peer belongs to a different Autonomous System.                                                                                                      |
+| `connectTime`         | `duration` | Specifies how long BGP waits between connection attempts to a neighbor.                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 MetalLB BGP peer custom resource
 
-> [!NOTE]
-> The `passwordSecret` parameter is mutually exclusive with the `password` parameter, and contains a reference to a secret containing the password to use. Setting both parameters results in a failure of the parsing.
+<div class="note">
+
+The `passwordSecret` parameter is mutually exclusive with the `password` parameter, and contains a reference to a secret containing the password to use. Setting both parameters results in a failure of the parsing.
+
+</div>
 
 # Configuring a BGP peer
 
@@ -40,29 +43,11 @@ To exchange routing information and advertise IP addresses for load balancer ser
 
 You can add a BGP peer custom resource to exchange routing information with network routers and advertise the IP addresses for services.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
 
 - Configure MetalLB with a BGP advertisement.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a file, such as `bgppeer.yaml`, with content like the following example:
 
@@ -86,8 +71,6 @@ Procedure
     $ oc apply -f bgppeer.yaml
     ```
 
-</div>
-
 # Configure a specific set of BGP peers for a given address pool
 
 To assign specific IP address pools to designated BGP peers, configure MetalLB BGP advertisements. Establishing these mappings ensures that your cluster advertises designated network ranges only to authorized routing peers for precise external traffic control.
@@ -100,27 +83,11 @@ This procedure demonstrates the following tasks:
 
 - Configure BGP advertisement to assign `pool1` to `peer1` and `pool2` to `peer2`.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create address pool `pool1`.
 
@@ -274,23 +241,27 @@ Procedure
         $ oc apply -f bgpadvertisement2.yaml
         ```
 
-</div>
-
 # Exposing a service through a network VRF
 
 To isolate network traffic and manage multiple routing tables, expose a service through a virtual routing and forwarding (VRF) instance. Associating a VRF with a MetalLB BGP peer ensures that external traffic is segmented and correctly routed to the intended application workloads.
 
-> [!IMPORTANT]
-> Exposing a service through a VRF on a BGP peer is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Exposing a service through a VRF on a BGP peer is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 By using a VRF on a network interface to expose a service through a BGP peer, you can segregate traffic to the service, configure independent routing decisions, and enable multi-tenancy support on a network interface.
 
-> [!NOTE]
-> By establishing a BGP session through an interface belonging to a network VRF, MetalLB can advertise services through that interface and enable external traffic to reach the service through this interface. However, the network VRF routing table is different from the default VRF routing table used by OVN-Kubernetes. Therefore, the traffic cannot reach the OVN-Kubernetes network infrastructure.
->
-> To enable the traffic directed to the service to reach the OVN-Kubernetes network infrastructure, you must configure routing rules to define the next hops for network traffic. See the `NodeNetworkConfigurationPolicy` resource in "Managing symmetric routing with MetalLB" in the *Additional resources* section for more information.
+<div class="note">
+
+By establishing a BGP session through an interface belonging to a network VRF, MetalLB can advertise services through that interface and enable external traffic to reach the service through this interface. However, the network VRF routing table is different from the default VRF routing table used by OVN-Kubernetes. Therefore, the traffic cannot reach the OVN-Kubernetes network infrastructure.
+
+To enable the traffic directed to the service to reach the OVN-Kubernetes network infrastructure, you must configure routing rules to define the next hops for network traffic. See the `NodeNetworkConfigurationPolicy` resource in "Managing symmetric routing with MetalLB" in the *Additional resources* section for more information.
+
+</div>
 
 The following high-level steps demonstrate how to expose a service through a network VRF with a BGP peer:
 
@@ -302,14 +273,6 @@ The following high-level steps demonstrate how to expose a service through a net
 
 4.  Deploy a service to test the configuration.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You installed the OpenShift CLI (`oc`).
 
 - You logged in as a user with `cluster-admin` privileges.
@@ -317,16 +280,6 @@ Prerequisites
 - You defined a `NodeNetworkConfigurationPolicy` (NNCP) to associate a Virtual Routing and Forwarding (VRF) instance with a network interface. For more information about completing this prerequisite, see the *Additional resources* section.
 
 - You installed MetalLB on your cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `BGPPeer` custom resource (CR):
 
@@ -348,8 +301,11 @@ Procedure
 
         `spec.vrf`: Specifies the network VRF instance to associate with the BGP peer. MetalLB can advertise services and make routing decisions based on the routing information in the VRF.
 
-        > [!NOTE]
-        > You must configure this network VRF instance in a `NodeNetworkConfigurationPolicy` CR. See the *Additional resources* for more information.
+        <div class="note">
+
+        You must configure this network VRF instance in a `NodeNetworkConfigurationPolicy` CR. See the *Additional resources* for more information.
+
+        </div>
 
     2.  Apply the configuration for the BGP peer by running the following command:
 
@@ -459,15 +415,7 @@ Procedure
         $ oc apply -f deploy-service.yaml
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Identify a MetalLB speaker pod by running the following command:
 
@@ -475,11 +423,9 @@ Verification
     $ oc get -n metallb-system pods -l component=speaker
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -488,19 +434,15 @@ Verification
     speaker-c6c5f   6/6     Running   0          69m
     ```
 
-    </div>
-
 2.  Verify that the state of the BGP session is `Established` in the speaker pod by running the following command, replacing the variables to match your configuration:
 
     ``` terminal
     $ oc exec -n metallb-system <speaker_pod> -c frr -- vtysh -c "show bgp vrf <vrf_name> neigh"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -512,15 +454,11 @@ Verification
     ...
     ```
 
-    </div>
-
 3.  Verify that the service is advertised correctly by running the following command:
 
     ``` terminal
     $ oc exec -n metallb-system <speaker_pod> -c frr -- vtysh -c "show bgp vrf <vrf_name> ipv4"
     ```
-
-</div>
 
 # Additional resources
 
@@ -575,8 +513,11 @@ spec:
 # ...
 ```
 
-> [!NOTE]
-> Deleting the bidirectional forwarding detection (BFD) profile and removing the `bfdProfile` added to the border gateway protocol (BGP) peer resource does not disable the BFD. Instead, the BGP peer starts using the default BFD profile. To disable BFD from a BGP peer resource, delete the BGP peer configuration and recreate it without a BFD profile. For more information, see [**BZ#2050824**](https://bugzilla.redhat.com/show_bug.cgi?id=2050824).
+<div class="note">
+
+Deleting the bidirectional forwarding detection (BFD) profile and removing the `bfdProfile` added to the border gateway protocol (BGP) peer resource does not disable the BFD. Instead, the BGP peer starts using the default BFD profile. To disable BFD from a BGP peer resource, delete the BGP peer configuration and recreate it without a BFD profile. For more information, see [**BZ#2050824**](https://bugzilla.redhat.com/show_bug.cgi?id=2050824).
+
+</div>
 
 Example of specifying BGP peers for dual-stack networking
 To support dual-stack networking, add one BGP peer custom resource for IPv4 and one BGP peer custom resource for IPv6.
@@ -620,10 +561,13 @@ spec:
 # ...
 ```
 
-> [!NOTE]
-> To use the `interface` parameter, you must establish a point-to-point layer 2 connection between the two BGP peers. You can use unnumbered BGP peering with IPv4, IPv6, or dual-stack, but you must enable IPv6 Router Advertisements (RAs). Each interface is limited to one BGP connection.
->
-> If you use this parameter, you cannot specify a value in the `spec.bgp.routers.neighbors.address` parameter.
+<div class="note">
+
+To use the `interface` parameter, you must establish a point-to-point layer 2 connection between the two BGP peers. You can use unnumbered BGP peering with IPv4, IPv6, or dual-stack, but you must enable IPv6 Router Advertisements (RAs). Each interface is limited to one BGP connection.
+
+If you use this parameter, you cannot specify a value in the `spec.bgp.routers.neighbors.address` parameter.
+
+</div>
 
 # Additional resources
 

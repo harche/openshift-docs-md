@@ -4,10 +4,13 @@ For an overview of the Power Monitoring Operator, see [About power monitoring](.
 
 # Power monitoring 0.5 (Technology Preview) release notes overview
 
-> [!IMPORTANT]
-> Power monitoring is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Power monitoring is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 Power monitoring for Red Hat OpenShift enables you to monitor the power usage of workloads and identify the most power-consuming namespaces running in an OpenShift Container Platform cluster with key power consumption metrics, such as CPU or DRAM, measured at container level.
 
@@ -69,8 +72,11 @@ With this update, power monitoring for Red Hat OpenShift has the following dashb
 
 - Updated **Power Monitor / Namespace (Pods)** dashboard.
 
-> [!IMPORTANT]
-> The older metrics and dashboards are no longer supported. If you are managing your own custom dashboard or queries, you need to update to the newer versions.
+<div class="important">
+
+The older metrics and dashboards are no longer supported. If you are managing your own custom dashboard or queries, you need to update to the newer versions.
+
+</div>
 
 ## Power monitoring 0.5 (Technology Preview) deprecated and removed features
 
@@ -96,5 +102,8 @@ Power Monitoring Operator supported version table
 
 Power monitoring supported platforms
 
-> [!IMPORTANT]
-> Installations in virtual machines are not supported and will not function.
+<div class="important">
+
+Installations in virtual machines are not supported and will not function.
+
+</div>

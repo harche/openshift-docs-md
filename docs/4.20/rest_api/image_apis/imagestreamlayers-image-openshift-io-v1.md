@@ -13,15 +13,15 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `blobs` | `object` | blobs is a map of blob name to metadata about the blob. |
-| `blobs{}` | `object` | ImageLayerData contains metadata about an image layer. |
-| `images` | `object` | images is a map between an image name and the names of the blobs and config that comprise the image. |
-| `images{}` | `object` | ImageBlobReferences describes the blob references within an image. |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta_v2) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
+| Property     | Type                                                                                       | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                                   | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `blobs`      | `object`                                                                                   | blobs is a map of blob name to metadata about the blob.                                                                                                                                                                                                                                              |
+| `blobs{}`    | `object`                                                                                   | ImageLayerData contains metadata about an image layer.                                                                                                                                                                                                                                               |
+| `images`     | `object`                                                                                   | images is a map between an image name and the names of the blobs and config that comprise the image.                                                                                                                                                                                                 |
+| `images{}`   | `object`                                                                                   | ImageBlobReferences describes the blob references within an image.                                                                                                                                                                                                                                   |
+| `kind`       | `string`                                                                                   | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta_v2) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                |
 
 ## .blobs
 
@@ -44,10 +44,10 @@ Required
 
 - `mediaType`
 
-| Property | Type | Description |
-|----|----|----|
-| `mediaType` | `string` | MediaType of the referenced object. |
-| `size` | `integer` | Size of the layer in bytes as defined by the underlying store. This field is optional if the necessary information about size is not available. |
+| Property    | Type      | Description                                                                                                                                     |
+|-------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| `mediaType` | `string`  | MediaType of the referenced object.                                                                                                             |
+| `size`      | `integer` | Size of the layer in bytes as defined by the underlying store. This field is optional if the necessary information about size is not available. |
 
 ## .images
 
@@ -65,12 +65,12 @@ ImageBlobReferences describes the blob references within an image.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `config` | `string` | config, if set, is the blob that contains the image config. Some images do not have separate config blobs and this field will be set to nil if so. |
-| `imageMissing` | `boolean` | imageMissing is true if the image is referenced by the image stream but the image object has been deleted from the API by an administrator. When this field is set, layers and config fields may be empty and callers that depend on the image metadata should consider the image to be unavailable for download or viewing. |
-| `layers` | `array (string)` | layers is the list of blobs that compose this image, from base layer to top layer. All layers referenced by this array will be defined in the blobs map. Some images may have zero layers. |
-| `manifests` | `array (string)` | manifests is the list of other image names that this image points to. For a single architecture image, it is empty. For a multi-arch image, it consists of the digests of single architecture images, such images shouldn’t have layers nor config. |
+| Property       | Type             | Description                                                                                                                                                                                                                                                                                                                  |
+|----------------|------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `config`       | `string`         | config, if set, is the blob that contains the image config. Some images do not have separate config blobs and this field will be set to nil if so.                                                                                                                                                                           |
+| `imageMissing` | `boolean`        | imageMissing is true if the image is referenced by the image stream but the image object has been deleted from the API by an administrator. When this field is set, layers and config fields may be empty and callers that depend on the image metadata should consider the image to be unavailable for download or viewing. |
+| `layers`       | `array (string)` | layers is the list of blobs that compose this image, from base layer to top layer. All layers referenced by this array will be defined in the blobs map. Some images may have zero layers.                                                                                                                                   |
+| `manifests`    | `array (string)` | manifests is the list of other image names that this image points to. For a single architecture image, it is empty. For a multi-arch image, it consists of the digests of single architecture images, such images shouldn’t have layers nor config.                                                                          |
 
 # API endpoints
 
@@ -94,9 +94,9 @@ HTTP method
 Description
 read layers of the specified ImageStream
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImageStreamLayers`](../image_apis/imagestreamlayers-image-openshift-io-v1.xml#imagestreamlayers-image-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                    |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImageStreamLayers`](../image_apis/imagestreamlayers-image-openshift-io-v1.xml#imagestreamlayers-image-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                           |
 
 HTTP responses

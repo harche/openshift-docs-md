@@ -1,5 +1,8 @@
-> [!NOTE]
-> The `threescale-wasm-auth` module runs on integrations of 3scale API Management 2.11 or later with Red Hat OpenShift Service Mesh 2.1.0 or later.
+<div class="note">
+
+The `threescale-wasm-auth` module runs on integrations of 3scale API Management 2.11 or later with Red Hat OpenShift Service Mesh 2.1.0 or later.
+
+</div>
 
 The `threescale-wasm-auth` module is a [WebAssembly](https://webassembly.org) module that uses a set of interfaces, known as an application binary interfaces (*ABI*). This is defined by the [*Proxy-WASM*](https://github.com/proxy-wasm/spec) specification to drive any piece of software that implements the ABI so it can authorize HTTP requests against 3scale.
 
@@ -31,14 +34,9 @@ Service Mesh provides a custom resource definition to specify and apply Proxy-WA
 
 See [custom resource definition](../../operators/understanding/crds/crd-extending-api-with-crds.xml#crd-extending-api-with-crds) for more information.
 
-> [!NOTE]
-> Configuring the WebAssembly extension is currently a manual process. Support for fetching the configuration for services from the 3scale system will be available in a future release.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Configuring the WebAssembly extension is currently a manual process. Support for fetching the configuration for services from the 3scale system will be available in a future release.
 
 </div>
 
@@ -84,21 +82,11 @@ Prerequisites
   $ oc apply -f threescale-wasm-auth-bookinfo.yaml
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Migrating from `ServiceMeshExtension` to `WasmPlugin` resources](../../service_mesh/v2x/ossm-extensions.xml#ossm-extensions-migration-overview_ossm-extensions)
 
 - [Custom Resources](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources)
-
-</div>
 
 # Applying 3scale external ServiceEntry objects
 
@@ -106,23 +94,13 @@ To have the `threescale-wasm-auth` module authorize requests against 3scale, the
 
 The custom resources (CRs) set up the service entries and destination rules for secure access from within Service Mesh to 3scale Hosted (SaaS) for the backend and system components of the Service Management API and the Account Management API. The Service Management API receives queries for the authorization status of each request. The Account Management API provides API management configuration settings for your services.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Apply the following external `ServiceEntry` CR and related `DestinationRule` CR for 3scale Hosted **backend** to your cluster:
 
     1.  Add the `ServiceEntry` CR to a file called `service-entry-threescale-saas-backend.yml`:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        ServiceEntry CR
+        **ServiceEntry CR**
 
         </div>
 
@@ -142,15 +120,11 @@ Procedure
           resolution: DNS
         ```
 
-        </div>
-
     2.  Add the `DestinationRule` CR to a file called `destination-rule-threescale-saas-backend.yml`:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        DestinationRule CR
+        **DestinationRule CR**
 
         </div>
 
@@ -166,8 +140,6 @@ Procedure
               mode: SIMPLE
               sni: su1.3scale.net
         ```
-
-        </div>
 
     3.  Apply and save the external `ServiceEntry` CR for the 3scale Hosted backend to your cluster, by running the following command:
 
@@ -185,11 +157,9 @@ Procedure
 
     1.  Add the `ServiceEntry` CR to a file called `service-entry-threescale-saas-system.yml`:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        ServiceEntry CR
+        **ServiceEntry CR**
 
         </div>
 
@@ -209,15 +179,11 @@ Procedure
           resolution: DNS
         ```
 
-        </div>
-
     2.  Add the `DestinationRule` CR to a file called `destination-rule-threescale-saas-system.yml`:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        DestinationRule CR
+        **DestinationRule CR**
 
         </div>
 
@@ -234,8 +200,6 @@ Procedure
               sni: multitenant.3scale.net
         ```
 
-        </div>
-
     3.  Apply and save the external `ServiceEntry` CR for the 3scale Hosted system to your cluster, by running the following command:
 
         ``` terminal
@@ -248,21 +212,9 @@ Procedure
         $ oc apply -f <destination-rule-threescale-saas-system.yml>
         ```
 
-</div>
-
 Alternatively, you can deploy an in-mesh 3scale service. To deploy an in-mesh 3scale service, change the location of the services in the CR by deploying 3scale and linking to the deployment.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Service entry and destination rule documentation](../../service_mesh/v2x/ossm-traffic-manage.xml#ossm-routing-service-entries_traffic-management)
-
-</div>
 
 # The 3scale WebAssembly module configuration
 
@@ -272,24 +224,23 @@ The spec is embedded in the host and read by the `Proxy-WASM` module. Typically,
 
 If you use the `Proxy-WASM` module in stand-alone mode, you must write the configuration using the JSON format. Using the JSON format means using escaping and quoting where needed within the `host` configuration files, for example `Envoy`. When you use the WebAssembly module with the `WasmPlugin` resource, the configuration is in the YAML format. In this case, an invalid configuration forces the module to show diagnostics based on its JSON representation to a sidecar’s logging stream.
 
-> [!IMPORTANT]
-> The `EnvoyFilter` custom resource is not a supported API, although it can be used in some 3scale Istio adapter or Service Mesh releases. Using the `EnvoyFilter` custom resource is not recommended. Use the `WasmPlugin` API instead of the `EnvoyFilter` custom resource. If you must use the `EnvoyFilter` custom resource, you must specify the spec in JSON format.
+<div class="important">
+
+The `EnvoyFilter` custom resource is not a supported API, although it can be used in some 3scale Istio adapter or Service Mesh releases. Using the `EnvoyFilter` custom resource is not recommended. Use the `WasmPlugin` API instead of the `EnvoyFilter` custom resource. If you must use the `EnvoyFilter` custom resource, you must specify the spec in JSON format.
+
+</div>
 
 ## Configuring the 3scale WebAssembly module
 
 The architecture of the 3scale WebAssembly module configuration depends on the 3scale account and authorization service, and the list of services to handle.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Prerequisites
+**Prerequisites**
 
 </div>
 
 The prerequisites are a set of minimum mandatory fields in all cases:
-
-</div>
 
 - For the 3scale account and authorization service: the `backend-listener` URL.
 
@@ -303,14 +254,15 @@ The prerequisites are a set of minimum mandatory fields in all cases:
 
 The `api` top-level string from the 3scale WebAssembly module defines which version of the configuration the module will use.
 
-> [!NOTE]
-> A non-existent or unsupported version of the `api` object renders the 3scale WebAssembly module inoperable.
+<div class="note">
 
-<div class="formalpara">
+A non-existent or unsupported version of the `api` object renders the 3scale WebAssembly module inoperable.
 
-<div class="title">
+</div>
 
-The `api` top-level string example
+<div class="formalpara-title">
+
+**The `api` top-level string example**
 
 </div>
 
@@ -325,8 +277,6 @@ spec:
     api: v1
 # ...
 ```
-
-</div>
 
 The `api` entry defines the rest of the values for the configuration. The only accepted value is `v1`. New settings that break compatibility with the current configuration or need more logic that modules using `v1` cannot handle, will require different values.
 
@@ -351,12 +301,12 @@ spec:
 # ...
 ```
 
-| Name | Description | Required |
-|----|----|----|
-| `name` | An identifier for the 3scale service, currently not referenced elsewhere. | Optional |
-| `upstream` | The details about a network host to be contacted. `upstream` refers to the 3scale Account Management API host known as system. | Yes |
-| `token` | A 3scale personal access token with read permissions. | Yes |
-| `ttl` | The minimum amount of seconds to consider a configuration retrieved from this host as valid before trying to fetch new changes. The default is 600 seconds (10 minutes). **Note:** there is no maximum amount, but the module will generally fetch any configuration within a reasonable amount of time after this TTL elapses. | Optional |
+| Name       | Description                                                                                                                                                                                                                                                                                                                     | Required |
+|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+| `name`     | An identifier for the 3scale service, currently not referenced elsewhere.                                                                                                                                                                                                                                                       | Optional |
+| `upstream` | The details about a network host to be contacted. `upstream` refers to the 3scale Account Management API host known as system.                                                                                                                                                                                                  | Yes      |
+| `token`    | A 3scale personal access token with read permissions.                                                                                                                                                                                                                                                                           | Yes      |
+| `ttl`      | The minimum amount of seconds to consider a configuration retrieved from this host as valid before trying to fetch new changes. The default is 600 seconds (10 minutes). **Note:** there is no maximum amount, but the module will generally fetch any configuration within a reasonable amount of time after this TTL elapses. | Optional |
 
 `system` object fields
 
@@ -373,11 +323,11 @@ upstream:
 # ...
 ```
 
-| Name | Description | Required |
-|----|----|----|
-| `name` | `name` is not a free-form identifier. It is the identifier for the external host as defined by the proxy configuration. In the case of stand-alone `Envoy` configurations, it maps to the name of a [Cluster](https://www.envoyproxy.io/docs/envoy/v1.19.0/api-v3/config/cluster/v3/cluster.proto#config-cluster-v3-cluster), also known as `upstream` in other proxies. **Note:** the value of this field, because the Service Mesh and 3scale Istio adapter control plane configure the name according to a format using a vertical bar (\|) as the separator of multiple fields. For the purposes of this integration, always use the format: `outbound|<port>||<hostname>`. | Yes |
-| `url` | The complete URL to access the described service. Unless implied by the scheme, you must include the TCP port. | Yes |
-| `Timeout` | Timeout in milliseconds so that connections to this service that take more than the amount of time to respond will be considered errors. Default is 1000 seconds. | Optional |
+| Name      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Required |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+| `name`    | `name` is not a free-form identifier. It is the identifier for the external host as defined by the proxy configuration. In the case of stand-alone `Envoy` configurations, it maps to the name of a [Cluster](https://www.envoyproxy.io/docs/envoy/v1.19.0/api-v3/config/cluster/v3/cluster.proto#config-cluster-v3-cluster), also known as `upstream` in other proxies. **Note:** the value of this field, because the Service Mesh and 3scale Istio adapter control plane configure the name according to a format using a vertical bar (\|) as the separator of multiple fields. For the purposes of this integration, always use the format: `outbound|<port>||<hostname>`. | Yes      |
+| `url`     | The complete URL to access the described service. Unless implied by the scheme, you must include the TCP port.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Yes      |
+| `Timeout` | Timeout in milliseconds so that connections to this service that take more than the amount of time to respond will be considered errors. Default is 1000 seconds.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Optional |
 
 `upstream` object fields
 
@@ -399,9 +349,9 @@ spec:
 # ...
 ```
 
-| Name | Description | Required |
-|----|----|----|
-| `name` | An identifier for the 3scale backend, currently not referenced elsewhere. | Optional |
+| Name       | Description                                                                                                                 | Required                                    |
+|------------|-----------------------------------------------------------------------------------------------------------------------------|---------------------------------------------|
+| `name`     | An identifier for the 3scale backend, currently not referenced elsewhere.                                                   | Optional                                    |
 | `upstream` | The details about a network host to be contacted. This must refer to the 3scale Account Management API host, known, system. | Yes. The most important and required field. |
 
 `backend` object fields
@@ -444,41 +394,43 @@ Each element in the `services` array represents a 3scale service.
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Name</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Required</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ID</code></p></td>
 <td style="text-align: left;"><p>An identifier for this 3scale service, currently not referenced elsewhere.</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>token</code></p></td>
 <td style="text-align: left;"><p>This <code>token</code> can be found in the proxy configuration for your service in System or you can retrieve the it from System with following <code>curl</code> command:</p>
 <p><code>curl https://&lt;system_host&gt;/admin/api/services/&lt;service_id&gt;/proxy/configs/production/latest.json?access_token=&lt;access_token&gt;" | jq '.proxy_config.content.backend_authentication_value</code></p></td>
 <td style="text-align: left;"><p>Optional</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>authorities</code></p></td>
 <td style="text-align: left;"><p>An array of strings, each one representing the <em>Authority</em> of a <em>URL</em> to match. These strings accept glob patterns supporting the asterisk (<em>*</em>), plus sign (<em>+</em>), and question mark (<em>?</em>) matchers.</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>credentials</code></p></td>
 <td style="text-align: left;"><p>An object defining which kind of credentials to look for and where.</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mapping_rules</code></p></td>
 <td style="text-align: left;"><p>An array of objects representing mapping rules and 3scale methods to hit.</p></td>
 <td style="text-align: left;"><p>Optional</p></td>
 </tr>
 </tbody>
 </table>
+
+`services` object fields
 
 ## The 3scale WebAssembly module credentials object
 
@@ -502,11 +454,11 @@ spec:
 # ...
 ```
 
-| Name | Description | Required |
-|----|----|----|
-| `user_key` | This is an array of lookup queries that defines a 3scale user key. A user key is commonly known as an API key. | Optional |
-| `app_id` | This is an array of lookup queries that define a 3scale application identifier. Application identifiers are provided by 3scale or by using an identity provider like [Red Hat Single Sign-On (RH-SS0)](https://access.redhat.com/products/red-hat-single-sign-on), or OpenID Connect (OIDC). The resolution of the lookup queries specified here, whenever it is successful and resolves to two values, it sets up the `app_id` and the `app_key`. | Optional |
-| `app_key` | This is an array of lookup queries that define a 3scale application key. Application keys without a resolved `app_id` are useless, so only specify this field when `app_id` has been specified. | Optional |
+| Name       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                        | Required |
+|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+| `user_key` | This is an array of lookup queries that defines a 3scale user key. A user key is commonly known as an API key.                                                                                                                                                                                                                                                                                                                                     | Optional |
+| `app_id`   | This is an array of lookup queries that define a 3scale application identifier. Application identifiers are provided by 3scale or by using an identity provider like [Red Hat Single Sign-On (RH-SS0)](https://access.redhat.com/products/red-hat-single-sign-on), or OpenID Connect (OIDC). The resolution of the lookup queries specified here, whenever it is successful and resolves to two values, it sets up the `app_id` and the `app_key`. | Optional |
+| `app_key`  | This is an array of lookup queries that define a 3scale application key. Application keys without a resolved `app_id` are useless, so only specify this field when `app_id` has been specified.                                                                                                                                                                                                                                                    | Optional |
 
 `credentials` object fields
 
@@ -552,10 +504,10 @@ A `source` object exists as part of an array of sources within any of the `crede
 
 All `source`-type objects have at least the following two fields:
 
-| Name | Description | Required |
-|----|----|----|
-| `keys` | An array of strings, each one a `key`, referring to entries found in the input data. | Yes |
-| `ops` | An array of `operations` that perform a `key` entry match. The array is a pipeline where operations receive inputs and generate outputs on the next operation. An `operation` failing to provide an output resolves the `lookup query` as failed. The pipeline order of the operations determines the evaluation order. | Optional |
+| Name   | Description                                                                                                                                                                                                                                                                                                             | Required |
+|--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+| `keys` | An array of strings, each one a `key`, referring to entries found in the input data.                                                                                                                                                                                                                                    | Yes      |
+| `ops`  | An array of `operations` that perform a `key` entry match. The array is a pipeline where operations receive inputs and generate outputs on the next operation. An `operation` failing to provide an output resolves the `lookup query` as failed. The pipeline order of the operations determines the evaluation order. | Optional |
 
 `source`-type object fields
 
@@ -573,8 +525,11 @@ Each element in the `ops` array belonging to a specific `source type` is an `ope
 
 Most `operations` attend to one or more inputs, and produce one or more outputs. When they consume inputs or produce outputs, they work with a stack of values: each value consumed by the operations is popped from the stack of values and initially populated with any `source` matches. The values outputted by them are pushed to the stack. Other `operations` do not consume or produce outputs other than asserting certain properties, but they inspect a stack of values.
 
-> [!NOTE]
-> When resolution finishes, the values picked up by the next step, such as assigning the values to be an `app_id`, `app_key`, or `user_key`, are taken from the bottom values of the stack.
+<div class="note">
+
+When resolution finishes, the values picked up by the next step, such as assigning the values to be an `app_id`, `app_key`, or `user_key`, are taken from the bottom values of the stack.
+
+</div>
 
 There are a few different `operations` categories:
 
@@ -592,17 +547,7 @@ There are a few different `operations` categories:
 
 All operations are specified by the name identifiers as strings.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - Available [operations](https://github.com/3scale/threescale-wasm-auth/blob/main/docs/operations.md)
-
-</div>
 
 ## The 3scale WebAssembly module mapping_rules object
 
@@ -632,24 +577,24 @@ The `mapping_rule` object fields specify the following information:
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Name</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Required</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>method</code></p></td>
 <td style="text-align: left;"><p>Specifies a string representing an HTTP request method, also known as verb. Values accepted match the any one of the accepted HTTP method names, case-insensitive. A special value of any matches any method.</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>pattern</code></p></td>
 <td style="text-align: left;"><p>The pattern to match the HTTP request’s URI path component. This pattern follows the same syntax as documented by 3scale. It allows wildcards (use of the asterisk (*) character) using any sequence of characters between braces such as <code>{this}</code>.</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>usages</code></p></td>
 <td style="text-align: left;"><p>A list of <code>usage</code> objects. When the rule matches, all methods with their <code>deltas</code> are added to the list of methods sent to 3scale for authorization and reporting.</p>
 <p>Embed the <code>usages</code> object with the following required fields:</p>
@@ -659,7 +604,7 @@ The `mapping_rule` object fields specify the following information:
 </ul></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>last</code></p></td>
 <td style="text-align: left;"><p>Whether the successful matching of this rule should stop the evaluation of more mapping rules.</p></td>
 <td style="text-align: left;"><p>Optional Boolean. The default is <code>false</code></p></td>
@@ -667,15 +612,15 @@ The `mapping_rule` object fields specify the following information:
 </tbody>
 </table>
 
+`mapping_rule` object fields
+
 The following example is independent of existing hierarchies between methods in 3scale. That is, anything run on the 3scale side will not affect this. For example, the *Hits* metric might be a parent of them all, so it stores 4 hits due to the sum of all reported methods in the authorized request and calls the 3scale `Authrep` API endpoint.
 
 The example below uses a `GET` request to a path, `/products/1/sold`, that matches all the rules.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-`mapping_rules` `GET` request example
+**`mapping_rules` `GET` request example**
 
 </div>
 
@@ -707,8 +652,6 @@ spec:
             delta: 1
 # ...
 ```
-
-</div>
 
 All `usages` get added to the request the module performs to 3scale with usage data as follows:
 

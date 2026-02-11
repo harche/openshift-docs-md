@@ -6,29 +6,11 @@ As an administrator, you can boot a client over the network by first creating a 
 
 You can also specify a MAC address in the virtual machine instance configuration file, if required by the PXE server.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - A Linux bridge must be connected.
 
 - The PXE server must be connected to the same VLAN as the bridge.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Configure a PXE network on the cluster:
 
@@ -89,8 +71,11 @@ Procedure
           bootOrder: 1
         ```
 
-        > [!NOTE]
-        > Boot order is global for interfaces and disks.
+        <div class="note">
+
+        Boot order is global for interfaces and disks.
+
+        </div>
 
     2.  Assign a boot device number to the disk to ensure proper booting after operating system provisioning.
 
@@ -149,15 +134,7 @@ Procedure
     $ virtctl console vmi-pxe-boot
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify the interfaces and MAC address on the virtual machine and that the interface connected to the bridge has the specified MAC address. In this case, we used `eth1` for the PXE boot, without an IP address. The other interface, `eth0`, got an IP address from OpenShift Container Platform.
 
@@ -172,8 +149,6 @@ Verification
     3. eth1: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN group default qlen 1000
        link/ether de:00:00:00:00:de brd ff:ff:ff:ff:ff:ff
     ```
-
-</div>
 
 # OpenShift Virtualization networking glossary
 

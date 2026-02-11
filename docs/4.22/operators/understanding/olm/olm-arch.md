@@ -6,53 +6,28 @@ Operator Lifecycle Manager (OLM) is composed of two Operators: the OLM Operator 
 
 The OLM and Catalog Operators are responsible for managing the custom resource definitions (CRDs) that are the basis for the OLM framework:
 
-| Resource | Short name | Owner | Description |
-|----|----|----|----|
-| `ClusterServiceVersion` (CSV) | `csv` | OLM | Application metadata: name, version, icon, required resources, installation, and so on. |
-| `InstallPlan` | `ip` | Catalog | Calculated list of resources to be created to automatically install or upgrade a CSV. |
-| `CatalogSource` | `catsrc` | Catalog | A repository of CSVs, CRDs, and packages that define an application. |
-| `Subscription` | `sub` | Catalog | Used to keep CSVs up to date by tracking a channel in a package. |
-| `OperatorGroup` | `og` | OLM | Configures all Operators deployed in the same namespace as the `OperatorGroup` object to watch for their custom resource (CR) in a list of namespaces or cluster-wide. |
+| Resource                      | Short name | Owner   | Description                                                                                                                                                            |
+|-------------------------------|------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `ClusterServiceVersion` (CSV) | `csv`      | OLM     | Application metadata: name, version, icon, required resources, installation, and so on.                                                                                |
+| `InstallPlan`                 | `ip`       | Catalog | Calculated list of resources to be created to automatically install or upgrade a CSV.                                                                                  |
+| `CatalogSource`               | `catsrc`   | Catalog | A repository of CSVs, CRDs, and packages that define an application.                                                                                                   |
+| `Subscription`                | `sub`      | Catalog | Used to keep CSVs up to date by tracking a channel in a package.                                                                                                       |
+| `OperatorGroup`               | `og`       | OLM     | Configures all Operators deployed in the same namespace as the `OperatorGroup` object to watch for their custom resource (CR) in a list of namespaces or cluster-wide. |
 
 CRDs managed by OLM and Catalog Operators
 
 Each of these Operators is also responsible for creating the following resources:
 
-<table>
-<caption>Resources created by OLM and Catalog Operators</caption>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Resource</th>
-<th style="text-align: left;">Owner</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><p><code>Deployments</code></p></td>
-<td rowspan="4" style="text-align: left;"><p>OLM</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>ServiceAccounts</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>(Cluster)Roles</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>(Cluster)RoleBindings</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>CustomResourceDefinitions</code> (CRDs)</p></td>
-<td rowspan="2" style="text-align: left;"><p>Catalog</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>ClusterServiceVersions</code></p></td>
-</tr>
-</tbody>
-</table>
+| Resource                           | Owner   |
+|------------------------------------|---------|
+| `Deployments`                      | OLM     |
+| `ServiceAccounts`                  |         |
+| `(Cluster)Roles`                   |         |
+| `(Cluster)RoleBindings`            |         |
+| `CustomResourceDefinitions` (CRDs) | Catalog |
+| `ClusterServiceVersions`           |         |
+
+Resources created by OLM and Catalog Operators
 
 # OLM Operator
 
@@ -66,8 +41,11 @@ The OLM Operator uses the following workflow:
 
 2.  If requirements are met, run the install strategy for the CSV.
 
-    > [!NOTE]
-    > A CSV must be an active member of an Operator group for the install strategy to run.
+    <div class="note">
+
+    A CSV must be an active member of an Operator group for the install strategy to run.
+
+    </div>
 
 # Catalog Operator
 

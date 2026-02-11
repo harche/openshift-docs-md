@@ -44,14 +44,6 @@ For shared storage providers like NFS, the PV registers its group ID (GID) as an
 
 For block storage providers like AWS Elastic Block Store (EBS), GCE Persistent Disks, and iSCSI, OpenShift Container Platform uses SELinux capabilities to secure the root of the mounted volume for non-privileged pods, making the mounted volume owned by and only visible to the container with which it is associated.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Understanding persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
 
 - [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-using-csi)
@@ -63,5 +55,3 @@ Additional resources
 - [Persistent storage using AWS Elastic Block Store](../../storage/persistent_storage/persistent-storage-aws.xml#persistent-storage-using-aws-ebs)
 
 - [Persistent storage using GCE Persistent Disk](../../storage/persistent_storage/persistent-storage-gce.xml#persistent-storage-using-gce)
-
-</div>

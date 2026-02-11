@@ -10,14 +10,15 @@ You can configure a certificate authority [to use with your scaled objects](../.
 
 You can scale pods based on Prometheus metrics, which can use the installed OpenShift Container Platform monitoring or an external Prometheus server as the metrics source. See "Configuring the custom metrics autoscaler to use OpenShift Container Platform monitoring" for information on the configurations required to use the OpenShift Container Platform monitoring as a source for metrics.
 
-> [!NOTE]
-> If Prometheus is collecting metrics from the application that the custom metrics autoscaler is scaling, do not set the minimum replicas to `0` in the custom resource. If there are no application pods, the custom metrics autoscaler does not have any metrics to scale on.
+<div class="note">
 
-<div class="formalpara">
+If Prometheus is collecting metrics from the application that the custom metrics autoscaler is scaling, do not set the minimum replicas to `0` in the custom resource. If there are no application pods, the custom metrics autoscaler does not have any metrics to scale on.
 
-<div class="title">
+</div>
 
-Example scaled object with a Prometheus target
+<div class="formalpara-title">
+
+**Example scaled object with a Prometheus target**
 
 </div>
 
@@ -43,8 +44,6 @@ spec:
       unsafeSsl: "false"
       timeout: 1000
 ```
-
-</div>
 
 - Specifies Prometheus as the trigger type.
 
@@ -74,8 +73,11 @@ spec:
 
   - If `true`, the certificate check is not performed.
 
-    > [!IMPORTANT]
-    > Skipping the check is not recommended.
+    <div class="important">
+
+    Skipping the check is not recommended.
+
+    </div>
 
 - Optional: Specifies an HTTP request timeout in milliseconds for the HTTP client used by this Prometheus trigger. This value overrides any global timeout setting.
 
@@ -83,11 +85,9 @@ spec:
 
 You can use the Custom Metrics Autoscaler with NVIDIA Data Center GPU Manager (DCGM) metrics to scale workloads based on GPU utilization. This is particularly useful for AI and machine learning workloads that require GPU resources.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example scaled object with a Prometheus target for GPU-based autoscaling
+**Example scaled object with a Prometheus target for GPU-based autoscaling**
 
 </div>
 
@@ -116,8 +116,6 @@ spec:
       name: keda-trigger-auth-prometheus
 ```
 
-</div>
-
 - Specifies the minimum number of replicas to maintain. For GPU workloads, this should not be set to `0` to ensure that metrics continue to be collected.
 
 - Specifies the maximum number of replicas allowed during scale-up operations.
@@ -132,8 +130,11 @@ You can use the installed OpenShift Container Platform Prometheus monitoring as 
 
 For your scaled objects to be able to read the OpenShift Container Platform Prometheus metrics, you must use a trigger authentication or a cluster trigger authentication in order to provide the authentication information required. The following procedure differs depending on which trigger authentication method you use. For more information on trigger authentications, see "Understanding custom metrics autoscaler trigger authentications".
 
-> [!NOTE]
-> These steps are not required for an external Prometheus source.
+<div class="note">
+
+These steps are not required for an external Prometheus source.
+
+</div>
 
 You must perform the following tasks, as described in this section:
 
@@ -147,29 +148,13 @@ You must perform the following tasks, as described in this section:
 
 - Reference the token in the trigger authentication object used by Prometheus.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - OpenShift Container Platform monitoring must be installed.
 
 - Monitoring of user-defined workloads must be enabled in OpenShift Container Platform monitoring, as described in the **Creating a user-defined workload monitoring config map** section.
 
 - The Custom Metrics Autoscaler Operator must be installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Change to the appropriate project:
 
@@ -303,8 +288,6 @@ Procedure
         $ oc create -f <file-name>.yaml
         ```
 
-</div>
-
 You can now deploy a scaled object or scaled job to enable autoscaling for your application, as described in "Understanding how to add custom metrics autoscalers". To use OpenShift Container Platform monitoring as the source, in the trigger, or scaler, you must include the following parameters:
 
 - `triggers.type` must be `prometheus`
@@ -317,17 +300,9 @@ You can now deploy a scaled object or scaled job to enable autoscaling for your 
 
 - `triggers.authenticationRef` must point to the trigger authentication resource specified in the previous step
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Understanding custom metrics autoscaler trigger authentications](../../nodes/cma/nodes-cma-autoscaling-custom-trigger-auth.xml#nodes-cma-autoscaling-custom-trigger-auth)
-
-</div>
 
 # Understanding the CPU trigger
 
@@ -337,21 +312,15 @@ The custom metrics autoscaler scales the pods associated with an object to maint
 
 <div class="note">
 
-<div class="title">
-
-</div>
-
 - This trigger cannot be used with the `ScaledJob` custom resource.
 
 - When using a memory trigger to scale an object, the object does not scale to `0`, even if you are using multiple triggers.
 
 </div>
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example scaled object with a CPU target
+**Example scaled object with a CPU target**
 
 </div>
 
@@ -370,8 +339,6 @@ spec:
       value: '60'
   minReplicaCount: 1
 ```
-
-</div>
 
 - Specifies CPU as the trigger type.
 
@@ -393,21 +360,15 @@ The custom metrics autoscaler scales the pods associated with an object to maint
 
 <div class="note">
 
-<div class="title">
-
-</div>
-
 - This trigger cannot be used with the `ScaledJob` custom resource.
 
 - When using a memory trigger to scale an object, the object does not scale to `0`, even if you are using multiple triggers.
 
 </div>
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example scaled object with a memory target
+**Example scaled object with a memory target**
 
 </div>
 
@@ -427,8 +388,6 @@ spec:
       containerName: api
 ```
 
-</div>
-
 - Specifies memory as the trigger type.
 
 - Specifies the type of metric to use, either `Utilization` or `AverageValue`.
@@ -445,22 +404,23 @@ spec:
 
 You can scale pods based on an Apache Kafka topic or other services that support the Kafka protocol. The custom metrics autoscaler does not scale higher than the number of Kafka partitions, unless you set the `allowIdleConsumers` parameter to `true` in the scaled object or scaled job.
 
-> [!NOTE]
-> If the number of consumer groups exceeds the number of partitions in a topic, the extra consumer groups remain idle. To avoid this, by default the number of replicas does not exceed:
->
-> - The number of partitions on a topic, if a topic is specified
->
-> - The number of partitions of all topics in the consumer group, if no topic is specified
->
-> - The `maxReplicaCount` specified in scaled object or scaled job CR
->
-> You can use the `allowIdleConsumers` parameter to disable these default behaviors.
+<div class="note">
 
-<div class="formalpara">
+If the number of consumer groups exceeds the number of partitions in a topic, the extra consumer groups remain idle. To avoid this, by default the number of replicas does not exceed:
 
-<div class="title">
+- The number of partitions on a topic, if a topic is specified
 
-Example scaled object with a Kafka target
+- The number of partitions of all topics in the consumer group, if no topic is specified
+
+- The `maxReplicaCount` specified in scaled object or scaled job CR
+
+You can use the `allowIdleConsumers` parameter to disable these default behaviors.
+
+</div>
+
+<div class="formalpara-title">
+
+**Example scaled object with a Kafka target**
 
 </div>
 
@@ -488,8 +448,6 @@ spec:
       partitionLimitation: '1,2,10-20,31'
       tls: enable
 ```
-
-</div>
 
 - Specifies Kafka as the trigger type.
 
@@ -537,11 +495,9 @@ When the time range starts, the custom metrics autoscaler scales the pods associ
 
 The following example scales the pods associated with this scaled object from `0` to `100` from 6:00 AM to 6:30 PM India Standard Time.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example scaled object with a Cron trigger
+**Example scaled object with a Cron trigger**
 
 </div>
 
@@ -565,8 +521,6 @@ spec:
       end: "30 18 * * *"
       desiredReplicas: "100"
 ```
-
-</div>
 
 - Specifies the minimum number of pods to scale down to at the end of the time frame.
 
@@ -592,11 +546,9 @@ The pod counts includes pods with a `Succeeded` or `Failed` phase.
 
 For example, if you have a `frontend` deployment and a `backend` deployment. You can use a `kubernetes-workload` trigger to scale the `backend` deployment based on the number of `frontend` pods. If number of `frontend` pods goes up, the Operator would scale the `backend` pods to maintain the specified ratio. In this example, if there are 10 pods with the `app=frontend` pod selector, the Operator scales the backend pods to 5 in order to maintain the `0.5` ratio set in the scaled object.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example scaled object with a Kubernetes workload trigger
+**Example scaled object with a Kubernetes workload trigger**
 
 </div>
 
@@ -614,8 +566,6 @@ spec:
       value: '0.5'
       activationValue: '3.1'
 ```
-
-</div>
 
 - Specifies a Kubernetes workload trigger.
 

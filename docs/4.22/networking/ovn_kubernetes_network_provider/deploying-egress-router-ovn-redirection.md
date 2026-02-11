@@ -50,11 +50,9 @@ spec:
 
 - Optional: The `fallbackIP` field specifies a destination IP address. If you do not specify any redirect rules, the egress router sends all traffic to this fallback IP address. If you specify redirect rules, any connections to network ports that are not defined in the rules are sent by the egress router to this fallback IP address. If you do not specify this field, the egress router rejects connections to network ports that are not defined in the rules.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example egress router specification
+**Example egress router specification**
 
 </div>
 
@@ -99,35 +97,15 @@ spec:
   }
 ```
 
-</div>
-
 # Deploying an egress router in redirect mode
 
 You can deploy an egress router to redirect traffic from its own reserved source IP address to one or more destination IP addresses.
 
 After you add an egress router, the client pods that need to use the reserved source IP address must be modified to connect to the egress router rather than connecting directly to the destination IP.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an egress router definition.
 
@@ -152,19 +130,13 @@ Procedure
 
       After you create the service, your pods can connect to the service. The egress router pod redirects traffic to the corresponding port on the destination IP address. The connections originate from the reserved source IP address.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 To verify that the Cluster Network Operator started the egress router, complete the following procedure:
-
-</div>
 
 1.  View the network attachment definition that the Operator created for the egress router:
 
@@ -174,11 +146,9 @@ To verify that the Cluster Network Operator started the egress router, complete 
 
     The name of the network attachment definition is not configurable.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -186,8 +156,6 @@ To verify that the Cluster Network Operator started the egress router, complete 
     NAME                    AGE
     egress-router-cni-nad   18m
     ```
-
-    </div>
 
 2.  View the deployment for the egress router pod:
 
@@ -197,11 +165,9 @@ To verify that the Cluster Network Operator started the egress router, complete 
 
     The name of the deployment is not configurable.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -210,19 +176,15 @@ To verify that the Cluster Network Operator started the egress router, complete 
     egress-router-cni-deployment   1/1     1            1           18m
     ```
 
-    </div>
-
 3.  View the status of the egress router pod:
 
     ``` terminal
     $ oc get pods -l app=egress-router-cni
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -230,8 +192,6 @@ To verify that the Cluster Network Operator started the egress router, complete 
     NAME                                            READY   STATUS    RESTARTS   AGE
     egress-router-cni-deployment-575465c75c-qkq6m   1/1     Running   0          18m
     ```
-
-    </div>
 
 4.  View the logs and the routing table for the egress router pod.
 
@@ -261,11 +221,9 @@ To verify that the Cluster Network Operator started the egress router, complete 
     # cat /tmp/egress-router-log
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -285,8 +243,6 @@ To verify that the Cluster Network Operator started the egress router, complete 
     2021-04-26T12:27:20Z [debug] Added iptables rule: iptables -t nat -o net1 -j SNAT --to-source 192.168.12.99
     ```
 
-    </div>
-
     The logging file location and logging level are not configurable when you start the egress router by creating an `EgressRouter` object as described in this procedure.
 
 5.  From within the `chroot` environment console, get the container ID:
@@ -295,11 +251,9 @@ To verify that the Cluster Network Operator started the egress router, complete 
     # crictl ps --name egress-router-cni-pod | awk '{print $1}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -308,27 +262,21 @@ To verify that the Cluster Network Operator started the egress router, complete 
     bac9fae69ddb6
     ```
 
-    </div>
-
 6.  Determine the process ID of the container. In this example, the container ID is `bac9fae69ddb6`:
 
     ``` terminal
     # crictl inspect -o yaml bac9fae69ddb6 | grep 'pid:' | awk '{print $2}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     68857
     ```
-
-    </div>
 
 7.  Enter the network namespace of the container:
 
@@ -344,11 +292,9 @@ To verify that the Cluster Network Operator started the egress router, complete 
 
     In the following example output, the `net1` network interface is the default route. Traffic for the cluster network uses the `eth0` network interface. Traffic for the `192.168.12.0/24` network uses the `net1` network interface and originates from the reserved source IP address `192.168.12.99`. The pod routes all other traffic to the gateway at IP address `192.168.12.1`. Routing for the service network is not shown.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -358,5 +304,3 @@ To verify that the Cluster Network Operator started the egress router, complete 
     192.168.12.0/24 dev net1 proto kernel scope link src 192.168.12.99
     192.168.12.1 dev net1
     ```
-
-    </div>

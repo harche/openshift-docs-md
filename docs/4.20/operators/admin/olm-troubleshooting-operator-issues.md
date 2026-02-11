@@ -4,56 +4,31 @@ If you experience Operator issues, verify Operator subscription status. Check Op
 
 Subscriptions can report the following condition types:
 
-| Condition | Description |
-|----|----|
+| Condition                 | Description                                                                |
+|---------------------------|----------------------------------------------------------------------------|
 | `CatalogSourcesUnhealthy` | Some or all of the catalog sources to be used in resolution are unhealthy. |
-| `InstallPlanMissing` | An install plan for a subscription is missing. |
-| `InstallPlanPending` | An install plan for a subscription is pending installation. |
-| `InstallPlanFailed` | An install plan for a subscription has failed. |
-| `ResolutionFailed` | The dependency resolution for a subscription has failed. |
+| `InstallPlanMissing`      | An install plan for a subscription is missing.                             |
+| `InstallPlanPending`      | An install plan for a subscription is pending installation.                |
+| `InstallPlanFailed`       | An install plan for a subscription has failed.                             |
+| `ResolutionFailed`        | The dependency resolution for a subscription has failed.                   |
 
 Subscription condition types
 
-> [!NOTE]
-> Default OpenShift Container Platform cluster Operators are managed by the Cluster Version Operator (CVO) and they do not have a `Subscription` object. Application Operators are managed by Operator Lifecycle Manager (OLM) and they have a `Subscription` object.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+Default OpenShift Container Platform cluster Operators are managed by the Cluster Version Operator (CVO) and they do not have a `Subscription` object. Application Operators are managed by Operator Lifecycle Manager (OLM) and they have a `Subscription` object.
 
 </div>
 
 - [Catalog health requirements](../../operators/understanding/olm/olm-understanding-olm.xml#olm-cs-health_olm-understanding-olm)
 
-</div>
-
 # Viewing Operator subscription status by using the CLI
 
 You can view Operator subscription status by using the CLI.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List Operator subscriptions:
 
@@ -69,11 +44,9 @@ Procedure
 
 3.  In the command output, find the `Conditions` section for the status of Operator subscription condition types. In the following example, the `CatalogSourcesUnhealthy` condition type has a status of `false` because all available catalog sources are healthy:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -94,38 +67,19 @@ Procedure
     # ...
     ```
 
-    </div>
+<div class="note">
+
+Default OpenShift Container Platform cluster Operators are managed by the Cluster Version Operator (CVO) and they do not have a `Subscription` object. Application Operators are managed by Operator Lifecycle Manager (OLM) and they have a `Subscription` object.
 
 </div>
-
-> [!NOTE]
-> Default OpenShift Container Platform cluster Operators are managed by the Cluster Version Operator (CVO) and they do not have a `Subscription` object. Application Operators are managed by Operator Lifecycle Manager (OLM) and they have a `Subscription` object.
 
 # Viewing Operator catalog source status by using the CLI
 
 You can view the status of an Operator catalog source by using the CLI.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List the catalog sources in a namespace. For example, you can check the `openshift-marketplace` namespace, which is used for cluster-wide catalog sources:
 
@@ -133,11 +87,9 @@ Procedure
     $ oc get catalogsources -n openshift-marketplace
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -149,19 +101,15 @@ Procedure
     redhat-operators      Red Hat Operators     grpc   Red Hat     55m
     ```
 
-    </div>
-
 2.  Use the `oc describe` command to get more details and status about a catalog source:
 
     ``` terminal
     $ oc describe catalogsource example-catalog -n openshift-marketplace
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -188,8 +136,6 @@ Procedure
     # ...
     ```
 
-    </div>
-
     In the preceding example output, the last observed state is `TRANSIENT_FAILURE`. This state indicates that there is a problem establishing a connection for the catalog source.
 
 3.  List the pods in the namespace where your catalog source was created:
@@ -198,11 +144,9 @@ Procedure
     $ oc get pods -n openshift-marketplace
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -215,8 +159,6 @@ Procedure
     redhat-operators-smxx8                  1/1     Running            0          36m
     ```
 
-    </div>
-
     When a catalog source is created in a namespace, a pod for the catalog source is created in that namespace. In the preceding example output, the status for the `example-catalog-bwt8z` pod is `ImagePullBackOff`. This status indicates that there is an issue pulling the catalog source’s index image.
 
 4.  Use the `oc describe` command to inspect a pod for more detailed information:
@@ -225,11 +167,9 @@ Procedure
     $ oc describe pod example-catalog-bwt8z -n openshift-marketplace
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -251,19 +191,7 @@ Procedure
       Warning  Failed          8s (x3 over 47s)   kubelet            Error: ErrImagePull
     ```
 
-    </div>
-
     In the preceding example output, the error messages indicate that the catalog source’s index image is failing to pull successfully because of an authorization issue. For example, the index image might be stored in a registry that requires login credentials.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Operator Lifecycle Manager concepts and resources → Catalog source](../../operators/understanding/olm/olm-understanding-olm.xml#olm-catalogsource_olm-understanding-olm)
 
@@ -271,35 +199,15 @@ Additional resources
 
 - [Accessing images for Operators from private registries](../../operators/admin/olm-managing-custom-catalogs.xml#olm-accessing-images-private-registries_olm-managing-custom-catalogs)
 
-</div>
-
 # Querying Operator pod status
 
 You can list Operator pods within a cluster and their status. You can also collect a detailed Operator pod summary.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - Your API service is still functional.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List Operators running in the cluster. The output includes Operator version, availability, and up-time information:
 
@@ -333,8 +241,11 @@ Procedure
         # chroot /host
         ```
 
-        > [!NOTE]
-        > OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>` instead.
+        <div class="note">
+
+        OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>` instead.
+
+        </div>
 
     3.  List details about the node’s containers, including state and associated pod IDs:
 
@@ -350,19 +261,9 @@ Procedure
 
     5.  Exit from the debug shell.
 
-</div>
-
 # Gathering Operator logs
 
 If you experience Operator issues, you can gather detailed diagnostic information from Operator pod logs.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -371,16 +272,6 @@ Prerequisites
 - You have installed the OpenShift CLI (`oc`).
 
 - You have the fully qualified domain names of the control plane or control plane machines.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List the Operator pods that are running in the Operator’s namespace, plus the pod status, restarts, and age:
 
@@ -432,20 +323,17 @@ Procedure
         $ ssh core@<master-node>.<cluster_name>.<base_domain> sudo crictl logs -f <container_id>
         ```
 
-        > [!NOTE]
-        > OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. Before attempting to collect diagnostic data over SSH, review whether the data collected by running `oc adm must gather` and other `oc` commands is sufficient instead. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>`.
+        <div class="note">
 
-</div>
+        OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. Before attempting to collect diagnostic data over SSH, review whether the data collected by running `oc adm must gather` and other `oc` commands is sufficient instead. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>`.
+
+        </div>
 
 # Disabling the Machine Config Operator from automatically rebooting
 
 When configuration changes are made by the Machine Config Operator (MCO), Red Hat Enterprise Linux CoreOS (RHCOS) must reboot for the changes to take effect. Whether the configuration change is automatic or manual, an RHCOS node reboots automatically unless it is paused.
 
 <div class="note">
-
-<div class="title">
-
-</div>
 
 - When the MCO detects any of the following changes, it applies the update without draining or rebooting the node:
 
@@ -471,32 +359,21 @@ To avoid unwanted disruptions, you can modify the machine config pool (MCP) to p
 
 To avoid unwanted disruptions from changes made by the Machine Config Operator (MCO), you can use the OpenShift Container Platform web console to modify the machine config pool (MCP) to prevent the MCO from making any changes to nodes in that pool. This prevents any reboots that would normally be part of the MCO update process.
 
-> [!NOTE]
-> See second `NOTE` in [Disabling the Machine Config Operator from automatically rebooting](../../support/troubleshooting/troubleshooting-operator-issues.xml#troubleshooting-disabling-autoreboot-mco_troubleshooting-operator-issues).
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+See second `NOTE` in [Disabling the Machine Config Operator from automatically rebooting](../../support/troubleshooting/troubleshooting-operator-issues.xml#troubleshooting-disabling-autoreboot-mco_troubleshooting-operator-issues).
 
 </div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To pause or unpause automatic MCO update rebooting:
-
-</div>
 
 - Pause the autoreboot process:
 
@@ -510,11 +387,9 @@ To pause or unpause automatic MCO update rebooting:
 
   5.  In the YAML, update the `spec.paused` field to `true`.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Sample MachineConfigPool object
+      **Sample MachineConfigPool object**
 
       </div>
 
@@ -528,8 +403,6 @@ To pause or unpause automatic MCO update rebooting:
       # ...
       ```
 
-      </div>
-
       - Update the `spec.paused` field to `true` to pause rebooting.
 
   6.  To verify that the MCP is paused, return to the **MachineConfigPools** page.
@@ -538,8 +411,11 @@ To pause or unpause automatic MCO update rebooting:
 
       If the MCP has pending changes while paused, the **Updated** column is **False** and **Updating** is **False**. When **Updated** is **True** and **Updating** is **False**, there are no pending changes.
 
-      > [!IMPORTANT]
-      > If there are pending changes (where both the **Updated** and **Updating** columns are **False**), it is recommended to schedule a maintenance window for a reboot as early as possible. Use the following steps for unpausing the autoreboot process to apply the changes that were queued since the last reboot.
+      <div class="important">
+
+      If there are pending changes (where both the **Updated** and **Updating** columns are **False**), it is recommended to schedule a maintenance window for a reboot as early as possible. Use the following steps for unpausing the autoreboot process to apply the changes that were queued since the last reboot.
+
+      </div>
 
 - Unpause the autoreboot process:
 
@@ -553,11 +429,9 @@ To pause or unpause automatic MCO update rebooting:
 
   5.  In the YAML, update the `spec.paused` field to `false`.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Sample MachineConfigPool object
+      **Sample MachineConfigPool object**
 
       </div>
 
@@ -571,12 +445,13 @@ To pause or unpause automatic MCO update rebooting:
       # ...
       ```
 
-      </div>
-
       - Update the `spec.paused` field to `false` to allow rebooting.
 
-        > [!NOTE]
-        > By unpausing an MCP, the MCO applies all paused changes reboots Red Hat Enterprise Linux CoreOS (RHCOS) as needed.
+        <div class="note">
+
+        By unpausing an MCP, the MCO applies all paused changes reboots Red Hat Enterprise Linux CoreOS (RHCOS) as needed.
+
+        </div>
 
   6.  To verify that the MCP is paused, return to the **MachineConfigPools** page.
 
@@ -588,14 +463,9 @@ To pause or unpause automatic MCO update rebooting:
 
 To avoid unwanted disruptions from changes made by the Machine Config Operator (MCO), you can modify the machine config pool (MCP) using the OpenShift CLI (oc) to prevent the MCO from making any changes to nodes in that pool. This prevents any reboots that would normally be part of the MCO update process.
 
-> [!NOTE]
-> See second `NOTE` in [Disabling the Machine Config Operator from automatically rebooting](../../support/troubleshooting/troubleshooting-operator-issues.xml#troubleshooting-disabling-autoreboot-mco_troubleshooting-operator-issues).
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+See second `NOTE` in [Disabling the Machine Config Operator from automatically rebooting](../../support/troubleshooting/troubleshooting-operator-issues.xml#troubleshooting-disabling-autoreboot-mco_troubleshooting-operator-issues).
 
 </div>
 
@@ -603,29 +473,21 @@ Prerequisites
 
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To pause or unpause automatic MCO update rebooting:
 
-</div>
-
 - Pause the autoreboot process:
 
   1.  Update the `MachineConfigPool` custom resource to set the `spec.paused` field to `true`.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Control plane (master) nodes
+      **Control plane (master) nodes**
 
       </div>
 
@@ -633,13 +495,9 @@ To pause or unpause automatic MCO update rebooting:
       $ oc patch --type=merge --patch='{"spec":{"paused":true}}' machineconfigpool/master
       ```
 
-      </div>
+      <div class="formalpara-title">
 
-      <div class="formalpara">
-
-      <div class="title">
-
-      Worker nodes
+      **Worker nodes**
 
       </div>
 
@@ -647,15 +505,11 @@ To pause or unpause automatic MCO update rebooting:
       $ oc patch --type=merge --patch='{"spec":{"paused":true}}' machineconfigpool/worker
       ```
 
-      </div>
-
   2.  Verify that the MCP is paused:
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Control plane (master) nodes
+      **Control plane (master) nodes**
 
       </div>
 
@@ -663,13 +517,9 @@ To pause or unpause automatic MCO update rebooting:
       $ oc get machineconfigpool/master --template='{{.spec.paused}}'
       ```
 
-      </div>
+      <div class="formalpara-title">
 
-      <div class="formalpara">
-
-      <div class="title">
-
-      Worker nodes
+      **Worker nodes**
 
       </div>
 
@@ -677,21 +527,15 @@ To pause or unpause automatic MCO update rebooting:
       $ oc get machineconfigpool/worker --template='{{.spec.paused}}'
       ```
 
-      </div>
+      <div class="formalpara-title">
 
-      <div class="formalpara">
-
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
       ``` terminal
       true
       ```
-
-      </div>
 
       The `spec.paused` field is `true` and the MCP is paused.
 
@@ -701,11 +545,9 @@ To pause or unpause automatic MCO update rebooting:
       # oc get machineconfigpool
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -713,22 +555,21 @@ To pause or unpause automatic MCO update rebooting:
           master   rendered-master-33cf0a1254318755d7b48002c597bf91   True      False
           worker   rendered-worker-e405a5bdb0db1295acea08bcca33fa60   False     False
 
-      </div>
-
       If the **UPDATED** column is **False** and **UPDATING** is **False**, there are pending changes. When **UPDATED** is **True** and **UPDATING** is **False**, there are no pending changes. In the previous example, the worker node has pending changes. The control plane node does not have any pending changes.
 
-      > [!IMPORTANT]
-      > If there are pending changes (where both the **Updated** and **Updating** columns are **False**), it is recommended to schedule a maintenance window for a reboot as early as possible. Use the following steps for unpausing the autoreboot process to apply the changes that were queued since the last reboot.
+      <div class="important">
+
+      If there are pending changes (where both the **Updated** and **Updating** columns are **False**), it is recommended to schedule a maintenance window for a reboot as early as possible. Use the following steps for unpausing the autoreboot process to apply the changes that were queued since the last reboot.
+
+      </div>
 
 - Unpause the autoreboot process:
 
   1.  Update the `MachineConfigPool` custom resource to set the `spec.paused` field to `false`.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Control plane (master) nodes
+      **Control plane (master) nodes**
 
       </div>
 
@@ -736,13 +577,9 @@ To pause or unpause automatic MCO update rebooting:
       $ oc patch --type=merge --patch='{"spec":{"paused":false}}' machineconfigpool/master
       ```
 
-      </div>
+      <div class="formalpara-title">
 
-      <div class="formalpara">
-
-      <div class="title">
-
-      Worker nodes
+      **Worker nodes**
 
       </div>
 
@@ -750,18 +587,17 @@ To pause or unpause automatic MCO update rebooting:
       $ oc patch --type=merge --patch='{"spec":{"paused":false}}' machineconfigpool/worker
       ```
 
-      </div>
+      <div class="note">
 
-      > [!NOTE]
-      > By unpausing an MCP, the MCO applies all paused changes and reboots Red Hat Enterprise Linux CoreOS (RHCOS) as needed.
+      By unpausing an MCP, the MCO applies all paused changes and reboots Red Hat Enterprise Linux CoreOS (RHCOS) as needed.
+
+      </div>
 
   2.  Verify that the MCP is unpaused:
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Control plane (master) nodes
+      **Control plane (master) nodes**
 
       </div>
 
@@ -769,13 +605,9 @@ To pause or unpause automatic MCO update rebooting:
       $ oc get machineconfigpool/master --template='{{.spec.paused}}'
       ```
 
-      </div>
+      <div class="formalpara-title">
 
-      <div class="formalpara">
-
-      <div class="title">
-
-      Worker nodes
+      **Worker nodes**
 
       </div>
 
@@ -783,21 +615,15 @@ To pause or unpause automatic MCO update rebooting:
       $ oc get machineconfigpool/worker --template='{{.spec.paused}}'
       ```
 
-      </div>
+      <div class="formalpara-title">
 
-      <div class="formalpara">
-
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
       ``` terminal
       false
       ```
-
-      </div>
 
       The `spec.paused` field is `false` and the MCP is unpaused.
 
@@ -807,11 +633,9 @@ To pause or unpause automatic MCO update rebooting:
       $ oc get machineconfigpool
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -819,19 +643,15 @@ To pause or unpause automatic MCO update rebooting:
           master   rendered-master-546383f80705bd5aeaba93   True     False
           worker   rendered-worker-b4c51bb33ccaae6fc4a6a5   False    True
 
-      </div>
-
       If the MCP is applying any pending changes, the **UPDATED** column is **False** and the **UPDATING** column is **True**. When **UPDATED** is **True** and **UPDATING** is **False**, there are no further changes being made. In the previous example, the MCO is updating the worker node.
 
 # Refreshing failing subscriptions
 
 In Operator Lifecycle Manager (OLM), if you subscribe to an Operator that references images that are not accessible on your network, you can find jobs in the `openshift-marketplace` namespace that are failing with the following errors:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -840,13 +660,9 @@ ImagePullBackOff for
 Back-off pulling image "example.com/openshift4/ose-elasticsearch-operator-bundle@sha256:6d2587129c846ec28d384540322b40b05833e7e00b25cca584e004af9a1d292e"
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -854,33 +670,13 @@ Example output
 rpc error: code = Unknown desc = error pinging docker registry example.com: Get "https://example.com/v2/": dial tcp: lookup example.com on 10.0.0.1:53: no such host
 ```
 
-</div>
-
 As a result, the subscription is stuck in this failing state and the Operator is unable to install or upgrade.
 
 You can refresh a failing subscription by deleting the subscription, cluster service version (CSV), and other related objects. After recreating the subscription, OLM then reinstalls the correct version of the Operator.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have a failing subscription that is unable to pull an inaccessible bundle image.
 
 - You have confirmed that the correct bundle image is accessible.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Get the names of the `Subscription` and `ClusterServiceVersion` objects from the namespace where the Operator is installed:
 
@@ -888,11 +684,9 @@ Procedure
     $ oc get sub,csv -n <namespace>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -903,8 +697,6 @@ Procedure
     NAME                                                                         DISPLAY                            VERSION    REPLACES   PHASE
     clusterserviceversion.operators.coreos.com/elasticsearch-operator.5.0.0-65   OpenShift Elasticsearch Operator   5.0.0-65              Succeeded
     ```
-
-    </div>
 
 2.  Delete the subscription:
 
@@ -924,11 +716,9 @@ Procedure
     $ oc get job,configmap -n openshift-marketplace
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -939,8 +729,6 @@ Procedure
     NAME                                                                        DATA   AGE
     configmap/1de9443b6324e629ddf31fed0a853a121275806170e34c926d69e53a7fcbccb   3      9m30s
     ```
-
-    </div>
 
 5.  Delete the job:
 
@@ -958,33 +746,19 @@ Procedure
 
 7.  Reinstall the Operator using the software catalog in the web console.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Check that the Operator has been reinstalled successfully:
 
   ``` terminal
   $ oc get sub,csv,installplan -n <namespace>
   ```
 
-</div>
-
 # Reinstalling Operators after failed uninstallation
 
 You must successfully and completely uninstall an Operator prior to attempting to reinstall the same Operator. Failure to fully uninstall the Operator properly can leave resources, such as a project or namespace, stuck in a "Terminating" state and cause "error resolving resource" messages. For example:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `Project` resource description
+**Example `Project` resource description**
 
 </div>
 
@@ -993,22 +767,15 @@ Example `Project` resource description
           error resolving resource'
     ...
 
-</div>
-
 These types of issues can prevent an Operator from being reinstalled successfully.
 
-> [!WARNING]
-> Forced deletion of a namespace is not likely to resolve "Terminating" state issues and can lead to unstable or unpredictable cluster behavior, so it is better to try to find related resources that might be preventing the namespace from being deleted. For more information, see the [Red Hat Knowledgebase Solution \#4165791](https://access.redhat.com/solutions/4165791), paying careful attention to the cautions and warnings.
+<div class="warning">
 
-The following procedure shows how to troubleshoot when an Operator cannot be reinstalled because an existing custom resource definition (CRD) from a previous installation of the Operator is preventing a related namespace from deleting successfully.
-
-<div>
-
-<div class="title">
-
-Procedure
+Forced deletion of a namespace is not likely to resolve "Terminating" state issues and can lead to unstable or unpredictable cluster behavior, so it is better to try to find related resources that might be preventing the namespace from being deleted. For more information, see the [Red Hat Knowledgebase Solution \#4165791](https://access.redhat.com/solutions/4165791), paying careful attention to the cautions and warnings.
 
 </div>
+
+The following procedure shows how to troubleshoot when an Operator cannot be reinstalled because an existing custom resource definition (CRD) from a previous installation of the Operator is preventing a related namespace from deleting successfully.
 
 1.  Check if there are any namespaces related to the Operator that are stuck in "Terminating" state:
 
@@ -1016,17 +783,13 @@ Procedure
     $ oc get namespaces
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
         operator-ns-1                                       Terminating
-
-    </div>
 
 2.  Check if there are any CRDs related to the Operator that are still present after the failed uninstallation:
 
@@ -1034,8 +797,11 @@ Procedure
     $ oc get crds
     ```
 
-    > [!NOTE]
-    > CRDs are global cluster definitions; the actual custom resource (CR) instances related to the CRDs could be in other namespaces or be global cluster instances.
+    <div class="note">
+
+    CRDs are global cluster definitions; the actual custom resource (CR) instances related to the CRDs could be in other namespaces or be global cluster instances.
+
+    </div>
 
 3.  If there are any CRDs that you know were provided or managed by the Operator and that should have been deleted after uninstallation, delete the CRD:
 
@@ -1069,20 +835,13 @@ Procedure
     $ oc get namespace <namespace_name>
     ```
 
-    > [!IMPORTANT]
-    > If the namespace or other Operator resources are still not uninstalled cleanly, contact Red Hat Support.
+    <div class="important">
+
+    If the namespace or other Operator resources are still not uninstalled cleanly, contact Red Hat Support.
+
+    </div>
 
 6.  Reinstall the Operator using the software catalog in the web console.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Check that the Operator has been reinstalled successfully:
 
@@ -1090,18 +849,8 @@ Verification
   $ oc get sub,csv,installplan -n <namespace>
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Deleting Operators from a cluster](../../operators/admin/olm-deleting-operators-from-cluster.xml#olm-deleting-operators-from-a-cluster)
 
 - [Adding Operators to a cluster](../../operators/admin/olm-adding-operators-to-cluster.xml#olm-adding-operators-to-a-cluster)
-
-</div>

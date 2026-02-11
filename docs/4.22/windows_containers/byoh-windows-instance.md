@@ -4,17 +4,13 @@ Bring-Your-Own-Host (BYOH) allows for users to repurpose Windows Server VMs and 
 
 Creating a BYOH Windows instance requires creating a config map in the Windows Machine Config Operator (WMCO) namespace.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Prerequisites
+**Prerequisites**
 
 </div>
 
 Any Windows instances that are to be attached to the cluster as a node must fulfill the following requirements:
-
-</div>
 
 - The instance must be on the same network as the Linux worker nodes in the cluster.
 
@@ -38,27 +34,23 @@ Any Windows instances that are to be attached to the cluster as a node must fulf
 
   - Ends with an alphanumeric character.
 
-> [!NOTE]
-> Windows instances deployed by the WMCO are configured with the containerd container runtime. Because the WMCO installs and manages the runtime, it is recommended that you not manually install containerd on nodes.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+Windows instances deployed by the WMCO are configured with the containerd container runtime. Because the WMCO installs and manages the runtime, it is recommended that you not manually install containerd on nodes.
 
 </div>
 
 1.  Create a ConfigMap named `windows-instances` in the WMCO namespace that describes the Windows instances to be added.
 
-    > [!NOTE]
-    > Format each entry in the config map’s data section by using the address as the key while formatting the value as `username=<username>`.
+    <div class="note">
 
-    <div class="formalpara">
+    Format each entry in the config map’s data section by using the address as the key while formatting the value as `username=<username>`.
 
-    <div class="title">
+    </div>
 
-    Example config map
+    <div class="formalpara-title">
+
+    **Example config map**
 
     </div>
 
@@ -75,13 +67,9 @@ Procedure
         username=core
     ```
 
-    </div>
-
     - The address that the WMCO uses to reach the instance over SSH, either a DNS name or an IPv4 address. A DNS PTR record must exist for this address. It is recommended that you use a DNS name with your BYOH instance if your organization uses DHCP to assign IP addresses. If not, you need to update the `windows-instances` ConfigMap whenever the instance is assigned a new IP address.
 
     - The name of the administrator user created in the prerequisites.
-
-</div>
 
 # Removing BYOH Windows instances
 

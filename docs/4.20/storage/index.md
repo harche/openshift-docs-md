@@ -54,11 +54,9 @@ A local volume represents a mounted local storage device such as a disk, partiti
 Nested mount points
 A nested mount point is a mount point that attempts to use a mount point created by a previous volume.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example pod definition with nested mount points
+**Example pod definition with nested mount points**
 
 </div>
 
@@ -89,8 +87,6 @@ spec:
       persistentVolumeClaim:
         claimName: "web"
 ```
-
-</div>
 
 - Nested mount point
 

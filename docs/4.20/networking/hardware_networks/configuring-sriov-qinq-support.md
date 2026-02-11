@@ -28,43 +28,21 @@ The OpenShift Container Platform SR-IOV solution already supports setting the VL
 
 Supported network interface cards
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Additional resources
+**Additional resources**
 
 </div>
 
 [Configuration for an VLAN additional network](../../networking/multiple_networks/secondary_networks/creating-secondary-nwt-other-cni.xml#nw-multus-vlan-object_configuring-additional-network-cni)
 
-</div>
-
 # Configuring QinQ support for SR-IOV enabled workloads
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the SR-IOV Network Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a file named `sriovnetpolicy-810-sriov-node-network.yaml` by using the following content:
 
@@ -102,8 +80,11 @@ Procedure
 
 4.  Create a `SriovNetwork` object, and set the outer VLAN called the S-tag, or `Service Tag`, as it belongs to the infrastructure.
 
-    > [!IMPORTANT]
-    > You must configure the VLAN on the trunk interface of the switch. In addition, you might need to further configure some switches to support QinQ tagging.
+    <div class="important">
+
+    You must configure the VLAN on the trunk interface of the switch. In addition, you might need to further configure some switches to support QinQ tagging.
+
+    </div>
 
     1.  Create a file named `nad-sriovnetwork-1ad-810.yaml` by using the following content:
 
@@ -161,16 +142,6 @@ Procedure
         $ oc apply -f nad-cvlan100.yaml
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify QinQ is active on the node by following this procedure:
 
   1.  Create a file named `test-qinq-pod.yaml` by using the following content:
@@ -203,11 +174,9 @@ Verification
       $ oc debug node/my-cluster-node -- bash -c "ip link show ens5f0"
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -226,8 +195,4 @@ Verification
       vf 9 link/ether a6:5a:7c:1c:2a:16 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
       ```
 
-      </div>
-
       The `vlan protocol 802.1ad` ID in the output indicates that the interface supports VLAN tagging with protocol 802.1ad (QinQ). The VLAN ID is 171.
-
-</div>

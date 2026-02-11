@@ -14,21 +14,19 @@ $ oc explain scansettingbindings
 
 You can run a scan using the Center for Internet Security (CIS) profiles. For convenience, the Compliance Operator creates a `ScanSetting` object with reasonable defaults on startup. This `ScanSetting` object is named `default`.
 
-> [!NOTE]
-> For all-in-one control plane and worker nodes, the compliance scan runs twice on the worker and control plane nodes. The compliance scan might generate inconsistent scan results. You can avoid inconsistent results by defining only a single role in the `ScanSetting` object.
+<div class="note">
 
-> [!IMPORTANT]
-> Compliance Operator scans report `INCONSISTENT` on clusters with multi-architecture compute machines whether the control plane uses `aarch64` or `x86` CPUs. This is due to the same rule behaving differently on different architectures. This should only be applicable for node scans, where the Compliance Operator aggregates results from multiple nodes into a single result.
-
-For more information about inconsistent scan results, see [Compliance Operator shows INCONSISTENT scan result with worker node](https://access.redhat.com/solutions/6970861).
-
-<div>
-
-<div class="title">
-
-Procedure
+For all-in-one control plane and worker nodes, the compliance scan runs twice on the worker and control plane nodes. The compliance scan might generate inconsistent scan results. You can avoid inconsistent results by defining only a single role in the `ScanSetting` object.
 
 </div>
+
+<div class="important">
+
+Compliance Operator scans report `INCONSISTENT` on clusters with multi-architecture compute machines whether the control plane uses `aarch64` or `x86` CPUs. This is due to the same rule behaving differently on different architectures. This should only be applicable for node scans, where the Compliance Operator aggregates results from multiple nodes into a single result.
+
+</div>
+
+For more information about inconsistent scan results, see [Compliance Operator shows INCONSISTENT scan result with worker node](https://access.redhat.com/solutions/6970861).
 
 1.  Inspect the `ScanSetting` object by running the following command:
 
@@ -36,11 +34,9 @@ Procedure
     $ oc describe scansettings default -n openshift-compliance
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -92,8 +88,6 @@ Procedure
     Timeout:              30m
     Events:               <none>
     ```
-
-    </div>
 
     - The Compliance Operator creates a persistent volume (PV) that contains the results of the scans. By default, the PV will use access mode `ReadWriteOnce` because the Compliance Operator cannot make any assumptions about the storage classes configured on the cluster. Additionally, `ReadWriteOnce` access mode is available on most clusters. If you need to fetch the scan results, you can do so by using a helper pod, which also binds the volume. Volumes that use the `ReadWriteOnce` access mode can be mounted by only one pod at time, so it is important to remember to delete the helper pods. Otherwise, the Compliance Operator will not be able to reuse the volume for subsequent scans.
 
@@ -220,8 +214,6 @@ Procedure
 
     The scans progress through the scanning phases and eventually reach the `DONE` phase when complete. In most cases, the result of the scan is `NON-COMPLIANT`. You can review the scan results and start applying remediations to make the cluster compliant. See *Managing Compliance Operator remediation* for more information.
 
-</div>
-
 # Setting custom storage size for results
 
 While the custom resources such as `ComplianceCheckResult` represent an aggregated result of one check across all scanned nodes, it can be useful to review the raw results as produced by the scanner. The raw results are produced in the ARF format and can be large (tens of megabytes per node), it is impractical to store them in a Kubernetes resource backed by the `etcd` key-value store. Instead, every scan creates a persistent volume (PV) which defaults to 1GB size. Depending on your environment, you may want to increase the PV size accordingly. This is done using the `rawResultStorage.size` attribute that is exposed in both the `ScanSetting` and `ComplianceScan` resources.
@@ -232,16 +224,17 @@ A related parameter is `rawResultStorage.rotation` which controls how many scans
 
 Because OpenShift Container Platform can be deployed in a variety of public clouds or bare metal, the Compliance Operator cannot determine available storage configurations. By default, the Compliance Operator will try to create the PV for storing results using the default storage class of the cluster, but a custom storage class can be configured using the `rawResultStorage.StorageClassName` attribute.
 
-> [!IMPORTANT]
-> If your cluster does not specify a default storage class, this attribute must be set.
+<div class="important">
+
+If your cluster does not specify a default storage class, this attribute must be set.
+
+</div>
 
 Configure the `ScanSetting` custom resource to use a standard storage class and create persistent volumes that are 10GB in size and keep the last 10 results:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `ScanSetting` CR
+**Example `ScanSetting` CR**
 
 </div>
 
@@ -265,21 +258,11 @@ scanTolerations:
 schedule: '0 1 * * *'
 ```
 
-</div>
-
 # Scheduling the result server pod on a worker node
 
 The result server pod mounts the persistent volume (PV) that stores the raw Asset Reporting Format (ARF) scan results. The `nodeSelector` and `tolerations` attributes enable you to configure the location of the result server pod.
 
 This is helpful for those environments where control plane nodes are not permitted to mount persistent volumes.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Create a `ScanSetting` custom resource (CR) for the Compliance Operator:
 
@@ -318,15 +301,7 @@ Procedure
       $ oc create -f rs-workers.yaml
       ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - To verify that the `ScanSetting` object is created, run the following command:
 
@@ -334,11 +309,9 @@ Verification
   $ oc get scansettings rs-on-workers -n openshift-compliance -o yaml
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -370,48 +343,35 @@ Verification
   strictNodeScan: true
   ```
 
-  </div>
-
-</div>
-
 # `ScanSetting` Custom Resource
 
 The `ScanSetting` Custom Resource now allows you to override the default CPU and memory limits of scanner pods through the scan limits attribute. The Compliance Operator will use defaults of 500Mi memory, 100m CPU for the scanner container, and 200Mi memory with 100m CPU for the `api-resource-collector` container. To set the memory limits of the Operator, modify the `Subscription` object if installed through OLM or the Operator deployment itself.
 
 To increase the default CPU and memory limits of the Compliance Operator, see *Increasing Compliance Operator resource limits*.
 
-> [!IMPORTANT]
-> Increasing the memory limit for the Compliance Operator or the scanner pods is needed if the default limits are not sufficient and the Operator or scanner pods are ended by the Out Of Memory (OOM) process. For more information, see [Increasing Compliance Operator resource limits](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/security_and_compliance/compliance-operator#compliance-increasing-operator-limits_compliance-troubleshooting).
+<div class="important">
+
+Increasing the memory limit for the Compliance Operator or the scanner pods is needed if the default limits are not sufficient and the Operator or scanner pods are ended by the Out Of Memory (OOM) process. For more information, see [Increasing Compliance Operator resource limits](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/security_and_compliance/compliance-operator#compliance-increasing-operator-limits_compliance-troubleshooting).
+
+</div>
 
 # Configuring the hosted control planes management cluster
 
 If you are hosting your own Hosted control plane or Hypershift environment and want to scan a Hosted Cluster from the management cluster, you will need to set the name and prefix namespace for the target Hosted Cluster. You can achieve this by creating a `TailoredProfile`.
 
-> [!IMPORTANT]
-> This procedure only applies to users managing their own hosted control planes environment.
+<div class="important">
 
-> [!NOTE]
-> Only `ocp4-cis` and `ocp4-pci-dss` profiles are supported in hosted control planes management clusters.
+This procedure only applies to users managing their own hosted control planes environment.
 
-<div>
+</div>
 
-<div class="title">
+<div class="note">
 
-Prerequisites
+Only `ocp4-cis` and `ocp4-pci-dss` profiles are supported in hosted control planes management clusters.
 
 </div>
 
 - The Compliance Operator is installed in the management cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Obtain the `name` and `namespace` of the hosted cluster to be scanned by running the following command:
 
@@ -419,11 +379,9 @@ Procedure
     $ oc get hostedcluster -A
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -432,15 +390,11 @@ Procedure
     local-cluster   79136a1bdb84b3c13217   4.13.5    79136a1bdb84b3c13217-admin-kubeconfig   Completed   True        False         The hosted control plane is available
     ```
 
-    </div>
-
 2.  In the management cluster, create a `TailoredProfile` extending the scan Profile and define the name and namespace of the Hosted Cluster to be scanned:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `management-tailoredprofile.yaml`
+    **Example `management-tailoredprofile.yaml`**
 
     </div>
 
@@ -463,8 +417,6 @@ Procedure
         value: local-cluster
     ```
 
-    </div>
-
     - Variable. Only `ocp4-cis` and `ocp4-pci-dss` profiles are supported in hosted control planes management clusters.
 
     - The `value` is the `NAME` from the output in the previous step.
@@ -476,8 +428,6 @@ Procedure
     ``` terminal
     $ oc create -n openshift-compliance -f mgmt-tp.yaml
     ```
-
-</div>
 
 # Applying resource requests and limits
 
@@ -491,8 +441,11 @@ If a container attempts to allocate more memory than this limit, the Linux kerne
 
 The kubelet tracks `tmpfs` `emptyDir` volumes as container memory is used, rather than as local ephemeral storage. If a container exceeds its memory request and the node that it runs on becomes short of memory overall, the Pod’s container might be evicted.
 
-> [!IMPORTANT]
-> A container may not exceed its CPU limit for extended periods. Container run times do not stop Pods or containers for excessive CPU usage. To determine whether a container cannot be scheduled or is being killed due to resource limits, see *Troubleshooting the Compliance Operator*.
+<div class="important">
+
+A container may not exceed its CPU limit for extended periods. Container run times do not stop Pods or containers for excessive CPU usage. To determine whether a container cannot be scheduled or is being killed due to resource limits, see *Troubleshooting the Compliance Operator*.
+
+</div>
 
 # Scheduling Pods with container resource requests
 
@@ -513,11 +466,9 @@ spec.containers[].resources.requests.hugepages-<size>
 
 Although you can specify requests and limits for only individual containers, it is also useful to consider the overall resource requests and limits for a pod. For a particular resource, a container resource request or limit is the sum of the resource requests or limits of that type for each container in the pod.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example container resource requests and limits
+**Example container resource requests and limits**
 
 </div>
 
@@ -559,8 +510,6 @@ spec:
       capabilities:
         drop: [ALL]
 ```
-
-</div>
 
 - The container is requesting 64 Mi of memory and 250 m CPU.
 

@@ -2,14 +2,6 @@
 
 Perform the following steps to prepare the provisioner node.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Log in to the provisioner node via `ssh`.
 
 2.  Create a non-root user (`kni`) and provide that user with `sudo` privileges:
@@ -53,8 +45,11 @@ Procedure
                                       --enable=rhel-8-for-x86_64-baseos-rpms
     ```
 
-    > [!NOTE]
-    > For more information about Red Hat Subscription Manager, see [Registering a RHEL system with command-line tools](https://docs.redhat.com/en/documentation/subscription_central/1-latest/html/getting_started_with_rhel_system_registration/basic-reg-rhel-cli).
+    <div class="note">
+
+    For more information about Red Hat Subscription Manager, see [Registering a RHEL system with command-line tools](https://docs.redhat.com/en/documentation/subscription_central/1-latest/html/getting_started_with_rhel_system_registration/basic-reg-rhel-cli).
+
+    </div>
 
 6.  Install the following packages:
 
@@ -201,8 +196,11 @@ Procedure
     "
     ```
 
-    > [!NOTE]
-    > For `eth1` and `eth2`, substitute the appropriate interface name, as needed.
+    <div class="note">
+
+    For `eth1` and `eth2`, substitute the appropriate interface name, as needed.
+
+    </div>
 
 24. If required, SSH back into the `provisioner` node:
 
@@ -216,11 +214,9 @@ Procedure
     $ sudo nmcli con show
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -233,8 +229,6 @@ Procedure
     bridge-slave-eth2  f31c3353-54b7-48de-893a-02d2b34c4736  ethernet  eth2
     ```
 
-    </div>
-
 26. Create a `pull-secret.txt` file:
 
     ``` terminal
@@ -243,21 +237,11 @@ Procedure
 
     In a web browser, navigate to [Install on Bare Metal with user-provisioned infrastructure](https://console.redhat.com/openshift/install/metal/user-provisioned). In step 1, click **Download pull secret**. Paste the contents into the `pull-secret.txt` file and save the contents in the `kni` user’s home directory.
 
-</div>
-
 # Configuring the public subnet
 
 All of the OpenShift Container Platform cluster nodes must be on the public subnet. IBM Cloud® Bare Metal (Classic) does not provide a DHCP server on the subnet. Set it up separately on the provisioner node.
 
 You must reset the BASH variables defined when preparing the provisioner node. Rebooting the provisioner node after preparing it will delete the BASH variables previously set.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Install `dnsmasq`:
 
@@ -338,11 +322,9 @@ Procedure
 
     Replace `<id>` with the ID of the node.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -350,8 +332,6 @@ Procedure
     "10.196.130.144 00:e0:ed:6a:ca:b4"
     "141.125.65.215 00:e0:ed:6a:ca:b5"
     ```
-
-    </div>
 
     Make a note of the MAC address and IP address of the public network. Make a separate note of the MAC address of the private network, which you will use later in the `install-config.yaml` file. Repeat this procedure for each node until you have all the public MAC and IP addresses for the public `baremetal` network, and the MAC addresses of the private `provisioning` network.
 
@@ -361,11 +341,9 @@ Procedure
     $ sudo vim /var/lib/dnsmasq/dnsmasq.hostsfile
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example input
+    **Example input**
 
     </div>
 
@@ -377,8 +355,6 @@ Procedure
     <mac>,<ip>,worker-1
     ...
     ```
-
-    </div>
 
     Replace `<mac>,<ip>` with the public MAC address and public IP address of the corresponding node name.
 
@@ -400,11 +376,9 @@ Procedure
     $ sudo systemctl status dnsmasq
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -418,8 +392,6 @@ Procedure
     CGroup: /system.slice/dnsmasq.service
     └─3101 /usr/sbin/dnsmasq -k
     ```
-
-    </div>
 
 10. Open ports `53` and `67` with UDP protocol:
 
@@ -445,8 +417,6 @@ Procedure
     $ sudo firewall-cmd --reload
     ```
 
-</div>
-
 # Retrieving the OpenShift Container Platform installer
 
 Use the `stable-4.x` version of the installation program and your selected architecture to deploy the generally available stable version of OpenShift Container Platform:
@@ -466,14 +436,6 @@ $ export RELEASE_IMAGE=$(curl -s https://mirror.openshift.com/pub/openshift-v4/$
 # Extracting the OpenShift Container Platform installer
 
 After retrieving the installer, the next step is to extract it.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Set the environment variables:
 
@@ -509,19 +471,9 @@ Procedure
     $ sudo cp openshift-baremetal-install /usr/local/bin
     ```
 
-</div>
-
 # Configuring the install-config.yaml file
 
 The `install-config.yaml` file requires some additional details. Most of the information is teaching the installer and the resulting cluster enough about the available IBM Cloud® Bare Metal (Classic) hardware so that it is able to fully manage it. The material difference between installing on bare metal and installing on IBM Cloud® Bare Metal (Classic) is that you must explicitly set the privilege level for IPMI in the BMC section of the `install-config.yaml` file.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Configure `install-config.yaml`. Change the appropriate variables to match the environment, including `pullSecret` and `sshKey`.
 
@@ -575,15 +527,18 @@ Procedure
 
     - Add the MAC address of the private `provisioning` network NIC for the corresponding node.
 
-      > [!NOTE]
-      > You can use the `ibmcloud` command-line utility to retrieve the password.
-      >
-      > ``` terminal
-      > $ ibmcloud sl hardware detail <id> --output JSON | \
-      >   jq '"(.networkManagementIpAddress) (.remoteManagementAccounts[0].password)"'
-      > ```
-      >
-      > Replace `<id>` with the ID of the node.
+      <div class="note">
+
+      You can use the `ibmcloud` command-line utility to retrieve the password.
+
+      ``` terminal
+      $ ibmcloud sl hardware detail <id> --output JSON | \
+        jq '"(.networkManagementIpAddress) (.remoteManagementAccounts[0].password)"'
+      ```
+
+      Replace `<id>` with the ID of the node.
+
+      </div>
 
 2.  Create a directory to store the cluster configuration:
 
@@ -617,8 +572,6 @@ Procedure
     done
     ```
 
-</div>
-
 # Additional `install-config` parameters
 
 See the following tables for the required parameters, the `hosts` parameter, and the `bmc` parameter for the `install-config.yaml` file.
@@ -631,142 +584,140 @@ See the following tables for the required parameters, the `hosts` parameter, and
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameters</th>
 <th style="text-align: left;">Default</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>baseDomain</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The domain name for the cluster. For example, <code>example.com</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>bootMode</code></p></td>
 <td style="text-align: left;"><p><code>UEFI</code></p></td>
 <td style="text-align: left;"><p>The boot mode for a node. Options are <code>legacy</code>, <code>UEFI</code>, and <code>UEFISecureBoot</code>. If <code>bootMode</code> is not set, Ironic sets it while inspecting the node.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   baremetal:
     bootstrapExternalStaticDNS</code></pre></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The static network DNS of the bootstrap node. You must set this value when deploying a cluster with static IP addresses when there is no Dynamic Host Configuration Protocol (DHCP) server on the bare-metal network. If you do not set this value, the installation program will use the value from <code>bootstrapExternalStaticGateway</code>, which causes problems when the IP address values of the gateway and DNS are different.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   baremetal:
     bootstrapExternalStaticIP</code></pre></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The static IP address for the bootstrap VM. You must set this value when deploying a cluster with static IP addresses when there is no DHCP server on the bare-metal network.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   baremetal:
     bootstrapExternalStaticGateway</code></pre></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The static IP address of the gateway for the bootstrap VM. You must set this value when deploying a cluster with static IP addresses when there is no DHCP server on the bare-metal network.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>sshKey</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The <code>sshKey</code> configuration setting has the key in the <code>~/.ssh/id_rsa.pub</code> file required to access the control plane nodes and compute nodes. Typically, this key is from the <code>provisioner</code> node.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>pullSecret</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The <code>pullSecret</code> configuration setting has a copy of the pull secret downloaded from the <a href="https://console.redhat.com/openshift/install/metal/user-provisioned">Install OpenShift on Bare Metal</a> page when preparing the provisioner node.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>metadata:
     name:</code></pre></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The name of the OpenShift Container Platform cluster. For example, <code>openshift</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>networking:
     machineNetwork:
     - cidr:</code></pre></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The public CIDR (Classless Inter-Domain Routing) of the external network. For example, <code>10.0.0.0/24</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:
   - name: worker</code></pre></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The OpenShift Container Platform cluster requires you to provide a name for compute nodes even if there are zero nodes.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
     replicas: 2</code></pre></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Replicas sets the number of compute nodes in the OpenShift Container Platform cluster.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
     name: master</code></pre></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The OpenShift Container Platform cluster requires a name for control plane nodes.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
     replicas: 3</code></pre></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Replicas sets the number of control plane nodes included as part of the OpenShift Container Platform cluster.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>arbiter:
     name: arbiter</code></pre></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The OpenShift Container Platform cluster requires a name for arbiter nodes.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>arbiter:
     replicas: 1</code></pre></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The <code>replicas</code> parameter sets the number of arbiter nodes for the OpenShift Container Platform cluster.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>provisioningNetworkInterface</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The name of the network interface on nodes connected to the provisioning network. For OpenShift Container Platform 4.9 and later releases, use the <code>bootMACAddress</code> configuration setting to enable Ironic to identify the IP address of the NIC instead of using the <code>provisioningNetworkInterface</code> configuration setting to identify the name of the NIC.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>defaultMachinePlatform</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The default configuration used for machine pools without a platform configuration.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>apiVIPs</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>(Optional) The virtual IP address for Kubernetes API communication.</p>
 <p>You must either provide this setting in the <code>install-config.yaml</code> file as a reserved IP from the <code>MachineNetwork</code> parameter or preconfigured in the DNS so that the default name resolves correctly. Use the virtual IP address and not the FQDN when adding a value to the <code>apiVIPs</code> configuration setting in the <code>install-config.yaml</code> file. For dual-stack networking, the primary IP address can be either an IPv4 network or an IPv6 network. If not set, the installation program uses <code>api.&lt;cluster_name&gt;.&lt;base_domain&gt;</code> to derive the IP address from the DNS.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>Before OpenShift Container Platform 4.12, the cluster installation program only accepted an IPv4 address or an IPv6 address for the <code>apiVIP</code> configuration setting. From OpenShift Container Platform 4.12 or later, the <code>apiVIP</code> configuration setting is deprecated. Instead, use a list format for the <code>apiVIPs</code> configuration setting to specify an IPv4 address, an IPv6 address or both IP address formats.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>disableCertificateVerification</code></p></td>
 <td style="text-align: left;"><p><code>False</code></p></td>
 <td style="text-align: left;"><p><code>redfish</code> and <code>redfish-virtualmedia</code> need this parameter to manage BMC addresses. The value should be <code>True</code> when using a self-signed certificate for BMC addresses.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>ingressVIPs</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>(Optional) The virtual IP address for ingress traffic.</p>
 <p>You must either provide this setting in the <code>install-config.yaml</code> file as a reserved IP from the <code>MachineNetwork</code> parameter or preconfigured in the DNS so that the default name resolves correctly. Use the virtual IP address and not the FQDN when adding a value to the <code>ingressVIPs</code> configuration setting in the <code>install-config.yaml</code> file. For dual-stack networking, the primary IP address can be either an IPv4 network or an IPv6 network. If not set, the installation program uses <code>test.apps.&lt;cluster_name&gt;.&lt;base_domain&gt;</code> to derive the IP address from the DNS.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>Before OpenShift Container Platform 4.12, the cluster installation program only accepted an IPv4 address or an IPv6 address for the <code>ingressVIP</code> configuration setting. In OpenShift Container Platform 4.12 and later, the <code>ingressVIP</code> configuration setting is deprecated. Instead, use a list format for the <code>ingressVIPs</code> configuration setting to specify an IPv4 addresses, an IPv6 addresses or both IP address formats.</p>
 </div></td>
 </tr>
 </tbody>
 </table>
+
+Required parameters
 
 <table>
 <caption>Optional Parameters</caption>
@@ -776,14 +727,14 @@ See the following tables for the required parameters, the `hosts` parameter, and
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameters</th>
 <th style="text-align: left;">Default</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   baremetal:
     additionalNTPServers:
@@ -791,52 +742,52 @@ See the following tables for the required parameters, the `hosts` parameter, and
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>An optional list of additional NTP servers to add to each host. You can use an IP address or a domain name to specify each NTP server. Additional NTP servers are user-defined NTP servers that enable preinstallation clock synchronization when the cluster host clocks are out of synchronization.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>provisioningDHCPRange</code></p></td>
 <td style="text-align: left;"><p><code>172.22.0.10,172.22.0.100</code></p></td>
 <td style="text-align: left;"><p>Defines the IP range for nodes on the provisioning network.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>provisioningNetworkCIDR</code></p></td>
 <td style="text-align: left;"><p><code>172.22.0.0/24</code></p></td>
 <td style="text-align: left;"><p>The CIDR for the network to use for provisioning. The installation program requires this option when not using the default address range on the provisioning network.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>clusterProvisioningIP</code></p></td>
 <td style="text-align: left;"><p>The third IP address of the <code>provisioningNetworkCIDR</code>.</p></td>
 <td style="text-align: left;"><p>The IP address within the cluster where the provisioning services run. Defaults to the third IP address of the provisioning subnet. For example, <code>172.22.0.3</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bootstrapProvisioningIP</code></p></td>
 <td style="text-align: left;"><p>The second IP address of the <code>provisioningNetworkCIDR</code>.</p></td>
 <td style="text-align: left;"><p>The IP address on the bootstrap VM where the provisioning services run while the installation program is deploying the control plane (master) nodes. Defaults to the second IP address of the provisioning subnet. For example, <code>172.22.0.2</code> or <code>2620:52:0:1307::2</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>externalBridge</code></p></td>
 <td style="text-align: left;"><p><code>baremetal</code></p></td>
 <td style="text-align: left;"><p>The name of the bare-metal bridge of the hypervisor attached to the bare-metal network.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>provisioningBridge</code></p></td>
 <td style="text-align: left;"><p><code>provisioning</code></p></td>
 <td style="text-align: left;"><p>The name of the provisioning bridge on the <code>provisioner</code> host attached to the provisioning network.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>architecture</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Defines the host architecture for your cluster. Valid values are <code>amd64</code> or <code>arm64</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>defaultMachinePlatform</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The default configuration used for machine pools without a platform configuration.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>bootstrapOSImage</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>A URL to override the default operating system image for the bootstrap node. The URL must contain a SHA-256 hash of the image. For example: <code>https://mirror.openshift.com/rhcos-&lt;version&gt;-qemu.qcow2.gz?sha256=&lt;uncompressed_sha256&gt;;</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>provisioningNetwork</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The <code>provisioningNetwork</code> configuration setting determines whether the cluster uses the provisioning network. If it does, the configuration setting also determines if the cluster manages the network.</p>
@@ -844,23 +795,25 @@ See the following tables for the required parameters, the `hosts` parameter, and
 <p><code>Managed</code>: Set this parameter to <code>Managed</code>, which is the default, to fully manage the provisioning network, including DHCP, TFTP, and so on.</p>
 <p><code>Unmanaged</code>: Set this parameter to <code>Unmanaged</code> to enable the provisioning network but take care of manual configuration of DHCP. Virtual media provisioning is recommended but PXE is still available if required.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>httpProxy</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Set this parameter to the appropriate HTTP proxy used within your environment.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>httpsProxy</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Set this parameter to the appropriate HTTPS proxy used within your environment.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Set this parameter to the appropriate list of exclusions for proxy usage within your environment.</p></td>
 </tr>
 </tbody>
 </table>
+
+Optional Parameters
 
 ## Hosts
 
@@ -874,45 +827,45 @@ The `hosts` parameter is a list of separate bare metal assets used to build the 
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Name</th>
 <th style="text-align: left;">Default</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The name of the <code>BareMetalHost</code> resource to associate with the details. For example, <code>openshift-master-0</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>role</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The role of the bare-metal node. Either <code>master</code> (control plane node) or <code>worker</code> (compute node).</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bmc</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Connection details for the baseboard management controller. See the BMC addressing section for additional details.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>bootMACAddress</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The MAC address of the NIC that the host uses for the provisioning network. Ironic retrieves the IP address using the <code>bootMACAddress</code> configuration setting. Then, it binds to the host.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>You must provide a valid MAC address from the host if you disabled the provisioning network.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>networkConfig</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Set this optional parameter to configure the network interface of a host. See "(Optional) Configuring host network interfaces" for additional details.</p></td>
 </tr>
 </tbody>
 </table>
+
+Hosts
 
 # Root device hints
 
@@ -925,66 +878,64 @@ The `rootDeviceHints` parameter enables the installer to provision the Red Hat 
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Subfield</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>deviceName</code></p></td>
 <td style="text-align: left;"><p>A string containing a Linux device name such as <code>/dev/vda</code> or <code>/dev/disk/by-path/</code>.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>It is recommended to use the <code>/dev/disk/by-path/&lt;device_path&gt;</code> link to the storage location.</p>
 </div>
 <p>The hint must match the actual value exactly.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>hctl</code></p></td>
 <td style="text-align: left;"><p>A string containing a SCSI bus address like <code>0:0:0:0</code>. The hint must match the actual value exactly.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>model</code></p></td>
 <td style="text-align: left;"><p>A string containing a vendor-specific device identifier. The hint can be a substring of the actual value.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>vendor</code></p></td>
 <td style="text-align: left;"><p>A string containing the name of the vendor or manufacturer of the device. The hint can be a sub-string of the actual value.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serialNumber</code></p></td>
 <td style="text-align: left;"><p>A string containing the device serial number. The hint must match the actual value exactly.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minSizeGigabytes</code></p></td>
 <td style="text-align: left;"><p>An integer representing the minimum size of the device in gigabytes.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>wwn</code></p></td>
 <td style="text-align: left;"><p>A string containing the unique storage identifier. The hint must match the actual value exactly.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>wwnWithExtension</code></p></td>
 <td style="text-align: left;"><p>A string containing the unique storage identifier with the vendor extension appended. The hint must match the actual value exactly.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>wwnVendorExtension</code></p></td>
 <td style="text-align: left;"><p>A string containing the unique vendor storage identifier. The hint must match the actual value exactly.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>rotational</code></p></td>
 <td style="text-align: left;"><p>A boolean indicating whether the device should be a rotating disk (true) or not (false).</p></td>
 </tr>
 </tbody>
 </table>
 
-<div class="formalpara">
+Subfields
 
-<div class="title">
+<div class="formalpara-title">
 
-Example usage
+**Example usage**
 
 </div>
 
@@ -999,8 +950,6 @@ Example usage
        rootDeviceHints:
          deviceName: "/dev/sda"
 ```
-
-</div>
 
 # Creating the OpenShift Container Platform manifests
 

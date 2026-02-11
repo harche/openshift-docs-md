@@ -1,7 +1,10 @@
-> [!IMPORTANT]
-> Two-node OpenShift cluster with fencing is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Two-node OpenShift cluster with fencing is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 You can deploy a two-node OpenShift cluster with fencing by using either the installer-provisioned infrastructure or the user-provisioned infrastructure installation method. The following examples provide sample `install-config.yaml` configurations for both methods.
 
@@ -9,14 +12,15 @@ You can deploy a two-node OpenShift cluster with fencing by using either the ins
 
 You can use the following `install-config.yaml` configuration as a template for deploying a two-node OpenShift cluster with fencing by using the installer-provisioned infrastructure method:
 
-> [!NOTE]
-> Do an etcd backup before proceeding to ensure that you can restore the cluster if any issues occur.
+<div class="note">
 
-<div class="formalpara">
+Do an etcd backup before proceeding to ensure that you can restore the cluster if any issues occur.
 
-<div class="title">
+</div>
 
-Sample `install-config.yaml` configuration
+<div class="formalpara-title">
+
+**Sample `install-config.yaml` configuration**
 
 </div>
 
@@ -69,8 +73,6 @@ pullSecret: '<pull_secret>'
 sshKey: '<ssh_public_key>'
 ```
 
-</div>
-
 - `compute.replicas`: Set this field to `0` because a two-node fencing cluster does not include worker nodes.
 
 - `controlPlane.replicas`: Set this field to `2` for a two-node fencing deployment.
@@ -93,14 +95,15 @@ sshKey: '<ssh_public_key>'
 
 You can use the following `install-config.yaml` configuration as a template for deploying a two-node OpenShift cluster with fencing by using the user-provisioned infrastructure method:
 
-> [!NOTE]
-> Do an etcd backup before proceeding to ensure that you can restore the cluster if any issues occur.
+<div class="note">
 
-<div class="formalpara">
+Do an etcd backup before proceeding to ensure that you can restore the cluster if any issues occur.
 
-<div class="title">
+</div>
 
-Sample `install-config.yaml` configuration
+<div class="formalpara-title">
+
+**Sample `install-config.yaml` configuration**
 
 </div>
 
@@ -131,8 +134,6 @@ platform:
 pullSecret: '<pull_secret>'
 sshKey: '<ssh_public_key>'
 ```
-
-</div>
 
 - `compute.replicas`: Set this field to `0` because a two-node fencing cluster does not include worker nodes.
 

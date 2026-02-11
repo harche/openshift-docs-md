@@ -36,14 +36,14 @@ To perform a storage live migration, a direct volume migration is required.
 <col style="width: 70%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Action</th>
 <th style="text-align: left;">Supported</th>
 <th style="text-align: left;">User-initiated steps</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Copy</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 <td style="text-align: left;"><ul>
@@ -55,13 +55,15 @@ To perform a storage live migration, a direct volume migration is required.
 </ul></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Move</p></td>
 <td style="text-align: left;"><p>No</p></td>
 <td style="text-align: left;"><p>This action is not supported.</p></td>
 </tr>
 </tbody>
 </table>
+
+Supported persistent volume actions
 
 # Prerequisites
 
@@ -79,41 +81,39 @@ Enable the feature gate by running the following command:
 $ oc annotate --overwrite -n openshift-cnv hco kubevirt-hyperconverged kubevirt.kubevirt.io/jsonpatch='[ {"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates/-", "value": "VolumesUpdateStrategy"}, {"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates/-", "value": "VolumeMigration"} ]'
 ```
 
-> [!WARNING]
-> Red Hat does not support clusters with the annotation enabling this feature gate.
->
-> Do not add this annotation in a production cluster, if you add that annotation you receive a cluster wide alert indicating that your cluster is no longer supported.
+<div class="warning">
+
+Red Hat does not support clusters with the annotation enabling this feature gate.
+
+Do not add this annotation in a production cluster, if you add that annotation you receive a cluster wide alert indicating that your cluster is no longer supported.
+
+</div>
 
 For more information about the deployments and custom resource definitions (CRDs) that the migration controller uses to manipulate the VMs, see [Migration controller options](../migrating_from_ocp_3_to_4/advanced-migration-options-3-4.xml#migration-controller-options_advanced-migration-options-3-4).
 
-> [!NOTE]
-> If the `mig-controller` pod starts before you install OpenShift Virtualization, the migration controller does not automatically see that you have the OpenShift Virtualization Custom Resource Definition (CRD) installed.
->
-> Restart the `mig-controller` pod in the `openshift-migration` namespace after installing OpenShift Virtualization.
+<div class="note">
+
+If the `mig-controller` pod starts before you install OpenShift Virtualization, the migration controller does not automatically see that you have the OpenShift Virtualization Custom Resource Definition (CRD) installed.
+
+Restart the `mig-controller` pod in the `openshift-migration` namespace after installing OpenShift Virtualization.
+
+</div>
 
 The following table explains that to use storage live migrations, you need to have OpenShift Virtualization installed. Moreover, you must use MTC CRDs and at least two storage classes.
 
-| Resource | Purpose |
-|----|----|
-| `MigCluster` | Represents the cluster to use when migrating the storage. |
-| `StorageClass` | The storage class, ensure there are at least two storage classes. |
-| `VirtualMachine` | A virtual machine definition, installed by KubeVirt. |
-| `VirtualMachineInstance` | A running virtual machine, installed by KubeVirt. |
-| `DataVolume` | A definition on how to populate a persistent volume (PV) with a VM disk, installed by Containerized Data Importer (CDI). |
+| Resource                 | Purpose                                                                                                                  |
+|--------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| `MigCluster`             | Represents the cluster to use when migrating the storage.                                                                |
+| `StorageClass`           | The storage class, ensure there are at least two storage classes.                                                        |
+| `VirtualMachine`         | A virtual machine definition, installed by KubeVirt.                                                                     |
+| `VirtualMachineInstance` | A running virtual machine, installed by KubeVirt.                                                                        |
+| `DataVolume`             | A definition on how to populate a persistent volume (PV) with a VM disk, installed by Containerized Data Importer (CDI). |
 
 Storage live migration requirements
 
 # Deploying a virtual machine
 
 After installing and activating OpenShift Virtualization and Containerized Data Importer (CDI), create a namespace and deploy a virtual machine (VM).
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Deploy the YAML, which creates both a VM definition and a data volume containing the Fedora operating system.
 
@@ -208,7 +208,7 @@ Procedure
             name: cloudinitdisk
   ```
 
-</div>
+<!-- -->
 
 - In this example, the namespace `mig-vm` is used.
 
@@ -222,14 +222,6 @@ The persistent volume (PV) is populated with the operating system, and the VM is
 
 You can create a migration plan in the Migration Toolkit for Containers (MTC) web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must be logged in as a user with `cluster-admin` privileges on all clusters.
 
 - You must ensure that the same MTC version is installed on all clusters.
@@ -239,16 +231,6 @@ Prerequisites
 - If you want to use the *move* data copy method to migrate a persistent volume (PV), the source and target clusters must have uninterrupted network access to the remote volume.
 
 - If you want to use direct image migration, you must specify the exposed route to the image registry of the source cluster. This can be done by using the MTC web console or by updating the `MigCluster` custom resource manifest.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the MTC web console, click **Migration plans**.
 
@@ -266,8 +248,11 @@ Procedure
 
 7.  Optional: Click the edit icon beside a project to change the target namespace.
 
-    > [!WARNING]
-    > Migration Toolkit for Containers 1.8.6 and later versions do not support multiple migration plans for a single namespace.
+    <div class="warning">
+
+    Migration Toolkit for Containers 1.8.6 and later versions do not support multiple migration plans for a single namespace.
+
+    </div>
 
 8.  Click **Next**.
 
@@ -335,29 +320,17 @@ Procedure
 
     The migration plan is displayed in the **Migration plans** list.
 
-</div>
-
 ## Creating the migration plan using YAML manifests
 
 You can create a migration plan using YAML. However, it is recommended to create a migration plan in the Migration Toolkit for Containers (MTC) web console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To migrate the `mig-vm` namespace, ensure that the `namespaces` field of the migration plan includes `mig-vm`.
 
 2.  Modify the contents of the migration plan by adding `mig-vm` to the namespaces.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example migration plan YAML
+    **Example migration plan YAML**
 
     </div>
 
@@ -372,8 +345,6 @@ Procedure
       - mig-vm
     ...
     ```
-
-    </div>
 
     - Add `mig-vm` to the namespaces.
 
@@ -392,8 +363,6 @@ Procedure
         ```
 
     - Live migration only happens during the cutover of a migration plan.
-
-</div>
 
 Staging the migration plan skips any running virtual machines and does not sync the data. Any stopped virtual machine disks are synced.
 

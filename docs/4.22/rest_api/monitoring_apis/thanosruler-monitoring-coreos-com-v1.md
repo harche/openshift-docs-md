@@ -13,13 +13,13 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | spec defines the specification of the desired behavior of the ThanosRuler cluster. More info: <https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status> |
-| `status` | `object` | status defines the most recent observed status of the ThanosRuler cluster. Read-only. More info: <https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status> |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | spec defines the specification of the desired behavior of the ThanosRuler cluster. More info: <https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status>                                                                           |
+| `status`     | `object`                                                                             | status defines the most recent observed status of the ThanosRuler cluster. Read-only. More info: <https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status>                                                                        |
 
 ## .spec
 
@@ -36,40 +36,40 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>additionalArgs</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>additionalArgs defines how to add additional arguments for the ThanosRuler container. It is intended for e.g. activating hidden flags which are not supported by the dedicated configuration options yet. The arguments are passed as-is to the ThanosRuler container which may cause issues if they are invalid or not supported by the given ThanosRuler version. In case of an argument conflict (e.g. an argument which is already set by the operator itself) or when providing an invalid argument the reconciliation will fail and an error will be logged.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>additionalArgs[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Argument as part of the AdditionalArgs list.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>affinity</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>affinity defines when specified, the pod’s scheduling constraints.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>alertDropLabels</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>alertDropLabels defines the label names which should be dropped in Thanos Ruler alerts.</p>
 <p>The replica label <code>thanos_ruler_replica</code> will always be dropped from the alerts.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>alertQueryUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>alertQueryUrl defines how Thanos Ruler will set in the 'Source' field of all alerts. Maps to the '--alert.query-url' CLI arg.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>alertRelabelConfigFile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>alertRelabelConfigFile defines the path to the alert relabeling configuration file.</p>
@@ -77,7 +77,7 @@ Type
 <p>The operator performs no validation of the configuration file.</p>
 <p>This field takes precedence over <code>alertRelabelConfig</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>alertRelabelConfigs</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>alertRelabelConfigs defines the alert relabeling in Thanos Ruler.</p>
@@ -85,7 +85,7 @@ Type
 <p>The operator performs no validation of the configuration.</p>
 <p><code>alertRelabelConfigFile</code> takes precedence over this field.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>alertmanagersConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>alertmanagersConfig defines the list of Alertmanager endpoints to send alerts to.</p>
@@ -94,34 +94,34 @@ Type
 <p>The operator performs no validation of the configuration.</p>
 <p>This field takes precedence over <code>alertmanagersUrl</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>alertmanagersUrl</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>alertmanagersUrl defines the list of Alertmanager endpoints to send alerts to.</p>
 <p>For Thanos &gt;= v0.10.0, it is recommended to use <code>alertmanagersConfig</code> instead.</p>
 <p><code>alertmanagersConfig</code> takes precedence over this field.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>containers</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to a ThanosRuler pod or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch. The current container names are: <code>thanos-ruler</code> and <code>config-reloader</code>. Overriding containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>containers[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>A single application container that you want to run within a pod.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>dnsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>dnsConfig defines Defines the DNS configuration for the pods.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>dnsPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>dnsPolicy defines the DNS policy for the pods.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>enableFeatures</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>enableFeatures defines how to setup Thanos Ruler feature flags. By default, no features are enabled.</p>
@@ -129,128 +129,128 @@ Type
 <p>For more information see <a href="https://thanos.io/tip/components/rule.md/">https://thanos.io/tip/components/rule.md/</a></p>
 <p>It requires Thanos &gt;= 0.39.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>enableServiceLinks</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>enableServiceLinks defines whether information about services should be injected into pod’s environment variables</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>enforcedNamespaceLabel</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>enforcedNamespaceLabel enforces adding a namespace label of origin for each alert and metric that is user created. The label value will always be the namespace of the object that is being created.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>evaluationInterval</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>evaluationInterval defines the interval between consecutive evaluations.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>excludedFromEnforcement</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>excludedFromEnforcement defines the list of references to PrometheusRule objects to be excluded from enforcing a namespace label of origin. Applies only if enforcedNamespaceLabel set to true.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>excludedFromEnforcement[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ObjectReference references a PodMonitor, ServiceMonitor, Probe or PrometheusRule object.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>externalPrefix</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>externalPrefix defines the Thanos Ruler instances will be available under. This is necessary to generate correct URLs. This is necessary if Thanos Ruler is not served from root of a DNS name.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>grpcServerTlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>grpcServerTlsConfig defines the gRPC server from which Thanos Querier reads recorded rule data. Note: Currently only the CAFile, CertFile, and KeyFile fields are supported. Maps to the '--grpc-server-tls-*' CLI args.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>hostAliases</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>hostAliases defines pods' hostAliases configuration</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>hostAliases[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HostAlias holds the mapping between IP and hostnames that will be injected as an entry in the pod’s hosts file.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>hostUsers</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>hostUsers supports the user space in Kubernetes.</p>
 <p>More info: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/">https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/</a></p>
 <p>The feature requires at least Kubernetes 1.28 with the <code>UserNamespacesSupport</code> feature gate enabled. Starting Kubernetes 1.33, the feature is enabled by default.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>image</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>image defines Thanos container image URL.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>imagePullPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>imagePullPolicy defines for the 'thanos', 'init-config-reloader' and 'config-reloader' containers. See <a href="https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy">https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy</a> for more details.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>imagePullSecrets</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>imagePullSecrets defines an optional list of references to secrets in the same namespace to use for pulling thanos images from registries see <a href="http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod">http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>imagePullSecrets[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>LocalObjectReference contains enough information to let you locate the referenced object inside the same namespace.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>initContainers</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>initContainers allows adding initContainers to the pod definition. Those can be used to e.g. fetch secrets for injection into the ThanosRuler configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: <a href="https://kubernetes.io/docs/concepts/workloads/pods/init-containers/">https://kubernetes.io/docs/concepts/workloads/pods/init-containers/</a> Using initContainers for any use case other then secret fetching is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>initContainers[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>A single application container that you want to run within a pod.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>labels</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p>labels defines the external label pairs of the ThanosRuler resource.</p>
 <p>A default replica label <code>thanos_ruler_replica</code> will be always added as a label with the value of the pod’s name.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>listenLocal</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>listenLocal defines the Thanos ruler listen on loopback, so that it does not bind against the Pod IP.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>logFormat</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>logFormat for ThanosRuler to be configured with.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>logLevel</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>logLevel for ThanosRuler to be configured with.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>minReadySeconds</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>minReadySeconds defines the minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available.</p>
 <p>If unset, pods will be considered available as soon as they are ready.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>nodeSelector</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p>nodeSelector defines which Nodes the Pods are scheduled on.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>objectStorageConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>objectStorageConfig defines the configuration format is defined at <a href="https://thanos.io/tip/thanos/storage.md/#configuring-access-to-object-storage">https://thanos.io/tip/thanos/storage.md/#configuring-access-to-object-storage</a></p>
 <p>The operator performs no validation of the configuration.</p>
 <p><code>objectStorageConfigFile</code> takes precedence over this field.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>objectStorageConfigFile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>objectStorageConfigFile defines the path of the object storage configuration file.</p>
@@ -258,38 +258,38 @@ Type
 <p>The operator performs no validation of the configuration file.</p>
 <p>This field takes precedence over <code>objectStorageConfig</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>paused</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>paused defines when a ThanosRuler deployment is paused, no actions except for deletion will be performed on the underlying objects.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>podMetadata</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>podMetadata defines labels and annotations which are propagated to the ThanosRuler pods.</p>
 <p>The following items are reserved and cannot be overridden: * "app.kubernetes.io/name" label, set to "thanos-ruler". * "app.kubernetes.io/managed-by" label, set to "prometheus-operator". * "app.kubernetes.io/instance" label, set to the name of the ThanosRuler instance. * "thanos-ruler" label, set to the name of the ThanosRuler instance. * "kubectl.kubernetes.io/default-container" annotation, set to "thanos-ruler".</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>portName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>portName defines the port name used for the pods and governing service. Defaults to <code>web</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>priorityClassName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>priorityClassName defines the priority class assigned to the Pods</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>prometheusRulesExcludedFromEnforce</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>prometheusRulesExcludedFromEnforce defines a list of Prometheus rules to be excluded from enforcing of adding namespace labels. Works only if enforcedNamespaceLabel set to true. Make sure both ruleNamespace and ruleName are set for each pair Deprecated: use excludedFromEnforcement instead.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>prometheusRulesExcludedFromEnforce[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>PrometheusRuleExcludeConfig enables users to configure excluded PrometheusRule names and their namespaces to be ignored while enforcing namespace label for alerts and metrics.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>queryConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>queryConfig defines the list of Thanos Query endpoints from which to query metrics.</p>
@@ -298,128 +298,128 @@ Type
 <p>The operator performs no validation of the configuration.</p>
 <p>This field takes precedence over <code>queryEndpoints</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>queryEndpoints</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>queryEndpoints defines the list of Thanos Query endpoints from which to query metrics.</p>
 <p>For Thanos &gt;= v0.11.0, it is recommended to use <code>queryConfig</code> instead.</p>
 <p><code>queryConfig</code> takes precedence over this field.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>remoteWrite</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>remoteWrite defines the list of remote write configurations.</p>
 <p>When the list isn’t empty, the ruler is configured with stateless mode.</p>
 <p>It requires Thanos &gt;= 0.24.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>remoteWrite[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>RemoteWriteSpec defines the configuration to write samples from Prometheus to a remote endpoint.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>replicas</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>replicas defines the number of thanos ruler instances to deploy.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>resendDelay</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>resendDelay defines the minimum amount of time to wait before resending an alert to Alertmanager.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>resources</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>resources defines the resource requirements for single Pods. If not provided, no requests/limits will be set</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>retention</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>retention defines the time duration ThanosRuler shall retain data for. Default is '24h', and must match the regular expression <code>[0-9]+(ms|s|m|h|d|w|y)</code> (milliseconds seconds minutes hours days weeks years).</p>
 <p>The field has no effect when remote-write is configured since the Ruler operates in stateless mode.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>routePrefix</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>routePrefix defines the route prefix ThanosRuler registers HTTP handlers for. This allows thanos UI to be served on a sub-path.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>ruleConcurrentEval</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>ruleConcurrentEval defines how many rules can be evaluated concurrently. It requires Thanos &gt;= v0.37.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ruleGracePeriod</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ruleGracePeriod defines the minimum duration between alert and restored "for" state. This is maintained only for alerts with configured "for" time greater than grace period. It requires Thanos &gt;= v0.30.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>ruleNamespaceSelector</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ruleNamespaceSelector defines the namespaces to be selected for Rules discovery. If unspecified, only the same namespace as the ThanosRuler object is in is used.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ruleOutageTolerance</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ruleOutageTolerance defines the max time to tolerate prometheus outage for restoring "for" state of alert. It requires Thanos &gt;= v0.30.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>ruleQueryOffset</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ruleQueryOffset defines the default rule group’s query offset duration to use. It requires Thanos &gt;= v0.38.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ruleSelector</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ruleSelector defines the PrometheusRule objects to be selected for rule evaluation. An empty label selector matches all objects. A null label selector matches no objects.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>securityContext</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>securityContext defines the pod-level security attributes and common container settings. This defaults to the default PodSecurityContext.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serviceAccountName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>serviceAccountName defines the name of the ServiceAccount to use to run the Thanos Ruler Pods.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>serviceName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>serviceName defines the name of the service name used by the underlying StatefulSet(s) as the governing service. If defined, the Service must be created before the ThanosRuler resource in the same namespace and it must define a selector that matches the pod labels. If empty, the operator will create and manage a headless service named <code>thanos-ruler-operated</code> for ThanosRuler resources. When deploying multiple ThanosRuler resources in the same namespace, it is recommended to specify a different value for each. See <a href="https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id">https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id</a> for more details.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>storage</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>storage defines the specification of how storage shall be used.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>terminationGracePeriodSeconds</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>terminationGracePeriodSeconds defines the optional duration in seconds the pod needs to terminate gracefully. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down) which may lead to data corruption.</p>
 <p>Defaults to 120 seconds.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tolerations</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>tolerations defines when specified, the pod’s tolerations.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tolerations[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The pod this Toleration is attached to tolerates any taint that matches the triple &lt;key,value,effect&gt; using the matching operator &lt;operator&gt;.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>topologySpreadConstraints</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>topologySpreadConstraints defines the pod’s topology spread constraints.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>topologySpreadConstraints[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TopologySpreadConstraint specifies how to spread matching pods among the given topology.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tracingConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>tracingConfig defines the tracing configuration.</p>
@@ -428,7 +428,7 @@ Type
 <p>The operator performs no validation of the configuration.</p>
 <p><code>tracingConfigFile</code> takes precedence over this field.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tracingConfigFile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>tracingConfigFile defines the path of the tracing configuration file.</p>
@@ -437,32 +437,32 @@ Type
 <p>The operator performs no validation of the configuration file.</p>
 <p>This field takes precedence over <code>tracingConfig</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>version</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>version of Thanos to be deployed.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>volumeMounts</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>volumeMounts defines how the configuration of additional VolumeMounts on the output StatefulSet definition. VolumeMounts specified will be appended to other VolumeMounts in the ruler container, that are generated as a result of StorageSpec objects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>volumeMounts[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>VolumeMount describes a mounting of a Volume within a container.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>volumes</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>volumes defines how configuration of additional volumes on the output StatefulSet definition. Volumes specified will be appended to other volumes that are generated as a result of StorageSpec objects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>volumes[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Volume represents a named volume in a pod that may be accessed by any container in the pod.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>web</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>web defines the configuration of the ThanosRuler web server.</p></td>
@@ -489,10 +489,10 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name of the argument, e.g. "scrape.discovery-reload-interval". |
-| `value` | `string` | value defines the argument value, e.g. 30s. Can be empty for name-only arguments (e.g. --storage.tsdb.no-lockfile) |
+| Property | Type     | Description                                                                                                        |
+|----------|----------|--------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | name of the argument, e.g. "scrape.discovery-reload-interval".                                                     |
+| `value`  | `string` | value defines the argument value, e.g. 30s. Can be empty for name-only arguments (e.g. --storage.tsdb.no-lockfile) |
 
 ## .spec.affinity
 
@@ -502,10 +502,10 @@ affinity defines when specified, the pod’s scheduling constraints.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `nodeAffinity` | `object` | Describes node affinity scheduling rules for the pod. |
-| `podAffinity` | `object` | Describes pod affinity scheduling rules (e.g. co-locate this pod in the same node, zone, etc. as some other pod(s)). |
+| Property          | Type     | Description                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------|
+| `nodeAffinity`    | `object` | Describes node affinity scheduling rules for the pod.                                                                         |
+| `podAffinity`     | `object` | Describes pod affinity scheduling rules (e.g. co-locate this pod in the same node, zone, etc. as some other pod(s)).          |
 | `podAntiAffinity` | `object` | Describes pod anti-affinity scheduling rules (e.g. avoid putting this pod in the same node, zone, etc. as some other pod(s)). |
 
 ## .spec.affinity.nodeAffinity
@@ -516,11 +516,11 @@ Describes node affinity scheduling rules for the pod.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `preferredDuringSchedulingIgnoredDuringExecution` | `array` | The scheduler will prefer to schedule pods to nodes that satisfy the affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling affinity expressions, etc.), compute a sum by iterating through the elements of this field and adding "weight" to the sum if the node matches the corresponding matchExpressions; the node(s) with the highest sum are the most preferred. |
-| `preferredDuringSchedulingIgnoredDuringExecution[]` | `object` | An empty preferred scheduling term matches all objects with implicit weight 0 (i.e. it’s a no-op). A null preferred scheduling term matches no objects (i.e. is also a no-op). |
-| `requiredDuringSchedulingIgnoredDuringExecution` | `object` | If the affinity requirements specified by this field are not met at scheduling time, the pod will not be scheduled onto the node. If the affinity requirements specified by this field cease to be met at some point during pod execution (e.g. due to an update), the system may or may not try to eventually evict the pod from its node. |
+| Property                                            | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|-----------------------------------------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `preferredDuringSchedulingIgnoredDuringExecution`   | `array`  | The scheduler will prefer to schedule pods to nodes that satisfy the affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling affinity expressions, etc.), compute a sum by iterating through the elements of this field and adding "weight" to the sum if the node matches the corresponding matchExpressions; the node(s) with the highest sum are the most preferred. |
+| `preferredDuringSchedulingIgnoredDuringExecution[]` | `object` | An empty preferred scheduling term matches all objects with implicit weight 0 (i.e. it’s a no-op). A null preferred scheduling term matches no objects (i.e. is also a no-op).                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `requiredDuringSchedulingIgnoredDuringExecution`    | `object` | If the affinity requirements specified by this field are not met at scheduling time, the pod will not be scheduled onto the node. If the affinity requirements specified by this field cease to be met at some point during pod execution (e.g. due to an update), the system may or may not try to eventually evict the pod from its node.                                                                                                                                                                                                                                                                                    |
 
 ## .spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution
 
@@ -543,10 +543,10 @@ Required
 
 - `weight`
 
-| Property | Type | Description |
-|----|----|----|
-| `preference` | `object` | A node selector term, associated with the corresponding weight. |
-| `weight` | `integer` | Weight associated with matching the corresponding nodeSelectorTerm, in the range 1-100. |
+| Property     | Type      | Description                                                                             |
+|--------------|-----------|-----------------------------------------------------------------------------------------|
+| `preference` | `object`  | A node selector term, associated with the corresponding weight.                         |
+| `weight`     | `integer` | Weight associated with matching the corresponding nodeSelectorTerm, in the range 1-100. |
 
 ## .spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].preference
 
@@ -556,12 +556,12 @@ A node selector term, associated with the corresponding weight.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | A list of node selector requirements by node’s labels. |
+| Property             | Type     | Description                                                                                                             |
+|----------------------|----------|-------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`  | A list of node selector requirements by node’s labels.                                                                  |
 | `matchExpressions[]` | `object` | A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchFields` | `array` | A list of node selector requirements by node’s fields. |
-| `matchFields[]` | `object` | A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
+| `matchFields`        | `array`  | A list of node selector requirements by node’s fields.                                                                  |
+| `matchFields[]`      | `object` | A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
 
 ## .spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].preference.matchExpressions
 
@@ -584,11 +584,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The label key that the selector applies to. |
-| `operator` | `string` | Represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt. |
-| `values` | `array (string)` | An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                                                                                                                         |
+|------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | The label key that the selector applies to.                                                                                                                                                                                                                                                                                                         |
+| `operator` | `string`         | Represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.                                                                                                                                                                                                                                |
+| `values`   | `array (string)` | An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].preference.matchFields
 
@@ -611,11 +611,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The label key that the selector applies to. |
-| `operator` | `string` | Represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt. |
-| `values` | `array (string)` | An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                                                                                                                         |
+|------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | The label key that the selector applies to.                                                                                                                                                                                                                                                                                                         |
+| `operator` | `string`         | Represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.                                                                                                                                                                                                                                |
+| `values`   | `array (string)` | An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution
 
@@ -628,9 +628,9 @@ Type
 Required
 - `nodeSelectorTerms`
 
-| Property | Type | Description |
-|----|----|----|
-| `nodeSelectorTerms` | `array` | Required. A list of node selector terms. The terms are ORed. |
+| Property              | Type     | Description                                                                                                                                                           |
+|-----------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `nodeSelectorTerms`   | `array`  | Required. A list of node selector terms. The terms are ORed.                                                                                                          |
 | `nodeSelectorTerms[]` | `object` | A null or empty node selector term matches no objects. The requirements of them are ANDed. The TopologySelectorTerm type implements a subset of the NodeSelectorTerm. |
 
 ## .spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms
@@ -649,12 +649,12 @@ A null or empty node selector term matches no objects. The requirements of them 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | A list of node selector requirements by node’s labels. |
+| Property             | Type     | Description                                                                                                             |
+|----------------------|----------|-------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`  | A list of node selector requirements by node’s labels.                                                                  |
 | `matchExpressions[]` | `object` | A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchFields` | `array` | A list of node selector requirements by node’s fields. |
-| `matchFields[]` | `object` | A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
+| `matchFields`        | `array`  | A list of node selector requirements by node’s fields.                                                                  |
+| `matchFields[]`      | `object` | A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
 
 ## .spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms\[\].matchExpressions
 
@@ -677,11 +677,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The label key that the selector applies to. |
-| `operator` | `string` | Represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt. |
-| `values` | `array (string)` | An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                                                                                                                         |
+|------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | The label key that the selector applies to.                                                                                                                                                                                                                                                                                                         |
+| `operator` | `string`         | Represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.                                                                                                                                                                                                                                |
+| `values`   | `array (string)` | An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms\[\].matchFields
 
@@ -704,11 +704,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The label key that the selector applies to. |
-| `operator` | `string` | Represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt. |
-| `values` | `array (string)` | An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                                                                                                                         |
+|------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | The label key that the selector applies to.                                                                                                                                                                                                                                                                                                         |
+| `operator` | `string`         | Represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.                                                                                                                                                                                                                                |
+| `values`   | `array (string)` | An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.podAffinity
 
@@ -718,12 +718,12 @@ Describes pod affinity scheduling rules (e.g. co-locate this pod in the same nod
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `preferredDuringSchedulingIgnoredDuringExecution` | `array` | The scheduler will prefer to schedule pods to nodes that satisfy the affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling affinity expressions, etc.), compute a sum by iterating through the elements of this field and adding "weight" to the sum if the node has pods which matches the corresponding podAffinityTerm; the node(s) with the highest sum are the most preferred. |
-| `preferredDuringSchedulingIgnoredDuringExecution[]` | `object` | The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s) |
-| `requiredDuringSchedulingIgnoredDuringExecution` | `array` | If the affinity requirements specified by this field are not met at scheduling time, the pod will not be scheduled onto the node. If the affinity requirements specified by this field cease to be met at some point during pod execution (e.g. due to a pod label update), the system may or may not try to eventually evict the pod from its node. When there are multiple elements, the lists of nodes corresponding to each podAffinityTerm are intersected, i.e. all terms must be satisfied. |
-| `requiredDuringSchedulingIgnoredDuringExecution[]` | `object` | Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key \<topologyKey\> matches that of any node on which a pod of the set of pods is running |
+| Property                                            | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|-----------------------------------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `preferredDuringSchedulingIgnoredDuringExecution`   | `array`  | The scheduler will prefer to schedule pods to nodes that satisfy the affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling affinity expressions, etc.), compute a sum by iterating through the elements of this field and adding "weight" to the sum if the node has pods which matches the corresponding podAffinityTerm; the node(s) with the highest sum are the most preferred. |
+| `preferredDuringSchedulingIgnoredDuringExecution[]` | `object` | The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `requiredDuringSchedulingIgnoredDuringExecution`    | `array`  | If the affinity requirements specified by this field are not met at scheduling time, the pod will not be scheduled onto the node. If the affinity requirements specified by this field cease to be met at some point during pod execution (e.g. due to a pod label update), the system may or may not try to eventually evict the pod from its node. When there are multiple elements, the lists of nodes corresponding to each podAffinityTerm are intersected, i.e. all terms must be satisfied.                                                                                                                                           |
+| `requiredDuringSchedulingIgnoredDuringExecution[]`  | `object` | Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key \<topologyKey\> matches that of any node on which a pod of the set of pods is running                                                                                                                                                                                                                                                                            |
 
 ## .spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution
 
@@ -746,10 +746,10 @@ Required
 
 - `weight`
 
-| Property | Type | Description |
-|----|----|----|
-| `podAffinityTerm` | `object` | Required. A pod affinity term, associated with the corresponding weight. |
-| `weight` | `integer` | weight associated with matching the corresponding podAffinityTerm, in the range 1-100. |
+| Property          | Type      | Description                                                                            |
+|-------------------|-----------|----------------------------------------------------------------------------------------|
+| `podAffinityTerm` | `object`  | Required. A pod affinity term, associated with the corresponding weight.               |
+| `weight`          | `integer` | weight associated with matching the corresponding podAffinityTerm, in the range 1-100. |
 
 ## .spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm
 
@@ -762,14 +762,14 @@ Type
 Required
 - `topologyKey`
 
-| Property | Type | Description |
-|----|----|----|
-| `labelSelector` | `object` | A label query over a set of resources, in this case pods. If it’s null, this PodAffinityTerm matches with no Pods. |
-| `matchLabelKeys` | `array (string)` | MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both matchLabelKeys and labelSelector. Also, matchLabelKeys cannot be set when labelSelector isn’t set. |
+| Property            | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|---------------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `labelSelector`     | `object`         | A label query over a set of resources, in this case pods. If it’s null, this PodAffinityTerm matches with no Pods.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `matchLabelKeys`    | `array (string)` | MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both matchLabelKeys and labelSelector. Also, matchLabelKeys cannot be set when labelSelector isn’t set.             |
 | `mismatchLabelKeys` | `array (string)` | MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both mismatchLabelKeys and labelSelector. Also, mismatchLabelKeys cannot be set when labelSelector isn’t set. |
-| `namespaceSelector` | `object` | A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod’s namespace". An empty selector ({}) matches all namespaces. |
-| `namespaces` | `array (string)` | namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod’s namespace". |
-| `topologyKey` | `string` | This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed. |
+| `namespaceSelector` | `object`         | A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod’s namespace". An empty selector ({}) matches all namespaces.                                                                                                                                                                                                                                                                                                            |
+| `namespaces`        | `array (string)` | namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod’s namespace".                                                                                                                                                                                                                                                                                                                                        |
+| `topologyKey`       | `string`         | This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed.                                                                                                                                                                                                                                                                          |
 
 ## .spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm.labelSelector
 
@@ -779,11 +779,11 @@ A label query over a set of resources, in this case pods. If it’s null, this P
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm.labelSelector.matchExpressions
 
@@ -806,11 +806,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm.namespaceSelector
 
@@ -820,11 +820,11 @@ A label query over the set of namespaces that the term applies to. The term is a
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm.namespaceSelector.matchExpressions
 
@@ -847,11 +847,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution
 
@@ -872,14 +872,14 @@ Type
 Required
 - `topologyKey`
 
-| Property | Type | Description |
-|----|----|----|
-| `labelSelector` | `object` | A label query over a set of resources, in this case pods. If it’s null, this PodAffinityTerm matches with no Pods. |
-| `matchLabelKeys` | `array (string)` | MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both matchLabelKeys and labelSelector. Also, matchLabelKeys cannot be set when labelSelector isn’t set. |
+| Property            | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|---------------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `labelSelector`     | `object`         | A label query over a set of resources, in this case pods. If it’s null, this PodAffinityTerm matches with no Pods.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `matchLabelKeys`    | `array (string)` | MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both matchLabelKeys and labelSelector. Also, matchLabelKeys cannot be set when labelSelector isn’t set.             |
 | `mismatchLabelKeys` | `array (string)` | MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both mismatchLabelKeys and labelSelector. Also, mismatchLabelKeys cannot be set when labelSelector isn’t set. |
-| `namespaceSelector` | `object` | A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod’s namespace". An empty selector ({}) matches all namespaces. |
-| `namespaces` | `array (string)` | namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod’s namespace". |
-| `topologyKey` | `string` | This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed. |
+| `namespaceSelector` | `object`         | A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod’s namespace". An empty selector ({}) matches all namespaces.                                                                                                                                                                                                                                                                                                            |
+| `namespaces`        | `array (string)` | namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod’s namespace".                                                                                                                                                                                                                                                                                                                                        |
+| `topologyKey`       | `string`         | This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed.                                                                                                                                                                                                                                                                          |
 
 ## .spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution\[\].labelSelector
 
@@ -889,11 +889,11 @@ A label query over a set of resources, in this case pods. If it’s null, this P
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution\[\].labelSelector.matchExpressions
 
@@ -916,11 +916,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution\[\].namespaceSelector
 
@@ -930,11 +930,11 @@ A label query over the set of namespaces that the term applies to. The term is a
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution\[\].namespaceSelector.matchExpressions
 
@@ -957,11 +957,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.podAntiAffinity
 
@@ -971,12 +971,12 @@ Describes pod anti-affinity scheduling rules (e.g. avoid putting this pod in the
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `preferredDuringSchedulingIgnoredDuringExecution` | `array` | The scheduler will prefer to schedule pods to nodes that satisfy the anti-affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling anti-affinity expressions, etc.), compute a sum by iterating through the elements of this field and subtracting "weight" from the sum if the node has pods which matches the corresponding podAffinityTerm; the node(s) with the highest sum are the most preferred. |
-| `preferredDuringSchedulingIgnoredDuringExecution[]` | `object` | The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s) |
-| `requiredDuringSchedulingIgnoredDuringExecution` | `array` | If the anti-affinity requirements specified by this field are not met at scheduling time, the pod will not be scheduled onto the node. If the anti-affinity requirements specified by this field cease to be met at some point during pod execution (e.g. due to a pod label update), the system may or may not try to eventually evict the pod from its node. When there are multiple elements, the lists of nodes corresponding to each podAffinityTerm are intersected, i.e. all terms must be satisfied. |
-| `requiredDuringSchedulingIgnoredDuringExecution[]` | `object` | Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key \<topologyKey\> matches that of any node on which a pod of the set of pods is running |
+| Property                                            | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-----------------------------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `preferredDuringSchedulingIgnoredDuringExecution`   | `array`  | The scheduler will prefer to schedule pods to nodes that satisfy the anti-affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling anti-affinity expressions, etc.), compute a sum by iterating through the elements of this field and subtracting "weight" from the sum if the node has pods which matches the corresponding podAffinityTerm; the node(s) with the highest sum are the most preferred. |
+| `preferredDuringSchedulingIgnoredDuringExecution[]` | `object` | The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `requiredDuringSchedulingIgnoredDuringExecution`    | `array`  | If the anti-affinity requirements specified by this field are not met at scheduling time, the pod will not be scheduled onto the node. If the anti-affinity requirements specified by this field cease to be met at some point during pod execution (e.g. due to a pod label update), the system may or may not try to eventually evict the pod from its node. When there are multiple elements, the lists of nodes corresponding to each podAffinityTerm are intersected, i.e. all terms must be satisfied.                                                                                                                                                  |
+| `requiredDuringSchedulingIgnoredDuringExecution[]`  | `object` | Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key \<topologyKey\> matches that of any node on which a pod of the set of pods is running                                                                                                                                                                                                                                                                                             |
 
 ## .spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution
 
@@ -999,10 +999,10 @@ Required
 
 - `weight`
 
-| Property | Type | Description |
-|----|----|----|
-| `podAffinityTerm` | `object` | Required. A pod affinity term, associated with the corresponding weight. |
-| `weight` | `integer` | weight associated with matching the corresponding podAffinityTerm, in the range 1-100. |
+| Property          | Type      | Description                                                                            |
+|-------------------|-----------|----------------------------------------------------------------------------------------|
+| `podAffinityTerm` | `object`  | Required. A pod affinity term, associated with the corresponding weight.               |
+| `weight`          | `integer` | weight associated with matching the corresponding podAffinityTerm, in the range 1-100. |
 
 ## .spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm
 
@@ -1015,14 +1015,14 @@ Type
 Required
 - `topologyKey`
 
-| Property | Type | Description |
-|----|----|----|
-| `labelSelector` | `object` | A label query over a set of resources, in this case pods. If it’s null, this PodAffinityTerm matches with no Pods. |
-| `matchLabelKeys` | `array (string)` | MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both matchLabelKeys and labelSelector. Also, matchLabelKeys cannot be set when labelSelector isn’t set. |
+| Property            | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|---------------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `labelSelector`     | `object`         | A label query over a set of resources, in this case pods. If it’s null, this PodAffinityTerm matches with no Pods.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `matchLabelKeys`    | `array (string)` | MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both matchLabelKeys and labelSelector. Also, matchLabelKeys cannot be set when labelSelector isn’t set.             |
 | `mismatchLabelKeys` | `array (string)` | MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both mismatchLabelKeys and labelSelector. Also, mismatchLabelKeys cannot be set when labelSelector isn’t set. |
-| `namespaceSelector` | `object` | A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod’s namespace". An empty selector ({}) matches all namespaces. |
-| `namespaces` | `array (string)` | namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod’s namespace". |
-| `topologyKey` | `string` | This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed. |
+| `namespaceSelector` | `object`         | A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod’s namespace". An empty selector ({}) matches all namespaces.                                                                                                                                                                                                                                                                                                            |
+| `namespaces`        | `array (string)` | namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod’s namespace".                                                                                                                                                                                                                                                                                                                                        |
+| `topologyKey`       | `string`         | This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed.                                                                                                                                                                                                                                                                          |
 
 ## .spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm.labelSelector
 
@@ -1032,11 +1032,11 @@ A label query over a set of resources, in this case pods. If it’s null, this P
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm.labelSelector.matchExpressions
 
@@ -1059,11 +1059,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm.namespaceSelector
 
@@ -1073,11 +1073,11 @@ A label query over the set of namespaces that the term applies to. The term is a
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm.namespaceSelector.matchExpressions
 
@@ -1100,11 +1100,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution
 
@@ -1125,14 +1125,14 @@ Type
 Required
 - `topologyKey`
 
-| Property | Type | Description |
-|----|----|----|
-| `labelSelector` | `object` | A label query over a set of resources, in this case pods. If it’s null, this PodAffinityTerm matches with no Pods. |
-| `matchLabelKeys` | `array (string)` | MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both matchLabelKeys and labelSelector. Also, matchLabelKeys cannot be set when labelSelector isn’t set. |
+| Property            | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|---------------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `labelSelector`     | `object`         | A label query over a set of resources, in this case pods. If it’s null, this PodAffinityTerm matches with no Pods.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `matchLabelKeys`    | `array (string)` | MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both matchLabelKeys and labelSelector. Also, matchLabelKeys cannot be set when labelSelector isn’t set.             |
 | `mismatchLabelKeys` | `array (string)` | MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both mismatchLabelKeys and labelSelector. Also, mismatchLabelKeys cannot be set when labelSelector isn’t set. |
-| `namespaceSelector` | `object` | A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod’s namespace". An empty selector ({}) matches all namespaces. |
-| `namespaces` | `array (string)` | namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod’s namespace". |
-| `topologyKey` | `string` | This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed. |
+| `namespaceSelector` | `object`         | A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod’s namespace". An empty selector ({}) matches all namespaces.                                                                                                                                                                                                                                                                                                            |
+| `namespaces`        | `array (string)` | namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod’s namespace".                                                                                                                                                                                                                                                                                                                                        |
+| `topologyKey`       | `string`         | This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed.                                                                                                                                                                                                                                                                          |
 
 ## .spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution\[\].labelSelector
 
@@ -1142,11 +1142,11 @@ A label query over a set of resources, in this case pods. If it’s null, this P
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution\[\].labelSelector.matchExpressions
 
@@ -1169,11 +1169,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution\[\].namespaceSelector
 
@@ -1183,11 +1183,11 @@ A label query over the set of namespaces that the term applies to. The term is a
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution\[\].namespaceSelector.matchExpressions
 
@@ -1210,11 +1210,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.alertRelabelConfigs
 
@@ -1233,11 +1233,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.alertmanagersConfig
 
@@ -1258,11 +1258,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.containers
 
@@ -1283,40 +1283,40 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `args` | `array (string)` | Arguments to the entrypoint. The container image’s CMD is used if this is not provided. Variable references \$(VAR_NAME) are expanded using the container’s environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: <https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell> |
-| `command` | `array (string)` | Entrypoint array. Not executed within a shell. The container image’s ENTRYPOINT is used if this is not provided. Variable references \$(VAR_NAME) are expanded using the container’s environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: <https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell> |
-| `env` | `array` | List of environment variables to set in the container. Cannot be updated. |
-| `env[]` | `object` | EnvVar represents an environment variable present in a Container. |
-| `envFrom` | `array` | List of sources to populate environment variables in the container. The keys defined within a source may consist of any printable ASCII characters except '='. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated. |
-| `envFrom[]` | `object` | EnvFromSource represents the source of a set of ConfigMaps or Secrets |
-| `image` | `string` | Container image name. More info: <https://kubernetes.io/docs/concepts/containers/images> This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets. |
-| `imagePullPolicy` | `string` | Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/containers/images#updating-images> |
-| `lifecycle` | `object` | Actions that the management system should take in response to container lifecycle events. Cannot be updated. |
-| `livenessProbe` | `object` | Periodic probe of container liveness. Container will be restarted if the probe fails. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes> |
-| `name` | `string` | Name of the container specified as a DNS_LABEL. Each container in a pod must have a unique name (DNS_LABEL). Cannot be updated. |
-| `ports` | `array` | List of ports to expose from the container. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default "0.0.0.0" address inside a container will be accessible from the network. Modifying this array with strategic merge patch may corrupt the data. For more information See <https://github.com/kubernetes/kubernetes/issues/108255>. Cannot be updated. |
-| `ports[]` | `object` | ContainerPort represents a network port in a single container. |
-| `readinessProbe` | `object` | Periodic probe of container service readiness. Container will be removed from service endpoints if the probe fails. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes> |
-| `resizePolicy` | `array` | Resources resize policy for the container. |
-| `resizePolicy[]` | `object` | ContainerResizePolicy represents resource resize policy for the container. |
-| `resources` | `object` | Compute Resources required by this container. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/> |
-| `restartPolicy` | `string` | RestartPolicy defines the restart behavior of individual containers in a pod. This overrides the pod-level restart policy. When this field is not specified, the restart behavior is defined by the Pod’s restart policy and the container type. Additionally, setting the RestartPolicy as "Always" for the init container will have the following effect: this init container will be continually restarted on exit until all regular containers have terminated. Once all regular containers have completed, all init containers with restartPolicy "Always" will be shut down. This lifecycle differs from normal init containers and is often referred to as a "sidecar" container. Although this init container still starts in the init container sequence, it does not wait for the container to complete before proceeding to the next init container. Instead, the next init container starts immediately after this init container is started, or after any startupProbe has successfully completed. |
-| `restartPolicyRules` | `array` | Represents a list of rules to be checked to determine if the container should be restarted on exit. The rules are evaluated in order. Once a rule matches a container exit condition, the remaining rules are ignored. If no rule matches the container exit condition, the Container-level restart policy determines the whether the container is restarted or not. Constraints on the rules: - At most 20 rules are allowed. - Rules can have the same action. - Identical rules are not forbidden in validations. When rules are specified, container MUST set RestartPolicy explicitly even it if matches the Pod’s RestartPolicy. |
-| `restartPolicyRules[]` | `object` | ContainerRestartRule describes how a container exit is handled. |
-| `securityContext` | `object` | SecurityContext defines the security options the container should be run with. If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext. More info: <https://kubernetes.io/docs/tasks/configure-pod-container/security-context/> |
-| `startupProbe` | `object` | StartupProbe indicates that the Pod has successfully initialized. If specified, no other probes are executed until this completes successfully. If this probe fails, the Pod will be restarted, just as if the livenessProbe failed. This can be used to provide different probe parameters at the beginning of a Pod’s lifecycle, when it might take a long time to load data or warm a cache, than during steady-state operation. This cannot be updated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes> |
-| `stdin` | `boolean` | Whether this container should allocate a buffer for stdin in the container runtime. If this is not set, reads from stdin in the container will always result in EOF. Default is false. |
-| `stdinOnce` | `boolean` | Whether the container runtime should close the stdin channel after it has been opened by a single attach. When stdin is true the stdin stream will remain open across multiple attach sessions. If stdinOnce is set to true, stdin is opened on container start, is empty until the first client attaches to stdin, and then remains open and accepts data until the client disconnects, at which time stdin is closed and remains closed until the container is restarted. If this flag is false, a container processes that reads from stdin will never receive an EOF. Default is false |
-| `terminationMessagePath` | `string` | Optional: Path at which the file to which the container’s termination message will be written is mounted into the container’s filesystem. Message written is intended to be brief final status, such as an assertion failure message. Will be truncated by the node if greater than 4096 bytes. The total message length across all containers will be limited to 12kb. Defaults to /dev/termination-log. Cannot be updated. |
-| `terminationMessagePolicy` | `string` | Indicate how the termination message should be populated. File will use the contents of terminationMessagePath to populate the container status message on both success and failure. FallbackToLogsOnError will use the last chunk of container log output if the termination message file is empty and the container exited with an error. The log output is limited to 2048 bytes or 80 lines, whichever is smaller. Defaults to File. Cannot be updated. |
-| `tty` | `boolean` | Whether this container should allocate a TTY for itself, also requires 'stdin' to be true. Default is false. |
-| `volumeDevices` | `array` | volumeDevices is the list of block devices to be used by the container. |
-| `volumeDevices[]` | `object` | volumeDevice describes a mapping of a raw block device within a container. |
-| `volumeMounts` | `array` | Pod volumes to mount into the container’s filesystem. Cannot be updated. |
-| `volumeMounts[]` | `object` | VolumeMount describes a mounting of a Volume within a container. |
-| `workingDir` | `string` | Container’s working directory. If not specified, the container runtime’s default will be used, which might be configured in the container image. Cannot be updated. |
+| Property                   | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+|----------------------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `args`                     | `array (string)` | Arguments to the entrypoint. The container image’s CMD is used if this is not provided. Variable references \$(VAR_NAME) are expanded using the container’s environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: <https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell>                                                                                                                                                                                                                                                                                                                                   |
+| `command`                  | `array (string)` | Entrypoint array. Not executed within a shell. The container image’s ENTRYPOINT is used if this is not provided. Variable references \$(VAR_NAME) are expanded using the container’s environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: <https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell>                                                                                                                                                                                                                                                                                                          |
+| `env`                      | `array`          | List of environment variables to set in the container. Cannot be updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `env[]`                    | `object`         | EnvVar represents an environment variable present in a Container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `envFrom`                  | `array`          | List of sources to populate environment variables in the container. The keys defined within a source may consist of any printable ASCII characters except '='. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `envFrom[]`                | `object`         | EnvFromSource represents the source of a set of ConfigMaps or Secrets                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `image`                    | `string`         | Container image name. More info: <https://kubernetes.io/docs/concepts/containers/images> This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `imagePullPolicy`          | `string`         | Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/containers/images#updating-images>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `lifecycle`                | `object`         | Actions that the management system should take in response to container lifecycle events. Cannot be updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `livenessProbe`            | `object`         | Periodic probe of container liveness. Container will be restarted if the probe fails. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `name`                     | `string`         | Name of the container specified as a DNS_LABEL. Each container in a pod must have a unique name (DNS_LABEL). Cannot be updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `ports`                    | `array`          | List of ports to expose from the container. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default "0.0.0.0" address inside a container will be accessible from the network. Modifying this array with strategic merge patch may corrupt the data. For more information See <https://github.com/kubernetes/kubernetes/issues/108255>. Cannot be updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `ports[]`                  | `object`         | ContainerPort represents a network port in a single container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `readinessProbe`           | `object`         | Periodic probe of container service readiness. Container will be removed from service endpoints if the probe fails. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `resizePolicy`             | `array`          | Resources resize policy for the container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `resizePolicy[]`           | `object`         | ContainerResizePolicy represents resource resize policy for the container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `resources`                | `object`         | Compute Resources required by this container. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `restartPolicy`            | `string`         | RestartPolicy defines the restart behavior of individual containers in a pod. This overrides the pod-level restart policy. When this field is not specified, the restart behavior is defined by the Pod’s restart policy and the container type. Additionally, setting the RestartPolicy as "Always" for the init container will have the following effect: this init container will be continually restarted on exit until all regular containers have terminated. Once all regular containers have completed, all init containers with restartPolicy "Always" will be shut down. This lifecycle differs from normal init containers and is often referred to as a "sidecar" container. Although this init container still starts in the init container sequence, it does not wait for the container to complete before proceeding to the next init container. Instead, the next init container starts immediately after this init container is started, or after any startupProbe has successfully completed. |
+| `restartPolicyRules`       | `array`          | Represents a list of rules to be checked to determine if the container should be restarted on exit. The rules are evaluated in order. Once a rule matches a container exit condition, the remaining rules are ignored. If no rule matches the container exit condition, the Container-level restart policy determines the whether the container is restarted or not. Constraints on the rules: - At most 20 rules are allowed. - Rules can have the same action. - Identical rules are not forbidden in validations. When rules are specified, container MUST set RestartPolicy explicitly even it if matches the Pod’s RestartPolicy.                                                                                                                                                                                                                                                                                                                                                                          |
+| `restartPolicyRules[]`     | `object`         | ContainerRestartRule describes how a container exit is handled.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `securityContext`          | `object`         | SecurityContext defines the security options the container should be run with. If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext. More info: <https://kubernetes.io/docs/tasks/configure-pod-container/security-context/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `startupProbe`             | `object`         | StartupProbe indicates that the Pod has successfully initialized. If specified, no other probes are executed until this completes successfully. If this probe fails, the Pod will be restarted, just as if the livenessProbe failed. This can be used to provide different probe parameters at the beginning of a Pod’s lifecycle, when it might take a long time to load data or warm a cache, than during steady-state operation. This cannot be updated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `stdin`                    | `boolean`        | Whether this container should allocate a buffer for stdin in the container runtime. If this is not set, reads from stdin in the container will always result in EOF. Default is false.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `stdinOnce`                | `boolean`        | Whether the container runtime should close the stdin channel after it has been opened by a single attach. When stdin is true the stdin stream will remain open across multiple attach sessions. If stdinOnce is set to true, stdin is opened on container start, is empty until the first client attaches to stdin, and then remains open and accepts data until the client disconnects, at which time stdin is closed and remains closed until the container is restarted. If this flag is false, a container processes that reads from stdin will never receive an EOF. Default is false                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `terminationMessagePath`   | `string`         | Optional: Path at which the file to which the container’s termination message will be written is mounted into the container’s filesystem. Message written is intended to be brief final status, such as an assertion failure message. Will be truncated by the node if greater than 4096 bytes. The total message length across all containers will be limited to 12kb. Defaults to /dev/termination-log. Cannot be updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `terminationMessagePolicy` | `string`         | Indicate how the termination message should be populated. File will use the contents of terminationMessagePath to populate the container status message on both success and failure. FallbackToLogsOnError will use the last chunk of container log output if the termination message file is empty and the container exited with an error. The log output is limited to 2048 bytes or 80 lines, whichever is smaller. Defaults to File. Cannot be updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `tty`                      | `boolean`        | Whether this container should allocate a TTY for itself, also requires 'stdin' to be true. Default is false.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `volumeDevices`            | `array`          | volumeDevices is the list of block devices to be used by the container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `volumeDevices[]`          | `object`         | volumeDevice describes a mapping of a raw block device within a container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `volumeMounts`             | `array`          | Pod volumes to mount into the container’s filesystem. Cannot be updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `volumeMounts[]`           | `object`         | VolumeMount describes a mounting of a Volume within a container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `workingDir`               | `string`         | Container’s working directory. If not specified, the container runtime’s default will be used, which might be configured in the container image. Cannot be updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 
 ## .spec.containers\[\].env
 
@@ -1337,11 +1337,11 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name of the environment variable. May consist of any printable ASCII characters except '='. |
-| `value` | `string` | Variable references \$(VAR_NAME) are expanded using the previously defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "". |
-| `valueFrom` | `object` | Source for the environment variable’s value. Cannot be used if value is not empty. |
+| Property    | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|-------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`      | `string` | Name of the environment variable. May consist of any printable ASCII characters except '='.                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `value`     | `string` | Variable references \$(VAR_NAME) are expanded using the previously defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "". |
+| `valueFrom` | `object` | Source for the environment variable’s value. Cannot be used if value is not empty.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
 ## .spec.containers\[\].env\[\].valueFrom
 
@@ -1351,13 +1351,13 @@ Source for the environment variable’s value. Cannot be used if value is not em
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `configMapKeyRef` | `object` | Selects a key of a ConfigMap. |
-| `fieldRef` | `object` | Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs. |
-| `fileKeyRef` | `object` | FileKeyRef selects a key of the env file. Requires the EnvFiles feature gate to be enabled. |
-| `resourceFieldRef` | `object` | Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported. |
-| `secretKeyRef` | `object` | Selects a key of a secret in the pod’s namespace |
+| Property           | Type     | Description                                                                                                                                                                                                              |
+|--------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `configMapKeyRef`  | `object` | Selects a key of a ConfigMap.                                                                                                                                                                                            |
+| `fieldRef`         | `object` | Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs. |
+| `fileKeyRef`       | `object` | FileKeyRef selects a key of the env file. Requires the EnvFiles feature gate to be enabled.                                                                                                                              |
+| `resourceFieldRef` | `object` | Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.     |
+| `secretKeyRef`     | `object` | Selects a key of a secret in the pod’s namespace                                                                                                                                                                         |
 
 ## .spec.containers\[\].env\[\].valueFrom.configMapKeyRef
 
@@ -1370,11 +1370,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.containers\[\].env\[\].valueFrom.fieldRef
 
@@ -1387,10 +1387,10 @@ Type
 Required
 - `fieldPath`
 
-| Property | Type | Description |
-|----|----|----|
+| Property     | Type     | Description                                                                   |
+|--------------|----------|-------------------------------------------------------------------------------|
 | `apiVersion` | `string` | Version of the schema the FieldPath is written in terms of, defaults to "v1". |
-| `fieldPath` | `string` | Path of the field to select in the specified API version. |
+| `fieldPath`  | `string` | Path of the field to select in the specified API version.                     |
 
 ## .spec.containers\[\].env\[\].valueFrom.fileKeyRef
 
@@ -1414,30 +1414,30 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>key</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The key within the env file. An invalid key will prevent the pod from starting. The keys defined within a source may consist of any printable ASCII characters except '='. During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>optional</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Specify whether the file or its key must be defined. If the file or key does not exist, then the env var is not published. If optional is set to true and the specified key does not exist, the environment variable will not be set in the Pod’s containers.</p>
 <p>If optional is set to false and the specified key does not exist, an error will be returned during Pod creation.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>path</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The path within the volume from which to select the file. Must be relative and may not contain the '..' path or start with '..'.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>volumeName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The name of the volume mount containing the env file.</p></td>
@@ -1456,11 +1456,11 @@ Type
 Required
 - `resource`
 
-| Property | Type | Description |
-|----|----|----|
-| `containerName` | `string` | Container name: required for volumes, optional for env vars |
-| `divisor` | `integer-or-string` | Specifies the output format of the exposed resources, defaults to "1" |
-| `resource` | `string` | Required: resource to select |
+| Property        | Type                | Description                                                           |
+|-----------------|---------------------|-----------------------------------------------------------------------|
+| `containerName` | `string`            | Container name: required for volumes, optional for env vars           |
+| `divisor`       | `integer-or-string` | Specifies the output format of the exposed resources, defaults to "1" |
+| `resource`      | `string`            | Required: resource to select                                          |
 
 ## .spec.containers\[\].env\[\].valueFrom.secretKeyRef
 
@@ -1473,11 +1473,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.containers\[\].envFrom
 
@@ -1495,11 +1495,11 @@ EnvFromSource represents the source of a set of ConfigMaps or Secrets
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `configMapRef` | `object` | The ConfigMap to select from |
-| `prefix` | `string` | Optional text to prepend to the name of each environment variable. May consist of any printable ASCII characters except '='. |
-| `secretRef` | `object` | The Secret to select from |
+| Property       | Type     | Description                                                                                                                  |
+|----------------|----------|------------------------------------------------------------------------------------------------------------------------------|
+| `configMapRef` | `object` | The ConfigMap to select from                                                                                                 |
+| `prefix`       | `string` | Optional text to prepend to the name of each environment variable. May consist of any printable ASCII characters except '='. |
+| `secretRef`    | `object` | The Secret to select from                                                                                                    |
 
 ## .spec.containers\[\].envFrom\[\].configMapRef
 
@@ -1509,10 +1509,10 @@ The ConfigMap to select from
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap must be defined                                                                                                                                                                                                                                                |
 
 ## .spec.containers\[\].envFrom\[\].secretRef
 
@@ -1522,10 +1522,10 @@ The Secret to select from
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret must be defined                                                                                                                                                                                                                                                   |
 
 ## .spec.containers\[\].lifecycle
 
@@ -1535,11 +1535,11 @@ Actions that the management system should take in response to container lifecycl
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `postStart` | `object` | PostStart is called immediately after a container is created. If the handler fails, the container is terminated and restarted according to its restart policy. Other management of the container blocks until the hook completes. More info: <https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks> |
-| `preStop` | `object` | PreStop is called immediately before a container is terminated due to an API request or management event such as liveness/startup probe failure, preemption, resource contention, etc. The handler is not called if the container crashes or exits. The Pod’s termination grace period countdown begins before the PreStop hook is executed. Regardless of the outcome of the handler, the container will eventually terminate within the Pod’s termination grace period (unless delayed by finalizers). Other management of the container blocks until the hook completes or until the termination grace period is reached. More info: <https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks> |
-| `stopSignal` | `string` | StopSignal defines which signal will be sent to a container when it is being stopped. If not specified, the default is defined by the container runtime in use. StopSignal can only be set for Pods with a non-empty .spec.os.name |
+| Property     | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|--------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `postStart`  | `object` | PostStart is called immediately after a container is created. If the handler fails, the container is terminated and restarted according to its restart policy. Other management of the container blocks until the hook completes. More info: <https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks>                                                                                                                                                                                                                                                                                                                                                                                            |
+| `preStop`    | `object` | PreStop is called immediately before a container is terminated due to an API request or management event such as liveness/startup probe failure, preemption, resource contention, etc. The handler is not called if the container crashes or exits. The Pod’s termination grace period countdown begins before the PreStop hook is executed. Regardless of the outcome of the handler, the container will eventually terminate within the Pod’s termination grace period (unless delayed by finalizers). Other management of the container blocks until the hook completes or until the termination grace period is reached. More info: <https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks> |
+| `stopSignal` | `string` | StopSignal defines which signal will be sent to a container when it is being stopped. If not specified, the default is defined by the container runtime in use. StopSignal can only be set for Pods with a non-empty .spec.os.name                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
 ## .spec.containers\[\].lifecycle.postStart
 
@@ -1549,11 +1549,11 @@ PostStart is called immediately after a container is created. If the handler fai
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `exec` | `object` | Exec specifies a command to execute in the container. |
-| `httpGet` | `object` | HTTPGet specifies an HTTP GET request to perform. |
-| `sleep` | `object` | Sleep represents a duration that the container should sleep. |
+| Property    | Type     | Description                                                                                                                                                                                           |
+|-------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `exec`      | `object` | Exec specifies a command to execute in the container.                                                                                                                                                 |
+| `httpGet`   | `object` | HTTPGet specifies an HTTP GET request to perform.                                                                                                                                                     |
+| `sleep`     | `object` | Sleep represents a duration that the container should sleep.                                                                                                                                          |
 | `tcpSocket` | `object` | Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept for backward compatibility. There is no validation of this field and lifecycle hooks will fail at runtime when it is specified. |
 
 ## .spec.containers\[\].lifecycle.postStart.exec
@@ -1564,8 +1564,8 @@ Exec specifies a command to execute in the container.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property  | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                 |
+|-----------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `command` | `array (string)` | Command is the command line to execute inside the container, the working directory for the command is root ('/') in the container’s filesystem. The command is simply exec’d, it is not run inside a shell, so traditional shell instructions ('\|', etc) won’t work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy. |
 
 ## .spec.containers\[\].lifecycle.postStart.httpGet
@@ -1579,14 +1579,14 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead. |
-| `httpHeaders` | `array` | Custom headers to set in the request. HTTP allows repeated headers. |
-| `httpHeaders[]` | `object` | HTTPHeader describes a custom header to be used in HTTP probes |
-| `path` | `string` | Path to access on the HTTP server. |
-| `port` | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
-| `scheme` | `string` | Scheme to use for connecting to the host. Defaults to HTTP. |
+| Property        | Type                | Description                                                                                                                   |
+|-----------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`          | `string`            | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead.                      |
+| `httpHeaders`   | `array`             | Custom headers to set in the request. HTTP allows repeated headers.                                                           |
+| `httpHeaders[]` | `object`            | HTTPHeader describes a custom header to be used in HTTP probes                                                                |
+| `path`          | `string`            | Path to access on the HTTP server.                                                                                            |
+| `port`          | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| `scheme`        | `string`            | Scheme to use for connecting to the host. Defaults to HTTP.                                                                   |
 
 ## .spec.containers\[\].lifecycle.postStart.httpGet.httpHeaders
 
@@ -1609,10 +1609,10 @@ Required
 
 - `value`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
-| `value` | `string` | The header field value |
+| Property | Type     | Description                                                                                                                 |
+|----------|----------|-----------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
+| `value`  | `string` | The header field value                                                                                                      |
 
 ## .spec.containers\[\].lifecycle.postStart.sleep
 
@@ -1640,10 +1640,10 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Optional: Host name to connect to, defaults to the pod IP. |
-| `port` | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| Property | Type                | Description                                                                                                                   |
+|----------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`   | `string`            | Optional: Host name to connect to, defaults to the pod IP.                                                                    |
+| `port`   | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
 
 ## .spec.containers\[\].lifecycle.preStop
 
@@ -1653,11 +1653,11 @@ PreStop is called immediately before a container is terminated due to an API req
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `exec` | `object` | Exec specifies a command to execute in the container. |
-| `httpGet` | `object` | HTTPGet specifies an HTTP GET request to perform. |
-| `sleep` | `object` | Sleep represents a duration that the container should sleep. |
+| Property    | Type     | Description                                                                                                                                                                                           |
+|-------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `exec`      | `object` | Exec specifies a command to execute in the container.                                                                                                                                                 |
+| `httpGet`   | `object` | HTTPGet specifies an HTTP GET request to perform.                                                                                                                                                     |
+| `sleep`     | `object` | Sleep represents a duration that the container should sleep.                                                                                                                                          |
 | `tcpSocket` | `object` | Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept for backward compatibility. There is no validation of this field and lifecycle hooks will fail at runtime when it is specified. |
 
 ## .spec.containers\[\].lifecycle.preStop.exec
@@ -1668,8 +1668,8 @@ Exec specifies a command to execute in the container.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property  | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                 |
+|-----------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `command` | `array (string)` | Command is the command line to execute inside the container, the working directory for the command is root ('/') in the container’s filesystem. The command is simply exec’d, it is not run inside a shell, so traditional shell instructions ('\|', etc) won’t work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy. |
 
 ## .spec.containers\[\].lifecycle.preStop.httpGet
@@ -1683,14 +1683,14 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead. |
-| `httpHeaders` | `array` | Custom headers to set in the request. HTTP allows repeated headers. |
-| `httpHeaders[]` | `object` | HTTPHeader describes a custom header to be used in HTTP probes |
-| `path` | `string` | Path to access on the HTTP server. |
-| `port` | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
-| `scheme` | `string` | Scheme to use for connecting to the host. Defaults to HTTP. |
+| Property        | Type                | Description                                                                                                                   |
+|-----------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`          | `string`            | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead.                      |
+| `httpHeaders`   | `array`             | Custom headers to set in the request. HTTP allows repeated headers.                                                           |
+| `httpHeaders[]` | `object`            | HTTPHeader describes a custom header to be used in HTTP probes                                                                |
+| `path`          | `string`            | Path to access on the HTTP server.                                                                                            |
+| `port`          | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| `scheme`        | `string`            | Scheme to use for connecting to the host. Defaults to HTTP.                                                                   |
 
 ## .spec.containers\[\].lifecycle.preStop.httpGet.httpHeaders
 
@@ -1713,10 +1713,10 @@ Required
 
 - `value`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
-| `value` | `string` | The header field value |
+| Property | Type     | Description                                                                                                                 |
+|----------|----------|-----------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
+| `value`  | `string` | The header field value                                                                                                      |
 
 ## .spec.containers\[\].lifecycle.preStop.sleep
 
@@ -1744,10 +1744,10 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Optional: Host name to connect to, defaults to the pod IP. |
-| `port` | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| Property | Type                | Description                                                                                                                   |
+|----------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`   | `string`            | Optional: Host name to connect to, defaults to the pod IP.                                                                    |
+| `port`   | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
 
 ## .spec.containers\[\].livenessProbe
 
@@ -1757,18 +1757,18 @@ Periodic probe of container liveness. Container will be restarted if the probe f
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `exec` | `object` | Exec specifies a command to execute in the container. |
-| `failureThreshold` | `integer` | Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. |
-| `grpc` | `object` | GRPC specifies a GRPC HealthCheckRequest. |
-| `httpGet` | `object` | HTTPGet specifies an HTTP GET request to perform. |
-| `initialDelaySeconds` | `integer` | Number of seconds after the container has started before liveness probes are initiated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes> |
-| `periodSeconds` | `integer` | How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. |
-| `successThreshold` | `integer` | Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1. |
-| `tcpSocket` | `object` | TCPSocket specifies a connection to a TCP port. |
+| Property                        | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|---------------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `exec`                          | `object`  | Exec specifies a command to execute in the container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `failureThreshold`              | `integer` | Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `grpc`                          | `object`  | GRPC specifies a GRPC HealthCheckRequest.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `httpGet`                       | `object`  | HTTPGet specifies an HTTP GET request to perform.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `initialDelaySeconds`           | `integer` | Number of seconds after the container has started before liveness probes are initiated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `periodSeconds`                 | `integer` | How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `successThreshold`              | `integer` | Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `tcpSocket`                     | `object`  | TCPSocket specifies a connection to a TCP port.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `terminationGracePeriodSeconds` | `integer` | Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod’s terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate. Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset. |
-| `timeoutSeconds` | `integer` | Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes> |
+| `timeoutSeconds`                | `integer` | Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ## .spec.containers\[\].livenessProbe.exec
 
@@ -1778,8 +1778,8 @@ Exec specifies a command to execute in the container.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property  | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                 |
+|-----------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `command` | `array (string)` | Command is the command line to execute inside the container, the working directory for the command is root ('/') in the container’s filesystem. The command is simply exec’d, it is not run inside a shell, so traditional shell instructions ('\|', etc) won’t work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy. |
 
 ## .spec.containers\[\].livenessProbe.grpc
@@ -1800,19 +1800,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>port</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Port number of the gRPC service. Number must be in the range 1 to 65535.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>service</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Service is the name of the service to place in the gRPC HealthCheckRequest (see <a href="https://github.com/grpc/grpc/blob/master/doc/health-checking.md">https://github.com/grpc/grpc/blob/master/doc/health-checking.md</a>).</p>
@@ -1832,14 +1832,14 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead. |
-| `httpHeaders` | `array` | Custom headers to set in the request. HTTP allows repeated headers. |
-| `httpHeaders[]` | `object` | HTTPHeader describes a custom header to be used in HTTP probes |
-| `path` | `string` | Path to access on the HTTP server. |
-| `port` | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
-| `scheme` | `string` | Scheme to use for connecting to the host. Defaults to HTTP. |
+| Property        | Type                | Description                                                                                                                   |
+|-----------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`          | `string`            | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead.                      |
+| `httpHeaders`   | `array`             | Custom headers to set in the request. HTTP allows repeated headers.                                                           |
+| `httpHeaders[]` | `object`            | HTTPHeader describes a custom header to be used in HTTP probes                                                                |
+| `path`          | `string`            | Path to access on the HTTP server.                                                                                            |
+| `port`          | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| `scheme`        | `string`            | Scheme to use for connecting to the host. Defaults to HTTP.                                                                   |
 
 ## .spec.containers\[\].livenessProbe.httpGet.httpHeaders
 
@@ -1862,10 +1862,10 @@ Required
 
 - `value`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
-| `value` | `string` | The header field value |
+| Property | Type     | Description                                                                                                                 |
+|----------|----------|-----------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
+| `value`  | `string` | The header field value                                                                                                      |
 
 ## .spec.containers\[\].livenessProbe.tcpSocket
 
@@ -1878,10 +1878,10 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Optional: Host name to connect to, defaults to the pod IP. |
-| `port` | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| Property | Type                | Description                                                                                                                   |
+|----------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`   | `string`            | Optional: Host name to connect to, defaults to the pod IP.                                                                    |
+| `port`   | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
 
 ## .spec.containers\[\].ports
 
@@ -1902,13 +1902,13 @@ Type
 Required
 - `containerPort`
 
-| Property | Type | Description |
-|----|----|----|
-| `containerPort` | `integer` | Number of port to expose on the pod’s IP address. This must be a valid port number, 0 \< x \< 65536. |
-| `hostIP` | `string` | What host IP to bind the external port to. |
-| `hostPort` | `integer` | Number of port to expose on the host. If specified, this must be a valid port number, 0 \< x \< 65536. If HostNetwork is specified, this must match ContainerPort. Most containers do not need this. |
-| `name` | `string` | If specified, this must be an IANA_SVC_NAME and unique within the pod. Each named port in a pod must have a unique name. Name for the port that can be referred to by services. |
-| `protocol` | `string` | Protocol for port. Must be UDP, TCP, or SCTP. Defaults to "TCP". |
+| Property        | Type      | Description                                                                                                                                                                                          |
+|-----------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `containerPort` | `integer` | Number of port to expose on the pod’s IP address. This must be a valid port number, 0 \< x \< 65536.                                                                                                 |
+| `hostIP`        | `string`  | What host IP to bind the external port to.                                                                                                                                                           |
+| `hostPort`      | `integer` | Number of port to expose on the host. If specified, this must be a valid port number, 0 \< x \< 65536. If HostNetwork is specified, this must match ContainerPort. Most containers do not need this. |
+| `name`          | `string`  | If specified, this must be an IANA_SVC_NAME and unique within the pod. Each named port in a pod must have a unique name. Name for the port that can be referred to by services.                      |
+| `protocol`      | `string`  | Protocol for port. Must be UDP, TCP, or SCTP. Defaults to "TCP".                                                                                                                                     |
 
 ## .spec.containers\[\].readinessProbe
 
@@ -1918,18 +1918,18 @@ Periodic probe of container service readiness. Container will be removed from se
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `exec` | `object` | Exec specifies a command to execute in the container. |
-| `failureThreshold` | `integer` | Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. |
-| `grpc` | `object` | GRPC specifies a GRPC HealthCheckRequest. |
-| `httpGet` | `object` | HTTPGet specifies an HTTP GET request to perform. |
-| `initialDelaySeconds` | `integer` | Number of seconds after the container has started before liveness probes are initiated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes> |
-| `periodSeconds` | `integer` | How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. |
-| `successThreshold` | `integer` | Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1. |
-| `tcpSocket` | `object` | TCPSocket specifies a connection to a TCP port. |
+| Property                        | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|---------------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `exec`                          | `object`  | Exec specifies a command to execute in the container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `failureThreshold`              | `integer` | Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `grpc`                          | `object`  | GRPC specifies a GRPC HealthCheckRequest.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `httpGet`                       | `object`  | HTTPGet specifies an HTTP GET request to perform.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `initialDelaySeconds`           | `integer` | Number of seconds after the container has started before liveness probes are initiated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `periodSeconds`                 | `integer` | How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `successThreshold`              | `integer` | Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `tcpSocket`                     | `object`  | TCPSocket specifies a connection to a TCP port.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `terminationGracePeriodSeconds` | `integer` | Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod’s terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate. Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset. |
-| `timeoutSeconds` | `integer` | Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes> |
+| `timeoutSeconds`                | `integer` | Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ## .spec.containers\[\].readinessProbe.exec
 
@@ -1939,8 +1939,8 @@ Exec specifies a command to execute in the container.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property  | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                 |
+|-----------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `command` | `array (string)` | Command is the command line to execute inside the container, the working directory for the command is root ('/') in the container’s filesystem. The command is simply exec’d, it is not run inside a shell, so traditional shell instructions ('\|', etc) won’t work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy. |
 
 ## .spec.containers\[\].readinessProbe.grpc
@@ -1961,19 +1961,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>port</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Port number of the gRPC service. Number must be in the range 1 to 65535.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>service</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Service is the name of the service to place in the gRPC HealthCheckRequest (see <a href="https://github.com/grpc/grpc/blob/master/doc/health-checking.md">https://github.com/grpc/grpc/blob/master/doc/health-checking.md</a>).</p>
@@ -1993,14 +1993,14 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead. |
-| `httpHeaders` | `array` | Custom headers to set in the request. HTTP allows repeated headers. |
-| `httpHeaders[]` | `object` | HTTPHeader describes a custom header to be used in HTTP probes |
-| `path` | `string` | Path to access on the HTTP server. |
-| `port` | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
-| `scheme` | `string` | Scheme to use for connecting to the host. Defaults to HTTP. |
+| Property        | Type                | Description                                                                                                                   |
+|-----------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`          | `string`            | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead.                      |
+| `httpHeaders`   | `array`             | Custom headers to set in the request. HTTP allows repeated headers.                                                           |
+| `httpHeaders[]` | `object`            | HTTPHeader describes a custom header to be used in HTTP probes                                                                |
+| `path`          | `string`            | Path to access on the HTTP server.                                                                                            |
+| `port`          | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| `scheme`        | `string`            | Scheme to use for connecting to the host. Defaults to HTTP.                                                                   |
 
 ## .spec.containers\[\].readinessProbe.httpGet.httpHeaders
 
@@ -2023,10 +2023,10 @@ Required
 
 - `value`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
-| `value` | `string` | The header field value |
+| Property | Type     | Description                                                                                                                 |
+|----------|----------|-----------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
+| `value`  | `string` | The header field value                                                                                                      |
 
 ## .spec.containers\[\].readinessProbe.tcpSocket
 
@@ -2039,10 +2039,10 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Optional: Host name to connect to, defaults to the pod IP. |
-| `port` | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| Property | Type                | Description                                                                                                                   |
+|----------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`   | `string`            | Optional: Host name to connect to, defaults to the pod IP.                                                                    |
+| `port`   | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
 
 ## .spec.containers\[\].resizePolicy
 
@@ -2065,9 +2065,9 @@ Required
 
 - `restartPolicy`
 
-| Property | Type | Description |
-|----|----|----|
-| `resourceName` | `string` | Name of the resource to which this resource resize policy applies. Supported values: cpu, memory. |
+| Property        | Type     | Description                                                                                               |
+|-----------------|----------|-----------------------------------------------------------------------------------------------------------|
+| `resourceName`  | `string` | Name of the resource to which this resource resize policy applies. Supported values: cpu, memory.         |
 | `restartPolicy` | `string` | Restart policy to apply when specified resource is resized. If not specified, it defaults to NotRequired. |
 
 ## .spec.containers\[\].resources
@@ -2085,31 +2085,31 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>claims</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.</p>
 <p>This field depends on the DynamicResourceAllocation feature gate.</p>
 <p>This field is immutable. It can only be set for containers.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>claims[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ResourceClaim references one entry in PodSpec.ResourceClaims.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>limits</code></p></td>
 <td style="text-align: left;"><p><code>integer-or-string</code></p></td>
 <td style="text-align: left;"><p>Limits describes the maximum amount of compute resources allowed. More info: <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>requests</code></p></td>
 <td style="text-align: left;"><p><code>integer-or-string</code></p></td>
 <td style="text-align: left;"><p>Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/</a></p></td>
@@ -2140,9 +2140,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container. |
+| Property  | Type     | Description                                                                                                                                                         |
+|-----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`    | `string` | Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container.          |
 | `request` | `string` | Request is the name chosen for a request in the referenced claim. If empty, everything from the claim is made available, otherwise only the result of this request. |
 
 ## .spec.containers\[\].restartPolicyRules
@@ -2164,10 +2164,10 @@ Type
 Required
 - `action`
 
-| Property | Type | Description |
-|----|----|----|
-| `action` | `string` | Specifies the action taken on a container exit if the requirements are satisfied. The only possible value is "Restart" to restart the container. |
-| `exitCodes` | `object` | Represents the exit codes to check on container exits. |
+| Property    | Type     | Description                                                                                                                                      |
+|-------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| `action`    | `string` | Specifies the action taken on a container exit if the requirements are satisfied. The only possible value is "Restart" to restart the container. |
+| `exitCodes` | `object` | Represents the exit codes to check on container exits.                                                                                           |
 
 ## .spec.containers\[\].restartPolicyRules\[\].exitCodes
 
@@ -2180,10 +2180,10 @@ Type
 Required
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `operator` | `string` | Represents the relationship between the container exit code(s) and the specified values. Possible values are: - In: the requirement is satisfied if the container exit code is in the set of specified values. - NotIn: the requirement is satisfied if the container exit code is not in the set of specified values. |
-| `values` | `array (integer)` | Specifies the set of values to check for container exit codes. At most 255 elements are allowed. |
+| Property   | Type              | Description                                                                                                                                                                                                                                                                                                            |
+|------------|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `operator` | `string`          | Represents the relationship between the container exit code(s) and the specified values. Possible values are: - In: the requirement is satisfied if the container exit code is in the set of specified values. - NotIn: the requirement is satisfied if the container exit code is not in the set of specified values. |
+| `values`   | `array (integer)` | Specifies the set of values to check for container exit codes. At most 255 elements are allowed.                                                                                                                                                                                                                       |
 
 ## .spec.containers\[\].securityContext
 
@@ -2193,20 +2193,20 @@ SecurityContext defines the security options the container should be run with. I
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `allowPrivilegeEscalation` | `boolean` | AllowPrivilegeEscalation controls whether a process can gain more privileges than its parent process. This bool directly controls if the no_new_privs flag will be set on the container process. AllowPrivilegeEscalation is true always when the container is: 1) run as Privileged 2) has CAP_SYS_ADMIN Note that this field cannot be set when spec.os.name is windows. |
-| `appArmorProfile` | `object` | appArmorProfile is the AppArmor options to use by this container. If set, this profile overrides the pod’s appArmorProfile. Note that this field cannot be set when spec.os.name is windows. |
-| `capabilities` | `object` | The capabilities to add/drop when running containers. Defaults to the default set of capabilities granted by the container runtime. Note that this field cannot be set when spec.os.name is windows. |
-| `privileged` | `boolean` | Run container in privileged mode. Processes in privileged containers are essentially equivalent to root on the host. Defaults to false. Note that this field cannot be set when spec.os.name is windows. |
-| `procMount` | `string` | procMount denotes the type of proc mount to use for the containers. The default value is Default which uses the container runtime defaults for readonly paths and masked paths. This requires the ProcMountType feature flag to be enabled. Note that this field cannot be set when spec.os.name is windows. |
-| `readOnlyRootFilesystem` | `boolean` | Whether this container has a read-only root filesystem. Default is false. Note that this field cannot be set when spec.os.name is windows. |
-| `runAsGroup` | `integer` | The GID to run the entrypoint of the container process. Uses runtime default if unset. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows. |
-| `runAsNonRoot` | `boolean` | Indicates that the container must run as a non-root user. If true, the Kubelet will validate the image at runtime to ensure that it does not run as UID 0 (root) and fail to start the container if it does. If unset or false, no such validation will be performed. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. |
-| `runAsUser` | `integer` | The UID to run the entrypoint of the container process. Defaults to user specified in image metadata if unspecified. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows. |
-| `seLinuxOptions` | `object` | The SELinux context to be applied to the container. If unspecified, the container runtime will allocate a random SELinux context for each container. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows. |
-| `seccompProfile` | `object` | The seccomp options to use by this container. If seccomp options are provided at both the pod & container level, the container options override the pod options. Note that this field cannot be set when spec.os.name is windows. |
-| `windowsOptions` | `object` | The Windows specific settings applied to all containers. If unspecified, the options from the PodSecurityContext will be used. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is linux. |
+| Property                   | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|----------------------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `allowPrivilegeEscalation` | `boolean` | AllowPrivilegeEscalation controls whether a process can gain more privileges than its parent process. This bool directly controls if the no_new_privs flag will be set on the container process. AllowPrivilegeEscalation is true always when the container is: 1) run as Privileged 2) has CAP_SYS_ADMIN Note that this field cannot be set when spec.os.name is windows.                                                   |
+| `appArmorProfile`          | `object`  | appArmorProfile is the AppArmor options to use by this container. If set, this profile overrides the pod’s appArmorProfile. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                                 |
+| `capabilities`             | `object`  | The capabilities to add/drop when running containers. Defaults to the default set of capabilities granted by the container runtime. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                         |
+| `privileged`               | `boolean` | Run container in privileged mode. Processes in privileged containers are essentially equivalent to root on the host. Defaults to false. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                     |
+| `procMount`                | `string`  | procMount denotes the type of proc mount to use for the containers. The default value is Default which uses the container runtime defaults for readonly paths and masked paths. This requires the ProcMountType feature flag to be enabled. Note that this field cannot be set when spec.os.name is windows.                                                                                                                 |
+| `readOnlyRootFilesystem`   | `boolean` | Whether this container has a read-only root filesystem. Default is false. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                                                                                   |
+| `runAsGroup`               | `integer` | The GID to run the entrypoint of the container process. Uses runtime default if unset. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows.                                                                                                               |
+| `runAsNonRoot`             | `boolean` | Indicates that the container must run as a non-root user. If true, the Kubelet will validate the image at runtime to ensure that it does not run as UID 0 (root) and fail to start the container if it does. If unset or false, no such validation will be performed. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. |
+| `runAsUser`                | `integer` | The UID to run the entrypoint of the container process. Defaults to user specified in image metadata if unspecified. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows.                                                                                 |
+| `seLinuxOptions`           | `object`  | The SELinux context to be applied to the container. If unspecified, the container runtime will allocate a random SELinux context for each container. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows.                                                 |
+| `seccompProfile`           | `object`  | The seccomp options to use by this container. If seccomp options are provided at both the pod & container level, the container options override the pod options. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                            |
+| `windowsOptions`           | `object`  | The Windows specific settings applied to all containers. If unspecified, the options from the PodSecurityContext will be used. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is linux.                                                                                                                |
 
 ## .spec.containers\[\].securityContext.appArmorProfile
 
@@ -2219,10 +2219,10 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `localhostProfile` | `string` | localhostProfile indicates a profile loaded on the node that should be used. The profile must be preconfigured on the node to work. Must match the loaded name of the profile. Must be set if and only if type is "Localhost". |
-| `type` | `string` | type indicates which kind of AppArmor profile will be applied. Valid options are: Localhost - a profile pre-loaded on the node. RuntimeDefault - the container runtime’s default profile. Unconfined - no AppArmor enforcement. |
+| Property           | Type     | Description                                                                                                                                                                                                                     |
+|--------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `localhostProfile` | `string` | localhostProfile indicates a profile loaded on the node that should be used. The profile must be preconfigured on the node to work. Must match the loaded name of the profile. Must be set if and only if type is "Localhost".  |
+| `type`             | `string` | type indicates which kind of AppArmor profile will be applied. Valid options are: Localhost - a profile pre-loaded on the node. RuntimeDefault - the container runtime’s default profile. Unconfined - no AppArmor enforcement. |
 
 ## .spec.containers\[\].securityContext.capabilities
 
@@ -2245,12 +2245,12 @@ The SELinux context to be applied to the container. If unspecified, the containe
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `level` | `string` | Level is SELinux level label that applies to the container. |
-| `role` | `string` | Role is a SELinux role label that applies to the container. |
-| `type` | `string` | Type is a SELinux type label that applies to the container. |
-| `user` | `string` | User is a SELinux user label that applies to the container. |
+| Property | Type     | Description                                                 |
+|----------|----------|-------------------------------------------------------------|
+| `level`  | `string` | Level is SELinux level label that applies to the container. |
+| `role`   | `string` | Role is a SELinux role label that applies to the container. |
+| `type`   | `string` | Type is a SELinux type label that applies to the container. |
+| `user`   | `string` | User is a SELinux user label that applies to the container. |
 
 ## .spec.containers\[\].securityContext.seccompProfile
 
@@ -2270,19 +2270,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>localhostProfile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet’s configured seccomp profile location. Must be set if type is "Localhost". Must NOT be set for any other type.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>type indicates which kind of seccomp profile will be applied. Valid options are:</p>
@@ -2299,12 +2299,12 @@ The Windows specific settings applied to all containers. If unspecified, the opt
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `gmsaCredentialSpec` | `string` | GMSACredentialSpec is where the GMSA admission webhook (<https://github.com/kubernetes-sigs/windows-gmsa>) inlines the contents of the GMSA credential spec named by the GMSACredentialSpecName field. |
-| `gmsaCredentialSpecName` | `string` | GMSACredentialSpecName is the name of the GMSA credential spec to use. |
-| `hostProcess` | `boolean` | HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod’s containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true. |
-| `runAsUserName` | `string` | The UserName in Windows to run the entrypoint of the container process. Defaults to the user specified in image metadata if unspecified. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. |
+| Property                 | Type      | Description                                                                                                                                                                                                                                                                                                                            |
+|--------------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `gmsaCredentialSpec`     | `string`  | GMSACredentialSpec is where the GMSA admission webhook (<https://github.com/kubernetes-sigs/windows-gmsa>) inlines the contents of the GMSA credential spec named by the GMSACredentialSpecName field.                                                                                                                                 |
+| `gmsaCredentialSpecName` | `string`  | GMSACredentialSpecName is the name of the GMSA credential spec to use.                                                                                                                                                                                                                                                                 |
+| `hostProcess`            | `boolean` | HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod’s containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true. |
+| `runAsUserName`          | `string`  | The UserName in Windows to run the entrypoint of the container process. Defaults to the user specified in image metadata if unspecified. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence.                                        |
 
 ## .spec.containers\[\].startupProbe
 
@@ -2314,18 +2314,18 @@ StartupProbe indicates that the Pod has successfully initialized. If specified, 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `exec` | `object` | Exec specifies a command to execute in the container. |
-| `failureThreshold` | `integer` | Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. |
-| `grpc` | `object` | GRPC specifies a GRPC HealthCheckRequest. |
-| `httpGet` | `object` | HTTPGet specifies an HTTP GET request to perform. |
-| `initialDelaySeconds` | `integer` | Number of seconds after the container has started before liveness probes are initiated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes> |
-| `periodSeconds` | `integer` | How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. |
-| `successThreshold` | `integer` | Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1. |
-| `tcpSocket` | `object` | TCPSocket specifies a connection to a TCP port. |
+| Property                        | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|---------------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `exec`                          | `object`  | Exec specifies a command to execute in the container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `failureThreshold`              | `integer` | Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `grpc`                          | `object`  | GRPC specifies a GRPC HealthCheckRequest.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `httpGet`                       | `object`  | HTTPGet specifies an HTTP GET request to perform.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `initialDelaySeconds`           | `integer` | Number of seconds after the container has started before liveness probes are initiated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `periodSeconds`                 | `integer` | How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `successThreshold`              | `integer` | Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `tcpSocket`                     | `object`  | TCPSocket specifies a connection to a TCP port.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `terminationGracePeriodSeconds` | `integer` | Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod’s terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate. Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset. |
-| `timeoutSeconds` | `integer` | Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes> |
+| `timeoutSeconds`                | `integer` | Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ## .spec.containers\[\].startupProbe.exec
 
@@ -2335,8 +2335,8 @@ Exec specifies a command to execute in the container.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property  | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                 |
+|-----------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `command` | `array (string)` | Command is the command line to execute inside the container, the working directory for the command is root ('/') in the container’s filesystem. The command is simply exec’d, it is not run inside a shell, so traditional shell instructions ('\|', etc) won’t work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy. |
 
 ## .spec.containers\[\].startupProbe.grpc
@@ -2357,19 +2357,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>port</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Port number of the gRPC service. Number must be in the range 1 to 65535.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>service</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Service is the name of the service to place in the gRPC HealthCheckRequest (see <a href="https://github.com/grpc/grpc/blob/master/doc/health-checking.md">https://github.com/grpc/grpc/blob/master/doc/health-checking.md</a>).</p>
@@ -2389,14 +2389,14 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead. |
-| `httpHeaders` | `array` | Custom headers to set in the request. HTTP allows repeated headers. |
-| `httpHeaders[]` | `object` | HTTPHeader describes a custom header to be used in HTTP probes |
-| `path` | `string` | Path to access on the HTTP server. |
-| `port` | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
-| `scheme` | `string` | Scheme to use for connecting to the host. Defaults to HTTP. |
+| Property        | Type                | Description                                                                                                                   |
+|-----------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`          | `string`            | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead.                      |
+| `httpHeaders`   | `array`             | Custom headers to set in the request. HTTP allows repeated headers.                                                           |
+| `httpHeaders[]` | `object`            | HTTPHeader describes a custom header to be used in HTTP probes                                                                |
+| `path`          | `string`            | Path to access on the HTTP server.                                                                                            |
+| `port`          | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| `scheme`        | `string`            | Scheme to use for connecting to the host. Defaults to HTTP.                                                                   |
 
 ## .spec.containers\[\].startupProbe.httpGet.httpHeaders
 
@@ -2419,10 +2419,10 @@ Required
 
 - `value`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
-| `value` | `string` | The header field value |
+| Property | Type     | Description                                                                                                                 |
+|----------|----------|-----------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
+| `value`  | `string` | The header field value                                                                                                      |
 
 ## .spec.containers\[\].startupProbe.tcpSocket
 
@@ -2435,10 +2435,10 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Optional: Host name to connect to, defaults to the pod IP. |
-| `port` | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| Property | Type                | Description                                                                                                                   |
+|----------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`   | `string`            | Optional: Host name to connect to, defaults to the pod IP.                                                                    |
+| `port`   | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
 
 ## .spec.containers\[\].volumeDevices
 
@@ -2461,10 +2461,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
+| Property     | Type     | Description                                                                       |
+|--------------|----------|-----------------------------------------------------------------------------------|
 | `devicePath` | `string` | devicePath is the path inside of the container that the device will be mapped to. |
-| `name` | `string` | name must match the name of a persistentVolumeClaim in the pod |
+| `name`       | `string` | name must match the name of a persistentVolumeClaim in the pod                    |
 
 ## .spec.containers\[\].volumeMounts
 
@@ -2494,34 +2494,34 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mountPath</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Path within the container at which the volume should be mounted. Must not contain ':'.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mountPropagation</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>mountPropagation determines how mounts are propagated from the host to container and the other way around. When not set, MountPropagationNone is used. This field is beta in 1.10. When RecursiveReadOnly is set to IfPossible or to Enabled, MountPropagation must be None or unspecified (which defaults to None).</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>This must match the Name of a Volume.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>readOnly</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Mounted read-only if true, read-write otherwise (false or unspecified). Defaults to false.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>recursiveReadOnly</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>RecursiveReadOnly specifies whether read-only mounts should be handled recursively.</p>
@@ -2530,12 +2530,12 @@ Required
 <p>If this field is set to IfPossible or Enabled, MountPropagation must be set to None (or be unspecified, which defaults to None).</p>
 <p>If this field is not specified, it is treated as an equivalent of Disabled.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>subPath</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Path within the volume from which the container’s volume should be mounted. Defaults to "" (volume’s root).</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>subPathExpr</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Expanded path within the volume from which the container’s volume should be mounted. Behaves similarly to SubPath but environment variable references $(VAR_NAME) are expanded using the container’s environment. Defaults to "" (volume’s root). SubPathExpr and SubPath are mutually exclusive.</p></td>
@@ -2551,12 +2551,12 @@ dnsConfig defines Defines the DNS configuration for the pods.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `nameservers` | `array (string)` | nameservers defines the list of DNS name server IP addresses. This will be appended to the base nameservers generated from DNSPolicy. |
-| `options` | `array` | options defines the list of DNS resolver options. This will be merged with the base options generated from DNSPolicy. Resolution options given in Options will override those that appear in the base DNSPolicy. |
-| `options[]` | `object` | PodDNSConfigOption defines DNS resolver options of a pod. |
-| `searches` | `array (string)` | searches defines the list of DNS search domains for host-name lookup. This will be appended to the base search paths generated from DNSPolicy. |
+| Property      | Type             | Description                                                                                                                                                                                                      |
+|---------------|------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `nameservers` | `array (string)` | nameservers defines the list of DNS name server IP addresses. This will be appended to the base nameservers generated from DNSPolicy.                                                                            |
+| `options`     | `array`          | options defines the list of DNS resolver options. This will be merged with the base options generated from DNSPolicy. Resolution options given in Options will override those that appear in the base DNSPolicy. |
+| `options[]`   | `object`         | PodDNSConfigOption defines DNS resolver options of a pod.                                                                                                                                                        |
+| `searches`    | `array (string)` | searches defines the list of DNS search domains for host-name lookup. This will be appended to the base search paths generated from DNSPolicy.                                                                   |
 
 ## .spec.dnsConfig.options
 
@@ -2603,12 +2603,12 @@ Required
 
 - `resource`
 
-| Property | Type | Description |
-|----|----|----|
-| `group` | `string` | group of the referent. When not specified, it defaults to `monitoring.coreos.com` |
-| `name` | `string` | name of the referent. When not set, all resources in the namespace are matched. |
+| Property    | Type     | Description                                                                                                           |
+|-------------|----------|-----------------------------------------------------------------------------------------------------------------------|
+| `group`     | `string` | group of the referent. When not specified, it defaults to `monitoring.coreos.com`                                     |
+| `name`      | `string` | name of the referent. When not set, all resources in the namespace are matched.                                       |
 | `namespace` | `string` | namespace of the referent. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/> |
-| `resource` | `string` | resource of the referent. |
+| `resource`  | `string` | resource of the referent.                                                                                             |
 
 ## .spec.grpcServerTlsConfig
 
@@ -2625,61 +2625,61 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ca defines the Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>caFile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>caFile defines the path to the CA cert in the Prometheus container to use for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>cert defines the Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>certFile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>certFile defines the path to the client cert file in the Prometheus container for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>insecureSkipVerify defines how to disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keyFile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>keyFile defines the path to the client key file in the Prometheus container for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>keySecret defines the Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>maxVersion defines the maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>minVersion defines the minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>serverName is used to verify the hostname for the targets.</p></td>
@@ -2695,10 +2695,10 @@ ca defines the Certificate authority used when verifying server certificates.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type     | Description                                                             |
+|-------------|----------|-------------------------------------------------------------------------|
 | `configMap` | `object` | configMap defines the ConfigMap containing data to use for the targets. |
-| `secret` | `object` | secret defines the Secret containing data to use for the targets. |
+| `secret`    | `object` | secret defines the Secret containing data to use for the targets.       |
 
 ## .spec.grpcServerTlsConfig.ca.configMap
 
@@ -2711,11 +2711,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.grpcServerTlsConfig.ca.secret
 
@@ -2728,11 +2728,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.grpcServerTlsConfig.cert
 
@@ -2742,10 +2742,10 @@ cert defines the Client certificate to present when doing client-authentication.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type     | Description                                                             |
+|-------------|----------|-------------------------------------------------------------------------|
 | `configMap` | `object` | configMap defines the ConfigMap containing data to use for the targets. |
-| `secret` | `object` | secret defines the Secret containing data to use for the targets. |
+| `secret`    | `object` | secret defines the Secret containing data to use for the targets.       |
 
 ## .spec.grpcServerTlsConfig.cert.configMap
 
@@ -2758,11 +2758,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.grpcServerTlsConfig.cert.secret
 
@@ -2775,11 +2775,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.grpcServerTlsConfig.keySecret
 
@@ -2792,11 +2792,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.hostAliases
 
@@ -2819,10 +2819,10 @@ Required
 
 - `ip`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type             | Description                                           |
+|-------------|------------------|-------------------------------------------------------|
 | `hostnames` | `array (string)` | hostnames defines hostnames for the above IP address. |
-| `ip` | `string` | ip defines the IP address of the host file entry. |
+| `ip`        | `string`         | ip defines the IP address of the host file entry.     |
 
 ## .spec.imagePullSecrets
 
@@ -2840,9 +2840,9 @@ LocalObjectReference contains enough information to let you locate the reference
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                  |
+|----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
 
 ## .spec.initContainers
 
@@ -2863,40 +2863,40 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `args` | `array (string)` | Arguments to the entrypoint. The container image’s CMD is used if this is not provided. Variable references \$(VAR_NAME) are expanded using the container’s environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: <https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell> |
-| `command` | `array (string)` | Entrypoint array. Not executed within a shell. The container image’s ENTRYPOINT is used if this is not provided. Variable references \$(VAR_NAME) are expanded using the container’s environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: <https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell> |
-| `env` | `array` | List of environment variables to set in the container. Cannot be updated. |
-| `env[]` | `object` | EnvVar represents an environment variable present in a Container. |
-| `envFrom` | `array` | List of sources to populate environment variables in the container. The keys defined within a source may consist of any printable ASCII characters except '='. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated. |
-| `envFrom[]` | `object` | EnvFromSource represents the source of a set of ConfigMaps or Secrets |
-| `image` | `string` | Container image name. More info: <https://kubernetes.io/docs/concepts/containers/images> This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets. |
-| `imagePullPolicy` | `string` | Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/containers/images#updating-images> |
-| `lifecycle` | `object` | Actions that the management system should take in response to container lifecycle events. Cannot be updated. |
-| `livenessProbe` | `object` | Periodic probe of container liveness. Container will be restarted if the probe fails. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes> |
-| `name` | `string` | Name of the container specified as a DNS_LABEL. Each container in a pod must have a unique name (DNS_LABEL). Cannot be updated. |
-| `ports` | `array` | List of ports to expose from the container. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default "0.0.0.0" address inside a container will be accessible from the network. Modifying this array with strategic merge patch may corrupt the data. For more information See <https://github.com/kubernetes/kubernetes/issues/108255>. Cannot be updated. |
-| `ports[]` | `object` | ContainerPort represents a network port in a single container. |
-| `readinessProbe` | `object` | Periodic probe of container service readiness. Container will be removed from service endpoints if the probe fails. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes> |
-| `resizePolicy` | `array` | Resources resize policy for the container. |
-| `resizePolicy[]` | `object` | ContainerResizePolicy represents resource resize policy for the container. |
-| `resources` | `object` | Compute Resources required by this container. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/> |
-| `restartPolicy` | `string` | RestartPolicy defines the restart behavior of individual containers in a pod. This overrides the pod-level restart policy. When this field is not specified, the restart behavior is defined by the Pod’s restart policy and the container type. Additionally, setting the RestartPolicy as "Always" for the init container will have the following effect: this init container will be continually restarted on exit until all regular containers have terminated. Once all regular containers have completed, all init containers with restartPolicy "Always" will be shut down. This lifecycle differs from normal init containers and is often referred to as a "sidecar" container. Although this init container still starts in the init container sequence, it does not wait for the container to complete before proceeding to the next init container. Instead, the next init container starts immediately after this init container is started, or after any startupProbe has successfully completed. |
-| `restartPolicyRules` | `array` | Represents a list of rules to be checked to determine if the container should be restarted on exit. The rules are evaluated in order. Once a rule matches a container exit condition, the remaining rules are ignored. If no rule matches the container exit condition, the Container-level restart policy determines the whether the container is restarted or not. Constraints on the rules: - At most 20 rules are allowed. - Rules can have the same action. - Identical rules are not forbidden in validations. When rules are specified, container MUST set RestartPolicy explicitly even it if matches the Pod’s RestartPolicy. |
-| `restartPolicyRules[]` | `object` | ContainerRestartRule describes how a container exit is handled. |
-| `securityContext` | `object` | SecurityContext defines the security options the container should be run with. If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext. More info: <https://kubernetes.io/docs/tasks/configure-pod-container/security-context/> |
-| `startupProbe` | `object` | StartupProbe indicates that the Pod has successfully initialized. If specified, no other probes are executed until this completes successfully. If this probe fails, the Pod will be restarted, just as if the livenessProbe failed. This can be used to provide different probe parameters at the beginning of a Pod’s lifecycle, when it might take a long time to load data or warm a cache, than during steady-state operation. This cannot be updated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes> |
-| `stdin` | `boolean` | Whether this container should allocate a buffer for stdin in the container runtime. If this is not set, reads from stdin in the container will always result in EOF. Default is false. |
-| `stdinOnce` | `boolean` | Whether the container runtime should close the stdin channel after it has been opened by a single attach. When stdin is true the stdin stream will remain open across multiple attach sessions. If stdinOnce is set to true, stdin is opened on container start, is empty until the first client attaches to stdin, and then remains open and accepts data until the client disconnects, at which time stdin is closed and remains closed until the container is restarted. If this flag is false, a container processes that reads from stdin will never receive an EOF. Default is false |
-| `terminationMessagePath` | `string` | Optional: Path at which the file to which the container’s termination message will be written is mounted into the container’s filesystem. Message written is intended to be brief final status, such as an assertion failure message. Will be truncated by the node if greater than 4096 bytes. The total message length across all containers will be limited to 12kb. Defaults to /dev/termination-log. Cannot be updated. |
-| `terminationMessagePolicy` | `string` | Indicate how the termination message should be populated. File will use the contents of terminationMessagePath to populate the container status message on both success and failure. FallbackToLogsOnError will use the last chunk of container log output if the termination message file is empty and the container exited with an error. The log output is limited to 2048 bytes or 80 lines, whichever is smaller. Defaults to File. Cannot be updated. |
-| `tty` | `boolean` | Whether this container should allocate a TTY for itself, also requires 'stdin' to be true. Default is false. |
-| `volumeDevices` | `array` | volumeDevices is the list of block devices to be used by the container. |
-| `volumeDevices[]` | `object` | volumeDevice describes a mapping of a raw block device within a container. |
-| `volumeMounts` | `array` | Pod volumes to mount into the container’s filesystem. Cannot be updated. |
-| `volumeMounts[]` | `object` | VolumeMount describes a mounting of a Volume within a container. |
-| `workingDir` | `string` | Container’s working directory. If not specified, the container runtime’s default will be used, which might be configured in the container image. Cannot be updated. |
+| Property                   | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+|----------------------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `args`                     | `array (string)` | Arguments to the entrypoint. The container image’s CMD is used if this is not provided. Variable references \$(VAR_NAME) are expanded using the container’s environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: <https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell>                                                                                                                                                                                                                                                                                                                                   |
+| `command`                  | `array (string)` | Entrypoint array. Not executed within a shell. The container image’s ENTRYPOINT is used if this is not provided. Variable references \$(VAR_NAME) are expanded using the container’s environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: <https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell>                                                                                                                                                                                                                                                                                                          |
+| `env`                      | `array`          | List of environment variables to set in the container. Cannot be updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `env[]`                    | `object`         | EnvVar represents an environment variable present in a Container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `envFrom`                  | `array`          | List of sources to populate environment variables in the container. The keys defined within a source may consist of any printable ASCII characters except '='. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `envFrom[]`                | `object`         | EnvFromSource represents the source of a set of ConfigMaps or Secrets                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `image`                    | `string`         | Container image name. More info: <https://kubernetes.io/docs/concepts/containers/images> This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `imagePullPolicy`          | `string`         | Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/containers/images#updating-images>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `lifecycle`                | `object`         | Actions that the management system should take in response to container lifecycle events. Cannot be updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `livenessProbe`            | `object`         | Periodic probe of container liveness. Container will be restarted if the probe fails. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `name`                     | `string`         | Name of the container specified as a DNS_LABEL. Each container in a pod must have a unique name (DNS_LABEL). Cannot be updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `ports`                    | `array`          | List of ports to expose from the container. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default "0.0.0.0" address inside a container will be accessible from the network. Modifying this array with strategic merge patch may corrupt the data. For more information See <https://github.com/kubernetes/kubernetes/issues/108255>. Cannot be updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `ports[]`                  | `object`         | ContainerPort represents a network port in a single container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `readinessProbe`           | `object`         | Periodic probe of container service readiness. Container will be removed from service endpoints if the probe fails. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `resizePolicy`             | `array`          | Resources resize policy for the container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `resizePolicy[]`           | `object`         | ContainerResizePolicy represents resource resize policy for the container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `resources`                | `object`         | Compute Resources required by this container. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `restartPolicy`            | `string`         | RestartPolicy defines the restart behavior of individual containers in a pod. This overrides the pod-level restart policy. When this field is not specified, the restart behavior is defined by the Pod’s restart policy and the container type. Additionally, setting the RestartPolicy as "Always" for the init container will have the following effect: this init container will be continually restarted on exit until all regular containers have terminated. Once all regular containers have completed, all init containers with restartPolicy "Always" will be shut down. This lifecycle differs from normal init containers and is often referred to as a "sidecar" container. Although this init container still starts in the init container sequence, it does not wait for the container to complete before proceeding to the next init container. Instead, the next init container starts immediately after this init container is started, or after any startupProbe has successfully completed. |
+| `restartPolicyRules`       | `array`          | Represents a list of rules to be checked to determine if the container should be restarted on exit. The rules are evaluated in order. Once a rule matches a container exit condition, the remaining rules are ignored. If no rule matches the container exit condition, the Container-level restart policy determines the whether the container is restarted or not. Constraints on the rules: - At most 20 rules are allowed. - Rules can have the same action. - Identical rules are not forbidden in validations. When rules are specified, container MUST set RestartPolicy explicitly even it if matches the Pod’s RestartPolicy.                                                                                                                                                                                                                                                                                                                                                                          |
+| `restartPolicyRules[]`     | `object`         | ContainerRestartRule describes how a container exit is handled.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `securityContext`          | `object`         | SecurityContext defines the security options the container should be run with. If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext. More info: <https://kubernetes.io/docs/tasks/configure-pod-container/security-context/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `startupProbe`             | `object`         | StartupProbe indicates that the Pod has successfully initialized. If specified, no other probes are executed until this completes successfully. If this probe fails, the Pod will be restarted, just as if the livenessProbe failed. This can be used to provide different probe parameters at the beginning of a Pod’s lifecycle, when it might take a long time to load data or warm a cache, than during steady-state operation. This cannot be updated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `stdin`                    | `boolean`        | Whether this container should allocate a buffer for stdin in the container runtime. If this is not set, reads from stdin in the container will always result in EOF. Default is false.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `stdinOnce`                | `boolean`        | Whether the container runtime should close the stdin channel after it has been opened by a single attach. When stdin is true the stdin stream will remain open across multiple attach sessions. If stdinOnce is set to true, stdin is opened on container start, is empty until the first client attaches to stdin, and then remains open and accepts data until the client disconnects, at which time stdin is closed and remains closed until the container is restarted. If this flag is false, a container processes that reads from stdin will never receive an EOF. Default is false                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `terminationMessagePath`   | `string`         | Optional: Path at which the file to which the container’s termination message will be written is mounted into the container’s filesystem. Message written is intended to be brief final status, such as an assertion failure message. Will be truncated by the node if greater than 4096 bytes. The total message length across all containers will be limited to 12kb. Defaults to /dev/termination-log. Cannot be updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `terminationMessagePolicy` | `string`         | Indicate how the termination message should be populated. File will use the contents of terminationMessagePath to populate the container status message on both success and failure. FallbackToLogsOnError will use the last chunk of container log output if the termination message file is empty and the container exited with an error. The log output is limited to 2048 bytes or 80 lines, whichever is smaller. Defaults to File. Cannot be updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `tty`                      | `boolean`        | Whether this container should allocate a TTY for itself, also requires 'stdin' to be true. Default is false.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `volumeDevices`            | `array`          | volumeDevices is the list of block devices to be used by the container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `volumeDevices[]`          | `object`         | volumeDevice describes a mapping of a raw block device within a container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `volumeMounts`             | `array`          | Pod volumes to mount into the container’s filesystem. Cannot be updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `volumeMounts[]`           | `object`         | VolumeMount describes a mounting of a Volume within a container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `workingDir`               | `string`         | Container’s working directory. If not specified, the container runtime’s default will be used, which might be configured in the container image. Cannot be updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 
 ## .spec.initContainers\[\].env
 
@@ -2917,11 +2917,11 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name of the environment variable. May consist of any printable ASCII characters except '='. |
-| `value` | `string` | Variable references \$(VAR_NAME) are expanded using the previously defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "". |
-| `valueFrom` | `object` | Source for the environment variable’s value. Cannot be used if value is not empty. |
+| Property    | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|-------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`      | `string` | Name of the environment variable. May consist of any printable ASCII characters except '='.                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `value`     | `string` | Variable references \$(VAR_NAME) are expanded using the previously defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "". |
+| `valueFrom` | `object` | Source for the environment variable’s value. Cannot be used if value is not empty.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
 ## .spec.initContainers\[\].env\[\].valueFrom
 
@@ -2931,13 +2931,13 @@ Source for the environment variable’s value. Cannot be used if value is not em
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `configMapKeyRef` | `object` | Selects a key of a ConfigMap. |
-| `fieldRef` | `object` | Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs. |
-| `fileKeyRef` | `object` | FileKeyRef selects a key of the env file. Requires the EnvFiles feature gate to be enabled. |
-| `resourceFieldRef` | `object` | Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported. |
-| `secretKeyRef` | `object` | Selects a key of a secret in the pod’s namespace |
+| Property           | Type     | Description                                                                                                                                                                                                              |
+|--------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `configMapKeyRef`  | `object` | Selects a key of a ConfigMap.                                                                                                                                                                                            |
+| `fieldRef`         | `object` | Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs. |
+| `fileKeyRef`       | `object` | FileKeyRef selects a key of the env file. Requires the EnvFiles feature gate to be enabled.                                                                                                                              |
+| `resourceFieldRef` | `object` | Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.     |
+| `secretKeyRef`     | `object` | Selects a key of a secret in the pod’s namespace                                                                                                                                                                         |
 
 ## .spec.initContainers\[\].env\[\].valueFrom.configMapKeyRef
 
@@ -2950,11 +2950,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.initContainers\[\].env\[\].valueFrom.fieldRef
 
@@ -2967,10 +2967,10 @@ Type
 Required
 - `fieldPath`
 
-| Property | Type | Description |
-|----|----|----|
+| Property     | Type     | Description                                                                   |
+|--------------|----------|-------------------------------------------------------------------------------|
 | `apiVersion` | `string` | Version of the schema the FieldPath is written in terms of, defaults to "v1". |
-| `fieldPath` | `string` | Path of the field to select in the specified API version. |
+| `fieldPath`  | `string` | Path of the field to select in the specified API version.                     |
 
 ## .spec.initContainers\[\].env\[\].valueFrom.fileKeyRef
 
@@ -2994,30 +2994,30 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>key</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The key within the env file. An invalid key will prevent the pod from starting. The keys defined within a source may consist of any printable ASCII characters except '='. During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>optional</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Specify whether the file or its key must be defined. If the file or key does not exist, then the env var is not published. If optional is set to true and the specified key does not exist, the environment variable will not be set in the Pod’s containers.</p>
 <p>If optional is set to false and the specified key does not exist, an error will be returned during Pod creation.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>path</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The path within the volume from which to select the file. Must be relative and may not contain the '..' path or start with '..'.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>volumeName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The name of the volume mount containing the env file.</p></td>
@@ -3036,11 +3036,11 @@ Type
 Required
 - `resource`
 
-| Property | Type | Description |
-|----|----|----|
-| `containerName` | `string` | Container name: required for volumes, optional for env vars |
-| `divisor` | `integer-or-string` | Specifies the output format of the exposed resources, defaults to "1" |
-| `resource` | `string` | Required: resource to select |
+| Property        | Type                | Description                                                           |
+|-----------------|---------------------|-----------------------------------------------------------------------|
+| `containerName` | `string`            | Container name: required for volumes, optional for env vars           |
+| `divisor`       | `integer-or-string` | Specifies the output format of the exposed resources, defaults to "1" |
+| `resource`      | `string`            | Required: resource to select                                          |
 
 ## .spec.initContainers\[\].env\[\].valueFrom.secretKeyRef
 
@@ -3053,11 +3053,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.initContainers\[\].envFrom
 
@@ -3075,11 +3075,11 @@ EnvFromSource represents the source of a set of ConfigMaps or Secrets
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `configMapRef` | `object` | The ConfigMap to select from |
-| `prefix` | `string` | Optional text to prepend to the name of each environment variable. May consist of any printable ASCII characters except '='. |
-| `secretRef` | `object` | The Secret to select from |
+| Property       | Type     | Description                                                                                                                  |
+|----------------|----------|------------------------------------------------------------------------------------------------------------------------------|
+| `configMapRef` | `object` | The ConfigMap to select from                                                                                                 |
+| `prefix`       | `string` | Optional text to prepend to the name of each environment variable. May consist of any printable ASCII characters except '='. |
+| `secretRef`    | `object` | The Secret to select from                                                                                                    |
 
 ## .spec.initContainers\[\].envFrom\[\].configMapRef
 
@@ -3089,10 +3089,10 @@ The ConfigMap to select from
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap must be defined                                                                                                                                                                                                                                                |
 
 ## .spec.initContainers\[\].envFrom\[\].secretRef
 
@@ -3102,10 +3102,10 @@ The Secret to select from
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret must be defined                                                                                                                                                                                                                                                   |
 
 ## .spec.initContainers\[\].lifecycle
 
@@ -3115,11 +3115,11 @@ Actions that the management system should take in response to container lifecycl
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `postStart` | `object` | PostStart is called immediately after a container is created. If the handler fails, the container is terminated and restarted according to its restart policy. Other management of the container blocks until the hook completes. More info: <https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks> |
-| `preStop` | `object` | PreStop is called immediately before a container is terminated due to an API request or management event such as liveness/startup probe failure, preemption, resource contention, etc. The handler is not called if the container crashes or exits. The Pod’s termination grace period countdown begins before the PreStop hook is executed. Regardless of the outcome of the handler, the container will eventually terminate within the Pod’s termination grace period (unless delayed by finalizers). Other management of the container blocks until the hook completes or until the termination grace period is reached. More info: <https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks> |
-| `stopSignal` | `string` | StopSignal defines which signal will be sent to a container when it is being stopped. If not specified, the default is defined by the container runtime in use. StopSignal can only be set for Pods with a non-empty .spec.os.name |
+| Property     | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|--------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `postStart`  | `object` | PostStart is called immediately after a container is created. If the handler fails, the container is terminated and restarted according to its restart policy. Other management of the container blocks until the hook completes. More info: <https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks>                                                                                                                                                                                                                                                                                                                                                                                            |
+| `preStop`    | `object` | PreStop is called immediately before a container is terminated due to an API request or management event such as liveness/startup probe failure, preemption, resource contention, etc. The handler is not called if the container crashes or exits. The Pod’s termination grace period countdown begins before the PreStop hook is executed. Regardless of the outcome of the handler, the container will eventually terminate within the Pod’s termination grace period (unless delayed by finalizers). Other management of the container blocks until the hook completes or until the termination grace period is reached. More info: <https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks> |
+| `stopSignal` | `string` | StopSignal defines which signal will be sent to a container when it is being stopped. If not specified, the default is defined by the container runtime in use. StopSignal can only be set for Pods with a non-empty .spec.os.name                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
 ## .spec.initContainers\[\].lifecycle.postStart
 
@@ -3129,11 +3129,11 @@ PostStart is called immediately after a container is created. If the handler fai
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `exec` | `object` | Exec specifies a command to execute in the container. |
-| `httpGet` | `object` | HTTPGet specifies an HTTP GET request to perform. |
-| `sleep` | `object` | Sleep represents a duration that the container should sleep. |
+| Property    | Type     | Description                                                                                                                                                                                           |
+|-------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `exec`      | `object` | Exec specifies a command to execute in the container.                                                                                                                                                 |
+| `httpGet`   | `object` | HTTPGet specifies an HTTP GET request to perform.                                                                                                                                                     |
+| `sleep`     | `object` | Sleep represents a duration that the container should sleep.                                                                                                                                          |
 | `tcpSocket` | `object` | Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept for backward compatibility. There is no validation of this field and lifecycle hooks will fail at runtime when it is specified. |
 
 ## .spec.initContainers\[\].lifecycle.postStart.exec
@@ -3144,8 +3144,8 @@ Exec specifies a command to execute in the container.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property  | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                 |
+|-----------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `command` | `array (string)` | Command is the command line to execute inside the container, the working directory for the command is root ('/') in the container’s filesystem. The command is simply exec’d, it is not run inside a shell, so traditional shell instructions ('\|', etc) won’t work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy. |
 
 ## .spec.initContainers\[\].lifecycle.postStart.httpGet
@@ -3159,14 +3159,14 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead. |
-| `httpHeaders` | `array` | Custom headers to set in the request. HTTP allows repeated headers. |
-| `httpHeaders[]` | `object` | HTTPHeader describes a custom header to be used in HTTP probes |
-| `path` | `string` | Path to access on the HTTP server. |
-| `port` | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
-| `scheme` | `string` | Scheme to use for connecting to the host. Defaults to HTTP. |
+| Property        | Type                | Description                                                                                                                   |
+|-----------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`          | `string`            | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead.                      |
+| `httpHeaders`   | `array`             | Custom headers to set in the request. HTTP allows repeated headers.                                                           |
+| `httpHeaders[]` | `object`            | HTTPHeader describes a custom header to be used in HTTP probes                                                                |
+| `path`          | `string`            | Path to access on the HTTP server.                                                                                            |
+| `port`          | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| `scheme`        | `string`            | Scheme to use for connecting to the host. Defaults to HTTP.                                                                   |
 
 ## .spec.initContainers\[\].lifecycle.postStart.httpGet.httpHeaders
 
@@ -3189,10 +3189,10 @@ Required
 
 - `value`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
-| `value` | `string` | The header field value |
+| Property | Type     | Description                                                                                                                 |
+|----------|----------|-----------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
+| `value`  | `string` | The header field value                                                                                                      |
 
 ## .spec.initContainers\[\].lifecycle.postStart.sleep
 
@@ -3220,10 +3220,10 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Optional: Host name to connect to, defaults to the pod IP. |
-| `port` | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| Property | Type                | Description                                                                                                                   |
+|----------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`   | `string`            | Optional: Host name to connect to, defaults to the pod IP.                                                                    |
+| `port`   | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
 
 ## .spec.initContainers\[\].lifecycle.preStop
 
@@ -3233,11 +3233,11 @@ PreStop is called immediately before a container is terminated due to an API req
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `exec` | `object` | Exec specifies a command to execute in the container. |
-| `httpGet` | `object` | HTTPGet specifies an HTTP GET request to perform. |
-| `sleep` | `object` | Sleep represents a duration that the container should sleep. |
+| Property    | Type     | Description                                                                                                                                                                                           |
+|-------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `exec`      | `object` | Exec specifies a command to execute in the container.                                                                                                                                                 |
+| `httpGet`   | `object` | HTTPGet specifies an HTTP GET request to perform.                                                                                                                                                     |
+| `sleep`     | `object` | Sleep represents a duration that the container should sleep.                                                                                                                                          |
 | `tcpSocket` | `object` | Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept for backward compatibility. There is no validation of this field and lifecycle hooks will fail at runtime when it is specified. |
 
 ## .spec.initContainers\[\].lifecycle.preStop.exec
@@ -3248,8 +3248,8 @@ Exec specifies a command to execute in the container.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property  | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                 |
+|-----------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `command` | `array (string)` | Command is the command line to execute inside the container, the working directory for the command is root ('/') in the container’s filesystem. The command is simply exec’d, it is not run inside a shell, so traditional shell instructions ('\|', etc) won’t work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy. |
 
 ## .spec.initContainers\[\].lifecycle.preStop.httpGet
@@ -3263,14 +3263,14 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead. |
-| `httpHeaders` | `array` | Custom headers to set in the request. HTTP allows repeated headers. |
-| `httpHeaders[]` | `object` | HTTPHeader describes a custom header to be used in HTTP probes |
-| `path` | `string` | Path to access on the HTTP server. |
-| `port` | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
-| `scheme` | `string` | Scheme to use for connecting to the host. Defaults to HTTP. |
+| Property        | Type                | Description                                                                                                                   |
+|-----------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`          | `string`            | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead.                      |
+| `httpHeaders`   | `array`             | Custom headers to set in the request. HTTP allows repeated headers.                                                           |
+| `httpHeaders[]` | `object`            | HTTPHeader describes a custom header to be used in HTTP probes                                                                |
+| `path`          | `string`            | Path to access on the HTTP server.                                                                                            |
+| `port`          | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| `scheme`        | `string`            | Scheme to use for connecting to the host. Defaults to HTTP.                                                                   |
 
 ## .spec.initContainers\[\].lifecycle.preStop.httpGet.httpHeaders
 
@@ -3293,10 +3293,10 @@ Required
 
 - `value`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
-| `value` | `string` | The header field value |
+| Property | Type     | Description                                                                                                                 |
+|----------|----------|-----------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
+| `value`  | `string` | The header field value                                                                                                      |
 
 ## .spec.initContainers\[\].lifecycle.preStop.sleep
 
@@ -3324,10 +3324,10 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Optional: Host name to connect to, defaults to the pod IP. |
-| `port` | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| Property | Type                | Description                                                                                                                   |
+|----------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`   | `string`            | Optional: Host name to connect to, defaults to the pod IP.                                                                    |
+| `port`   | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
 
 ## .spec.initContainers\[\].livenessProbe
 
@@ -3337,18 +3337,18 @@ Periodic probe of container liveness. Container will be restarted if the probe f
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `exec` | `object` | Exec specifies a command to execute in the container. |
-| `failureThreshold` | `integer` | Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. |
-| `grpc` | `object` | GRPC specifies a GRPC HealthCheckRequest. |
-| `httpGet` | `object` | HTTPGet specifies an HTTP GET request to perform. |
-| `initialDelaySeconds` | `integer` | Number of seconds after the container has started before liveness probes are initiated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes> |
-| `periodSeconds` | `integer` | How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. |
-| `successThreshold` | `integer` | Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1. |
-| `tcpSocket` | `object` | TCPSocket specifies a connection to a TCP port. |
+| Property                        | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|---------------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `exec`                          | `object`  | Exec specifies a command to execute in the container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `failureThreshold`              | `integer` | Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `grpc`                          | `object`  | GRPC specifies a GRPC HealthCheckRequest.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `httpGet`                       | `object`  | HTTPGet specifies an HTTP GET request to perform.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `initialDelaySeconds`           | `integer` | Number of seconds after the container has started before liveness probes are initiated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `periodSeconds`                 | `integer` | How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `successThreshold`              | `integer` | Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `tcpSocket`                     | `object`  | TCPSocket specifies a connection to a TCP port.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `terminationGracePeriodSeconds` | `integer` | Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod’s terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate. Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset. |
-| `timeoutSeconds` | `integer` | Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes> |
+| `timeoutSeconds`                | `integer` | Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ## .spec.initContainers\[\].livenessProbe.exec
 
@@ -3358,8 +3358,8 @@ Exec specifies a command to execute in the container.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property  | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                 |
+|-----------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `command` | `array (string)` | Command is the command line to execute inside the container, the working directory for the command is root ('/') in the container’s filesystem. The command is simply exec’d, it is not run inside a shell, so traditional shell instructions ('\|', etc) won’t work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy. |
 
 ## .spec.initContainers\[\].livenessProbe.grpc
@@ -3380,19 +3380,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>port</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Port number of the gRPC service. Number must be in the range 1 to 65535.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>service</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Service is the name of the service to place in the gRPC HealthCheckRequest (see <a href="https://github.com/grpc/grpc/blob/master/doc/health-checking.md">https://github.com/grpc/grpc/blob/master/doc/health-checking.md</a>).</p>
@@ -3412,14 +3412,14 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead. |
-| `httpHeaders` | `array` | Custom headers to set in the request. HTTP allows repeated headers. |
-| `httpHeaders[]` | `object` | HTTPHeader describes a custom header to be used in HTTP probes |
-| `path` | `string` | Path to access on the HTTP server. |
-| `port` | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
-| `scheme` | `string` | Scheme to use for connecting to the host. Defaults to HTTP. |
+| Property        | Type                | Description                                                                                                                   |
+|-----------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`          | `string`            | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead.                      |
+| `httpHeaders`   | `array`             | Custom headers to set in the request. HTTP allows repeated headers.                                                           |
+| `httpHeaders[]` | `object`            | HTTPHeader describes a custom header to be used in HTTP probes                                                                |
+| `path`          | `string`            | Path to access on the HTTP server.                                                                                            |
+| `port`          | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| `scheme`        | `string`            | Scheme to use for connecting to the host. Defaults to HTTP.                                                                   |
 
 ## .spec.initContainers\[\].livenessProbe.httpGet.httpHeaders
 
@@ -3442,10 +3442,10 @@ Required
 
 - `value`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
-| `value` | `string` | The header field value |
+| Property | Type     | Description                                                                                                                 |
+|----------|----------|-----------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
+| `value`  | `string` | The header field value                                                                                                      |
 
 ## .spec.initContainers\[\].livenessProbe.tcpSocket
 
@@ -3458,10 +3458,10 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Optional: Host name to connect to, defaults to the pod IP. |
-| `port` | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| Property | Type                | Description                                                                                                                   |
+|----------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`   | `string`            | Optional: Host name to connect to, defaults to the pod IP.                                                                    |
+| `port`   | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
 
 ## .spec.initContainers\[\].ports
 
@@ -3482,13 +3482,13 @@ Type
 Required
 - `containerPort`
 
-| Property | Type | Description |
-|----|----|----|
-| `containerPort` | `integer` | Number of port to expose on the pod’s IP address. This must be a valid port number, 0 \< x \< 65536. |
-| `hostIP` | `string` | What host IP to bind the external port to. |
-| `hostPort` | `integer` | Number of port to expose on the host. If specified, this must be a valid port number, 0 \< x \< 65536. If HostNetwork is specified, this must match ContainerPort. Most containers do not need this. |
-| `name` | `string` | If specified, this must be an IANA_SVC_NAME and unique within the pod. Each named port in a pod must have a unique name. Name for the port that can be referred to by services. |
-| `protocol` | `string` | Protocol for port. Must be UDP, TCP, or SCTP. Defaults to "TCP". |
+| Property        | Type      | Description                                                                                                                                                                                          |
+|-----------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `containerPort` | `integer` | Number of port to expose on the pod’s IP address. This must be a valid port number, 0 \< x \< 65536.                                                                                                 |
+| `hostIP`        | `string`  | What host IP to bind the external port to.                                                                                                                                                           |
+| `hostPort`      | `integer` | Number of port to expose on the host. If specified, this must be a valid port number, 0 \< x \< 65536. If HostNetwork is specified, this must match ContainerPort. Most containers do not need this. |
+| `name`          | `string`  | If specified, this must be an IANA_SVC_NAME and unique within the pod. Each named port in a pod must have a unique name. Name for the port that can be referred to by services.                      |
+| `protocol`      | `string`  | Protocol for port. Must be UDP, TCP, or SCTP. Defaults to "TCP".                                                                                                                                     |
 
 ## .spec.initContainers\[\].readinessProbe
 
@@ -3498,18 +3498,18 @@ Periodic probe of container service readiness. Container will be removed from se
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `exec` | `object` | Exec specifies a command to execute in the container. |
-| `failureThreshold` | `integer` | Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. |
-| `grpc` | `object` | GRPC specifies a GRPC HealthCheckRequest. |
-| `httpGet` | `object` | HTTPGet specifies an HTTP GET request to perform. |
-| `initialDelaySeconds` | `integer` | Number of seconds after the container has started before liveness probes are initiated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes> |
-| `periodSeconds` | `integer` | How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. |
-| `successThreshold` | `integer` | Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1. |
-| `tcpSocket` | `object` | TCPSocket specifies a connection to a TCP port. |
+| Property                        | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|---------------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `exec`                          | `object`  | Exec specifies a command to execute in the container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `failureThreshold`              | `integer` | Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `grpc`                          | `object`  | GRPC specifies a GRPC HealthCheckRequest.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `httpGet`                       | `object`  | HTTPGet specifies an HTTP GET request to perform.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `initialDelaySeconds`           | `integer` | Number of seconds after the container has started before liveness probes are initiated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `periodSeconds`                 | `integer` | How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `successThreshold`              | `integer` | Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `tcpSocket`                     | `object`  | TCPSocket specifies a connection to a TCP port.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `terminationGracePeriodSeconds` | `integer` | Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod’s terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate. Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset. |
-| `timeoutSeconds` | `integer` | Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes> |
+| `timeoutSeconds`                | `integer` | Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ## .spec.initContainers\[\].readinessProbe.exec
 
@@ -3519,8 +3519,8 @@ Exec specifies a command to execute in the container.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property  | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                 |
+|-----------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `command` | `array (string)` | Command is the command line to execute inside the container, the working directory for the command is root ('/') in the container’s filesystem. The command is simply exec’d, it is not run inside a shell, so traditional shell instructions ('\|', etc) won’t work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy. |
 
 ## .spec.initContainers\[\].readinessProbe.grpc
@@ -3541,19 +3541,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>port</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Port number of the gRPC service. Number must be in the range 1 to 65535.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>service</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Service is the name of the service to place in the gRPC HealthCheckRequest (see <a href="https://github.com/grpc/grpc/blob/master/doc/health-checking.md">https://github.com/grpc/grpc/blob/master/doc/health-checking.md</a>).</p>
@@ -3573,14 +3573,14 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead. |
-| `httpHeaders` | `array` | Custom headers to set in the request. HTTP allows repeated headers. |
-| `httpHeaders[]` | `object` | HTTPHeader describes a custom header to be used in HTTP probes |
-| `path` | `string` | Path to access on the HTTP server. |
-| `port` | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
-| `scheme` | `string` | Scheme to use for connecting to the host. Defaults to HTTP. |
+| Property        | Type                | Description                                                                                                                   |
+|-----------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`          | `string`            | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead.                      |
+| `httpHeaders`   | `array`             | Custom headers to set in the request. HTTP allows repeated headers.                                                           |
+| `httpHeaders[]` | `object`            | HTTPHeader describes a custom header to be used in HTTP probes                                                                |
+| `path`          | `string`            | Path to access on the HTTP server.                                                                                            |
+| `port`          | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| `scheme`        | `string`            | Scheme to use for connecting to the host. Defaults to HTTP.                                                                   |
 
 ## .spec.initContainers\[\].readinessProbe.httpGet.httpHeaders
 
@@ -3603,10 +3603,10 @@ Required
 
 - `value`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
-| `value` | `string` | The header field value |
+| Property | Type     | Description                                                                                                                 |
+|----------|----------|-----------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
+| `value`  | `string` | The header field value                                                                                                      |
 
 ## .spec.initContainers\[\].readinessProbe.tcpSocket
 
@@ -3619,10 +3619,10 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Optional: Host name to connect to, defaults to the pod IP. |
-| `port` | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| Property | Type                | Description                                                                                                                   |
+|----------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`   | `string`            | Optional: Host name to connect to, defaults to the pod IP.                                                                    |
+| `port`   | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
 
 ## .spec.initContainers\[\].resizePolicy
 
@@ -3645,9 +3645,9 @@ Required
 
 - `restartPolicy`
 
-| Property | Type | Description |
-|----|----|----|
-| `resourceName` | `string` | Name of the resource to which this resource resize policy applies. Supported values: cpu, memory. |
+| Property        | Type     | Description                                                                                               |
+|-----------------|----------|-----------------------------------------------------------------------------------------------------------|
+| `resourceName`  | `string` | Name of the resource to which this resource resize policy applies. Supported values: cpu, memory.         |
 | `restartPolicy` | `string` | Restart policy to apply when specified resource is resized. If not specified, it defaults to NotRequired. |
 
 ## .spec.initContainers\[\].resources
@@ -3665,31 +3665,31 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>claims</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.</p>
 <p>This field depends on the DynamicResourceAllocation feature gate.</p>
 <p>This field is immutable. It can only be set for containers.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>claims[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ResourceClaim references one entry in PodSpec.ResourceClaims.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>limits</code></p></td>
 <td style="text-align: left;"><p><code>integer-or-string</code></p></td>
 <td style="text-align: left;"><p>Limits describes the maximum amount of compute resources allowed. More info: <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>requests</code></p></td>
 <td style="text-align: left;"><p><code>integer-or-string</code></p></td>
 <td style="text-align: left;"><p>Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/</a></p></td>
@@ -3720,9 +3720,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container. |
+| Property  | Type     | Description                                                                                                                                                         |
+|-----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`    | `string` | Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container.          |
 | `request` | `string` | Request is the name chosen for a request in the referenced claim. If empty, everything from the claim is made available, otherwise only the result of this request. |
 
 ## .spec.initContainers\[\].restartPolicyRules
@@ -3744,10 +3744,10 @@ Type
 Required
 - `action`
 
-| Property | Type | Description |
-|----|----|----|
-| `action` | `string` | Specifies the action taken on a container exit if the requirements are satisfied. The only possible value is "Restart" to restart the container. |
-| `exitCodes` | `object` | Represents the exit codes to check on container exits. |
+| Property    | Type     | Description                                                                                                                                      |
+|-------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| `action`    | `string` | Specifies the action taken on a container exit if the requirements are satisfied. The only possible value is "Restart" to restart the container. |
+| `exitCodes` | `object` | Represents the exit codes to check on container exits.                                                                                           |
 
 ## .spec.initContainers\[\].restartPolicyRules\[\].exitCodes
 
@@ -3760,10 +3760,10 @@ Type
 Required
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `operator` | `string` | Represents the relationship between the container exit code(s) and the specified values. Possible values are: - In: the requirement is satisfied if the container exit code is in the set of specified values. - NotIn: the requirement is satisfied if the container exit code is not in the set of specified values. |
-| `values` | `array (integer)` | Specifies the set of values to check for container exit codes. At most 255 elements are allowed. |
+| Property   | Type              | Description                                                                                                                                                                                                                                                                                                            |
+|------------|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `operator` | `string`          | Represents the relationship between the container exit code(s) and the specified values. Possible values are: - In: the requirement is satisfied if the container exit code is in the set of specified values. - NotIn: the requirement is satisfied if the container exit code is not in the set of specified values. |
+| `values`   | `array (integer)` | Specifies the set of values to check for container exit codes. At most 255 elements are allowed.                                                                                                                                                                                                                       |
 
 ## .spec.initContainers\[\].securityContext
 
@@ -3773,20 +3773,20 @@ SecurityContext defines the security options the container should be run with. I
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `allowPrivilegeEscalation` | `boolean` | AllowPrivilegeEscalation controls whether a process can gain more privileges than its parent process. This bool directly controls if the no_new_privs flag will be set on the container process. AllowPrivilegeEscalation is true always when the container is: 1) run as Privileged 2) has CAP_SYS_ADMIN Note that this field cannot be set when spec.os.name is windows. |
-| `appArmorProfile` | `object` | appArmorProfile is the AppArmor options to use by this container. If set, this profile overrides the pod’s appArmorProfile. Note that this field cannot be set when spec.os.name is windows. |
-| `capabilities` | `object` | The capabilities to add/drop when running containers. Defaults to the default set of capabilities granted by the container runtime. Note that this field cannot be set when spec.os.name is windows. |
-| `privileged` | `boolean` | Run container in privileged mode. Processes in privileged containers are essentially equivalent to root on the host. Defaults to false. Note that this field cannot be set when spec.os.name is windows. |
-| `procMount` | `string` | procMount denotes the type of proc mount to use for the containers. The default value is Default which uses the container runtime defaults for readonly paths and masked paths. This requires the ProcMountType feature flag to be enabled. Note that this field cannot be set when spec.os.name is windows. |
-| `readOnlyRootFilesystem` | `boolean` | Whether this container has a read-only root filesystem. Default is false. Note that this field cannot be set when spec.os.name is windows. |
-| `runAsGroup` | `integer` | The GID to run the entrypoint of the container process. Uses runtime default if unset. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows. |
-| `runAsNonRoot` | `boolean` | Indicates that the container must run as a non-root user. If true, the Kubelet will validate the image at runtime to ensure that it does not run as UID 0 (root) and fail to start the container if it does. If unset or false, no such validation will be performed. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. |
-| `runAsUser` | `integer` | The UID to run the entrypoint of the container process. Defaults to user specified in image metadata if unspecified. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows. |
-| `seLinuxOptions` | `object` | The SELinux context to be applied to the container. If unspecified, the container runtime will allocate a random SELinux context for each container. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows. |
-| `seccompProfile` | `object` | The seccomp options to use by this container. If seccomp options are provided at both the pod & container level, the container options override the pod options. Note that this field cannot be set when spec.os.name is windows. |
-| `windowsOptions` | `object` | The Windows specific settings applied to all containers. If unspecified, the options from the PodSecurityContext will be used. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is linux. |
+| Property                   | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|----------------------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `allowPrivilegeEscalation` | `boolean` | AllowPrivilegeEscalation controls whether a process can gain more privileges than its parent process. This bool directly controls if the no_new_privs flag will be set on the container process. AllowPrivilegeEscalation is true always when the container is: 1) run as Privileged 2) has CAP_SYS_ADMIN Note that this field cannot be set when spec.os.name is windows.                                                   |
+| `appArmorProfile`          | `object`  | appArmorProfile is the AppArmor options to use by this container. If set, this profile overrides the pod’s appArmorProfile. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                                 |
+| `capabilities`             | `object`  | The capabilities to add/drop when running containers. Defaults to the default set of capabilities granted by the container runtime. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                         |
+| `privileged`               | `boolean` | Run container in privileged mode. Processes in privileged containers are essentially equivalent to root on the host. Defaults to false. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                     |
+| `procMount`                | `string`  | procMount denotes the type of proc mount to use for the containers. The default value is Default which uses the container runtime defaults for readonly paths and masked paths. This requires the ProcMountType feature flag to be enabled. Note that this field cannot be set when spec.os.name is windows.                                                                                                                 |
+| `readOnlyRootFilesystem`   | `boolean` | Whether this container has a read-only root filesystem. Default is false. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                                                                                   |
+| `runAsGroup`               | `integer` | The GID to run the entrypoint of the container process. Uses runtime default if unset. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows.                                                                                                               |
+| `runAsNonRoot`             | `boolean` | Indicates that the container must run as a non-root user. If true, the Kubelet will validate the image at runtime to ensure that it does not run as UID 0 (root) and fail to start the container if it does. If unset or false, no such validation will be performed. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. |
+| `runAsUser`                | `integer` | The UID to run the entrypoint of the container process. Defaults to user specified in image metadata if unspecified. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows.                                                                                 |
+| `seLinuxOptions`           | `object`  | The SELinux context to be applied to the container. If unspecified, the container runtime will allocate a random SELinux context for each container. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows.                                                 |
+| `seccompProfile`           | `object`  | The seccomp options to use by this container. If seccomp options are provided at both the pod & container level, the container options override the pod options. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                            |
+| `windowsOptions`           | `object`  | The Windows specific settings applied to all containers. If unspecified, the options from the PodSecurityContext will be used. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is linux.                                                                                                                |
 
 ## .spec.initContainers\[\].securityContext.appArmorProfile
 
@@ -3799,10 +3799,10 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `localhostProfile` | `string` | localhostProfile indicates a profile loaded on the node that should be used. The profile must be preconfigured on the node to work. Must match the loaded name of the profile. Must be set if and only if type is "Localhost". |
-| `type` | `string` | type indicates which kind of AppArmor profile will be applied. Valid options are: Localhost - a profile pre-loaded on the node. RuntimeDefault - the container runtime’s default profile. Unconfined - no AppArmor enforcement. |
+| Property           | Type     | Description                                                                                                                                                                                                                     |
+|--------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `localhostProfile` | `string` | localhostProfile indicates a profile loaded on the node that should be used. The profile must be preconfigured on the node to work. Must match the loaded name of the profile. Must be set if and only if type is "Localhost".  |
+| `type`             | `string` | type indicates which kind of AppArmor profile will be applied. Valid options are: Localhost - a profile pre-loaded on the node. RuntimeDefault - the container runtime’s default profile. Unconfined - no AppArmor enforcement. |
 
 ## .spec.initContainers\[\].securityContext.capabilities
 
@@ -3825,12 +3825,12 @@ The SELinux context to be applied to the container. If unspecified, the containe
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `level` | `string` | Level is SELinux level label that applies to the container. |
-| `role` | `string` | Role is a SELinux role label that applies to the container. |
-| `type` | `string` | Type is a SELinux type label that applies to the container. |
-| `user` | `string` | User is a SELinux user label that applies to the container. |
+| Property | Type     | Description                                                 |
+|----------|----------|-------------------------------------------------------------|
+| `level`  | `string` | Level is SELinux level label that applies to the container. |
+| `role`   | `string` | Role is a SELinux role label that applies to the container. |
+| `type`   | `string` | Type is a SELinux type label that applies to the container. |
+| `user`   | `string` | User is a SELinux user label that applies to the container. |
 
 ## .spec.initContainers\[\].securityContext.seccompProfile
 
@@ -3850,19 +3850,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>localhostProfile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet’s configured seccomp profile location. Must be set if type is "Localhost". Must NOT be set for any other type.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>type indicates which kind of seccomp profile will be applied. Valid options are:</p>
@@ -3879,12 +3879,12 @@ The Windows specific settings applied to all containers. If unspecified, the opt
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `gmsaCredentialSpec` | `string` | GMSACredentialSpec is where the GMSA admission webhook (<https://github.com/kubernetes-sigs/windows-gmsa>) inlines the contents of the GMSA credential spec named by the GMSACredentialSpecName field. |
-| `gmsaCredentialSpecName` | `string` | GMSACredentialSpecName is the name of the GMSA credential spec to use. |
-| `hostProcess` | `boolean` | HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod’s containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true. |
-| `runAsUserName` | `string` | The UserName in Windows to run the entrypoint of the container process. Defaults to the user specified in image metadata if unspecified. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. |
+| Property                 | Type      | Description                                                                                                                                                                                                                                                                                                                            |
+|--------------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `gmsaCredentialSpec`     | `string`  | GMSACredentialSpec is where the GMSA admission webhook (<https://github.com/kubernetes-sigs/windows-gmsa>) inlines the contents of the GMSA credential spec named by the GMSACredentialSpecName field.                                                                                                                                 |
+| `gmsaCredentialSpecName` | `string`  | GMSACredentialSpecName is the name of the GMSA credential spec to use.                                                                                                                                                                                                                                                                 |
+| `hostProcess`            | `boolean` | HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod’s containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true. |
+| `runAsUserName`          | `string`  | The UserName in Windows to run the entrypoint of the container process. Defaults to the user specified in image metadata if unspecified. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence.                                        |
 
 ## .spec.initContainers\[\].startupProbe
 
@@ -3894,18 +3894,18 @@ StartupProbe indicates that the Pod has successfully initialized. If specified, 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `exec` | `object` | Exec specifies a command to execute in the container. |
-| `failureThreshold` | `integer` | Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. |
-| `grpc` | `object` | GRPC specifies a GRPC HealthCheckRequest. |
-| `httpGet` | `object` | HTTPGet specifies an HTTP GET request to perform. |
-| `initialDelaySeconds` | `integer` | Number of seconds after the container has started before liveness probes are initiated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes> |
-| `periodSeconds` | `integer` | How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. |
-| `successThreshold` | `integer` | Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1. |
-| `tcpSocket` | `object` | TCPSocket specifies a connection to a TCP port. |
+| Property                        | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|---------------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `exec`                          | `object`  | Exec specifies a command to execute in the container.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `failureThreshold`              | `integer` | Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `grpc`                          | `object`  | GRPC specifies a GRPC HealthCheckRequest.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `httpGet`                       | `object`  | HTTPGet specifies an HTTP GET request to perform.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `initialDelaySeconds`           | `integer` | Number of seconds after the container has started before liveness probes are initiated. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `periodSeconds`                 | `integer` | How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `successThreshold`              | `integer` | Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `tcpSocket`                     | `object`  | TCPSocket specifies a connection to a TCP port.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `terminationGracePeriodSeconds` | `integer` | Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod’s terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate. Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset. |
-| `timeoutSeconds` | `integer` | Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes> |
+| `timeoutSeconds`                | `integer` | Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ## .spec.initContainers\[\].startupProbe.exec
 
@@ -3915,8 +3915,8 @@ Exec specifies a command to execute in the container.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property  | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                 |
+|-----------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `command` | `array (string)` | Command is the command line to execute inside the container, the working directory for the command is root ('/') in the container’s filesystem. The command is simply exec’d, it is not run inside a shell, so traditional shell instructions ('\|', etc) won’t work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy. |
 
 ## .spec.initContainers\[\].startupProbe.grpc
@@ -3937,19 +3937,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>port</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Port number of the gRPC service. Number must be in the range 1 to 65535.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>service</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Service is the name of the service to place in the gRPC HealthCheckRequest (see <a href="https://github.com/grpc/grpc/blob/master/doc/health-checking.md">https://github.com/grpc/grpc/blob/master/doc/health-checking.md</a>).</p>
@@ -3969,14 +3969,14 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead. |
-| `httpHeaders` | `array` | Custom headers to set in the request. HTTP allows repeated headers. |
-| `httpHeaders[]` | `object` | HTTPHeader describes a custom header to be used in HTTP probes |
-| `path` | `string` | Path to access on the HTTP server. |
-| `port` | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
-| `scheme` | `string` | Scheme to use for connecting to the host. Defaults to HTTP. |
+| Property        | Type                | Description                                                                                                                   |
+|-----------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`          | `string`            | Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead.                      |
+| `httpHeaders`   | `array`             | Custom headers to set in the request. HTTP allows repeated headers.                                                           |
+| `httpHeaders[]` | `object`            | HTTPHeader describes a custom header to be used in HTTP probes                                                                |
+| `path`          | `string`            | Path to access on the HTTP server.                                                                                            |
+| `port`          | `integer-or-string` | Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| `scheme`        | `string`            | Scheme to use for connecting to the host. Defaults to HTTP.                                                                   |
 
 ## .spec.initContainers\[\].startupProbe.httpGet.httpHeaders
 
@@ -3999,10 +3999,10 @@ Required
 
 - `value`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
-| `value` | `string` | The header field value |
+| Property | Type     | Description                                                                                                                 |
+|----------|----------|-----------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. |
+| `value`  | `string` | The header field value                                                                                                      |
 
 ## .spec.initContainers\[\].startupProbe.tcpSocket
 
@@ -4015,10 +4015,10 @@ Type
 Required
 - `port`
 
-| Property | Type | Description |
-|----|----|----|
-| `host` | `string` | Optional: Host name to connect to, defaults to the pod IP. |
-| `port` | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
+| Property | Type                | Description                                                                                                                   |
+|----------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `host`   | `string`            | Optional: Host name to connect to, defaults to the pod IP.                                                                    |
+| `port`   | `integer-or-string` | Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. |
 
 ## .spec.initContainers\[\].volumeDevices
 
@@ -4041,10 +4041,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
+| Property     | Type     | Description                                                                       |
+|--------------|----------|-----------------------------------------------------------------------------------|
 | `devicePath` | `string` | devicePath is the path inside of the container that the device will be mapped to. |
-| `name` | `string` | name must match the name of a persistentVolumeClaim in the pod |
+| `name`       | `string` | name must match the name of a persistentVolumeClaim in the pod                    |
 
 ## .spec.initContainers\[\].volumeMounts
 
@@ -4074,34 +4074,34 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mountPath</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Path within the container at which the volume should be mounted. Must not contain ':'.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mountPropagation</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>mountPropagation determines how mounts are propagated from the host to container and the other way around. When not set, MountPropagationNone is used. This field is beta in 1.10. When RecursiveReadOnly is set to IfPossible or to Enabled, MountPropagation must be None or unspecified (which defaults to None).</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>This must match the Name of a Volume.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>readOnly</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Mounted read-only if true, read-write otherwise (false or unspecified). Defaults to false.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>recursiveReadOnly</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>RecursiveReadOnly specifies whether read-only mounts should be handled recursively.</p>
@@ -4110,12 +4110,12 @@ Required
 <p>If this field is set to IfPossible or Enabled, MountPropagation must be set to None (or be unspecified, which defaults to None).</p>
 <p>If this field is not specified, it is treated as an equivalent of Disabled.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>subPath</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Path within the volume from which the container’s volume should be mounted. Defaults to "" (volume’s root).</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>subPathExpr</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Expanded path within the volume from which the container’s volume should be mounted. Behaves similarly to SubPath but environment variable references $(VAR_NAME) are expanded using the container’s environment. Defaults to "" (volume’s root). SubPathExpr and SubPath are mutually exclusive.</p></td>
@@ -4138,11 +4138,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.podMetadata
 
@@ -4154,11 +4154,11 @@ The following items are reserved and cannot be overridden: \* "app.kubernetes.io
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `annotations` | `object (string)` | annotations defines an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/> |
-| `labels` | `object (string)` | labels define the map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/> |
-| `name` | `string` | name must be unique within a namespace. Is required when creating resources, although some resources may allow a client to request the generation of an appropriate name automatically. Name is primarily intended for creation idempotence and configuration definition. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/> |
+| Property      | Type              | Description                                                                                                                                                                                                                                                                                                                                                                        |
+|---------------|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `annotations` | `object (string)` | annotations defines an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/>                                                            |
+| `labels`      | `object (string)` | labels define the map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/>                                                                                                        |
+| `name`        | `string`          | name must be unique within a namespace. Is required when creating resources, although some resources may allow a client to request the generation of an appropriate name automatically. Name is primarily intended for creation idempotence and configuration definition. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/> |
 
 ## .spec.prometheusRulesExcludedFromEnforce
 
@@ -4181,9 +4181,9 @@ Required
 
 - `ruleNamespace`
 
-| Property | Type | Description |
-|----|----|----|
-| `ruleName` | `string` | ruleName defines the name of the excluded PrometheusRule object. |
+| Property        | Type     | Description                                                                |
+|-----------------|----------|----------------------------------------------------------------------------|
+| `ruleName`      | `string` | ruleName defines the name of the excluded PrometheusRule object.           |
 | `ruleNamespace` | `string` | ruleNamespace defines the namespace of the excluded PrometheusRule object. |
 
 ## .spec.queryConfig
@@ -4205,11 +4205,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.remoteWrite
 
@@ -4241,62 +4241,62 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>authorization</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>authorization section for the URL.</p>
 <p>It requires Prometheus &gt;= v2.26.0 or Thanos &gt;= v0.24.0.</p>
 <p>Cannot be set at the same time as <code>sigv4</code>, <code>basicAuth</code>, <code>oauth2</code>, or <code>azureAd</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>azureAd</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>azureAd for the URL.</p>
 <p>It requires Prometheus &gt;= v2.45.0 or Thanos &gt;= v0.31.0.</p>
 <p>Cannot be set at the same time as <code>authorization</code>, <code>basicAuth</code>, <code>oauth2</code>, or <code>sigv4</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>basicAuth</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>basicAuth configuration for the URL.</p>
 <p>Cannot be set at the same time as <code>sigv4</code>, <code>authorization</code>, <code>oauth2</code>, or <code>azureAd</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>bearerToken</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>bearerToken is deprecated: this will be removed in a future release. <strong>Warning: this field shouldn’t be used because the token value appears in clear-text. Prefer using <code>authorization</code>.</strong></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bearerTokenFile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>bearerTokenFile defines the file from which to read bearer token for the URL.</p>
 <p>Deprecated: this will be removed in a future release. Prefer using <code>authorization</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>enableHTTP2</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>enableHTTP2 defines whether to enable HTTP2.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>followRedirects</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>followRedirects defines whether HTTP requests follow HTTP 3xx redirects.</p>
 <p>It requires Prometheus &gt;= v2.26.0 or Thanos &gt;= v0.24.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>headers</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p>headers defines the custom HTTP headers to be sent along with each remote write request. Be aware that headers that are set by Prometheus itself can’t be overwritten.</p>
 <p>It requires Prometheus &gt;= v2.25.0 or Thanos &gt;= v0.24.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>messageVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>messageVersion defines the Remote Write message’s version to use when writing to the endpoint.</p>
@@ -4305,69 +4305,69 @@ Required
 <p>Before setting this field, consult with your remote storage provider what message version it supports.</p>
 <p>It requires Prometheus &gt;= v2.54.0 or Thanos &gt;= v0.37.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>metadataConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>metadataConfig defines how to send a series metadata to the remote storage.</p>
 <p>When the field is empty, <strong>no metadata</strong> is sent. But when the field is null, metadata is sent.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>name of the remote write queue, it must be unique if specified. The name is used in metrics and logging in order to differentiate queues.</p>
 <p>It requires Prometheus &gt;= v2.15.0 or Thanos &gt;= 0.24.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>oauth2</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>oauth2 configuration for the URL.</p>
 <p>It requires Prometheus &gt;= v2.27.0 or Thanos &gt;= v0.24.0.</p>
 <p>Cannot be set at the same time as <code>sigv4</code>, <code>authorization</code>, <code>basicAuth</code>, or <code>azureAd</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>proxyUrl defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>queueConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>queueConfig allows tuning of the remote write queue parameters.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>remoteTimeout</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>remoteTimeout defines the timeout for requests to the remote write endpoint.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>roundRobinDNS</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>roundRobinDNS controls the DNS resolution behavior for remote-write connections. When enabled: - The remote-write mechanism will resolve the hostname via DNS. - It will randomly select one of the resolved IP addresses and connect to it.</p>
@@ -4376,41 +4376,41 @@ Required
 <p>If disabled, the timeout is distributed across all connection attempts.</p>
 <p>It requires Prometheus &gt;= v3.1.0 or Thanos &gt;= v0.38.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>sendExemplars</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>sendExemplars enables sending of exemplars over remote write. Note that exemplar-storage itself must be enabled using the <code>spec.enableFeatures</code> option for exemplars to be scraped in the first place.</p>
 <p>It requires Prometheus &gt;= v2.27.0 or Thanos &gt;= v0.24.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>sendNativeHistograms</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>sendNativeHistograms enables sending of native histograms, also known as sparse histograms over remote write.</p>
 <p>It requires Prometheus &gt;= v2.40.0 or Thanos &gt;= v0.30.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>sigv4</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>sigv4 defines the AWS’s Signature Verification 4 for the URL.</p>
 <p>It requires Prometheus &gt;= v2.26.0 or Thanos &gt;= v0.24.0.</p>
 <p>Cannot be set at the same time as <code>authorization</code>, <code>basicAuth</code>, <code>oauth2</code>, or <code>azureAd</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>tlsConfig to use for the URL.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>url</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>url defines the URL of the endpoint to send samples to.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>writeRelabelConfigs</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>writeRelabelConfigs defines the list of remote write relabel configurations.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>writeRelabelConfigs[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples.</p>
@@ -4438,24 +4438,24 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>credentials</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>credentials defines a key of a Secret in the namespace that contains the credentials for authentication.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>credentialsFile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>credentialsFile defines the file to read a secret from, mutually exclusive with <code>credentials</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>type defines the authentication type. The value is case-insensitive.</p>
@@ -4476,11 +4476,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.remoteWrite\[\].azureAd
 
@@ -4501,30 +4501,30 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>cloud</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>cloud defines the Azure Cloud. Options are 'AzurePublic', 'AzureChina', or 'AzureGovernment'.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>managedIdentity</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>managedIdentity defines the Azure User-assigned Managed identity. Cannot be set at the same time as <code>oauth</code> or <code>sdk</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>oauth</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>oauth defines the oauth config that is being used to authenticate. Cannot be set at the same time as <code>managedIdentity</code> or <code>sdk</code>.</p>
 <p>It requires Prometheus &gt;= v2.48.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>sdk</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>sdk defines the Azure SDK config that is being used to authenticate. See <a href="https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication">https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication</a> Cannot be set at the same time as <code>oauth</code> or <code>managedIdentity</code>.</p>
@@ -4548,14 +4548,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clientId</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>clientId defines the Azure User-assigned Managed identity.</p>
@@ -4581,11 +4581,11 @@ Required
 
 - `tenantId`
 
-| Property | Type | Description |
-|----|----|----|
-| `clientId` | `string` | clientId defines the clientId of the Azure Active Directory application that is being used to authenticate. |
+| Property       | Type     | Description                                                                                                                                         |
+|----------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `clientId`     | `string` | clientId defines the clientId of the Azure Active Directory application that is being used to authenticate.                                         |
 | `clientSecret` | `object` | clientSecret specifies a key of a Secret containing the client secret of the Azure Active Directory application that is being used to authenticate. |
-| `tenantId` | `string` | tenantId is the tenant ID of the Azure Active Directory application that is being used to authenticate. |
+| `tenantId`     | `string` | tenantId is the tenant ID of the Azure Active Directory application that is being used to authenticate.                                             |
 
 ## .spec.remoteWrite\[\].azureAd.oauth.clientSecret
 
@@ -4598,11 +4598,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.remoteWrite\[\].azureAd.sdk
 
@@ -4614,8 +4614,8 @@ It requires Prometheus \>= v2.52.0 or Thanos \>= v0.36.0.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                                                  |
+|------------|----------|--------------------------------------------------------------------------------------------------------------|
 | `tenantId` | `string` | tenantId defines the tenant ID of the azure active directory application that is being used to authenticate. |
 
 ## .spec.remoteWrite\[\].basicAuth
@@ -4628,8 +4628,8 @@ Cannot be set at the same time as `sigv4`, `authorization`, `oauth2`, or `azureA
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                    |
+|------------|----------|--------------------------------------------------------------------------------|
 | `password` | `object` | password defines a key of a Secret containing the password for authentication. |
 | `username` | `object` | username defines a key of a Secret containing the username for authentication. |
 
@@ -4644,11 +4644,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.remoteWrite\[\].basicAuth.username
 
@@ -4661,11 +4661,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.remoteWrite\[\].metadataConfig
 
@@ -4684,25 +4684,25 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxSamplesPerSend</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>maxSamplesPerSend defines the maximum number of metadata samples per send.</p>
 <p>It requires Prometheus &gt;= v2.29.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>send</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>send defines whether metric metadata is sent to the remote storage or not.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>sendInterval</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>sendInterval defines how frequently metric metadata is sent to the remote storage.</p></td>
@@ -4736,72 +4736,72 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clientId</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>clientId defines a key of a Secret or ConfigMap containing the OAuth2 client’s ID.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>clientSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>clientSecret defines a key of a Secret containing the OAuth2 client’s secret.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>endpointParams</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p>endpointParams configures the HTTP parameters to append to the token URL.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>proxyUrl defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scopes</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>scopes defines the OAuth2 scopes used for the token request.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>tlsConfig defines the TLS configuration to use when connecting to the OAuth2 server. It requires Prometheus &gt;= v2.43.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tokenUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>tokenUrl defines the URL to fetch the token from.</p></td>
@@ -4817,10 +4817,10 @@ clientId defines a key of a Secret or ConfigMap containing the OAuth2 client’s
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type     | Description                                                             |
+|-------------|----------|-------------------------------------------------------------------------|
 | `configMap` | `object` | configMap defines the ConfigMap containing data to use for the targets. |
-| `secret` | `object` | secret defines the Secret containing data to use for the targets. |
+| `secret`    | `object` | secret defines the Secret containing data to use for the targets.       |
 
 ## .spec.remoteWrite\[\].oauth2.clientId.configMap
 
@@ -4833,11 +4833,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.remoteWrite\[\].oauth2.clientId.secret
 
@@ -4850,11 +4850,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.remoteWrite\[\].oauth2.clientSecret
 
@@ -4867,11 +4867,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.remoteWrite\[\].oauth2.proxyConnectHeader
 
@@ -4901,11 +4901,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.remoteWrite\[\].oauth2.tlsConfig
 
@@ -4922,46 +4922,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ca defines the Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>cert defines the Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>insecureSkipVerify defines how to disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>keySecret defines the Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>maxVersion defines the maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>minVersion defines the minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>serverName is used to verify the hostname for the targets.</p></td>
@@ -4977,10 +4977,10 @@ ca defines the Certificate authority used when verifying server certificates.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type     | Description                                                             |
+|-------------|----------|-------------------------------------------------------------------------|
 | `configMap` | `object` | configMap defines the ConfigMap containing data to use for the targets. |
-| `secret` | `object` | secret defines the Secret containing data to use for the targets. |
+| `secret`    | `object` | secret defines the Secret containing data to use for the targets.       |
 
 ## .spec.remoteWrite\[\].oauth2.tlsConfig.ca.configMap
 
@@ -4993,11 +4993,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.remoteWrite\[\].oauth2.tlsConfig.ca.secret
 
@@ -5010,11 +5010,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.remoteWrite\[\].oauth2.tlsConfig.cert
 
@@ -5024,10 +5024,10 @@ cert defines the Client certificate to present when doing client-authentication.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type     | Description                                                             |
+|-------------|----------|-------------------------------------------------------------------------|
 | `configMap` | `object` | configMap defines the ConfigMap containing data to use for the targets. |
-| `secret` | `object` | secret defines the Secret containing data to use for the targets. |
+| `secret`    | `object` | secret defines the Secret containing data to use for the targets.       |
 
 ## .spec.remoteWrite\[\].oauth2.tlsConfig.cert.configMap
 
@@ -5040,11 +5040,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.remoteWrite\[\].oauth2.tlsConfig.cert.secret
 
@@ -5057,11 +5057,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.remoteWrite\[\].oauth2.tlsConfig.keySecret
 
@@ -5074,11 +5074,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.remoteWrite\[\].proxyConnectHeader
 
@@ -5108,11 +5108,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.remoteWrite\[\].queueConfig
 
@@ -5129,60 +5129,60 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>batchSendDeadline</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>batchSendDeadline defines the maximum time a sample will wait in buffer.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>capacity</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>capacity defines the number of samples to buffer per shard before we start dropping them.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxBackoff</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>maxBackoff defines the maximum retry delay.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>maxRetries</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>maxRetries defines the maximum number of times to retry a batch on recoverable errors.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxSamplesPerSend</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>maxSamplesPerSend defines the maximum number of samples per send.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>maxShards</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>maxShards defines the maximum number of shards, i.e. amount of concurrency.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>minBackoff</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>minBackoff defines the initial retry delay. Gets doubled for every retry.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minShards</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>minShards defines the minimum number of shards, i.e. amount of concurrency.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>retryOnRateLimit</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>retryOnRateLimit defines the retry upon receiving a 429 status code from the remote-write storage.</p>
 <p>This is an <strong>experimental feature</strong>, it may change in any upcoming release in a breaking way.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>sampleAgeLimit</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>sampleAgeLimit drops samples older than the limit. It requires Prometheus &gt;= v2.50.0 or Thanos &gt;= v0.32.0.</p></td>
@@ -5202,14 +5202,14 @@ Cannot be set at the same time as `authorization`, `basicAuth`, `oauth2`, or `az
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `accessKey` | `object` | accessKey defines the AWS API key. If not specified, the environment variable `AWS_ACCESS_KEY_ID` is used. |
-| `profile` | `string` | profile defines the named AWS profile used to authenticate. |
-| `region` | `string` | region defines the AWS region. If blank, the region from the default credentials chain used. |
-| `roleArn` | `string` | roleArn defines the named AWS profile used to authenticate. |
-| `secretKey` | `object` | secretKey defines the AWS API secret. If not specified, the environment variable `AWS_SECRET_ACCESS_KEY` is used. |
-| `useFIPSSTSEndpoint` | `boolean` | useFIPSSTSEndpoint defines the FIPS mode for the AWS STS endpoint. It requires Prometheus \>= v2.54.0. |
+| Property             | Type      | Description                                                                                                       |
+|----------------------|-----------|-------------------------------------------------------------------------------------------------------------------|
+| `accessKey`          | `object`  | accessKey defines the AWS API key. If not specified, the environment variable `AWS_ACCESS_KEY_ID` is used.        |
+| `profile`            | `string`  | profile defines the named AWS profile used to authenticate.                                                       |
+| `region`             | `string`  | region defines the AWS region. If blank, the region from the default credentials chain used.                      |
+| `roleArn`            | `string`  | roleArn defines the named AWS profile used to authenticate.                                                       |
+| `secretKey`          | `object`  | secretKey defines the AWS API secret. If not specified, the environment variable `AWS_SECRET_ACCESS_KEY` is used. |
+| `useFIPSSTSEndpoint` | `boolean` | useFIPSSTSEndpoint defines the FIPS mode for the AWS STS endpoint. It requires Prometheus \>= v2.54.0.            |
 
 ## .spec.remoteWrite\[\].sigv4.accessKey
 
@@ -5222,11 +5222,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.remoteWrite\[\].sigv4.secretKey
 
@@ -5239,11 +5239,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.remoteWrite\[\].tlsConfig
 
@@ -5260,61 +5260,61 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ca defines the Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>caFile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>caFile defines the path to the CA cert in the Prometheus container to use for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>cert defines the Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>certFile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>certFile defines the path to the client cert file in the Prometheus container for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>insecureSkipVerify defines how to disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keyFile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>keyFile defines the path to the client key file in the Prometheus container for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>keySecret defines the Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>maxVersion defines the maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>minVersion defines the minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>serverName is used to verify the hostname for the targets.</p></td>
@@ -5330,10 +5330,10 @@ ca defines the Certificate authority used when verifying server certificates.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type     | Description                                                             |
+|-------------|----------|-------------------------------------------------------------------------|
 | `configMap` | `object` | configMap defines the ConfigMap containing data to use for the targets. |
-| `secret` | `object` | secret defines the Secret containing data to use for the targets. |
+| `secret`    | `object` | secret defines the Secret containing data to use for the targets.       |
 
 ## .spec.remoteWrite\[\].tlsConfig.ca.configMap
 
@@ -5346,11 +5346,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.remoteWrite\[\].tlsConfig.ca.secret
 
@@ -5363,11 +5363,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.remoteWrite\[\].tlsConfig.cert
 
@@ -5377,10 +5377,10 @@ cert defines the Client certificate to present when doing client-authentication.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type     | Description                                                             |
+|-------------|----------|-------------------------------------------------------------------------|
 | `configMap` | `object` | configMap defines the ConfigMap containing data to use for the targets. |
-| `secret` | `object` | secret defines the Secret containing data to use for the targets. |
+| `secret`    | `object` | secret defines the Secret containing data to use for the targets.       |
 
 ## .spec.remoteWrite\[\].tlsConfig.cert.configMap
 
@@ -5393,11 +5393,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.remoteWrite\[\].tlsConfig.cert.secret
 
@@ -5410,11 +5410,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.remoteWrite\[\].tlsConfig.keySecret
 
@@ -5427,11 +5427,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.remoteWrite\[\].writeRelabelConfigs
 
@@ -5458,48 +5458,48 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>action</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>action to perform based on the regex matching.</p>
 <p><code>Uppercase</code> and <code>Lowercase</code> actions require Prometheus &gt;= v2.36.0. <code>DropEqual</code> and <code>KeepEqual</code> actions require Prometheus &gt;= v2.41.0.</p>
 <p>Default: "Replace"</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>modulus</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>modulus to take of the hash of the source label values.</p>
 <p>Only applicable when the action is <code>HashMod</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>regex</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>regex defines the regular expression against which the extracted value is matched.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>replacement</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>replacement value against which a Replace action is performed if the regular expression matches.</p>
 <p>Regex capture groups are available.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>separator</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>separator defines the string between concatenated SourceLabels.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>sourceLabels</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>sourceLabels defines the source labels select values from existing labels. Their content is concatenated using the configured Separator and matched against the configured regular expression.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>targetLabel</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>targetLabel defines the label to which the resulting string is written in a replacement.</p>
@@ -5524,31 +5524,31 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>claims</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.</p>
 <p>This field depends on the DynamicResourceAllocation feature gate.</p>
 <p>This field is immutable. It can only be set for containers.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>claims[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ResourceClaim references one entry in PodSpec.ResourceClaims.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>limits</code></p></td>
 <td style="text-align: left;"><p><code>integer-or-string</code></p></td>
 <td style="text-align: left;"><p>Limits describes the maximum amount of compute resources allowed. More info: <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>requests</code></p></td>
 <td style="text-align: left;"><p><code>integer-or-string</code></p></td>
 <td style="text-align: left;"><p>Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/</a></p></td>
@@ -5579,9 +5579,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container. |
+| Property  | Type     | Description                                                                                                                                                         |
+|-----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`    | `string` | Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container.          |
 | `request` | `string` | Request is the name chosen for a request in the referenced claim. If empty, everything from the claim is made available, otherwise only the result of this request. |
 
 ## .spec.ruleNamespaceSelector
@@ -5592,11 +5592,11 @@ ruleNamespaceSelector defines the namespaces to be selected for Rules discovery.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.ruleNamespaceSelector.matchExpressions
 
@@ -5619,11 +5619,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.ruleSelector
 
@@ -5633,11 +5633,11 @@ ruleSelector defines the PrometheusRule objects to be selected for rule evaluati
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.ruleSelector.matchExpressions
 
@@ -5660,11 +5660,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.securityContext
 
@@ -5681,46 +5681,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>appArmorProfile</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>appArmorProfile is the AppArmor options to use by the containers in this pod. Note that this field cannot be set when spec.os.name is windows.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>fsGroup</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>A special supplemental group that applies to all containers in a pod. Some volume types allow the Kubelet to change the ownership of that volume to be owned by the pod:</p>
 <p>1. The owning GID will be the FSGroup 2. The setgid bit is set (new files created in the volume will be owned by FSGroup) 3. The permission bits are OR’d with rw-rw----</p>
 <p>If unset, the Kubelet will not modify the ownership and permissions of any volume. Note that this field cannot be set when spec.os.name is windows.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>fsGroupChangePolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>fsGroupChangePolicy defines behavior of changing ownership and permission of the volume before being exposed inside Pod. This field will only apply to volume types which support fsGroup based ownership(and permissions). It will have no effect on ephemeral volume types such as: secret, configmaps and emptydir. Valid values are "OnRootMismatch" and "Always". If not specified, "Always" is used. Note that this field cannot be set when spec.os.name is windows.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>runAsGroup</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>The GID to run the entrypoint of the container process. Uses runtime default if unset. May also be set in SecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence for that container. Note that this field cannot be set when spec.os.name is windows.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>runAsNonRoot</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Indicates that the container must run as a non-root user. If true, the Kubelet will validate the image at runtime to ensure that it does not run as UID 0 (root) and fail to start the container if it does. If unset or false, no such validation will be performed. May also be set in SecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>runAsUser</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>The UID to run the entrypoint of the container process. Defaults to user specified in image metadata if unspecified. May also be set in SecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence for that container. Note that this field cannot be set when spec.os.name is windows.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>seLinuxChangePolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>seLinuxChangePolicy defines how the container’s SELinux label is applied to all volumes used by the Pod. It has no effect on nodes that do not support SELinux or to volumes does not support SELinux. Valid values are "MountOption" and "Recursive".</p>
@@ -5730,37 +5730,37 @@ Type
 <p>This field affects only Pods that have SELinux label set, either in PodSecurityContext or in SecurityContext of all containers.</p>
 <p>All Pods that use the same volume should use the same seLinuxChangePolicy, otherwise some pods can get stuck in ContainerCreating state. Note that this field cannot be set when spec.os.name is windows.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>seLinuxOptions</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The SELinux context to be applied to all containers. If unspecified, the container runtime will allocate a random SELinux context for each container. May also be set in SecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence for that container. Note that this field cannot be set when spec.os.name is windows.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>seccompProfile</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The seccomp options to use by the containers in this pod. Note that this field cannot be set when spec.os.name is windows.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>supplementalGroups</code></p></td>
 <td style="text-align: left;"><p><code>array (integer)</code></p></td>
 <td style="text-align: left;"><p>A list of groups applied to the first process run in each container, in addition to the container’s primary GID and fsGroup (if specified). If the SupplementalGroupsPolicy feature is enabled, the supplementalGroupsPolicy field determines whether these are in addition to or instead of any group memberships defined in the container image. If unspecified, no additional groups are added, though group memberships defined in the container image may still be used, depending on the supplementalGroupsPolicy field. Note that this field cannot be set when spec.os.name is windows.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>supplementalGroupsPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Defines how supplemental groups of the first container processes are calculated. Valid values are "Merge" and "Strict". If not specified, "Merge" is used. (Alpha) Using the field requires the SupplementalGroupsPolicy feature gate to be enabled and the container runtime must implement support for this feature. Note that this field cannot be set when spec.os.name is windows.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>sysctls</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Sysctls hold a list of namespaced sysctls used for the pod. Pods with unsupported sysctls (by the container runtime) might fail to launch. Note that this field cannot be set when spec.os.name is windows.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>sysctls[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Sysctl defines a kernel parameter to be set</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>windowsOptions</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The Windows specific settings applied to all containers. If unspecified, the options within a container’s SecurityContext will be used. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is linux.</p></td>
@@ -5779,10 +5779,10 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `localhostProfile` | `string` | localhostProfile indicates a profile loaded on the node that should be used. The profile must be preconfigured on the node to work. Must match the loaded name of the profile. Must be set if and only if type is "Localhost". |
-| `type` | `string` | type indicates which kind of AppArmor profile will be applied. Valid options are: Localhost - a profile pre-loaded on the node. RuntimeDefault - the container runtime’s default profile. Unconfined - no AppArmor enforcement. |
+| Property           | Type     | Description                                                                                                                                                                                                                     |
+|--------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `localhostProfile` | `string` | localhostProfile indicates a profile loaded on the node that should be used. The profile must be preconfigured on the node to work. Must match the loaded name of the profile. Must be set if and only if type is "Localhost".  |
+| `type`             | `string` | type indicates which kind of AppArmor profile will be applied. Valid options are: Localhost - a profile pre-loaded on the node. RuntimeDefault - the container runtime’s default profile. Unconfined - no AppArmor enforcement. |
 
 ## .spec.securityContext.seLinuxOptions
 
@@ -5792,12 +5792,12 @@ The SELinux context to be applied to all containers. If unspecified, the contain
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `level` | `string` | Level is SELinux level label that applies to the container. |
-| `role` | `string` | Role is a SELinux role label that applies to the container. |
-| `type` | `string` | Type is a SELinux type label that applies to the container. |
-| `user` | `string` | User is a SELinux user label that applies to the container. |
+| Property | Type     | Description                                                 |
+|----------|----------|-------------------------------------------------------------|
+| `level`  | `string` | Level is SELinux level label that applies to the container. |
+| `role`   | `string` | Role is a SELinux role label that applies to the container. |
+| `type`   | `string` | Type is a SELinux type label that applies to the container. |
+| `user`   | `string` | User is a SELinux user label that applies to the container. |
 
 ## .spec.securityContext.seccompProfile
 
@@ -5817,19 +5817,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>localhostProfile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet’s configured seccomp profile location. Must be set if type is "Localhost". Must NOT be set for any other type.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>type indicates which kind of seccomp profile will be applied. Valid options are:</p>
@@ -5872,12 +5872,12 @@ The Windows specific settings applied to all containers. If unspecified, the opt
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `gmsaCredentialSpec` | `string` | GMSACredentialSpec is where the GMSA admission webhook (<https://github.com/kubernetes-sigs/windows-gmsa>) inlines the contents of the GMSA credential spec named by the GMSACredentialSpecName field. |
-| `gmsaCredentialSpecName` | `string` | GMSACredentialSpecName is the name of the GMSA credential spec to use. |
-| `hostProcess` | `boolean` | HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod’s containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true. |
-| `runAsUserName` | `string` | The UserName in Windows to run the entrypoint of the container process. Defaults to the user specified in image metadata if unspecified. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. |
+| Property                 | Type      | Description                                                                                                                                                                                                                                                                                                                            |
+|--------------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `gmsaCredentialSpec`     | `string`  | GMSACredentialSpec is where the GMSA admission webhook (<https://github.com/kubernetes-sigs/windows-gmsa>) inlines the contents of the GMSA credential spec named by the GMSACredentialSpecName field.                                                                                                                                 |
+| `gmsaCredentialSpecName` | `string`  | GMSACredentialSpecName is the name of the GMSA credential spec to use.                                                                                                                                                                                                                                                                 |
+| `hostProcess`            | `boolean` | HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod’s containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true. |
+| `runAsUserName`          | `string`  | The UserName in Windows to run the entrypoint of the container process. Defaults to the user specified in image metadata if unspecified. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence.                                        |
 
 ## .spec.storage
 
@@ -5887,12 +5887,12 @@ storage defines the specification of how storage shall be used.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `disableMountSubPath` | `boolean` | disableMountSubPath deprecated: subPath usage will be removed in a future release. |
-| `emptyDir` | `object` | emptyDir to be used by the StatefulSet. If specified, it takes precedence over `ephemeral` and `volumeClaimTemplate`. More info: <https://kubernetes.io/docs/concepts/storage/volumes/#emptydir> |
-| `ephemeral` | `object` | ephemeral to be used by the StatefulSet. This is a beta field in k8s 1.21 and GA in 1.15. For lower versions, starting with k8s 1.19, it requires enabling the GenericEphemeralVolume feature gate. More info: <https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/#generic-ephemeral-volumes> |
-| `volumeClaimTemplate` | `object` | volumeClaimTemplate defines the PVC spec to be used by the Prometheus StatefulSets. The easiest way to use a volume that cannot be automatically provisioned is to use a label selector alongside manually created PersistentVolumes. |
+| Property              | Type      | Description                                                                                                                                                                                                                                                                                               |
+|-----------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `disableMountSubPath` | `boolean` | disableMountSubPath deprecated: subPath usage will be removed in a future release.                                                                                                                                                                                                                        |
+| `emptyDir`            | `object`  | emptyDir to be used by the StatefulSet. If specified, it takes precedence over `ephemeral` and `volumeClaimTemplate`. More info: <https://kubernetes.io/docs/concepts/storage/volumes/#emptydir>                                                                                                          |
+| `ephemeral`           | `object`  | ephemeral to be used by the StatefulSet. This is a beta field in k8s 1.21 and GA in 1.15. For lower versions, starting with k8s 1.19, it requires enabling the GenericEphemeralVolume feature gate. More info: <https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/#generic-ephemeral-volumes> |
+| `volumeClaimTemplate` | `object`  | volumeClaimTemplate defines the PVC spec to be used by the Prometheus StatefulSets. The easiest way to use a volume that cannot be automatically provisioned is to use a label selector alongside manually created PersistentVolumes.                                                                     |
 
 ## .spec.storage.emptyDir
 
@@ -5902,9 +5902,9 @@ emptyDir to be used by the StatefulSet. If specified, it takes precedence over `
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `medium` | `string` | medium represents what type of storage medium should back this directory. The default is "" which means to use the node’s default medium. Must be an empty string (default) or Memory. More info: <https://kubernetes.io/docs/concepts/storage/volumes#emptydir> |
+| Property    | Type                | Description                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|-------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `medium`    | `string`            | medium represents what type of storage medium should back this directory. The default is "" which means to use the node’s default medium. Must be an empty string (default) or Memory. More info: <https://kubernetes.io/docs/concepts/storage/volumes#emptydir>                                                                                                                                                                                  |
 | `sizeLimit` | `integer-or-string` | sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: <https://kubernetes.io/docs/concepts/storage/volumes#emptydir> |
 
 ## .spec.storage.ephemeral
@@ -5922,14 +5922,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>volumeClaimTemplate</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Will be used to create a stand-alone PVC to provision the volume. The pod in which this EphemeralVolumeSource is embedded will be the owner of the PVC, i.e. the PVC will be deleted together with the pod. The name of the PVC will be <code>&lt;pod name&gt;-&lt;volume name&gt;</code> where <code>&lt;volume name&gt;</code> is the name from the <code>PodSpec.Volumes</code> array entry. Pod validation will reject the pod if the concatenated name is not valid for a PVC (for example, too long).</p>
@@ -5957,10 +5957,10 @@ Type
 Required
 - `spec`
 
-| Property | Type | Description |
-|----|----|----|
-| `metadata` | `object` | May contain labels and annotations that will be copied into the PVC when creating it. No other fields are allowed and will be rejected during validation. |
-| `spec` | `object` | The specification for the PersistentVolumeClaim. The entire content is copied unchanged into the PVC that gets created from this template. The same fields as in a PersistentVolumeClaim are also valid here. |
+| Property   | Type     | Description                                                                                                                                                                                                   |
+|------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `metadata` | `object` | May contain labels and annotations that will be copied into the PVC when creating it. No other fields are allowed and will be rejected during validation.                                                     |
+| `spec`     | `object` | The specification for the PersistentVolumeClaim. The entire content is copied unchanged into the PVC that gets created from this template. The same fields as in a PersistentVolumeClaim are also valid here. |
 
 ## .spec.storage.ephemeral.volumeClaimTemplate.metadata
 
@@ -5978,17 +5978,17 @@ The specification for the PersistentVolumeClaim. The entire content is copied un
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `accessModes` | `array (string)` | accessModes contains the desired access modes the volume should have. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1> |
-| `dataSource` | `object` | dataSource field can be used to specify either: \* An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot) \* An existing PVC (PersistentVolumeClaim) If the provisioner or an external controller can support the specified data source, it will create a new volume based on the contents of the specified data source. When the AnyVolumeDataSource feature gate is enabled, dataSource contents will be copied to dataSourceRef, and dataSourceRef contents will be copied to dataSource when dataSourceRef.namespace is not specified. If the namespace is specified, then dataSourceRef will not be copied to dataSource. |
-| `dataSourceRef` | `object` | dataSourceRef specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the dataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, when namespace isn’t specified in dataSourceRef, both fields (dataSource and dataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. When namespace is specified in dataSourceRef, dataSource isn’t set to the same value and must be empty. There are three important differences between dataSource and dataSourceRef: \* While dataSource only allows two specific types of objects, dataSourceRef allows any non-core object, as well as PersistentVolumeClaim objects. \* While dataSource ignores disallowed values (dropping them), dataSourceRef preserves all values, and generates an error if a disallowed value is specified. \* While dataSource only allows local objects, dataSourceRef allows objects in any namespaces. (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled. (Alpha) Using the namespace field of dataSourceRef requires the CrossNamespaceVolumeDataSource feature gate to be enabled. |
-| `resources` | `object` | resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources> |
-| `selector` | `object` | selector is a label query over volumes to consider for binding. |
-| `storageClassName` | `string` | storageClassName is the name of the StorageClass required by the claim. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1> |
-| `volumeAttributesClassName` | `string` | volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string or nil value indicates that no VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state, this field can be reset to its previous value (including nil) to cancel the modification. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: <https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/> |
-| `volumeMode` | `string` | volumeMode defines what type of volume is required by the claim. Value of Filesystem is implied when not included in claim spec. |
-| `volumeName` | `string` | volumeName is the binding reference to the PersistentVolume backing this claim. |
+| Property                    | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|-----------------------------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `accessModes`               | `array (string)` | accessModes contains the desired access modes the volume should have. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `dataSource`                | `object`         | dataSource field can be used to specify either: \* An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot) \* An existing PVC (PersistentVolumeClaim) If the provisioner or an external controller can support the specified data source, it will create a new volume based on the contents of the specified data source. When the AnyVolumeDataSource feature gate is enabled, dataSource contents will be copied to dataSourceRef, and dataSourceRef contents will be copied to dataSource when dataSourceRef.namespace is not specified. If the namespace is specified, then dataSourceRef will not be copied to dataSource.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `dataSourceRef`             | `object`         | dataSourceRef specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the dataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, when namespace isn’t specified in dataSourceRef, both fields (dataSource and dataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. When namespace is specified in dataSourceRef, dataSource isn’t set to the same value and must be empty. There are three important differences between dataSource and dataSourceRef: \* While dataSource only allows two specific types of objects, dataSourceRef allows any non-core object, as well as PersistentVolumeClaim objects. \* While dataSource ignores disallowed values (dropping them), dataSourceRef preserves all values, and generates an error if a disallowed value is specified. \* While dataSource only allows local objects, dataSourceRef allows objects in any namespaces. (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled. (Alpha) Using the namespace field of dataSourceRef requires the CrossNamespaceVolumeDataSource feature gate to be enabled. |
+| `resources`                 | `object`         | resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `selector`                  | `object`         | selector is a label query over volumes to consider for binding.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `storageClassName`          | `string`         | storageClassName is the name of the StorageClass required by the claim. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `volumeAttributesClassName` | `string`         | volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string or nil value indicates that no VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state, this field can be reset to its previous value (including nil) to cancel the modification. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: <https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `volumeMode`                | `string`         | volumeMode defines what type of volume is required by the claim. Value of Filesystem is implied when not included in claim spec.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `volumeName`                | `string`         | volumeName is the binding reference to the PersistentVolume backing this claim.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 
 ## .spec.storage.ephemeral.volumeClaimTemplate.spec.dataSource
 
@@ -6003,11 +6003,11 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                                                                                                                                     |
+|------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiGroup` | `string` | APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required. |
-| `kind` | `string` | Kind is the type of resource being referenced |
-| `name` | `string` | Name is the name of resource being referenced |
+| `kind`     | `string` | Kind is the type of resource being referenced                                                                                                                                                   |
+| `name`     | `string` | Name is the name of resource being referenced                                                                                                                                                   |
 
 ## .spec.storage.ephemeral.volumeClaimTemplate.spec.dataSourceRef
 
@@ -6022,11 +6022,11 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `apiGroup` | `string` | APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required. |
-| `kind` | `string` | Kind is the type of resource being referenced |
-| `name` | `string` | Name is the name of resource being referenced |
+| Property    | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                    |
+|-------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiGroup`  | `string` | APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required.                                                                                                                                                                                                |
+| `kind`      | `string` | Kind is the type of resource being referenced                                                                                                                                                                                                                                                                                                                                                  |
+| `name`      | `string` | Name is the name of resource being referenced                                                                                                                                                                                                                                                                                                                                                  |
 | `namespace` | `string` | Namespace is the namespace of resource being referenced Note that when a namespace is specified, a gateway.networking.k8s.io/ReferenceGrant object is required in the referent namespace to allow that namespace’s owner to accept the reference. See the ReferenceGrant documentation for details. (Alpha) This field requires the CrossNamespaceVolumeDataSource feature gate to be enabled. |
 
 ## .spec.storage.ephemeral.volumeClaimTemplate.spec.resources
@@ -6037,9 +6037,9 @@ resources represents the minimum resources the volume should have. If RecoverVol
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `limits` | `integer-or-string` | Limits describes the maximum amount of compute resources allowed. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/> |
+| Property   | Type                | Description                                                                                                                                                                                                                                                                                                                                  |
+|------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `limits`   | `integer-or-string` | Limits describes the maximum amount of compute resources allowed. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/>                                                                                                                                                                                |
 | `requests` | `integer-or-string` | Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/> |
 
 ## .spec.storage.ephemeral.volumeClaimTemplate.spec.selector
@@ -6050,11 +6050,11 @@ selector is a label query over volumes to consider for binding.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.storage.ephemeral.volumeClaimTemplate.spec.selector.matchExpressions
 
@@ -6077,11 +6077,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.storage.volumeClaimTemplate
 
@@ -6091,13 +6091,13 @@ volumeClaimTemplate defines the PVC spec to be used by the Prometheus StatefulSe
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | `object` | metadata defines EmbeddedMetadata contains metadata relevant to an EmbeddedResource. |
-| `spec` | `object` | spec defines the specification of the characteristics of a volume requested by a pod author. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims> |
-| `status` | `object` | status is deprecated: this field is never set. |
+| Property     | Type     | Description                                                                                                                                                                                                                                                                                          |
+|--------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | `object` | metadata defines EmbeddedMetadata contains metadata relevant to an EmbeddedResource.                                                                                                                                                                                                                 |
+| `spec`       | `object` | spec defines the specification of the characteristics of a volume requested by a pod author. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims>                                                                                                      |
+| `status`     | `object` | status is deprecated: this field is never set.                                                                                                                                                                                                                                                       |
 
 ## .spec.storage.volumeClaimTemplate.metadata
 
@@ -6107,11 +6107,11 @@ metadata defines EmbeddedMetadata contains metadata relevant to an EmbeddedResou
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `annotations` | `object (string)` | annotations defines an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/> |
-| `labels` | `object (string)` | labels define the map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/> |
-| `name` | `string` | name must be unique within a namespace. Is required when creating resources, although some resources may allow a client to request the generation of an appropriate name automatically. Name is primarily intended for creation idempotence and configuration definition. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/> |
+| Property      | Type              | Description                                                                                                                                                                                                                                                                                                                                                                        |
+|---------------|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `annotations` | `object (string)` | annotations defines an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/>                                                            |
+| `labels`      | `object (string)` | labels define the map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/>                                                                                                        |
+| `name`        | `string`          | name must be unique within a namespace. Is required when creating resources, although some resources may allow a client to request the generation of an appropriate name automatically. Name is primarily intended for creation idempotence and configuration definition. Cannot be updated. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/> |
 
 ## .spec.storage.volumeClaimTemplate.spec
 
@@ -6121,17 +6121,17 @@ spec defines the specification of the characteristics of a volume requested by a
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `accessModes` | `array (string)` | accessModes contains the desired access modes the volume should have. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1> |
-| `dataSource` | `object` | dataSource field can be used to specify either: \* An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot) \* An existing PVC (PersistentVolumeClaim) If the provisioner or an external controller can support the specified data source, it will create a new volume based on the contents of the specified data source. When the AnyVolumeDataSource feature gate is enabled, dataSource contents will be copied to dataSourceRef, and dataSourceRef contents will be copied to dataSource when dataSourceRef.namespace is not specified. If the namespace is specified, then dataSourceRef will not be copied to dataSource. |
-| `dataSourceRef` | `object` | dataSourceRef specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the dataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, when namespace isn’t specified in dataSourceRef, both fields (dataSource and dataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. When namespace is specified in dataSourceRef, dataSource isn’t set to the same value and must be empty. There are three important differences between dataSource and dataSourceRef: \* While dataSource only allows two specific types of objects, dataSourceRef allows any non-core object, as well as PersistentVolumeClaim objects. \* While dataSource ignores disallowed values (dropping them), dataSourceRef preserves all values, and generates an error if a disallowed value is specified. \* While dataSource only allows local objects, dataSourceRef allows objects in any namespaces. (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled. (Alpha) Using the namespace field of dataSourceRef requires the CrossNamespaceVolumeDataSource feature gate to be enabled. |
-| `resources` | `object` | resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources> |
-| `selector` | `object` | selector is a label query over volumes to consider for binding. |
-| `storageClassName` | `string` | storageClassName is the name of the StorageClass required by the claim. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1> |
-| `volumeAttributesClassName` | `string` | volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string or nil value indicates that no VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state, this field can be reset to its previous value (including nil) to cancel the modification. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: <https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/> |
-| `volumeMode` | `string` | volumeMode defines what type of volume is required by the claim. Value of Filesystem is implied when not included in claim spec. |
-| `volumeName` | `string` | volumeName is the binding reference to the PersistentVolume backing this claim. |
+| Property                    | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|-----------------------------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `accessModes`               | `array (string)` | accessModes contains the desired access modes the volume should have. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `dataSource`                | `object`         | dataSource field can be used to specify either: \* An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot) \* An existing PVC (PersistentVolumeClaim) If the provisioner or an external controller can support the specified data source, it will create a new volume based on the contents of the specified data source. When the AnyVolumeDataSource feature gate is enabled, dataSource contents will be copied to dataSourceRef, and dataSourceRef contents will be copied to dataSource when dataSourceRef.namespace is not specified. If the namespace is specified, then dataSourceRef will not be copied to dataSource.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `dataSourceRef`             | `object`         | dataSourceRef specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the dataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, when namespace isn’t specified in dataSourceRef, both fields (dataSource and dataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. When namespace is specified in dataSourceRef, dataSource isn’t set to the same value and must be empty. There are three important differences between dataSource and dataSourceRef: \* While dataSource only allows two specific types of objects, dataSourceRef allows any non-core object, as well as PersistentVolumeClaim objects. \* While dataSource ignores disallowed values (dropping them), dataSourceRef preserves all values, and generates an error if a disallowed value is specified. \* While dataSource only allows local objects, dataSourceRef allows objects in any namespaces. (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled. (Alpha) Using the namespace field of dataSourceRef requires the CrossNamespaceVolumeDataSource feature gate to be enabled. |
+| `resources`                 | `object`         | resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `selector`                  | `object`         | selector is a label query over volumes to consider for binding.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `storageClassName`          | `string`         | storageClassName is the name of the StorageClass required by the claim. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `volumeAttributesClassName` | `string`         | volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string or nil value indicates that no VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state, this field can be reset to its previous value (including nil) to cancel the modification. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: <https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `volumeMode`                | `string`         | volumeMode defines what type of volume is required by the claim. Value of Filesystem is implied when not included in claim spec.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `volumeName`                | `string`         | volumeName is the binding reference to the PersistentVolume backing this claim.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 
 ## .spec.storage.volumeClaimTemplate.spec.dataSource
 
@@ -6146,11 +6146,11 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                                                                                                                                     |
+|------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiGroup` | `string` | APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required. |
-| `kind` | `string` | Kind is the type of resource being referenced |
-| `name` | `string` | Name is the name of resource being referenced |
+| `kind`     | `string` | Kind is the type of resource being referenced                                                                                                                                                   |
+| `name`     | `string` | Name is the name of resource being referenced                                                                                                                                                   |
 
 ## .spec.storage.volumeClaimTemplate.spec.dataSourceRef
 
@@ -6165,11 +6165,11 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `apiGroup` | `string` | APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required. |
-| `kind` | `string` | Kind is the type of resource being referenced |
-| `name` | `string` | Name is the name of resource being referenced |
+| Property    | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                    |
+|-------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiGroup`  | `string` | APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required.                                                                                                                                                                                                |
+| `kind`      | `string` | Kind is the type of resource being referenced                                                                                                                                                                                                                                                                                                                                                  |
+| `name`      | `string` | Name is the name of resource being referenced                                                                                                                                                                                                                                                                                                                                                  |
 | `namespace` | `string` | Namespace is the namespace of resource being referenced Note that when a namespace is specified, a gateway.networking.k8s.io/ReferenceGrant object is required in the referent namespace to allow that namespace’s owner to accept the reference. See the ReferenceGrant documentation for details. (Alpha) This field requires the CrossNamespaceVolumeDataSource feature gate to be enabled. |
 
 ## .spec.storage.volumeClaimTemplate.spec.resources
@@ -6180,9 +6180,9 @@ resources represents the minimum resources the volume should have. If RecoverVol
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `limits` | `integer-or-string` | Limits describes the maximum amount of compute resources allowed. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/> |
+| Property   | Type                | Description                                                                                                                                                                                                                                                                                                                                  |
+|------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `limits`   | `integer-or-string` | Limits describes the maximum amount of compute resources allowed. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/>                                                                                                                                                                                |
 | `requests` | `integer-or-string` | Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/> |
 
 ## .spec.storage.volumeClaimTemplate.spec.selector
@@ -6193,11 +6193,11 @@ selector is a label query over volumes to consider for binding.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.storage.volumeClaimTemplate.spec.selector.matchExpressions
 
@@ -6220,11 +6220,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.storage.volumeClaimTemplate.status
 
@@ -6241,19 +6241,19 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>accessModes</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>accessModes contains the actual access modes the volume backing the PVC has. More info: <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1">https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>allocatedResourceStatuses</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p>allocatedResourceStatuses stores status of resource being resized for the given PVC. Key names follow standard Kubernetes label syntax. Valid values are either: * Un-prefixed keys: - storage - the capacity of the volume. * Custom resources must use implementation-defined prefixed names such as "example.com/my-custom-resource" Apart from above values - keys that are unprefixed or have kubernetes.io prefix are considered reserved and hence may not be used.</p>
@@ -6261,7 +6261,7 @@ Type
 <p>A controller that receives PVC update with previously unknown resourceName or ClaimResourceStatus should ignore the update for the purpose it was designed. For example - a controller that only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid resources associated with PVC.</p>
 <p>This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>allocatedResources</code></p></td>
 <td style="text-align: left;"><p><code>integer-or-string</code></p></td>
 <td style="text-align: left;"><p>allocatedResources tracks the resources allocated to a PVC including its capacity. Key names follow standard Kubernetes label syntax. Valid values are either: * Un-prefixed keys: - storage - the capacity of the volume. * Custom resources must use implementation-defined prefixed names such as "example.com/my-custom-resource" Apart from above values - keys that are unprefixed or have kubernetes.io prefix are considered reserved and hence may not be used.</p>
@@ -6269,32 +6269,32 @@ Type
 <p>A controller that receives PVC update with previously unknown resourceName should ignore the update for the purpose it was designed. For example - a controller that only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid resources associated with PVC.</p>
 <p>This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>capacity</code></p></td>
 <td style="text-align: left;"><p><code>integer-or-string</code></p></td>
 <td style="text-align: left;"><p>capacity represents the actual resources of the underlying volume.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>conditions</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>conditions is the current Condition of persistent volume claim. If underlying persistent volume is being resized then the Condition will be set to 'Resizing'.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>conditions[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>PersistentVolumeClaimCondition contains details about state of pvc</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>currentVolumeAttributesClassName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>currentVolumeAttributesClassName is the current name of the VolumeAttributesClass the PVC is using. When unset, there is no VolumeAttributeClass applied to this PersistentVolumeClaim</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>modifyVolumeStatus</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ModifyVolumeStatus represents the status object of ControllerModifyVolume operation. When this is unset, there is no ModifyVolume operation being attempted.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>phase</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>phase represents the current phase of PersistentVolumeClaim.</p></td>
@@ -6323,14 +6323,14 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastProbeTime` | `string` | lastProbeTime is the time we probed the condition. |
-| `lastTransitionTime` | `string` | lastTransitionTime is the time the condition transitioned from one status to another. |
-| `message` | `string` | message is the human-readable message indicating details about last transition. |
-| `reason` | `string` | reason is a unique, this should be a short, machine understandable string that gives the reason for condition’s last transition. If it reports "Resizing" that means the underlying persistent volume is being resized. |
-| `status` | `string` | Status is the status of the condition. Can be True, False, Unknown. More info: <https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-claim-v1/#:~:text=state%20of%20pvc-,conditions.status,-(string)%2C%20required> |
-| `type` | `string` | Type is the type of the condition. More info: <https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-claim-v1/#:~:text=set%20to%20%27ResizeStarted%27.-,PersistentVolumeClaimCondition,-contains%20details%20about> |
+| Property             | Type     | Description                                                                                                                                                                                                                                                       |
+|----------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastProbeTime`      | `string` | lastProbeTime is the time we probed the condition.                                                                                                                                                                                                                |
+| `lastTransitionTime` | `string` | lastTransitionTime is the time the condition transitioned from one status to another.                                                                                                                                                                             |
+| `message`            | `string` | message is the human-readable message indicating details about last transition.                                                                                                                                                                                   |
+| `reason`             | `string` | reason is a unique, this should be a short, machine understandable string that gives the reason for condition’s last transition. If it reports "Resizing" that means the underlying persistent volume is being resized.                                           |
+| `status`             | `string` | Status is the status of the condition. Can be True, False, Unknown. More info: <https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-claim-v1/#:~:text=state%20of%20pvc-,conditions.status,-(string)%2C%20required> |
+| `type`               | `string` | Type is the type of the condition. More info: <https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-claim-v1/#:~:text=set%20to%20%27ResizeStarted%27.-,PersistentVolumeClaimCondition,-contains%20details%20about>  |
 
 ## .spec.storage.volumeClaimTemplate.status.modifyVolumeStatus
 
@@ -6343,10 +6343,10 @@ Type
 Required
 - `status`
 
-| Property | Type | Description |
-|----|----|----|
-| `status` | `string` | status is the status of the ControllerModifyVolume operation. It can be in any of following states: - Pending Pending indicates that the PersistentVolumeClaim cannot be modified due to unmet requirements, such as the specified VolumeAttributesClass not existing. - InProgress InProgress indicates that the volume is being modified. - Infeasible Infeasible indicates that the request has been rejected as invalid by the CSI driver. To resolve the error, a valid VolumeAttributesClass needs to be specified. Note: New statuses can be added in the future. Consumers should check for unknown statuses and fail appropriately. |
-| `targetVolumeAttributesClassName` | `string` | targetVolumeAttributesClassName is the name of the VolumeAttributesClass the PVC currently being reconciled |
+| Property                          | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|-----------------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `status`                          | `string` | status is the status of the ControllerModifyVolume operation. It can be in any of following states: - Pending Pending indicates that the PersistentVolumeClaim cannot be modified due to unmet requirements, such as the specified VolumeAttributesClass not existing. - InProgress InProgress indicates that the volume is being modified. - Infeasible Infeasible indicates that the request has been rejected as invalid by the CSI driver. To resolve the error, a valid VolumeAttributesClass needs to be specified. Note: New statuses can be added in the future. Consumers should check for unknown statuses and fail appropriately. |
+| `targetVolumeAttributesClassName` | `string` | targetVolumeAttributesClassName is the name of the VolumeAttributesClass the PVC currently being reconciled                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
 ## .spec.tolerations
 
@@ -6364,13 +6364,13 @@ The pod this Toleration is attached to tolerates any taint that matches the trip
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `effect` | `string` | Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute. |
-| `key` | `string` | Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys. |
-| `operator` | `string` | Operator represents a key’s relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category. |
+| Property            | Type      | Description                                                                                                                                                                                                                                                                                                                 |
+|---------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `effect`            | `string`  | Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute.                                                                                                                                                             |
+| `key`               | `string`  | Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys.                                                                                                                               |
+| `operator`          | `string`  | Operator represents a key’s relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category.                                                                                                 |
 | `tolerationSeconds` | `integer` | TolerationSeconds represents the period of time the toleration (which must be of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default, it is not set, which means tolerate the taint forever (do not evict). Zero and negative values will be treated as 0 (evict immediately) by the system. |
-| `value` | `string` | Value is the taint value the toleration matches to. If the operator is Exists, the value should be empty, otherwise just a regular string. |
+| `value`             | `string`  | Value is the taint value the toleration matches to. If the operator is Exists, the value should be empty, otherwise just a regular string.                                                                                                                                                                                  |
 
 ## .spec.topologySpreadConstraints
 
@@ -6402,53 +6402,53 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>labelSelector</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>LabelSelector is used to find matching pods. Pods that match this label selector are counted to determine the number of pods in their corresponding topology domain.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>matchLabelKeys</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>MatchLabelKeys is a set of pod label keys to select the pods over which spreading will be calculated. The keys are used to lookup values from the incoming pod labels, those key-value labels are ANDed with labelSelector to select the group of existing pods over which spreading will be calculated for the incoming pod. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. MatchLabelKeys cannot be set when LabelSelector isn’t set. Keys that don’t exist in the incoming pod labels will be ignored. A null or empty list means only match against labelSelector.</p>
 <p>This is a beta field and requires the MatchLabelKeysInPodTopologySpread feature gate to be enabled (enabled by default).</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxSkew</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>MaxSkew describes the degree to which pods may be unevenly distributed. When <code>whenUnsatisfiable=DoNotSchedule</code>, it is the maximum permitted difference between the number of matching pods in the target topology and the global minimum. The global minimum is the minimum number of matching pods in an eligible domain or zero if the number of eligible domains is less than MinDomains. For example, in a 3-zone cluster, MaxSkew is set to 1, and pods with the same labelSelector spread as 2/2/1: In this case, the global minimum is 1. | zone1 | zone2 | zone3 | | P P | P P | P | - if MaxSkew is 1, incoming pod can only be scheduled to zone3 to become 2/2/2; scheduling it onto zone1(zone2) would make the ActualSkew(3-1) on zone1(zone2) violate MaxSkew(1). - if MaxSkew is 2, incoming pod can be scheduled onto any zone. When <code>whenUnsatisfiable=ScheduleAnyway</code>, it is used to give higher precedence to topologies that satisfy it. It’s a required field. Default value is 1 and 0 is not allowed.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minDomains</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>MinDomains indicates a minimum number of eligible domains. When the number of eligible domains with matching topology keys is less than minDomains, Pod Topology Spread treats "global minimum" as 0, and then the calculation of Skew is performed. And when the number of eligible domains with matching topology keys equals or greater than minDomains, this value has no effect on scheduling. As a result, when the number of eligible domains is less than minDomains, scheduler won’t schedule more than maxSkew Pods to those domains. If value is nil, the constraint behaves as if MinDomains is equal to 1. Valid values are integers greater than 0. When value is not nil, WhenUnsatisfiable must be DoNotSchedule.</p>
 <p>For example, in a 3-zone cluster, MaxSkew is set to 2, MinDomains is set to 5 and pods with the same labelSelector spread as 2/2/2: | zone1 | zone2 | zone3 | | P P | P P | P P | The number of domains is less than 5(MinDomains), so "global minimum" is treated as 0. In this situation, new pod with the same labelSelector cannot be scheduled, because computed skew will be 3(3 - 0) if new Pod is scheduled to any of the three zones, it will violate MaxSkew.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>nodeAffinityPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>NodeAffinityPolicy indicates how we will treat Pod’s nodeAffinity/nodeSelector when calculating pod topology spread skew. Options are: - Honor: only nodes matching nodeAffinity/nodeSelector are included in the calculations. - Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.</p>
 <p>If this value is nil, the behavior is equivalent to the Honor policy.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>nodeTaintsPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>NodeTaintsPolicy indicates how we will treat node taints when calculating pod topology spread skew. Options are: - Honor: nodes without taints, along with tainted nodes for which the incoming pod has a toleration, are included. - Ignore: node taints are ignored. All nodes are included.</p>
 <p>If this value is nil, the behavior is equivalent to the Ignore policy.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>topologyKey</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>TopologyKey is the key of node labels. Nodes that have a label with this key and identical values are considered to be in the same topology. We consider each &lt;key, value&gt; as a "bucket", and try to put balanced number of pods into each bucket. We define a domain as a particular instance of a topology. Also, we define an eligible domain as a domain whose nodes meet the requirements of nodeAffinityPolicy and nodeTaintsPolicy. e.g. If TopologyKey is "kubernetes.io/hostname", each Node is a domain of that topology. And, if TopologyKey is "topology.kubernetes.io/zone", each zone is a domain of that topology. It’s a required field.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>whenUnsatisfiable</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>WhenUnsatisfiable indicates how to deal with a pod if it doesn’t satisfy the spread constraint. - DoNotSchedule (default) tells the scheduler not to schedule it. - ScheduleAnyway tells the scheduler to schedule the pod in any location, but giving higher precedence to topologies that would help reduce the skew. A constraint is considered "Unsatisfiable" for an incoming pod if and only if every possible node assignment for that pod would violate "MaxSkew" on some topology. For example, in a 3-zone cluster, MaxSkew is set to 1, and pods with the same labelSelector spread as 3/1/1: | zone1 | zone2 | zone3 | | P P P | P | P | If WhenUnsatisfiable is set to DoNotSchedule, incoming pod can only be scheduled to zone2(zone3) to become 3/2/1(3/1/2) as ActualSkew(2-1) on zone2(zone3) satisfies MaxSkew(1). In other words, the cluster can still be imbalanced, but scheduler won’t make it <strong>more</strong> imbalanced. It’s a required field.</p></td>
@@ -6464,11 +6464,11 @@ LabelSelector is used to find matching pods. Pods that match this label selector
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.topologySpreadConstraints\[\].labelSelector.matchExpressions
 
@@ -6491,11 +6491,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.tracingConfig
 
@@ -6516,11 +6516,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.volumeMounts
 
@@ -6550,34 +6550,34 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mountPath</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Path within the container at which the volume should be mounted. Must not contain ':'.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mountPropagation</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>mountPropagation determines how mounts are propagated from the host to container and the other way around. When not set, MountPropagationNone is used. This field is beta in 1.10. When RecursiveReadOnly is set to IfPossible or to Enabled, MountPropagation must be None or unspecified (which defaults to None).</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>This must match the Name of a Volume.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>readOnly</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Mounted read-only if true, read-write otherwise (false or unspecified). Defaults to false.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>recursiveReadOnly</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>RecursiveReadOnly specifies whether read-only mounts should be handled recursively.</p>
@@ -6586,12 +6586,12 @@ Required
 <p>If this field is set to IfPossible or Enabled, MountPropagation must be set to None (or be unspecified, which defaults to None).</p>
 <p>If this field is not specified, it is treated as an equivalent of Disabled.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>subPath</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Path within the volume from which the container’s volume should be mounted. Defaults to "" (volume’s root).</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>subPathExpr</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Expanded path within the volume from which the container’s volume should be mounted. Behaves similarly to SubPath but environment variable references $(VAR_NAME) are expanded using the container’s environment. Defaults to "" (volume’s root). SubPathExpr and SubPath are mutually exclusive.</p></td>
@@ -6625,59 +6625,59 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>awsElasticBlockStore</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>awsElasticBlockStore represents an AWS Disk resource that is attached to a kubelet’s host machine and then exposed to the pod. Deprecated: AWSElasticBlockStore is deprecated. All operations for the in-tree awsElasticBlockStore type are redirected to the ebs.csi.aws.com CSI driver. More info: <a href="https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore">https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>azureDisk</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>azureDisk represents an Azure Data Disk mount on the host and bind mount to the pod. Deprecated: AzureDisk is deprecated. All operations for the in-tree azureDisk type are redirected to the disk.csi.azure.com CSI driver.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>azureFile</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>azureFile represents an Azure File Service mount on the host and bind mount to the pod. Deprecated: AzureFile is deprecated. All operations for the in-tree azureFile type are redirected to the file.csi.azure.com CSI driver.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cephfs</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>cephFS represents a Ceph FS mount on the host that shares a pod’s lifetime. Deprecated: CephFS is deprecated and the in-tree cephfs type is no longer supported.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>cinder</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>cinder represents a cinder volume attached and mounted on kubelets host machine. Deprecated: Cinder is deprecated. All operations for the in-tree cinder type are redirected to the cinder.csi.openstack.org CSI driver. More info: <a href="https://examples.k8s.io/mysql-cinder-pd/README.md">https://examples.k8s.io/mysql-cinder-pd/README.md</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>configMap</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>configMap represents a configMap that should populate this volume</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>csi</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>csi (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>downwardAPI</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>downwardAPI represents downward API about the pod that should populate this volume</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>emptyDir</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>emptyDir represents a temporary directory that shares a pod’s lifetime. More info: <a href="https://kubernetes.io/docs/concepts/storage/volumes#emptydir">https://kubernetes.io/docs/concepts/storage/volumes#emptydir</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>ephemeral</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ephemeral represents a volume that is handled by a cluster storage driver. The volume’s lifecycle is tied to the pod that defines it - it will be created before the pod starts, and deleted when the pod is removed.</p>
@@ -6686,109 +6686,109 @@ Required
 <p>Use CSI for light-weight local ephemeral volumes if the CSI driver is meant to be used that way - see the documentation of the driver for more information.</p>
 <p>A pod can use both types of ephemeral volumes and persistent volumes at the same time.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>fc</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>fc represents a Fibre Channel resource that is attached to a kubelet’s host machine and then exposed to the pod.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>flexVolume</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>flexVolume represents a generic volume resource that is provisioned/attached using an exec based plugin. Deprecated: FlexVolume is deprecated. Consider using a CSIDriver instead.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>flocker</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>flocker represents a Flocker volume attached to a kubelet’s host machine. This depends on the Flocker control service being running. Deprecated: Flocker is deprecated and the in-tree flocker type is no longer supported.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>gcePersistentDisk</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>gcePersistentDisk represents a GCE Disk resource that is attached to a kubelet’s host machine and then exposed to the pod. Deprecated: GCEPersistentDisk is deprecated. All operations for the in-tree gcePersistentDisk type are redirected to the pd.csi.storage.gke.io CSI driver. More info: <a href="https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk">https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk</a></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>gitRepo</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>gitRepo represents a git repository at a particular revision. Deprecated: GitRepo is deprecated. To provision a container with a git repo, mount an EmptyDir into an InitContainer that clones the repo using git, then mount the EmptyDir into the Pod’s container.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>glusterfs</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>glusterfs represents a Glusterfs mount on the host that shares a pod’s lifetime. Deprecated: Glusterfs is deprecated and the in-tree glusterfs type is no longer supported.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>hostPath</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>hostPath represents a pre-existing file or directory on the host machine that is directly exposed to the container. This is generally used for system agents or other privileged things that are allowed to see the host machine. Most containers will NOT need this. More info: <a href="https://kubernetes.io/docs/concepts/storage/volumes#hostpath">https://kubernetes.io/docs/concepts/storage/volumes#hostpath</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>image</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>image represents an OCI object (a container image or artifact) pulled and mounted on the kubelet’s host machine. The volume is resolved at pod startup depending on which PullPolicy value is provided:</p>
 <p>- Always: the kubelet always attempts to pull the reference. Container creation will fail If the pull fails. - Never: the kubelet never pulls the reference and only uses a local image or artifact. Container creation will fail if the reference isn’t present. - IfNotPresent: the kubelet pulls if the reference isn’t already present on disk. Container creation will fail if the reference isn’t present and the pull fails.</p>
 <p>The volume gets re-resolved if the pod gets deleted and recreated, which means that new remote content will become available on pod recreation. A failure to resolve or pull the image during pod startup will block containers from starting and may add significant latency. Failures will be retried using normal volume backoff and will be reported on the pod reason and message. The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field. The OCI object gets mounted in a single directory (spec.containers[<strong>].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images. The volume will be mounted read-only (ro) and non-executable files (noexec). Sub path mounts for containers are not supported (spec.containers[</strong>].volumeMounts.subpath) before 1.33. The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>iscsi</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>iscsi represents an ISCSI Disk resource that is attached to a kubelet’s host machine and then exposed to the pod. More info: <a href="https://kubernetes.io/docs/concepts/storage/volumes/#iscsi">https://kubernetes.io/docs/concepts/storage/volumes/#iscsi</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>name of the volume. Must be a DNS_LABEL and unique within the pod. More info: <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names">https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</a></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>nfs</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>nfs represents an NFS mount on the host that shares a pod’s lifetime More info: <a href="https://kubernetes.io/docs/concepts/storage/volumes#nfs">https://kubernetes.io/docs/concepts/storage/volumes#nfs</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>persistentVolumeClaim</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>persistentVolumeClaimVolumeSource represents a reference to a PersistentVolumeClaim in the same namespace. More info: <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims">https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims</a></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>photonPersistentDisk</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>photonPersistentDisk represents a PhotonController persistent disk attached and mounted on kubelets host machine. Deprecated: PhotonPersistentDisk is deprecated and the in-tree photonPersistentDisk type is no longer supported.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>portworxVolume</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>portworxVolume represents a portworx volume attached and mounted on kubelets host machine. Deprecated: PortworxVolume is deprecated. All operations for the in-tree portworxVolume type are redirected to the pxd.portworx.com CSI driver when the CSIMigrationPortworx feature-gate is on.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>projected</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>projected items for all in one resources secrets, configmaps, and downward API</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>quobyte</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>quobyte represents a Quobyte mount on the host that shares a pod’s lifetime. Deprecated: Quobyte is deprecated and the in-tree quobyte type is no longer supported.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>rbd</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>rbd represents a Rados Block Device mount on the host that shares a pod’s lifetime. Deprecated: RBD is deprecated and the in-tree rbd type is no longer supported.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scaleIO</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>scaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes. Deprecated: ScaleIO is deprecated and the in-tree scaleIO type is no longer supported.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>secret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>secret represents a secret that should populate this volume. More info: <a href="https://kubernetes.io/docs/concepts/storage/volumes#secret">https://kubernetes.io/docs/concepts/storage/volumes#secret</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>storageos</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>storageOS represents a StorageOS volume attached and mounted on Kubernetes nodes. Deprecated: StorageOS is deprecated and the in-tree storageos type is no longer supported.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>vsphereVolume</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>vsphereVolume represents a vSphere volume attached and mounted on kubelets host machine. Deprecated: VsphereVolume is deprecated. All operations for the in-tree vsphereVolume type are redirected to the csi.vsphere.vmware.com CSI driver.</p></td>
@@ -6807,12 +6807,12 @@ Type
 Required
 - `volumeID`
 
-| Property | Type | Description |
-|----|----|----|
-| `fsType` | `string` | fsType is the filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. More info: <https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore> |
-| `partition` | `integer` | partition is the partition in the volume that you want to mount. If omitted, the default is to mount by volume name. Examples: For volume /dev/sda1, you specify the partition as "1". Similarly, the volume partition for /dev/sda is "0" (or you can leave the property empty). |
-| `readOnly` | `boolean` | readOnly value true will force the readOnly setting in VolumeMounts. More info: <https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore> |
-| `volumeID` | `string` | volumeID is unique ID of the persistent disk resource in AWS (Amazon EBS volume). More info: <https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore> |
+| Property    | Type      | Description                                                                                                                                                                                                                                                                                                                 |
+|-------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fsType`    | `string`  | fsType is the filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. More info: <https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore> |
+| `partition` | `integer` | partition is the partition in the volume that you want to mount. If omitted, the default is to mount by volume name. Examples: For volume /dev/sda1, you specify the partition as "1". Similarly, the volume partition for /dev/sda is "0" (or you can leave the property empty).                                           |
+| `readOnly`  | `boolean` | readOnly value true will force the readOnly setting in VolumeMounts. More info: <https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore>                                                                                                                                                                  |
+| `volumeID`  | `string`  | volumeID is unique ID of the persistent disk resource in AWS (Amazon EBS volume). More info: <https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore>                                                                                                                                                     |
 
 ## .spec.volumes\[\].azureDisk
 
@@ -6827,14 +6827,14 @@ Required
 
 - `diskURI`
 
-| Property | Type | Description |
-|----|----|----|
-| `cachingMode` | `string` | cachingMode is the Host Caching mode: None, Read Only, Read Write. |
-| `diskName` | `string` | diskName is the Name of the data disk in the blob storage |
-| `diskURI` | `string` | diskURI is the URI of data disk in the blob storage |
-| `fsType` | `string` | fsType is Filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. |
-| `kind` | `string` | kind expected values are Shared: multiple blob disks per storage account Dedicated: single blob disk per storage account Managed: azure managed data disk (only in managed availability set). defaults to shared |
-| `readOnly` | `boolean` | readOnly Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. |
+| Property      | Type      | Description                                                                                                                                                                                                      |
+|---------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `cachingMode` | `string`  | cachingMode is the Host Caching mode: None, Read Only, Read Write.                                                                                                                                               |
+| `diskName`    | `string`  | diskName is the Name of the data disk in the blob storage                                                                                                                                                        |
+| `diskURI`     | `string`  | diskURI is the URI of data disk in the blob storage                                                                                                                                                              |
+| `fsType`      | `string`  | fsType is Filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.                                |
+| `kind`        | `string`  | kind expected values are Shared: multiple blob disks per storage account Dedicated: single blob disk per storage account Managed: azure managed data disk (only in managed availability set). defaults to shared |
+| `readOnly`    | `boolean` | readOnly Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts.                                                                                                          |
 
 ## .spec.volumes\[\].azureFile
 
@@ -6849,11 +6849,11 @@ Required
 
 - `shareName`
 
-| Property | Type | Description |
-|----|----|----|
-| `readOnly` | `boolean` | readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. |
-| `secretName` | `string` | secretName is the name of secret that contains Azure Storage Account Name and Key |
-| `shareName` | `string` | shareName is the azure share Name |
+| Property     | Type      | Description                                                                                             |
+|--------------|-----------|---------------------------------------------------------------------------------------------------------|
+| `readOnly`   | `boolean` | readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. |
+| `secretName` | `string`  | secretName is the name of secret that contains Azure Storage Account Name and Key                       |
+| `shareName`  | `string`  | shareName is the azure share Name                                                                       |
 
 ## .spec.volumes\[\].cephfs
 
@@ -6866,14 +6866,14 @@ Type
 Required
 - `monitors`
 
-| Property | Type | Description |
-|----|----|----|
-| `monitors` | `array (string)` | monitors is Required: Monitors is a collection of Ceph monitors More info: <https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it> |
-| `path` | `string` | path is Optional: Used as the mounted root, rather than the full Ceph tree, default is / |
-| `readOnly` | `boolean` | readOnly is Optional: Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. More info: <https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it> |
-| `secretFile` | `string` | secretFile is Optional: SecretFile is the path to key ring for User, default is /etc/ceph/user.secret More info: <https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it> |
-| `secretRef` | `object` | secretRef is Optional: SecretRef is reference to the authentication secret for User, default is empty. More info: <https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it> |
-| `user` | `string` | user is optional: User is the rados user name, default is admin More info: <https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it> |
+| Property     | Type             | Description                                                                                                                                                                                      |
+|--------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `monitors`   | `array (string)` | monitors is Required: Monitors is a collection of Ceph monitors More info: <https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it>                                                      |
+| `path`       | `string`         | path is Optional: Used as the mounted root, rather than the full Ceph tree, default is /                                                                                                         |
+| `readOnly`   | `boolean`        | readOnly is Optional: Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. More info: <https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it> |
+| `secretFile` | `string`         | secretFile is Optional: SecretFile is the path to key ring for User, default is /etc/ceph/user.secret More info: <https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it>                |
+| `secretRef`  | `object`         | secretRef is Optional: SecretRef is reference to the authentication secret for User, default is empty. More info: <https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it>               |
+| `user`       | `string`         | user is optional: User is the rados user name, default is admin More info: <https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it>                                                      |
 
 ## .spec.volumes\[\].cephfs.secretRef
 
@@ -6883,9 +6883,9 @@ secretRef is Optional: SecretRef is reference to the authentication secret for U
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                  |
+|----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
 
 ## .spec.volumes\[\].cinder
 
@@ -6898,12 +6898,12 @@ Type
 Required
 - `volumeID`
 
-| Property | Type | Description |
-|----|----|----|
-| `fsType` | `string` | fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. More info: <https://examples.k8s.io/mysql-cinder-pd/README.md> |
-| `readOnly` | `boolean` | readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. More info: <https://examples.k8s.io/mysql-cinder-pd/README.md> |
-| `secretRef` | `object` | secretRef is optional: points to a secret object containing parameters used to connect to OpenStack. |
-| `volumeID` | `string` | volumeID used to identify the volume in cinder. More info: <https://examples.k8s.io/mysql-cinder-pd/README.md> |
+| Property    | Type      | Description                                                                                                                                                                                                                                                |
+|-------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fsType`    | `string`  | fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. More info: <https://examples.k8s.io/mysql-cinder-pd/README.md> |
+| `readOnly`  | `boolean` | readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. More info: <https://examples.k8s.io/mysql-cinder-pd/README.md>                                                                                     |
+| `secretRef` | `object`  | secretRef is optional: points to a secret object containing parameters used to connect to OpenStack.                                                                                                                                                       |
+| `volumeID`  | `string`  | volumeID used to identify the volume in cinder. More info: <https://examples.k8s.io/mysql-cinder-pd/README.md>                                                                                                                                             |
 
 ## .spec.volumes\[\].cinder.secretRef
 
@@ -6913,9 +6913,9 @@ secretRef is optional: points to a secret object containing parameters used to c
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                  |
+|----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
 
 ## .spec.volumes\[\].configMap
 
@@ -6925,13 +6925,13 @@ configMap represents a configMap that should populate this volume
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `defaultMode` | `integer` | defaultMode is optional: mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set. |
-| `items` | `array` | items if unspecified, each key-value pair in the Data field of the referenced ConfigMap will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the ConfigMap, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'. |
-| `items[]` | `object` | Maps a string key to a path within a volume. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | optional specify whether the ConfigMap or its keys must be defined |
+| Property      | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|---------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `defaultMode` | `integer` | defaultMode is optional: mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set.                      |
+| `items`       | `array`   | items if unspecified, each key-value pair in the Data field of the referenced ConfigMap will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the ConfigMap, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'. |
+| `items[]`     | `object`  | Maps a string key to a path within a volume.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `name`        | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names>                                                                                                                                                                                                             |
+| `optional`    | `boolean` | optional specify whether the ConfigMap or its keys must be defined                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 ## .spec.volumes\[\].configMap.items
 
@@ -6954,11 +6954,11 @@ Required
 
 - `path`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the key to project. |
-| `mode` | `integer` | mode is Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set. |
-| `path` | `string` | path is the relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'. |
+| Property | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|----------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`    | `string`  | key is the key to project.                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `mode`   | `integer` | mode is Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set. |
+| `path`   | `string`  | path is the relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'.                                                                                                                                                                                                                                                                     |
 
 ## .spec.volumes\[\].csi
 
@@ -6971,13 +6971,13 @@ Type
 Required
 - `driver`
 
-| Property | Type | Description |
-|----|----|----|
-| `driver` | `string` | driver is the name of the CSI driver that handles this volume. Consult with your admin for the correct name as registered in the cluster. |
-| `fsType` | `string` | fsType to mount. Ex. "ext4", "xfs", "ntfs". If not provided, the empty value is passed to the associated CSI driver which will determine the default filesystem to apply. |
-| `nodePublishSecretRef` | `object` | nodePublishSecretRef is a reference to the secret object containing sensitive information to pass to the CSI driver to complete the CSI NodePublishVolume and NodeUnpublishVolume calls. This field is optional, and may be empty if no secret is required. If the secret object contains more than one secret, all secret references are passed. |
-| `readOnly` | `boolean` | readOnly specifies a read-only configuration for the volume. Defaults to false (read/write). |
-| `volumeAttributes` | `object (string)` | volumeAttributes stores driver-specific properties that are passed to the CSI driver. Consult your driver’s documentation for supported values. |
+| Property               | Type              | Description                                                                                                                                                                                                                                                                                                                                       |
+|------------------------|-------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `driver`               | `string`          | driver is the name of the CSI driver that handles this volume. Consult with your admin for the correct name as registered in the cluster.                                                                                                                                                                                                         |
+| `fsType`               | `string`          | fsType to mount. Ex. "ext4", "xfs", "ntfs". If not provided, the empty value is passed to the associated CSI driver which will determine the default filesystem to apply.                                                                                                                                                                         |
+| `nodePublishSecretRef` | `object`          | nodePublishSecretRef is a reference to the secret object containing sensitive information to pass to the CSI driver to complete the CSI NodePublishVolume and NodeUnpublishVolume calls. This field is optional, and may be empty if no secret is required. If the secret object contains more than one secret, all secret references are passed. |
+| `readOnly`             | `boolean`         | readOnly specifies a read-only configuration for the volume. Defaults to false (read/write).                                                                                                                                                                                                                                                      |
+| `volumeAttributes`     | `object (string)` | volumeAttributes stores driver-specific properties that are passed to the CSI driver. Consult your driver’s documentation for supported values.                                                                                                                                                                                                   |
 
 ## .spec.volumes\[\].csi.nodePublishSecretRef
 
@@ -6987,9 +6987,9 @@ nodePublishSecretRef is a reference to the secret object containing sensitive in
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                  |
+|----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
 
 ## .spec.volumes\[\].downwardAPI
 
@@ -6999,11 +6999,11 @@ downwardAPI represents downward API about the pod that should populate this volu
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property      | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|---------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `defaultMode` | `integer` | Optional: mode bits to use on created files by default. Must be a Optional: mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set. |
-| `items` | `array` | Items is a list of downward API volume file |
-| `items[]` | `object` | DownwardAPIVolumeFile represents information to create the file containing the pod field |
+| `items`       | `array`   | Items is a list of downward API volume file                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `items[]`     | `object`  | DownwardAPIVolumeFile represents information to create the file containing the pod field                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 
 ## .spec.volumes\[\].downwardAPI.items
 
@@ -7024,12 +7024,12 @@ Type
 Required
 - `path`
 
-| Property | Type | Description |
-|----|----|----|
-| `fieldRef` | `object` | Required: Selects a field of the pod: only annotations, labels, name, namespace and uid are supported. |
-| `mode` | `integer` | Optional: mode bits used to set permissions on this file, must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set. |
-| `path` | `string` | Required: Path is the relative path name of the file to be created. Must not be absolute or contain the '..' path. Must be utf-8 encoded. The first item of the relative path must not start with '..' |
-| `resourceFieldRef` | `object` | Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, requests.cpu and requests.memory) are currently supported. |
+| Property           | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|--------------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fieldRef`         | `object`  | Required: Selects a field of the pod: only annotations, labels, name, namespace and uid are supported.                                                                                                                                                                                                                                                                                                                       |
+| `mode`             | `integer` | Optional: mode bits used to set permissions on this file, must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set. |
+| `path`             | `string`  | Required: Path is the relative path name of the file to be created. Must not be absolute or contain the '..' path. Must be utf-8 encoded. The first item of the relative path must not start with '..'                                                                                                                                                                                                                       |
+| `resourceFieldRef` | `object`  | Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, requests.cpu and requests.memory) are currently supported.                                                                                                                                                                                                                                                               |
 
 ## .spec.volumes\[\].downwardAPI.items\[\].fieldRef
 
@@ -7042,10 +7042,10 @@ Type
 Required
 - `fieldPath`
 
-| Property | Type | Description |
-|----|----|----|
+| Property     | Type     | Description                                                                   |
+|--------------|----------|-------------------------------------------------------------------------------|
 | `apiVersion` | `string` | Version of the schema the FieldPath is written in terms of, defaults to "v1". |
-| `fieldPath` | `string` | Path of the field to select in the specified API version. |
+| `fieldPath`  | `string` | Path of the field to select in the specified API version.                     |
 
 ## .spec.volumes\[\].downwardAPI.items\[\].resourceFieldRef
 
@@ -7058,11 +7058,11 @@ Type
 Required
 - `resource`
 
-| Property | Type | Description |
-|----|----|----|
-| `containerName` | `string` | Container name: required for volumes, optional for env vars |
-| `divisor` | `integer-or-string` | Specifies the output format of the exposed resources, defaults to "1" |
-| `resource` | `string` | Required: resource to select |
+| Property        | Type                | Description                                                           |
+|-----------------|---------------------|-----------------------------------------------------------------------|
+| `containerName` | `string`            | Container name: required for volumes, optional for env vars           |
+| `divisor`       | `integer-or-string` | Specifies the output format of the exposed resources, defaults to "1" |
+| `resource`      | `string`            | Required: resource to select                                          |
 
 ## .spec.volumes\[\].emptyDir
 
@@ -7072,9 +7072,9 @@ emptyDir represents a temporary directory that shares a pod’s lifetime. More i
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `medium` | `string` | medium represents what type of storage medium should back this directory. The default is "" which means to use the node’s default medium. Must be an empty string (default) or Memory. More info: <https://kubernetes.io/docs/concepts/storage/volumes#emptydir> |
+| Property    | Type                | Description                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|-------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `medium`    | `string`            | medium represents what type of storage medium should back this directory. The default is "" which means to use the node’s default medium. Must be an empty string (default) or Memory. More info: <https://kubernetes.io/docs/concepts/storage/volumes#emptydir>                                                                                                                                                                                  |
 | `sizeLimit` | `integer-or-string` | sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: <https://kubernetes.io/docs/concepts/storage/volumes#emptydir> |
 
 ## .spec.volumes\[\].ephemeral
@@ -7100,14 +7100,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>volumeClaimTemplate</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Will be used to create a stand-alone PVC to provision the volume. The pod in which this EphemeralVolumeSource is embedded will be the owner of the PVC, i.e. the PVC will be deleted together with the pod. The name of the PVC will be <code>&lt;pod name&gt;-&lt;volume name&gt;</code> where <code>&lt;volume name&gt;</code> is the name from the <code>PodSpec.Volumes</code> array entry. Pod validation will reject the pod if the concatenated name is not valid for a PVC (for example, too long).</p>
@@ -7135,10 +7135,10 @@ Type
 Required
 - `spec`
 
-| Property | Type | Description |
-|----|----|----|
-| `metadata` | `object` | May contain labels and annotations that will be copied into the PVC when creating it. No other fields are allowed and will be rejected during validation. |
-| `spec` | `object` | The specification for the PersistentVolumeClaim. The entire content is copied unchanged into the PVC that gets created from this template. The same fields as in a PersistentVolumeClaim are also valid here. |
+| Property   | Type     | Description                                                                                                                                                                                                   |
+|------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `metadata` | `object` | May contain labels and annotations that will be copied into the PVC when creating it. No other fields are allowed and will be rejected during validation.                                                     |
+| `spec`     | `object` | The specification for the PersistentVolumeClaim. The entire content is copied unchanged into the PVC that gets created from this template. The same fields as in a PersistentVolumeClaim are also valid here. |
 
 ## .spec.volumes\[\].ephemeral.volumeClaimTemplate.metadata
 
@@ -7156,17 +7156,17 @@ The specification for the PersistentVolumeClaim. The entire content is copied un
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `accessModes` | `array (string)` | accessModes contains the desired access modes the volume should have. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1> |
-| `dataSource` | `object` | dataSource field can be used to specify either: \* An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot) \* An existing PVC (PersistentVolumeClaim) If the provisioner or an external controller can support the specified data source, it will create a new volume based on the contents of the specified data source. When the AnyVolumeDataSource feature gate is enabled, dataSource contents will be copied to dataSourceRef, and dataSourceRef contents will be copied to dataSource when dataSourceRef.namespace is not specified. If the namespace is specified, then dataSourceRef will not be copied to dataSource. |
-| `dataSourceRef` | `object` | dataSourceRef specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the dataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, when namespace isn’t specified in dataSourceRef, both fields (dataSource and dataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. When namespace is specified in dataSourceRef, dataSource isn’t set to the same value and must be empty. There are three important differences between dataSource and dataSourceRef: \* While dataSource only allows two specific types of objects, dataSourceRef allows any non-core object, as well as PersistentVolumeClaim objects. \* While dataSource ignores disallowed values (dropping them), dataSourceRef preserves all values, and generates an error if a disallowed value is specified. \* While dataSource only allows local objects, dataSourceRef allows objects in any namespaces. (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled. (Alpha) Using the namespace field of dataSourceRef requires the CrossNamespaceVolumeDataSource feature gate to be enabled. |
-| `resources` | `object` | resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources> |
-| `selector` | `object` | selector is a label query over volumes to consider for binding. |
-| `storageClassName` | `string` | storageClassName is the name of the StorageClass required by the claim. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1> |
-| `volumeAttributesClassName` | `string` | volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string or nil value indicates that no VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state, this field can be reset to its previous value (including nil) to cancel the modification. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: <https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/> |
-| `volumeMode` | `string` | volumeMode defines what type of volume is required by the claim. Value of Filesystem is implied when not included in claim spec. |
-| `volumeName` | `string` | volumeName is the binding reference to the PersistentVolume backing this claim. |
+| Property                    | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|-----------------------------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `accessModes`               | `array (string)` | accessModes contains the desired access modes the volume should have. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `dataSource`                | `object`         | dataSource field can be used to specify either: \* An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot) \* An existing PVC (PersistentVolumeClaim) If the provisioner or an external controller can support the specified data source, it will create a new volume based on the contents of the specified data source. When the AnyVolumeDataSource feature gate is enabled, dataSource contents will be copied to dataSourceRef, and dataSourceRef contents will be copied to dataSource when dataSourceRef.namespace is not specified. If the namespace is specified, then dataSourceRef will not be copied to dataSource.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `dataSourceRef`             | `object`         | dataSourceRef specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the dataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, when namespace isn’t specified in dataSourceRef, both fields (dataSource and dataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. When namespace is specified in dataSourceRef, dataSource isn’t set to the same value and must be empty. There are three important differences between dataSource and dataSourceRef: \* While dataSource only allows two specific types of objects, dataSourceRef allows any non-core object, as well as PersistentVolumeClaim objects. \* While dataSource ignores disallowed values (dropping them), dataSourceRef preserves all values, and generates an error if a disallowed value is specified. \* While dataSource only allows local objects, dataSourceRef allows objects in any namespaces. (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled. (Alpha) Using the namespace field of dataSourceRef requires the CrossNamespaceVolumeDataSource feature gate to be enabled. |
+| `resources`                 | `object`         | resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `selector`                  | `object`         | selector is a label query over volumes to consider for binding.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `storageClassName`          | `string`         | storageClassName is the name of the StorageClass required by the claim. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `volumeAttributesClassName` | `string`         | volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string or nil value indicates that no VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state, this field can be reset to its previous value (including nil) to cancel the modification. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: <https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `volumeMode`                | `string`         | volumeMode defines what type of volume is required by the claim. Value of Filesystem is implied when not included in claim spec.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `volumeName`                | `string`         | volumeName is the binding reference to the PersistentVolume backing this claim.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 
 ## .spec.volumes\[\].ephemeral.volumeClaimTemplate.spec.dataSource
 
@@ -7181,11 +7181,11 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                                                                                                                                     |
+|------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiGroup` | `string` | APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required. |
-| `kind` | `string` | Kind is the type of resource being referenced |
-| `name` | `string` | Name is the name of resource being referenced |
+| `kind`     | `string` | Kind is the type of resource being referenced                                                                                                                                                   |
+| `name`     | `string` | Name is the name of resource being referenced                                                                                                                                                   |
 
 ## .spec.volumes\[\].ephemeral.volumeClaimTemplate.spec.dataSourceRef
 
@@ -7200,11 +7200,11 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `apiGroup` | `string` | APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required. |
-| `kind` | `string` | Kind is the type of resource being referenced |
-| `name` | `string` | Name is the name of resource being referenced |
+| Property    | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                    |
+|-------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiGroup`  | `string` | APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required.                                                                                                                                                                                                |
+| `kind`      | `string` | Kind is the type of resource being referenced                                                                                                                                                                                                                                                                                                                                                  |
+| `name`      | `string` | Name is the name of resource being referenced                                                                                                                                                                                                                                                                                                                                                  |
 | `namespace` | `string` | Namespace is the namespace of resource being referenced Note that when a namespace is specified, a gateway.networking.k8s.io/ReferenceGrant object is required in the referent namespace to allow that namespace’s owner to accept the reference. See the ReferenceGrant documentation for details. (Alpha) This field requires the CrossNamespaceVolumeDataSource feature gate to be enabled. |
 
 ## .spec.volumes\[\].ephemeral.volumeClaimTemplate.spec.resources
@@ -7215,9 +7215,9 @@ resources represents the minimum resources the volume should have. If RecoverVol
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `limits` | `integer-or-string` | Limits describes the maximum amount of compute resources allowed. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/> |
+| Property   | Type                | Description                                                                                                                                                                                                                                                                                                                                  |
+|------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `limits`   | `integer-or-string` | Limits describes the maximum amount of compute resources allowed. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/>                                                                                                                                                                                |
 | `requests` | `integer-or-string` | Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/> |
 
 ## .spec.volumes\[\].ephemeral.volumeClaimTemplate.spec.selector
@@ -7228,11 +7228,11 @@ selector is a label query over volumes to consider for binding.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.volumes\[\].ephemeral.volumeClaimTemplate.spec.selector.matchExpressions
 
@@ -7255,11 +7255,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.volumes\[\].fc
 
@@ -7269,13 +7269,13 @@ fc represents a Fibre Channel resource that is attached to a kubelet’s host ma
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `fsType` | `string` | fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. |
-| `lun` | `integer` | lun is Optional: FC target lun number |
-| `readOnly` | `boolean` | readOnly is Optional: Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. |
-| `targetWWNs` | `array (string)` | targetWWNs is Optional: FC target worldwide names (WWNs) |
-| `wwids` | `array (string)` | wwids Optional: FC volume world wide identifiers (wwids) Either wwids or combination of targetWWNs and lun must be set, but not both simultaneously. |
+| Property     | Type             | Description                                                                                                                                                                           |
+|--------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fsType`     | `string`         | fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. |
+| `lun`        | `integer`        | lun is Optional: FC target lun number                                                                                                                                                 |
+| `readOnly`   | `boolean`        | readOnly is Optional: Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts.                                                                  |
+| `targetWWNs` | `array (string)` | targetWWNs is Optional: FC target worldwide names (WWNs)                                                                                                                              |
+| `wwids`      | `array (string)` | wwids Optional: FC volume world wide identifiers (wwids) Either wwids or combination of targetWWNs and lun must be set, but not both simultaneously.                                  |
 
 ## .spec.volumes\[\].flexVolume
 
@@ -7288,13 +7288,13 @@ Type
 Required
 - `driver`
 
-| Property | Type | Description |
-|----|----|----|
-| `driver` | `string` | driver is the name of the driver to use for this volume. |
-| `fsType` | `string` | fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". The default filesystem depends on FlexVolume script. |
-| `options` | `object (string)` | options is Optional: this field holds extra command options if any. |
-| `readOnly` | `boolean` | readOnly is Optional: defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. |
-| `secretRef` | `object` | secretRef is Optional: secretRef is reference to the secret object containing sensitive information to pass to the plugin scripts. This may be empty if no secret object is specified. If the secret object contains more than one secret, all secrets are passed to the plugin scripts. |
+| Property    | Type              | Description                                                                                                                                                                                                                                                                              |
+|-------------|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `driver`    | `string`          | driver is the name of the driver to use for this volume.                                                                                                                                                                                                                                 |
+| `fsType`    | `string`          | fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". The default filesystem depends on FlexVolume script.                                                                                                |
+| `options`   | `object (string)` | options is Optional: this field holds extra command options if any.                                                                                                                                                                                                                      |
+| `readOnly`  | `boolean`         | readOnly is Optional: defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts.                                                                                                                                                                     |
+| `secretRef` | `object`          | secretRef is Optional: secretRef is reference to the secret object containing sensitive information to pass to the plugin scripts. This may be empty if no secret object is specified. If the secret object contains more than one secret, all secrets are passed to the plugin scripts. |
 
 ## .spec.volumes\[\].flexVolume.secretRef
 
@@ -7304,9 +7304,9 @@ secretRef is Optional: secretRef is reference to the secret object containing se
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                  |
+|----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
 
 ## .spec.volumes\[\].flocker
 
@@ -7316,10 +7316,10 @@ flocker represents a Flocker volume attached to a kubelet’s host machine. This
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property      | Type     | Description                                                                                                                |
+|---------------|----------|----------------------------------------------------------------------------------------------------------------------------|
 | `datasetName` | `string` | datasetName is Name of the dataset stored as metadata → name on the dataset for Flocker should be considered as deprecated |
-| `datasetUUID` | `string` | datasetUUID is the UUID of the dataset. This is unique identifier of a Flocker dataset |
+| `datasetUUID` | `string` | datasetUUID is the UUID of the dataset. This is unique identifier of a Flocker dataset                                     |
 
 ## .spec.volumes\[\].gcePersistentDisk
 
@@ -7332,12 +7332,12 @@ Type
 Required
 - `pdName`
 
-| Property | Type | Description |
-|----|----|----|
-| `fsType` | `string` | fsType is filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. More info: <https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk> |
+| Property    | Type      | Description                                                                                                                                                                                                                                                                                                                                                          |
+|-------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fsType`    | `string`  | fsType is filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. More info: <https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk>                                                 |
 | `partition` | `integer` | partition is the partition in the volume that you want to mount. If omitted, the default is to mount by volume name. Examples: For volume /dev/sda1, you specify the partition as "1". Similarly, the volume partition for /dev/sda is "0" (or you can leave the property empty). More info: <https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk> |
-| `pdName` | `string` | pdName is unique name of the PD resource in GCE. Used to identify the disk in GCE. More info: <https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk> |
-| `readOnly` | `boolean` | readOnly here will force the ReadOnly setting in VolumeMounts. Defaults to false. More info: <https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk> |
+| `pdName`    | `string`  | pdName is unique name of the PD resource in GCE. Used to identify the disk in GCE. More info: <https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk>                                                                                                                                                                                                |
+| `readOnly`  | `boolean` | readOnly here will force the ReadOnly setting in VolumeMounts. Defaults to false. More info: <https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk>                                                                                                                                                                                                 |
 
 ## .spec.volumes\[\].gitRepo
 
@@ -7350,11 +7350,11 @@ Type
 Required
 - `repository`
 
-| Property | Type | Description |
-|----|----|----|
-| `directory` | `string` | directory is the target directory name. Must not contain or start with '..'. If '.' is supplied, the volume directory will be the git repository. Otherwise, if specified, the volume will contain the git repository in the subdirectory with the given name. |
-| `repository` | `string` | repository is the URL |
-| `revision` | `string` | revision is the commit hash for the specified revision. |
+| Property     | Type     | Description                                                                                                                                                                                                                                                    |
+|--------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `directory`  | `string` | directory is the target directory name. Must not contain or start with '..'. If '.' is supplied, the volume directory will be the git repository. Otherwise, if specified, the volume will contain the git repository in the subdirectory with the given name. |
+| `repository` | `string` | repository is the URL                                                                                                                                                                                                                                          |
+| `revision`   | `string` | revision is the commit hash for the specified revision.                                                                                                                                                                                                        |
 
 ## .spec.volumes\[\].glusterfs
 
@@ -7369,11 +7369,11 @@ Required
 
 - `path`
 
-| Property | Type | Description |
-|----|----|----|
-| `endpoints` | `string` | endpoints is the endpoint name that details Glusterfs topology. |
-| `path` | `string` | path is the Glusterfs volume path. More info: <https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod> |
-| `readOnly` | `boolean` | readOnly here will force the Glusterfs volume to be mounted with read-only permissions. Defaults to false. More info: <https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod> |
+| Property    | Type      | Description                                                                                                                                                                              |
+|-------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `endpoints` | `string`  | endpoints is the endpoint name that details Glusterfs topology.                                                                                                                          |
+| `path`      | `string`  | path is the Glusterfs volume path. More info: <https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod>                                                                         |
+| `readOnly`  | `boolean` | readOnly here will force the Glusterfs volume to be mounted with read-only permissions. Defaults to false. More info: <https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod> |
 
 ## .spec.volumes\[\].hostPath
 
@@ -7386,10 +7386,10 @@ Type
 Required
 - `path`
 
-| Property | Type | Description |
-|----|----|----|
-| `path` | `string` | path of the directory on the host. If the path is a symlink, it will follow the link to the real path. More info: <https://kubernetes.io/docs/concepts/storage/volumes#hostpath> |
-| `type` | `string` | type for HostPath Volume Defaults to "" More info: <https://kubernetes.io/docs/concepts/storage/volumes#hostpath> |
+| Property | Type     | Description                                                                                                                                                                      |
+|----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `path`   | `string` | path of the directory on the host. If the path is a symlink, it will follow the link to the real path. More info: <https://kubernetes.io/docs/concepts/storage/volumes#hostpath> |
+| `type`   | `string` | type for HostPath Volume Defaults to "" More info: <https://kubernetes.io/docs/concepts/storage/volumes#hostpath>                                                                |
 
 ## .spec.volumes\[\].image
 
@@ -7407,10 +7407,10 @@ The volume gets re-resolved if the pod gets deleted and recreated, which means t
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property     | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|--------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `pullPolicy` | `string` | Policy for pulling OCI objects. Possible values are: Always: the kubelet always attempts to pull the reference. Container creation will fail If the pull fails. Never: the kubelet never pulls the reference and only uses a local image or artifact. Container creation will fail if the reference isn’t present. IfNotPresent: the kubelet pulls if the reference isn’t already present on disk. Container creation will fail if the reference isn’t present and the pull fails. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. |
-| `reference` | `string` | Required: Image or artifact reference to be used. Behaves in the same way as pod.spec.containers\[\*\].image. Pull secrets will be assembled in the same way as for the container image by looking up node credentials, SA image pull secrets, and pod spec image pull secrets. More info: <https://kubernetes.io/docs/concepts/containers/images> This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets. |
+| `reference`  | `string` | Required: Image or artifact reference to be used. Behaves in the same way as pod.spec.containers\[\*\].image. Pull secrets will be assembled in the same way as for the container image by looking up node credentials, SA image pull secrets, and pod spec image pull secrets. More info: <https://kubernetes.io/docs/concepts/containers/images> This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets.                                          |
 
 ## .spec.volumes\[\].iscsi
 
@@ -7427,19 +7427,19 @@ Required
 
 - `targetPortal`
 
-| Property | Type | Description |
-|----|----|----|
-| `chapAuthDiscovery` | `boolean` | chapAuthDiscovery defines whether support iSCSI Discovery CHAP authentication |
-| `chapAuthSession` | `boolean` | chapAuthSession defines whether support iSCSI Session CHAP authentication |
-| `fsType` | `string` | fsType is the filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. More info: <https://kubernetes.io/docs/concepts/storage/volumes#iscsi> |
-| `initiatorName` | `string` | initiatorName is the custom iSCSI Initiator Name. If initiatorName is specified with iscsiInterface simultaneously, new iSCSI interface \<target portal\>:\<volume name\> will be created for the connection. |
-| `iqn` | `string` | iqn is the target iSCSI Qualified Name. |
-| `iscsiInterface` | `string` | iscsiInterface is the interface Name that uses an iSCSI transport. Defaults to 'default' (tcp). |
-| `lun` | `integer` | lun represents iSCSI Target Lun number. |
-| `portals` | `array (string)` | portals is the iSCSI Target Portal List. The portal is either an IP or ip_addr:port if the port is other than default (typically TCP ports 860 and 3260). |
-| `readOnly` | `boolean` | readOnly here will force the ReadOnly setting in VolumeMounts. Defaults to false. |
-| `secretRef` | `object` | secretRef is the CHAP Secret for iSCSI target and initiator authentication |
-| `targetPortal` | `string` | targetPortal is iSCSI Target Portal. The Portal is either an IP or ip_addr:port if the port is other than default (typically TCP ports 860 and 3260). |
+| Property            | Type             | Description                                                                                                                                                                                                                                                                                                  |
+|---------------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `chapAuthDiscovery` | `boolean`        | chapAuthDiscovery defines whether support iSCSI Discovery CHAP authentication                                                                                                                                                                                                                                |
+| `chapAuthSession`   | `boolean`        | chapAuthSession defines whether support iSCSI Session CHAP authentication                                                                                                                                                                                                                                    |
+| `fsType`            | `string`         | fsType is the filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. More info: <https://kubernetes.io/docs/concepts/storage/volumes#iscsi> |
+| `initiatorName`     | `string`         | initiatorName is the custom iSCSI Initiator Name. If initiatorName is specified with iscsiInterface simultaneously, new iSCSI interface \<target portal\>:\<volume name\> will be created for the connection.                                                                                                |
+| `iqn`               | `string`         | iqn is the target iSCSI Qualified Name.                                                                                                                                                                                                                                                                      |
+| `iscsiInterface`    | `string`         | iscsiInterface is the interface Name that uses an iSCSI transport. Defaults to 'default' (tcp).                                                                                                                                                                                                              |
+| `lun`               | `integer`        | lun represents iSCSI Target Lun number.                                                                                                                                                                                                                                                                      |
+| `portals`           | `array (string)` | portals is the iSCSI Target Portal List. The portal is either an IP or ip_addr:port if the port is other than default (typically TCP ports 860 and 3260).                                                                                                                                                    |
+| `readOnly`          | `boolean`        | readOnly here will force the ReadOnly setting in VolumeMounts. Defaults to false.                                                                                                                                                                                                                            |
+| `secretRef`         | `object`         | secretRef is the CHAP Secret for iSCSI target and initiator authentication                                                                                                                                                                                                                                   |
+| `targetPortal`      | `string`         | targetPortal is iSCSI Target Portal. The Portal is either an IP or ip_addr:port if the port is other than default (typically TCP ports 860 and 3260).                                                                                                                                                        |
 
 ## .spec.volumes\[\].iscsi.secretRef
 
@@ -7449,9 +7449,9 @@ secretRef is the CHAP Secret for iSCSI target and initiator authentication
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                  |
+|----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
 
 ## .spec.volumes\[\].nfs
 
@@ -7466,11 +7466,11 @@ Required
 
 - `server`
 
-| Property | Type | Description |
-|----|----|----|
-| `path` | `string` | path that is exported by the NFS server. More info: <https://kubernetes.io/docs/concepts/storage/volumes#nfs> |
+| Property   | Type      | Description                                                                                                                                                               |
+|------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `path`     | `string`  | path that is exported by the NFS server. More info: <https://kubernetes.io/docs/concepts/storage/volumes#nfs>                                                             |
 | `readOnly` | `boolean` | readOnly here will force the NFS export to be mounted with read-only permissions. Defaults to false. More info: <https://kubernetes.io/docs/concepts/storage/volumes#nfs> |
-| `server` | `string` | server is the hostname or IP address of the NFS server. More info: <https://kubernetes.io/docs/concepts/storage/volumes#nfs> |
+| `server`   | `string`  | server is the hostname or IP address of the NFS server. More info: <https://kubernetes.io/docs/concepts/storage/volumes#nfs>                                              |
 
 ## .spec.volumes\[\].persistentVolumeClaim
 
@@ -7483,10 +7483,10 @@ Type
 Required
 - `claimName`
 
-| Property | Type | Description |
-|----|----|----|
-| `claimName` | `string` | claimName is the name of a PersistentVolumeClaim in the same namespace as the pod using this volume. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims> |
-| `readOnly` | `boolean` | readOnly Will force the ReadOnly setting in VolumeMounts. Default false. |
+| Property    | Type      | Description                                                                                                                                                                                             |
+|-------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `claimName` | `string`  | claimName is the name of a PersistentVolumeClaim in the same namespace as the pod using this volume. More info: <https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims> |
+| `readOnly`  | `boolean` | readOnly Will force the ReadOnly setting in VolumeMounts. Default false.                                                                                                                                |
 
 ## .spec.volumes\[\].photonPersistentDisk
 
@@ -7499,10 +7499,10 @@ Type
 Required
 - `pdID`
 
-| Property | Type | Description |
-|----|----|----|
+| Property | Type     | Description                                                                                                                                                                           |
+|----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `fsType` | `string` | fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. |
-| `pdID` | `string` | pdID is the ID that identifies Photon Controller persistent disk |
+| `pdID`   | `string` | pdID is the ID that identifies Photon Controller persistent disk                                                                                                                      |
 
 ## .spec.volumes\[\].portworxVolume
 
@@ -7515,11 +7515,11 @@ Type
 Required
 - `volumeID`
 
-| Property | Type | Description |
-|----|----|----|
-| `fsType` | `string` | fSType represents the filesystem type to mount Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs". Implicitly inferred to be "ext4" if unspecified. |
-| `readOnly` | `boolean` | readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. |
-| `volumeID` | `string` | volumeID uniquely identifies a Portworx volume |
+| Property   | Type      | Description                                                                                                                                                                          |
+|------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fsType`   | `string`  | fSType represents the filesystem type to mount Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs". Implicitly inferred to be "ext4" if unspecified. |
+| `readOnly` | `boolean` | readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts.                                                                              |
+| `volumeID` | `string`  | volumeID uniquely identifies a Portworx volume                                                                                                                                       |
 
 ## .spec.volumes\[\].projected
 
@@ -7529,11 +7529,11 @@ projected items for all in one resources secrets, configmaps, and downward API
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property      | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|---------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `defaultMode` | `integer` | defaultMode are the mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set. |
-| `sources` | `array` | sources is the list of volume projections. Each entry in this list handles one source. |
-| `sources[]` | `object` | Projection that may be projected along with other supported volume types. Exactly one of these fields must be set. |
+| `sources`     | `array`   | sources is the list of volume projections. Each entry in this list handles one source.                                                                                                                                                                                                                                                                                                                                                                       |
+| `sources[]`   | `object`  | Projection that may be projected along with other supported volume types. Exactly one of these fields must be set.                                                                                                                                                                                                                                                                                                                                           |
 
 ## .spec.volumes\[\].projected.sources
 
@@ -7558,14 +7558,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clusterTrustBundle</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ClusterTrustBundle allows a pod to access the <code>.spec.trustBundle</code> field of ClusterTrustBundle objects in an auto-updating file.</p>
@@ -7573,17 +7573,17 @@ Type
 <p>ClusterTrustBundle objects can either be selected by name, or by the combination of signer name and a label selector.</p>
 <p>Kubelet performs aggressive normalization of the PEM contents written into the pod filesystem. Esoteric PEM features such as inter-block comments and block headers are stripped. Certificates are deduplicated. The ordering of certificates within the file is arbitrary, and Kubelet may change the order over time.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>configMap</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>configMap information about the configMap data to project</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>downwardAPI</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>downwardAPI information about the downwardAPI data to project</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>podCertificate</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Projects an auto-rotating credential bundle (private key and certificate chain) that the pod can use either as a TLS client or server.</p>
@@ -7594,12 +7594,12 @@ Type
 <p>Prefer using the credential bundle format, since your application code can read it atomically. If you use keyPath and certificateChainPath, your application must make two separate file reads. If these coincide with a certificate rotation, it is possible that the private key and leaf certificate you read may not correspond to each other. Your application will need to check for this condition, and re-read until they are consistent.</p>
 <p>The named signer controls chooses the format of the certificate it issues; consult the signer implementation’s documentation to learn how to use the certificates it issues.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>secret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>secret information about the secret data to project</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>serviceAccountToken</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>serviceAccountToken is information about the serviceAccountToken data to project</p></td>
@@ -7624,13 +7624,13 @@ Type
 Required
 - `path`
 
-| Property | Type | Description |
-|----|----|----|
-| `labelSelector` | `object` | Select all ClusterTrustBundles that match this label selector. Only has effect if signerName is set. Mutually-exclusive with name. If unset, interpreted as "match nothing". If set but empty, interpreted as "match everything". |
-| `name` | `string` | Select a single ClusterTrustBundle by object name. Mutually-exclusive with signerName and labelSelector. |
-| `optional` | `boolean` | If true, don’t block pod startup if the referenced ClusterTrustBundle(s) aren’t available. If using name, then the named ClusterTrustBundle is allowed not to exist. If using signerName, then the combination of signerName and labelSelector is allowed to match zero ClusterTrustBundles. |
-| `path` | `string` | Relative path from the volume root to write the bundle. |
-| `signerName` | `string` | Select all ClusterTrustBundles that match this signer name. Mutually-exclusive with name. The contents of all selected ClusterTrustBundles will be unified and deduplicated. |
+| Property        | Type      | Description                                                                                                                                                                                                                                                                                  |
+|-----------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `labelSelector` | `object`  | Select all ClusterTrustBundles that match this label selector. Only has effect if signerName is set. Mutually-exclusive with name. If unset, interpreted as "match nothing". If set but empty, interpreted as "match everything".                                                            |
+| `name`          | `string`  | Select a single ClusterTrustBundle by object name. Mutually-exclusive with signerName and labelSelector.                                                                                                                                                                                     |
+| `optional`      | `boolean` | If true, don’t block pod startup if the referenced ClusterTrustBundle(s) aren’t available. If using name, then the named ClusterTrustBundle is allowed not to exist. If using signerName, then the combination of signerName and labelSelector is allowed to match zero ClusterTrustBundles. |
+| `path`          | `string`  | Relative path from the volume root to write the bundle.                                                                                                                                                                                                                                      |
+| `signerName`    | `string`  | Select all ClusterTrustBundles that match this signer name. Mutually-exclusive with name. The contents of all selected ClusterTrustBundles will be unified and deduplicated.                                                                                                                 |
 
 ## .spec.volumes\[\].projected.sources\[\].clusterTrustBundle.labelSelector
 
@@ -7640,11 +7640,11 @@ Select all ClusterTrustBundles that match this label selector. Only has effect i
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.volumes\[\].projected.sources\[\].clusterTrustBundle.labelSelector.matchExpressions
 
@@ -7667,11 +7667,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.volumes\[\].projected.sources\[\].configMap
 
@@ -7681,12 +7681,12 @@ configMap information about the configMap data to project
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `items` | `array` | items if unspecified, each key-value pair in the Data field of the referenced ConfigMap will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the ConfigMap, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'. |
-| `items[]` | `object` | Maps a string key to a path within a volume. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | optional specify whether the ConfigMap or its keys must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `items`    | `array`   | items if unspecified, each key-value pair in the Data field of the referenced ConfigMap will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the ConfigMap, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'. |
+| `items[]`  | `object`  | Maps a string key to a path within a volume.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names>                                                                                                                                                                                                             |
+| `optional` | `boolean` | optional specify whether the ConfigMap or its keys must be defined                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 ## .spec.volumes\[\].projected.sources\[\].configMap.items
 
@@ -7709,11 +7709,11 @@ Required
 
 - `path`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the key to project. |
-| `mode` | `integer` | mode is Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set. |
-| `path` | `string` | path is the relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'. |
+| Property | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|----------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`    | `string`  | key is the key to project.                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `mode`   | `integer` | mode is Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set. |
+| `path`   | `string`  | path is the relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'.                                                                                                                                                                                                                                                                     |
 
 ## .spec.volumes\[\].projected.sources\[\].downwardAPI
 
@@ -7723,9 +7723,9 @@ downwardAPI information about the downwardAPI data to project
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `items` | `array` | Items is a list of DownwardAPIVolume file |
+| Property  | Type     | Description                                                                              |
+|-----------|----------|------------------------------------------------------------------------------------------|
+| `items`   | `array`  | Items is a list of DownwardAPIVolume file                                                |
 | `items[]` | `object` | DownwardAPIVolumeFile represents information to create the file containing the pod field |
 
 ## .spec.volumes\[\].projected.sources\[\].downwardAPI.items
@@ -7747,12 +7747,12 @@ Type
 Required
 - `path`
 
-| Property | Type | Description |
-|----|----|----|
-| `fieldRef` | `object` | Required: Selects a field of the pod: only annotations, labels, name, namespace and uid are supported. |
-| `mode` | `integer` | Optional: mode bits used to set permissions on this file, must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set. |
-| `path` | `string` | Required: Path is the relative path name of the file to be created. Must not be absolute or contain the '..' path. Must be utf-8 encoded. The first item of the relative path must not start with '..' |
-| `resourceFieldRef` | `object` | Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, requests.cpu and requests.memory) are currently supported. |
+| Property           | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|--------------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fieldRef`         | `object`  | Required: Selects a field of the pod: only annotations, labels, name, namespace and uid are supported.                                                                                                                                                                                                                                                                                                                       |
+| `mode`             | `integer` | Optional: mode bits used to set permissions on this file, must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set. |
+| `path`             | `string`  | Required: Path is the relative path name of the file to be created. Must not be absolute or contain the '..' path. Must be utf-8 encoded. The first item of the relative path must not start with '..'                                                                                                                                                                                                                       |
+| `resourceFieldRef` | `object`  | Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, requests.cpu and requests.memory) are currently supported.                                                                                                                                                                                                                                                               |
 
 ## .spec.volumes\[\].projected.sources\[\].downwardAPI.items\[\].fieldRef
 
@@ -7765,10 +7765,10 @@ Type
 Required
 - `fieldPath`
 
-| Property | Type | Description |
-|----|----|----|
+| Property     | Type     | Description                                                                   |
+|--------------|----------|-------------------------------------------------------------------------------|
 | `apiVersion` | `string` | Version of the schema the FieldPath is written in terms of, defaults to "v1". |
-| `fieldPath` | `string` | Path of the field to select in the specified API version. |
+| `fieldPath`  | `string` | Path of the field to select in the specified API version.                     |
 
 ## .spec.volumes\[\].projected.sources\[\].downwardAPI.items\[\].resourceFieldRef
 
@@ -7781,11 +7781,11 @@ Type
 Required
 - `resource`
 
-| Property | Type | Description |
-|----|----|----|
-| `containerName` | `string` | Container name: required for volumes, optional for env vars |
-| `divisor` | `integer-or-string` | Specifies the output format of the exposed resources, defaults to "1" |
-| `resource` | `string` | Required: resource to select |
+| Property        | Type                | Description                                                           |
+|-----------------|---------------------|-----------------------------------------------------------------------|
+| `containerName` | `string`            | Container name: required for volumes, optional for env vars           |
+| `divisor`       | `integer-or-string` | Specifies the output format of the exposed resources, defaults to "1" |
+| `resource`      | `string`            | Required: resource to select                                          |
 
 ## .spec.volumes\[\].projected.sources\[\].podCertificate
 
@@ -7819,20 +7819,20 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>certificateChainPath</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Write the certificate chain at this path in the projected volume.</p>
 <p>Most applications should use credentialBundlePath. When using keyPath and certificateChainPath, your application needs to check that the key and leaf certificate are consistent, because it is possible to read the files mid-rotation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>credentialBundlePath</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Write the credential bundle at this path in the projected volume.</p>
@@ -7840,19 +7840,19 @@ Required
 <p>The remaining blocks are CERTIFICATE blocks, containing the issued certificate chain from the signer (leaf and any intermediates).</p>
 <p>Using credentialBundlePath lets your Pod’s application code make a single atomic read that retrieves a consistent key and certificate chain. If you project them to separate files, your application code will need to additionally check that the leaf certificate was issued to the key.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>keyPath</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Write the key at this path in the projected volume.</p>
 <p>Most applications should use credentialBundlePath. When using keyPath and certificateChainPath, your application needs to check that the key and leaf certificate are consistent, because it is possible to read the files mid-rotation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keyType</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The type of keypair Kubelet will generate for the pod.</p>
 <p>Valid values are "RSA3072", "RSA4096", "ECDSAP256", "ECDSAP384", "ECDSAP521", and "ED25519".</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxExpirationSeconds</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>maxExpirationSeconds is the maximum lifetime permitted for the certificate.</p>
@@ -7860,7 +7860,7 @@ Required
 <p>If omitted, kube-apiserver will set it to 86400(24 hours). kube-apiserver will reject values shorter than 3600 (1 hour). The maximum allowable value is 7862400 (91 days).</p>
 <p>The signer implementation is then free to issue a certificate with any lifetime <strong>shorter</strong> than MaxExpirationSeconds, but no shorter than 3600 seconds (1 hour). This constraint is enforced by kube-apiserver. <code>kubernetes.io</code> signers will never issue certificates with a lifetime longer than 24 hours.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>signerName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Kubelet’s generated CSRs will be addressed to this signer.</p></td>
@@ -7876,12 +7876,12 @@ secret information about the secret data to project
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `items` | `array` | items if unspecified, each key-value pair in the Data field of the referenced Secret will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the Secret, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'. |
-| `items[]` | `object` | Maps a string key to a path within a volume. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | optional field specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `items`    | `array`   | items if unspecified, each key-value pair in the Data field of the referenced Secret will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the Secret, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'. |
+| `items[]`  | `object`  | Maps a string key to a path within a volume.                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names>                                                                                                                                                                                                       |
+| `optional` | `boolean` | optional field specify whether the Secret or its key must be defined                                                                                                                                                                                                                                                                                                                                                                                                                               |
 
 ## .spec.volumes\[\].projected.sources\[\].secret.items
 
@@ -7904,11 +7904,11 @@ Required
 
 - `path`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the key to project. |
-| `mode` | `integer` | mode is Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set. |
-| `path` | `string` | path is the relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'. |
+| Property | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|----------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`    | `string`  | key is the key to project.                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `mode`   | `integer` | mode is Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set. |
+| `path`   | `string`  | path is the relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'.                                                                                                                                                                                                                                                                     |
 
 ## .spec.volumes\[\].projected.sources\[\].serviceAccountToken
 
@@ -7921,11 +7921,11 @@ Type
 Required
 - `path`
 
-| Property | Type | Description |
-|----|----|----|
-| `audience` | `string` | audience is the intended audience of the token. A recipient of a token must identify itself with an identifier specified in the audience of the token, and otherwise should reject the token. The audience defaults to the identifier of the apiserver. |
+| Property            | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                   |
+|---------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `audience`          | `string`  | audience is the intended audience of the token. A recipient of a token must identify itself with an identifier specified in the audience of the token, and otherwise should reject the token. The audience defaults to the identifier of the apiserver.                                                                                                                                                       |
 | `expirationSeconds` | `integer` | expirationSeconds is the requested duration of validity of the service account token. As the token approaches expiration, the kubelet volume plugin will proactively rotate the service account token. The kubelet will start trying to rotate the token if the token is older than 80 percent of its time to live or if the token is older than 24 hours.Defaults to 1 hour and must be at least 10 minutes. |
-| `path` | `string` | path is the path relative to the mount point of the file to project the token into. |
+| `path`              | `string`  | path is the path relative to the mount point of the file to project the token into.                                                                                                                                                                                                                                                                                                                           |
 
 ## .spec.volumes\[\].quobyte
 
@@ -7940,14 +7940,14 @@ Required
 
 - `volume`
 
-| Property | Type | Description |
-|----|----|----|
-| `group` | `string` | group to map volume access to Default is no group |
-| `readOnly` | `boolean` | readOnly here will force the Quobyte volume to be mounted with read-only permissions. Defaults to false. |
-| `registry` | `string` | registry represents a single or multiple Quobyte Registry services specified as a string as host:port pair (multiple entries are separated with commas) which acts as the central registry for volumes |
-| `tenant` | `string` | tenant owning the given Quobyte volume in the Backend Used with dynamically provisioned Quobyte volumes, value is set by the plugin |
-| `user` | `string` | user to map volume access to Defaults to serivceaccount user |
-| `volume` | `string` | volume is a string that references an already created Quobyte volume by name. |
+| Property   | Type      | Description                                                                                                                                                                                            |
+|------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `group`    | `string`  | group to map volume access to Default is no group                                                                                                                                                      |
+| `readOnly` | `boolean` | readOnly here will force the Quobyte volume to be mounted with read-only permissions. Defaults to false.                                                                                               |
+| `registry` | `string`  | registry represents a single or multiple Quobyte Registry services specified as a string as host:port pair (multiple entries are separated with commas) which acts as the central registry for volumes |
+| `tenant`   | `string`  | tenant owning the given Quobyte volume in the Backend Used with dynamically provisioned Quobyte volumes, value is set by the plugin                                                                    |
+| `user`     | `string`  | user to map volume access to Defaults to serivceaccount user                                                                                                                                           |
+| `volume`   | `string`  | volume is a string that references an already created Quobyte volume by name.                                                                                                                          |
 
 ## .spec.volumes\[\].rbd
 
@@ -7962,16 +7962,16 @@ Required
 
 - `monitors`
 
-| Property | Type | Description |
-|----|----|----|
-| `fsType` | `string` | fsType is the filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. More info: <https://kubernetes.io/docs/concepts/storage/volumes#rbd> |
-| `image` | `string` | image is the rados image name. More info: <https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it> |
-| `keyring` | `string` | keyring is the path to key ring for RBDUser. Default is /etc/ceph/keyring. More info: <https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it> |
-| `monitors` | `array (string)` | monitors is a collection of Ceph monitors. More info: <https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it> |
-| `pool` | `string` | pool is the rados pool name. Default is rbd. More info: <https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it> |
-| `readOnly` | `boolean` | readOnly here will force the ReadOnly setting in VolumeMounts. Defaults to false. More info: <https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it> |
-| `secretRef` | `object` | secretRef is name of the authentication secret for RBDUser. If provided overrides keyring. Default is nil. More info: <https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it> |
-| `user` | `string` | user is the rados user name. Default is admin. More info: <https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it> |
+| Property    | Type             | Description                                                                                                                                                                                                                                                                                                |
+|-------------|------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fsType`    | `string`         | fsType is the filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. More info: <https://kubernetes.io/docs/concepts/storage/volumes#rbd> |
+| `image`     | `string`         | image is the rados image name. More info: <https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it>                                                                                                                                                                                                    |
+| `keyring`   | `string`         | keyring is the path to key ring for RBDUser. Default is /etc/ceph/keyring. More info: <https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it>                                                                                                                                                        |
+| `monitors`  | `array (string)` | monitors is a collection of Ceph monitors. More info: <https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it>                                                                                                                                                                                        |
+| `pool`      | `string`         | pool is the rados pool name. Default is rbd. More info: <https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it>                                                                                                                                                                                      |
+| `readOnly`  | `boolean`        | readOnly here will force the ReadOnly setting in VolumeMounts. Defaults to false. More info: <https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it>                                                                                                                                                 |
+| `secretRef` | `object`         | secretRef is name of the authentication secret for RBDUser. If provided overrides keyring. Default is nil. More info: <https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it>                                                                                                                        |
+| `user`      | `string`         | user is the rados user name. Default is admin. More info: <https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it>                                                                                                                                                                                    |
 
 ## .spec.volumes\[\].rbd.secretRef
 
@@ -7981,9 +7981,9 @@ secretRef is name of the authentication secret for RBDUser. If provided override
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                  |
+|----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
 
 ## .spec.volumes\[\].scaleIO
 
@@ -8000,18 +8000,18 @@ Required
 
 - `system`
 
-| Property | Type | Description |
-|----|----|----|
-| `fsType` | `string` | fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Default is "xfs". |
-| `gateway` | `string` | gateway is the host address of the ScaleIO API Gateway. |
-| `protectionDomain` | `string` | protectionDomain is the name of the ScaleIO Protection Domain for the configured storage. |
-| `readOnly` | `boolean` | readOnly Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. |
-| `secretRef` | `object` | secretRef references to the secret for ScaleIO user and other sensitive information. If this is not provided, Login operation will fail. |
-| `sslEnabled` | `boolean` | sslEnabled Flag enable/disable SSL communication with Gateway, default false |
-| `storageMode` | `string` | storageMode indicates whether the storage for a volume should be ThickProvisioned or ThinProvisioned. Default is ThinProvisioned. |
-| `storagePool` | `string` | storagePool is the ScaleIO Storage Pool associated with the protection domain. |
-| `system` | `string` | system is the name of the storage system as configured in ScaleIO. |
-| `volumeName` | `string` | volumeName is the name of a volume already created in the ScaleIO system that is associated with this volume source. |
+| Property           | Type      | Description                                                                                                                                            |
+|--------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fsType`           | `string`  | fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Default is "xfs". |
+| `gateway`          | `string`  | gateway is the host address of the ScaleIO API Gateway.                                                                                                |
+| `protectionDomain` | `string`  | protectionDomain is the name of the ScaleIO Protection Domain for the configured storage.                                                              |
+| `readOnly`         | `boolean` | readOnly Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts.                                                |
+| `secretRef`        | `object`  | secretRef references to the secret for ScaleIO user and other sensitive information. If this is not provided, Login operation will fail.               |
+| `sslEnabled`       | `boolean` | sslEnabled Flag enable/disable SSL communication with Gateway, default false                                                                           |
+| `storageMode`      | `string`  | storageMode indicates whether the storage for a volume should be ThickProvisioned or ThinProvisioned. Default is ThinProvisioned.                      |
+| `storagePool`      | `string`  | storagePool is the ScaleIO Storage Pool associated with the protection domain.                                                                         |
+| `system`           | `string`  | system is the name of the storage system as configured in ScaleIO.                                                                                     |
+| `volumeName`       | `string`  | volumeName is the name of a volume already created in the ScaleIO system that is associated with this volume source.                                   |
 
 ## .spec.volumes\[\].scaleIO.secretRef
 
@@ -8021,9 +8021,9 @@ secretRef references to the secret for ScaleIO user and other sensitive informat
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                  |
+|----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
 
 ## .spec.volumes\[\].secret
 
@@ -8033,13 +8033,13 @@ secret represents a secret that should populate this volume. More info: <https:/
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `defaultMode` | `integer` | defaultMode is Optional: mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set. |
-| `items` | `array` | items If unspecified, each key-value pair in the Data field of the referenced Secret will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the Secret, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'. |
-| `items[]` | `object` | Maps a string key to a path within a volume. |
-| `optional` | `boolean` | optional field specify whether the Secret or its keys must be defined |
-| `secretName` | `string` | secretName is the name of the secret in the pod’s namespace to use. More info: <https://kubernetes.io/docs/concepts/storage/volumes#secret> |
+| Property      | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+|---------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `defaultMode` | `integer` | defaultMode is Optional: mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set.                |
+| `items`       | `array`   | items If unspecified, each key-value pair in the Data field of the referenced Secret will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the Secret, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'. |
+| `items[]`     | `object`  | Maps a string key to a path within a volume.                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `optional`    | `boolean` | optional field specify whether the Secret or its keys must be defined                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `secretName`  | `string`  | secretName is the name of the secret in the pod’s namespace to use. More info: <https://kubernetes.io/docs/concepts/storage/volumes#secret>                                                                                                                                                                                                                                                                                                                                                        |
 
 ## .spec.volumes\[\].secret.items
 
@@ -8062,11 +8062,11 @@ Required
 
 - `path`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the key to project. |
-| `mode` | `integer` | mode is Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set. |
-| `path` | `string` | path is the relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'. |
+| Property | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|----------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`    | `string`  | key is the key to project.                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `mode`   | `integer` | mode is Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set. |
+| `path`   | `string`  | path is the relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'.                                                                                                                                                                                                                                                                     |
 
 ## .spec.volumes\[\].storageos
 
@@ -8076,13 +8076,13 @@ storageOS represents a StorageOS volume attached and mounted on Kubernetes nodes
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `fsType` | `string` | fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. |
-| `readOnly` | `boolean` | readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. |
-| `secretRef` | `object` | secretRef specifies the secret to use for obtaining the StorageOS API credentials. If not specified, default values will be attempted. |
-| `volumeName` | `string` | volumeName is the human-readable name of the StorageOS volume. Volume names are only unique within a namespace. |
-| `volumeNamespace` | `string` | volumeNamespace specifies the scope of the volume within StorageOS. If no namespace is specified then the Pod’s namespace will be used. This allows the Kubernetes name scoping to be mirrored within StorageOS for tighter integration. Set VolumeName to any name to override the default behaviour. Set to "default" if you are not using namespaces within StorageOS. Namespaces that do not pre-exist within StorageOS will be created. |
+| Property          | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|-------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fsType`          | `string`  | fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.                                                                                                                                                                                                                                                        |
+| `readOnly`        | `boolean` | readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts.                                                                                                                                                                                                                                                                                                                                      |
+| `secretRef`       | `object`  | secretRef specifies the secret to use for obtaining the StorageOS API credentials. If not specified, default values will be attempted.                                                                                                                                                                                                                                                                                                       |
+| `volumeName`      | `string`  | volumeName is the human-readable name of the StorageOS volume. Volume names are only unique within a namespace.                                                                                                                                                                                                                                                                                                                              |
+| `volumeNamespace` | `string`  | volumeNamespace specifies the scope of the volume within StorageOS. If no namespace is specified then the Pod’s namespace will be used. This allows the Kubernetes name scoping to be mirrored within StorageOS for tighter integration. Set VolumeName to any name to override the default behaviour. Set to "default" if you are not using namespaces within StorageOS. Namespaces that do not pre-exist within StorageOS will be created. |
 
 ## .spec.volumes\[\].storageos.secretRef
 
@@ -8092,9 +8092,9 @@ secretRef specifies the secret to use for obtaining the StorageOS API credential
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                  |
+|----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
 
 ## .spec.volumes\[\].vsphereVolume
 
@@ -8107,12 +8107,12 @@ Type
 Required
 - `volumePath`
 
-| Property | Type | Description |
-|----|----|----|
-| `fsType` | `string` | fsType is filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. |
-| `storagePolicyID` | `string` | storagePolicyID is the storage Policy Based Management (SPBM) profile ID associated with the StoragePolicyName. |
-| `storagePolicyName` | `string` | storagePolicyName is the storage Policy Based Management (SPBM) profile name. |
-| `volumePath` | `string` | volumePath is the path that identifies vSphere volume vmdk |
+| Property            | Type     | Description                                                                                                                                                                       |
+|---------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fsType`            | `string` | fsType is filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. |
+| `storagePolicyID`   | `string` | storagePolicyID is the storage Policy Based Management (SPBM) profile ID associated with the StoragePolicyName.                                                                   |
+| `storagePolicyName` | `string` | storagePolicyName is the storage Policy Based Management (SPBM) profile name.                                                                                                     |
+| `volumePath`        | `string` | volumePath is the path that identifies vSphere volume vmdk                                                                                                                        |
 
 ## .spec.web
 
@@ -8135,10 +8135,10 @@ httpConfig defines HTTP parameters for web server.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `headers` | `object` | headers defines a list of headers that can be added to HTTP responses. |
-| `http2` | `boolean` | http2 enable HTTP/2 support. Note that HTTP/2 is only supported with TLS. When TLSConfig is not configured, HTTP/2 will be disabled. Whenever the value of the field changes, a rolling update will be triggered. |
+| Property  | Type      | Description                                                                                                                                                                                                       |
+|-----------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `headers` | `object`  | headers defines a list of headers that can be added to HTTP responses.                                                                                                                                            |
+| `http2`   | `boolean` | http2 enable HTTP/2 support. Note that HTTP/2 is only supported with TLS. When TLSConfig is not configured, HTTP/2 will be disabled. Whenever the value of the field changes, a rolling update will be triggered. |
 
 ## .spec.web.httpConfig.headers
 
@@ -8148,13 +8148,13 @@ headers defines a list of headers that can be added to HTTP responses.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `contentSecurityPolicy` | `string` | contentSecurityPolicy defines the Content-Security-Policy header to HTTP responses. Unset if blank. |
+| Property                  | Type     | Description                                                                                                                                                                                                                                                                                                                                                                       |
+|---------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `contentSecurityPolicy`   | `string` | contentSecurityPolicy defines the Content-Security-Policy header to HTTP responses. Unset if blank.                                                                                                                                                                                                                                                                               |
 | `strictTransportSecurity` | `string` | strictTransportSecurity defines the Strict-Transport-Security header to HTTP responses. Unset if blank. Please make sure that you use this with care as this header might force browsers to load Prometheus and the other applications hosted on the same domain and subdomains over HTTPS. <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security> |
-| `xContentTypeOptions` | `string` | xContentTypeOptions defines the X-Content-Type-Options header to HTTP responses. Unset if blank. Accepted value is nosniff. <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options> |
-| `xFrameOptions` | `string` | xFrameOptions defines the X-Frame-Options header to HTTP responses. Unset if blank. Accepted values are deny and sameorigin. <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options> |
-| `xXSSProtection` | `string` | xXSSProtection defines the X-XSS-Protection header to all responses. Unset if blank. <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection> |
+| `xContentTypeOptions`     | `string` | xContentTypeOptions defines the X-Content-Type-Options header to HTTP responses. Unset if blank. Accepted value is nosniff. <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options>                                                                                                                                                                    |
+| `xFrameOptions`           | `string` | xFrameOptions defines the X-Frame-Options header to HTTP responses. Unset if blank. Accepted values are deny and sameorigin. <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options>                                                                                                                                                                          |
+| `xXSSProtection`          | `string` | xXSSProtection defines the X-XSS-Protection header to all responses. Unset if blank. <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection>                                                                                                                                                                                                                 |
 
 ## .spec.web.tlsConfig
 
@@ -8171,82 +8171,82 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>cert defines the Secret or ConfigMap containing the TLS certificate for the web server.</p>
 <p>Either <code>keySecret</code> or <code>keyFile</code> must be defined.</p>
 <p>It is mutually exclusive with <code>certFile</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>certFile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>certFile defines the path to the TLS certificate file in the container for the web server.</p>
 <p>Either <code>keySecret</code> or <code>keyFile</code> must be defined.</p>
 <p>It is mutually exclusive with <code>cert</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>cipherSuites</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>cipherSuites defines the list of supported cipher suites for TLS versions up to TLS 1.2.</p>
 <p>If not defined, the Go default cipher suites are used. Available cipher suites are documented in the Go documentation: <a href="https://golang.org/pkg/crypto/tls/#pkg-constants">https://golang.org/pkg/crypto/tls/#pkg-constants</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>clientAuthType</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>clientAuthType defines the server policy for client TLS authentication.</p>
 <p>For more detail on clientAuth options: <a href="https://golang.org/pkg/crypto/tls/#ClientAuthType">https://golang.org/pkg/crypto/tls/#ClientAuthType</a></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clientCAFile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>clientCAFile defines the path to the CA certificate file for client certificate authentication to the server.</p>
 <p>It is mutually exclusive with <code>client_ca</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>client_ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>client_ca defines the Secret or ConfigMap containing the CA certificate for client certificate authentication to the server.</p>
 <p>It is mutually exclusive with <code>clientCAFile</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>curvePreferences</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>curvePreferences defines elliptic curves that will be used in an ECDHE handshake, in preference order.</p>
 <p>Available curves are documented in the Go documentation: <a href="https://golang.org/pkg/crypto/tls/#CurveID">https://golang.org/pkg/crypto/tls/#CurveID</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keyFile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>keyFile defines the path to the TLS private key file in the container for the web server.</p>
 <p>If defined, either <code>cert</code> or <code>certFile</code> must be defined.</p>
 <p>It is mutually exclusive with <code>keySecret</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>keySecret defines the secret containing the TLS private key for the web server.</p>
 <p>Either <code>cert</code> or <code>certFile</code> must be defined.</p>
 <p>It is mutually exclusive with <code>keyFile</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>maxVersion defines the Maximum TLS version that is acceptable.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>minVersion defines the minimum TLS version that is acceptable.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>preferServerCipherSuites</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>preferServerCipherSuites defines whether the server selects the client’s most preferred cipher suite, or the server’s most preferred cipher suite.</p>
@@ -8267,10 +8267,10 @@ It is mutually exclusive with `certFile`.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type     | Description                                                             |
+|-------------|----------|-------------------------------------------------------------------------|
 | `configMap` | `object` | configMap defines the ConfigMap containing data to use for the targets. |
-| `secret` | `object` | secret defines the Secret containing data to use for the targets. |
+| `secret`    | `object` | secret defines the Secret containing data to use for the targets.       |
 
 ## .spec.web.tlsConfig.cert.configMap
 
@@ -8283,11 +8283,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.web.tlsConfig.cert.secret
 
@@ -8300,11 +8300,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.web.tlsConfig.client_ca
 
@@ -8316,10 +8316,10 @@ It is mutually exclusive with `clientCAFile`.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type     | Description                                                             |
+|-------------|----------|-------------------------------------------------------------------------|
 | `configMap` | `object` | configMap defines the ConfigMap containing data to use for the targets. |
-| `secret` | `object` | secret defines the Secret containing data to use for the targets. |
+| `secret`    | `object` | secret defines the Secret containing data to use for the targets.       |
 
 ## .spec.web.tlsConfig.client_ca.configMap
 
@@ -8332,11 +8332,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.web.tlsConfig.client_ca.secret
 
@@ -8349,11 +8349,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.web.tlsConfig.keySecret
 
@@ -8370,11 +8370,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .status
 
@@ -8384,15 +8384,15 @@ status defines the most recent observed status of the ThanosRuler cluster. Read-
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `availableReplicas` | `integer` | availableReplicas defines the total number of available pods (ready for at least minReadySeconds) targeted by this ThanosRuler deployment. |
-| `conditions` | `array` | conditions defines the current state of the ThanosRuler object. |
-| `conditions[]` | `object` | Condition represents the state of the resources associated with the Prometheus, Alertmanager or ThanosRuler resource. |
-| `paused` | `boolean` | paused defines whether any actions on the underlying managed objects are being performed. Only delete actions will be performed. |
-| `replicas` | `integer` | replicas defines the total number of non-terminated pods targeted by this ThanosRuler deployment (their labels match the selector). |
-| `unavailableReplicas` | `integer` | unavailableReplicas defines the total number of unavailable pods targeted by this ThanosRuler deployment. |
-| `updatedReplicas` | `integer` | updatedReplicas defines the total number of non-terminated pods targeted by this ThanosRuler deployment that have the desired version spec. |
+| Property              | Type      | Description                                                                                                                                 |
+|-----------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| `availableReplicas`   | `integer` | availableReplicas defines the total number of available pods (ready for at least minReadySeconds) targeted by this ThanosRuler deployment.  |
+| `conditions`          | `array`   | conditions defines the current state of the ThanosRuler object.                                                                             |
+| `conditions[]`        | `object`  | Condition represents the state of the resources associated with the Prometheus, Alertmanager or ThanosRuler resource.                       |
+| `paused`              | `boolean` | paused defines whether any actions on the underlying managed objects are being performed. Only delete actions will be performed.            |
+| `replicas`            | `integer` | replicas defines the total number of non-terminated pods targeted by this ThanosRuler deployment (their labels match the selector).         |
+| `unavailableReplicas` | `integer` | unavailableReplicas defines the total number of unavailable pods targeted by this ThanosRuler deployment.                                   |
+| `updatedReplicas`     | `integer` | updatedReplicas defines the total number of non-terminated pods targeted by this ThanosRuler deployment that have the desired version spec. |
 
 ## .status.conditions
 
@@ -8417,14 +8417,14 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastTransitionTime` | `string` | lastTransitionTime is the time of the last update to the current status property. |
-| `message` | `string` | message defines human-readable message indicating details for the condition’s last transition. |
+| Property             | Type      | Description                                                                                                                                                                                                                                                                                 |
+|----------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string`  | lastTransitionTime is the time of the last update to the current status property.                                                                                                                                                                                                           |
+| `message`            | `string`  | message defines human-readable message indicating details for the condition’s last transition.                                                                                                                                                                                              |
 | `observedGeneration` | `integer` | observedGeneration defines the .metadata.generation that the condition was set based upon. For instance, if `.metadata.generation` is currently 12, but the `.status.conditions[].observedGeneration` is 9, the condition is out of date with respect to the current state of the instance. |
-| `reason` | `string` | reason for the condition’s last transition. |
-| `status` | `string` | status of the condition. |
-| `type` | `string` | type of the condition being reported. |
+| `reason`             | `string`  | reason for the condition’s last transition.                                                                                                                                                                                                                                                 |
+| `status`             | `string`  | status of the condition.                                                                                                                                                                                                                                                                    |
+| `type`               | `string`  | type of the condition being reported.                                                                                                                                                                                                                                                       |
 
 # API endpoints
 
@@ -8468,10 +8468,10 @@ HTTP method
 Description
 list objects of kind ThanosRuler
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ThanosRulerList`](../objects/index.xml#com-coreos-monitoring-v1-ThanosRulerList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                              |
+|--------------------|-------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ThanosRulerList`](../objects/index.xml#com-coreos-monitoring-v1-ThanosRulerList) schema |
+| 401 - Unauthorized | Empty                                                                                     |
 
 HTTP responses
 
@@ -8483,10 +8483,10 @@ HTTP method
 Description
 delete collection of ThanosRuler
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -8496,10 +8496,10 @@ HTTP method
 Description
 list objects of kind ThanosRuler
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ThanosRulerList`](../objects/index.xml#com-coreos-monitoring-v1-ThanosRulerList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                              |
+|--------------------|-------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ThanosRulerList`](../objects/index.xml#com-coreos-monitoring-v1-ThanosRulerList) schema |
+| 401 - Unauthorized | Empty                                                                                     |
 
 HTTP responses
 
@@ -8509,25 +8509,25 @@ HTTP method
 Description
 create a ThanosRuler
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |  |
+| Parameter | Type                                                                                                                     | Description |
+|-----------|--------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
-| 201 - Created | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
-| 202 - Accepted | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                             |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
+| 201 - Created      | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
+| 202 - Accepted     | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                    |
 
 HTTP responses
 
@@ -8545,17 +8545,17 @@ HTTP method
 Description
 delete a ThanosRuler
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -8565,10 +8565,10 @@ HTTP method
 Description
 read the specified ThanosRuler
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                             |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                    |
 
 HTTP responses
 
@@ -8578,17 +8578,17 @@ HTTP method
 Description
 partially update the specified ThanosRuler
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                             |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                    |
 
 HTTP responses
 
@@ -8598,24 +8598,24 @@ HTTP method
 Description
 replace the specified ThanosRuler
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |  |
+| Parameter | Type                                                                                                                     | Description |
+|-----------|--------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
-| 201 - Created | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                             |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
+| 201 - Created      | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                    |
 
 HTTP responses
 
@@ -8633,10 +8633,10 @@ HTTP method
 Description
 read status of the specified ThanosRuler
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                             |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                    |
 
 HTTP responses
 
@@ -8646,17 +8646,17 @@ HTTP method
 Description
 partially update status of the specified ThanosRuler
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                             |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                    |
 
 HTTP responses
 
@@ -8666,23 +8666,23 @@ HTTP method
 Description
 replace status of the specified ThanosRuler
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |  |
+| Parameter | Type                                                                                                                     | Description |
+|-----------|--------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
-| 201 - Created | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                             |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
+| 201 - Created      | [`ThanosRuler`](../monitoring_apis/thanosruler-monitoring-coreos-com-v1.xml#thanosruler-monitoring-coreos-com-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                    |
 
 HTTP responses

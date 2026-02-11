@@ -4,29 +4,11 @@ The AWS Load Balancer Operator deploys and manages the AWS Load Balancer Control
 
 To deploy the AWS Load Balancer Operator, install the Operator by using the web console. You can manage the lifecycle of the Operator by using a graphical interface.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have logged in to the OpenShift Container Platform web console as a user with `cluster-admin` permissions.
 
 - Your cluster is configured with AWS as the platform type and cloud provider.
 
 - If you are using a security token service (STS) or user-provisioned infrastructure, follow the related preparation steps. For example, if you are using AWS Security Token Service, see "Preparing for the AWS Load Balancer Operator on a cluster using the AWS Security Token Service (STS)".
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Ecosystem** → **Software Catalog** in the OpenShift Container Platform web console.
 
@@ -46,31 +28,11 @@ Procedure
 
 5.  Click **Install**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the AWS Load Balancer Operator shows the **Status** as **Succeeded** on the Installed Operators dashboard.
-
-</div>
 
 # Installing the AWS Load Balancer Operator by using the CLI
 
 To deploy the AWS Load Balancer Controller, install the AWS Load Balancer Operator by using the command-line interface (CLI).
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You are logged in to the OpenShift Container Platform web console as a user with `cluster-admin` permissions.
 
@@ -78,25 +40,13 @@ Prerequisites
 
 - You have logged into the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a `Namespace` object:
 
     1.  Create a YAML file that defines the `Namespace` object:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `namespace.yaml` file
+        **Example `namespace.yaml` file**
 
         </div>
 
@@ -108,8 +58,6 @@ Procedure
         # ...
         ```
 
-        </div>
-
     2.  Create the `Namespace` object by running the following command:
 
         ``` terminal
@@ -120,11 +68,9 @@ Procedure
 
     1.  Create a YAML file that defines the `OperatorGroup` object:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `operatorgroup.yaml` file
+        **Example `operatorgroup.yaml` file**
 
         </div>
 
@@ -138,8 +84,6 @@ Procedure
           upgradeStrategy: Default
         ```
 
-        </div>
-
     2.  Create the `OperatorGroup` object by running the following command:
 
         ``` terminal
@@ -150,11 +94,9 @@ Procedure
 
     1.  Create a YAML file that defines the `Subscription` object:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `subscription.yaml` file
+        **Example `subscription.yaml` file**
 
         </div>
 
@@ -172,23 +114,13 @@ Procedure
           sourceNamespace: openshift-marketplace
         ```
 
-        </div>
-
     2.  Create the `Subscription` object by running the following command:
 
         ``` terminal
         $ oc apply -f subscription.yaml
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Get the name of the install plan from the subscription:
 
@@ -208,41 +140,19 @@ Verification
 
     The output must be `Complete`.
 
-</div>
-
 # Creating the AWS Load Balancer Controller
 
 You can install only a single instance of the `AWSLoadBalancerController` object in a cluster. You can create the AWS Load Balancer Controller by using CLI. The AWS Load Balancer Operator reconciles only the `cluster` named resource.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have created the `echoserver` namespace.
 
 - You have access to the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a YAML file that defines the `AWSLoadBalancerController` object:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `sample-aws-lb.yaml` file
+    **Example `sample-aws-lb.yaml` file**
 
     </div>
 
@@ -262,8 +172,6 @@ Procedure
       enabledAddons:
         - AWSWAFv2
     ```
-
-    </div>
 
     where:
 
@@ -303,11 +211,9 @@ Procedure
 
 3.  Create a YAML file that defines the `Deployment` resource:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `sample-aws-lb.yaml` file
+    **Example `sample-aws-lb.yaml` file**
 
     </div>
 
@@ -340,8 +246,6 @@ Procedure
                 - containerPort: 8080
     ```
 
-    </div>
-
     where:
 
     `kind`
@@ -355,11 +259,9 @@ Procedure
 
 4.  Create a YAML file that defines the `Service` resource:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `service-albo.yaml` file
+    **Example `service-albo.yaml` file**
 
     </div>
 
@@ -379,8 +281,6 @@ Procedure
         app: echoserver
     ```
 
-    </div>
-
     where:
 
     `apiVersion`
@@ -391,11 +291,9 @@ Procedure
 
 5.  Create a YAML file that defines the `Ingress` resource:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `ingress-albo.yaml` file
+    **Example `ingress-albo.yaml` file**
 
     </div>
 
@@ -422,8 +320,6 @@ Procedure
                       number: 80
     ```
 
-    </div>
-
     where:
 
     `metadata.name`
@@ -431,16 +327,6 @@ Procedure
 
     `service.name`
     Specifies the service name.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Save the status of the `Ingress` resource in the `HOST` variable by running the following command:
 
@@ -453,5 +339,3 @@ Verification
   ``` terminal
   $ curl $HOST
   ```
-
-</div>

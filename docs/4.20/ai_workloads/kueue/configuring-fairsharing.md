@@ -10,11 +10,9 @@ Share values are important because they allow administrators to prioritize speci
 
 The `weight` value, or share value, defines a comparative advantage for the cluster queue when competing for borrowable resources. Generally, Red Hat build of Kueue admits jobs with a lower share value first. Jobs with a higher share value are more likely to be preempted before those with lower share values.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example cluster queue with a fair sharing weight configured
+**Example cluster queue with a fair sharing weight configured**
 
 </div>
 
@@ -36,8 +34,6 @@ spec:
   fairSharing:
     weight: 2
 ```
-
-</div>
 
 ## Zero weight
 

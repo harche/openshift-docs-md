@@ -1,52 +1,51 @@
 Before you can deploy virtual distributed unit (vDU) applications, you need to tune and configure the cluster host firmware and various other cluster configuration settings. Use the following information to validate the cluster configuration to support vDU workloads.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Workload partitioning in single-node OpenShift with GitOps ZTP](../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#ztp-workload-partitioning-sno_sno-configure-for-vdu)
 
 - [Reference configuration for deploying vDUs on single-node OpenShift](../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#sno-configure-for-vdu)
-
-</div>
 
 # Recommended firmware configuration for vDU cluster hosts
 
 Use the following table as the basis to configure the cluster host firmware for vDU applications running on OpenShift Container Platform 4.17.
 
-> [!NOTE]
-> The following table is a general recommendation for vDU cluster host firmware configuration. Exact firmware settings will depend on your requirements and specific hardware platform. Automatic setting of firmware is not handled by the zero touch provisioning pipeline.
+<div class="note">
 
-| Firmware setting | Configuration | Description |
-|----|----|----|
-| HyperTransport (HT) | Enabled | HyperTransport (HT) bus is a bus technology developed by AMD. HT provides a high-speed link between the components in the host memory and other system peripherals. |
-| UEFI | Enabled | Enable booting from UEFI for the vDU host. |
-| CPU Power and Performance Policy | Performance | Set CPU Power and Performance Policy to optimize the system for performance over energy efficiency. |
-| Uncore Frequency Scaling | Disabled | Disable Uncore Frequency Scaling to prevent the voltage and frequency of non-core parts of the CPU from being set independently. |
-| Uncore Frequency | Maximum | Sets the non-core parts of the CPU such as cache and memory controller to their maximum possible frequency of operation. |
-| Performance P-limit | Disabled | Disable Performance P-limit to prevent the Uncore frequency coordination of processors. |
-| Enhanced Intel® SpeedStep Tech | Enabled | Enable Enhanced Intel SpeedStep to allow the system to dynamically adjust processor voltage and core frequency that decreases power consumption and heat production in the host. |
-| Intel® Turbo Boost Technology | Enabled | Enable Turbo Boost Technology for Intel-based CPUs to automatically allow processor cores to run faster than the rated operating frequency if they are operating below power, current, and temperature specification limits. |
-| Intel Configurable TDP | Enabled | Enables Thermal Design Power (TDP) for the CPU. |
-| Configurable TDP Level | Level 2 | TDP level sets the CPU power consumption required for a particular performance rating. TDP level 2 sets the CPU to the most stable performance level at the cost of power consumption. |
-| Energy Efficient Turbo | Disabled | Disable Energy Efficient Turbo to prevent the processor from using an energy-efficiency based policy. |
-| Hardware P-States | Enabled or Disabled | Enable OS-controlled P-States to allow power saving configurations. Disable `P-states` (performance states) to optimize the operating system and CPU for performance over power consumption. |
-| Package C-State | C0/C1 state | Use C0 or C1 states to set the processor to a fully active state (C0) or to stop CPU internal clocks running in software (C1). |
-| C1E | Disabled | CPU Enhanced Halt (C1E) is a power saving feature in Intel chips. Disabling C1E prevents the operating system from sending a halt command to the CPU when inactive. |
-| Processor C6 | Disabled | C6 power-saving is a CPU feature that automatically disables idle CPU cores and cache. Disabling C6 improves system performance. |
-| Sub-NUMA Clustering | Disabled | Sub-NUMA clustering divides the processor cores, cache, and memory into multiple NUMA domains. Disabling this option can increase performance for latency-sensitive workloads. |
+The following table is a general recommendation for vDU cluster host firmware configuration. Exact firmware settings will depend on your requirements and specific hardware platform. Automatic setting of firmware is not handled by the zero touch provisioning pipeline.
+
+</div>
+
+| Firmware setting                 | Configuration       | Description                                                                                                                                                                                                                  |
+|----------------------------------|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| HyperTransport (HT)              | Enabled             | HyperTransport (HT) bus is a bus technology developed by AMD. HT provides a high-speed link between the components in the host memory and other system peripherals.                                                          |
+| UEFI                             | Enabled             | Enable booting from UEFI for the vDU host.                                                                                                                                                                                   |
+| CPU Power and Performance Policy | Performance         | Set CPU Power and Performance Policy to optimize the system for performance over energy efficiency.                                                                                                                          |
+| Uncore Frequency Scaling         | Disabled            | Disable Uncore Frequency Scaling to prevent the voltage and frequency of non-core parts of the CPU from being set independently.                                                                                             |
+| Uncore Frequency                 | Maximum             | Sets the non-core parts of the CPU such as cache and memory controller to their maximum possible frequency of operation.                                                                                                     |
+| Performance P-limit              | Disabled            | Disable Performance P-limit to prevent the Uncore frequency coordination of processors.                                                                                                                                      |
+| Enhanced Intel® SpeedStep Tech   | Enabled             | Enable Enhanced Intel SpeedStep to allow the system to dynamically adjust processor voltage and core frequency that decreases power consumption and heat production in the host.                                             |
+| Intel® Turbo Boost Technology    | Enabled             | Enable Turbo Boost Technology for Intel-based CPUs to automatically allow processor cores to run faster than the rated operating frequency if they are operating below power, current, and temperature specification limits. |
+| Intel Configurable TDP           | Enabled             | Enables Thermal Design Power (TDP) for the CPU.                                                                                                                                                                              |
+| Configurable TDP Level           | Level 2             | TDP level sets the CPU power consumption required for a particular performance rating. TDP level 2 sets the CPU to the most stable performance level at the cost of power consumption.                                       |
+| Energy Efficient Turbo           | Disabled            | Disable Energy Efficient Turbo to prevent the processor from using an energy-efficiency based policy.                                                                                                                        |
+| Hardware P-States                | Enabled or Disabled | Enable OS-controlled P-States to allow power saving configurations. Disable `P-states` (performance states) to optimize the operating system and CPU for performance over power consumption.                                 |
+| Package C-State                  | C0/C1 state         | Use C0 or C1 states to set the processor to a fully active state (C0) or to stop CPU internal clocks running in software (C1).                                                                                               |
+| C1E                              | Disabled            | CPU Enhanced Halt (C1E) is a power saving feature in Intel chips. Disabling C1E prevents the operating system from sending a halt command to the CPU when inactive.                                                          |
+| Processor C6                     | Disabled            | C6 power-saving is a CPU feature that automatically disables idle CPU cores and cache. Disabling C6 improves system performance.                                                                                             |
+| Sub-NUMA Clustering              | Disabled            | Sub-NUMA clustering divides the processor cores, cache, and memory into multiple NUMA domains. Disabling this option can increase performance for latency-sensitive workloads.                                               |
 
 Recommended cluster host firmware settings
 
-> [!NOTE]
-> Enable global SR-IOV and VT-d settings in the firmware for the host. These settings are relevant to bare-metal environments.
+<div class="note">
 
-> [!NOTE]
-> Enable both `C-states` and OS-controlled `P-States` to allow per pod power management.
+Enable global SR-IOV and VT-d settings in the firmware for the host. These settings are relevant to bare-metal environments.
+
+</div>
+
+<div class="note">
+
+Enable both `C-states` and OS-controlled `P-States` to allow per pod power management.
+
+</div>
 
 # Recommended cluster configurations to run vDU applications
 
@@ -65,52 +64,52 @@ The following `MachineConfig` CRs from the `ztp-site-generate` container configu
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">MachineConfig CR</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>01-container-mount-ns-and-kubelet-conf-master.yaml</code></p>
 <p><code>01-container-mount-ns-and-kubelet-conf-worker.yaml</code></p></td>
 <td style="text-align: left;"><p>Configures the container mount namespace and kubelet configuration.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>03-sctp-machine-config-master.yaml</code></p>
 <p><code>03-sctp-machine-config-worker.yaml</code></p></td>
 <td style="text-align: left;"><p>Loads the SCTP kernel module. These <code>MachineConfig</code> CRs are optional and can be omitted if you do not require this kernel module.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>06-kdump-master.yaml</code></p>
 <p><code>06-kdump-worker.yaml</code></p></td>
 <td style="text-align: left;"><p>Configures kdump crash reporting for the cluster.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>07-sriov-related-kernel-args-master.yaml</code></p></td>
 <td style="text-align: left;"><p>Configures SR-IOV kernel arguments in the cluster.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>08-set-rcu-normal-master.yaml</code></p>
 <p><code>08-set-rcu-normal-worker.yaml</code></p></td>
 <td style="text-align: left;"><p>Disables <code>rcu_expedited</code> mode after the cluster has rebooted.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>99-crio-disable-wipe-master.yaml</code></p>
 <p><code>99-crio-disable-wipe-worker.yaml</code></p></td>
 <td style="text-align: left;"><p>Disables the automatic CRI-O cache wipe following cluster reboot.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>99-sync-time-once-master.yaml</code></p>
 <p><code>99-sync-time-once-worker.yaml</code></p></td>
 <td style="text-align: left;"><p>Configures the one-time check and adjustment of the system clock by the Chrony service.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>enable-crun-master.yaml</code></p>
 <p><code>enable-crun-worker.yaml</code></p></td>
 <td style="text-align: left;"><p>Enables the <code>crun</code> OCI container runtime.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>extra-manifest/enable-cgroups-v1.yaml</code></p>
 <p><code>source-crs/extra-manifest/enable-cgroups-v1.yaml</code></p></td>
 <td style="text-align: left;"><p>Enables cgroups v1 during cluster installation and when generating RHACM cluster policies.</p></td>
@@ -118,22 +117,17 @@ The following `MachineConfig` CRs from the `ztp-site-generate` container configu
 </tbody>
 </table>
 
-> [!NOTE]
-> In OpenShift Container Platform 4.14 and later, you configure workload partitioning with the `cpuPartitioningMode` field in the `SiteConfig` CR.
+Recommended GitOps ZTP MachineConfig CRs
 
-<div>
+<div class="note">
 
-<div class="title">
-
-Additional resources
+In OpenShift Container Platform 4.14 and later, you configure workload partitioning with the `cpuPartitioningMode` field in the `SiteConfig` CR.
 
 </div>
 
 - [Workload partitioning in single-node OpenShift with GitOps ZTP](../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#ztp-workload-partitioning-sno_sno-configure-for-vdu)
 
 - [Extracting source CRs from the ztp-site-generate container](../edge_computing/ztp-preparing-the-hub-cluster.xml#ztp-preparing-the-ztp-git-repository_ztp-preparing-the-hub-cluster)
-
-</div>
 
 ## Recommended cluster Operators
 
@@ -229,29 +223,11 @@ Always use the latest supported real-time kernel version in your cluster. Ensure
 
 Always use the latest version of the realtime kernel in your OpenShift Container Platform clusters. If you are unsure about the kernel version that is in use in the cluster, you can compare the current realtime kernel version to the release version with the following procedure.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You are logged in as a user with `cluster-admin` privileges.
 
 - You have installed `podman`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the following command to get the cluster version:
 
@@ -271,11 +247,9 @@ Procedure
     $ podman run --rm $DTK_IMAGE rpm -qa | grep 'kernel-rt-core-' | sed 's#kernel-rt-core-##'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -283,26 +257,21 @@ Procedure
     4.18.0-305.49.1.rt7.121.el8_4.x86_64
     ```
 
-    </div>
-
     This is the default realtime kernel version that ships with the release.
 
-    > [!NOTE]
-    > The realtime kernel is denoted by the string `.rt` in the kernel version.
+    <div class="note">
 
-</div>
+    The realtime kernel is denoted by the string `.rt` in the kernel version.
 
-<div class="formalpara">
+    </div>
 
-<div class="title">
+<div class="formalpara-title">
 
-Verification
+**Verification**
 
 </div>
 
 Check that the kernel version listed for the cluster’s current release matches actual realtime kernel that is running in the cluster. Run the following commands to check the running realtime kernel version:
-
-</div>
 
 1.  Open a remote shell connection to the cluster node:
 
@@ -316,11 +285,9 @@ Check that the kernel version listed for the cluster’s current release matches
     sh-4.4# uname -r
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -328,19 +295,9 @@ Check that the kernel version listed for the cluster’s current release matches
     4.18.0-305.49.1.rt7.121.el8_4.x86_64
     ```
 
-    </div>
-
 # Checking that the recommended cluster configurations are applied
 
 You can check that clusters are running the correct configuration. The following procedure describes how to check the various configurations that you require to deploy a DU application in OpenShift Container Platform 4.17 clusters.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have deployed a cluster and tuned it for vDU workloads.
 
@@ -348,27 +305,15 @@ Prerequisites
 
 - You have logged in as a user with `cluster-admin` privileges.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Check that the default OperatorHub sources are disabled. Run the following command:
 
     ``` terminal
     $ oc get operatorhub cluster -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -377,19 +322,15 @@ Procedure
         disableAllDefaultSources: true
     ```
 
-    </div>
-
 2.  Check that all required `CatalogSource` resources are annotated for workload partitioning (`PreferredDuringScheduling`) by running the following command:
 
     ``` terminal
     $ oc get catalogsource -A -o jsonpath='{range .items[*]}{.metadata.name}{" -- "}{.metadata.annotations.target\.workload\.openshift\.io/management}{"\n"}{end}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -401,12 +342,13 @@ Procedure
     redhat-operators -- {"effect": "PreferredDuringScheduling"}
     ```
 
-    </div>
-
     - `CatalogSource` resources that are not annotated are also returned. In this example, the `ran-operators` `CatalogSource` resource is not annotated and does not have the `PreferredDuringScheduling` annotation.
 
-      > [!NOTE]
-      > In a properly configured vDU cluster, only a single annotated catalog source is listed.
+      <div class="note">
+
+      In a properly configured vDU cluster, only a single annotated catalog source is listed.
+
+      </div>
 
 3.  Check that all applicable OpenShift Container Platform Operator namespaces are annotated for workload partitioning. This includes all Operators installed with core OpenShift Container Platform and the set of additional Operators included in the reference DU tuning configuration. Run the following command:
 
@@ -414,11 +356,9 @@ Procedure
     $ oc get namespaces -A -o jsonpath='{range .items[*]}{.metadata.name}{" -- "}{.metadata.annotations.workload\.openshift\.io/allowed}{"\n"}{end}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -430,10 +370,11 @@ Procedure
     openshift-authentication-operator -- management
     ```
 
-    </div>
+    <div class="important">
 
-    > [!IMPORTANT]
-    > Additional Operators must not be annotated for workload partitioning. In the output from the previous command, additional Operators should be listed without any value on the right side of the `--` separator.
+    Additional Operators must not be annotated for workload partitioning. In the output from the previous command, additional Operators should be listed without any value on the right side of the `--` separator.
+
+    </div>
 
 4.  Check that the `ClusterLogging` configuration is correct. Run the following commands:
 
@@ -443,11 +384,9 @@ Procedure
         $ oc get -n openshift-logging ClusterLogForwarder instance -o yaml
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -483,19 +422,15 @@ Procedure
         ...
         ```
 
-        </div>
-
     2.  Check that the curation schedule is appropriate for your application:
 
         ``` terminal
         $ oc get -n openshift-logging clusterloggings.logging.openshift.io instance -o yaml
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -522,27 +457,21 @@ Procedure
         ...
         ```
 
-        </div>
-
 5.  Check that the web console is disabled (`managementState: Removed`) by running the following command:
 
     ``` terminal
     $ oc get consoles.operator.openshift.io cluster -o jsonpath="{ .spec.managementState }"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     Removed
     ```
-
-    </div>
 
 6.  Check that `chronyd` is disabled on the cluster node by running the following commands:
 
@@ -560,11 +489,9 @@ Procedure
     sh-4.4# systemctl status chronyd
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -575,8 +502,6 @@ Procedure
           Docs: man:chronyd(8)
                 man:chrony.conf(5)
     ```
-
-    </div>
 
 7.  Check that the PTP interface is successfully synchronized to the primary clock using a remote shell connection to the `linuxptp-daemon` container and the PTP Management Client (`pmc`) tool:
 
@@ -592,11 +517,9 @@ Procedure
         $ oc -n openshift-ptp rsh -c linuxptp-daemon-container ${PTP_POD_NAME} pmc -u -f /var/run/ptp4l.0.config -b 0 'GET PORT_DATA_SET'
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -626,19 +549,15 @@ Procedure
             versionNumber           2
         ```
 
-        </div>
-
     3.  Run the following `pmc` command to check the PTP clock status:
 
         ``` terminal
         $ oc -n openshift-ptp rsh -c linuxptp-daemon-container ${PTP_POD_NAME} pmc -u -f /var/run/ptp4l.0.config -b 0 'GET TIME_STATUS_NP'
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -655,8 +574,6 @@ Procedure
             gmIdentity                 3c2c30.ffff.670e00
         ```
 
-        </div>
-
         - `master_offset` should be between -100 and 100 ns.
 
         - Indicates that the PTP clock is synchronized to a master, and the local clock is not the grandmaster clock.
@@ -667,11 +584,9 @@ Procedure
         $ oc logs $PTP_POD_NAME -n openshift-ptp -c linuxptp-daemon-container
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -681,8 +596,6 @@ Procedure
         ptp4l[56020.390]: [ptp4l.0.config] master offset         -8 s2 freq  -10699 path delay       533
         ```
 
-        </div>
-
 8.  Check that the SR-IOV configuration is correct by running the following commands:
 
     1.  Check that the `disableDrain` value in the `SriovOperatorConfig` resource is set to `true`:
@@ -691,11 +604,9 @@ Procedure
         $ oc get sriovoperatorconfig -n openshift-sriov-network-operator default -o jsonpath="{.spec.disableDrain}{'\n'}"
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -703,19 +614,15 @@ Procedure
         true
         ```
 
-        </div>
-
     2.  Check that the `SriovNetworkNodeState` sync status is `Succeeded` by running the following command:
 
         ``` terminal
         $ oc get SriovNetworkNodeStates -n openshift-sriov-network-operator -o jsonpath="{.items[*].status.syncStatus}{'\n'}"
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -723,19 +630,15 @@ Procedure
         Succeeded
         ```
 
-        </div>
-
     3.  Verify that the expected number and configuration of virtual functions (`Vfs`) under each interface configured for SR-IOV is present and correct in the `.status.interfaces` field. For example:
 
         ``` terminal
         $ oc get SriovNetworkNodeStates -n openshift-sriov-network-operator -o yaml
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -791,19 +694,15 @@ Procedure
                 vfID: 7
         ```
 
-        </div>
-
 9.  Check that the cluster performance profile is correct. The `cpu` and `hugepages` sections will vary depending on your hardware configuration. Run the following command:
 
     ``` terminal
     $ oc get PerformanceProfile openshift-node-performance-profile -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -863,10 +762,11 @@ Procedure
       tuned: openshift-cluster-node-tuning-operator/openshift-node-performance-openshift-node-performance-profile
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > CPU settings are dependent on the number of cores available on the server and should align with workload partitioning settings. `hugepages` configuration is server and application dependent.
+    CPU settings are dependent on the number of cores available on the server and should align with workload partitioning settings. `hugepages` configuration is server and application dependent.
+
+    </div>
 
 10. Check that the `PerformanceProfile` was successfully applied to the cluster by running the following command:
 
@@ -874,11 +774,9 @@ Procedure
     $ oc get performanceprofile openshift-node-performance-profile -o jsonpath="{range .status.conditions[*]}{ @.type }{' -- '}{@.status}{'\n'}{end}"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -889,19 +787,15 @@ Procedure
     Degraded -- False
     ```
 
-    </div>
-
 11. Check the `Tuned` performance patch settings by running the following command:
 
     ``` terminal
     $ oc get tuneds.tuned.openshift.io -n openshift-cluster-node-tuning-operator performance-patch -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -938,8 +832,6 @@ Procedure
         profile: performance-patch
     ```
 
-    </div>
-
     - The cpu list in `cmdline=nohz_full=` will vary based on your hardware configuration.
 
 12. Check that cluster networking diagnostics are disabled by running the following command:
@@ -948,11 +840,9 @@ Procedure
     $ oc get networks.operator.openshift.io cluster -o jsonpath='{.spec.disableNetworkDiagnostics}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -960,19 +850,15 @@ Procedure
     true
     ```
 
-    </div>
-
 13. Check that the `Kubelet` housekeeping interval is tuned to slower rate. This is set in the `containerMountNS` machine config. Run the following command:
 
     ``` terminal
     $ oc describe machineconfig container-mount-namespace-and-kubelet-conf-master | grep OPENSHIFT_MAX_HOUSEKEEPING_INTERVAL_DURATION
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -980,19 +866,15 @@ Procedure
     Environment="OPENSHIFT_MAX_HOUSEKEEPING_INTERVAL_DURATION=60s"
     ```
 
-    </div>
-
 14. Check that Grafana and `alertManagerMain` are disabled and that the Prometheus retention period is set to 24h by running the following command:
 
     ``` terminal
     $ oc get configmap cluster-monitoring-config -n openshift-monitoring -o jsonpath="{ .data.config\.yaml }"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1004,8 +886,6 @@ Procedure
     prometheusK8s:
        retention: 24h
     ```
-
-    </div>
 
     1.  Use the following commands to verify that Grafana and `alertManagerMain` routes are not found in the cluster:
 
@@ -1025,11 +905,9 @@ Procedure
     $ oc get performanceprofile -o jsonpath="{ .items[0].spec.cpu.reserved }"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1037,9 +915,8 @@ Procedure
     0-3
     ```
 
+    <div class="note">
+
+    Depending on your workload requirements, you might require additional reserved CPUs to be allocated.
+
     </div>
-
-    > [!NOTE]
-    > Depending on your workload requirements, you might require additional reserved CPUs to be allocated.
-
-</div>

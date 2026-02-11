@@ -12,17 +12,23 @@ In OpenShift Container Platform, *pod affinity* and *pod anti-affinity* allow yo
 
 For example, using affinity rules, you could spread or pack pods within a service or relative to pods in other services. Anti-affinity rules allow you to prevent pods of a particular service from scheduling on the same nodes as pods of another service that are known to interfere with the performance of the pods of the first service. Or, you could spread the pods of a service across nodes, availability zones, or availability sets to reduce correlated failures.
 
-> [!NOTE]
-> A label selector might match pods with multiple pod deployments. Use unique combinations of labels when configuring anti-affinity rules to avoid matching pods.
+<div class="note">
+
+A label selector might match pods with multiple pod deployments. Use unique combinations of labels when configuring anti-affinity rules to avoid matching pods.
+
+</div>
 
 There are two types of pod affinity rules: *required* and *preferred*.
 
 Required rules **must** be met before a pod can be scheduled on a node. Preferred rules specify that, if the rule is met, the scheduler tries to enforce the rules, but does not guarantee enforcement.
 
-> [!NOTE]
-> Depending on your pod priority and preemption settings, the scheduler might not be able to find an appropriate node for a pod without violating affinity requirements. If so, a pod might not be scheduled.
->
-> To prevent this situation, carefully configure pod affinity with equal-priority pods.
+<div class="note">
+
+Depending on your pod priority and preemption settings, the scheduler might not be able to find an appropriate node for a pod without violating affinity requirements. If so, a pod might not be scheduled.
+
+To prevent this situation, carefully configure pod affinity with equal-priority pods.
+
+</div>
 
 You configure pod affinity/anti-affinity through the `Pod` spec files. You can specify a required rule, a preferred rule, or both. If you specify both, the node must first meet the required rule, then attempts to meet the preferred rule.
 
@@ -30,11 +36,9 @@ The following example shows a `Pod` spec configured for pod affinity and anti-af
 
 In this example, the pod affinity rule indicates that the pod can schedule onto a node only if that node has at least one already-running pod with a label that has the key `security` and value `S1`. The pod anti-affinity rule says that the pod prefers to not schedule onto a node if that node is already running a pod with label having key `security` and value `S2`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample `Pod` config file with pod affinity
+**Sample `Pod` config file with pod affinity**
 
 </div>
 
@@ -67,8 +71,6 @@ spec:
         drop: [ALL]
 ```
 
-</div>
-
 - Stanza to configure pod affinity.
 
 - Defines a required rule.
@@ -77,11 +79,9 @@ spec:
 
 - The operator represents the relationship between the label on the existing pod and the set of values in the `matchExpression` parameters in the specification for the new pod. Can be `In`, `NotIn`, `Exists`, or `DoesNotExist`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample `Pod` config file with pod anti-affinity
+**Sample `Pod` config file with pod anti-affinity**
 
 </div>
 
@@ -116,8 +116,6 @@ spec:
         drop: [ALL]
 ```
 
-</div>
-
 - Stanza to configure pod anti-affinity.
 
 - Defines a preferred rule.
@@ -128,21 +126,19 @@ spec:
 
 - The operator represents the relationship between the label on the existing pod and the set of values in the `matchExpression` parameters in the specification for the new pod. Can be `In`, `NotIn`, `Exists`, or `DoesNotExist`.
 
-> [!NOTE]
-> If labels on a node change at runtime such that the affinity rules on a pod are no longer met, the pod continues to run on the node.
+<div class="note">
+
+If labels on a node change at runtime such that the affinity rules on a pod are no longer met, the pod continues to run on the node.
+
+</div>
 
 # Configuring a pod affinity rule
 
 The following steps demonstrate a simple two-pod configuration that creates pod with a label and a pod that uses affinity to allow scheduling with that pod.
 
-> [!NOTE]
-> You cannot add an affinity directly to a scheduled pod.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+You cannot add an affinity directly to a scheduled pod.
 
 </div>
 
@@ -217,20 +213,13 @@ Procedure
         $ oc create -f <pod-spec>.yaml
         ```
 
-</div>
-
 # Configuring a pod anti-affinity rule
 
 The following steps demonstrate a simple two-pod configuration that creates pod with a label and a pod that uses an anti-affinity preferred rule to attempt to prevent scheduling with that pod.
 
-> [!NOTE]
-> You cannot add an affinity directly to a scheduled pod.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+You cannot add an affinity directly to a scheduled pod.
 
 </div>
 
@@ -309,8 +298,6 @@ Procedure
         ``` terminal
         $ oc create -f <pod-spec>.yaml
         ```
-
-</div>
 
 # Sample pod affinity and anti-affinity rules
 
@@ -508,11 +495,9 @@ The following example demonstrates pod affinity for pods without matching labels
 
 - The pod **pod-s2** is not scheduled unless there is a node with a pod that has the `security:s2` label. If there is no other pod with that label, the new pod remains in a pending state:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -520,8 +505,6 @@ The following example demonstrates pod affinity for pods without matching labels
   NAME      READY     STATUS    RESTARTS   AGE       IP        NODE
   pod-s2    0/1       Pending   0          32s       <none>
   ```
-
-  </div>
 
 # Using pod affinity and anti-affinity to control where an Operator is installed
 
@@ -541,11 +524,9 @@ You can control where an Operator pod is installed by adding a pod affinity or a
 
 The following example shows how to use pod anti-affinity to prevent the installation the Custom Metrics Autoscaler Operator from any node that has pods with a specific label:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Pod affinity example that places the Operator pod on one or more specific nodes
+**Pod affinity example that places the Operator pod on one or more specific nodes**
 
 </div>
 
@@ -573,15 +554,11 @@ spec:
 #...
 ```
 
-</div>
-
 - A pod affinity that places the Operator’s pod on a node that has pods with the `app=test` label.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Pod anti-affinity example that prevents the Operator pod from one or more specific nodes
+**Pod anti-affinity example that prevents the Operator pod from one or more specific nodes**
 
 </div>
 
@@ -609,21 +586,15 @@ spec:
 #...
 ```
 
-</div>
-
 - A pod anti-affinity that prevents the Operator’s pod from being scheduled on a node that has pods with the `cpu=high` label.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To control the placement of an Operator pod, complete the following steps:
-
-</div>
 
 1.  Install the Operator as usual.
 
@@ -658,25 +629,15 @@ To control the placement of an Operator pod, complete the following steps:
 
     - Add a `podAffinity` or `podAntiAffinity`.
 
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - To ensure that the pod is deployed on the specific node, run the following command:
 
   ``` yaml
   $ oc get pods -o wide
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -684,7 +645,3 @@ Verification
   NAME                                                  READY   STATUS    RESTARTS   AGE   IP            NODE                           NOMINATED NODE   READINESS GATES
   custom-metrics-autoscaler-operator-5dcc45d656-bhshg   1/1     Running   0          50s   10.131.0.20   ip-10-0-185-229.ec2.internal   <none>           <none>
   ```
-
-  </div>
-
-</div>

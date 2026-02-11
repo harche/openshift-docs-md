@@ -16,10 +16,13 @@ When you enable etcd encryption, the following OpenShift API server and Kubernet
 
 When you enable etcd encryption, encryption keys are created. You must have these keys to restore from an etcd backup.
 
-> [!NOTE]
-> Etcd encryption only encrypts values, not keys. Resource types, namespaces, and object names are unencrypted.
->
-> If etcd encryption is enabled during a backup, the `static_kuberesources_<datetimestamp>.tar.gz` file contains the encryption keys for the etcd snapshot. For security reasons, store this file separately from the etcd snapshot. However, this file is required to restore a previous state of etcd from the respective etcd snapshot.
+<div class="note">
+
+Etcd encryption only encrypts values, not keys. Resource types, namespaces, and object names are unencrypted.
+
+If etcd encryption is enabled during a backup, the `static_kuberesources_<datetimestamp>.tar.gz` file contains the encryption keys for the etcd snapshot. For security reasons, store this file separately from the etcd snapshot. However, this file is required to restore a previous state of etcd from the respective etcd snapshot.
+
+</div>
 
 # Supported encryption types
 
@@ -35,41 +38,29 @@ Uses AES-GCM with a random nonce and a 32 byte key to perform the encryption. Th
 
 You can enable etcd encryption to encrypt sensitive resources in your cluster.
 
-> [!WARNING]
-> Do not back up etcd resources until the initial encryption process is completed. If the encryption process is not completed, the backup might be only partially encrypted.
->
-> After you enable etcd encryption, several changes can occur:
->
-> - The etcd encryption might affect the memory consumption of a few resources.
->
-> - You might notice a transient affect on backup performance because the leader must serve the backup.
->
-> - A disk I/O can affect the node that receives the backup state.
+<div class="warning">
+
+Do not back up etcd resources until the initial encryption process is completed. If the encryption process is not completed, the backup might be only partially encrypted.
+
+After you enable etcd encryption, several changes can occur:
+
+- The etcd encryption might affect the memory consumption of a few resources.
+
+- You might notice a transient affect on backup performance because the leader must serve the backup.
+
+- A disk I/O can affect the node that receives the backup state.
+
+</div>
 
 You can encrypt the etcd database in either AES-GCM or AES-CBC encryption.
 
-> [!NOTE]
-> To migrate your etcd database from one encryption type to the other, you can modify the API server’s `spec.encryption.type` field. Migration of the etcd data to the new encryption type occurs automatically.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+To migrate your etcd database from one encryption type to the other, you can modify the API server’s `spec.encryption.type` field. Migration of the etcd data to the new encryption type occurs automatically.
 
 </div>
 
 - Access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Modify the `APIServer` object:
 
@@ -138,31 +129,11 @@ Procedure
 
         If the output shows `EncryptionInProgress`, encryption is still in progress. Wait a few minutes and try again.
 
-</div>
-
 # Disabling etcd encryption
 
 You can disable encryption of etcd data in your cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Modify the `APIServer` object:
 
@@ -230,5 +201,3 @@ Procedure
         ```
 
         If the output shows `DecryptionInProgress`, decryption is still in progress. Wait a few minutes and try again.
-
-</div>

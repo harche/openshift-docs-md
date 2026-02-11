@@ -12,34 +12,19 @@ You uninstall OpenShift Virtualization by using the [web console](../../web_cons
 
 4.  [Delete the OpenShift Virtualization custom resource definitions (CRDs)](../../virt/install/uninstalling-virt.xml#virt-deleting-virt-crds-web_uninstalling-virt).
 
-> [!IMPORTANT]
-> You must first delete all [virtual machines](../../virt/managing_vms/virt-delete-vms.xml#virt-delete-vm-web_virt-delete-vms), and [virtual machine instances](../../virt/managing_vms/virt-manage-vmis.xml#virt-deleting-vmis-cli_virt-manage-vmis).
->
-> You cannot uninstall OpenShift Virtualization while its workloads remain on the cluster.
+<div class="important">
+
+You must first delete all [virtual machines](../../virt/managing_vms/virt-delete-vms.xml#virt-delete-vm-web_virt-delete-vms), and [virtual machine instances](../../virt/managing_vms/virt-manage-vmis.xml#virt-deleting-vmis-cli_virt-manage-vmis).
+
+You cannot uninstall OpenShift Virtualization while its workloads remain on the cluster.
+
+</div>
 
 ## Deleting the HyperConverged custom resource
 
 To uninstall OpenShift Virtualization, you first delete the `HyperConverged` custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to the **Ecosystem** → **Installed Operators** page.
 
@@ -51,31 +36,11 @@ Procedure
 
 5.  Click **Delete** in the confirmation window.
 
-</div>
-
 ## Deleting Operators from a cluster using the web console
 
 Cluster administrators can delete installed Operators from a selected namespace by using the web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the OpenShift Container Platform cluster web console using an account with `cluster-admin` permissions.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to the **Ecosystem** → **Installed Operators** page.
 
@@ -87,34 +52,17 @@ Procedure
 
 4.  Select **Uninstall** to remove the Operator, Operator deployments, and pods. Following this action, the Operator stops running and no longer receives updates.
 
-    > [!NOTE]
-    > This action does not remove resources managed by the Operator, including custom resource definitions (CRDs) and custom resources (CRs). Dashboards and navigation items enabled by the web console and off-cluster resources that continue to run might need manual clean up. To remove these after uninstalling the Operator, you might need to manually delete the Operator CRDs.
+    <div class="note">
 
-</div>
+    This action does not remove resources managed by the Operator, including custom resource definitions (CRDs) and custom resources (CRs). Dashboards and navigation items enabled by the web console and off-cluster resources that continue to run might need manual clean up. To remove these after uninstalling the Operator, you might need to manually delete the Operator CRDs.
+
+    </div>
 
 ## Deleting a namespace using the web console
 
 You can delete a namespace by using the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Administration** → **Namespaces**.
 
@@ -126,31 +74,11 @@ Procedure
 
 5.  Click **Delete**.
 
-</div>
-
 ## Deleting OpenShift Virtualization custom resource definitions
 
 You can delete the OpenShift Virtualization custom resource definitions (CRDs) by using the web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Administration** → **CustomResourceDefinitions**.
 
@@ -158,35 +86,15 @@ Procedure
 
 3.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) beside each CRD and select **Delete CustomResourceDefinition**.
 
-</div>
-
 # Uninstalling OpenShift Virtualization by using the CLI
 
 You can uninstall OpenShift Virtualization by using the OpenShift CLI (`oc`).
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have deleted all virtual machines and virtual machine instances. You cannot uninstall OpenShift Virtualization while its workloads remain on the cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Delete the `HyperConverged` custom resource:
 
@@ -234,18 +142,6 @@ Procedure
     $ oc delete crd -l operators.coreos.com/kubevirt-hyperconverged.openshift-cnv
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Deleting virtual machines](../../virt/managing_vms/virt-delete-vms.xml#virt-delete-vm-web_virt-delete-vms)
 
 - [Deleting virtual machine instances](../../virt/managing_vms/virt-manage-vmis.xml#virt-deleting-vmis-cli_virt-manage-vmis)
-
-</div>

@@ -8,25 +8,7 @@ You can change the Red Hat OpenStack Platform (RHOSP) compute service (Nova) fl
 
 In RHOSP, flavors define the compute, memory, and storage capacity of computing instances. By increasing or decreasing the flavor size, you can scale your control plane vertically.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Your RHOSP cluster uses a control plane machine set.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the following line under the `providerSpec` field:
 
@@ -40,8 +22,6 @@ Procedure
     - Specify a RHOSP flavor type that has the same base as the existing selection. For example, you can change `m6i.xlarge` to `m6i.2xlarge` or `m6i.4xlarge`. You can choose larger or smaller flavors depending on your vertical scaling needs.
 
 2.  Save your changes.
-
-</div>
 
 After you save your changes, machines are replaced with ones that use the flavor you chose.
 

@@ -10,49 +10,37 @@ Installing the Red Hat build of OpenTelemetry involves the following steps:
 
 You can install the Red Hat build of OpenTelemetry from the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to the web console as a cluster administrator with the `cluster-admin` role.
 
 - For Red Hat OpenShift Dedicated, you must be logged in using an account with the `dedicated-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Install the Red Hat build of OpenTelemetry Operator:
 
     1.  In the web console, search for `Red Hat build of OpenTelemetry Operator`.
 
-        > [!TIP]
-        > In OpenShift Container Platform 4.19 or earlier, go to **Operators** → **OperatorHub**.
-        >
-        > In OpenShift Container Platform 4.20 or later, go to **Ecosystem** → **Software Catalog**.
+        <div class="tip">
+
+        In OpenShift Container Platform 4.19 or earlier, go to **Operators** → **OperatorHub**.
+
+        In OpenShift Container Platform 4.20 or later, go to **Ecosystem** → **Software Catalog**.
+
+        </div>
 
     2.  Select the **Red Hat build of OpenTelemetry Operator** that is **provided by Red Hat** → **Install** → **Install** → **View Operator**.
 
-        > [!IMPORTANT]
-        > This installs the Operator with the default presets:
-        >
-        > - **Update channel** → **stable**
-        >
-        > - **Installation mode** → **All namespaces on the cluster**
-        >
-        > - **Installed Namespace** → **openshift-opentelemetry-operator**
-        >
-        > - **Update approval** → **Automatic**
+        <div class="important">
+
+        This installs the Operator with the default presets:
+
+        - **Update channel** → **stable**
+
+        - **Installation mode** → **All namespaces on the cluster**
+
+        - **Installed Namespace** → **openshift-opentelemetry-operator**
+
+        - **Update approval** → **Automatic**
+
+        </div>
 
     3.  In the **Details** tab of the installed Operator page, under **ClusterServiceVersion details**, verify that the installation **Status** is **Succeeded**.
 
@@ -66,11 +54,9 @@ Procedure
 
     3.  In the **YAML view**, customize the `OpenTelemetryCollector` custom resource (CR):
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `OpenTelemetryCollector` CR
+        **Example `OpenTelemetryCollector` CR**
 
         </div>
 
@@ -111,8 +97,6 @@ Procedure
                   exporters: [debug]
         ```
 
-        </div>
-
         - The project that you have chosen for the `OpenTelemetryCollector` deployment. Project names beginning with the `openshift-` prefix are not permitted.
 
         - The deployment mode with the following supported values: the default `deployment`, `daemonset`, `statefulset`, or `sidecar`. For details, see *Deployment Modes*.
@@ -125,15 +109,7 @@ Procedure
 
     4.  Select **Create**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Use the **Project:** dropdown list to select the project of the **OpenTelemetry Collector** instance.
 
@@ -141,27 +117,13 @@ Verification
 
 3.  Go to **Workloads** → **Pods** to verify that all the component pods of the **OpenTelemetry Collector** instance are running.
 
-</div>
-
 # Installing the Red Hat build of OpenTelemetry by using the CLI
 
 You can install the Red Hat build of OpenTelemetry from the command line.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - An active OpenShift CLI (`oc`) session by a cluster administrator with the `cluster-admin` role.
 
   <div class="tip">
-
-  <div class="title">
-
-  </div>
 
   - Ensure that your OpenShift CLI (`oc`) version is up to date and matches your OpenShift Container Platform version.
 
@@ -172,16 +134,6 @@ Prerequisites
     ```
 
   </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Install the Red Hat build of OpenTelemetry Operator:
 
@@ -262,16 +214,17 @@ Procedure
 
 3.  Create an OpenTelemetry Collector instance in the project that you created for it.
 
-    > [!NOTE]
-    > You can create multiple OpenTelemetry Collector instances in separate projects on the same cluster.
+    <div class="note">
+
+    You can create multiple OpenTelemetry Collector instances in separate projects on the same cluster.
+
+    </div>
 
     1.  Customize the `OpenTelemetryCollector` custom resource (CR):
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `OpenTelemetryCollector` CR
+        **Example `OpenTelemetryCollector` CR**
 
         </div>
 
@@ -312,8 +265,6 @@ Procedure
                   exporters: [debug]
         ```
 
-        </div>
-
         - The project that you have chosen for the `OpenTelemetryCollector` deployment. Project names beginning with the `openshift-` prefix are not permitted.
 
         - The deployment mode with the following supported values: the default `deployment`, `daemonset`, `statefulset`, or `sidecar`. For details, see *Deployment Modes*.
@@ -332,15 +283,7 @@ Procedure
         EOF
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the `status.phase` of the OpenTelemetry Collector pod is `Running` and the `conditions` are `type: Ready` by running the following command:
 
@@ -354,8 +297,6 @@ Verification
     $ oc get service -l app.kubernetes.io/managed-by=opentelemetry-operator,app.kubernetes.io/instance=<namespace>.<instance_name>
     ```
 
-</div>
-
 # Using taints and tolerations
 
 To schedule the OpenTelemetry pods on dedicated nodes, see [How to deploy the different OpenTelemetry components on infra nodes using nodeSelector and tolerations in OpenShift 4](https://access.redhat.com/solutions/7040771)
@@ -363,14 +304,6 @@ To schedule the OpenTelemetry pods on dedicated nodes, see [How to deploy the di
 # Creating the required RBAC resources automatically
 
 Some Collector components require configuring the RBAC resources.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Add the following permissions to the `opentelemetry-operator-controller-manage` service account so that the Red Hat build of OpenTelemetry Operator can create them automatically:
 
@@ -407,8 +340,6 @@ Procedure
     name: opentelemetry-operator-controller-manager
     namespace: openshift-opentelemetry-operator
   ```
-
-</div>
 
 # Additional resources
 

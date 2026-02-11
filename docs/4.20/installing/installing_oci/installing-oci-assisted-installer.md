@@ -30,33 +30,25 @@ The installation process uses the OpenShift Container Platform discovery ISO ima
 
 Before installing OpenShift Container Platform on Oracle Distributed Cloud, you must consider the following configuration choices.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Deployment platforms
+**Deployment platforms**
 
 </div>
 
 The integration between OpenShift Container Platform and Oracle Distributed Cloud is certified on both virtual machines (VMs) and bare-metal (BM) machines. Bare-metal installations using iSCSI boot drives require a secondary vNIC that is automatically created in the Terraform stack provided by Oracle.
 
-</div>
-
 Before you create a virtual machine (VM) or bare-metal (BM) machine, you must identify the relevant OCI shape. For details, see the following resource:
 
 - [Cloud instance types (Red Hat Ecosystem Catalog portal)](https://catalog.redhat.com/cloud/detail/216977).
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-VPU sizing recommendations
+**VPU sizing recommendations**
 
 </div>
 
 To ensure the best performance conditions for your cluster workloads that operate on Oracle Distributed Cloud, ensure that volume performance units (VPUs) for your block volume are sized for your workloads. The following list provides guidance for selecting the VPUs needed for specific performance needs:
-
-</div>
 
 - Test or proof of concept environment: 100 GB, and 20 to 30 VPUs.
 
@@ -66,17 +58,13 @@ To ensure the best performance conditions for your cluster workloads that operat
 
 Consider reserving additional VPUs to provide sufficient capacity for updates and scaling activities. For more information about VPUs, see [Volume Performance Units (Oracle documentation)](https://docs.oracle.com/en-us/iaas/Content/Block/Concepts/blockvolumeperformance.htm#vpus).
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Instance sizing recommendations
+**Instance sizing recommendations**
 
 </div>
 
 Find recommended values for compute instance CPU, memory, VPU, and volume size for OpenShift Container Platform nodes. For details, see [Instance Sizing Recommendations for OpenShift Container Platform Nodes (Oracle documentation)](https://docs.oracle.com/en-us/iaas/Content/openshift-on-oci/installing-agent-about-instance-configurations.htm).
-
-</div>
 
 ## Workflow
 
@@ -119,14 +107,9 @@ The procedure for using the Assisted Installer in a connected environment to ins
 
     3.  Install the cluster.
 
-> [!IMPORTANT]
-> The steps for provisioning OCI resources are provided as an example only. You can also choose to create the required resources through other methods; the scripts are just an example. Installing a cluster with infrastructure that you provide requires knowledge of the cloud provider and the installation process on OpenShift Container Platform. You can access OCI configurations to complete these steps, or use the configurations to model your own custom script.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Additional resources
+The steps for provisioning OCI resources are provided as an example only. You can also choose to create the required resources through other methods; the scripts are just an example. Installing a cluster with infrastructure that you provide requires knowledge of the cloud provider and the installation process on OpenShift Container Platform. You can access OCI configurations to complete these steps, or use the configurations to model your own custom script.
 
 </div>
 
@@ -136,33 +119,13 @@ Additional resources
 
 - [Internet access for OpenShift Container Platform](../../installing/installing_platform_agnostic/installing-platform-agnostic.xml#cluster-entitlements_installing-platform-agnostic)
 
-</div>
-
 # Preparing the Oracle Distributed Cloud environment
 
 Before installing OpenShift Container Platform using Assisted Installer, create the necessary resources and download the configuration file in the Oracle Distributed Cloud environment.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have an Oracle Cloud Infrastructure (OCI) account to host the cluster.
 
 - If you use a firewall and you plan to use a Telemetry service, you configured your firewall to allow OpenShift Container Platform to access the sites required.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to your [OCI](https://cloud.oracle.com/a/) account with administrator privileges.
 
@@ -178,42 +141,25 @@ Procedure
 
     - **Custom Manifests**: The manifest files needed for the installation of OpenShift Container Platform clusters on Oracle Distributed Cloud.
 
-    > [!NOTE]
-    > To make any changes to the manifests, you can clone the entire Oracle GitHub repository and access the `custom_manifests` and `terraform-stacks` directories directly.
+    <div class="note">
+
+    To make any changes to the manifests, you can clone the entire Oracle GitHub repository and access the `custom_manifests` and `terraform-stacks` directories directly.
+
+    </div>
 
     For details, see [Configuration Files (Oracle documentation)](https://docs.oracle.com/iaas/Content/openshift-on-oci/install-prereq.htm#install-configuration-files).
-
-</div>
 
 # Using the Assisted Installer to generate a discovery ISO image
 
 Create the cluster configuration and generate the discovery ISO image in the Assisted Installer web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You created a child compartment and an object storage bucket on Oracle Distributed Cloud. For details, see *Preparing the Oracle Distributed Cloud environment*.
 
 - You reviewed details about the OpenShift Container Platform installation and update processes.
 
-</div>
-
 ## Creating the cluster
 
 Set the cluster details.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the [Assisted Installer web console](https://console.redhat.com/) with your credentials.
 
@@ -233,31 +179,31 @@ Procedure
     <col style="width: 75%" />
     </colgroup>
     <thead>
-    <tr>
+    <tr class="header">
     <th style="text-align: left;">Field</th>
     <th style="text-align: left;">Action required</th>
     </tr>
     </thead>
     <tbody>
-    <tr>
+    <tr class="odd">
     <td style="text-align: left;"><p><strong>Cluster name</strong></p></td>
     <td style="text-align: left;"><p>Specify the name of your cluster, such as <code>oci</code>. This is the same value as the cluster name in Oracle Distributed Cloud.</p></td>
     </tr>
-    <tr>
+    <tr class="even">
     <td style="text-align: left;"><p><strong>Base domain</strong></p></td>
     <td style="text-align: left;"><p>Specify the base domain of the cluster, such as <code>openshift-demo.devcluster.openshift.com</code>.</p>
     <p>This must be the same value as the zone DNS server in Oracle Distributed Cloud.</p></td>
     </tr>
-    <tr>
+    <tr class="odd">
     <td style="text-align: left;"><p><strong>OpenShift version</strong></p></td>
     <td style="text-align: left;"><p>* For installations on virtual machines only, specify <code>OpenShift 4.14</code> or a later version.</p>
     <p>* For installations that include bare metal machines, specify <code>OpenShift 4.16</code> or a later version.</p></td>
     </tr>
-    <tr>
+    <tr class="even">
     <td style="text-align: left;"><p><strong>CPU architecture</strong></p></td>
     <td style="text-align: left;"><p>Specify <code>x86_64</code> or <code>Arm64</code>.</p></td>
     </tr>
-    <tr>
+    <tr class="odd">
     <td style="text-align: left;"><p><strong>Integrate with external partner platforms</strong></p></td>
     <td style="text-align: left;"><p>Specify <code>Oracle Cloud Infrastructure</code>.</p>
     <p>After you specify this value, the <strong>Include custom manifests</strong> checkbox is selected by default and the <strong>Custom manifests</strong> page is added to the wizard.</p></td>
@@ -269,19 +215,9 @@ Procedure
 
 8.  On the **Operators** page, click **Next**.
 
-</div>
-
 ## Generating the Discovery ISO image
 
 Generate and download the Discovery ISO image.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  On the **Host Discovery** page, click **Add hosts** and complete the following steps:
 
@@ -299,47 +235,17 @@ Procedure
 
     4.  Click **Download Discovery ISO** to save the file to your local system.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Installation and update](../../architecture/architecture-installation.xml#architecture-installation)
 
 - [Configuring your firewall](../../installing/install_config/configuring-firewall.xml#configuring-firewall)
-
-</div>
 
 # Provisioning OCI infrastructure for your cluster
 
 When using the Assisted Installer to create details for your OpenShift Container Platform cluster, you specify these details in a Terraform stack. A stack is an Oracle Cloud Infrastructure (OCI) feature that automates the provisioning of all necessary OCI infrastructure resources that are required for installing an OpenShift Container Platform cluster on Oracle Distributed Cloud.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You downloaded the discovery ISO image to a local directory. For details, see *Using the Assisted Installer to generate a discovery ISO image*.
 
 - You downloaded the Terraform stack template to a local directory. For details, see "Preparing the Oracle Distributed Cloud environment".
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to your [Oracle Distributed Cloud](https://cloud.oracle.com/a/) account.
 
@@ -355,18 +261,17 @@ Procedure
 
 4.  Create and apply the Terraform stack:
 
-    > [!IMPORTANT]
-    > The Terraform stack includes files for creating cluster resources and custom manifests. The stack also includes a script, and when you apply the stack, the script creates OCI resources, such as DNS records, an instance, and other resources. For a list of the resources, see the `terraform-stacks` folder in [OpenShift on OCI (OSO)](https://github.com/oracle-quickstart/oci-openshift/tree/main).
+    <div class="important">
+
+    The Terraform stack includes files for creating cluster resources and custom manifests. The stack also includes a script, and when you apply the stack, the script creates OCI resources, such as DNS records, an instance, and other resources. For a list of the resources, see the `terraform-stacks` folder in [OpenShift on OCI (OSO)](https://github.com/oracle-quickstart/oci-openshift/tree/main).
+
+    </div>
 
     1.  Upload the Terraform stacks template [terraform-stacks](https://github.com/oracle-quickstart/oci-openshift/tree/main/terraform-stacks) to the new object storage bucket.
 
     2.  Complete the stack information and click **Next**.
 
         <div class="important">
-
-        <div class="title">
-
-        </div>
 
         - Make sure that **Cluster Name** matches **Cluster Name** in Assisted Installer, and **Zone DNS** matches **Base Domain** in Assisted Installer.
 
@@ -382,12 +287,13 @@ Procedure
 
 5.  Copy the `dynamic_custom_manifest.yml` file from the **Outputs** page of the Terraform stack.
 
-    > [!NOTE]
-    > The YAML file contains all the required manifests, concatenated and preformatted with the configuration values. For details, see the [Custom Manifests README file](https://github.com/oracle-openshift/oci-openshift/blob/main/custom_manifests/README.md).
+    <div class="note">
+
+    The YAML file contains all the required manifests, concatenated and preformatted with the configuration values. For details, see the [Custom Manifests README file](https://github.com/oracle-openshift/oci-openshift/blob/main/custom_manifests/README.md).
+
+    </div>
 
     For the full procedure, see [Getting the OpenShift Container Platform Custom Manifests for Installation (Oracle documentation)](https://docs.oracle.com/en-us/iaas/Content/openshift-on-oci/installing-assisted.htm#install-cluster-edit-manifests).
-
-</div>
 
 # Completing the remaining Assisted Installer steps
 
@@ -397,35 +303,13 @@ After you provision Oracle® Distributed Cloud resources and upload OpenShift Co
 
 Following host discovery, the role of all nodes appears as **Auto-assign** by default. Change each of the node roles to either **Control Plane node** or **Worker**.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You created and applied the Terraform stack in Oracle Distributed Cloud. For details, see "Provisioning OCI infrastructure for your cluster".
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  From the Assisted Installer user interface, go to the **Host discovery** page.
 
 2.  Under the **Role** column, select either **Control plane node** or **Worker** for each targeted hostname. Then click **Next**.
 
     <div class="note">
-
-    <div class="title">
-
-    </div>
 
     1.  Before continuing to the next step, wait for each node to reach `Ready` status.
 
@@ -435,31 +319,11 @@ Procedure
 
 3.  Accept the default settings for the **Storage** and **Networking** pages. Then click **Next**.
 
-</div>
-
 ## Adding custom manifests
 
 Add the mandatory custom manifests provided by Oracle. For details, see [Custom Manifests (Oracle documentation).](https://github.com/dfoster-oracle/oci-openshift/blob/v1.0.0-release-preview/custom_manifests/README.md)
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You copied the `dynamic_custom_manifest.yml` file from the Terraform stack in Oracle Distributed Cloud. For details, see "Provisioning OCI infrastructure for your cluster".
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  On the **Custom manifests** page, in the **Folder** field, select `manifests`. This is the Assisted Installer folder where you want to save the custom manifest file.
 
@@ -475,33 +339,13 @@ Procedure
 
 5.  From the **Review and create** page, click **Install cluster** to create your OpenShift Container Platform cluster on Oracle Distributed Cloud.
 
-</div>
-
 After the cluster installation and initialization operations, the Assisted Installer indicates the completion of the cluster installation operation. For more information, see "Completing the installation" section in the Assisted Installer for OpenShift Container Platform document.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Assisted Installer for OpenShift Container Platform](https://access.redhat.com/documentation/en-us/assisted_installer_for_openshift_container_platform/)
-
-</div>
 
 # Verifying a successful cluster installation on Oracle Distributed Cloud
 
 Verify that your cluster was installed and is running effectively on Oracle® Distributed Cloud.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  From the [Red Hat Hybrid Cloud Console](https://console.redhat.com/openshift), go to **Clusters \> Assisted Clusters** and select your cluster’s name.
 
@@ -509,8 +353,11 @@ Procedure
 
 3.  Under **Host inventory**, confirm that the status of all control plane and compute nodes is `Installed`.
 
-    > [!NOTE]
-    > OpenShift Container Platform designates one of the control plane nodes as the bootstrap virtual machine, eliminating the need for a separate bootstrap machine.
+    <div class="note">
+
+    OpenShift Container Platform designates one of the control plane nodes as the bootstrap virtual machine, eliminating the need for a separate bootstrap machine.
+
+    </div>
 
 4.  Click the Web Console URL, to access the OpenShift Container Platform web console.
 
@@ -525,8 +372,6 @@ Procedure
 9.  Select the **YAML** tab.
 
 10. Check the `labels` parameter, and verify that the listed labels apply to your configuration. For example, the `topology.kubernetes.io/region=us-sanjose-1` label indicates in what Oracle Distributed Cloud region the node was deployed.
-
-</div>
 
 # Adding hosts to the cluster following the installation
 
@@ -561,16 +406,6 @@ Documentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/re
 
 Go to the [**Install OpenShift with the Assisted Installer**](https://console.redhat.com/openshift/assisted-installer/clusters/~new) page on the Hybrid Cloud Console, and check the **Cluster name** field on the **Cluster Details** step. Remove any special characters, such as a hyphen (`-`), from the name, because these special characters are not compatible with the OCI naming conventions. For example, change `oci-demo` to `ocidemo`.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Troubleshooting OpenShift Container Platform on OCI (Oracle documentation)](https://docs.oracle.com/iaas/Content/openshift-on-oci/openshift-troubleshooting.htm)
 
 - [Installing an on-premise cluster using the Assisted Installer](../../installing/installing_on_prem_assisted/installing-on-prem-assisted.xml#using-the-assisted-installer_installing-on-prem-assisted)
-
-</div>

@@ -2,8 +2,11 @@
 
 Distributed Tracing Platform 3.8.2 is provided through the [Tempo Operator 0.19.0](https://catalog.redhat.com/software/containers/rhosdt/tempo-operator-bundle/642c3e0eacf1b5bdbba7654a/history) and based on the open source [Grafana Tempo](https://grafana.com/oss/tempo/) 2.9.0.
 
-> [!NOTE]
-> Only supported features are documented. Undocumented features are currently unsupported. If you need assistance with a feature, contact Red Hat’s support.
+<div class="note">
+
+Only supported features are documented. Undocumented features are currently unsupported. If you need assistance with a feature, contact Red Hat’s support.
+
+</div>
 
 # Fixed issues
 
@@ -33,8 +36,11 @@ Before this update, clicking on **Trace** in the Jaeger UI and refreshing the pa
 
 [TRACING-5483](https://issues.redhat.com/browse/TRACING-5483)
 
-> [!NOTE]
-> Some linked Jira tickets are accessible only with Red Hat credentials.
+<div class="note">
+
+Some linked Jira tickets are accessible only with Red Hat credentials.
+
+</div>
 
 # Getting support
 
@@ -52,11 +58,14 @@ To identify issues with your cluster, you can use Red Hat Lightspeed in [OpenSh
 
 If you have a suggestion for improving this documentation or have found an error, submit a [Jira issue](https://issues.redhat.com/secure/CreateIssueDetails!init.jspa?pid=12332330&summary=Documentation_issue&issuetype=1&components=12367614&priority=10200&versions=12385624) for the most relevant documentation component. Please provide specific details, such as the section name and OpenShift Container Platform version.
 
-> [!WARNING]
-> The deprecated Red Hat OpenShift Distributed Tracing Platform (Jaeger) 3.5 was the last release of the Red Hat OpenShift Distributed Tracing Platform (Jaeger) that Red Hat supported.
->
-> All support and maintenance for the deprecated Red Hat OpenShift Distributed Tracing Platform (Jaeger) 3.5 ended on November 3, 2025.
->
-> If you still use Red Hat OpenShift Distributed Tracing Platform (Jaeger), you must migrate to Red Hat build of OpenTelemetry Operator and Tempo Operator for distributed tracing collection and storage. For more information, see "Migrating" in the Red Hat build of OpenTelemetry documentation, "Installing" in the Red Hat build of OpenTelemetry documentation, and "Installing" in the Red Hat OpenShift Distributed Tracing Platform documentation.
->
-> For more information, see the Red Hat Knowledgebase solution [Jaeger Deprecation and Removal in OpenShift](https://access.redhat.com/solutions/7083722).
+<div class="warning">
+
+The deprecated Red Hat OpenShift Distributed Tracing Platform (Jaeger) 3.5 was the last release of the Red Hat OpenShift Distributed Tracing Platform (Jaeger) that Red Hat supported.
+
+All support and maintenance for the deprecated Red Hat OpenShift Distributed Tracing Platform (Jaeger) 3.5 ended on November 3, 2025.
+
+If you still use Red Hat OpenShift Distributed Tracing Platform (Jaeger), you must migrate to Red Hat build of OpenTelemetry Operator and Tempo Operator for distributed tracing collection and storage. For more information, see "Migrating" in the Red Hat build of OpenTelemetry documentation, "Installing" in the Red Hat build of OpenTelemetry documentation, and "Installing" in the Red Hat OpenShift Distributed Tracing Platform documentation.
+
+For more information, see the Red Hat Knowledgebase solution [Jaeger Deprecation and Removal in OpenShift](https://access.redhat.com/solutions/7083722).
+
+</div>

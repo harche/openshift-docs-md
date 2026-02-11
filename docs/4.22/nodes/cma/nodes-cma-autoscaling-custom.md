@@ -8,8 +8,11 @@ The Custom Metrics Autoscaler Operator scales your pods up and down based on cus
 
 To use the custom metrics autoscaler, you create a `ScaledObject` or `ScaledJob` object for a workload, which is a custom resource (CR) that defines the scaling metadata. You specify the deployment or job to scale, the source of the metrics to scale on (trigger), and other parameters such as the minimum and maximum replica counts allowed.
 
-> [!NOTE]
-> You can create only one scaled object or scaled job for each workload that you want to scale. Also, you cannot use a scaled object or scaled job and the horizontal pod autoscaler (HPA) on the same workload.
+<div class="note">
+
+You can create only one scaled object or scaled job for each workload that you want to scale. Also, you cannot use a scaled object or scaled job and the horizontal pod autoscaler (HPA) on the same workload.
+
+</div>
 
 The custom metrics autoscaler, unlike the HPA, can scale to zero. If you set the `minReplicaCount` value in the custom metrics autoscaler CR to `0`, the custom metrics autoscaler scales the workload down from 1 to 0 replicas to or up from 0 replicas to 1. This is known as the *activation phase*. After scaling up to 1 replica, the HPA takes control of the scaling. This is known as the *scaling phase*.
 
@@ -44,5 +47,8 @@ If you want to use off-cluster services that require custom CA certificates, you
 
 The config maps can contain one or more certificate files that contain one or more PEM-encoded CA certificates. Or, you can use separate config maps for each certificate file.
 
-> [!NOTE]
-> If you later update the config map to add additional certificates, you must restart the `keda-operator-*` pod for the changes to take effect.
+<div class="note">
+
+If you later update the config map to add additional certificates, you must restart the `keda-operator-*` pod for the changes to take effect.
+
+</div>

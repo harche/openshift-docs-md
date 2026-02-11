@@ -1,9 +1,12 @@
 As a cluster administrator, you can configure egress traffic for pods behind a load balancer service by using an egress service.
 
-> [!IMPORTANT]
-> Egress service is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Egress service is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 You can use the `EgressService` custom resource (CR) to manage egress traffic in the following ways:
 
@@ -11,8 +14,11 @@ You can use the `EgressService` custom resource (CR) to manage egress traffic in
 
   Assigning the load balancer IP address as the source IP address in this context is useful to present a single point of egress and ingress. For example, in some scenarios, an external system communicating with an application behind a load balancer service can expect the source and destination IP address for the application to be the same.
 
-  > [!NOTE]
-  > When you assign the load balancer service IP address to egress traffic for pods behind the service, OVN-Kubernetes restricts the ingress and egress point to a single node. This limits the load balancing of traffic that MetalLB typically provides.
+  <div class="note">
+
+  When you assign the load balancer service IP address to egress traffic for pods behind the service, OVN-Kubernetes restricts the ingress and egress point to a single node. This limits the load balancing of traffic that MetalLB typically provides.
+
+  </div>
 
 - Assign the egress traffic for pods behind a load balancer to a different network than the default node network.
 
@@ -46,11 +52,9 @@ spec:
 
 - Optional: Specify the routing table ID for egress traffic. Ensure that the value matches the `route-table-id` ID defined in the `NodeNetworkConfigurationPolicy` resource. If you do not include the `network` specification, the egress service uses the default host network.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example egress service specification
+**Example egress service specification**
 
 </div>
 
@@ -68,37 +72,17 @@ spec:
   network: "2"
 ```
 
-</div>
-
 # Deploying an egress service
 
 You can deploy an egress service to manage egress traffic for pods behind a `LoadBalancer` service.
 
 The following example configures the egress traffic to have the same source IP address as the ingress IP address of the `LoadBalancer` service.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
 
 - You configured MetalLB `BGPPeer` resources.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an `IPAddressPool` CR with the desired IP for the service:
 
@@ -161,8 +145,11 @@ Procedure
 
         - When you specify the `LoadBalancerIP` value, a single node handles the `LoadBalancer` service’s traffic. In this example, only nodes with the `worker` label can be selected to handle the traffic. When a node is selected, OVN-Kubernetes labels the node in the following format `egress-service.k8s.ovn.org/<svc-namespace>-<svc-name>: ""`.
 
-          > [!NOTE]
-          > If you use the `sourceIPBy: "LoadBalancerIP"` setting, you must specify the load-balancer node in the `BGPAdvertisement` custom resource (CR).
+          <div class="note">
+
+          If you use the `sourceIPBy: "LoadBalancerIP"` setting, you must specify the load-balancer node in the `BGPAdvertisement` custom resource (CR).
+
+          </div>
 
     2.  Apply the configuration for the service and egress service by running the following command:
 
@@ -190,15 +177,7 @@ Procedure
 
         - In this example, the `EgressService` CR configures the source IP address for egress traffic to use the load-balancer service IP address. Therefore, you must specify the load-balancer node for return traffic to use the same return path for the traffic originating from the pod.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that you can access the application endpoint of the pods running behind the MetalLB service by running the following command:
 
@@ -210,16 +189,6 @@ Verification
 
 2.  If you assigned the `LoadBalancer` service’s ingress IP address as the source IP address for egress traffic, verify this configuration by using tools such as `tcpdump` to analyze packets received at the external client.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Exposing a service through a network VRF](../../networking/ingress_load_balancing/metallb/metallb-configure-bgp-peers.xml#nw-metallb-bgp-peer-vrf_configure-metallb-bgp-peers)
 
 - [Example: Network interface with a VRF instance node network configuration policy](../../networking/k8s_nmstate/k8s-nmstate-updating-node-network-config.xml#virt-example-host-vrf_k8s-nmstate-updating-node-network-config)
@@ -227,5 +196,3 @@ Additional resources
 - [Managing symmetric routing with MetalLB](../../networking/ingress_load_balancing/metallb/metallb-configure-return-traffic.xml#metallb-configure-return-traffic)
 
 - [About virtual routing and forwarding](../../networking/multiple_networks/about-virtual-routing-and-forwarding.xml#cnf-about-virtual-routing-and-forwarding_about-virtual-routing-and-forwarding)
-
-</div>

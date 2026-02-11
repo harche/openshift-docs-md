@@ -10,19 +10,22 @@ The examples of services that require custom egress rules include the following:
 
 - External CAs, such as HashiCorp Vault
 
-> [!NOTE]
-> Network policies are expected to be enabled by default in a future release, which could cause connectivity failures during an upgrade. To prepare for this change, configure the required egress policies.
+<div class="note">
+
+Network policies are expected to be enabled by default in a future release, which could cause connectivity failures during an upgrade. To prepare for this change, configure the required egress policies.
+
+</div>
 
 # Default ingress and egress rules
 
 The default network policy applies the following ingress and egress rules to each component.
 
-| Component | Ingress ports | Egress ports | Description |
-|----|----|----|----|
-| `cert-manager` | 9402 | 6443, 5353 | Allows ingress traffic to metrics server and egress traffic to OpenShift API server. |
-| `cert-manager-webhook` | 9402, 10250 | 6443 | Allows ingress traffic to metrics and webhook servers, and egress traffic to OpenShift API server and internal DNS server. |
-| `cert-manager-cainjector` | 9402 | 6443 | Allows ingress traffic to metrics server and egress traffic to OpenShift API server. |
-| `istio-csr` | 6443, 9402 | 6443 | Allows ingress traffic to the gRPC Istio certificate request API, metrics servers and egress traffic to OpenShift API server. |
+| Component                 | Ingress ports | Egress ports | Description                                                                                                                   |
+|---------------------------|---------------|--------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `cert-manager`            | 9402          | 6443, 5353   | Allows ingress traffic to metrics server and egress traffic to OpenShift API server.                                          |
+| `cert-manager-webhook`    | 9402, 10250   | 6443         | Allows ingress traffic to metrics and webhook servers, and egress traffic to OpenShift API server and internal DNS server.    |
+| `cert-manager-cainjector` | 9402          | 6443         | Allows ingress traffic to metrics server and egress traffic to OpenShift API server.                                          |
+| `istio-csr`               | 6443, 9402    | 6443         | Allows ingress traffic to the gRPC Istio certificate request API, metrics servers and egress traffic to OpenShift API server. |
 
 # Network policy configuration parameters
 
@@ -35,44 +38,42 @@ You can enable and configure network policies for the cert-manager Operator comp
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.defaultNetworkPolicy</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Specifies whether to enable the default network policy for the cert-manager Operator components.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>Once you enable default network policies, you cannot disable them. This restriction prevents accidental security degradation. Before enabling this setting, ensure that you plan the network policy requirements.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.networkPolicies</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Defines a list of custom network policy configuration. To apply the configuration, you must set <code>spec.defaultNetworkPolicy</code> to <code>true</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.networkPolicies.componentName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the component that this network policy targets. The only valid value is <code>CoreController</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.networkPolicies.egress</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Defines the egress rules for the specified component. Set to <code>{}</code> to allow connections to all external providers.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.networkPolicies.egress.ports</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Defines a list of network ports and protocols for the specified providers.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.networkPolicies.name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies a unique name for the custom network policy, which is used to generate the <code>NetworkPolicy</code> resource name.</p></td>
@@ -143,25 +144,9 @@ spec:
 
 You can verify that the default and custom `NetworkPolicy` resources are created.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have enabled network policy for cert-manager Operator for Red Hat OpenShift in the `CertManager` custom resource.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Verify the list of `NetworkPolicy` resources in the `cert-manager` namespace by running the following command:
 
@@ -169,11 +154,9 @@ Procedure
   $ oc get networkpolicy -n cert-manager
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -188,8 +171,4 @@ Procedure
   cert-manager-user-allow-egress-to-dns-service    app=cert-manager                          7s
   ```
 
-  </div>
-
   The output lists the default policies and any custom policies that you created.
-
-</div>

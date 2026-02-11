@@ -16,17 +16,20 @@ An Operator is considered a *member* of an Operator group if the following condi
 
 An install mode in a CSV consists of an `InstallModeType` field and a boolean `Supported` field. The spec of a CSV can contain a set of install modes of four distinct `InstallModeTypes`:
 
-| InstallModeType | Description |
-|----|----|
-| `OwnNamespace` | The Operator can be a member of an Operator group that selects its own namespace. |
-| `SingleNamespace` | The Operator can be a member of an Operator group that selects one namespace. |
-| `MultiNamespace` | The Operator can be a member of an Operator group that selects more than one namespace. |
-| `AllNamespaces` | The Operator can be a member of an Operator group that selects all namespaces (target namespace set is the empty string `""`). |
+| InstallModeType   | Description                                                                                                                    |
+|-------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| `OwnNamespace`    | The Operator can be a member of an Operator group that selects its own namespace.                                              |
+| `SingleNamespace` | The Operator can be a member of an Operator group that selects one namespace.                                                  |
+| `MultiNamespace`  | The Operator can be a member of an Operator group that selects more than one namespace.                                        |
+| `AllNamespaces`   | The Operator can be a member of an Operator group that selects all namespaces (target namespace set is the empty string `""`). |
 
 Install modes and supported Operator groups
 
-> [!NOTE]
-> If the spec of a CSV omits an entry of `InstallModeType`, then that type is considered unsupported unless support can be inferred by an existing entry that implicitly supports it.
+<div class="note">
+
+If the spec of a CSV omits an entry of `InstallModeType`, then that type is considered unsupported unless support can be inferred by an existing entry that implicitly supports it.
+
+</div>
 
 # Target namespace selection
 
@@ -56,8 +59,11 @@ spec:
     cool.io/prod: "true"
 ```
 
-> [!IMPORTANT]
-> Listing multiple namespaces via `spec.targetNamespaces` or use of a label selector via `spec.selector` is not recommended, as the support for more than one target namespace in an Operator group will likely be removed in a future release.
+<div class="important">
+
+Listing multiple namespaces via `spec.targetNamespaces` or use of a label selector via `spec.selector` is not recommended, as the support for more than one target namespace in an Operator group will likely be removed in a future release.
+
+</div>
 
 If both `spec.targetNamespaces` and `spec.selector` are defined, `spec.selector` is ignored. Alternatively, you can omit both `spec.selector` and `spec.targetNamespaces` to specify a *global* Operator group, which selects all namespaces:
 
@@ -75,14 +81,17 @@ The resolved set of selected namespaces is shown in the `status.namespaces` para
 
 Member CSVs of an Operator group have the following annotations:
 
-| Annotation | Description |
-|----|----|
-| `olm.operatorGroup=<group_name>` | Contains the name of the Operator group. |
-| `olm.operatorNamespace=<group_namespace>` | Contains the namespace of the Operator group. |
+| Annotation                                 | Description                                                                                        |
+|--------------------------------------------|----------------------------------------------------------------------------------------------------|
+| `olm.operatorGroup=<group_name>`           | Contains the name of the Operator group.                                                           |
+| `olm.operatorNamespace=<group_namespace>`  | Contains the namespace of the Operator group.                                                      |
 | `olm.targetNamespaces=<target_namespaces>` | Contains a comma-delimited string that lists the target namespace selection of the Operator group. |
 
-> [!NOTE]
-> All annotations except `olm.targetNamespaces` are included with copied CSVs. Omitting the `olm.targetNamespaces` annotation on copied CSVs prevents the duplication of target namespaces between tenants.
+<div class="note">
+
+All annotations except `olm.targetNamespaces` are included with copied CSVs. Omitting the `olm.targetNamespaces` annotation on copied CSVs prevents the duplication of target namespaces between tenants.
+
+</div>
 
 # Provided APIs annotation
 
@@ -116,20 +125,23 @@ status:
 
 When an Operator group is created, three cluster roles are generated. When the cluster roles are generated, they are automatically suffixed with a hash value to ensure that each cluster role is unique. Each Operator group contains a single aggregation rule with a cluster role selector set to match a label, as shown in the following table:
 
-| Cluster role | Label to match |
-|----|----|
+| Cluster role                                     | Label to match                                                     |
+|--------------------------------------------------|--------------------------------------------------------------------|
 | `olm.og.<operatorgroup_name>-admin-<hash_value>` | `olm.opgroup.permissions/aggregate-to-admin: <operatorgroup_name>` |
-| `olm.og.<operatorgroup_name>-edit-<hash_value>` | `olm.opgroup.permissions/aggregate-to-edit: <operatorgroup_name>` |
-| `olm.og.<operatorgroup_name>-view-<hash_value>` | `olm.opgroup.permissions/aggregate-to-view: <operatorgroup_name>` |
+| `olm.og.<operatorgroup_name>-edit-<hash_value>`  | `olm.opgroup.permissions/aggregate-to-edit: <operatorgroup_name>`  |
+| `olm.og.<operatorgroup_name>-view-<hash_value>`  | `olm.opgroup.permissions/aggregate-to-view: <operatorgroup_name>`  |
 
-> [!NOTE]
-> To use the cluster role of an Operator group to assign role-based access control (RBAC) to a resource, get the full name of cluster role and hash value by running the following command:
->
-> ``` terminal
-> $ oc get clusterroles | grep <operatorgroup_name>
-> ```
->
-> Because the hash value is generated when the Operator group is created, you must create the Operator group before you can look up the complete name of the cluster role.
+<div class="note">
+
+To use the cluster role of an Operator group to assign role-based access control (RBAC) to a resource, get the full name of cluster role and hash value by running the following command:
+
+``` terminal
+$ oc get clusterroles | grep <operatorgroup_name>
+```
+
+Because the hash value is generated when the Operator group is created, you must create the Operator group before you can look up the complete name of the cluster role.
+
+</div>
 
 The following RBAC resources are generated when a CSV becomes an active member of an Operator group, as long as the CSV is watching all namespaces with the `AllNamespaces` install mode and is not in a failed state with reason `InterOperatorGroupOwnerConflict`:
 
@@ -139,20 +151,20 @@ The following RBAC resources are generated when a CSV becomes an active member o
 
 - Additional roles and role bindings
 
-<table id="olm-resources-per-api-resource-crd_olm-understanding-operatorgroups">
+<table>
 <caption>Cluster roles generated for each API resource from a CRD</caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Cluster role</th>
 <th style="text-align: left;">Settings</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>&lt;kind&gt;.&lt;group&gt;-&lt;version&gt;-admin</code></p></td>
 <td style="text-align: left;"><p>Verbs on <code>&lt;kind&gt;</code>:</p>
 <ul>
@@ -164,7 +176,7 @@ The following RBAC resources are generated when a CSV becomes an active member o
 <li><p><code>olm.opgroup.permissions/aggregate-to-admin: &lt;operatorgroup_name&gt;</code></p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>&lt;kind&gt;.&lt;group&gt;-&lt;version&gt;-edit</code></p></td>
 <td style="text-align: left;"><p>Verbs on <code>&lt;kind&gt;</code>:</p>
 <ul>
@@ -179,7 +191,7 @@ The following RBAC resources are generated when a CSV becomes an active member o
 <li><p><code>olm.opgroup.permissions/aggregate-to-edit: &lt;operatorgroup_name&gt;</code></p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>&lt;kind&gt;.&lt;group&gt;-&lt;version&gt;-view</code></p></td>
 <td style="text-align: left;"><p>Verbs on <code>&lt;kind&gt;</code>:</p>
 <ul>
@@ -193,7 +205,7 @@ The following RBAC resources are generated when a CSV becomes an active member o
 <li><p><code>olm.opgroup.permissions/aggregate-to-view: &lt;operatorgroup_name&gt;</code></p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>&lt;kind&gt;.&lt;group&gt;-&lt;version&gt;-view-crdview</code></p></td>
 <td style="text-align: left;"><p>Verbs on <code>apiextensions.k8s.io</code> <code>customresourcedefinitions</code> <code>&lt;crd-name&gt;</code>:</p>
 <ul>
@@ -208,20 +220,22 @@ The following RBAC resources are generated when a CSV becomes an active member o
 </tbody>
 </table>
 
-<table id="olm-resources-per-api-resource-api_olm-understanding-operatorgroups">
+Cluster roles generated for each API resource from a CRD
+
+<table>
 <caption>Cluster roles generated for each API resource from an API service</caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Cluster role</th>
 <th style="text-align: left;">Settings</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>&lt;kind&gt;.&lt;group&gt;-&lt;version&gt;-admin</code></p></td>
 <td style="text-align: left;"><p>Verbs on <code>&lt;kind&gt;</code>:</p>
 <ul>
@@ -233,7 +247,7 @@ The following RBAC resources are generated when a CSV becomes an active member o
 <li><p><code>olm.opgroup.permissions/aggregate-to-admin: &lt;operatorgroup_name&gt;</code></p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>&lt;kind&gt;.&lt;group&gt;-&lt;version&gt;-edit</code></p></td>
 <td style="text-align: left;"><p>Verbs on <code>&lt;kind&gt;</code>:</p>
 <ul>
@@ -248,7 +262,7 @@ The following RBAC resources are generated when a CSV becomes an active member o
 <li><p><code>olm.opgroup.permissions/aggregate-to-edit: &lt;operatorgroup_name&gt;</code></p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>&lt;kind&gt;.&lt;group&gt;-&lt;version&gt;-view</code></p></td>
 <td style="text-align: left;"><p>Verbs on <code>&lt;kind&gt;</code>:</p>
 <ul>
@@ -265,19 +279,11 @@ The following RBAC resources are generated when a CSV becomes an active member o
 </tbody>
 </table>
 
-<div id="olm-resources-additional-roles-rolebindings_olm-understanding-operatorgroups">
-
-<div class="title">
-
-Additional roles and role bindings
-
-</div>
+Cluster roles generated for each API resource from an API service
 
 - If the CSV defines exactly one target namespace that contains `*`, then a cluster role and corresponding cluster role binding are generated for each permission defined in the `permissions` field of the CSV. All resources generated are given the `olm.owner: <csv_name>` and `olm.owner.namespace: <csv_namespace>` labels.
 
 - If the CSV does *not* define exactly one target namespace that contains `*`, then all roles and role bindings in the Operator namespace with the `olm.owner: <csv_name>` and `olm.owner.namespace: <csv_namespace>` labels are copied into the target namespace.
-
-</div>
 
 # Copied CSVs
 
@@ -287,36 +293,39 @@ Copied CSVs have a status reason `Copied` and are updated to match the status of
 
 Copied CSVs are deleted when their source CSV no longer exists or the Operator group that their source CSV belongs to no longer targets the namespace of the copied CSV.
 
-> [!NOTE]
-> By default, the `disableCopiedCSVs` field is disabled. After enabling a `disableCopiedCSVs` field, the OLM deletes existing copied CSVs on a cluster. When a `disableCopiedCSVs` field is disabled, the OLM adds copied CSVs again.
->
-> - Disable the `disableCopiedCSVs` field:
->
->   ``` yaml
->   $ cat << EOF | oc apply -f -
->   apiVersion: operators.coreos.com/v1
->   kind: OLMConfig
->   metadata:
->     name: cluster
->   spec:
->     features:
->       disableCopiedCSVs: false
->   EOF
->   ```
->
-> - Enable the `disableCopiedCSVs` field:
->
->   ``` yaml
->   $ cat << EOF | oc apply -f -
->   apiVersion: operators.coreos.com/v1
->   kind: OLMConfig
->   metadata:
->     name: cluster
->   spec:
->     features:
->       disableCopiedCSVs: true
->   EOF
->   ```
+<div class="note">
+
+By default, the `disableCopiedCSVs` field is disabled. After enabling a `disableCopiedCSVs` field, the OLM deletes existing copied CSVs on a cluster. When a `disableCopiedCSVs` field is disabled, the OLM adds copied CSVs again.
+
+- Disable the `disableCopiedCSVs` field:
+
+  ``` yaml
+  $ cat << EOF | oc apply -f -
+  apiVersion: operators.coreos.com/v1
+  kind: OLMConfig
+  metadata:
+    name: cluster
+  spec:
+    features:
+      disableCopiedCSVs: false
+  EOF
+  ```
+
+- Enable the `disableCopiedCSVs` field:
+
+  ``` yaml
+  $ cat << EOF | oc apply -f -
+  apiVersion: operators.coreos.com/v1
+  kind: OLMConfig
+  metadata:
+    name: cluster
+  spec:
+    features:
+      disableCopiedCSVs: true
+  EOF
+  ```
+
+</div>
 
 # Static Operator groups
 
@@ -345,8 +354,11 @@ Two Operator groups are said to have *intersecting provided APIs* if the interse
 
 A potential issue is that Operator groups with intersecting provided APIs can compete for the same resources in the set of intersecting namespaces.
 
-> [!NOTE]
-> When checking intersection rules, an Operator group namespace is always included as part of its selected target namespaces.
+<div class="note">
+
+When checking intersection rules, an Operator group namespace is always included as part of its selected target namespaces.
+
+</div>
 
 ## Rules for intersection
 
@@ -386,8 +398,11 @@ Each time an active member CSV synchronizes, OLM queries the cluster for the set
 
     - Replace the Operator group’s `olm.providedAPIs` annotation with the difference between itself and the CSV’s provided APIs.
 
-> [!NOTE]
-> Failure states caused by Operator groups are non-terminal.
+<div class="note">
+
+Failure states caused by Operator groups are non-terminal.
+
+</div>
 
 The following actions are performed each time an Operator group synchronizes:
 
@@ -413,21 +428,11 @@ The supported scenarios include the following:
 
 All other scenarios are not supported, because the integrity of the cluster data cannot be guaranteed if there are multiple competing or overlapping CRDs from different Operator versions to be reconciled on the same cluster.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Operator Lifecycle Manager (OLM) → Multitenancy and Operator colocation](../../../operators/understanding/olm/olm-colocation.xml#olm-colocation)
 
 - [Operators in multitenant clusters](../../../operators/understanding/olm-multitenancy.xml#olm-multitenancy)
 
 - [Allowing non-cluster administrators to install Operators](../../../operators/admin/olm-creating-policy.xml#olm-creating-policy)
-
-</div>
 
 # Troubleshooting Operator groups
 

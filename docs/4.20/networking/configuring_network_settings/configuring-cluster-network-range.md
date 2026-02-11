@@ -14,14 +14,9 @@ The following limitations apply when modifying the cluster network IP address ra
 
 To expand the cluster network IP address range in OpenShift Container Platform to support more nodes, you can modify the cluster network CIDR mask using the `oc patch` command.
 
-> [!NOTE]
-> This change requires rolling out a new Operator configuration across the cluster, and can take up to 30 minutes to take effect.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+This change requires rolling out a new Operator configuration across the cluster, and can take up to 30 minutes to take effect.
 
 </div>
 
@@ -31,16 +26,6 @@ Prerequisites
 
 - You have ensured that the cluster uses the OVN-Kubernetes network plugin.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To obtain the cluster network range and host prefix for your cluster, enter the following command:
 
     ``` terminal
@@ -48,19 +33,15 @@ Procedure
       -o jsonpath="{.items[0].spec.clusterNetwork}"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` text
     [{"cidr":"10.217.0.0/22","hostPrefix":23}]
     ```
-
-    </div>
 
 2.  To expand the cluster network IP address range, enter the following command. Use the CIDR IP address range and host prefix returned from the output of the previous command.
 
@@ -85,11 +66,9 @@ Procedure
     `<prefix>`
     Specifies the current host prefix for your cluster. This value must be the same value for the `hostPrefix` field that you obtained from the previous step.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example command
+    **Example command**
 
     </div>
 
@@ -103,21 +82,15 @@ Procedure
       }'
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` text
     network.config.openshift.io/cluster patched
     ```
-
-    </div>
 
 3.  To confirm that the configuration is active, enter the following command. It can take up to 30 minutes for this change to take effect.
 
@@ -126,21 +99,15 @@ Procedure
       -o jsonpath="{.items[0].spec.clusterNetwork}"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` text
     [{"cidr":"10.217.0.0/14","hostPrefix":23}]
     ```
-
-    </div>
-
-</div>
 
 # Additional resources
 

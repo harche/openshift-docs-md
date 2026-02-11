@@ -2,21 +2,19 @@ You can upgrade the Migration Toolkit for Containers (MTC) on OpenShift Containe
 
 You can upgrade MTC on OpenShift Container Platform 4.5, and earlier versions, by reinstalling the legacy Migration Toolkit for Containers Operator.
 
-> [!IMPORTANT]
-> If you are upgrading from MTC version 1.3, you must perform an additional procedure to update the `MigPlan` custom resource (CR).
+<div class="important">
+
+If you are upgrading from MTC version 1.3, you must perform an additional procedure to update the `MigPlan` custom resource (CR).
+
+</div>
 
 # Upgrading the Migration Toolkit for Containers on OpenShift Container Platform 4.17
 
 You can upgrade the Migration Toolkit for Containers (MTC) on OpenShift Container Platform 4.17 by using the Operator Lifecycle Manager.
 
-> [!IMPORTANT]
-> When upgrading the MTC by using the Operator Lifecycle Manager, you must use a supported migration path.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Migration paths
+When upgrading the MTC by using the Operator Lifecycle Manager, you must use a supported migration path.
 
 </div>
 
@@ -38,27 +36,9 @@ Migration paths
 
   - Migration from source MTC 1.8.x to destination MTC 1.8.x is supported
 
-</div>
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - You must be logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -76,19 +56,9 @@ Procedure
 
 7.  Click **Workloads** → **Pods** to verify that the MTC pods are running.
 
-</div>
-
 # Upgrading the Migration Toolkit for Containers to 1.8.0
 
 To upgrade the Migration Toolkit for Containers to 1.8.0, complete the following steps.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Determine subscription names and current channels to work with for upgrading by using one of the following methods:
 
@@ -98,11 +68,9 @@ Procedure
       $ oc -n openshift-migration get sub
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -112,19 +80,15 @@ Procedure
       redhat-oadp-operator-stable-1.0-mtc-operator-catalog-openshift-marketplace   redhat-oadp-operator   mtc-operator-catalog   stable-1.0
       ```
 
-      </div>
-
     - Or return the subscription names and channels in JSON by running the following command:
 
       ``` terminal
       $ oc -n openshift-migration get sub -o json | jq -r '.items[] | { name: .metadata.name, package: .spec.name, channel: .spec.channel }'
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -141,19 +105,15 @@ Procedure
       }
       ```
 
-      </div>
-
 2.  For each subscription, patch to move from the MTC 1.7 channel to the MTC 1.8 channel by running the following command:
 
     ``` terminal
     $ oc -n openshift-migration patch subscription mtc-operator --type merge --patch '{"spec": {"channel": "release-v1.8"}}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -161,21 +121,9 @@ Procedure
     subscription.operators.coreos.com/mtc-operator patched
     ```
 
-    </div>
-
-</div>
-
 ## Upgrading OADP 1.0 to 1.2 for Migration Toolkit for Containers 1.8.0
 
 To upgrade OADP 1.0 to 1.2 for Migration Toolkit for Containers 1.8.0, complete the following steps.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - For each subscription, patch the OADP operator from OADP 1.0 to OADP 1.2 by running the following command:
 
@@ -183,14 +131,15 @@ Procedure
   $ oc -n openshift-migration patch subscription redhat-oadp-operator-stable-1.0-mtc-operator-catalog-openshift-marketplace --type merge --patch '{"spec": {"channel":"stable-1.2"}}'
   ```
 
-  > [!NOTE]
-  > Sections indicating the user-specific returned `NAME` values that are used for the installation of MTC & OADP, respectively.
+  <div class="note">
 
-  <div class="formalpara">
+  Sections indicating the user-specific returned `NAME` values that are used for the installation of MTC & OADP, respectively.
 
-  <div class="title">
+  </div>
 
-  Example output
+  <div class="formalpara-title">
+
+  **Example output**
 
   </div>
 
@@ -198,24 +147,15 @@ Procedure
   subscription.operators.coreos.com/redhat-oadp-operator-stable-1.0-mtc-operator-catalog-openshift-marketplace patched
   ```
 
-  </div>
+  <div class="note">
 
-  > [!NOTE]
-  > The returned value will be similar to `redhat-oadp-operator-stable-1.0-mtc-operator-catalog-openshift-marketplace`, which is used in this example.
+  The returned value will be similar to `redhat-oadp-operator-stable-1.0-mtc-operator-catalog-openshift-marketplace`, which is used in this example.
+
+  </div>
 
   - If the `installPlanApproval` parameter is set to `Automatic`, the Operator Lifecycle Manager (OLM) begins the upgrade process.
 
   - If the `installPlanApproval` parameter is set to `Manual`, you must approve each `installPlan` before the OLM begins the upgrades.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 1.  Verify that the OLM has completed the upgrades of OADP and MTC by running the following command:
 
@@ -229,11 +169,9 @@ Verification
     $ oc -n openshift-migration get sub -o json | jq -r '.items[] | {name: .metadata.name, channel: .spec.channel }'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -248,19 +186,15 @@ Verification
     }
     ```
 
-    </div>
-
         Confirm that the `mtc-operator.v1.8.0` and `oadp-operator.v1.2.x` packages are installed by running the following command:
 
     ``` terminal
     $ oc -n openshift-migration get csv
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -270,37 +204,15 @@ Verification
     oadp-operator.v1.2.2     OADP Operator                               1.2.2     oadp-operator.v1.0.13    Succeeded
     ```
 
-    </div>
-
-</div>
-
 # Upgrading the Migration Toolkit for Containers on OpenShift Container Platform versions 4.2 to 4.5
 
 You can upgrade Migration Toolkit for Containers (MTC) on OpenShift Container Platform versions 4.2 to 4.5 by manually installing the legacy Migration Toolkit for Containers Operator.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You must be logged in as a user with `cluster-admin` privileges.
 
 - You must have access to `registry.redhat.io`.
 
 - You must have `podman` installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to `registry.redhat.io` with your Red Hat Customer Portal credentials by entering the following command:
 
@@ -356,8 +268,6 @@ Procedure
     $ oc get pods -n openshift-migration
     ```
 
-</div>
-
 # Upgrading MTC 1.3 to 1.8
 
 If you are upgrading Migration Toolkit for Containers (MTC) version 1.3.x to 1.8, you must update the `MigPlan` custom resource (CR) manifest on the cluster on which the `MigrationController` pod is running.
@@ -366,35 +276,13 @@ Because the `indirectImageMigration` and `indirectVolumeMigration` parameters do
 
 <div class="important">
 
-<div class="title">
-
-</div>
-
 - Migrating from OpenShift Container Platform 3 to OpenShift Container Platform 4 requires a legacy MTC Operator and MTC 1.7.x.
 
 - Upgrading MTC 1.7.x to 1.8.x requires manually updating the OADP channel from `stable-1.0` to `stable-1.2` in order to successfully complete the upgrade from 1.7.x to 1.8.x.
 
 </div>
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must be logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the cluster on which the `MigrationController` pod is running.
 
@@ -424,5 +312,3 @@ Procedure
     ``` terminal
     $ oc get migplan <migplan> -o yaml -n openshift-migration
     ```
-
-</div>

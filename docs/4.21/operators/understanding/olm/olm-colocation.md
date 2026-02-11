@@ -28,16 +28,6 @@ As a cluster administrator, you can bypass this default behavior manually by usi
 
 If the Operator has dependencies, the dependencies are automatically installed in the pre-created namespace. As a result, it is then valid for the dependency Operators to have the same update policy and shared install plans. For a detailed procedure, see "Installing global Operators in custom namespaces".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Installing global Operators in custom namespaces](../../../operators/admin/olm-adding-operators-to-cluster.xml#olm-installing-global-namespaces_olm-adding-operators-to-a-cluster)
 
 - [Operators in multitenant clusters](../../../operators/understanding/olm-multitenancy.xml#olm-multitenancy)
-
-</div>

@@ -4,30 +4,15 @@ OpenShift Virtualization is now integrated with OpenShift Service Mesh. You can 
 
 To add a virtual machine (VM) workload to a service mesh, enable automatic sidecar injection in the VM configuration file by setting the `sidecar.istio.io/inject` annotation to `true`. Then expose your VM as a service to view your application in the mesh.
 
-> [!IMPORTANT]
-> To avoid port conflicts, do not use ports used by the Istio sidecar proxy. These include ports 15000, 15001, 15006, 15008, 15020, 15021, and 15090.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+To avoid port conflicts, do not use ports used by the Istio sidecar proxy. These include ports 15000, 15001, 15006, 15008, 15020, 15021, and 15090.
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have installed the Service Mesh Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the VM configuration file to add the `sidecar.istio.io/inject: "true"` annotation.
 
@@ -120,8 +105,6 @@ Procedure
 
     `<service_name>`
     Specifies the name of the service YAML file.
-
-</div>
 
 # Additional resources
 

@@ -6,14 +6,6 @@ You can create only one scaled object for each workload that you want to scale. 
 
 You can create a custom metrics autoscaler for a workload that is created by a `Deployment`, `StatefulSet`, or `custom resource` object.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The Custom Metrics Autoscaler Operator must be installed.
 
 - If you use a custom metrics autoscaler for scaling based on CPU or memory:
@@ -24,11 +16,9 @@ Prerequisites
     $ oc describe PodMetrics openshift-kube-scheduler-ip-10-0-135-131.ec2.internal
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -55,15 +45,11 @@ Prerequisites
     Events:                <none>
     ```
 
-    </div>
-
   - The pods associated with the object you want to scale must include specified memory and CPU limits. For example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example pod spec
+    **Example pod spec**
 
     </div>
 
@@ -82,25 +68,11 @@ Prerequisites
     # ...
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a YAML file similar to the following. Only the name `<2>`, object name `<4>`, and object kind `<5>` are required:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example scaled object
+    **Example scaled object**
 
     </div>
 
@@ -164,8 +136,6 @@ Procedure
           kind: TriggerAuthentication
     ```
 
-    </div>
-
     - Optional: Specifies that the Custom Metrics Autoscaler Operator is to scale the replicas to the specified value and stop autoscaling, as described in the "Pausing the custom metrics autoscaler for a workload" section.
 
     - Specifies a name for this custom metrics autoscaler.
@@ -220,27 +190,15 @@ Procedure
     $ oc create -f <filename>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - View the command output to verify that the custom metrics autoscaler was created:
 
   ``` terminal
   $ oc get scaledobject <scaled_object_name>
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -248,8 +206,6 @@ Verification
   NAME            SCALETARGETKIND      SCALETARGETNAME        MIN   MAX   TRIGGERS     AUTHENTICATION               READY   ACTIVE   FALLBACK   AGE
   scaledobject    apps/v1.Deployment   example-deployment     0     50    prometheus   prom-triggerauthentication   True    True     True       17s
   ```
-
-  </div>
 
   Note the following fields in the output:
 
@@ -275,36 +231,19 @@ Verification
 
     - If `True`, the custom metrics autoscaler is getting metrics because there are no metrics or there is a problem in one or more of the objects you created.
 
-</div>
-
 # Adding a custom metrics autoscaler to a job
 
 You can create a custom metrics autoscaler for any `Job` object.
 
-> [!IMPORTANT]
-> Scaling by using a scaled job is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div>
+Scaling by using a scaled job is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
 - The Custom Metrics Autoscaler Operator must be installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file similar to the following:
 
@@ -407,27 +346,15 @@ Procedure
     $ oc create -f <filename>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - View the command output to verify that the custom metrics autoscaler was created:
 
   ``` terminal
   $ oc get scaledjob <scaled_job_name>
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -435,8 +362,6 @@ Verification
   NAME        MAX   TRIGGERS     AUTHENTICATION              READY   ACTIVE    AGE
   scaledjob   100   prometheus   prom-triggerauthentication  True    True      8s
   ```
-
-  </div>
 
   Note the following fields in the output:
 
@@ -455,8 +380,6 @@ Verification
     - If `True`, scaling is taking place.
 
     - If `False`, scaling is not taking place because there are no metrics or there is a problem in one or more of the objects you created.
-
-</div>
 
 # Additional resources
 

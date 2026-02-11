@@ -10,16 +10,17 @@ You can update your control plane machines to reflect changes in your underlying
 
 The following example YAML illustrates a valid configuration for a VMware vSphere cluster.
 
-> [!NOTE]
-> When you create a control plane machine set for an existing cluster, the provider specification must match the `providerSpec` configuration in the control plane machine custom resource (CR) that the installation program creates.
+<div class="note">
+
+When you create a control plane machine set for an existing cluster, the provider specification must match the `providerSpec` configuration in the control plane machine custom resource (CR) that the installation program creates.
+
+</div>
 
 You can omit any field that has a value set in the failure domain section of the CR.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample vSphere `providerSpec` values
+**Sample vSphere `providerSpec` values**
 
 </div>
 
@@ -65,8 +66,6 @@ spec:
               server: <vcenter_server_ip>
 ```
 
-</div>
-
 where:
 
 `spec.template.spec.providerSpec.value.credentialsSecret`
@@ -87,8 +86,11 @@ Specifies the memory allocated for the control plane machines.
 `spec.template.spec.providerSpec.value.network`
 Specifies the network on which to deploy the control plane.
 
-> [!NOTE]
-> If the cluster uses a failure domain, configure this parameter in the failure domain. If you specify this value in the provider specification when using a failure domain, the Control Plane Machine Set Operator ignores it and uses the value in the failure domain.
+<div class="note">
+
+If the cluster uses a failure domain, configure this parameter in the failure domain. If you specify this value in the provider specification when using a failure domain, the Control Plane Machine Set Operator ignores it and uses the value in the failure domain.
+
+</div>
 
 `spec.template.spec.providerSpec.value.numCPUs`
 Specifies the number of CPUs allocated for the control plane machines.
@@ -99,8 +101,11 @@ Specifies the number of cores for each control plane CPU.
 `spec.template.spec.providerSpec.value.template`
 Specifies the vSphere VM template to use, such as `user-5ddjd-rhcos`.
 
-> [!NOTE]
-> If the cluster uses a failure domain, configure this parameter in the failure domain. If you specify this value in the provider specification when using a failure domain, the Control Plane Machine Set Operator ignores it and uses the value in the failure domain.
+<div class="note">
+
+If the cluster uses a failure domain, configure this parameter in the failure domain. If you specify this value in the provider specification when using a failure domain, the Control Plane Machine Set Operator ignores it and uses the value in the failure domain.
+
+</div>
 
 `spec.template.spec.providerSpec.value.userDataSecret`
 Specifies the control plane user data secret. Do not change this value.
@@ -108,8 +113,11 @@ Specifies the control plane user data secret. Do not change this value.
 `spec.template.spec.providerSpec.value.workspace`
 Specifies the workspace details for the control plane.
 
-> [!NOTE]
-> If the cluster uses a failure domain, configure this parameter in the failure domain. If you specify this value in the provider specification when using a failure domain, the Control Plane Machine Set Operator ignores it and uses the value in the failure domain.
+<div class="note">
+
+If the cluster uses a failure domain, configure this parameter in the failure domain. If you specify this value in the provider specification when using a failure domain, the Control Plane Machine Set Operator ignores it and uses the value in the failure domain.
+
+</div>
 
 The following keys in this stanza specify additional details:
 
@@ -136,14 +144,15 @@ On vSphere infrastructure, the cluster-wide infrastructure custom resource defin
 
 By using a failure domain resource, you can use a control plane machine set to deploy control plane machines on separate clusters or data centers. A control plane machine set also balances control plane machines across defined failure domains to improve fault tolerance capabilities for your infrastructure.
 
-> [!NOTE]
-> If you change the `ProviderSpec` configuration in the `ControlPlaneMachineSet` CR, the Control Plane Machine Set Operator updates the control plane machines according to your configured update strategy.
+<div class="note">
 
-<div class="formalpara">
+If you change the `ProviderSpec` configuration in the `ControlPlaneMachineSet` CR, the Control Plane Machine Set Operator updates the control plane machines according to your configured update strategy.
 
-<div class="title">
+</div>
 
-Sample VMware vSphere failure domain values
+<div class="formalpara-title">
+
+**Sample VMware vSphere failure domain values**
 
 </div>
 
@@ -166,21 +175,22 @@ spec:
 # ...
 ```
 
-</div>
-
 where:
 
 `spec.template.machines_v1beta1_machine_openshift_io.failureDomains.vsphere.name`
 Each instance of `name` specifies a failure domain.
 
-> [!IMPORTANT]
-> Each `name` field value in the stanza must match the corresponding value in the `failureDomains.name` field of the cluster-wide infrastructure CRD. You can find the value of the `failureDomains.name` field by running the following command:
->
-> ``` terminal
-> $ oc get infrastructure cluster -o=jsonpath={.spec.platformSpec.vsphere.failureDomains[0].name}
-> ```
->
-> The `name` field is the only supported failure domain field that you can specify in the `ControlPlaneMachineSet` CR.
+<div class="important">
+
+Each `name` field value in the stanza must match the corresponding value in the `failureDomains.name` field of the cluster-wide infrastructure CRD. You can find the value of the `failureDomains.name` field by running the following command:
+
+``` terminal
+$ oc get infrastructure cluster -o=jsonpath={.spec.platformSpec.vsphere.failureDomains[0].name}
+```
+
+The `name` field is the only supported failure domain field that you can specify in the `ControlPlaneMachineSet` CR.
+
+</div>
 
 For an example of a cluster-wide infrastructure CRD that defines resources for each failure domain, see "Specifying multiple regions and zones for your cluster on vSphere."
 

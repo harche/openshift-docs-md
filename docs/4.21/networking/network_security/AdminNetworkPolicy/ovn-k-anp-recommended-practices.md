@@ -8,8 +8,11 @@ When building `AdminNetworkPolicy` (ANP) resources, you might consider the follo
 
 - Administrators must create ANP that apply to user namespaces not system namespaces.
 
-> [!IMPORTANT]
-> Applying ANP and `BaselineAdminNetworkPolicy` (BANP) to system namespaces (`default`, `kube-system`, any namespace whose name starts with `openshift-`, etc) is not supported, and this can leave your cluster unresponsive and in a non-functional state.
+<div class="important">
+
+Applying ANP and `BaselineAdminNetworkPolicy` (BANP) to system namespaces (`default`, `kube-system`, any namespace whose name starts with `openshift-`, etc) is not supported, and this can leave your cluster unresponsive and in a non-functional state.
+
+</div>
 
 - Because `0-100` is the supported priority range, you might design your ANP to use a middle range like `30-70`. This leaves some placeholder for priorities before and after. Even in the middle range, you might want to leave gaps so that as your infrastructure requirements evolve over time, you are able to insert new ANPs when needed at the right priority level. If you pack your ANPs, then you might need to recreate all of them to accommodate any changes in the future.
 
@@ -41,8 +44,11 @@ When building `AdminNetworkPolicy` (ANP) resources, you might consider the follo
 
 - Unlike `NetworkPolicy` objects, you must use explicit labels to reference your workloads within ANP and BANP rather than using the empty (`{}`) catch all selector to avoid accidental traffic selection.
 
-> [!IMPORTANT]
-> An empty namespace selector applied to a infrastructure namespace can make your cluster unresponsive and in a non-functional state.
+<div class="important">
+
+An empty namespace selector applied to a infrastructure namespace can make your cluster unresponsive and in a non-functional state.
+
+</div>
 
 - In API semantics for ANP, you have to explicitly define allow or deny rules when you create the policy, unlike `NetworkPolicy` objects which have an implicit deny.
 

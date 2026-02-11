@@ -4,27 +4,9 @@ With the NBDE Tang Server Operator, you can deploy and quickly configure Tang se
 
 You can deploy and quickly configure one or more Tang servers using the NBDE Tang Server Operator in the web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have `cluster-admin` privileges on an OpenShift Container Platform cluster.
 
 - You have installed the NBDE Tang Server Operator on your OCP cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Ecosystem** → **Software Catalog**.
 
@@ -72,19 +54,9 @@ Procedure
 
 11. After you enter the required values a change settings that differ from the default values in your scenario, click **Create**.
 
-</div>
-
 # Rotating keys using the NBDE Tang Server Operator
 
 With the NBDE Tang Server Operator, you also can rotate your Tang server keys. The precise interval at which you should rotate them depends on your application, key sizes, and institutional policy.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You must have `cluster-admin` privileges on an OpenShift Container Platform cluster.
 
@@ -92,27 +64,15 @@ Prerequisites
 
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  List the existing keys on your Tang server, for example:
 
     ``` terminal
     $ oc -n nbde describe tangserver
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -127,15 +87,11 @@ Procedure
     …
     ```
 
-    </div>
-
 2.  Create a YAML file for moving your active keys to hidden keys, for example, `minimal-keyretrieve-rotate-tangserver.yaml`:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example key-rotation YAML for tang-operator
+    **Example key-rotation YAML for tang-operator**
 
     </div>
 
@@ -153,8 +109,6 @@ Procedure
         - sha1: "PvYQKtrTuYsMV2AomUeHrUWkCGg"
     ```
 
-    </div>
-
     - Specify the SHA-1 thumbprint of your active key to rotate it.
 
 3.  Apply the YAML file:
@@ -163,15 +117,7 @@ Procedure
     $ oc apply -f minimal-keyretrieve-rotate-tangserver.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  After a certain amount of time depending on your configuration, check that the previous `activeKey` value is the new `hiddenKey` value and the `activeKey` key file is newly generated, for example:
 
@@ -179,11 +125,9 @@ Verification
     $ oc -n nbde describe tangserver
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -208,10 +152,6 @@ Verification
     …
     ```
 
-    </div>
-
-</div>
-
 # Deleting hidden keys with the NBDE Tang Server Operator
 
 After you rotate your Tang server keys, the previously active keys become hidden and are no longer advertised by the Tang instance. You can use the NBDE Tang Server Operator to remove encryption keys no longer used.
@@ -219,29 +159,11 @@ After you rotate your Tang server keys, the previously active keys become hidden
 WARNING
 Do not remove any hidden keys unless you are sure that all bound Clevis clients already use new keys.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have `cluster-admin` privileges on an OpenShift Container Platform cluster.
 
 - You deployed a Tang server using the NBDE Tang Server Operator on your OpenShift cluster.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List the existing keys on your Tang server, for example:
 
@@ -249,11 +171,9 @@ Procedure
     $ oc -n nbde describe tangserver
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -268,15 +188,11 @@ Procedure
     …
     ```
 
-    </div>
-
 2.  Create a YAML file for removing all hidden keys, for example, `hidden-keys-deletion-tangserver.yaml`:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example hidden-keys-deletion YAML for tang-operator
+    **Example hidden-keys-deletion YAML for tang-operator**
 
     </div>
 
@@ -293,8 +209,6 @@ Procedure
       hiddenKeys: []
     ```
 
-    </div>
-
     - The empty array as the value of the `hiddenKeys` entry indicates you want to preserve no hidden keys on your Tang server.
 
 3.  Apply the YAML file:
@@ -303,15 +217,7 @@ Procedure
     $ oc apply -f hidden-keys-deletion-tangserver.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  After a certain amount of time depending on your configuration, check that the previous active key still exists, but no hidden key is available, for example:
 
@@ -319,11 +225,9 @@ Verification
     $ oc -n nbde describe tangserver
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -347,7 +251,3 @@ Verification
     Events:
     …
     ```
-
-    </div>
-
-</div>

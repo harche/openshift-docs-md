@@ -11,51 +11,29 @@ Enable improved security through isolated network paths in the VRF domain.
 Multi-tenancy support
 Support multi-tenancy through network segmentation with a unique routing table in the VRF domain for each tenant.
 
-> [!NOTE]
-> Applications that use VRFs must bind to a specific device. The common usage is to use the `SO_BINDTODEVICE` option for a socket. The `SO_BINDTODEVICE` option binds the socket to the device that is specified in the passed interface name, for example, `eth1`. To use the `SO_BINDTODEVICE` option, the application must have `CAP_NET_RAW` capabilities.
->
-> Using a VRF through the `ip vrf exec` command is not supported in OpenShift Container Platform pods. To use VRF, bind applications directly to the VRF interface.
+<div class="note">
 
-<div>
+Applications that use VRFs must bind to a specific device. The common usage is to use the `SO_BINDTODEVICE` option for a socket. The `SO_BINDTODEVICE` option binds the socket to the device that is specified in the passed interface name, for example, `eth1`. To use the `SO_BINDTODEVICE` option, the application must have `CAP_NET_RAW` capabilities.
 
-<div class="title">
-
-Additional resources
+Using a VRF through the `ip vrf exec` command is not supported in OpenShift Container Platform pods. To use VRF, bind applications directly to the VRF interface.
 
 </div>
 
 - [About virtual routing and forwarding](../../networking/multiple_networks/about-virtual-routing-and-forwarding.xml#cnf-about-virtual-routing-and-forwarding_about-virtual-routing-and-forwarding)
 
-</div>
-
 # Creating a secondary network attachment with the CNI VRF plugin
 
 The Cluster Network Operator (CNO) manages secondary network definitions. When you specify a secondary network in the cluster-scoped `Network` custom resource (CR), the CNO automatically creates the `NetworkAttachmentDefinition` CR.
 
-> [!NOTE]
-> Do not edit the `NetworkAttachmentDefinition` CRs that the Cluster Network Operator manages. Doing so might disrupt network traffic on your secondary network.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Do not edit the `NetworkAttachmentDefinition` CRs that the Cluster Network Operator manages. Doing so might disrupt network traffic on your secondary network.
 
 </div>
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in to the cluster as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `Network` CR for the additional network attachment and insert the `rawCNIConfig` configuration for the secondary network. Save as the `additional-network-attachment.yaml` file.
 
@@ -107,8 +85,11 @@ Procedure
     `table`
     Optional parameter. Specify the routing table ID. By default, the `tableid` parameter is used. If you do not specify a table ID, the CNI assigns a free routing table ID to the VRF.
 
-    > [!NOTE]
-    > VRF functions correctly only when the resource is of type `netdevice`.
+    <div class="note">
+
+    VRF functions correctly only when the resource is of type `netdevice`.
+
+    </div>
 
 2.  Create the `Network` resource:
 
@@ -122,18 +103,13 @@ Procedure
     $ oc get network-attachment-definitions -n <namespace>
     ```
 
-    > [!NOTE]
-    > A delay might exist before the CNO creates the CR.
+    <div class="note">
 
-</div>
+    A delay might exist before the CNO creates the CR.
 
-<div>
+    </div>
 
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Create a pod and assign the pod to the secondary network that includes the VRF plugin configuration.
 
@@ -183,5 +159,3 @@ Verification
     ``` terminal
     5: net1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master red state UP mode
     ```
-
-</div>

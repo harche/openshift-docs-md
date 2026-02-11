@@ -6,14 +6,6 @@ By default, `spec.proxy` has the settings `cpu: 10m` and `memory: 128M`. If you 
 
 The settings in the following example are based on 1,000 services and 1,000 requests per second. You can change the values for `cpu` and `memory` in the `ServiceMeshControlPlane`.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  In the OpenShift Container Platform web console, click **Ecosystem** → **Installed Operators**.
 
 2.  Click the **Project** menu and select the project where you installed the Service Mesh control plane, for example **istio-system**.
@@ -26,11 +18,9 @@ Procedure
 
     2.  Set the values for `spec.proxy.runtime.container.resources.requests.cpu`, `spec.proxy.runtime.container.resources.requests.memory`, `components.kiali.container`, and `components.global.oauthproxy` in your `ServiceMeshControlPlane` resource.
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example version 2.6 ServiceMeshControlPlane
+        **Example version 2.6 ServiceMeshControlPlane**
 
         </div>
 
@@ -79,25 +69,11 @@ Procedure
                       memory: "512Mi"
         ```
 
-        </div>
-
     3.  To set values for Red Hat OpenShift Distributed Tracing Platform (Jaeger), see "Configuring and deploying the distributed tracing platform Jaeger".
 
     4.  Click **Save**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Click **Reload** to verify that the `ServiceMeshControlPlane` resource was configured correctly.
-
-</div>
 
 # Load test results
 

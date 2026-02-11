@@ -11,13 +11,13 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | spec holds user settable values for configuration |
-| `status` | `object` | status contains the observed state of the resource. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | spec holds user settable values for configuration                                                                                                                                                                                                                                                    |
+| `status`     | `object`                                                                             | status contains the observed state of the resource.                                                                                                                                                                                                                                                  |
 
 ## .spec
 
@@ -32,9 +32,9 @@ Required
 
 - `scopes`
 
-| Property | Type | Description |
-|----|----|----|
-| `policy` | `object` | policy is a required field that contains configuration to allow scopes to be verified, and defines how images not matching the verification policy will be treated. |
+| Property | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|----------|------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `policy` | `object`         | policy is a required field that contains configuration to allow scopes to be verified, and defines how images not matching the verification policy will be treated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `scopes` | `array (string)` | scopes is a required field that defines the list of image identities assigned to a policy. Each item refers to a scope in a registry implementing the "Docker Registry HTTP API V2". Scopes matching individual images are named Docker references in the fully expanded form, either using a tag or digest. For example, docker.io/library/busybox:latest (not busybox:latest). More general scopes are prefixes of individual-image scopes, and specify a repository (by omitting the tag or digest), a repository namespace, or a registry host (by only specifying the host name and possibly a port number) or a wildcard expression starting with `*.`, for matching all subdomains (not including a port number). Wildcards are only supported for subdomain matching, and may not be used in the middle of the host, i.e. \*.example.com is a valid case, but example\*.\*.com is not. This support no more than 256 scopes in one object. If multiple scopes match a given image, only the policy requirements for the most specific scope apply. The policy requirements for more general scopes are ignored. In addition to setting a policy appropriate for your own deployed applications, make sure that a policy on the OpenShift image repositories quay.io/openshift-release-dev/ocp-release, quay.io/openshift-release-dev/ocp-v4.0-art-dev (or on a more general scope) allows deployment of the OpenShift images required for cluster operation. If a scope is configured in both the ClusterImagePolicy and the ImagePolicy, or if the scope in ImagePolicy is nested under one of the scopes from the ClusterImagePolicy, only the policy from the ClusterImagePolicy will be applied. For additional details about the format, please refer to the document explaining the docker transport field, which can be found at: <https://github.com/containers/image/blob/main/docs/containers-policy.json.5.md#docker> |
 
 ## .spec.policy
@@ -48,9 +48,9 @@ Type
 Required
 - `rootOfTrust`
 
-| Property | Type | Description |
-|----|----|----|
-| `rootOfTrust` | `object` | rootOfTrust is a required field that defines the root of trust for verifying image signatures during retrieval. This allows image consumers to specify policyType and corresponding configuration of the policy, matching how the policy was generated. |
+| Property         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `rootOfTrust`    | `object` | rootOfTrust is a required field that defines the root of trust for verifying image signatures during retrieval. This allows image consumers to specify policyType and corresponding configuration of the policy, matching how the policy was generated.                                                                                                                                                                                                                                                                                                                                                  |
 | `signedIdentity` | `object` | signedIdentity is an optional field specifies what image identity the signature claims about the image. This is useful when the image identity in the signature differs from the original image spec, such as when mirror registry is configured for the image scope, the signature from the mirror registry contains the image identity of the mirror instead of the original scope. The required matchPolicy field specifies the approach used in the verification process to verify the identity in the signature and the actual image identity, the default matchPolicy is "MatchRepoDigestOrExact". |
 
 ## .spec.policy.rootOfTrust
@@ -64,11 +64,11 @@ Type
 Required
 - `policyType`
 
-| Property | Type | Description |
-|----|----|----|
-| `fulcioCAWithRekor` | `object` | fulcioCAWithRekor defines the root of trust configuration based on the Fulcio certificate and the Rekor public key. fulcioCAWithRekor is required when policyType is FulcioCAWithRekor, and forbidden otherwise For more information about Fulcio and Rekor, please refer to the document at: <https://github.com/sigstore/fulcio> and <https://github.com/sigstore/rekor> |
-| `policyType` | `string` | policyType is a required field specifies the type of the policy for verification. This field must correspond to how the policy was generated. Allowed values are "PublicKey", "FulcioCAWithRekor", and "PKI". When set to "PublicKey", the policy relies on a sigstore publicKey and may optionally use a Rekor verification. When set to "FulcioCAWithRekor", the policy is based on the Fulcio certification and incorporates a Rekor verification. When set to "PKI", the policy is based on the certificates from Bring Your Own Public Key Infrastructure (BYOPKI). This value is enabled by turning on the SigstoreImageVerificationPKI feature gate. |
-| `publicKey` | `object` | publicKey defines the root of trust configuration based on a sigstore public key. Optionally include a Rekor public key for Rekor verification. publicKey is required when policyType is PublicKey, and forbidden otherwise. |
+| Property            | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|---------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fulcioCAWithRekor` | `object` | fulcioCAWithRekor defines the root of trust configuration based on the Fulcio certificate and the Rekor public key. fulcioCAWithRekor is required when policyType is FulcioCAWithRekor, and forbidden otherwise For more information about Fulcio and Rekor, please refer to the document at: <https://github.com/sigstore/fulcio> and <https://github.com/sigstore/rekor>                                                                                                                                                                                                                                                                                  |
+| `policyType`        | `string` | policyType is a required field specifies the type of the policy for verification. This field must correspond to how the policy was generated. Allowed values are "PublicKey", "FulcioCAWithRekor", and "PKI". When set to "PublicKey", the policy relies on a sigstore publicKey and may optionally use a Rekor verification. When set to "FulcioCAWithRekor", the policy is based on the Fulcio certification and incorporates a Rekor verification. When set to "PKI", the policy is based on the certificates from Bring Your Own Public Key Infrastructure (BYOPKI). This value is enabled by turning on the SigstoreImageVerificationPKI feature gate. |
+| `publicKey`         | `object` | publicKey defines the root of trust configuration based on a sigstore public key. Optionally include a Rekor public key for Rekor verification. publicKey is required when policyType is PublicKey, and forbidden otherwise.                                                                                                                                                                                                                                                                                                                                                                                                                                |
 
 ## .spec.policy.rootOfTrust.fulcioCAWithRekor
 
@@ -85,11 +85,11 @@ Required
 
 - `rekorKeyData`
 
-| Property | Type | Description |
-|----|----|----|
-| `fulcioCAData` | `string` | fulcioCAData is a required field contains inline base64-encoded data for the PEM format fulcio CA. fulcioCAData must be at most 8192 characters. |
-| `fulcioSubject` | `object` | fulcioSubject is a required field specifies OIDC issuer and the email of the Fulcio authentication configuration. |
-| `rekorKeyData` | `string` | rekorKeyData is a required field contains inline base64-encoded data for the PEM format from the Rekor public key. rekorKeyData must be at most 8192 characters. |
+| Property        | Type     | Description                                                                                                                                                      |
+|-----------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fulcioCAData`  | `string` | fulcioCAData is a required field contains inline base64-encoded data for the PEM format fulcio CA. fulcioCAData must be at most 8192 characters.                 |
+| `fulcioSubject` | `object` | fulcioSubject is a required field specifies OIDC issuer and the email of the Fulcio authentication configuration.                                                |
+| `rekorKeyData`  | `string` | rekorKeyData is a required field contains inline base64-encoded data for the PEM format from the Rekor public key. rekorKeyData must be at most 8192 characters. |
 
 ## .spec.policy.rootOfTrust.fulcioCAWithRekor.fulcioSubject
 
@@ -104,10 +104,10 @@ Required
 
 - `signedEmail`
 
-| Property | Type | Description |
-|----|----|----|
-| `oidcIssuer` | `string` | oidcIssuer is a required filed contains the expected OIDC issuer. The oidcIssuer must be a valid URL and at most 2048 characters in length. It will be verified that the Fulcio-issued certificate contains a (Fulcio-defined) certificate extension pointing at this OIDC issuer URL. When Fulcio issues certificates, it includes a value based on an URL inside the client-provided ID token. Example: "https://expected.OIDC.issuer/" |
-| `signedEmail` | `string` | signedEmail is a required field holds the email address that the Fulcio certificate is issued for. The signedEmail must be a valid email address and at most 320 characters in length. Example: "<expected-signing-user@example.com>" |
+| Property      | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|---------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `oidcIssuer`  | `string` | oidcIssuer is a required filed contains the expected OIDC issuer. The oidcIssuer must be a valid URL and at most 2048 characters in length. It will be verified that the Fulcio-issued certificate contains a (Fulcio-defined) certificate extension pointing at this OIDC issuer URL. When Fulcio issues certificates, it includes a value based on an URL inside the client-provided ID token. Example: "https://expected.OIDC.issuer/" |
+| `signedEmail` | `string` | signedEmail is a required field holds the email address that the Fulcio certificate is issued for. The signedEmail must be a valid email address and at most 320 characters in length. Example: "<expected-signing-user@example.com>"                                                                                                                                                                                                     |
 
 ## .spec.policy.rootOfTrust.publicKey
 
@@ -120,9 +120,9 @@ Type
 Required
 - `keyData`
 
-| Property | Type | Description |
-|----|----|----|
-| `keyData` | `string` | keyData is a required field contains inline base64-encoded data for the PEM format public key. keyData must be at most 8192 characters. |
+| Property       | Type     | Description                                                                                                                                                       |
+|----------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `keyData`      | `string` | keyData is a required field contains inline base64-encoded data for the PEM format public key. keyData must be at most 8192 characters.                           |
 | `rekorKeyData` | `string` | rekorKeyData is an optional field contains inline base64-encoded data for the PEM format from the Rekor public key. rekorKeyData must be at most 8192 characters. |
 
 ## .spec.policy.signedIdentity
@@ -136,11 +136,11 @@ Type
 Required
 - `matchPolicy`
 
-| Property | Type | Description |
-|----|----|----|
-| `exactRepository` | `object` | exactRepository specifies the repository that must be exactly matched by the identity in the signature. exactRepository is required if matchPolicy is set to "ExactRepository". It is used to verify that the signature claims an identity matching this exact repository, rather than the original image identity. |
-| `matchPolicy` | `string` | matchPolicy is a required filed specifies matching strategy to verify the image identity in the signature against the image scope. Allowed values are "MatchRepoDigestOrExact", "MatchRepository", "ExactRepository", "RemapIdentity". When omitted, the default value is "MatchRepoDigestOrExact". When set to "MatchRepoDigestOrExact", the identity in the signature must be in the same repository as the image identity if the image identity is referenced by a digest. Otherwise, the identity in the signature must be the same as the image identity. When set to "MatchRepository", the identity in the signature must be in the same repository as the image identity. When set to "ExactRepository", the exactRepository must be specified. The identity in the signature must be in the same repository as a specific identity specified by "repository". When set to "RemapIdentity", the remapIdentity must be specified. The signature must be in the same as the remapped image identity. Remapped image identity is obtained by replacing the "prefix" with the specified “signedPrefix” if the the image identity matches the specified remapPrefix. |
-| `remapIdentity` | `object` | remapIdentity specifies the prefix remapping rule for verifying image identity. remapIdentity is required if matchPolicy is set to "RemapIdentity". It is used to verify that the signature claims a different registry/repository prefix than the original image. |
+| Property          | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `exactRepository` | `object` | exactRepository specifies the repository that must be exactly matched by the identity in the signature. exactRepository is required if matchPolicy is set to "ExactRepository". It is used to verify that the signature claims an identity matching this exact repository, rather than the original image identity.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `matchPolicy`     | `string` | matchPolicy is a required filed specifies matching strategy to verify the image identity in the signature against the image scope. Allowed values are "MatchRepoDigestOrExact", "MatchRepository", "ExactRepository", "RemapIdentity". When omitted, the default value is "MatchRepoDigestOrExact". When set to "MatchRepoDigestOrExact", the identity in the signature must be in the same repository as the image identity if the image identity is referenced by a digest. Otherwise, the identity in the signature must be the same as the image identity. When set to "MatchRepository", the identity in the signature must be in the same repository as the image identity. When set to "ExactRepository", the exactRepository must be specified. The identity in the signature must be in the same repository as a specific identity specified by "repository". When set to "RemapIdentity", the remapIdentity must be specified. The signature must be in the same as the remapped image identity. Remapped image identity is obtained by replacing the "prefix" with the specified “signedPrefix” if the the image identity matches the specified remapPrefix. |
+| `remapIdentity`   | `object` | remapIdentity specifies the prefix remapping rule for verifying image identity. remapIdentity is required if matchPolicy is set to "RemapIdentity". It is used to verify that the signature claims a different registry/repository prefix than the original image.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 ## .spec.policy.signedIdentity.exactRepository
 
@@ -153,8 +153,8 @@ Type
 Required
 - `repository`
 
-| Property | Type | Description |
-|----|----|----|
+| Property     | Type     | Description                                                                                                                                                                                                                                                                                                    |
+|--------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `repository` | `string` | repository is the reference of the image identity to be matched. repository is required if matchPolicy is set to "ExactRepository". The value should be a repository name (by omitting the tag or digest) in a registry implementing the "Docker Registry HTTP API V2". For example, docker.io/library/busybox |
 
 ## .spec.policy.signedIdentity.remapIdentity
@@ -170,10 +170,10 @@ Required
 
 - `signedPrefix`
 
-| Property | Type | Description |
-|----|----|----|
-| `prefix` | `string` | prefix is required if matchPolicy is set to "RemapIdentity". prefix is the prefix of the image identity to be matched. If the image identity matches the specified prefix, that prefix is replaced by the specified “signedPrefix” (otherwise it is used as unchanged and no remapping takes place). This is useful when verifying signatures for a mirror of some other repository namespace that preserves the vendor’s repository structure. The prefix and signedPrefix values can be either host\[:port\] values (matching exactly the same host\[:port\], string), repository namespaces, or repositories (i.e. they must not contain tags/digests), and match as prefixes of the fully expanded form. For example, docker.io/library/busybox (not busybox) to specify that single repository, or docker.io/library (not an empty string) to specify the parent namespace of docker.io/library/busybox. |
-| `signedPrefix` | `string` | signedPrefix is required if matchPolicy is set to "RemapIdentity". signedPrefix is the prefix of the image identity to be matched in the signature. The format is the same as "prefix". The values can be either host\[:port\] values (matching exactly the same host\[:port\], string), repository namespaces, or repositories (i.e. they must not contain tags/digests), and match as prefixes of the fully expanded form. For example, docker.io/library/busybox (not busybox) to specify that single repository, or docker.io/library (not an empty string) to specify the parent namespace of docker.io/library/busybox. |
+| Property       | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|----------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `prefix`       | `string` | prefix is required if matchPolicy is set to "RemapIdentity". prefix is the prefix of the image identity to be matched. If the image identity matches the specified prefix, that prefix is replaced by the specified “signedPrefix” (otherwise it is used as unchanged and no remapping takes place). This is useful when verifying signatures for a mirror of some other repository namespace that preserves the vendor’s repository structure. The prefix and signedPrefix values can be either host\[:port\] values (matching exactly the same host\[:port\], string), repository namespaces, or repositories (i.e. they must not contain tags/digests), and match as prefixes of the fully expanded form. For example, docker.io/library/busybox (not busybox) to specify that single repository, or docker.io/library (not an empty string) to specify the parent namespace of docker.io/library/busybox. |
+| `signedPrefix` | `string` | signedPrefix is required if matchPolicy is set to "RemapIdentity". signedPrefix is the prefix of the image identity to be matched in the signature. The format is the same as "prefix". The values can be either host\[:port\] values (matching exactly the same host\[:port\], string), repository namespaces, or repositories (i.e. they must not contain tags/digests), and match as prefixes of the fully expanded form. For example, docker.io/library/busybox (not busybox) to specify that single repository, or docker.io/library (not an empty string) to specify the parent namespace of docker.io/library/busybox.                                                                                                                                                                                                                                                                                 |
 
 ## .status
 
@@ -183,10 +183,10 @@ status contains the observed state of the resource.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `conditions` | `array` | conditions provide details on the status of this API Resource. condition type 'Pending' indicates that the customer resource contains a policy that cannot take effect. It is either overwritten by a global policy or the image scope is not valid. |
-| `conditions[]` | `object` | Condition contains details for one aspect of the current state of this API Resource. |
+| Property       | Type     | Description                                                                                                                                                                                                                                          |
+|----------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `conditions`   | `array`  | conditions provide details on the status of this API Resource. condition type 'Pending' indicates that the customer resource contains a policy that cannot take effect. It is either overwritten by a global policy or the image scope is not valid. |
+| `conditions[]` | `object` | Condition contains details for one aspect of the current state of this API Resource.                                                                                                                                                                 |
 
 ## .status.conditions
 
@@ -215,14 +215,14 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastTransitionTime` | `string` | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable. |
-| `message` | `string` | message is a human readable message indicating details about the transition. This may be an empty string. |
-| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance. |
-| `reason` | `string` | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
-| `status` | `string` | status of the condition, one of True, False, Unknown. |
-| `type` | `string` | type of condition in CamelCase or in foo.example.com/CamelCase. |
+| Property             | Type      | Description                                                                                                                                                                                                                                                                                                                     |
+|----------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string`  | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable.                                                                                            |
+| `message`            | `string`  | message is a human readable message indicating details about the transition. This may be an empty string.                                                                                                                                                                                                                       |
+| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.                                   |
+| `reason`             | `string`  | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
+| `status`             | `string`  | status of the condition, one of True, False, Unknown.                                                                                                                                                                                                                                                                           |
+| `type`               | `string`  | type of condition in CamelCase or in foo.example.com/CamelCase.                                                                                                                                                                                                                                                                 |
 
 # API endpoints
 
@@ -266,10 +266,10 @@ HTTP method
 Description
 list objects of kind ImagePolicy
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImagePolicyList`](../objects/index.xml#io-openshift-config-v1-ImagePolicyList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                            |
+|--------------------|-----------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImagePolicyList`](../objects/index.xml#io-openshift-config-v1-ImagePolicyList) schema |
+| 401 - Unauthorized | Empty                                                                                   |
 
 HTTP responses
 
@@ -281,10 +281,10 @@ HTTP method
 Description
 delete collection of ImagePolicy
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -294,10 +294,10 @@ HTTP method
 Description
 list objects of kind ImagePolicy
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImagePolicyList`](../objects/index.xml#io-openshift-config-v1-ImagePolicyList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                            |
+|--------------------|-----------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImagePolicyList`](../objects/index.xml#io-openshift-config-v1-ImagePolicyList) schema |
+| 401 - Unauthorized | Empty                                                                                   |
 
 HTTP responses
 
@@ -307,25 +307,25 @@ HTTP method
 Description
 create an ImagePolicy
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                             | Description |
+|-----------|------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
-| 201 - Created | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
-| 202 - Accepted | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                     |
+|--------------------|------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
+| 201 - Created      | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
+| 202 - Accepted     | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                            |
 
 HTTP responses
 
@@ -343,17 +343,17 @@ HTTP method
 Description
 delete an ImagePolicy
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -363,10 +363,10 @@ HTTP method
 Description
 read the specified ImagePolicy
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                     |
+|--------------------|------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                            |
 
 HTTP responses
 
@@ -376,17 +376,17 @@ HTTP method
 Description
 partially update the specified ImagePolicy
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                     |
+|--------------------|------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                            |
 
 HTTP responses
 
@@ -396,24 +396,24 @@ HTTP method
 Description
 replace the specified ImagePolicy
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                             | Description |
+|-----------|------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
-| 201 - Created | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                     |
+|--------------------|------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
+| 201 - Created      | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                            |
 
 HTTP responses
 
@@ -431,10 +431,10 @@ HTTP method
 Description
 read status of the specified ImagePolicy
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                     |
+|--------------------|------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                            |
 
 HTTP responses
 
@@ -444,17 +444,17 @@ HTTP method
 Description
 partially update status of the specified ImagePolicy
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                     |
+|--------------------|------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                            |
 
 HTTP responses
 
@@ -464,23 +464,23 @@ HTTP method
 Description
 replace status of the specified ImagePolicy
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                             | Description |
+|-----------|------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
-| 201 - Created | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                     |
+|--------------------|------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
+| 201 - Created      | [`ImagePolicy`](../config_apis/imagepolicy-config-openshift-io-v1.xml#imagepolicy-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                            |
 
 HTTP responses

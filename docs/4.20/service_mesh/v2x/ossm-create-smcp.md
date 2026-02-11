@@ -2,37 +2,25 @@
 
 The control plane includes Istiod, Ingress and Egress Gateways, and other components, such as Kiali and Jaeger. The control plane must be deployed in a separate namespace than the Service Mesh Operators and the data plane applications and services. You can deploy a basic installation of the `ServiceMeshControlPlane`(SMCP) from the OpenShift Container Platform web console or the command line using the `oc` client tool.
 
-> [!NOTE]
-> This basic installation is configured based on the default OpenShift Container Platform settings and is not designed for production use. Use this default installation to verify your installation, and then configure your `ServiceMeshControlPlane` settings for your environment.
+<div class="note">
 
-> [!NOTE]
-> The Service Mesh documentation uses `istio-system` as the example project, but you can deploy the service mesh to any project.
+This basic installation is configured based on the default OpenShift Container Platform settings and is not designed for production use. Use this default installation to verify your installation, and then configure your `ServiceMeshControlPlane` settings for your environment.
+
+</div>
+
+<div class="note">
+
+The Service Mesh documentation uses `istio-system` as the example project, but you can deploy the service mesh to any project.
+
+</div>
 
 ## Deploying the Service Mesh control plane from the web console
 
 You can deploy a basic `ServiceMeshControlPlane` by using the web console. In this example, `istio-system` is the name of the Service Mesh control plane project.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The Red Hat OpenShift Service Mesh Operator must be installed.
 
 - You are logged in to the OpenShift Container Platform web console as `cluster-admin`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console as a user with the `cluster-admin` role. If you use Red Hat OpenShift Dedicated, you must have an account with the `dedicated-admin` role.
 
@@ -60,51 +48,21 @@ Procedure
 
     The Operator creates pods, services, and Service Mesh control plane components based on your configuration parameters. You can configure `ServiceMeshControlPlane` settings at a later time.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - To verify the control plane installed correctly, click the **Istio Service Mesh Control Plane** tab.
 
   1.  Click the name of the new control plane.
 
   2.  Click the **Resources** tab to see the Red Hat OpenShift Service Mesh control plane resources the Operator created and configured.
 
-</div>
-
 ## Deploying the Service Mesh control plane using the CLI
 
 You can deploy a basic `ServiceMeshControlPlane` from the command line.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - The Red Hat OpenShift Service Mesh Operator must be installed.
 
 - Access to the OpenShift CLI (`oc`).
 
 - You are logged in to OpenShift Container Platform as\`cluster-admin\`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a project named `istio-system`.
 
@@ -114,11 +72,9 @@ Procedure
 
 2.  Create a `ServiceMeshControlPlane` file named `istio-installation.yaml` using the following example. The version of the Service Mesh control plane determines the features available regardless of the version of the Operator.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example version 2.6 istio-installation.yaml
+    **Example version 2.6 istio-installation.yaml**
 
     </div>
 
@@ -140,8 +96,6 @@ Procedure
         grafana:
           enabled: true
     ```
-
-    </div>
 
 3.  Run the following command to deploy the Service Mesh control plane, where `<istio_installation.yaml>` includes the full path to your file.
 
@@ -167,8 +121,6 @@ Procedure
     prometheus-58954b8d6b-m5std            2/2     Running   0          66m
     ```
 
-</div>
-
 ## Validating your SMCP installation with the CLI
 
 You can validate the creation of the `ServiceMeshControlPlane` from the command line.
@@ -181,13 +133,7 @@ You can validate the creation of the `ServiceMeshControlPlane` from the command 
 
     - You are logged in to OpenShift Container Platform as\`cluster-admin\`.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 1.  Run the following command to verify the Service Mesh control plane installation, where `istio-system` is the namespace where you installed the Service Mesh control plane.
 
@@ -201,8 +147,6 @@ Procedure
     NAME    READY   STATUS            PROFILES      VERSION   AGE
     basic   10/10   ComponentsReady   ["default"]   2.6.12     66m
     ```
-
-</div>
 
 # About control plane components and infrastructure nodes
 
@@ -220,27 +164,9 @@ Perform this task if all of the components deployed by the Service Mesh control 
 
 If the control plane will run on a worker node, skip this task.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the Red Hat OpenShift Service Mesh Operator.
 
 - You are logged in to OpenShift Container Platform as\`cluster-admin\`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -278,35 +204,15 @@ Procedure
 
 8.  Click **Reload**.
 
-</div>
-
 ## Configuring individual control plane components to run on infrastructure nodes using the web console
 
 Perform this task if individual components deployed by the Service Mesh control plane will run on infrastructure nodes. These deployed components include Istiod, the Ingress Gateway, and the Egress Gateway.
 
 If the control plane will run on a worker node, skip this task.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the Red Hat OpenShift Service Mesh Operator.
 
 - You are logged in to OpenShift Container Platform as\`cluster-admin\`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -380,35 +286,15 @@ Procedure
 
 9.  Click **Reload**.
 
-</div>
-
 ## Configuring all control plane components to run on infrastructure nodes using the CLI
 
 Perform this task if all of the components deployed by the Service Mesh control plane will run on infrastructure nodes. These deployed components include Istiod, Ingress Gateway, and Egress Gateway, and optional applications such as Prometheus, Grafana, and Distributed Tracing.
 
 If the control plane will run on a worker node, skip this task.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the Red Hat OpenShift Service Mesh Operator.
 
 - You are logged in to OpenShift Container Platform as\`cluster-admin\`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open the `ServiceMeshControlPlane` resource as a YAML file:
 
@@ -440,35 +326,15 @@ Procedure
 
     - Ensures that the pods are accepted by the infrastructure node.
 
-</div>
-
 ## Configuring individual control plane components to run on infrastructure nodes using the CLI
 
 Perform this task if individual components deployed by the Service Mesh control plane will run on infrastructure nodes. These deployed components include Istiod, the Ingress Gateway, and the Egress Gateway.
 
 If the control plane will run on a worker node, skip this task.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the Red Hat OpenShift Service Mesh Operator.
 
 - You are logged in to OpenShift Container Platform as\`cluster-admin\`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open the `ServiceMeshControlPlane` resource as a YAML file.
 
@@ -536,25 +402,13 @@ Procedure
 
     - Ensures that the pod is accepted by the infrastructure node.
 
-</div>
-
 ## Verifying the Service Mesh control plane is running on infrastructure nodes
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Confirm that the nodes associated with Istiod, Ingress Gateway, and Egress Gateway pods are infrastructure nodes:
 
   ``` terminal
   $ oc -n istio-system get pods -owide
   ```
-
-</div>
 
 # About control plane and cluster-wide deployments
 
@@ -566,27 +420,9 @@ You can configure the Service Mesh Control Plane for cluster-wide deployments us
 
 You can configure the `ServiceMeshControlPlane` resource for cluster-wide deployment using the OpenShift Container Platform web console. In this example, `istio-system` is the name of the Service Mesh control plane project.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The Red Hat OpenShift Service Mesh Operator is installed.
 
 - You are logged in to OpenShift Container Platform as\`cluster-admin\`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a project named `istio-system`.
 
@@ -610,11 +446,9 @@ Procedure
 
 6.  Modify the `spec.mode` field of the YAML file to specify `ClusterWide`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example version 2.6 istio-installation.yaml
+    **Example version 2.6 istio-installation.yaml**
 
     </div>
 
@@ -629,19 +463,7 @@ Procedure
       mode: ClusterWide
     ```
 
-    </div>
-
 7.  Click **Create**. The Operator creates pods, services, and Service Mesh control plane components based on your configuration parameters. The operator also creates the `ServiceMeshMemberRoll` if it does not exist as part of the default configuration.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - To verify that the control plane installed correctly:
 
@@ -651,35 +473,15 @@ Verification
 
   3.  Click the **Resources** tab to see the Red Hat OpenShift Service Mesh control plane resources that the Operator created and configured.
 
-</div>
-
 ## Configuring the control plane for cluster-wide deployment with the CLI
 
 You can configure the `ServiceMeshControlPlane` resource for cluster-wide deployment using the CLI. In this example, `istio-system` is the name of the Service Mesh control plane namespace.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - The Red Hat OpenShift Service Mesh Operator is installed.
 
 - You have access to the OpenShift CLI (`oc`).
 
 - You are logged in to OpenShift Container Platform as\`cluster-admin\`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a project named `istio-system`.
 
@@ -689,11 +491,9 @@ Procedure
 
 2.  Create a `ServiceMeshControlPlane` file named `istio-installation.yaml` using the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example version 2.6 istio-installation.yaml
+    **Example version 2.6 istio-installation.yaml**
 
     </div>
 
@@ -707,8 +507,6 @@ Procedure
       version: v2.6
       mode: ClusterWide
     ```
-
-    </div>
 
 3.  Run the following command to deploy the Service Mesh control plane:
 
@@ -721,15 +519,7 @@ Procedure
     \<istio_installation.yaml\>
     Specifies the full path to your file.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  To monitor the progress of the pod deployment, run the following command:
 
@@ -739,11 +529,9 @@ Verification
 
     You should see output similar to the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -758,23 +546,25 @@ Verification
     prometheus-58954b8d6b-m5std            2/2     Running   0          66m
     ```
 
-    </div>
-
-</div>
-
 ## Customizing the member roll for a cluster-wide mesh
 
 In cluster-wide mode, when you create the `ServiceMeshControlPlane` resource, the `ServiceMeshMemberRoll` resource is also created. You can modify the `ServiceMeshMemberRoll` resource after it gets created. After you modify the resource, the Service Mesh operator no longer changes it. If you modify the `ServiceMeshMemberRoll` resource by using the OpenShift Container Platform web console, accept the prompt to overwrite the modifications.
 
 Alternatively, you can create a `ServiceMeshMemberRoll` resource before deploying the `ServiceMeshControlPlane` resource. When you create the `ServiceMeshControlPlane` resource, the Service Mesh Operator will not modify the `ServiceMeshMemberRoll`.
 
-> [!NOTE]
-> The `ServiceMeshMemberRoll` resource name must be named `default` and must be created in the same project namespace as the `ServiceMeshControlPlane` resource.
+<div class="note">
+
+The `ServiceMeshMemberRoll` resource name must be named `default` and must be created in the same project namespace as the `ServiceMeshControlPlane` resource.
+
+</div>
 
 There are two ways to add a namespace to the mesh. You can either add the namespace by specifying its name in the `spec.members` list, or configure a set of namespace label selectors to include or exclude namespaces based on their labels.
 
-> [!NOTE]
-> Regardless of how members are specified in the `ServiceMeshMemberRoll` resource, you can also add members to the mesh by creating the `ServiceMeshMember` resource in each namespace.
+<div class="note">
+
+Regardless of how members are specified in the `ServiceMeshMemberRoll` resource, you can also add members to the mesh by creating the `ServiceMeshMember` resource in each namespace.
+
+</div>
 
 # Validating your SMCP installation with Kiali
 
@@ -788,13 +578,7 @@ You can use the Kiali console to validate your Service Mesh installation. The Ki
 
     - You are logged in to OpenShift Container Platform as\`cluster-admin\`.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 1.  In the OpenShift Container Platform web console, navigate to **Networking** → **Routes**.
 
@@ -859,8 +643,6 @@ Procedure
 10. To view a list of the Istio Configuration objects in the `istio-system` namespace, click the **Istio Config** page. Kiali displays the health of the configuration.
 
     1.  If there are configuration errors, click the row and Kiali opens the configuration file with the error highlighted.
-
-</div>
 
 # Additional resources
 

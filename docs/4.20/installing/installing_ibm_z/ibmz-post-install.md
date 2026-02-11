@@ -10,32 +10,17 @@ After installing OpenShift Container Platform, you can configure additional devi
 
 You can configure devices by adding udev rules using the Machine Config Operator (MCO) or you can configure devices manually.
 
-> [!NOTE]
-> The procedures described here apply only to z/VM installations. If you have installed your cluster with RHEL KVM on IBM Z® or IBM® LinuxONE infrastructure, no additional configuration is needed inside the KVM guest after the devices were added to the KVM guests. However, both in z/VM and RHEL KVM environments the next steps to configure the Local Storage Operator and Kubernetes NMState Operator need to be applied.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+The procedures described here apply only to z/VM installations. If you have installed your cluster with RHEL KVM on IBM Z® or IBM® LinuxONE infrastructure, no additional configuration is needed inside the KVM guest after the devices were added to the KVM guests. However, both in z/VM and RHEL KVM environments the next steps to configure the Local Storage Operator and Kubernetes NMState Operator need to be applied.
 
 </div>
 
 - [Machine configuration overview](../../machine_configuration/index.xml#machine-config-overview)
 
-</div>
-
 # Configuring additional devices using the Machine Config Operator (MCO)
 
 Tasks in this section describe how to use features of the Machine Config Operator (MCO) to configure additional devices in an IBM Z® or IBM® LinuxONE environment. Configuring devices with the MCO is persistent but only allows specific configurations for compute nodes. MCO does not allow control plane nodes to have different configurations.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You are logged in to the cluster as a user with administrative privileges.
 
@@ -61,19 +46,9 @@ Prerequisites
         node-role.kubernetes.io/worker0: ""
   ```
 
-</div>
-
 ## Configuring a Fibre Channel Protocol (FCP) host
 
 The following is an example of how to configure an FCP host adapter with N_Port Identifier Virtualization (NPIV) by adding a udev rule.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Take the following sample udev rule `441-zfcp-host-0.0.8000.rules`:
 
@@ -122,19 +97,9 @@ Procedure
 
     - The path where the udev rule is located.
 
-</div>
-
 ## Configuring an FCP LUN
 
 The following is an example of how to configure an FCP LUN by adding a udev rule. You can add new FCP LUNs or add additional paths to LUNs that are already configured with multipathing.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Take the following sample udev rule `41-zfcp-lun-0.0.8000:0x500507680d760026:0x00bc000000000000.rules`:
 
@@ -187,19 +152,9 @@ Procedure
 
     - The path where the udev rule is located.
 
-</div>
-
 ## Configuring DASD
 
 The following is an example of how to configure a DASD device by adding a udev rule.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Take the following sample udev rule `41-dasd-eckd-0.0.4444.rules`:
 
@@ -248,19 +203,9 @@ Procedure
 
     - The path where the udev rule is located.
 
-</div>
-
 ## Configuring qeth
 
 The following is an example of how to configure a qeth device by adding a udev rule.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Take the following sample udev rule `41-qeth-0.0.1000.rules`:
 
@@ -320,49 +265,19 @@ Procedure
 
     - The path where the udev rule is located.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - [Install and configure the Local Storage Operator](../../storage/persistent_storage_local/persistent-storage-local.xml#persistent-storage-using-local-volume)
 
 - [Observing and updating the node network state and configuration](../../networking/k8s_nmstate/k8s-nmstate-updating-node-network-config.xml#k8s-nmstate-updating-node-network-config)
 
-</div>
-
 # Configuring additional devices manually
 
 Tasks in this section describe how to manually configure additional devices in an IBM Z® or IBM® LinuxONE environment. This configuration method is persistent over node restarts but not OpenShift Container Platform native and you need to redo the steps if you replace the node.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You are logged in to the cluster as a user with administrative privileges.
 
 - The device must be available to the node.
 
 - In a z/VM environment, the device must be attached to the z/VM guest.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Connect to the node via SSH by running the following command:
 
@@ -382,21 +297,9 @@ Procedure
     $ sudo chzdev -e <device>
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [chzdev - Configure IBM Z® devices](https://www.ibm.com/docs/en/linux-on-systems?topic=commands-chzdev) (IBM® Documentation)
 
 - [Persistent device configuration](https://www.ibm.com/docs/en/linux-on-systems?topic=linuxonibm/com.ibm.linux.z.ludd/ludd_c_perscfg.html) (IBM® Documentation)
-
-</div>
 
 # RoCE network Cards
 
@@ -406,30 +309,15 @@ RoCE (RDMA over Converged Ethernet) network cards do not need to be enabled and 
 
 Tasks in this section describe how to manually configure additional devices in an IBM Z® or IBM® LinuxONE environment. This configuration method is persistent over node restarts but not OpenShift Container Platform native and you need to redo the steps if you replace the node.
 
-> [!IMPORTANT]
-> On IBM Z® and IBM® LinuxONE, you can enable multipathing only if you configured your cluster for it during installation. For more information, see "Installing RHCOS and starting the OpenShift Container Platform bootstrap process" in *Installing a cluster with z/VM on IBM Z® and IBM® LinuxONE*.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+On IBM Z® and IBM® LinuxONE, you can enable multipathing only if you configured your cluster for it during installation. For more information, see "Installing RHCOS and starting the OpenShift Container Platform bootstrap process" in *Installing a cluster with z/VM on IBM Z® and IBM® LinuxONE*.
 
 </div>
 
 - You are logged in to the cluster as a user with administrative privileges.
 
 - You have configured multiple paths to a LUN with either method explained above.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Connect to the node via SSH by running the following command:
 
@@ -461,27 +349,15 @@ Procedure
     $ sudo fdisk /dev/mapper/mpatha
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - To verify that the devices have been grouped, run the following command:
 
   ``` terminal
   $ sudo multipath -ll
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -495,20 +371,8 @@ Verification
       `- 0:0:1:6  sdh 66:48  active ready running
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
+<!-- -->
 
 - [Install and configure the Local Storage Operator](../../storage/persistent_storage_local/persistent-storage-local.xml#persistent-storage-using-local-volume)
 
 - [Observing and updating the node network state and configuration](../../networking/k8s_nmstate/k8s-nmstate-updating-node-network-config.xml#k8s-nmstate-updating-node-network-config)
-
-</div>

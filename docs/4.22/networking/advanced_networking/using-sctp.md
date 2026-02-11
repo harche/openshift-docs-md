@@ -69,27 +69,9 @@ spec:
 
 As a cluster administrator, you can load and enable the blacklisted SCTP kernel module on worker nodes in your cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a file named `load-sctp-module.yaml` that contains the following YAML definition:
 
@@ -130,35 +112,15 @@ Procedure
     $ oc get nodes
     ```
 
-</div>
-
 # Verifying Stream Control Transmission Protocol (SCTP) is enabled
 
 You can verify that SCTP is working on a cluster by creating a pod with an application that listens for SCTP traffic, associating it with a service, and then connecting to the exposed service.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Access to the internet from the cluster to install the `nc` package.
 
 - Install the OpenShift CLI (`oc`).
 
 - Access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a pod starts an SCTP listener:
 
@@ -279,5 +241,3 @@ Procedure
         ``` terminal
         # nc <cluster_IP> 30102 --sctp
         ```
-
-</div>

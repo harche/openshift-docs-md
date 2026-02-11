@@ -13,22 +13,15 @@ Exposes the service on the same port of each selected node in the cluster. `Node
 LoadBalancer
 Creates an external load balancer in the current cloud (if supported) and assigns a fixed, external IP address to the service.
 
-> [!NOTE]
-> For on-premise clusters, you can configure a load-balancing service by deploying the MetalLB Operator.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+For on-premise clusters, you can configure a load-balancing service by deploying the MetalLB Operator.
 
 </div>
 
 - [Installing the MetalLB Operator](../../networking/networking_operators/metallb-operator/metallb-operator-install.xml#metallb-operator-install_metallb-operator-install)
 
 - [Configuring services to use MetalLB](../../networking/ingress_load_balancing/metallb/metallb-configure-services.xml#metallb-configure-services)
-
-</div>
 
 # Dual-stack support
 
@@ -59,27 +52,9 @@ You can define which IP family to use for single-stack or define the order of IP
 
 You can create a service and associate it with a virtual machine (VM) by using the command line.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You configured the cluster network to support the service.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `VirtualMachine` manifest to add the label for service creation:
 
@@ -100,8 +75,11 @@ Procedure
 
     - Add `special: key` to the `spec.template.metadata.labels` stanza.
 
-      > [!NOTE]
-      > Labels on a virtual machine are passed through to the pod. The `special: key` label must match the label in the `spec.selector` attribute of the `Service` manifest.
+      <div class="note">
+
+      Labels on a virtual machine are passed through to the pod. The `special: key` label must match the label in the `spec.selector` attribute of the `Service` manifest.
+
+      </div>
 
 2.  Save the `VirtualMachine` manifest file to apply your changes.
 
@@ -141,23 +119,11 @@ Procedure
 
 6.  Restart the VM to apply the changes.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Query the `Service` object to verify that it is available:
 
   ``` terminal
   $ oc get service -n example-namespace
   ```
-
-</div>
 
 # Additional resources
 

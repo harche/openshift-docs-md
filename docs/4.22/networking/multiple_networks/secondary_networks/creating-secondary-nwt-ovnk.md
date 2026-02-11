@@ -4,15 +4,21 @@ As a cluster administrator, you can configure a secondary network for your clust
 
 The Red Hat OpenShift Networking OVN-Kubernetes network plugin allows the configuration of secondary network interfaces for pods. To configure secondary network interfaces, you must define the configurations in the `NetworkAttachmentDefinition` custom resource definition (CRD).
 
-> [!NOTE]
-> Pod and multi-network policy creation might remain in a pending state until the OVN-Kubernetes control plane agent in the nodes processes the associated `network-attachment-definition` CRD.
+<div class="note">
+
+Pod and multi-network policy creation might remain in a pending state until the OVN-Kubernetes control plane agent in the nodes processes the associated `network-attachment-definition` CRD.
+
+</div>
 
 You can configure an OVN-Kubernetes secondary network in layer 2, layer 3, or localnet topologies. For more information about features supported on these topologies, see "UserDefinedNetwork and NetworkAttachmentDefinition support matrix".
 
 The following sections provide example configurations for each of the topologies that OVN-Kubernetes currently allows for secondary networks.
 
-> [!NOTE]
-> Networks names must be unique. For example, creating multiple `NetworkAttachmentDefinition` CRDs with different configurations that reference the same network is unsupported.
+<div class="note">
+
+Networks names must be unique. For example, creating multiple `NetworkAttachmentDefinition` CRDs with different configurations that reference the same network is unsupported.
+
+</div>
 
 ## Supported platforms for OVN-Kubernetes secondary network
 
@@ -42,67 +48,69 @@ The OVN-Kubernetes network plugin JSON configuration object describes the config
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>cniVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The CNI specification version. The required value is <code>0.3.1</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The name of the network. These networks are not namespaced. For example, a network named <code>l2-network</code> can be referenced by <code>NetworkAttachmentDefinition</code> custom resources (CRs) that exist in different namespaces. This configuration allows pods that use the <code>NetworkAttachmentDefinition</code> CR in different namespaces to communicate over the same secondary network. However, the <code>NetworkAttachmentDefinition</code> CRs must share the same network-specific parameters, such as <code>topology</code>, <code>subnets</code>, <code>mtu</code>, <code>excludeSubnets</code>, and <code>vlanID</code>. The <code>vlanID</code> parameter applies only when the <code>topology</code> field is set to <code>localnet</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The name of the CNI plugin to configure. This value must be set to <code>ovn-k8s-cni-overlay</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>topology</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The topological configuration for the network. Must be one of <code>layer2</code> or <code>localnet</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>subnets</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The subnet to use for the network across the cluster.</p>
 <p>For <code>"topology":"layer2"</code> deployments, IPv6 (<code>2001:DBB::/64</code>) and dual-stack (<code>192.168.100.0/24,2001:DBB::/64</code>) subnets are supported.</p>
 <p>When omitted, the logical switch implementing the network only provides layer 2 communication, and users must configure IP addresses for the pods. Port security only prevents MAC spoofing.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>mtu</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The maximum transmission unit (MTU). If you do not set a value, the Cluster Network Operator (CNO) sets a default MTU value by calculating the difference among the underlay MTU of the primary network interface, the overlay MTU of the pod network, such as the Geneve (Generic Network Virtualization Encapsulation), and byte capacity of any enabled features, such as IPsec.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>netAttachDefName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The metadata <code>namespace</code> and <code>name</code> of the network attachment definition CRD where this configuration is included. For example, if this configuration is defined in a <code>NetworkAttachmentDefinition</code> CRD in namespace <code>ns1</code> named <code>l2-network</code>, this should be set to <code>ns1/l2-network</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>excludeSubnets</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>A comma-separated list of CIDRs and IP addresses. IP addresses are removed from the assignable IP address pool and are never passed to the pods.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>vlanID</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>If topology is set to <code>localnet</code>, the specified VLAN tag is assigned to traffic from this secondary network. The default is to not assign a VLAN tag.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>physicalNetworkName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>If topology is set to <code>localnet</code>, you can reuse the same physical network mapping with multiple network overlays. Specifies the name of the physical network to which the OVN overlay connects. When omitted, the default value is the <code>name</code> of the <code>localnet</code> network. To isolate the different networks, ensure that a different VLAN tag is used when sharing the same physical network between overlays.</p></td>
 </tr>
 </tbody>
 </table>
+
+OVN-Kubernetes network plugin JSON configuration table
 
 ## Compatibility with multi-network policy
 
@@ -118,20 +126,20 @@ Refer to the following table that details supported multi-network policy selecto
 <col style="width: 70%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;"><code>subnets</code> field specified</th>
 <th style="text-align: left;">Allowed multi-network policy selectors</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Yes</p></td>
 <td style="text-align: left;"><ul>
 <li><p><code>podSelector</code> and <code>namespaceSelector</code></p></li>
 <li><p><code>ipBlock</code></p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>No</p></td>
 <td style="text-align: left;"><ul>
 <li><p><code>ipBlock</code></p></li>
@@ -158,11 +166,9 @@ spec:
 
 The following example uses the `ipBlock` network multi-network policy that is always valid for an OVN-Kubernetes secondary network:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example multi-network policy that uses an IP block selector
+**Example multi-network policy that uses an IP block selector**
 
 </div>
 
@@ -185,8 +191,6 @@ spec:
         cidr: 10.200.0.0/30
 ```
 
-</div>
-
 ## Configuration for a localnet switched topology
 
 The switched `localnet` topology interconnects the workloads created as Network Attachment Definitions (NADs) through a cluster-wide logical switch to a physical network.
@@ -201,8 +205,11 @@ When attaching a secondary network, you can either use the existing `br-ex` brid
 
 - If your nodes include several network interfaces, you can attach a different network interface to a new bridge, and use that for your secondary network. This approach provides for traffic isolation from your primary cluster network.
 
-> [!NOTE]
-> You cannot make configuration changes to the `br-ex` bridge or its underlying interfaces in the `NodeNetworkConfigurationPolicy` (NNCP) resource as a postinstallation task. As a workaround, use a secondary network interface connected to your host or switch.
+<div class="note">
+
+You cannot make configuration changes to the `br-ex` bridge or its underlying interfaces in the `NodeNetworkConfigurationPolicy` (NNCP) resource as a postinstallation task. As a workaround, use a secondary network interface connected to your host or switch.
+
+</div>
 
 The `localnet1` network is mapped to the `br-ex` bridge in the following sharing-a-bridge example:
 
@@ -300,8 +307,11 @@ spec:
 
 The switched (layer 2) topology networks interconnect the workloads through a cluster-wide logical switch. This configuration can be used for IPv6 and dual-stack deployments.
 
-> [!NOTE]
-> Layer 2 switched topology networks only allow for the transfer of data packets between pods within a cluster.
+<div class="note">
+
+Layer 2 switched topology networks only allow for the transfer of data packets between pods within a cluster.
+
+</div>
 
 The following JSON example configures a switched secondary network:
 
@@ -346,10 +356,6 @@ spec:
 You can configure pods with a static IP address. The example in the procedure provisions a pod with a static IP address.
 
 <div class="note">
-
-<div class="title">
-
-</div>
 
 - You can specify the IP address for the secondary network attachment of a pod only when the secondary network attachment, a namespaced-scoped object, uses a layer 2 or localnet topology.
 

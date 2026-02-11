@@ -24,14 +24,9 @@ $ oc adm must-gather --image="$(oc get packagemanifests openshift-custom-metrics
 -o jsonpath='{.status.channels[?(@.name=="stable")].currentCSVDesc.annotations.containerImage}')"
 ```
 
-> [!NOTE]
-> The standard OpenShift Container Platform `must-gather` command, `oc adm must-gather`, does not collect Custom Metrics Autoscaler Operator data.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The standard OpenShift Container Platform `must-gather` command, `oc adm must-gather`, does not collect Custom Metrics Autoscaler Operator data.
 
 </div>
 
@@ -39,24 +34,17 @@ Prerequisites
 
 - The OpenShift Container Platform CLI (`oc`) installed.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Navigate to the directory where you want to store the `must-gather` data.
 
-    > [!NOTE]
-    > If your cluster is using a restricted network, you must take additional steps. If your mirror registry has a trusted CA, you must first add the trusted CA to the cluster. For all clusters on restricted networks, you must import the default `must-gather` image as an image stream by running the following command.
-    >
-    > ``` terminal
-    > $ oc import-image is/must-gather -n openshift
-    > ```
+    <div class="note">
+
+    If your cluster is using a restricted network, you must take additional steps. If your mirror registry has a trusted CA, you must first add the trusted CA to the cluster. For all clusters on restricted networks, you must import the default `must-gather` image as an image stream by running the following command.
+
+    ``` terminal
+    $ oc import-image is/must-gather -n openshift
+    ```
+
+    </div>
 
 2.  Perform one of the following:
 
@@ -85,14 +73,6 @@ Procedure
           ``` terminal
           $ oc adm must-gather --image-stream=openshift/must-gather --image=${IMAGE}
           ```
-
-    <div class="example">
-
-    <div class="title">
-
-    Example must-gather output for the Custom Metric Autoscaler
-
-    </div>
 
     ``` terminal
     └── openshift-keda
@@ -174,8 +154,6 @@ Procedure
             └── routes.yaml
     ```
 
-    </div>
-
 3.  Create a compressed file from the `must-gather` directory that was created in your working directory. For example, on a computer that uses a Linux operating system, run the following command:
 
     ``` terminal
@@ -185,5 +163,3 @@ Procedure
     - Replace `must-gather-local.5421342344627712289/` with the actual directory name.
 
 4.  Attach the compressed file to your support case on the [Red Hat Customer Portal](https://access.redhat.com).
-
-</div>

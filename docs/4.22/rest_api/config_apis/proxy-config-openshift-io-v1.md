@@ -11,13 +11,13 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | spec holds user-settable values for the proxy configuration |
-| `status` | `object` | status holds observed values from the cluster. They may not be overridden. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | spec holds user-settable values for the proxy configuration                                                                                                                                                                                                                                          |
+| `status`     | `object`                                                                             | status holds observed values from the cluster. They may not be overridden.                                                                                                                                                                                                                           |
 
 ## .spec
 
@@ -34,34 +34,34 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>httpProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>httpProxy is the URL of the proxy for HTTP requests. Empty means unset and will not result in an env var.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>httpsProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>httpsProxy is the URL of the proxy for HTTPS requests. Empty means unset and will not result in an env var.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>noProxy is a comma-separated list of hostnames and/or CIDRs and/or IPs for which the proxy should not be used. Empty means unset and will not result in an env var.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>readinessEndpoints</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>readinessEndpoints is a list of endpoints used to verify readiness of the proxy.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>trustedCA</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>trustedCA is a reference to a ConfigMap containing a CA certificate bundle. The trustedCA field should only be consumed by a proxy validator. The validator is responsible for reading the certificate bundle from the required key "ca-bundle.crt", merging it with the system default trust bundle, and writing the merged trust bundle to a ConfigMap named "trusted-ca-bundle" in the "openshift-config-managed" namespace. Clients that expect to make proxy connections must use the trusted-ca-bundle for all HTTPS requests to the proxy, and may use the trusted-ca-bundle for non-proxy HTTPS requests as well.</p>
@@ -98,11 +98,11 @@ status holds observed values from the cluster. They may not be overridden.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `httpProxy` | `string` | httpProxy is the URL of the proxy for HTTP requests. |
-| `httpsProxy` | `string` | httpsProxy is the URL of the proxy for HTTPS requests. |
-| `noProxy` | `string` | noProxy is a comma-separated list of hostnames and/or CIDRs for which the proxy should not be used. |
+| Property     | Type     | Description                                                                                         |
+|--------------|----------|-----------------------------------------------------------------------------------------------------|
+| `httpProxy`  | `string` | httpProxy is the URL of the proxy for HTTP requests.                                                |
+| `httpsProxy` | `string` | httpsProxy is the URL of the proxy for HTTPS requests.                                              |
+| `noProxy`    | `string` | noProxy is a comma-separated list of hostnames and/or CIDRs for which the proxy should not be used. |
 
 # API endpoints
 
@@ -142,10 +142,10 @@ HTTP method
 Description
 delete collection of Proxy
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -155,10 +155,10 @@ HTTP method
 Description
 list objects of kind Proxy
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ProxyList`](../objects/index.xml#io-openshift-config-v1-ProxyList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                |
+|--------------------|-----------------------------------------------------------------------------|
+| 200 - OK           | [`ProxyList`](../objects/index.xml#io-openshift-config-v1-ProxyList) schema |
+| 401 - Unauthorized | Empty                                                                       |
 
 HTTP responses
 
@@ -168,25 +168,25 @@ HTTP method
 Description
 create a Proxy
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                           | Description |
+|-----------|------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
-| 201 - Created | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
-| 202 - Accepted | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
+| 201 - Created      | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
+| 202 - Accepted     | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                          |
 
 HTTP responses
 
@@ -204,17 +204,17 @@ HTTP method
 Description
 delete a Proxy
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -224,10 +224,10 @@ HTTP method
 Description
 read the specified Proxy
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                          |
 
 HTTP responses
 
@@ -237,17 +237,17 @@ HTTP method
 Description
 partially update the specified Proxy
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                          |
 
 HTTP responses
 
@@ -257,24 +257,24 @@ HTTP method
 Description
 replace the specified Proxy
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                           | Description |
+|-----------|------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
-| 201 - Created | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
+| 201 - Created      | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                          |
 
 HTTP responses
 
@@ -292,10 +292,10 @@ HTTP method
 Description
 read status of the specified Proxy
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                          |
 
 HTTP responses
 
@@ -305,17 +305,17 @@ HTTP method
 Description
 partially update status of the specified Proxy
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                          |
 
 HTTP responses
 
@@ -325,23 +325,23 @@ HTTP method
 Description
 replace status of the specified Proxy
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                           | Description |
+|-----------|------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
-| 201 - Created | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
+| 201 - Created      | [`Proxy`](../config_apis/proxy-config-openshift-io-v1.xml#proxy-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                          |
 
 HTTP responses

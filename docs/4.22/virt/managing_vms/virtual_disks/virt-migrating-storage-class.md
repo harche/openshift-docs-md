@@ -4,29 +4,11 @@ You can migrate one or more virtual disks to a different storage class without s
 
 You can migrate one or more disks attached to a virtual machine (VM) to a different storage class by using the OpenShift Container Platform web console. When performing this action on a running VM, the operation of the VM is not interrupted and the data on the migrated disks remains accessible.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have a data volume or a persistent volume claim (PVC) available for storage class migration.
 
 - The cluster must have a node available for live migration. As part of the storage class migration, the VM is live migrated to a different node.
 
 - The VM must be running.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
 
@@ -44,18 +26,8 @@ Procedure
 
 6.  Stay on the **Migrate VirtualMachine storage** page to watch the progress and wait for the confirmation that the migration completed successfully.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  From the **VirtualMachine details** page, navigate to **Configuration** → **Storage**.
 
 2.  Verify that all disks have the expected storage class listed in the **Storage class** column.
-
-</div>

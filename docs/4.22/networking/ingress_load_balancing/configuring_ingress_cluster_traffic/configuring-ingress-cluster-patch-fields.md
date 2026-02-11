@@ -16,18 +16,13 @@ You can update or modify the following fields of existing `Ingress` objects with
 
 To prevent certain routing issues, you must define define the `ingressClassName` field for each `Ingress` object.
 
-> [!NOTE]
-> Approximately 24 hours after you create an `Ingress` object, the Ingress Controller sends you an `ingressWithoutClassName` alert to remind you to set the `ingressClassName` field.
+<div class="note">
 
-The procedure demonstrates patching the `Ingress` objects with a completed `ingressClassName` field to ensure proper routing and functionality.
-
-<div>
-
-<div class="title">
-
-Procedure
+Approximately 24 hours after you create an `Ingress` object, the Ingress Controller sends you an `ingressWithoutClassName` alert to remind you to set the `ingressClassName` field.
 
 </div>
+
+The procedure demonstrates patching the `Ingress` objects with a completed `ingressClassName` field to ensure proper routing and functionality.
 
 1.  List all `IngressClass` objects:
 
@@ -48,5 +43,3 @@ Procedure
     ```
 
     - `<ingress_name>`: Replace `<ingress_name>` with the name of the `Ingress` object.
-
-</div>

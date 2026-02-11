@@ -12,14 +12,14 @@ Understand your persistent storage options so that you can optimize your OpenShi
 <col style="width: 37%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Storage type</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Examples</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Block</p></td>
 <td style="text-align: left;"><ul>
 <li><p>Presented to the operating system (OS) as a block device</p></li>
@@ -29,7 +29,7 @@ Understand your persistent storage options so that you can optimize your OpenShi
 </ul></td>
 <td style="text-align: left;"><p>AWS EBS and VMware vSphere support dynamic persistent volume (PV) provisioning natively in the OpenShift Container Platform.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>File</p></td>
 <td style="text-align: left;"><ul>
 <li><p>Presented to the OS as a file system export to be mounted</p></li>
@@ -38,7 +38,7 @@ Understand your persistent storage options so that you can optimize your OpenShi
 </ul></td>
 <td style="text-align: left;"><p>RHEL NFS, NetApp NFS <sup>[1]</sup>, and Vendor NFS</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Object</p></td>
 <td style="text-align: left;"><ul>
 <li><p>Accessible through a REST API endpoint</p></li>
@@ -50,34 +50,42 @@ Understand your persistent storage options so that you can optimize your OpenShi
 </tbody>
 </table>
 
+Available storage options
+
 1.  NetApp NFS supports dynamic PV provisioning when using the Trident plugin.
 
 # Recommended configurable storage technology
 
 The following table summarizes the recommended and configurable storage technologies for the given OpenShift Container Platform cluster application.
 
-| Storage type | Block | File | Object |
-|----|----|----|----|
-| ROX<sup>1</sup> | Yes<sup>4</sup> | Yes<sup>4</sup> | Yes |
-| RWX<sup>2</sup> | No | Yes | Yes |
-| Registry | Configurable | Configurable | Recommended |
-| Scaled registry | Not configurable | Configurable | Recommended |
-| Metrics<sup>3</sup> | Recommended | Configurable<sup>5</sup> | Not configurable |
-| Elasticsearch Logging | Recommended | Configurable<sup>6</sup> | Not supported<sup>6</sup> |
-| Loki Logging | Not configurable | Not configurable | Recommended |
-| Apps | Recommended | Recommended | Not configurable<sup>7</sup> |
+| Storage type          | Block            | File                     | Object                       |
+|-----------------------|------------------|--------------------------|------------------------------|
+| ROX<sup>1</sup>       | Yes<sup>4</sup>  | Yes<sup>4</sup>          | Yes                          |
+| RWX<sup>2</sup>       | No               | Yes                      | Yes                          |
+| Registry              | Configurable     | Configurable             | Recommended                  |
+| Scaled registry       | Not configurable | Configurable             | Recommended                  |
+| Metrics<sup>3</sup>   | Recommended      | Configurable<sup>5</sup> | Not configurable             |
+| Elasticsearch Logging | Recommended      | Configurable<sup>6</sup> | Not supported<sup>6</sup>    |
+| Loki Logging          | Not configurable | Not configurable         | Recommended                  |
+| Apps                  | Recommended      | Recommended              | Not configurable<sup>7</sup> |
 
 Recommended and configurable storage technology
 
-> [!NOTE]
-> A scaled registry is an OpenShift image registry where two or more pod replicas are running.
+<div class="note">
+
+A scaled registry is an OpenShift image registry where two or more pod replicas are running.
+
+</div>
 
 ## Specific application storage recommendations
 
-> [!IMPORTANT]
-> Testing shows issues with using the NFS server on Red Hat Enterprise Linux (RHEL) as a storage backend for core services. This includes the OpenShift Container Registry and Quay, Prometheus for monitoring storage, and Elasticsearch for logging storage. Therefore, using RHEL NFS to back PVs used by core services is not recommended.
->
-> Other NFS implementations in the marketplace might not have these issues. Contact the individual NFS implementation vendor for more information on any testing that was possibly completed against these OpenShift Container Platform core components.
+<div class="important">
+
+Testing shows issues with using the NFS server on Red Hat Enterprise Linux (RHEL) as a storage backend for core services. This includes the OpenShift Container Registry and Quay, Prometheus for monitoring storage, and Elasticsearch for logging storage. Therefore, using RHEL NFS to back PVs used by core services is not recommended.
+
+Other NFS implementations in the marketplace might not have these issues. Contact the individual NFS implementation vendor for more information on any testing that was possibly completed against these OpenShift Container Platform core components.
+
+</div>
 
 ### Registry
 
@@ -119,8 +127,11 @@ In an OpenShift Container Platform hosted metrics cluster deployment:
 
 - Object storage is not configurable.
 
-> [!IMPORTANT]
-> It is not recommended to use file storage for a hosted metrics cluster deployment with production workloads.
+<div class="important">
+
+It is not recommended to use file storage for a hosted metrics cluster deployment with production workloads.
+
+</div>
 
 ### Logging
 
@@ -138,8 +149,11 @@ In an OpenShift Container Platform hosted logging cluster deployment:
 
   - Object storage is not supported.
 
-> [!NOTE]
-> As of logging version 5.4.3 the OpenShift Elasticsearch Operator is deprecated and is planned to be removed in a future release. Red Hat will provide bug fixes and support for this feature during the current release lifecycle, but this feature will no longer receive enhancements and will be removed. As an alternative to using the OpenShift Elasticsearch Operator to manage the default log storage, you can use the Loki Operator.
+<div class="note">
+
+As of logging version 5.4.3 the OpenShift Elasticsearch Operator is deprecated and is planned to be removed in a future release. Red Hat will provide bug fixes and support for this feature during the current release lifecycle, but this feature will no longer receive enhancements and will be removed. As an alternative to using the OpenShift Elasticsearch Operator to manage the default log storage, you can use the Loki Operator.
+
+</div>
 
 ### Applications
 
@@ -151,8 +165,11 @@ Application use cases vary from application to application, as described in the 
 
 ## Other specific application storage recommendations
 
-> [!IMPORTANT]
-> It is not recommended to use RAID configurations on `Write` intensive workloads, such as `etcd`. If you are running `etcd` with a RAID configuration, you might be at risk of encountering performance issues with your workloads.
+<div class="important">
+
+It is not recommended to use RAID configurations on `Write` intensive workloads, such as `etcd`. If you are running `etcd` with a RAID configuration, you might be at risk of encountering performance issues with your workloads.
+
+</div>
 
 - Red Hat OpenStack Platform (RHOSP) Cinder: RHOSP Cinder tends to be adept in ROX access mode use cases.
 
@@ -173,7 +190,7 @@ The following table summarizes the main directories that OpenShift Container Pla
 <col style="width: 25%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Directory</th>
 <th style="text-align: left;">Notes</th>
 <th style="text-align: left;">Sizing</th>
@@ -181,7 +198,7 @@ The following table summarizes the main directories that OpenShift Container Pla
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><strong><em>/var/lib/etcd</em></strong></p></td>
 <td style="text-align: left;"><p>Used for etcd storage when storing the database.</p></td>
 <td style="text-align: left;"><p>Less than 20 GB.</p>
@@ -189,14 +206,14 @@ The following table summarizes the main directories that OpenShift Container Pla
 <td style="text-align: left;"><p>Will grow slowly with the environment. Only storing metadata.</p>
 <p>Additional 20-25 GB for every additional 8 GB of memory.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><strong><em>/var/lib/containers</em></strong></p></td>
 <td style="text-align: left;"><p>This is the mount point for the CRI-O runtime. Storage used for active container runtimes, including pods, and storage of local images. Not used for registry storage.</p></td>
 <td style="text-align: left;"><p>50 GB for a node with 16 GB memory. Note that this sizing should not be used to determine minimum cluster requirements.</p>
 <p>Additional 20-25 GB for every additional 8 GB of memory.</p></td>
 <td style="text-align: left;"><p>Growth is limited by capacity for running containers.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><strong><em>/var/lib/kubelet</em></strong></p></td>
 <td style="text-align: left;"><p>Ephemeral volume storage for pods. This includes anything external that is mounted into a container at runtime. Includes environment variables, kube secrets, and data volumes not backed by persistent volumes.</p></td>
 <td style="text-align: left;"><p>Varies</p></td>
@@ -204,6 +221,8 @@ The following table summarizes the main directories that OpenShift Container Pla
 </tr>
 </tbody>
 </table>
+
+Main directories for storing OpenShift Container Platform data
 
 # Optimizing storage performance for Microsoft Azure
 

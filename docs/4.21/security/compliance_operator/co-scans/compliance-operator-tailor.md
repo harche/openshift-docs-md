@@ -10,23 +10,13 @@ You can write a tailored profile from scratch by using the `TailoredProfile` obj
 
 - Platform scan: Scans the OpenShift Container Platform configuration.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Set the following annotation on the `TailoredProfile` object:
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example `new-profile.yaml`
+**Example `new-profile.yaml`**
 
 </div>
 
@@ -49,8 +39,6 @@ spec:
       rationale: This does not apply to the cluster
 ```
 
-</div>
-
 - Set `Node` or `Platform` accordingly.
 
 - The `extends` field is optional.
@@ -59,22 +47,17 @@ spec:
 
 - Give your `TailoredProfile` object a title with the `title` field.
 
-  > [!NOTE]
-  > Adding the `-node` suffix to the `name` field of the `TailoredProfile` object is similar to adding the `Node` product type annotation and generates an Operating System scan.
+  <div class="note">
+
+  Adding the `-node` suffix to the `name` field of the `TailoredProfile` object is similar to adding the `Node` product type annotation and generates an Operating System scan.
+
+  </div>
 
 # Using tailored profiles to extend existing ProfileBundles
 
 While the `TailoredProfile` CR enables the most common tailoring operations, the XCCDF standard allows even more flexibility in tailoring OpenSCAP profiles. In addition, if your organization has been using OpenScap previously, you may have an existing XCCDF tailoring file and can reuse it.
 
 The `ComplianceSuite` object contains an optional `TailoringConfigMap` attribute that you can point to a custom tailoring file. The value of the `TailoringConfigMap` attribute is a name of a config map, which must contain a key called `tailoring.xml` and the value of this key is the tailoring contents.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Browse the available rules for the Red Hat Enterprise Linux CoreOS (RHCOS) `ProfileBundle`:
 
@@ -92,11 +75,9 @@ Procedure
 
     1.  Choose which rules you want to add to the `nist-moderate-modified` tailored profile. This example extends the `rhcos4-moderate` profile by disabling two rules and changing one value. Use the `rationale` value to describe why these changes were made:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `new-profile-node.yaml`
+        **Example `new-profile-node.yaml`**
 
         </div>
 
@@ -120,27 +101,23 @@ Procedure
             value: permissive
         ```
 
-        </div>
-
-        | Attribute | Description |
-        |----|----|
-        | `extends` | Name of the `Profile` object upon which this `TailoredProfile` is built. |
-        | `title` | Human-readable title of the `TailoredProfile`. |
-        | `disableRules` | A list of name and rationale pairs. Each name refers to a name of a rule object that is to be disabled. The rationale value is human-readable text describing why the rule is disabled. |
-        | `manualRules` | A list of name and rationale pairs. When a manual rule is added, the check result status will always be `manual` and remediation will not be generated. This attribute is automatic and by default has no values when set as a manual rule. |
-        | `enableRules` | A list of name and rationale pairs. Each name refers to a name of a rule object that is to be enabled. The rationale value is human-readable text describing why the rule is enabled. |
-        | `description` | Human-readable text describing the `TailoredProfile`. |
-        | `setValues` | A list of name, rationale, and value groupings. Each name refers to a name of the value set. The rationale is human-readable text describing the set. The value is the actual setting. |
+        | Attribute      | Description                                                                                                                                                                                                                                 |
+        |----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+        | `extends`      | Name of the `Profile` object upon which this `TailoredProfile` is built.                                                                                                                                                                    |
+        | `title`        | Human-readable title of the `TailoredProfile`.                                                                                                                                                                                              |
+        | `disableRules` | A list of name and rationale pairs. Each name refers to a name of a rule object that is to be disabled. The rationale value is human-readable text describing why the rule is disabled.                                                     |
+        | `manualRules`  | A list of name and rationale pairs. When a manual rule is added, the check result status will always be `manual` and remediation will not be generated. This attribute is automatic and by default has no values when set as a manual rule. |
+        | `enableRules`  | A list of name and rationale pairs. Each name refers to a name of a rule object that is to be enabled. The rationale value is human-readable text describing why the rule is enabled.                                                       |
+        | `description`  | Human-readable text describing the `TailoredProfile`.                                                                                                                                                                                       |
+        | `setValues`    | A list of name, rationale, and value groupings. Each name refers to a name of the value set. The rationale is human-readable text describing the set. The value is the actual setting.                                                      |
 
         Attributes for spec variables
 
     2.  Add the `tailoredProfile.spec.manualRules` attribute:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `tailoredProfile.spec.manualRules.yaml`
+        **Example `tailoredProfile.spec.manualRules.yaml`**
 
         </div>
 
@@ -158,8 +135,6 @@ Procedure
               rationale: We use third party software that installs its own SCC with extra privileges
         ```
 
-        </div>
-
     3.  Create the `TailoredProfile` object:
 
         ``` terminal
@@ -168,11 +143,9 @@ Procedure
 
         - The `TailoredProfile` object is created in the default `openshift-compliance` namespace.
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example output
+          **Example output**
 
           </div>
 
@@ -180,15 +153,11 @@ Procedure
           tailoredprofile.compliance.openshift.io/nist-moderate-modified created
           ```
 
-          </div>
-
 4.  Define the `ScanSettingBinding` object to bind the new `nist-moderate-modified` tailored profile to the default `ScanSetting` object.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `new-scansettingbinding.yaml`
+    **Example `new-scansettingbinding.yaml`**
 
     </div>
 
@@ -210,26 +179,18 @@ Procedure
       name: default
     ```
 
-    </div>
-
 5.  Create the `ScanSettingBinding` object:
 
     ``` terminal
     $ oc create -n openshift-compliance -f new-scansettingbinding.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     scansettingbinding.compliance.openshift.io/nist-moderate-modified created
     ```
-
-    </div>
-
-</div>

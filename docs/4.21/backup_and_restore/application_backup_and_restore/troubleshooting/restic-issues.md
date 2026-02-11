@@ -10,11 +10,9 @@ You might encounter the following issues when you back up applications with Rest
 
 If your NFS data volumes have the `root_squash` parameter enabled, `Restic` maps set to the `nfsnobody` value, and do not have permission to create backups, the Restic\` pod log displays the following error message:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample error
+**Sample error**
 
 </div>
 
@@ -22,17 +20,7 @@ Sample error
 controller=pod-volume-backup error="fork/exec/usr/bin/restic: permission denied".
 ```
 
-</div>
-
 You can resolve this issue by creating a supplemental group for `Restic` and adding the group ID to the `DataProtectionApplication` manifest.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a supplemental group for `Restic` on the NFS data volume.
 
@@ -58,8 +46,6 @@ Procedure
 
 4.  Wait for the `Restic` pods to restart so that the changes are applied.
 
-</div>
-
 # Troubleshooting Restic Backup CR issue that cannot be re-created after bucket is emptied
 
 Velero does not re-create or update the Restic repository from the `ResticRepository` manifest if the Restic directories are deleted from object storage. For more information, see [Velero issue 4421](https://github.com/vmware-tanzu/velero/issues/4421).
@@ -71,14 +57,6 @@ If you create a Restic `Backup` CR for a namespace, empty the object storage buc
 ``` text
 stderr=Fatal: unable to open config file: Stat: The specified key does not exist.\nIs there a repository at the following location?
 ```
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Remove the related Restic repository from the namespace by running the following command:
 
@@ -105,8 +83,6 @@ Procedure
    logSource="pkg/backup/backup.go:435" name=mysql-7d99fc949-qbkds
   ```
 
-</div>
-
 # Troubleshooting restic restore partially failed issue on OpenShift Container Platform 4.14 due to changed PSA policy
 
 OpenShift Container Platform 4.14 enforces a Pod Security Admission (PSA) policy that can hinder the readiness of pods during a Restic restore process.
@@ -115,11 +91,9 @@ If a `SecurityContextConstraints` (SCC) resource is not found when a pod is crea
 
 This issue arises due to the resource restore order of Velero.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample error
+**Sample error**
 
 </div>
 
@@ -148,27 +122,15 @@ logSource=\"/remote-source/velero/app/pkg/controller/restore_controller.go:510\"
 restore=openshift-adp/todolist-backup-0780518c-08ed-11ee-805c-0a580a80e92c\n]",
 ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  In your DPA custom resource (CR), check or set the `restore-resource-priorities` field on the Velero server to ensure that `securitycontextconstraints` is listed in order before `pods` in the list of resources:
 
     ``` terminal
     $ oc get dpa -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example DPA CR
+    **Example DPA CR**
 
     </div>
 
@@ -185,25 +147,14 @@ Procedure
         - openshift
     ```
 
-    </div>
-
     - If you have an existing restore resource priority list, ensure you combine that existing list with the complete list.
 
 2.  Ensure that the security standards for the application pods are aligned, as provided in [Fixing PodSecurity Admission warnings for deployments](https://access.redhat.com/solutions/7002730), to prevent deployment warnings. If the application is not aligned with security standards, an error can occur regardless of the SCC.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> This solution is temporary, and ongoing discussions are in progress to address it.
-
-<div>
-
-<div class="title">
-
-Additional resources
+This solution is temporary, and ongoing discussions are in progress to address it.
 
 </div>
 
 - [Fixing PodSecurity Admission warnings for deployments](https://access.redhat.com/solutions/7002730)
-
-</div>

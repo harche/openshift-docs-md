@@ -24,10 +24,10 @@ MTC 1.7 supports migrations from OpenShift Container Platform 3.11 to 4.17.
 
 MTC 1.8 only supports migrations from OpenShift Container Platform 4.14 and later.
 
-| Details | OpenShift Container Platform 3.11 | OpenShift Container Platform 4.14 or later |
-|----|----|----|
-| Stable MTC version | MTC v.1.7.*z* | MTC v.1.8.*z* |
-| Installation | As described in this guide | Install with OLM, release channel `release-v1.8` |
+| Details            | OpenShift Container Platform 3.11 | OpenShift Container Platform 4.14 or later       |
+|--------------------|-----------------------------------|--------------------------------------------------|
+| Stable MTC version | MTC v.1.7.*z*                     | MTC v.1.8.*z*                                    |
+| Installation       | As described in this guide        | Install with OLM, release channel `release-v1.8` |
 
 MTC compatibility: Migrating from OpenShift Container Platform 3 to 4
 
@@ -37,14 +37,6 @@ Edge cases exist where network restrictions prevent OpenShift Container Platform
 
 You can install the legacy Migration Toolkit for Containers Operator manually on OpenShift Container Platform 3.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must be logged in as a user with `cluster-admin` privileges on all clusters.
 
 - You must have access to `registry.redhat.io`.
@@ -52,16 +44,6 @@ Prerequisites
 - You must have `podman` installed.
 
 - You must create an [image stream secret](https://access.redhat.com/solutions/3772061) and copy it to each node in the cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to `registry.redhat.io` with your Red Hat Customer Portal credentials:
 
@@ -95,11 +77,9 @@ Procedure
     $ oc create -f operator.yml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -118,8 +98,6 @@ Procedure
     rolebindings.rbac.authorization.k8s.io "system:image-pullers" already exists
     ```
 
-    </div>
-
     - You can ignore `Error from server (AlreadyExists)` messages. They are caused by the Migration Toolkit for Containers Operator creating resources for earlier versions of OpenShift Container Platform 4 that are provided in later releases.
 
 7.  Create the `MigrationController` object:
@@ -134,31 +112,11 @@ Procedure
     $ oc get pods -n openshift-migration
     ```
 
-</div>
-
 # Installing the Migration Toolkit for Containers Operator on OpenShift Container Platform 4.17
 
 You install the Migration Toolkit for Containers Operator on OpenShift Container Platform 4.17 by using the Operator Lifecycle Manager.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must be logged in as a user with `cluster-admin` privileges on all clusters.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform web console, click **Ecosystem** → **Software Catalog**.
 
@@ -177,8 +135,6 @@ Procedure
 7.  Click **Create**.
 
 8.  Click **Workloads** → **Pods** to verify that the MTC pods are running.
-
-</div>
 
 # Proxy configuration
 
@@ -217,17 +173,13 @@ Cluster-wide HTTP/HTTPS proxies in OpenShift are usually configured in man-in-th
 
 ### Known issue
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Migration fails with error `Upgrade request required`
+**Migration fails with error `Upgrade request required`**
 
 </div>
 
 The migration Controller uses the SPDY protocol to execute commands within remote pods. If the remote cluster is behind a proxy or a firewall that does not support the SPDY protocol, the migration controller fails to execute remote commands. The migration fails with the error message `Upgrade request required`. Workaround: Use a proxy that supports the SPDY protocol.
-
-</div>
 
 In addition to supporting the SPDY protocol, the proxy or firewall also must pass the `Upgrade` HTTP header to the API server. The client uses this header to open a websocket connection with the API server. If the `Upgrade` header is blocked by the proxy or firewall, the migration fails with the error message `Upgrade request required`. Workaround: Ensure that the proxy forwards the `Upgrade` header.
 
@@ -319,24 +271,20 @@ spec:
 
 When your PVCs use a shared storage, you can configure the access to that storage by adding supplemental groups to Rsync pod definitions in order for the pods to allow access:
 
-| Variable | Type | Default | Description |
-|----|----|----|----|
-| `src_supplemental_groups` | string | Not set | Comma-separated list of supplemental groups for source Rsync pods |
+| Variable                     | Type   | Default | Description                                                       |
+|------------------------------|--------|---------|-------------------------------------------------------------------|
+| `src_supplemental_groups`    | string | Not set | Comma-separated list of supplemental groups for source Rsync pods |
 | `target_supplemental_groups` | string | Not set | Comma-separated list of supplemental groups for target Rsync pods |
 
 Supplementary groups for Rsync pods
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
 The `MigrationController` CR can be updated to set values for these supplemental groups:
-
-</div>
 
 ``` yaml
 spec:
@@ -346,25 +294,7 @@ spec:
 
 ## Configuring proxies
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must be logged in as a user with `cluster-admin` privileges on all clusters.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Get the `MigrationController` CR manifest:
 
@@ -402,8 +332,6 @@ Procedure
     $ oc replace -f migration-controller.yaml -n openshift-migration
     ```
 
-</div>
-
 For more information, see [Configuring the cluster-wide proxy](../networking/configuring_network_settings/enable-cluster-wide-proxy.xml#nw-proxy-configure-object_config-cluster-wide-proxy).
 
 # Configuring a replication repository
@@ -436,46 +364,23 @@ You must retrieve the Multicloud Object Gateway (MCG) credentials and S3 endpoin
 
 You must retrieve the Multicloud Object Gateway (MCG) credentials, which you need to create a `Secret` custom resource (CR) for MTC.
 
-> [!NOTE]
-> Although the MCG Operator is [deprecated](https://catalog.redhat.com/software/containers/ocs4/mcg-rhel8-operator/5ddbcefbdd19c71643b56ce9?architecture=amd64&image=64243f5dcd0eb61355af9abd), the MCG plugin is still available for OpenShift Data Foundation. To download the plugin, browse to [Download Red Hat OpenShift Data Foundation](https://access.redhat.com/downloads/content/547/ver=4/rhel---9/4.15.4/x86_64/product-software) and download the appropriate MCG plugin for your operating system.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Although the MCG Operator is [deprecated](https://catalog.redhat.com/software/containers/ocs4/mcg-rhel8-operator/5ddbcefbdd19c71643b56ce9?architecture=amd64&image=64243f5dcd0eb61355af9abd), the MCG plugin is still available for OpenShift Data Foundation. To download the plugin, browse to [Download Red Hat OpenShift Data Foundation](https://access.redhat.com/downloads/content/547/ver=4/rhel---9/4.15.4/x86_64/product-software) and download the appropriate MCG plugin for your operating system.
 
 </div>
 
 - You must deploy OpenShift Data Foundation by using the appropriate [Red Hat OpenShift Data Foundation deployment guide](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/4.15).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Obtain the S3 endpoint, `AWS_ACCESS_KEY_ID`, and the `AWS_SECRET_ACCESS_KEY` value by running the `oc describe` command for the `NooBaa` CR.
 
   You use these credentials to add MCG as a replication repository.
 
-</div>
-
 ## Configuring Amazon Web Services
 
 Configure Amazon Web Services (AWS) S3 storage and Identity and Access Management (IAM) credentials for backup storage with Migration Toolkit for Containers (MTC). This provides the necessary permissions and storage infrastructure for data protection operations.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You must have the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html) installed.
 
@@ -490,16 +395,6 @@ Prerequisites
   - The source and target clusters must have the same storage class.
 
   - The storage class must be compatible with snapshots.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Set the `BUCKET` variable:
 
@@ -615,19 +510,9 @@ Procedure
 
     Record the `AWS_SECRET_ACCESS_KEY` and the `AWS_ACCESS_KEY_ID`. You use the credentials to add AWS as a replication repository.
 
-</div>
-
 ## Configuring Google Cloud
 
 You configure a Google Cloud storage bucket as a replication repository for the Migration Toolkit for Containers (MTC).
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You must have the `gcloud` and `gsutil` CLI tools installed. See the [Google cloud documentation](https://cloud.google.com/sdk/docs/) for details.
 
@@ -640,16 +525,6 @@ Prerequisites
   - The source and target clusters must have the same storage class.
 
   - The storage class must be compatible with snapshots.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to Google Cloud:
 
@@ -753,19 +628,9 @@ Procedure
 
     You use the `credentials-velero` file to add Google Cloud as a replication repository.
 
-</div>
-
 ## Configuring Microsoft Azure
 
 Configure Microsoft Azure storage and service principal credentials for backup storage with Migration Toolkit for Containers (MTC). This provides the necessary authentication and storage infrastructure for data protection operations.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You must have the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) installed.
 
@@ -779,8 +644,6 @@ Prerequisites
 
   - The storage class must be compatible with snapshots.
 
-</div>
-
 ## Additional resources
 
 - [MTC workflow](../migrating_from_ocp_3_to_4/about-mtc-3-4.xml#migration-mtc-workflow_about-mtc-3-4)
@@ -793,28 +656,13 @@ Prerequisites
 
 You can uninstall the Migration Toolkit for Containers (MTC) and delete its resources to clean up the cluster.
 
-> [!NOTE]
-> Deleting the `velero` CRDs removes Velero from the cluster.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Deleting the `velero` CRDs removes Velero from the cluster.
 
 </div>
 
 - You must be logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Delete the `MigrationController` custom resource (CR) on all clusters:
 
@@ -873,5 +721,3 @@ Procedure
       ``` terminal
       $ oc delete $(oc get clusterrolebindings -o name | grep 'velero')
       ```
-
-</div>

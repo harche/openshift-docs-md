@@ -4,8 +4,11 @@ You create a `VirtualMachineExport` custom resource (CR) by using the command-li
 
 Alternatively, you can use the [`virtctl vmexport` command](../../virt/getting_started/virt-using-the-cli-tools.xml#vm-export-commands_virt-using-the-cli-tools) to create a `VirtualMachineExport` CR and to download exported volumes.
 
-> [!NOTE]
-> You can migrate virtual machines between OpenShift Virtualization clusters by using the [Migration Toolkit for Virtualization](https://access.redhat.com/products/migration-toolkits-virtualization).
+<div class="note">
+
+You can migrate virtual machines between OpenShift Virtualization clusters by using the [Migration Toolkit for Virtualization](https://access.redhat.com/products/migration-toolkits-virtualization).
+
+</div>
 
 # Creating a VirtualMachineExport custom resource
 
@@ -31,27 +34,11 @@ The export server supports the following file formats:
 
 - `tar.gz`: Compressed PVC file.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - The VM must be shut down for a VM export.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `VirtualMachineExport` manifest to export a volume from a `VirtualMachine`, `VirtualMachineSnapshot`, or `PersistentVolumeClaim` CR according to the following example and save it as `example-export.yaml`.
 
@@ -155,36 +142,19 @@ Procedure
 
     - Internal links are only valid inside the cluster.
 
-</div>
-
 # Accessing exported virtual machine manifests
 
 After you export a virtual machine (VM) or snapshot, you can get the `VirtualMachine` manifest and related information from the export server.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You exported a virtual machine or VM snapshot by creating a `VirtualMachineExport` custom resource (CR).
 
-  > [!NOTE]
-  > `VirtualMachineExport` objects that have the `spec.source.kind: PersistentVolumeClaim` parameter do not generate virtual machine manifests.
+  <div class="note">
 
-</div>
+  `VirtualMachineExport` objects that have the `spec.source.kind: PersistentVolumeClaim` parameter do not generate virtual machine manifests.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  To access the manifests, you must first copy the certificates from the source cluster to the target cluster.
 
@@ -292,16 +262,4 @@ Procedure
       $ curl --cacert cacert.crt https://vmexport-proxy.test.net/api/export.kubevirt.io/v1beta1/namespaces/example/virtualmachineexports/example-export/external/manifests/all -H "x-kubevirt-export-token:token_decode" -H "Accept:application/yaml"
       ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - You can now create the `ConfigMap` and `VirtualMachine` objects on the target cluster by using the exported manifests.
-
-</div>

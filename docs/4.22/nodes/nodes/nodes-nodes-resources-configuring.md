@@ -2,22 +2,28 @@ By default, upon node start up OpenShift Container Platform automatically calcul
 
 You can modify the CPU and memory resources for these node and system components, as needed, by creating a `Kubelet Config` CR.
 
-> [!IMPORTANT]
-> If you updated your cluster from a version earlier than 4.21, automatic allocation of system resources is disabled by default. To enable the feature, delete the `50-worker-auto-sizing-disabled` machine config.
+<div class="important">
+
+If you updated your cluster from a version earlier than 4.21, automatic allocation of system resources is disabled by default. To enable the feature, delete the `50-worker-auto-sizing-disabled` machine config.
+
+</div>
 
 # Understanding how to allocate resources for nodes
 
 CPU and memory resources reserved for node components in OpenShift Container Platform are based on two node settings: `kube-reserved` and `system-reserved`. These settings are automatically configured upon node start up, or you can manually set these values as needed.
 
-| Setting | Description |
-|----|----|
-| `kube-reserved` | This setting is not used with OpenShift Container Platform. Add the CPU and memory resources that you planned to reserve to the `system-reserved` setting. |
+| Setting           | Description                                                                                                                                                                                                                                                                                                                  |
+|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `kube-reserved`   | This setting is not used with OpenShift Container Platform. Add the CPU and memory resources that you planned to reserve to the `system-reserved` setting.                                                                                                                                                                   |
 | `system-reserved` | This setting identifies the resources to reserve for the node components and system components, such as CRI-O and Kubelet. The default settings depend on the OpenShift Container Platform and Machine Config Operator versions. Confirm the default `systemReserved` parameter on the `machine-config-operator` repository. |
 
 If a flag is not set, the defaults are used. If none of the flags are set, the allocated resource is set to the node’s capacity as it was before the introduction of allocatable resources.
 
-> [!NOTE]
-> Any CPUs specifically reserved using the `reservedSystemCPUs` parameter are not available for allocation using `kube-reserved` or `system-reserved`.
+<div class="note">
+
+Any CPUs specifically reserved using the `reservedSystemCPUs` parameter are not available for allocation using `kube-reserved` or `system-reserved`.
+
+</div>
 
 By default, OpenShift Container Platform uses a script on each worker node to automatically determine the optimal `system-reserved` CPU and memory resources for nodes. The script runs on node start up and uses the following calculations by default.
 
@@ -49,8 +55,11 @@ OpenShift Container Platform uses the following logic to determine how much CPU 
 
 For example, on a 4-core node, 0.5 vCPU is reserved for node and system components, leaving 3.5 vCPUs for workloads. Note that 1000 millicores is equal to 1CPU/vCPU.
 
-> [!IMPORTANT]
-> If you updated your cluster from a version earlier than 4.21, automatic allocation of system resources is disabled by default. To enable the feature, delete the `50-worker-auto-sizing-disabled` machine config.
+<div class="important">
+
+If you updated your cluster from a version earlier than 4.21, automatic allocation of system resources is disabled by default. To enable the feature, delete the `50-worker-auto-sizing-disabled` machine config.
+
+</div>
 
 ## How OpenShift Container Platform computes allocated resources
 
@@ -58,8 +67,11 @@ An allocated amount of a resource is computed based on the following formula:
 
     [Allocatable] = [Node Capacity] - [system-reserved] - [Hard-Eviction-Thresholds]
 
-> [!NOTE]
-> The withholding of `Hard-Eviction-Thresholds` from `Allocatable` improves system reliability because the value for `Allocatable` is enforced for pods at the node level.
+<div class="note">
+
+The withholding of `Hard-Eviction-Thresholds` from `Allocatable` improves system reliability because the value for `Allocatable` is enforced for pods at the node level.
+
+</div>
 
 If `Allocatable` is negative, it is set to `0`.
 
@@ -73,8 +85,11 @@ The node enforces resource constraints by using a new cgroup hierarchy that enfo
 
 Administrators should treat system daemons similar to pods that have a guaranteed quality of service. System daemons can burst within their bounding control groups and this behavior must be managed as part of cluster deployments. Reserve CPU and memory resources for system daemons by specifying the amount of CPU and memory resources in `system-reserved`.
 
-> [!NOTE]
-> Enforcing `system-reserved` limits can prevent critical system services from receiving CPU and memory resources. As a result, a critical system service can be ended by the out-of-memory killer. The recommendation is to enforce `system-reserved` only if you have profiled the nodes exhaustively to determine precise estimates and you are confident that critical system services can recover if any process in that group is ended by the out-of-memory killer.
+<div class="note">
+
+Enforcing `system-reserved` limits can prevent critical system services from receiving CPU and memory resources. As a result, a critical system service can be ended by the out-of-memory killer. The recommendation is to enforce `system-reserved` only if you have profiled the nodes exhaustively to determine precise estimates and you are confident that critical system services can recover if any process in that group is ended by the out-of-memory killer.
+
+</div>
 
 ## Understanding Eviction Thresholds
 
@@ -120,19 +135,15 @@ In OpenShift Container Platform, consider these two supported limits for process
   sh-5.1# cat /etc/kubernetes/kubelet.conf | grep -i pids
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
   ``` terminal
   "podPidsLimit": 4096,
   ```
-
-  </div>
 
   You can change the `podPidsLimit` by using a `KubeletConfig` object. See "Creating a KubeletConfig CR to edit kubelet parameters".
 
@@ -156,8 +167,11 @@ If you are running a large number of pods per node, and you have a high `podPids
 
 To find the maximum number of pods that you can run simultaneously on a single node without exceeding the PID maximum for the node, divide 3,650,000 by your `podPidsLimit` value. For example, if your `podPidsLimit` value is 16,384, and you expect the pods to use close to that number of process IDs, you can safely run 222 pods on a single node.
 
-> [!NOTE]
-> Memory, CPU, and available storage can also limit the maximum number of pods that can run simultaneously, even when the `podPidsLimit` value is set appropriately.
+<div class="note">
+
+Memory, CPU, and available storage can also limit the maximum number of pods that can run simultaneously, even when the `podPidsLimit` value is set appropriately.
+
+</div>
 
 # Manually allocating resources for nodes
 
@@ -165,8 +179,11 @@ As an administrator, you can manually set `system-reserved` CPU and memory resou
 
 By default, OpenShift Container Platform uses a script on each worker node to automatically determine the optimal `system-reserved` CPU and memory resources for nodes associated with a specific machine config pool and update the nodes with those values. The script runs on node start up.
 
-> [!IMPORTANT]
-> If you updated your cluster from a version earlier than 4.21, automatic allocation of system resources is disabled by default. To enable the feature, delete the `50-worker-auto-sizing-disabled` machine config.
+<div class="important">
+
+If you updated your cluster from a version earlier than 4.21, automatic allocation of system resources is disabled by default. To enable the feature, delete the `50-worker-auto-sizing-disabled` machine config.
+
+</div>
 
 However, you can manually set these values by using a `KubeletConfig` custom resource (CR) that includes a set of `<resource_type>=<resource_quantity>` pairs (for example, `cpu=200m,memory=512Mi`). You must use the `spec.autoSizingReserved: false` parameter in the `KubeletConfig` CR to override the default OpenShift Container Platform behavior of automatically setting the `systemReserved` values.
 
@@ -174,43 +191,19 @@ For `memory` and `ephemeral-storage`, you specify the resource quantity in units
 
 <div class="important">
 
-<div class="title">
-
-</div>
-
 - For details on the recommended `system-reserved` values, refer to the [recommended system-reserved values](https://access.redhat.com/solutions/5843241).
 
 - To manually set resource values, you must use a kubelet configuration. You cannot use a machine config.
 
 </div>
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Obtain the label associated with the static `MachineConfigPool` CRD for the type of node you want to configure by entering the following command:
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a custom resource (CR) for your configuration change.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample configuration for a resource allocation CR
+    **Sample configuration for a resource allocation CR**
 
     </div>
 
@@ -232,8 +225,6 @@ Procedure
     #...
     ```
 
-    </div>
-
     `metadata.name`
     Specifies a name for the CR.
 
@@ -252,15 +243,7 @@ Procedure
     $ oc create -f <file_name>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Log in to a node you configured by entering the following command:
 
@@ -276,11 +259,9 @@ Verification
 
 3.  View the `/etc/node-sizing.env` file:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -290,11 +271,7 @@ Verification
     SYSTEM_RESERVED_ES=50Mi
     ```
 
-    </div>
-
     The kubelet uses the `system-reserved` values in the `/etc/node-sizing.env` file.
-
-</div>
 
 # Additional resources
 

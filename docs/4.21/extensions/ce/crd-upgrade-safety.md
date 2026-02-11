@@ -1,16 +1,6 @@
 When you update a custom resource definition (CRD) that is provided by a cluster extension, Operator Lifecycle Manager (OLM) v1 runs a CRD upgrade safety preflight check to ensure backwards compatibility with previous versions of that CRD. The CRD update must pass the validation checks before the change is allowed to progress on a cluster.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Updating a cluster extension](../../extensions/ce/managing-ce.xml#olmv1-updating-an-operator_managing-ce)
-
-</div>
 
 # Prohibited CRD upgrade changes
 
@@ -38,8 +28,11 @@ The following changes to an existing custom resource definition (CRD) are caught
 
 - Minimum or maximum field constraints are added to a field that did not previously have constraints
 
-> [!NOTE]
-> The rules for changes to minimum and maximum values apply to `minimum`, `minLength`, `minProperties`, `minItems`, `maximum`, `maxLength`, `maxProperties`, and `maxItems` constraints.
+<div class="note">
+
+The rules for changes to minimum and maximum values apply to `minimum`, `minLength`, `minProperties`, `minItems`, `maximum`, `maxLength`, `maxProperties`, and `maxItems` constraints.
+
+</div>
 
 The following changes to an existing CRD are reported by the CRD upgrade safety preflight check and prevent the upgrade, though the operations are technically handled by the Kubernetes API server:
 
@@ -49,8 +42,11 @@ The following changes to an existing CRD are reported by the CRD upgrade safety 
 
 If the CRD upgrade safety preflight check encounters one of the prohibited upgrade changes, it logs an error for each prohibited change detected in the CRD upgrade.
 
-> [!TIP]
-> In cases where a change to the CRD does not fall into one of the prohibited change categories, but is also unable to be properly detected as allowed, the CRD upgrade safety preflight check will prevent the upgrade and log an error for an "unknown change".
+<div class="tip">
+
+In cases where a change to the CRD does not fall into one of the prohibited change categories, but is also unable to be properly detected as allowed, the CRD upgrade safety preflight check will prevent the upgrade and log an error for an "unknown change".
+
+</div>
 
 # Allowed CRD upgrade changes
 
@@ -70,37 +66,25 @@ The following changes to an existing custom resource definition (CRD) are safe f
 
 You can disable the custom resource definition (CRD) upgrade safety preflight check. In the `ClusterExtension` object that provides the CRD, set the `install.preflight.crdUpgradeSafety.enforcement` field with the value of `None`.
 
-> [!WARNING]
-> Disabling the CRD upgrade safety preflight check could break backwards compatibility with stored versions of the CRD and cause other unintended consequences on the cluster.
+<div class="warning">
+
+Disabling the CRD upgrade safety preflight check could break backwards compatibility with stored versions of the CRD and cause other unintended consequences on the cluster.
+
+</div>
 
 You cannot disable individual field validators. If you disable the CRD upgrade safety preflight check, you disable all field validators.
 
-> [!NOTE]
-> If you disable the CRD upgrade safety preflight check in Operator Lifecycle Manager (OLM) v1, the Kubernetes API server still prevents the following operations:
->
-> - Changing scope from `Cluster` to `Namespace` or from `Namespace` to `Cluster`
->
-> - Removing an existing stored version of the CRD
+<div class="note">
 
-<div>
+If you disable the CRD upgrade safety preflight check in Operator Lifecycle Manager (OLM) v1, the Kubernetes API server still prevents the following operations:
 
-<div class="title">
+- Changing scope from `Cluster` to `Namespace` or from `Namespace` to `Cluster`
 
-Prerequisites
+- Removing an existing stored version of the CRD
 
 </div>
 
 - You have a cluster extension installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `ClusterExtension` object of the CRD:
 
@@ -110,11 +94,9 @@ Procedure
 
 2.  Set the `install.preflight.crdUpgradeSafety.enforcement` field to `None`:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `ClusterExtension` object
+    **Example `ClusterExtension` object**
 
     </div>
 
@@ -138,23 +120,11 @@ Procedure
             enforcement: None
     ```
 
-    </div>
-
-</div>
-
 # Examples of unsafe CRD changes
 
 The following examples demonstrate specific changes to sections of an example custom resource definition (CRD) that would be caught by the CRD upgrade safety preflight check.
 
 For the following examples, consider a CRD object in the following starting state:
-
-<div class="example">
-
-<div class="title">
-
-Example CRD object
-
-</div>
 
 ``` yaml
 apiVersion: apiextensions.k8s.io/v1
@@ -195,19 +165,9 @@ spec:
       status: {}
 ```
 
-</div>
-
 ## Scope change
 
 In the following custom resource definition (CRD) example, the `scope` field is changed from `Namespaced` to `Cluster`:
-
-<div class="example">
-
-<div class="title">
-
-Example scope change in a CRD
-
-</div>
 
 ``` yaml
     spec:
@@ -222,33 +182,13 @@ Example scope change in a CRD
       - name: v1alpha1
 ```
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Example error output
-
-</div>
-
 ``` text
 validating upgrade for CRD "test.example.com" failed: CustomResourceDefinition test.example.com failed upgrade safety validation. "NoScopeChange" validation failed: scope changed from "Namespaced" to "Cluster"
 ```
 
-</div>
-
 ## Removal of a stored version
 
 In the following custom resource definition (CRD) example, the existing stored version, `v1alpha1`, is removed:
-
-<div class="example">
-
-<div class="title">
-
-Example removal of a stored version in a CRD
-
-</div>
 
 ``` yaml
       versions:
@@ -271,33 +211,13 @@ Example removal of a stored version in a CRD
             type: object
 ```
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Example error output
-
-</div>
-
 ``` text
 validating upgrade for CRD "test.example.com" failed: CustomResourceDefinition test.example.com failed upgrade safety validation. "NoStoredVersionRemoved" validation failed: stored version "v1alpha1" removed
 ```
 
-</div>
-
 ## Removal of an existing field
 
 In the following custom resource definition (CRD) example, the `pollInterval` property field is removed from the `v1alpha1` schema:
-
-<div class="example">
-
-<div class="title">
-
-Example removal of an existing field in a CRD
-
-</div>
 
 ``` yaml
       versions:
@@ -318,33 +238,13 @@ Example removal of an existing field in a CRD
             type: object
 ```
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Example error output
-
-</div>
-
 ``` text
 validating upgrade for CRD "test.example.com" failed: CustomResourceDefinition test.example.com failed upgrade safety validation. "NoExistingFieldRemoved" validation failed: crd/test.example.com version/v1alpha1 field/^.spec.pollInterval may not be removed
 ```
 
-</div>
-
 ## Addition of a required field
 
 In the following custom resource definition (CRD) example, the `pollInterval` property has been changed to a required field:
-
-<div class="example">
-
-<div class="title">
-
-Example addition of a required field in a CRD
-
-</div>
 
 ``` yaml
       versions:
@@ -369,18 +269,6 @@ Example addition of a required field in a CRD
             - pollInterval
 ```
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Example error output
-
-</div>
-
 ``` text
 validating upgrade for CRD "test.example.com" failed: CustomResourceDefinition test.example.com failed upgrade safety validation. "ChangeValidator" validation failed: version "v1alpha1", field "^": new required fields added: [pollInterval]
 ```
-
-</div>

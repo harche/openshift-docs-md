@@ -41,8 +41,11 @@ spec:
 
 - Optional: The spoof check mode of the VF. The allowed values are the strings `"on"` and `"off"`.
 
-  > [!IMPORTANT]
-  > You must enclose the value you specify in quotes or the object is rejected by the SR-IOV Network Operator.
+  <div class="important">
+
+  You must enclose the value you specify in quotes or the object is rejected by the SR-IOV Network Operator.
+
+  </div>
 
 - A configuration object for the IPAM CNI plugin as a YAML block scalar. The plugin manages IP address assignment for the attachment definition.
 
@@ -52,15 +55,21 @@ spec:
 
 - Optional: A minimum transmission rate, in Mbps, for the VF. This value must be less than or equal to the maximum transmission rate.
 
-  > [!NOTE]
-  > Intel NICs do not support the `minTxRate` parameter. For more information, see [BZ#1772847](https://bugzilla.redhat.com/show_bug.cgi?id=1772847).
+  <div class="note">
+
+  Intel NICs do not support the `minTxRate` parameter. For more information, see [BZ#1772847](https://bugzilla.redhat.com/show_bug.cgi?id=1772847).
+
+  </div>
 
 - Optional: An IEEE 802.1p priority level for the VF. The default value is `0`.
 
 - Optional: The trust mode of the VF. The allowed values are the strings `"on"` and `"off"`.
 
-  > [!IMPORTANT]
-  > You must enclose the value that you specify in quotes, or the SR-IOV Network Operator rejects the object.
+  <div class="important">
+
+  You must enclose the value that you specify in quotes, or the SR-IOV Network Operator rejects the object.
+
+  </div>
 
 - Optional: The capabilities to configure for this additional network. You can specify `'{ "ips": true }'` to enable IP address support or `'{ "mac": true }'` to enable MAC address support.
 
@@ -81,14 +90,6 @@ You can configure the following IP address assignment types in the `ipRanges` pa
 - IPv6 addresses
 
 - multiple IP address assignment
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Set `type` to `whereabouts`.
 
@@ -121,16 +122,6 @@ Procedure
 
 3.  Attach the secondary network to a pod. For more information, see "Adding a pod to a secondary network".
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that all IP addresses got assigned to the network interfaces within the network namespace of a pod by entering the following command:
 
   ``` yaml
@@ -141,8 +132,6 @@ Verification
 
   `<podname>`
   The name of the pod.
-
-</div>
 
 ## Configuration of IP address assignment for a network attachment
 
@@ -164,8 +153,11 @@ For networks requiring `type: dhcp` in their IPAM configuration, ensure the DHCP
 
 In cases where a DHCP server is unavailable in the environment, consider using the Whereabouts IPAM CNI plugin. The Whereabouts CNI provides similar IP address management capabilities without the need for an external DHCP server.
 
-> [!NOTE]
-> Use the Whereabouts CNI plugin when no external DHCP server exists or where static IP address management is preferred. The Whereabouts plugin includes a reconciler daemon to manage stale IP address allocations.
+<div class="note">
+
+Use the Whereabouts CNI plugin when no external DHCP server exists or where static IP address management is preferred. The Whereabouts plugin includes a reconciler daemon to manage stale IP address allocations.
+
+</div>
 
 Ensure the periodic renewal of a DHCP lease throughout the lifetime of a container by including a separate daemon, the DHCP IPAM CNI Daemon. To deploy the DHCP IPAM CNI daemon, change the Cluster Network Operator (CNO) configuration to trigger the deployment of this daemon as part of the secondary network setup.
 
@@ -173,44 +165,42 @@ Ensure the periodic renewal of a DHCP lease throughout the lifetime of a contain
 
 The following table describes the configuration for static IP address assignment:
 
-| Field | Type | Description |
-|----|----|----|
-| `type` | `string` | The IPAM address type. The value `static` is required. |
-| `addresses` | `array` | An array of objects specifying IP addresses to assign to the virtual interface. Both IPv4 and IPv6 IP addresses are supported. |
-| `routes` | `array` | An array of objects specifying routes to configure inside the pod. |
-| `dns` | `array` | Optional: An array of objects specifying the DNS configuration. |
+| Field       | Type     | Description                                                                                                                    |
+|-------------|----------|--------------------------------------------------------------------------------------------------------------------------------|
+| `type`      | `string` | The IPAM address type. The value `static` is required.                                                                         |
+| `addresses` | `array`  | An array of objects specifying IP addresses to assign to the virtual interface. Both IPv4 and IPv6 IP addresses are supported. |
+| `routes`    | `array`  | An array of objects specifying routes to configure inside the pod.                                                             |
+| `dns`       | `array`  | Optional: An array of objects specifying the DNS configuration.                                                                |
 
 `ipam` static configuration object
 
 The `addresses` array requires objects with the following fields:
 
-| Field | Type | Description |
-|----|----|----|
+| Field     | Type     | Description                                                                                                                                                                                             |
+|-----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `address` | `string` | An IP address and network prefix that you specify. For example, if you specify `10.10.21.10/24`, the secondary network gets assigned an IP address of `10.10.21.10` and the netmask of `255.255.255.0`. |
-| `gateway` | `string` | The default gateway to route egress network traffic to. |
+| `gateway` | `string` | The default gateway to route egress network traffic to.                                                                                                                                                 |
 
 `ipam.addresses[]` array
 
-| Field | Type | Description |
-|----|----|----|
+| Field | Type     | Description                                                                                          |
+|-------|----------|------------------------------------------------------------------------------------------------------|
 | `dst` | `string` | The IP address range in CIDR format, such as `192.168.17.0/24` or `0.0.0.0/0` for the default route. |
-| `gw` | `string` | The gateway that routes network traffic. |
+| `gw`  | `string` | The gateway that routes network traffic.                                                             |
 
 `ipam.routes[]` array
 
-| Field | Type | Description |
-|----|----|----|
-| `nameservers` | `array` | An array of one or more IP addresses where DNS queries get sent. |
-| `domain` | `array` | The default domain to append to a hostname. For example, if the domain is set to `example.com`, a DNS lookup query for `example-host` is rewritten as `example-host.example.com`. |
-| `search` | `array` | An array of domain names to append to an unqualified hostname, such as `example-host`, during a DNS lookup query. |
+| Field         | Type    | Description                                                                                                                                                                       |
+|---------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `nameservers` | `array` | An array of one or more IP addresses where DNS queries get sent.                                                                                                                  |
+| `domain`      | `array` | The default domain to append to a hostname. For example, if the domain is set to `example.com`, a DNS lookup query for `example-host` is rewritten as `example-host.example.com`. |
+| `search`      | `array` | An array of domain names to append to an unqualified hostname, such as `example-host`, during a DNS lookup query.                                                                 |
 
 `ipam.dns` object
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Static IP address assignment configuration example
+**Static IP address assignment configuration example**
 
 </div>
 
@@ -227,22 +217,21 @@ Static IP address assignment configuration example
 }
 ```
 
-</div>
-
 ### Dynamic IP address (DHCP) assignment configuration
 
 A pod obtains its original DHCP lease when the pod gets created. The lease must be periodically renewed by a minimal DHCP server deployment running on the cluster.
 
-> [!IMPORTANT]
-> For an Ethernet network attachment, the SR-IOV Network Operator does not create a DHCP server deployment; the Cluster Network Operator is responsible for creating the minimal DHCP server deployment.
+<div class="important">
+
+For an Ethernet network attachment, the SR-IOV Network Operator does not create a DHCP server deployment; the Cluster Network Operator is responsible for creating the minimal DHCP server deployment.
+
+</div>
 
 To trigger the deployment of the DHCP server, you must create a shim network attachment by editing the Cluster Network Operator configuration, as in the following example:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example shim network attachment definition
+**Example shim network attachment definition**
 
 </div>
 
@@ -268,8 +257,6 @@ spec:
   # ...
 ```
 
-</div>
-
 where:
 
 `type`
@@ -285,11 +272,11 @@ The Whereabouts CNI plugin also supports overlapping IP address ranges and confi
 
 The following table describes the configuration objects for dynamic IP address assignment with Whereabouts:
 
-| Field | Type | Description |
-|----|----|----|
-| `type` | `string` | The IPAM address type. The value `whereabouts` is required. |
-| `range` | `string` | An IP address and range in CIDR notation. IP addresses are assigned from within this range of addresses. |
-| `exclude` | `array` | Optional: A list of zero or more IP addresses and ranges in CIDR notation. IP addresses within an excluded address range are not assigned. |
+| Field          | Type     | Description                                                                                                                                                                                                                                                      |
+|----------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `type`         | `string` | The IPAM address type. The value `whereabouts` is required.                                                                                                                                                                                                      |
+| `range`        | `string` | An IP address and range in CIDR notation. IP addresses are assigned from within this range of addresses.                                                                                                                                                         |
+| `exclude`      | `array`  | Optional: A list of zero or more IP addresses and ranges in CIDR notation. IP addresses within an excluded address range are not assigned.                                                                                                                       |
 | `network_name` | `string` | Optional: Helps ensure that each group or domain of pods gets its own set of IP addresses, even if they share the same range of IP addresses. Setting this field is important for keeping networks separate and organized, notably in multi-tenant environments. |
 
 `ipam` whereabouts configuration parameters
@@ -298,11 +285,9 @@ The following table describes the configuration objects for dynamic IP address a
 
 The following example shows a dynamic address assignment configuration in a NAD file that uses Whereabouts:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Whereabouts dynamic IP address assignment that excludes specific IP address ranges
+**Whereabouts dynamic IP address assignment that excludes specific IP address ranges**
 
 </div>
 
@@ -319,17 +304,13 @@ Whereabouts dynamic IP address assignment that excludes specific IP address rang
 }
 ```
 
-</div>
-
 ### Dynamic IP address assignment that uses Whereabouts with overlapping IP address ranges
 
 The following example shows a dynamic IP address assignment that uses overlapping IP address ranges for multitenant networks.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-NetworkAttachmentDefinition 1
+**NetworkAttachmentDefinition 1**
 
 </div>
 
@@ -343,18 +324,14 @@ NetworkAttachmentDefinition 1
 }
 ```
 
-</div>
-
 where:
 
 `network_name`
 Optional parameter. If set, must match the `network_name` of `NetworkAttachmentDefinition 2`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-NetworkAttachmentDefinition 2
+**NetworkAttachmentDefinition 2**
 
 </div>
 
@@ -368,8 +345,6 @@ NetworkAttachmentDefinition 2
 }
 ```
 
-</div>
-
 where:
 
 `network_name`
@@ -379,30 +354,15 @@ Optional parameter. If set, must match the `network_name` of `NetworkAttachmentD
 
 You can configure an additional network that uses SR-IOV hardware by creating an `SriovNetwork` object. When you create an `SriovNetwork` object, the SR-IOV Network Operator automatically creates a `NetworkAttachmentDefinition` object.
 
-> [!NOTE]
-> Do not modify or delete an `SriovNetwork` object if it is attached to any pods in a `running` state.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Do not modify or delete an `SriovNetwork` object if it is attached to any pods in a `running` state.
 
 </div>
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `SriovNetwork` object, and then save the YAML in the `<name>.yaml` file, where `<name>` is a name for this additional network. The object specification might resemble the following example:
 
@@ -439,49 +399,35 @@ Procedure
     $ oc get net-attach-def -n <namespace>
     ```
 
-</div>
-
 # Assigning an SR-IOV network to a VRF
 
 As a cluster administrator, you can assign an SR-IOV network interface to your VRF domain by using the CNI VRF plugin.
 
 To do this, add the VRF configuration to the optional `metaPlugins` parameter of the `SriovNetwork` resource.
 
-> [!NOTE]
-> Applications that use VRFs need to bind to a specific device. The common usage is to use the `SO_BINDTODEVICE` option for a socket. `SO_BINDTODEVICE` binds the socket to a device that is specified in the passed interface name, for example, `eth1`. To use `SO_BINDTODEVICE`, the application must have `CAP_NET_RAW` capabilities.
->
-> Using a VRF through the `ip vrf exec` command is not supported in OpenShift Container Platform pods. To use VRF, bind applications directly to the VRF interface.
+<div class="note">
+
+Applications that use VRFs need to bind to a specific device. The common usage is to use the `SO_BINDTODEVICE` option for a socket. `SO_BINDTODEVICE` binds the socket to a device that is specified in the passed interface name, for example, `eth1`. To use `SO_BINDTODEVICE`, the application must have `CAP_NET_RAW` capabilities.
+
+Using a VRF through the `ip vrf exec` command is not supported in OpenShift Container Platform pods. To use VRF, bind applications directly to the VRF interface.
+
+</div>
 
 ## Creating an additional SR-IOV network attachment with the CNI VRF plugin
 
 The SR-IOV Network Operator manages additional network definitions. When you specify an additional SR-IOV network to create, the SR-IOV Network Operator creates the `NetworkAttachmentDefinition` custom resource (CR) automatically.
 
-> [!NOTE]
-> Do not edit `NetworkAttachmentDefinition` custom resources that the SR-IOV Network Operator manages. Doing so might disrupt network traffic on your additional network.
+<div class="note">
 
-To create an additional SR-IOV network attachment with the CNI virtual routing and forwarding (VRF) plugin, perform the following procedure.
-
-<div>
-
-<div class="title">
-
-Prerequisites
+Do not edit `NetworkAttachmentDefinition` custom resources that the SR-IOV Network Operator manages. Doing so might disrupt network traffic on your additional network.
 
 </div>
+
+To create an additional SR-IOV network attachment with the CNI virtual routing and forwarding (VRF) plugin, perform the following procedure.
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in to the OpenShift Container Platform cluster as a user with cluster-admin privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `SriovNetwork` custom resource (CR) for the additional SR-IOV network attachment and insert the `metaPlugins` configuration, as in the following example CR. Save the YAML as the file `sriov-network-attachment.yaml`.
 
@@ -526,15 +472,7 @@ Procedure
     $ oc create -f sriov-network-attachment.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Confirm that the SR-IOV Network Operator created the `NetworkAttachmentDefinition` CR by running the following command. The expected output shows the name of the NAD CR and the creation age in minutes.
 
@@ -544,8 +482,11 @@ Verification
 
     - `<namespace>`: Replace `<namespace>` with the namespace that you specified when configuring the network attachment, for example, `additional-sriov-network-1`.
 
-      > [!NOTE]
-      > There might be a delay before the SR-IOV Network Operator creates the CR.
+      <div class="note">
+
+      There might be a delay before the SR-IOV Network Operator creates the CR.
+
+      </div>
 
 2.  To verify that the VRF CNI is correctly configured and that the additional SR-IOV network attachment is attached, do the following:
 
@@ -565,19 +506,15 @@ Verification
         $ ip link
         ```
 
-</div>
-
 # Runtime configuration for an Ethernet-based SR-IOV attachment
 
 When attaching a pod to an additional network, you can specify a runtime configuration to make specific customizations for the pod. For example, you can request a specific MAC hardware address.
 
 You specify the runtime configuration by setting an annotation in the pod specification. The annotation key is `k8s.v1.cni.cncf.io/networks`, and it accepts a JSON object that describes the runtime configuration.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example runtime configuration for an Ethernet-based SR-IOV network attachment
+**Example runtime configuration for an Ethernet-based SR-IOV network attachment**
 
 </div>
 
@@ -603,8 +540,6 @@ spec:
     command: ["sleep", "infinity"]
 ```
 
-</div>
-
 where:
 
 `k8s.v1.cni.cncf.io/networks.name`
@@ -624,27 +559,9 @@ When a pod is created, a secondary network is attached to the pod. However, if a
 
 The pod must be in the same namespace as the secondary network.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in to the cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Add an annotation to the `Pod` object. Only one of the following annotation formats can be used:
 
@@ -741,19 +658,9 @@ Procedure
     `k8s.v1.cni.cncf.io/network-status`
     Specifies a JSON array of objects. Each object describes the status of a secondary network attached to the pod. The annotation value is stored as a plain text value.
 
-</div>
-
 ## Exposing MTU for vfio-pci SR-IOV devices to pod
 
 After adding a pod to an additional network, you can check that the MTU is available for the SR-IOV network.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Check that the pod annotation includes MTU by running the following command:
 
@@ -813,8 +720,6 @@ Procedure
         }]"
     ```
 
-</div>
-
 # Configuring parallel node draining during SR-IOV network policy updates
 
 By default, the SR-IOV Network Operator drains workloads from a node before every policy change. The Operator performs this action, one node at a time, to ensure that the reconfiguration does not impact workloads.
@@ -823,20 +728,15 @@ In large clusters, draining nodes sequentially can be time-consuming, taking hou
 
 To configure parallel draining, use the `SriovNetworkPoolConfig` CR to create a node pool. You can then add nodes to the pool and define the maximum number of nodes in the pool that the Operator can drain in parallel. With this approach, you can enable parallel draining for faster reconfiguration while ensuring you still have enough nodes remaining in the pool to handle any running workloads.
 
-> [!NOTE]
-> A node can only belong to one SR-IOV network pool configuration. If a node is not part of a pool, the node gets added to a virtual, default, pool that with a configuration for draining one node at a time only.
->
-> The node might restart during the draining process.
+<div class="note">
 
-The procedure requires that you create SR-IOV resources and then parallel drain the nodes.
+A node can only belong to one SR-IOV network pool configuration. If a node is not part of a pool, the node gets added to a virtual, default, pool that with a configuration for draining one node at a time only.
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The node might restart during the draining process.
 
 </div>
+
+The procedure requires that you create SR-IOV resources and then parallel drain the nodes.
 
 - Install the OpenShift CLI (`oc`).
 
@@ -846,23 +746,11 @@ Prerequisites
 
 - Nodes have hardware that support SR-IOV.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a YAML file that defines the `SriovNetworkPoolConfig` resource:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `sriov-nw-pool.yaml` file
+    **Example `sriov-nw-pool.yaml` file**
 
     </div>
 
@@ -878,8 +766,6 @@ Procedure
         matchLabels:
           node-role.kubernetes.io/worker: ""
     ```
-
-    </div>
 
     where:
 
@@ -934,11 +820,9 @@ Procedure
 
 6.  Create a YAML file that defines the `SriovNetwork` resource:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `sriov-network.yaml` file
+    **Example `sriov-network.yaml` file**
 
     </div>
 
@@ -955,8 +839,6 @@ Procedure
       capabilities: '{ "mac": true, "ips": true }'
       ipam: '{ "type": "static" }'
     ```
-
-    </div>
 
 7.  Create the `SriovNetwork` resource by running the following command:
 
@@ -984,11 +866,9 @@ Procedure
     $ oc get sriovNetworkNodeState -n openshift-sriov-network-operator
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -998,23 +878,11 @@ Procedure
     openshift-sriov-network-operator   worker-1   InProgress    Drain_Required       DrainComplete        3d10h
     ```
 
-    </div>
-
     When the draining process completes, the `SYNC STATUS` changes to `Succeeded`, and the `DESIRED SYNC STATE` and `CURRENT SYNC STATE` values return to `IDLE`.
-
-</div>
 
 # Excluding the SR-IOV network topology for NUMA-aware scheduling
 
 To exclude advertising the SR-IOV network resource’s Non-Uniform Memory Access (NUMA) node to the Topology Manager, you can configure the `excludeTopology` specification in the `SriovNetworkNodePolicy` custom resource. Use this configuration for more flexible SR-IOV network deployments during NUMA-aware pod scheduling.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -1023,16 +891,6 @@ Prerequisites
 - You have configured the Topology Manager policy to `single-numa-node`.
 
 - You have installed the SR-IOV Network Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `SriovNetworkNodePolicy` CR:
 
@@ -1062,8 +920,11 @@ Procedure
 
         - To exclude advertising the NUMA node for the SR-IOV network resource to the Topology Manager, set the value to `true`. The default value is `false`.
 
-          > [!NOTE]
-          > If many `SriovNetworkNodePolicy` resources target the same SR-IOV network resource, the `SriovNetworkNodePolicy` resources must have the same value as the `excludeTopology` specification. Otherwise, the conflicting policy is rejected.
+          <div class="note">
+
+          If many `SriovNetworkNodePolicy` resources target the same SR-IOV network resource, the `SriovNetworkNodePolicy` resources must have the same value as the `excludeTopology` specification. Otherwise, the conflicting policy is rejected.
+
+          </div>
 
     2.  Create the `SriovNetworkNodePolicy` resource by running the following command. Successful output lists the name of the `SriovNetworkNodePolicy` resource and the `created` status.
 
@@ -1136,15 +997,7 @@ Procedure
         $ oc create -f sriov-network-pod.yaml
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify the status of the pod by running the following command, replacing `<pod_name>` with the name of the pod:
 
@@ -1152,11 +1005,9 @@ Verification
     $ oc get pod <pod_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1164,8 +1015,6 @@ Verification
     NAME                                     READY   STATUS    RESTARTS   AGE
     test-deployment-sriov-76cbbf4756-k9v72   1/1     Running   0          45h
     ```
-
-    </div>
 
 2.  Open a debug session with the target pod to verify that the SR-IOV network resources are deployed to a different node than the memory and CPU resources.
 
@@ -1187,11 +1036,9 @@ Verification
         $ lscpu | grep NUMA
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1201,17 +1048,13 @@ Verification
         NUMA node1 CPU(s):     1,3,5,7,9,11,13,15,17,19,...
         ```
 
-        </div>
-
         ``` terminal
         $ cat /proc/self/status | grep Cpus
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1219,8 +1062,6 @@ Verification
         Cpus_allowed:    ffff
         Cpus_allowed_list:  1,3,5,7
         ```
-
-        </div>
 
         The expected output shows the CPUs (1, 3, 5, and 7) that get allocated to a `NUMA` node, such as `NUMA node1`. The SR-IOV network resource can use the NIC from another `NUMA` node, such as `NUMA node0`. Note that the `ffff` hexadecimal value represents the CPU cores that run a process.
 
@@ -1230,10 +1071,11 @@ Verification
 
         Expected output shows the number for the `NUMA` node, such as `0`.
 
-        > [!NOTE]
-        > If you set the `excludeTopology` specification to `True`, the required resources might exist in the same NUMA node.
+        <div class="note">
 
-</div>
+        If you set the `excludeTopology` specification to `True`, the required resources might exist in the same NUMA node.
+
+        </div>
 
 # Additional resources
 

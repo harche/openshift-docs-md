@@ -6,14 +6,9 @@ Before you perform any tasks in the following documentation, ensure that you [in
 
 Use the following procedure to switch Bluefield-2 from data processing units (DPU) mode to network interface controller (NIC) mode.
 
-> [!IMPORTANT]
-> Currently, only switching Bluefield-2 from DPU to NIC mode is supported. Switching from NIC mode to DPU mode is unsupported.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Currently, only switching Bluefield-2 from DPU to NIC mode is supported. Switching from NIC mode to DPU mode is unsupported.
 
 </div>
 
@@ -21,23 +16,11 @@ Prerequisites
 
 - You have updated Bluefield-2 to the latest firmware. For more information, see [Firmware for NVIDIA BlueField-2](https://network.nvidia.com/support/firmware/bluefield2/).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Add the following label to each of your compute nodes by entering the following command. You must run the command for each compute node.
 
     ``` terminal
     $ oc label node <node_name> node-role.kubernetes.io/sriov=
     ```
-
-</div>
 
 where:
 
@@ -105,14 +88,4 @@ Refers to the name of a compute node.
 
 4.  Optional: You might need to restart the host hardware because most recent Bluefield-2 firmware releases require a hardware restart to switch into NIC mode.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Installing SR-IOV Network Operator](../../networking/networking_operators/sr-iov-operator/installing-sriov-operator.xml#installing-sriov-operator)
-
-</div>

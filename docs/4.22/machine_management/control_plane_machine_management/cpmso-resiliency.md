@@ -8,28 +8,20 @@ When possible, the control plane machine set spreads the control plane machines 
 
 The control plane machine set concept of a failure domain is analogous to existing concepts on cloud providers. Not all platforms support the use of failure domains.
 
-| Cloud provider | Support for failure domains | Provider nomenclature |
-|----|----|----|
-| Amazon Web Services (AWS) | X | [Availability Zone (AZ)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-availability-zones) |
-| Google Cloud | X | [zone](https://cloud.google.com/compute/docs/regions-zones) |
-| Microsoft Azure | X | [Azure availability zone](https://learn.microsoft.com/en-us/azure/azure-web-pubsub/concept-availability-zones) |
-| Nutanix | X | [failure domain](https://portal.nutanix.com/page/documents/solutions/details?targetId=RA-2147-Nutanix-for-Enterprise-Edge:failure-domain-considerations.html) |
-| Red Hat OpenStack Platform (RHOSP) | X | [OpenStack Nova availability zones](https://docs.openstack.org/nova/2023.2/admin/availability-zones.html) and [OpenStack Cinder availability zones](https://docs.openstack.org/cinder/2023.2/admin/availability-zone-type.html) |
-| VMware vSphere | X | failure domain mapped to a vSphere Zone <sup>\[1\]</sup> |
+| Cloud provider                     | Support for failure domains | Provider nomenclature                                                                                                                                                                                                           |
+|------------------------------------|-----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Amazon Web Services (AWS)          | X                           | [Availability Zone (AZ)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-availability-zones)                                                                                 |
+| Google Cloud                       | X                           | [zone](https://cloud.google.com/compute/docs/regions-zones)                                                                                                                                                                     |
+| Microsoft Azure                    | X                           | [Azure availability zone](https://learn.microsoft.com/en-us/azure/azure-web-pubsub/concept-availability-zones)                                                                                                                  |
+| Nutanix                            | X                           | [failure domain](https://portal.nutanix.com/page/documents/solutions/details?targetId=RA-2147-Nutanix-for-Enterprise-Edge:failure-domain-considerations.html)                                                                   |
+| Red Hat OpenStack Platform (RHOSP) | X                           | [OpenStack Nova availability zones](https://docs.openstack.org/nova/2023.2/admin/availability-zones.html) and [OpenStack Cinder availability zones](https://docs.openstack.org/cinder/2023.2/admin/availability-zone-type.html) |
+| VMware vSphere                     | X                           | failure domain mapped to a vSphere Zone <sup>\[1\]</sup>                                                                                                                                                                        |
 
 Failure domain support matrix
 
 1.  For more information, see "Regions and zones for a VMware vCenter".
 
 The failure domain configuration in the control plane machine set custom resource (CR) is platform-specific. For more information about failure domain parameters in the CR, see the sample failure domain configuration for your provider.
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Sample Amazon Web Services failure domain configuration](../../machine_management/control_plane_machine_management/cpmso_provider_configurations/cpmso-config-options-aws.xml#cpmso-yaml-failure-domain-aws_cpmso-config-options-aws)
 
@@ -45,8 +37,6 @@ Additional resources
 
 - [Regions and zones for a VMware vCenter](../../installing/installing_vsphere/post-install-vsphere-zones-regions-configuration.xml#post-install-vsphere-zones-regions-configuration)
 
-</div>
-
 ## Balancing control plane machines
 
 The control plane machine set balances control plane machines across the failure domains that are specified in the custom resource (CR).
@@ -61,24 +51,17 @@ The Control Plane Machine Set Operator automates the recovery of control plane m
 
 For clusters that use control plane machine sets, you can configure a machine health check. The machine health check deletes unhealthy control plane machines so that they are replaced.
 
-> [!IMPORTANT]
-> If you configure a `MachineHealthCheck` resource for the control plane, set the value of `maxUnhealthy` to `1`.
->
-> This configuration ensures that the machine health check takes no action when multiple control plane machines appear to be unhealthy. Multiple unhealthy control plane machines can indicate that the etcd cluster is degraded or that a scaling operation to replace a failed machine is in progress.
->
-> If the etcd cluster is degraded, manual intervention might be required. If a scaling operation is in progress, the machine health check should allow it to finish.
+<div class="important">
 
-<div>
+If you configure a `MachineHealthCheck` resource for the control plane, set the value of `maxUnhealthy` to `1`.
 
-<div class="title">
+This configuration ensures that the machine health check takes no action when multiple control plane machines appear to be unhealthy. Multiple unhealthy control plane machines can indicate that the etcd cluster is degraded or that a scaling operation to replace a failed machine is in progress.
 
-Additional resources
+If the etcd cluster is degraded, manual intervention might be required. If a scaling operation is in progress, the machine health check should allow it to finish.
 
 </div>
 
 - [Deploying machine health checks](../../machine_management/deploying-machine-health-checks.xml#deploying-machine-health-checks)
-
-</div>
 
 # Quorum protection with machine lifecycle hooks
 
@@ -122,11 +105,9 @@ The control plane machine `Deleting` phase proceeds in the following order:
 
 9.  The machine controller deletes the `Node` object.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-YAML snippet demonstrating the etcd quorum protection `preDrain` lifecycle hook
+**YAML snippet demonstrating the etcd quorum protection `preDrain` lifecycle hook**
 
 </div>
 
@@ -143,20 +124,10 @@ spec:
   ...
 ```
 
-</div>
-
 - The name of the `preDrain` lifecycle hook.
 
 - The hook-implementing controller that manages the `preDrain` lifecycle hook.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Lifecycle hooks for the machine deletion phase](../../machine_management/deleting-machine.xml#machine-lifecycle-hook-deletion_deleting-machine)
-
-</div>

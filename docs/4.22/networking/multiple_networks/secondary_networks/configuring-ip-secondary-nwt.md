@@ -20,8 +20,11 @@ For networks requiring `type: dhcp` in their IPAM configuration, ensure the DHCP
 
 In cases where a DHCP server is unavailable in the environment, consider using the Whereabouts IPAM CNI plugin. The Whereabouts CNI provides similar IP address management capabilities without the need for an external DHCP server.
 
-> [!NOTE]
-> Use the Whereabouts CNI plugin when no external DHCP server exists or where static IP address management is preferred. The Whereabouts plugin includes a reconciler daemon to manage stale IP address allocations.
+<div class="note">
+
+Use the Whereabouts CNI plugin when no external DHCP server exists or where static IP address management is preferred. The Whereabouts plugin includes a reconciler daemon to manage stale IP address allocations.
+
+</div>
 
 Ensure the periodic renewal of a DHCP lease throughout the lifetime of a container by including a separate daemon, the DHCP IPAM CNI Daemon. To deploy the DHCP IPAM CNI daemon, change the Cluster Network Operator (CNO) configuration to trigger the deployment of this daemon as part of the secondary network setup.
 
@@ -29,44 +32,42 @@ Ensure the periodic renewal of a DHCP lease throughout the lifetime of a contain
 
 The following table describes the configuration for static IP address assignment:
 
-| Field | Type | Description |
-|----|----|----|
-| `type` | `string` | The IPAM address type. The value `static` is required. |
-| `addresses` | `array` | An array of objects specifying IP addresses to assign to the virtual interface. Both IPv4 and IPv6 IP addresses are supported. |
-| `routes` | `array` | An array of objects specifying routes to configure inside the pod. |
-| `dns` | `array` | Optional: An array of objects specifying the DNS configuration. |
+| Field       | Type     | Description                                                                                                                    |
+|-------------|----------|--------------------------------------------------------------------------------------------------------------------------------|
+| `type`      | `string` | The IPAM address type. The value `static` is required.                                                                         |
+| `addresses` | `array`  | An array of objects specifying IP addresses to assign to the virtual interface. Both IPv4 and IPv6 IP addresses are supported. |
+| `routes`    | `array`  | An array of objects specifying routes to configure inside the pod.                                                             |
+| `dns`       | `array`  | Optional: An array of objects specifying the DNS configuration.                                                                |
 
 `ipam` static configuration object
 
 The `addresses` array requires objects with the following fields:
 
-| Field | Type | Description |
-|----|----|----|
+| Field     | Type     | Description                                                                                                                                                                                             |
+|-----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `address` | `string` | An IP address and network prefix that you specify. For example, if you specify `10.10.21.10/24`, the secondary network gets assigned an IP address of `10.10.21.10` and the netmask of `255.255.255.0`. |
-| `gateway` | `string` | The default gateway to route egress network traffic to. |
+| `gateway` | `string` | The default gateway to route egress network traffic to.                                                                                                                                                 |
 
 `ipam.addresses[]` array
 
-| Field | Type | Description |
-|----|----|----|
+| Field | Type     | Description                                                                                          |
+|-------|----------|------------------------------------------------------------------------------------------------------|
 | `dst` | `string` | The IP address range in CIDR format, such as `192.168.17.0/24` or `0.0.0.0/0` for the default route. |
-| `gw` | `string` | The gateway that routes network traffic. |
+| `gw`  | `string` | The gateway that routes network traffic.                                                             |
 
 `ipam.routes[]` array
 
-| Field | Type | Description |
-|----|----|----|
-| `nameservers` | `array` | An array of one or more IP addresses where DNS queries get sent. |
-| `domain` | `array` | The default domain to append to a hostname. For example, if the domain is set to `example.com`, a DNS lookup query for `example-host` is rewritten as `example-host.example.com`. |
-| `search` | `array` | An array of domain names to append to an unqualified hostname, such as `example-host`, during a DNS lookup query. |
+| Field         | Type    | Description                                                                                                                                                                       |
+|---------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `nameservers` | `array` | An array of one or more IP addresses where DNS queries get sent.                                                                                                                  |
+| `domain`      | `array` | The default domain to append to a hostname. For example, if the domain is set to `example.com`, a DNS lookup query for `example-host` is rewritten as `example-host.example.com`. |
+| `search`      | `array` | An array of domain names to append to an unqualified hostname, such as `example-host`, during a DNS lookup query.                                                                 |
 
 `ipam.dns` object
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Static IP address assignment configuration example
+**Static IP address assignment configuration example**
 
 </div>
 
@@ -83,22 +84,21 @@ Static IP address assignment configuration example
 }
 ```
 
-</div>
-
 ## Dynamic IP address (DHCP) assignment configuration
 
 A pod obtains its original DHCP lease when the pod gets created. The lease must be periodically renewed by a minimal DHCP server deployment running on the cluster.
 
-> [!IMPORTANT]
-> For an Ethernet network attachment, the SR-IOV Network Operator does not create a DHCP server deployment; the Cluster Network Operator is responsible for creating the minimal DHCP server deployment.
+<div class="important">
+
+For an Ethernet network attachment, the SR-IOV Network Operator does not create a DHCP server deployment; the Cluster Network Operator is responsible for creating the minimal DHCP server deployment.
+
+</div>
 
 To trigger the deployment of the DHCP server, you must create a shim network attachment by editing the Cluster Network Operator configuration, as in the following example:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example shim network attachment definition
+**Example shim network attachment definition**
 
 </div>
 
@@ -124,8 +124,6 @@ spec:
   # ...
 ```
 
-</div>
-
 where:
 
 `type`
@@ -141,11 +139,11 @@ The Whereabouts CNI plugin also supports overlapping IP address ranges and confi
 
 The following table describes the configuration objects for dynamic IP address assignment with Whereabouts:
 
-| Field | Type | Description |
-|----|----|----|
-| `type` | `string` | The IPAM address type. The value `whereabouts` is required. |
-| `range` | `string` | An IP address and range in CIDR notation. IP addresses are assigned from within this range of addresses. |
-| `exclude` | `array` | Optional: A list of zero or more IP addresses and ranges in CIDR notation. IP addresses within an excluded address range are not assigned. |
+| Field          | Type     | Description                                                                                                                                                                                                                                                      |
+|----------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `type`         | `string` | The IPAM address type. The value `whereabouts` is required.                                                                                                                                                                                                      |
+| `range`        | `string` | An IP address and range in CIDR notation. IP addresses are assigned from within this range of addresses.                                                                                                                                                         |
+| `exclude`      | `array`  | Optional: A list of zero or more IP addresses and ranges in CIDR notation. IP addresses within an excluded address range are not assigned.                                                                                                                       |
 | `network_name` | `string` | Optional: Helps ensure that each group or domain of pods gets its own set of IP addresses, even if they share the same range of IP addresses. Setting this field is important for keeping networks separate and organized, notably in multi-tenant environments. |
 
 `ipam` whereabouts configuration parameters
@@ -154,11 +152,9 @@ The following table describes the configuration objects for dynamic IP address a
 
 The following example shows a dynamic address assignment configuration in a NAD file that uses Whereabouts:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Whereabouts dynamic IP address assignment that excludes specific IP address ranges
+**Whereabouts dynamic IP address assignment that excludes specific IP address ranges**
 
 </div>
 
@@ -175,17 +171,13 @@ Whereabouts dynamic IP address assignment that excludes specific IP address rang
 }
 ```
 
-</div>
-
 ### Dynamic IP address assignment that uses Whereabouts with overlapping IP address ranges
 
 The following example shows a dynamic IP address assignment that uses overlapping IP address ranges for multitenant networks.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-NetworkAttachmentDefinition 1
+**NetworkAttachmentDefinition 1**
 
 </div>
 
@@ -199,18 +191,14 @@ NetworkAttachmentDefinition 1
 }
 ```
 
-</div>
-
 where:
 
 `network_name`
 Optional parameter. If set, must match the `network_name` of `NetworkAttachmentDefinition 2`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-NetworkAttachmentDefinition 2
+**NetworkAttachmentDefinition 2**
 
 </div>
 
@@ -224,8 +212,6 @@ NetworkAttachmentDefinition 2
 }
 ```
 
-</div>
-
 where:
 
 `network_name`
@@ -235,20 +221,15 @@ Optional parameter. If set, must match the `network_name` of `NetworkAttachmentD
 
 The Whereabouts reconciler is responsible for managing dynamic IP address assignments for the pods within a cluster by using the Whereabouts IP Address Management (IPAM) solution. The Whereabouts reconciler ensures that each pod gets a unique IP address from the specified IP address range. The Whereabouts reconciler also handles IP address releases when pods are deleted or scaled down.
 
-> [!NOTE]
-> You can also use a `NetworkAttachmentDefinition` custom resource definition (CRD) for dynamic IP address assignment.
+<div class="note">
+
+You can also use a `NetworkAttachmentDefinition` custom resource definition (CRD) for dynamic IP address assignment.
+
+</div>
 
 The `whereabouts-reconciler` daemon set is automatically created when you configure a secondary network through the Cluster Network Operator. The `whereabouts-reconciler` DaemonSet does not get automatically created when you configure a secondary network from a YAML manifest.
 
 To trigger the deployment of the `whereabouts-reconciler` daemon set, you must manually create a `whereabouts-shim` network attachment by editing the Cluster Network Operator custom resource (CR) file.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `Network.operator.openshift.io` CR by running the following command:
 
@@ -295,37 +276,17 @@ Procedure
     daemonset.apps/whereabouts-reconciler 6 6 6 6 6 kubernetes.io/os=linux 6s
     ```
 
-</div>
-
 ## Configuring the Whereabouts IP reconciler schedule
 
 The Whereabouts IPAM CNI plugin runs the IP address reconciler daily. This process cleans up any stranded IP address allocations that might result in exhausting IP addresses and therefore prevent new pods from getting a stranded IP address allocated to them.
 
 Use this procedure to change the frequency at which the IP reconciler runs.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You installed the OpenShift CLI (`oc`).
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have deployed the `whereabouts-reconciler` daemon set, and the `whereabouts-reconciler` pods are up and running.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the following command to create a `ConfigMap` object named `whereabouts-config` in the `openshift-multus` namespace with a specific cron expression for the IP reconciler:
 
@@ -335,8 +296,11 @@ Procedure
 
     This cron expression indicates the IP reconciler runs every 15 minutes. Adjust the expression based on your specific requirements.
 
-    > [!NOTE]
-    > The `whereabouts-reconciler` daemon set can only consume a cron expression pattern that includes five asterisks. Red  Hat does not support the sixth asterisk, which is used to denote seconds.
+    <div class="note">
+
+    The `whereabouts-reconciler` daemon set can only consume a cron expression pattern that includes five asterisks. Red  Hat does not support the sixth asterisk, which is used to denote seconds.
+
+    </div>
 
 2.  Retrieve information about resources related to the `whereabouts-reconciler` daemon set and pods within the `openshift-multus` namespace by running the following command:
 
@@ -372,8 +336,6 @@ Procedure
     2024-02-02T16:45:00Z [verbose] reconciler success
     ```
 
-</div>
-
 ## Fast IPAM configuration for the Whereabouts IPAM CNI plugin
 
 Wherabouts is an IP Address Management (IPAM) Container Network Interface (CNI) plugin that assigns IP addresses at a cluster-wide level. Whereabouts does not require a Dynamic Host Configuration Protocol (DHCP) server.
@@ -388,34 +350,19 @@ A typical Wherabouts workflow is described as follows:
 
 To improve the performance of Whereabouts, especially if nodes in your cluster run a high amount of pods, you can enable the Fast IPAM feature.
 
-> [!IMPORTANT]
-> Fast IPAM is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-The Fast IPAM feature uses `nodeslicepools`, which are managed by the Whereabouts Controller, to optimize IP allocation for nodes.
+Fast IPAM is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div>
-
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
+
+The Fast IPAM feature uses `nodeslicepools`, which are managed by the Whereabouts Controller, to optimize IP allocation for nodes.
 
 - You added the `whereabouts-shim` configuration to the `Network.operator.openshift.io` custom resource (CR), so that the Cluster Network Operator (CNO) can deploy the Whereabouts Controller. See "Creating a Whereabouts reconciler daemon set".
 
 - For the Fast IPAM feature to work, ensure that the `NetworkAttachmentDefinition` (NAD) and the pod exist in the same `openshift-multus` namespace.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Confirm that the Whereabouts Controller is running by entering the following command.
 
@@ -428,8 +375,11 @@ Procedure
     ...
     ```
 
-    > [!IMPORTANT]
-    > If the Whereabouts Controller is not running, the Fast IPAM does not work.
+    <div class="important">
+
+    If the Whereabouts Controller is not running, the Fast IPAM does not work.
+
+    </div>
 
 2.  Create a NAD file for your cluster and add the Fast IPAM details to the file as demonstrated in the following example configuration:
 
@@ -508,15 +458,7 @@ Procedure
     $ oc create -f <NAD_file_name>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Show the IP address details of the pod by entering the following command:
 
@@ -564,8 +506,6 @@ Verification
     $ oc get nodeslicepool -n openshift-multus
     ```
 
-</div>
-
 ## Creating a configuration for assignment of dual-stack IP addresses dynamically
 
 You can dynamically assign dual-stack IP addresses to a secondary network so that pods can communicate over both IPv4 and IPv6 addresses.
@@ -577,14 +517,6 @@ You can configure the following IP address assignment types in the `ipRanges` pa
 - IPv6 addresses
 
 - multiple IP address assignment
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Set `type` to `whereabouts`.
 
@@ -617,16 +549,6 @@ Procedure
 
 3.  Attach the secondary network to a pod. For more information, see "Adding a pod to a secondary network".
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that all IP addresses got assigned to the network interfaces within the network namespace of a pod by entering the following command:
 
   ``` yaml
@@ -637,5 +559,3 @@ Verification
 
   `<podname>`
   The name of the pod.
-
-</div>

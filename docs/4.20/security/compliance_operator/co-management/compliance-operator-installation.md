@@ -1,37 +1,28 @@
 Before you can use the Compliance Operator, you must ensure it is deployed in the cluster.
 
-> [!IMPORTANT]
-> All cluster nodes must have the same release version in order for this Operator to function properly. As an example, for nodes running RHCOS, all nodes must have the same RHCOS version.
+<div class="important">
 
-> [!IMPORTANT]
-> The Compliance Operator might report incorrect results on managed platforms, such as OpenShift Dedicated, Red Hat OpenShift Service on AWS Classic, and Microsoft Azure Red Hat OpenShift. For more information, see the Knowledgebase article [Compliance Operator reports incorrect results on Managed Services](https://access.redhat.com/solutions/6983418).
-
-> [!IMPORTANT]
-> Before deploying the Compliance Operator, you are required to define persistent storage in your cluster to store the raw results output. For more information, see [Persistent storage overview](../../../storage/understanding-persistent-storage.xml#persistent-storage-overview_understanding-persistent-storage) and [Managing the default storage class](../../../storage/container_storage_interface/persistent-storage-csi-sc-manage.xml#overview).
-
-# Installing the Compliance Operator through the web console
-
-<div>
-
-<div class="title">
-
-Prerequisites
+All cluster nodes must have the same release version in order for this Operator to function properly. As an example, for nodes running RHCOS, all nodes must have the same RHCOS version.
 
 </div>
+
+<div class="important">
+
+The Compliance Operator might report incorrect results on managed platforms, such as OpenShift Dedicated, Red Hat OpenShift Service on AWS Classic, and Microsoft Azure Red Hat OpenShift. For more information, see the Knowledgebase article [Compliance Operator reports incorrect results on Managed Services](https://access.redhat.com/solutions/6983418).
+
+</div>
+
+<div class="important">
+
+Before deploying the Compliance Operator, you are required to define persistent storage in your cluster to store the raw results output. For more information, see [Persistent storage overview](../../../storage/understanding-persistent-storage.xml#persistent-storage-overview_understanding-persistent-storage) and [Managing the default storage class](../../../storage/container_storage_interface/persistent-storage-csi-sc-manage.xml#overview).
+
+</div>
+
+# Installing the Compliance Operator through the web console
 
 - You must have `admin` privileges.
 
 - You must have a `StorageClass` resource configured.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Ecosystem** → **Software Catalog**.
 
@@ -41,19 +32,13 @@ Procedure
 
 4.  Click **Install**.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 To confirm that the installation is successful:
-
-</div>
 
 1.  Navigate to the **Ecosystem** → **Installed Operators** page.
 
@@ -65,42 +50,25 @@ If the Operator is not installed successfully:
 
 2.  Navigate to the **Workloads** → **Pods** page and check the logs in any pods in the `openshift-compliance` project that are reporting issues.
 
-> [!IMPORTANT]
-> If the `restricted` Security Context Constraints (SCC) have been modified to contain the `system:authenticated` group or has added `requiredDropCapabilities`, the Compliance Operator may not function properly due to permissions issues.
->
-> You can create a custom SCC for the Compliance Operator scanner pod service account. For more information, see [Creating a custom SCC for the Compliance Operator](../../../security/compliance_operator/co-scans/compliance-operator-advanced.xml#compliance-custom-scc_compliance-advanced).
+<div class="important">
 
-# Installing the Compliance Operator using the CLI
+If the `restricted` Security Context Constraints (SCC) have been modified to contain the `system:authenticated` group or has added `requiredDropCapabilities`, the Compliance Operator may not function properly due to permissions issues.
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You can create a custom SCC for the Compliance Operator scanner pod service account. For more information, see [Creating a custom SCC for the Compliance Operator](../../../security/compliance_operator/co-scans/compliance-operator-advanced.xml#compliance-custom-scc_compliance-advanced).
 
 </div>
+
+# Installing the Compliance Operator using the CLI
 
 - You must have `admin` privileges.
 
 - You must have a `StorageClass` resource configured.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Define a `Namespace` object:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `namespace-object.yaml`
+    **Example `namespace-object.yaml`**
 
     </div>
 
@@ -114,8 +82,6 @@ Procedure
       name: openshift-compliance
     ```
 
-    </div>
-
     - In OpenShift Container Platform 4.17, the pod security label must be set to `privileged` at the namespace level.
 
 2.  Create the `Namespace` object:
@@ -126,11 +92,9 @@ Procedure
 
 3.  Define an `OperatorGroup` object:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `operator-group-object.yaml`
+    **Example `operator-group-object.yaml`**
 
     </div>
 
@@ -145,8 +109,6 @@ Procedure
       - openshift-compliance
     ```
 
-    </div>
-
 4.  Create the `OperatorGroup` object:
 
     ``` terminal
@@ -155,11 +117,9 @@ Procedure
 
 5.  Define a `Subscription` object:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `subscription-object.yaml`
+    **Example `subscription-object.yaml`**
 
     </div>
 
@@ -177,24 +137,15 @@ Procedure
       sourceNamespace: openshift-marketplace
     ```
 
-    </div>
-
 6.  Create the `Subscription` object:
 
     ``` terminal
     $ oc create -f subscription-object.yaml
     ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> If you are setting the global scheduler feature and enable `defaultNodeSelector`, you must create the namespace manually and update the annotations of the `openshift-compliance` namespace, or the namespace where the Compliance Operator was installed, with `openshift.io/node-selector: “”`. This removes the default node selector and prevents deployment failures.
-
-<div>
-
-<div class="title">
-
-Verification
+If you are setting the global scheduler feature and enable `defaultNodeSelector`, you must create the namespace manually and update the annotations of the `openshift-compliance` namespace, or the namespace where the Compliance Operator was installed, with `openshift.io/node-selector: “”`. This removes the default node selector and prevents deployment failures.
 
 </div>
 
@@ -210,43 +161,21 @@ Verification
     $ oc get deploy -n openshift-compliance
     ```
 
-</div>
-
 # Installing the Compliance Operator on ROSA hosted control planes (HCP)
 
 As of the Compliance Operator 1.5.0 release, the Operator is tested against Red Hat OpenShift Service on AWS using Hosted control planes.
 
 Red Hat OpenShift Service on AWS Hosted control planes clusters have restricted access to the control plane, which is managed by Red Hat. By default, the Compliance Operator will schedule to nodes within the `master` node pool, which is not available in Red Hat OpenShift Service on AWS Hosted control planes installations. This requires you to configure the `Subscription` object in a way that allows the Operator to schedule on available node pools. This step is necessary for a successful installation on Red Hat OpenShift Service on AWS Hosted control planes clusters.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have `admin` privileges.
 
 - You must have a `StorageClass` resource configured.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Define a `Namespace` object:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `namespace-object.yaml` file
+    **Example `namespace-object.yaml` file**
 
     </div>
 
@@ -260,8 +189,6 @@ Procedure
       name: openshift-compliance
     ```
 
-    </div>
-
     - In OpenShift Container Platform 4.17, the pod security label must be set to `privileged` at the namespace level.
 
 2.  Create the `Namespace` object by running the following command:
@@ -272,11 +199,9 @@ Procedure
 
 3.  Define an `OperatorGroup` object:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `operator-group-object.yaml` file
+    **Example `operator-group-object.yaml` file**
 
     </div>
 
@@ -291,8 +216,6 @@ Procedure
       - openshift-compliance
     ```
 
-    </div>
-
 4.  Create the `OperatorGroup` object by running the following command:
 
     ``` terminal
@@ -301,11 +224,9 @@ Procedure
 
 5.  Define a `Subscription` object:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `subscription-object.yaml` file
+    **Example `subscription-object.yaml` file**
 
     </div>
 
@@ -326,8 +247,6 @@ Procedure
           node-role.kubernetes.io/worker: ""
     ```
 
-    </div>
-
     - Update the Operator deployment to deploy on `worker` nodes.
 
 6.  Create the `Subscription` object by running the following command:
@@ -336,15 +255,7 @@ Procedure
     $ oc create -f subscription-object.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the installation succeeded by running the following command to inspect the cluster service version (CSV) file:
 
@@ -358,49 +269,33 @@ Verification
     $ oc get deploy -n openshift-compliance
     ```
 
-</div>
+<div class="important">
 
-> [!IMPORTANT]
-> If the `restricted` Security Context Constraints (SCC) have been modified to contain the `system:authenticated` group or has added `requiredDropCapabilities`, the Compliance Operator may not function properly due to permissions issues.
->
-> You can create a custom SCC for the Compliance Operator scanner pod service account. For more information, see [Creating a custom SCC for the Compliance Operator](../../../security/compliance_operator/co-scans/compliance-operator-advanced.xml#compliance-custom-scc_compliance-advanced).
+If the `restricted` Security Context Constraints (SCC) have been modified to contain the `system:authenticated` group or has added `requiredDropCapabilities`, the Compliance Operator may not function properly due to permissions issues.
+
+You can create a custom SCC for the Compliance Operator scanner pod service account. For more information, see [Creating a custom SCC for the Compliance Operator](../../../security/compliance_operator/co-scans/compliance-operator-advanced.xml#compliance-custom-scc_compliance-advanced).
+
+</div>
 
 # Installing the Compliance Operator on Hypershift hosted control planes
 
 The Compliance Operator can be installed in hosted control planes using the software catalog by creating a `Subscription` file.
 
-> [!IMPORTANT]
-> Hosted control planes is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div>
+Hosted control planes is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
 - You must have `admin` privileges.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Define a `Namespace` object similar to the following:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `namespace-object.yaml`
+    **Example `namespace-object.yaml`**
 
     </div>
 
@@ -414,8 +309,6 @@ Procedure
       name: openshift-compliance
     ```
 
-    </div>
-
     - In OpenShift Container Platform 4.17, the pod security label must be set to `privileged` at the namespace level.
 
 2.  Create the `Namespace` object by running the following command:
@@ -426,11 +319,9 @@ Procedure
 
 3.  Define an `OperatorGroup` object:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `operator-group-object.yaml`
+    **Example `operator-group-object.yaml`**
 
     </div>
 
@@ -445,8 +336,6 @@ Procedure
       - openshift-compliance
     ```
 
-    </div>
-
 4.  Create the `OperatorGroup` object by running the following command:
 
     ``` terminal
@@ -455,11 +344,9 @@ Procedure
 
 5.  Define a `Subscription` object:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `subscription-object.yaml`
+    **Example `subscription-object.yaml`**
 
     </div>
 
@@ -483,23 +370,13 @@ Procedure
           value: "HyperShift"
     ```
 
-    </div>
-
 6.  Create the `Subscription` object by running the following command:
 
     ``` terminal
     $ oc create -f subscription-object.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify the installation succeeded by inspecting the CSV file by running the following command:
 
@@ -513,19 +390,7 @@ Verification
     $ oc get deploy -n openshift-compliance
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Hosted control planes overview](../../../hosted_control_planes/index.xml#hcp-overview)
-
-</div>
 
 # Additional resources
 

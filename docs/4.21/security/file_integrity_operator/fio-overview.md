@@ -1,7 +1,10 @@
 The File Integrity Operator continually runs file integrity checks on the cluster nodes. It deploys a DaemonSet that initializes and runs privileged [Advanced Intrusion Detection Environment](https://aide.github.io/) (AIDE) containers on each node, providing a log of files that have been modified since the initial run of the DaemonSet pods.
 
-> [!NOTE]
-> File Integrity Operator is not supported on HCP clusters.
+<div class="note">
+
+File Integrity Operator is not supported on HCP clusters.
+
+</div>
 
 For the latest updates, see the [File Integrity Operator release notes](../../security/file_integrity_operator/file-integrity-operator-release-notes.xml#file-integrity-operator-release-notes).
 

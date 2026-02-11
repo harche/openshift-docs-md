@@ -1,7 +1,10 @@
-> [!IMPORTANT]
-> Two-node OpenShift cluster with fencing is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Two-node OpenShift cluster with fencing is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 A two-node OpenShift cluster with fencing provides high availability (HA) with a reduced hardware footprint. This configuration is designed for distributed or edge environments where deploying a full three-node control plane cluster is not practical.
 
@@ -9,31 +12,37 @@ A two-node cluster does not include compute nodes. The two control plane machine
 
 Fencing is managed by Pacemaker, which can isolate an unresponsive node by using the Baseboard Management Console (BMC) of the node. After the unresponsive node is fenced, the remaining node can safely continue operating the cluster without the risk of resource corruption.
 
-> [!NOTE]
-> You can deploy a two-node OpenShift cluster with fencing by using either the user-provisioned infrastructure method or the installer-provisioned infrastructure method.
+<div class="note">
+
+You can deploy a two-node OpenShift cluster with fencing by using either the user-provisioned infrastructure method or the installer-provisioned infrastructure method.
+
+</div>
 
 The two-node OpenShift cluster with fencing requires the following hosts:
 
-| Hosts | Description |
-|----|----|
-| Two control plane machines | The control plane machines run the Kubernetes and OpenShift Container Platform services that form the control plane. |
+| Hosts                           | Description                                                                                                                                                                        |
+|---------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Two control plane machines      | The control plane machines run the Kubernetes and OpenShift Container Platform services that form the control plane.                                                               |
 | One temporary bootstrap machine | You need a bootstrap machine to deploy the OpenShift Container Platform cluster on the control plane machines. You can remove the bootstrap machine after you install the cluster. |
 
 Minimum required hosts
 
 The bootstrap and control plane machines must use Red Hat Enterprise Linux CoreOS (RHCOS) as the operating system. For instructions on installing RHCOS and starting the bootstrap process, see [Installing RHCOS and starting the OpenShift Container Platform bootstrap process](../../../installing/installing_bare_metal/upi/installing-bare-metal-network-customizations.xml#creating-machines-bare-metal_installing-bare-metal-network-customizations)
 
-> [!NOTE]
-> The requirement to use RHCOS applies only to user-provisioned infrastructure deployments. For installer-provisioned infrastructure deployments, the bootstrap and control plane machines are provisioned automatically by the installation program, and you do not need to manually install RHCOS.
+<div class="note">
+
+The requirement to use RHCOS applies only to user-provisioned infrastructure deployments. For installer-provisioned infrastructure deployments, the bootstrap and control plane machines are provisioned automatically by the installation program, and you do not need to manually install RHCOS.
+
+</div>
 
 # Minimum resource requirements for installing the two-node OpenShift cluster with fencing
 
 Each cluster machine must meet the following minimum requirements:
 
-| Machine | Operating System | CPU <sup>\[1\]</sup> | RAM | Storage | Input/Output Per Second (IOPS) <sup>\[1\]</sup> |
-|----|----|----|----|----|----|
-| Bootstrap | RHCOS | 4 | 16 GB | 120 GB | 300 |
-| Control plane | RHCOS | 4 | 16 GB | 120 GB | 300 |
+| Machine       | Operating System | CPU <sup>\[1\]</sup> | RAM   | Storage | Input/Output Per Second (IOPS) <sup>\[1\]</sup> |
+|---------------|------------------|----------------------|-------|---------|-------------------------------------------------|
+| Bootstrap     | RHCOS            | 4                    | 16 GB | 120 GB  | 300                                             |
+| Control plane | RHCOS            | 4                    | 16 GB | 120 GB  | 300                                             |
 
 Minimum resource requirements
 
@@ -57,8 +66,11 @@ Reverse DNS resolution is also required for the Kubernetes API, the bootstrap ma
 
 DNS A/AAAA or CNAME records are used for name resolution and PTR records are used for reverse name resolution. The reverse records are important because Red Hat Enterprise Linux CoreOS (RHCOS) uses the reverse records to set the hostnames for all the nodes, unless the hostnames are provided by DHCP. Additionally, the reverse records are used to generate the certificate signing requests (CSR) that OpenShift Container Platform needs to operate.
 
-> [!NOTE]
-> It is recommended to use a DHCP server to provide the hostnames to each cluster node. See the *DHCP recommendations for user-provisioned infrastructure* section for more information.
+<div class="note">
+
+It is recommended to use a DHCP server to provide the hostnames to each cluster node. See the *DHCP recommendations for user-provisioned infrastructure* section for more information.
+
+</div>
 
 The following DNS records are required for a user-provisioned OpenShift Container Platform cluster and they must be in place before installation. In each record, `<cluster_name>` is the cluster name and `<base_domain>` is the base domain that you specify in the `install-config.yaml` file. A complete DNS record takes the form: `<component>.<cluster_name>.<base_domain>.`.
 
@@ -70,39 +82,38 @@ The following DNS records are required for a user-provisioned OpenShift Containe
 <col style="width: 55%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Component</th>
 <th style="text-align: left;">Record</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td rowspan="2" style="text-align: left;"><p>Kubernetes API</p></td>
+<tr class="odd">
+<td style="text-align: left;"><p>Kubernetes API</p></td>
 <td style="text-align: left;"><p><code>api.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code></p></td>
 <td style="text-align: left;"><p>A DNS A/AAAA or CNAME record, and a DNS PTR record, to identify the API load balancer. These records must be resolvable by both clients external to the cluster and from all the nodes within the cluster.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>api-int.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code></p></td>
 <td style="text-align: left;"><p>A DNS A/AAAA or CNAME record, and a DNS PTR record, to internally identify the API load balancer. These records must be resolvable from all the nodes within the cluster.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>The API server must be able to resolve the worker nodes by the hostnames that are recorded in Kubernetes. If the API server cannot resolve the node names, then proxied API calls can fail, and you cannot retrieve logs from pods.</p>
 </div></td>
+<td></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Routes</p></td>
 <td style="text-align: left;"><p><code>*.apps.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code></p></td>
 <td style="text-align: left;"><p>A wildcard DNS A/AAAA or CNAME record that refers to the application ingress load balancer. The application ingress load balancer targets the machines that run the Ingress Controller pods. By default, the Ingress Controller pods run on compute nodes. In cluster topologies without dedicated compute nodes, such as two-node or three-node clusters, the control plane nodes also carry the worker label, so the Ingress pods are scheduled on the control plane nodes. These records must be resolvable by both clients external to the cluster and from all the nodes within the cluster.</p>
 <p>For example, <code>console-openshift-console.apps.&lt;cluster_name&gt;.&lt;base_domain&gt;</code> is used as a wildcard route to the OpenShift Container Platform console.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Bootstrap machine</p></td>
 <td style="text-align: left;"><p><code>bootstrap.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code></p></td>
 <td style="text-align: left;"><p>A DNS A/AAAA or CNAME record, and a DNS PTR record, to identify the bootstrap machine. These records must be resolvable by the nodes within the cluster.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Control plane machines</p></td>
 <td style="text-align: left;"><p><code>&lt;control_plane&gt;&lt;n&gt;.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code></p></td>
 <td style="text-align: left;"><p>DNS A/AAAA or CNAME records and DNS PTR records to identify each machine for the control plane nodes. These records must be resolvable by the nodes within the cluster.</p></td>
@@ -110,11 +121,19 @@ The following DNS records are required for a user-provisioned OpenShift Containe
 </tbody>
 </table>
 
-> [!NOTE]
-> In OpenShift Container Platform 4.4 and later, you do not need to specify etcd host and SRV records in your DNS configuration.
+Required DNS records
 
-> [!TIP]
-> You can use the `dig` command to verify name and reverse name resolution. See the section on *Validating DNS resolution for user-provisioned infrastructure* for detailed validation steps.
+<div class="note">
+
+In OpenShift Container Platform 4.4 and later, you do not need to specify etcd host and SRV records in your DNS configuration.
+
+</div>
+
+<div class="tip">
+
+You can use the `dig` command to verify name and reverse name resolution. See the section on *Validating DNS resolution for user-provisioned infrastructure* for detailed validation steps.
+
+</div>
 
 ## Example DNS configuration for user-provisioned clusters
 
@@ -124,13 +143,19 @@ The DNS configuration examples provided here are for reference only and are not 
 
 In the examples, the cluster name is `ocp4` and the base domain is `example.com`.
 
-> [!NOTE]
-> In a two-node cluster with fencing, the control plane machines are also schedulable worker nodes. The DNS configuration must therefore include only the two control plane nodes. If you later add compute machines, provide corresponding A and PTR records for them as in a standard user-provisioned installation.
+<div class="note">
+
+In a two-node cluster with fencing, the control plane machines are also schedulable worker nodes. The DNS configuration must therefore include only the two control plane nodes. If you later add compute machines, provide corresponding A and PTR records for them as in a standard user-provisioned installation.
+
+</div>
 
 The following example is a BIND zone file that shows sample DNS A records for name resolution in a user-provisioned cluster.
 
-> [!NOTE]
-> In the example, the same load balancer is used for the Kubernetes API and application ingress traffic. In production scenarios, you can deploy the API and application ingress load balancers separately so that you can scale the load balancer infrastructure for each in isolation.
+<div class="note">
+
+In the example, the same load balancer is used for the Kubernetes API and application ingress traffic. In production scenarios, you can deploy the API and application ingress load balancers separately so that you can scale the load balancer infrastructure for each in isolation.
+
+</div>
 
 ``` text
 $TTL 1W
@@ -219,8 +244,11 @@ Provides reverse DNS resolution for the bootstrap machine.
 `control-plane0.ocp4.example.com.`
 Provides rebootstrap.ocp4.example.com.verse DNS resolution for the control plane machines.
 
-> [!NOTE]
-> A PTR record is not required for the OpenShift Container Platform application wildcard.
+<div class="note">
+
+A PTR record is not required for the OpenShift Container Platform application wildcard.
+
+</div>
 
 # Installer-provisioned DNS requirements
 
@@ -258,19 +286,19 @@ Installer-provisioned installation includes functionality that uses cluster memb
 <col style="width: 55%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Component</th>
 <th style="text-align: left;">Record</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Kubernetes API</p></td>
 <td style="text-align: left;"><p><code>api.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code></p></td>
 <td style="text-align: left;"><p>An A/AAAA record and a PTR record identify the API load balancer. These records must be resolvable by both clients external to the cluster and from all the nodes within the cluster.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Routes</p></td>
 <td style="text-align: left;"><p><code>*.apps.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code></p></td>
 <td style="text-align: left;"><p>The wildcard A/AAAA record refers to the application ingress load balancer. The application ingress load balancer targets the nodes that run the Ingress Controller pods. The Ingress Controller pods run on the worker nodes by default. These records must be resolvable by both clients external to the cluster and from all the nodes within the cluster.</p>
@@ -279,20 +307,17 @@ Installer-provisioned installation includes functionality that uses cluster memb
 </tbody>
 </table>
 
-> [!TIP]
-> You can use the `dig` command to verify DNS resolution.
+Required DNS records
+
+<div class="tip">
+
+You can use the `dig` command to verify DNS resolution.
+
+</div>
 
 # Configuring an Ingress load balancer for a two-node cluster with fencing
 
 You must configure an external Ingress load balancer (LB) before you install a two-node OpenShift cluster with fencing. The Ingress LB forwards external application traffic to the Ingress Controller pods that run on the control plane nodes. Both nodes can actively receive traffic.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have two control plane nodes with fencing enabled.
 
@@ -301,16 +326,6 @@ Prerequisites
 - You created DNS records for `api.<cluster_name>.<base_domain>` and `*.apps.<cluster_name>.<base_domain>`.
 
 - You have an external load balancer that supports health checks on endpoints.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Configure the load balancer to forward traffic for the following ports:
 
@@ -364,8 +379,6 @@ Procedure
         ``` terminal
         $ curl https://<app>.<cluster_name>.<base_domain>
         ```
-
-</div>
 
 You can shut down a control plane node and verify that the load balancer stops sending traffic to that node while the other node continues to serve requests.
 

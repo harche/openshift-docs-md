@@ -1,35 +1,26 @@
 Before you can use the Security Profiles Operator, you must ensure the Operator is deployed in the cluster.
 
-> [!IMPORTANT]
-> All cluster nodes must have the same release version in order for this Operator to function properly. As an example, for nodes running RHCOS, all nodes must have the same RHCOS version.
+<div class="important">
 
-> [!IMPORTANT]
-> The Security Profiles Operator supports only Red Hat Enterprise Linux CoreOS (RHCOS) worker nodes. Red Hat Enterprise Linux (RHEL) nodes are not supported.
+All cluster nodes must have the same release version in order for this Operator to function properly. As an example, for nodes running RHCOS, all nodes must have the same RHCOS version.
 
-> [!IMPORTANT]
-> The Security Profiles Operator supports `x86_64` and `ppc64le` architecture.
+</div>
+
+<div class="important">
+
+The Security Profiles Operator supports only Red Hat Enterprise Linux CoreOS (RHCOS) worker nodes. Red Hat Enterprise Linux (RHEL) nodes are not supported.
+
+</div>
+
+<div class="important">
+
+The Security Profiles Operator supports `x86_64` and `ppc64le` architecture.
+
+</div>
 
 # Installing the Security Profiles Operator
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have access to the web console as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Ecosystem** → **Software Catalog**.
 
@@ -39,19 +30,13 @@ Procedure
 
 4.  Click **Install**.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 To confirm that the installation is successful:
-
-</div>
 
 1.  Navigate to the **Ecosystem** → **Installed Operators** page.
 
@@ -65,33 +50,13 @@ If the Operator is not installed successfully:
 
 # Installing the Security Profiles Operator using the CLI
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Define a `Namespace` object:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `namespace-object.yaml`
+    **Example `namespace-object.yaml`**
 
     </div>
 
@@ -104,8 +69,6 @@ Procedure
       openshift.io/cluster-monitoring: "true"
     ```
 
-    </div>
-
 2.  Create the `Namespace` object:
 
     ``` terminal
@@ -114,11 +77,9 @@ Procedure
 
 3.  Define an `OperatorGroup` object:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `operator-group-object.yaml`
+    **Example `operator-group-object.yaml`**
 
     </div>
 
@@ -130,8 +91,6 @@ Procedure
       namespace: openshift-security-profiles
     ```
 
-    </div>
-
 4.  Create the `OperatorGroup` object:
 
     ``` terminal
@@ -140,11 +99,9 @@ Procedure
 
 5.  Define a `Subscription` object:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `subscription-object.yaml`
+    **Example `subscription-object.yaml`**
 
     </div>
 
@@ -162,24 +119,15 @@ Procedure
       sourceNamespace: openshift-marketplace
     ```
 
-    </div>
-
 6.  Create the `Subscription` object:
 
     ``` terminal
     $ oc create -f subscription-object.yaml
     ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> If you are setting the global scheduler feature and enable `defaultNodeSelector`, you must create the namespace manually and update the annotations of the `openshift-security-profiles` namespace, or the namespace where the Security Profiles Operator was installed, with `openshift.io/node-selector: “”`. This removes the default node selector and prevents deployment failures.
-
-<div>
-
-<div class="title">
-
-Verification
+If you are setting the global scheduler feature and enable `defaultNodeSelector`, you must create the namespace manually and update the annotations of the `openshift-security-profiles` namespace, or the namespace where the Security Profiles Operator was installed, with `openshift.io/node-selector: “”`. This removes the default node selector and prevents deployment failures.
 
 </div>
 
@@ -195,19 +143,9 @@ Verification
     $ oc get deploy -n openshift-security-profiles
     ```
 
-</div>
-
 # Configuring logging verbosity
 
 The Security Profiles Operator supports the default logging verbosity of `0` and an enhanced verbosity of `1`.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To enable enhanced logging verbosity, patch the `spod` configuration and adjust the value by running the following command:
 
@@ -216,18 +154,12 @@ Procedure
       spod --type=merge -p '{"spec":{"verbosity":1}}'
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
   ``` terminal
   securityprofilesoperatordaemon.security-profiles-operator.x-k8s.io/spod patched
   ```
-
-  </div>
-
-</div>

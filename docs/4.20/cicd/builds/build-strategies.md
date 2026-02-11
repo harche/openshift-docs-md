@@ -4,20 +4,15 @@ The following sections define the primary supported build strategies, and how to
 
 OpenShift Container Platform uses Buildah to build a container image from a Dockerfile. For more information on building container images with Dockerfiles, see [the Dockerfile reference documentation](https://docs.docker.com/engine/reference/builder/).
 
-> [!TIP]
-> If you set Docker build arguments by using the `buildArgs` array, see [Understand how ARG and FROM interact](https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact) in the Dockerfile reference documentation.
+<div class="tip">
+
+If you set Docker build arguments by using the `buildArgs` array, see [Understand how ARG and FROM interact](https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact) in the Dockerfile reference documentation.
+
+</div>
 
 ## Replacing the Dockerfile FROM image
 
 You can replace the `FROM` instruction of the Dockerfile with the `from` parameters of the `BuildConfig` object. If the Dockerfile uses multi-stage builds, the image in the last `FROM` instruction will be replaced.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To replace the `FROM` instruction of the Dockerfile with the `from` parameters of the `BuildConfig` object, add the following settings to the `BuildConfig` object:
 
@@ -29,21 +24,11 @@ Procedure
         name: "debian:latest"
   ```
 
-</div>
-
 ## Using Dockerfile path
 
 By default, docker builds use a Dockerfile located at the root of the context specified in the `BuildConfig.spec.source.contextDir` field.
 
 The `dockerfilePath` field allows the build to use a different path to locate your Dockerfile, relative to the `BuildConfig.spec.source.contextDir` field. It can be a different file name than the default Dockerfile, such as `MyDockerfile`, or a path to a Dockerfile in a subdirectory, such as `dockerfiles/app1/Dockerfile`.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Set the `dockerfilePath` field for the build to use a different path to locate your Dockerfile:
 
@@ -52,8 +37,6 @@ Procedure
     dockerStrategy:
       dockerfilePath: dockerfiles/app1/Dockerfile
   ```
-
-</div>
 
 ## Using docker environment variables
 
@@ -79,14 +62,9 @@ You can also manage environment variables defined in the build configuration wit
 
 You can set [Docker build arguments](https://docs.docker.com/engine/reference/builder/#arg) using the `buildArgs` array. The build arguments are passed to Docker when a build is started.
 
-> [!TIP]
-> See [Understand how ARG and FROM interact](https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact) in the Dockerfile reference documentation.
+<div class="tip">
 
-<div>
-
-<div class="title">
-
-Procedure
+See [Understand how ARG and FROM interact](https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact) in the Dockerfile reference documentation.
 
 </div>
 
@@ -100,22 +78,15 @@ Procedure
         value: "latest"
   ```
 
-  > [!NOTE]
-  > Only the `name` and `value` fields are supported. Any settings on the `valueFrom` field are ignored.
+  <div class="note">
 
-</div>
+  Only the `name` and `value` fields are supported. Any settings on the `valueFrom` field are ignored.
+
+  </div>
 
 ## Squashing layers with docker builds
 
 Docker builds normally create a layer representing each instruction in a Dockerfile. Setting the `imageOptimizationPolicy` to `SkipLayers` merges all instructions into a single layer on top of the base image.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Set the `imageOptimizationPolicy` to `SkipLayers`:
 
@@ -125,8 +96,6 @@ Procedure
       imageOptimizationPolicy: SkipLayers
   ```
 
-</div>
-
 ## Using build volumes
 
 You can mount build volumes to give running builds access to information that you do not want to persist in the output container image.
@@ -135,25 +104,9 @@ Build volumes provide sensitive information, such as repository credentials, tha
 
 The mount points of build volumes, from which the running build reads data, are functionally similar to [pod volume mounts](https://kubernetes.io/docs/concepts/storage/volumes/).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have added an input secret, config map, or both to a BuildConfig object.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - In the `dockerStrategy` definition of the `BuildConfig` object, add any build volumes to the `volumes` array. For example:
 
@@ -210,21 +163,11 @@ Procedure
   `volumeAttributes`
   (Optional) Specifies the volume attributes of the ephemeral CSI volume. Consult the CSI driver’s documentation for supported attribute keys and values.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Build inputs](../../cicd/builds/creating-build-inputs.xml#builds-define-build-inputs_creating-build-inputs)
 
 - [Input secrets and config maps](../../cicd/builds/creating-build-inputs.xml#builds-input-secrets-configmaps_creating-build-inputs)
-
-</div>
 
 # Source-to-image build
 
@@ -233,14 +176,6 @@ Source-to-image (S2I) is a tool for building reproducible container images. It p
 ## Performing source-to-image incremental builds
 
 Source-to-image (S2I) can perform incremental builds, which means it reuses artifacts from previously-built images.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To create an incremental build, create a with the following modification to the strategy definition:
 
@@ -257,31 +192,13 @@ Procedure
 
   - This flag controls whether an incremental build is attempted. If the builder image does not support incremental builds, the build will still succeed, but you will get a log message stating the incremental build was not successful because of a missing `save-artifacts` script.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - See S2I Requirements for information on how to create a builder image supporting incremental builds.
-
-</div>
 
 ## Overriding source-to-image builder image scripts
 
 You can override the `assemble`, `run`, and `save-artifacts` source-to-image (S2I) scripts provided by the builder image.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To override the `assemble`, `run`, and `save-artifacts` S2I scripts provided by the builder image, complete one of the following actions:
 
@@ -300,10 +217,11 @@ Procedure
 
     - The build process appends `run`, `assemble`, and `save-artifacts` to the path. If any or all scripts with these names exist, the build process uses these scripts in place of scripts with the same name that are provided in the image.
 
-      > [!NOTE]
-      > Files located at the `scripts` URL take precedence over files located in `.s2i/bin` of the source repository.
+      <div class="note">
 
-</div>
+      Files located at the `scripts` URL take precedence over files located in `.s2i/bin` of the source repository.
+
+      </div>
 
 ## Source-to-image environment variables
 
@@ -315,17 +233,13 @@ Source build enables you to set environment values, one per line, inside your ap
 
 If you provide a `.s2i/environment` file in your source repository, source-to-image (S2I) reads this file during the build. This allows customization of the build behavior as the `assemble` script may use these variables.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 For example, to disable assets compilation for your Rails application during the build:
-
-</div>
 
 - Add `DISABLE_ASSET_COMPILATION=true` in the `.s2i/environment` file.
 
@@ -339,14 +253,6 @@ The complete list of supported environment variables is available in the using i
 
 You can add environment variables to the `sourceStrategy` definition of the build configuration. The environment variables defined there are visible during the `assemble` script execution and will be defined in the output image, making them also available to the `run` script and application code.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - For example, to disable assets compilation for your Rails application:
 
   ``` yaml
@@ -357,21 +263,11 @@ Procedure
         value: "true"
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - The build environment section provides more advanced instructions.
 
 - You can also manage environment variables defined in the build configuration with the `oc set env` command.
-
-</div>
 
 ## Ignoring source-to-image source files
 
@@ -424,13 +320,13 @@ Both the `io.openshift.s2i.scripts-url` label specified in the image and the scr
 <col style="width: 72%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Script</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>assemble</code></p></td>
 <td style="text-align: left;"><p>The <code>assemble</code> script builds the application artifacts from a source and places them into appropriate directories inside the image. This script is required. The workflow for this script is:</p>
 <ol type="1">
@@ -440,11 +336,11 @@ Both the `io.openshift.s2i.scripts-url` label specified in the image and the scr
 <li><p>Install the artifacts into locations appropriate for them to run.</p></li>
 </ol></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>run</code></p></td>
 <td style="text-align: left;"><p>The <code>run</code> script executes your application. This script is required.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>save-artifacts</code></p></td>
 <td style="text-align: left;"><p>The <code>save-artifacts</code> script gathers all dependencies that can speed up the build processes that follow. This script is optional. For example:</p>
 <ul>
@@ -453,11 +349,11 @@ Both the `io.openshift.s2i.scripts-url` label specified in the image and the scr
 </ul>
 <p>These dependencies are gathered into a <code>tar</code> file and streamed to the standard output.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>usage</code></p></td>
 <td style="text-align: left;"><p>The <code>usage</code> script allows you to inform the user how to properly use your image. This script is optional.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>test/run</code></p></td>
 <td style="text-align: left;"><p>The <code>test/run</code> script allows you to create a process to check if the image is working correctly. This script is optional. The proposed flow of that process is:</p>
 <ol type="1">
@@ -468,23 +364,21 @@ Both the `io.openshift.s2i.scripts-url` label specified in the image and the scr
 <li><p>Run the image to verify the test application is working.</p></li>
 </ol>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>The suggested location to put the test application built by your <code>test/run</code> script is the <code>test/test-app</code> directory in your image repository.</p>
 </div></td>
 </tr>
 </tbody>
 </table>
 
+S2I scripts
+
 **Example S2I scripts**
 
 The following example S2I scripts are written in Bash. Each example assumes its `tar` contents are unpacked into the `/tmp/s2i` directory.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-`assemble` script:
+**`assemble` script:**
 
 </div>
 
@@ -508,13 +402,9 @@ make install
 popd
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-`run` script:
+**`run` script:**
 
 </div>
 
@@ -525,13 +415,9 @@ popd
 /opt/application/run.sh
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-`save-artifacts` script:
+**`save-artifacts` script:**
 
 </div>
 
@@ -546,13 +432,9 @@ fi
 popd
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-`usage` script:
+**`usage` script:**
 
 </div>
 
@@ -566,19 +448,7 @@ https://github.com/openshift/source-to-image
 EOF
 ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [S2I Image Creation Tutorial](https://blog.openshift.com/create-s2i-builder-image/)
-
-</div>
 
 ## Using build volumes
 
@@ -588,25 +458,9 @@ Build volumes provide sensitive information, such as repository credentials, tha
 
 The mount points of build volumes, from which the running build reads data, are functionally similar to [pod volume mounts](https://kubernetes.io/docs/concepts/storage/volumes/).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have added an input secret, config map, or both to a BuildConfig object.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - In the `sourceStrategy` definition of the `BuildConfig` object, add any build volumes to the `volumes` array. For example:
 
@@ -663,21 +517,11 @@ Procedure
   `volumeAttributes`
   (Optional) Specifies the volume attributes of the ephemeral CSI volume. Consult the CSI driver’s documentation for supported attribute keys and values.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Build inputs](../../cicd/builds/creating-build-inputs.xml#builds-define-build-inputs_creating-build-inputs)
 
 - [Input secrets and config maps](../../cicd/builds/creating-build-inputs.xml#builds-input-secrets-configmaps_creating-build-inputs)
-
-</div>
 
 # Custom build
 
@@ -691,14 +535,6 @@ Custom builds run with a high level of privilege and are not available to users 
 
 You can use the `customStrategy.from` section to indicate the image to use for the custom build.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Set the `customStrategy.from` section:
 
   ``` yaml
@@ -709,19 +545,9 @@ Procedure
         name: "openshift/sti-image-builder"
   ```
 
-</div>
-
 ## Using secrets in custom builds
 
 In addition to secrets for source and images that can be added to all build types, custom strategies allow adding an arbitrary list of secrets to the builder pod.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To mount each secret at a specific location, edit the `secretSource` and `mountPath` fields of the `strategy` YAML file:
 
@@ -741,21 +567,11 @@ Procedure
 
   - `mountPath` is the path inside the custom builder where the secret should be mounted.
 
-</div>
-
 ## Using environment variables for custom builds
 
 To make environment variables available to the custom build process, you can add environment variables to the `customStrategy` definition of the build configuration.
 
 The environment variables defined there are passed to the pod that runs the custom build.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Define a custom HTTP proxy to be used during build:
 
@@ -773,8 +589,6 @@ Procedure
     $ oc set env <enter_variables>
     ```
 
-</div>
-
 ## Using custom builder images
 
 OpenShift Container Platform’s custom build strategy enables you to define a specific builder image responsible for the entire build process. When you need a build to produce individual artifacts such as packages, JARs, WARs, installable ZIPs, or base images, use a custom builder image using the custom build strategy.
@@ -787,17 +601,17 @@ Additionally, the custom builder allows implementing any extended build process,
 
 Upon invocation, a custom builder image receives the following environment variables with the information needed to proceed with the build:
 
-| Variable Name | Description |
-|----|----|
-| `BUILD` | The entire serialized JSON of the `Build` object definition. If you must use a specific API version for serialization, you can set the `buildAPIVersion` parameter in the custom strategy specification of the build configuration. |
-| `SOURCE_REPOSITORY` | The URL of a Git repository with source to be built. |
-| `SOURCE_URI` | Uses the same value as `SOURCE_REPOSITORY`. Either can be used. |
-| `SOURCE_CONTEXT_DIR` | Specifies the subdirectory of the Git repository to be used when building. Only present if defined. |
-| `SOURCE_REF` | The Git reference to be built. |
-| `ORIGIN_VERSION` | The version of the OpenShift Container Platform master that created this build object. |
-| `OUTPUT_REGISTRY` | The container image registry to push the image to. |
-| `OUTPUT_IMAGE` | The container image tag name for the image being built. |
-| `PUSH_DOCKERCFG_PATH` | The path to the container registry credentials for running a `podman push` operation. |
+| Variable Name         | Description                                                                                                                                                                                                                         |
+|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `BUILD`               | The entire serialized JSON of the `Build` object definition. If you must use a specific API version for serialization, you can set the `buildAPIVersion` parameter in the custom strategy specification of the build configuration. |
+| `SOURCE_REPOSITORY`   | The URL of a Git repository with source to be built.                                                                                                                                                                                |
+| `SOURCE_URI`          | Uses the same value as `SOURCE_REPOSITORY`. Either can be used.                                                                                                                                                                     |
+| `SOURCE_CONTEXT_DIR`  | Specifies the subdirectory of the Git repository to be used when building. Only present if defined.                                                                                                                                 |
+| `SOURCE_REF`          | The Git reference to be built.                                                                                                                                                                                                      |
+| `ORIGIN_VERSION`      | The version of the OpenShift Container Platform master that created this build object.                                                                                                                                              |
+| `OUTPUT_REGISTRY`     | The container image registry to push the image to.                                                                                                                                                                                  |
+| `OUTPUT_IMAGE`        | The container image tag name for the image being built.                                                                                                                                                                             |
+| `PUSH_DOCKERCFG_PATH` | The path to the container registry credentials for running a `podman push` operation.                                                                                                                                               |
 
 Custom Builder Environment Variables
 
@@ -813,10 +627,13 @@ Although custom builder image authors have flexibility in defining the build pro
 
 # Pipeline build
 
-> [!IMPORTANT]
-> The Pipeline build strategy is deprecated in OpenShift Container Platform 4. Equivalent and improved functionality is present in the OpenShift Container Platform Pipelines based on Tekton.
->
-> Jenkins images on OpenShift Container Platform are fully supported and users should follow Jenkins user documentation for defining their `jenkinsfile` in a job or store it in a Source Control Management system.
+<div class="important">
+
+The Pipeline build strategy is deprecated in OpenShift Container Platform 4. Equivalent and improved functionality is present in the OpenShift Container Platform Pipelines based on Tekton.
+
+Jenkins images on OpenShift Container Platform are fully supported and users should follow Jenkins user documentation for defining their `jenkinsfile` in a job or store it in a Source Control Management system.
+
+</div>
 
 The Pipeline build strategy allows developers to define a Jenkins pipeline for use by the Jenkins pipeline plugin. The build can be started, monitored, and managed by OpenShift Container Platform in the same way as any other build type.
 
@@ -824,10 +641,13 @@ Pipeline workflows are defined in a `jenkinsfile`, either embedded directly in t
 
 ## Understanding OpenShift Container Platform pipelines
 
-> [!IMPORTANT]
-> The Pipeline build strategy is deprecated in OpenShift Container Platform 4. Equivalent and improved functionality is present in the OpenShift Container Platform Pipelines based on Tekton.
->
-> Jenkins images on OpenShift Container Platform are fully supported and users should follow Jenkins user documentation for defining their `jenkinsfile` in a job or store it in a Source Control Management system.
+<div class="important">
+
+The Pipeline build strategy is deprecated in OpenShift Container Platform 4. Equivalent and improved functionality is present in the OpenShift Container Platform Pipelines based on Tekton.
+
+Jenkins images on OpenShift Container Platform are fully supported and users should follow Jenkins user documentation for defining their `jenkinsfile` in a job or store it in a Source Control Management system.
+
+</div>
 
 Pipelines give you control over building, deploying, and promoting your applications on OpenShift Container Platform. Using a combination of the Jenkins Pipeline build strategy, `jenkinsfiles`, and the OpenShift Container Platform Domain Specific Language (DSL) provided by the Jenkins Client Plugin, you can create advanced build, test, deploy, and promote pipelines for any scenario.
 
@@ -859,15 +679,21 @@ For OpenShift Container Platform Pipelines within your project, you will must us
 
 - A `jenkinsfilePath` field within your build configuration that references the location of the `jenkinsfile` to use relative to the source `contextDir`.
 
-> [!NOTE]
-> The optional `jenkinsfilePath` field specifies the name of the file to use, relative to the source `contextDir`. If `contextDir` is omitted, it defaults to the root of the repository. If `jenkinsfilePath` is omitted, it defaults to `jenkinsfile`.
+<div class="note">
+
+The optional `jenkinsfilePath` field specifies the name of the file to use, relative to the source `contextDir`. If `contextDir` is omitted, it defaults to the root of the repository. If `jenkinsfilePath` is omitted, it defaults to `jenkinsfile`.
+
+</div>
 
 ## Providing the Jenkins file for pipeline builds
 
-> [!IMPORTANT]
-> The Pipeline build strategy is deprecated in OpenShift Container Platform 4. Equivalent and improved functionality is present in the OpenShift Container Platform Pipelines based on Tekton.
->
-> Jenkins images on OpenShift Container Platform are fully supported and users should follow Jenkins user documentation for defining their `jenkinsfile` in a job or store it in a Source Control Management system.
+<div class="important">
+
+The Pipeline build strategy is deprecated in OpenShift Container Platform 4. Equivalent and improved functionality is present in the OpenShift Container Platform Pipelines based on Tekton.
+
+Jenkins images on OpenShift Container Platform are fully supported and users should follow Jenkins user documentation for defining their `jenkinsfile` in a job or store it in a Source Control Management system.
+
+</div>
 
 The `jenkinsfile` uses the standard groovy language syntax to allow fine grained control over the configuration, build, and deployment of your application.
 
@@ -887,27 +713,21 @@ When using the first option, the `jenkinsfile` must be included in your applicat
 
 The `jenkinsfile` is run on the Jenkins agent pod, which must have the OpenShift Container Platform client binaries available if you intend to use the OpenShift Container Platform DSL.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To provide the Jenkins file, you can either:
 
-</div>
-
 - Embed the Jenkins file in the build configuration.
 
 - Include in the build configuration a reference to the Git repository that contains the Jenkins file.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Embedded Definition
+**Embedded Definition**
 
 </div>
 
@@ -928,13 +748,9 @@ spec:
         }
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Reference to Git Repository
+**Reference to Git Repository**
 
 </div>
 
@@ -952,28 +768,21 @@ spec:
       jenkinsfilePath: some/repo/dir/filename
 ```
 
-</div>
-
 - The optional `jenkinsfilePath` field specifies the name of the file to use, relative to the source `contextDir`. If `contextDir` is omitted, it defaults to the root of the repository. If `jenkinsfilePath` is omitted, it defaults to `jenkinsfile`.
 
 ## Using environment variables for pipeline builds
 
-> [!IMPORTANT]
-> The Pipeline build strategy is deprecated in OpenShift Container Platform 4. Equivalent and improved functionality is present in the OpenShift Container Platform Pipelines based on Tekton.
->
-> Jenkins images on OpenShift Container Platform are fully supported and users should follow Jenkins user documentation for defining their `jenkinsfile` in a job or store it in a Source Control Management system.
+<div class="important">
+
+The Pipeline build strategy is deprecated in OpenShift Container Platform 4. Equivalent and improved functionality is present in the OpenShift Container Platform Pipelines based on Tekton.
+
+Jenkins images on OpenShift Container Platform are fully supported and users should follow Jenkins user documentation for defining their `jenkinsfile` in a job or store it in a Source Control Management system.
+
+</div>
 
 To make environment variables available to the Pipeline build process, you can add environment variables to the `jenkinsPipelineStrategy` definition of the build configuration.
 
 Once defined, the environment variables will be set as parameters for any Jenkins job associated with the build configuration.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To define environment variables to be used during build, edit the YAML file:
 
@@ -984,8 +793,6 @@ Procedure
       - name: "FOO"
         value: "BAR"
   ```
-
-</div>
 
 You can also manage environment variables defined in the build configuration with the `oc set env` command.
 
@@ -1007,25 +814,23 @@ How you start builds for the Jenkins job dictates how the parameters are set.
 
 - If you start the Jenkins job with the Jenkins console, then you can control the setting of the parameters with the Jenkins console as part of starting a build for the job.
 
-> [!NOTE]
-> It is recommended that you specify in the build configuration all possible environment variables to be associated with job parameters. Doing so reduces disk I/O and improves performance during Jenkins processing.
+<div class="note">
+
+It is recommended that you specify in the build configuration all possible environment variables to be associated with job parameters. Doing so reduces disk I/O and improves performance during Jenkins processing.
+
+</div>
 
 ## Pipeline build tutorial
 
-> [!IMPORTANT]
-> The Pipeline build strategy is deprecated in OpenShift Container Platform 4. Equivalent and improved functionality is present in the OpenShift Container Platform Pipelines based on Tekton.
->
-> Jenkins images on OpenShift Container Platform are fully supported and users should follow Jenkins user documentation for defining their `jenkinsfile` in a job or store it in a Source Control Management system.
+<div class="important">
 
-This example demonstrates how to create an OpenShift Container Platform Pipeline that will build, deploy, and verify a `Node.js/MongoDB` application using the `nodejs-mongodb.json` template.
+The Pipeline build strategy is deprecated in OpenShift Container Platform 4. Equivalent and improved functionality is present in the OpenShift Container Platform Pipelines based on Tekton.
 
-<div>
-
-<div class="title">
-
-Procedure
+Jenkins images on OpenShift Container Platform are fully supported and users should follow Jenkins user documentation for defining their `jenkinsfile` in a job or store it in a Source Control Management system.
 
 </div>
+
+This example demonstrates how to create an OpenShift Container Platform Pipeline that will build, deploy, and verify a `Node.js/MongoDB` application using the `nodejs-mongodb.json` template.
 
 1.  Create the Jenkins master:
 
@@ -1043,8 +848,11 @@ Procedure
 
 2.  Create a file named `nodejs-sample-pipeline.yaml` with the following content:
 
-    > [!NOTE]
-    > This creates a `BuildConfig` object that employs the Jenkins pipeline strategy to build, deploy, and scale the `Node.js/MongoDB` example application.
+    <div class="note">
+
+    This creates a `BuildConfig` object that employs the Jenkins pipeline strategy to build, deploy, and scale the `Node.js/MongoDB` example application.
+
+    </div>
 
     ``` yaml
     kind: "BuildConfig"
@@ -1060,10 +868,13 @@ Procedure
 
 3.  After you create a `BuildConfig` object with a `jenkinsPipelineStrategy`, tell the pipeline what to do by using an inline `jenkinsfile`:
 
-    > [!NOTE]
-    > This example does not set up a Git repository for the application.
-    >
-    > The following `jenkinsfile` content is written in Groovy using the OpenShift Container Platform DSL. For this example, include inline content in the `BuildConfig` object using the YAML Literal Style, though including a `jenkinsfile` in your source repository is the preferred method.
+    <div class="note">
+
+    This example does not set up a Git repository for the application.
+
+    The following `jenkinsfile` content is written in Groovy using the OpenShift Container Platform DSL. For this example, include inline content in the `BuildConfig` object using the YAML Literal Style, though including a `jenkinsfile` in your source repository is the preferred method.
+
+    </div>
 
     ``` groovy
     def templatePath = 'https://raw.githubusercontent.com/openshift/nodejs-ex/master/openshift/templates/nodejs-mongodb.json'
@@ -1181,8 +992,11 @@ Procedure
 
     - If everything else succeeded, tag the `$ {templateName}:latest` image as `$ {templateName}-staging:latest`. A pipeline build configuration for the staging environment can watch for the `$ {templateName}-staging:latest` image to change and then deploy it to the staging environment.
 
-      > [!NOTE]
-      > The previous example was written using the declarative pipeline style, but the older scripted pipeline style is also supported.
+      <div class="note">
+
+      The previous example was written using the declarative pipeline style, but the older scripted pipeline style is also supported.
+
+      </div>
 
 4.  Create the Pipeline `BuildConfig` in your OpenShift Container Platform cluster:
 
@@ -1202,8 +1016,11 @@ Procedure
     $ oc start-build nodejs-sample-pipeline
     ```
 
-    > [!NOTE]
-    > Alternatively, you can start your pipeline with the OpenShift Container Platform web console by navigating to the Builds → Pipeline section and clicking **Start Pipeline**, or by visiting the Jenkins Console, navigating to the Pipeline that you created, and clicking **Build Now**.
+    <div class="note">
+
+    Alternatively, you can start your pipeline with the OpenShift Container Platform web console by navigating to the Builds → Pipeline section and clicking **Start Pipeline**, or by visiting the Jenkins Console, navigating to the Pipeline that you created, and clicking **Build Now**.
+
+    </div>
 
     Once the pipeline is started, you should see the following actions performed within your project:
 
@@ -1229,26 +1046,23 @@ Procedure
 
     - The agent pod is deleted, if one was required for the pipeline.
 
-      > [!NOTE]
-      > The best way to visualize the pipeline execution is by viewing it in the OpenShift Container Platform web console. You can view your pipelines by logging in to the web console and navigating to Builds → Pipelines.
+      <div class="note">
 
-</div>
+      The best way to visualize the pipeline execution is by viewing it in the OpenShift Container Platform web console. You can view your pipelines by logging in to the web console and navigating to Builds → Pipelines.
+
+      </div>
 
 # Adding secrets with web console
 
 You can add a secret to your build configuration so that it can access a private repository.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To add a secret to your build configuration so that it can access a private repository from the OpenShift Container Platform web console:
-
-</div>
 
 1.  Create a new OpenShift Container Platform project.
 
@@ -1264,17 +1078,13 @@ To add a secret to your build configuration so that it can access a private repo
 
 You can enable pulling to a private registry by setting the pull secret and pushing by setting the push secret in the build configuration.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To enable pulling to a private registry:
-
-</div>
 
 - Set the pull secret in the build configuration.
 

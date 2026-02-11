@@ -2,8 +2,11 @@ You can use a TLS (Transport Layer Security) security profile to define which TL
 
 A TLS security profile defines the TLS ciphers that the Kubernetes API server must use when connecting with the kubelet to protect communication between the kubelet and the Kubernetes API server.
 
-> [!NOTE]
-> By default, when the kubelet acts as a client with the Kubernetes API server, it automatically negotiates the TLS parameters with the API server.
+<div class="note">
+
+By default, when the kubelet acts as a client with the Kubernetes API server, it automatically negotiates the TLS parameters with the API server.
+
+</div>
 
 # Understanding TLS security profiles
 
@@ -20,51 +23,50 @@ You can specify one of the following TLS security profiles for each component:
 <col style="width: 66%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Profile</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>Old</code></p></td>
 <td style="text-align: left;"><p>This profile is intended for use with legacy clients or libraries. The profile is based on the <a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Old_backward_compatibility">Old backward compatibility</a> recommended configuration.</p>
 <p>The <code>Old</code> profile requires a minimum TLS version of 1.0.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>For the Ingress Controller, the minimum TLS version is converted from 1.0 to 1.1.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>Intermediate</code></p></td>
 <td style="text-align: left;"><p>This profile is the default TLS security profile for the Ingress Controller, kubelet, and control plane. The profile is based on the <a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Intermediate_compatibility_.28recommended.29">Intermediate compatibility</a> recommended configuration.</p>
 <p>The <code>Intermediate</code> profile requires a minimum TLS version of 1.2.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>This profile is the recommended configuration for the majority of clients.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>Modern</code></p></td>
 <td style="text-align: left;"><p>This profile is intended for use with modern clients that have no need for backwards compatibility. This profile is based on the <a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Modern_compatibility">Modern compatibility</a> recommended configuration.</p>
 <p>The <code>Modern</code> profile requires a minimum TLS version of 1.3.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>Custom</code></p></td>
 <td style="text-align: left;"><p>This profile allows you to define the TLS version and ciphers to use.</p>
 <div class="warning">
-<div class="title">
-&#10;</div>
 <p>Use caution when using a <code>Custom</code> profile, because invalid configurations can cause problems.</p>
 </div></td>
 </tr>
 </tbody>
 </table>
 
-> [!NOTE]
-> When using one of the predefined profile types, the effective profile configuration is subject to change between releases. For example, given a specification to use the Intermediate profile deployed on release X.Y.Z, an upgrade to release X.Y.Z+1 might cause a new profile configuration to be applied, resulting in a rollout.
+TLS security profiles
+
+<div class="note">
+
+When using one of the predefined profile types, the effective profile configuration is subject to change between releases. For example, given a specification to use the Intermediate profile deployed on release X.Y.Z, an upgrade to release X.Y.Z+1 might cause a new profile configuration to be applied, resulting in a rollout.
+
+</div>
 
 # Configuring the TLS security profile for the kubelet
 
@@ -72,11 +74,9 @@ You can configure a TLS security profile for the kubelet when it is acting as an
 
 If a TLS security profile is not configured, the default TLS security profile, `Intermediate`, is used.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample `KubeletConfig` CR that configures the `Old` TLS security profile on worker nodes
+**Sample `KubeletConfig` CR that configures the `Old` TLS security profile on worker nodes**
 
 </div>
 
@@ -94,37 +94,15 @@ spec:
 # ...
 ```
 
-</div>
-
 You can see the ciphers and the minimum TLS version of the configured TLS security profile in the `kubelet.conf` file on a configured node.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You are logged in to OpenShift Container Platform as a user with the `cluster-admin` role.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a `KubeletConfig` CR to configure the TLS security profile:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample `KubeletConfig` CR for a `Custom` profile
+    **Sample `KubeletConfig` CR for a `Custom` profile**
 
     </div>
 
@@ -148,8 +126,6 @@ Procedure
           pools.operator.machineconfiguration.openshift.io/worker: ""
     #...
     ```
-
-    </div>
 
     where:
 
@@ -181,19 +157,13 @@ Procedure
 
     Depending on the number of worker nodes in the cluster, wait for the configured nodes to be rebooted one by one.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 To verify that the profile is set, perform the following steps after the nodes are in the `Ready` state:
-
-</div>
 
 1.  Start a debug session for a configured node:
 
@@ -213,11 +183,9 @@ To verify that the profile is set, perform the following steps after the nodes a
     sh-4.4# cat /etc/kubernetes/kubelet.conf
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -236,5 +204,3 @@ To verify that the profile is set, perform the following steps after the nodes a
       "tlsMinVersion": "VersionTLS12",
     #...
     ```
-
-    </div>

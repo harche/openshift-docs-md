@@ -1,19 +1,28 @@
 As a cluster administrator, you can select an IP address block that is external to the cluster and can send traffic to services in the cluster. This functionality is generally most useful for clusters installed on bare-metal hardware.
 
-> [!IMPORTANT]
-> Before you configure ExternalIPs for services, your network infrastructure must route traffic for the external IP addresses to your cluster.
+<div class="important">
+
+Before you configure ExternalIPs for services, your network infrastructure must route traffic for the external IP addresses to your cluster.
+
+</div>
 
 # About ExternalIP
 
 To load balance traffic in non-cloud environments, use the ExternalIP facility to specify external IP addresses in the `spec.externalIPs[]` parameter of the `Service` object. This configuration directs traffic to a local node, providing functionality similar to a `type=NodePort` service.
 
-> [!IMPORTANT]
-> For cloud environments, use the load balancer services for automatic deployment of a cloud load balancer to target the endpoints of a service.
+<div class="important">
+
+For cloud environments, use the load balancer services for automatic deployment of a cloud load balancer to target the endpoints of a service.
+
+</div>
 
 After you specify a value for the parameter, OpenShift Container Platform assigns an additional virtual IP address to the service. The IP address can exist outside of the service network that you defined for your cluster.
 
-> [!WARNING]
-> Because ExternalIP is disabled by default, enabling the ExternalIP functionality might introduce security risks for the service, because in-cluster traffic to an external IP address is directed to that service. This configuration means that cluster users could intercept sensitive traffic destined for external resources.
+<div class="warning">
+
+Because ExternalIP is disabled by default, enabling the ExternalIP functionality might introduce security risks for the service, because in-cluster traffic to an external IP address is directed to that service. This configuration means that cluster users could intercept sensitive traffic destined for external resources.
+
+</div>
 
 You can use either a MetalLB implementation or an IP failover deployment to attach an ExternalIP resource to a service in the following ways:
 
@@ -43,21 +52,25 @@ The following list details these parameters:
 
 If routed correctly, external traffic from the configured external IP address block can reach service endpoints through any TCP or UDP port that the service exposes.
 
-> [!IMPORTANT]
-> As a cluster administrator, you must configure routing to externalIPs. You must also ensure that the IP address block you assign terminates at one or more nodes in your cluster. For more information, see [Kubernetes External IPs](https://kubernetes.io/docs/concepts/services-networking/service/#external-ips).
+<div class="important">
+
+As a cluster administrator, you must configure routing to externalIPs. You must also ensure that the IP address block you assign terminates at one or more nodes in your cluster. For more information, see [Kubernetes External IPs](https://kubernetes.io/docs/concepts/services-networking/service/#external-ips).
+
+</div>
 
 OpenShift Container Platform supports both automatic and manual IP address assignment. This support guarantees that each address gets assigned to a maximum of one service and that each service can expose its chosen ports regardless of the ports exposed by other services.
 
-> [!NOTE]
-> To use IP address blocks defined by `autoAssignCIDRs` in OpenShift Container Platform, you must configure the necessary IP address assignment and routing for your host network.
+<div class="note">
+
+To use IP address blocks defined by `autoAssignCIDRs` in OpenShift Container Platform, you must configure the necessary IP address assignment and routing for your host network.
+
+</div>
 
 The following YAML describes a service with an external IP address configured:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `Service` object with `spec.externalIPs[]` set
+**Example `Service` object with `spec.externalIPs[]` set**
 
 </div>
 
@@ -88,8 +101,6 @@ status:
 # ...
 ```
 
-</div>
-
 If you run a private cluster on a cloud-provider platform, you can change the publishing scope to `internal` for the load balancer of the Ingress Controller by running the following `patch` command:
 
 ``` terminal
@@ -114,21 +125,13 @@ When configuring policy restrictions, the following rules apply:
 
   - If `rejectedCIDRs[]` is set, creating a `Service` object with `spec.ExternalIPs[]` succeeds only if the specified IP addresses are not rejected.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Configure an IP address policy by specifying Classless Inter-Domain Routing (CIDR) address blocks for the `spec.ExternalIP.policy` parameter in the `policy` object:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example in JSON form of a `policy` object and its CIDR parameters
+  **Example in JSON form of a `policy` object and its CIDR parameters**
 
   </div>
 
@@ -141,21 +144,15 @@ Procedure
   }
   ```
 
-  </div>
-
-</div>
-
 # Example policy objects
 
 Reference the examples in the `Example policy objects` section to understand different `spec.externalIP.policy` configurations.
 
 In the following example, the policy prevents OpenShift Container Platform from creating any service with a specified external IP address.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example policy to reject any value specified for `Service` object `spec.externalIPs[]`
+**Example policy to reject any value specified for `Service` object `spec.externalIPs[]`**
 
 </div>
 
@@ -170,15 +167,11 @@ spec:
 # ...
 ```
 
-</div>
-
 In the following example, both the `allowedCIDRs` and `rejectedCIDRs` fields are set.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example policy that includes both allowed and rejected CIDR blocks
+**Example policy that includes both allowed and rejected CIDR blocks**
 
 </div>
 
@@ -197,15 +190,11 @@ spec:
 # ...
 ```
 
-</div>
-
 In the following example, `policy` is set to `{}`. With this configuration, using the `oc get networks.config.openshift.io -o yaml` command to view the configuration means `policy` parameter does not show on the command output. The same behavior exists for `policy: null`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example policy to allow any value specified for `Service` object `spec.externalIPs[]`
+**Example policy to allow any value specified for `Service` object `spec.externalIPs[]`**
 
 </div>
 
@@ -223,14 +212,15 @@ spec:
 # ...
 ```
 
-</div>
-
 # ExternalIP address block configuration
 
 To better understand ExternalIP address blocks, view the example configuration for ExternalIP address blocks that is defined by a Network custom resource (CR) named `cluster`. The Network CR is part of the `config.openshift.io` API group.
 
-> [!IMPORTANT]
-> During cluster installation, the Cluster Version Operator (CVO) automatically creates a Network CR named `cluster`. Creating any other CR objects of this type is not supported.
+<div class="important">
+
+During cluster installation, the Cluster Version Operator (CVO) automatically creates a Network CR named `cluster`. Creating any other CR objects of this type is not supported.
+
+</div>
 
 The following YAML describes the ExternalIP configuration in a `Network.config.openshift.io` CR named `cluster`:
 
@@ -266,11 +256,9 @@ The next set of example configurations show external IP address pools configurat
 
 The following YAML shows a `spec.externalIP.autoAssignCIDRs` configuration that enables automatically assigned external IP addresses:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example configuration with `spec.externalIP.autoAssignCIDRs` set
+**Example configuration with `spec.externalIP.autoAssignCIDRs` set**
 
 </div>
 
@@ -285,8 +273,6 @@ spec:
     autoAssignCIDRs:
     - 192.168.132.254/29
 ```
-
-</div>
 
 The following YAML configuration includes a `spec.externalIP.policy` configuration that sets policy rules for the allowed and rejected CIDR ranges:
 
@@ -316,27 +302,11 @@ The following list details these ExternalIP settings:
 
 - A policy object to restrict what IP addresses may be manually assigned to the `spec.clusterIP` array of a `Service` object.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - Install the OpenShift CLI (`oc`)
 
 - Access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Optional: To display the current external IP configuration, enter the following command:
 
@@ -370,8 +340,6 @@ Procedure
     ``` terminal
     $ oc get networks.config cluster -o go-template='{{.spec.externalIP}}{{"\n"}}'
     ```
-
-</div>
 
 # Additional resources
 

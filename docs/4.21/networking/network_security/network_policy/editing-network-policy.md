@@ -4,17 +4,15 @@ As a cluster administrator, you can edit an existing network policy for a namesp
 
 To modify existing policy configurations, you can edit a network policy in a namespace. Edit policies by modifying the policy file and applying it with `oc apply`, or by using the `oc edit` command directly.
 
-> [!NOTE]
-> If you log in with `cluster-admin` privileges, you can edit network policies in any namespace in the cluster.
+<div class="note">
 
-> [!NOTE]
-> If you log in with `cluster-admin` privileges, you can edit network policies in any namespace in the cluster. In the web console, you can edit policies directly in YAML or by using the **Actions** menu.
+If you log in with `cluster-admin` privileges, you can edit network policies in any namespace in the cluster.
 
-<div>
+</div>
 
-<div class="title">
+<div class="note">
 
-Prerequisites
+If you log in with `cluster-admin` privileges, you can edit network policies in any namespace in the cluster. In the web console, you can edit policies directly in YAML or by using the **Actions** menu.
 
 </div>
 
@@ -25,16 +23,6 @@ Prerequisites
 - You are logged in to the cluster with a user with `admin` privileges.
 
 - You are working in the namespace where the network policy exists.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Optional: To list the network policy objects in a namespace, enter the following command:
 
@@ -90,8 +78,6 @@ Procedure
 
     `<namespace>`
     Optional: Specifies the namespace if the object is defined in a different namespace than the current namespace.
-
-</div>
 
 # Example NetworkPolicy object
 

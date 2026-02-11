@@ -1,22 +1,28 @@
 You can add or remove an instance of a machine in a compute machine set.
 
-> [!NOTE]
-> If you need to modify aspects of a compute machine set outside of scaling, see [Modifying a compute machine set](../machine_management/modifying-machineset.xml#modifying-machineset).
+<div class="note">
+
+If you need to modify aspects of a compute machine set outside of scaling, see [Modifying a compute machine set](../machine_management/modifying-machineset.xml#modifying-machineset).
+
+</div>
 
 # Prerequisites
 
 - If you enabled the cluster-wide proxy and scale up compute machines not included in `networking.machineNetwork[].cidr` from the installation configuration, you must [add the compute machines to the Proxy object’s `noProxy` field](../networking/configuring_network_settings/enable-cluster-wide-proxy.xml#nw-proxy-configure-object_config-cluster-wide-proxy) to prevent connection issues.
 
-> [!IMPORTANT]
-> You can use the advanced machine management and scaling capabilities only in clusters where the Machine API is operational. Clusters with user-provisioned infrastructure require additional validation and configuration to use the Machine API.
->
-> Clusters with the infrastructure platform type `none` cannot use the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that supports the feature. This parameter cannot be changed after installation.
->
-> To view the platform type for your cluster, run the following command:
->
-> ``` terminal
-> $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
-> ```
+<div class="important">
+
+You can use the advanced machine management and scaling capabilities only in clusters where the Machine API is operational. Clusters with user-provisioned infrastructure require additional validation and configuration to use the Machine API.
+
+Clusters with the infrastructure platform type `none` cannot use the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that supports the feature. This parameter cannot be changed after installation.
+
+To view the platform type for your cluster, run the following command:
+
+``` terminal
+$ oc get infrastructure cluster -o jsonpath='{.status.platform}'
+```
+
+</div>
 
 # Scaling a compute machine set manually
 
@@ -24,27 +30,9 @@ To add or remove an instance of a machine in a compute machine set, you can manu
 
 This guidance is relevant to fully automated, installer-provisioned infrastructure installations. Customized, user-provisioned infrastructure installations do not have compute machine sets.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install an OpenShift Container Platform cluster and the `oc` command line.
 
 - Log in to `oc` as a user with `cluster-admin` permission.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  View the compute machine sets that are in the cluster by running the following command:
 
@@ -78,43 +66,37 @@ Procedure
     $ oc edit machinesets.machine.openshift.io <machineset> -n openshift-machine-api
     ```
 
-    > [!TIP]
-    > You can alternatively apply the following YAML to scale the compute machine set:
-    >
-    > ``` yaml
-    > apiVersion: machine.openshift.io/v1beta1
-    > kind: MachineSet
-    > metadata:
-    >   name: <machineset>
-    >   namespace: openshift-machine-api
-    > spec:
-    >   replicas: 2
-    > ```
+    <div class="tip">
+
+    You can alternatively apply the following YAML to scale the compute machine set:
+
+    ``` yaml
+    apiVersion: machine.openshift.io/v1beta1
+    kind: MachineSet
+    metadata:
+      name: <machineset>
+      namespace: openshift-machine-api
+    spec:
+      replicas: 2
+    ```
+
+    </div>
 
     You can scale the compute machine set up or down. It takes several minutes for the new machines to be available.
 
-    > [!IMPORTANT]
-    > By default, the machine controller tries to drain the node that is backed by the machine until it succeeds. In some situations, such as with a misconfigured pod disruption budget, the drain operation might not be able to succeed. If the drain operation fails, the machine controller cannot proceed removing the machine.
-    >
-    > You can skip draining the node by annotating `machine.openshift.io/exclude-node-draining` in a specific machine.
+    <div class="important">
 
-</div>
+    By default, the machine controller tries to drain the node that is backed by the machine until it succeeds. In some situations, such as with a misconfigured pod disruption budget, the drain operation might not be able to succeed. If the drain operation fails, the machine controller cannot proceed removing the machine.
 
-<div>
+    You can skip draining the node by annotating `machine.openshift.io/exclude-node-draining` in a specific machine.
 
-<div class="title">
-
-Verification
-
-</div>
+    </div>
 
 - Verify the deletion of the intended machine by running the following command:
 
   ``` terminal
   $ oc get machines.machine.openshift.io
   ```
-
-</div>
 
 # The compute machine set deletion policy
 
@@ -128,11 +110,17 @@ spec:
 
 Specific machines can also be prioritized for deletion by adding the annotation `machine.openshift.io/delete-machine=true` to the machine of interest, regardless of the deletion policy.
 
-> [!IMPORTANT]
-> By default, the OpenShift Container Platform router pods are deployed on workers. Because the router is required to access some cluster resources, including the web console, do not scale the worker compute machine set to `0` unless you first relocate the router pods.
+<div class="important">
 
-> [!NOTE]
-> Custom compute machine sets can be used for use cases requiring that services run on specific nodes and that those services are ignored by the controller when the worker compute machine sets are scaling down. This prevents service disruption.
+By default, the OpenShift Container Platform router pods are deployed on workers. Because the router is required to access some cluster resources, including the web console, do not scale the worker compute machine set to `0` unless you first relocate the router pods.
+
+</div>
+
+<div class="note">
+
+Custom compute machine sets can be used for use cases requiring that services run on specific nodes and that those services are ignored by the controller when the worker compute machine sets are scaling down. This prevents service disruption.
+
+</div>
 
 # Additional resources
 

@@ -1,16 +1,6 @@
 Cluster administrators can use *Operator groups* to allow regular users to install Operators.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Operator groups](../../operators/understanding/olm/olm-understanding-operatorgroups.xml#olm-understanding-operatorgroups)
-
-</div>
 
 # Understanding Operator installation policy
 
@@ -22,8 +12,11 @@ Cluster administrators can associate an Operator group with a service account th
 
 By employing Operator groups, users with enough privileges can install Operators with a limited scope. As a result, more of the Operator Framework tools can safely be made available to more users, providing a richer experience for building applications with Operators.
 
-> [!NOTE]
-> Role-based access control (RBAC) for `Subscription` objects is automatically granted to every user with the `edit` or `admin` role in a namespace. However, RBAC does not exist on `OperatorGroup` objects; this absence is what prevents regular users from installing Operators. Preinstalling Operator groups is effectively what gives installation privileges.
+<div class="note">
+
+Role-based access control (RBAC) for `Subscription` objects is automatically granted to every user with the `edit` or `admin` role in a namespace. However, RBAC does not exist on `OperatorGroup` objects; this absence is what prevents regular users from installing Operators. Preinstalling Operator groups is effectively what gives installation privileges.
+
+</div>
 
 Keep the following points in mind when associating an Operator group with a service account:
 
@@ -67,37 +60,11 @@ To provide scoping rules to Operator installations and upgrades on Operator Life
 
 Using this example, a cluster administrator can confine a set of Operators to a designated namespace.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a new namespace:
-
-    <div class="example">
-
-    <div class="title">
-
-    Example command that creates a `Namespace` object
-
-    </div>
 
     ``` terminal
     $ cat <<EOF | oc create -f -
@@ -108,19 +75,9 @@ Procedure
     EOF
     ```
 
-    </div>
-
 2.  Allocate permissions that you want the Operator(s) to be confined to. This involves creating a new service account, relevant role(s), and role binding(s) in the newly created, designated namespace:
 
     1.  Create a service account by running the following command:
-
-        <div class="example">
-
-        <div class="title">
-
-        Example command that creates a `ServiceAccount` object
-
-        </div>
 
         ``` terminal
         $ cat <<EOF | oc create -f -
@@ -132,17 +89,7 @@ Procedure
         EOF
         ```
 
-        </div>
-
     2.  Create a secret by running the following command:
-
-        <div class="example">
-
-        <div class="title">
-
-        Example command that creates a long-lived API token `Secret` object
-
-        </div>
 
         ``` terminal
         $ cat <<EOF | oc create -f -
@@ -159,18 +106,11 @@ Procedure
 
         - The secret must be a long-lived API token, which is used by the service account.
 
-        </div>
-
     3.  Create a role by running the following command.
 
-        > [!WARNING]
-        > In this example, the role grants the service account permissions to do anything in the designated namespace for demonostration purposes only. In a production environment, you should create a more fine-grained set of permissions. For more information, see "Fine-grained permissions".
+        <div class="warning">
 
-        <div class="example">
-
-        <div class="title">
-
-        Example command that creates `Role` and `RoleBinding` objects
+        In this example, the role grants the service account permissions to do anything in the designated namespace for demonostration purposes only. In a production environment, you should create a more fine-grained set of permissions. For more information, see "Fine-grained permissions".
 
         </div>
 
@@ -202,17 +142,7 @@ Procedure
         EOF
         ```
 
-        </div>
-
 3.  Create an `OperatorGroup` object in the designated namespace by running the following command. This Operator group targets the designated namespace to ensure that its tenancy is confined to it. In addition, Operator groups allow a user to specify a service account.
-
-    <div class="example">
-
-    <div class="title">
-
-    Example command that creates an `OperatorGroup` object
-
-    </div>
 
     ``` terminal
     $ cat <<EOF | oc create -f -
@@ -230,17 +160,7 @@ Procedure
 
     - Specify the service account created in the previous step. Any Operator installed in the designated namespace is tied to this Operator group and therefore to the service account specified.
 
-    </div>
-
 4.  Create a `Subscription` object in the designated namespace to install an Operator:
-
-    <div class="example">
-
-    <div class="title">
-
-    Example command that creates a `Subscription` object
-
-    </div>
 
     ``` terminal
     $ cat <<EOF | oc create -f -
@@ -261,11 +181,7 @@ Procedure
 
     - Specify a namespace where the catalog source was created, for example `openshift-marketplace` for the `redhat-operators` catalog.
 
-    </div>
-
     Any Operator tied to this Operator group is confined to the permissions granted to the specified service account. If the Operator requests permissions that are outside the scope of the service account, the installation fails with relevant errors.
-
-</div>
 
 ## Fine-grained permissions
 
@@ -287,8 +203,11 @@ Operator Lifecycle Manager (OLM) uses the service account specified in an Operat
 
 To confine Operators to a designated namespace, cluster administrators can start by granting the following permissions to the service account:
 
-> [!NOTE]
-> The following role is a generic example and additional rules might be required based on the specific Operator.
+<div class="note">
+
+The following role is a generic example and additional rules might be required based on the specific Operator.
+
+</div>
 
 ``` yaml
 kind: Role
@@ -340,31 +259,13 @@ On clusters where non-cluster administrator users have been delegated Operator i
 
 2.  Enable custom, curated catalogs in the same namespace where the relevant Operator groups have been preinstalled.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Disabling the default OperatorHub catalog sources](../../operators/admin/olm-managing-custom-catalogs.xml#olm-restricted-networks-operatorhub_olm-managing-custom-catalogs)
 
 - [Adding a catalog source to a cluster](../../operators/admin/olm-managing-custom-catalogs.xml#olm-creating-catalog-from-index_olm-managing-custom-catalogs)
 
-</div>
-
 # Troubleshooting permission failures
 
 If an Operator installation fails due to lack of permissions, identify the errors using the following procedure.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Review the `Subscription` object. Its status has an object reference `installPlanRef` that points to the `InstallPlan` object that attempted to create the necessary `[Cluster]Role[Binding]` object(s) for the Operator:
 
@@ -416,7 +317,8 @@ Procedure
 
       The user can add the missing permission to the service account and then iterate.
 
-      > [!NOTE]
-      > Operator Lifecycle Manager (OLM) does not currently provide the complete list of errors on the first try.
+      <div class="note">
 
-</div>
+      Operator Lifecycle Manager (OLM) does not currently provide the complete list of errors on the first try.
+
+      </div>

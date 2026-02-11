@@ -4,29 +4,13 @@ To disconnect a pod from specific network configurations in OpenShift Container 
 
 To disconnect a pod from specific network configurations in OpenShift Container Platform, you can remove the pod from a secondary network. Delete the pod using the `oc delete pod` command to remove its connection to the secondary network.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - A secondary network is attached to the pod.
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in to the cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Delete the pod by entering the following command:
 
@@ -41,5 +25,3 @@ Procedure
 
   `<namespace>`
   Specifies the namespace that contains the pod.
-
-</div>

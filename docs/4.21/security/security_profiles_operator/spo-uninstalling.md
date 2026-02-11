@@ -4,31 +4,17 @@ You can remove the Security Profiles Operator from your cluster by using the Ope
 
 To remove the Security Profiles Operator, you must first delete the `seccomp` and SELinux profiles. After the profiles are removed, you can then remove the Operator and its namespace by deleting the **openshift-security-profiles** project.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the web console as a user with `cluster-admin` privileges.
 
 - The Security Profiles Operator is installed.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To remove the Security Profiles Operator by using the OpenShift Container Platform web console:
-
-</div>
 
 1.  Navigate to the **Ecosystem** → **Installed Operators** page.
 

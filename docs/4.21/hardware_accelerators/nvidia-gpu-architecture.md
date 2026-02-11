@@ -4,8 +4,11 @@ The NVIDIA GPU Operator uses the Operator framework within OpenShift Container P
 
 These components include the NVIDIA drivers (to enable CUDA), the Kubernetes device plugin for GPUs, the NVIDIA Container Toolkit, automatic node tagging using GPU feature discovery (GFD), DCGM-based monitoring, and others.
 
-> [!NOTE]
-> The NVIDIA GPU Operator is only supported by NVIDIA. For more information about obtaining support from NVIDIA, see [Obtaining Support from NVIDIA](https://access.redhat.com/solutions/5174941).
+<div class="note">
+
+The NVIDIA GPU Operator is only supported by NVIDIA. For more information about obtaining support from NVIDIA, see [Obtaining Support from NVIDIA](https://access.redhat.com/solutions/5174941).
+
+</div>
 
 # NVIDIA GPU prerequisites
 
@@ -26,8 +29,11 @@ The following diagram shows how the GPU architecture is enabled for OpenShift:
 <figcaption aria-hidden="true">NVIDIA GPU enablement</figcaption>
 </figure>
 
-> [!NOTE]
-> MIG is supported on GPUs starting with the NVIDIA Ampere generation. For a list of GPUs that support MIG, see the [NVIDIA MIG User Guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#supported-gpus).
+<div class="note">
+
+MIG is supported on GPUs starting with the NVIDIA Ampere generation. For a list of GPUs that support MIG, see the [NVIDIA MIG User Guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#supported-gpus).
+
+</div>
 
 ## GPUs and bare metal
 
@@ -47,17 +53,9 @@ You can choose one of the following methods to access the containerized GPUs:
 
 - Multi-Instance GPU (MIG)
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Red Hat OpenShift on Bare Metal Stack](https://docs.nvidia.com/ai-enterprise/deployment-guide-openshift-on-bare-metal/0.1.0/on-bare-metal.html)
-
-</div>
 
 ## GPUs and virtualization
 
@@ -69,17 +67,9 @@ You can choose one of the following methods to connect the worker nodes to the G
 
 - GPU (vGPU) time-slicing, when GPU compute capacity is not saturated by workloads.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [NVIDIA GPU Operator with OpenShift Virtualization](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/openshift/openshift-virtualization.html)
-
-</div>
 
 ## GPUs and vSphere
 
@@ -93,8 +83,11 @@ The maximum number of vGPUS that can be allocated to worker node VMs depends on 
 
 - vSphere 8.0: maximum 8 vGPU per VM
 
-  > [!NOTE]
-  > vSphere 8.0 introduced support for multiple full or fractional heterogenous profiles associated with a VM.
+  <div class="note">
+
+  vSphere 8.0 introduced support for multiple full or fractional heterogenous profiles associated with a VM.
+
+  </div>
 
 You can choose one of the following methods to attach the worker nodes to the GPUs:
 
@@ -104,17 +97,7 @@ You can choose one of the following methods to attach the worker nodes to the GP
 
 Similar to bare metal deployments, one or three or more servers are required. Clusters with two servers are not supported.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [OpenShift Container Platform on VMware vSphere with NVIDIA vGPUs](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/openshift/nvaie-with-ocp.html#openshift-container-platform-on-vmware-vsphere-with-nvidia-vgpus)
-
-</div>
 
 ## GPUs and Red Hat KVM
 
@@ -150,17 +133,9 @@ You can choose one of the following methods to access the containerized GPUs:
 
 - GPU (vGPU) time slicing when the entire GPU is not required.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Red Hat Openshift in the Cloud](https://docs.nvidia.com/ai-enterprise/deployment-guide-cloud/0.1.0/aws-redhat-openshift.html)
-
-</div>
 
 ## GPUs and Red Hat Device Edge
 
@@ -170,17 +145,7 @@ You can enable NVIDIA GPUs on containers in a Red Hat Device Edge environment.
 
 You use GPU passthrough to access the containerized GPUs.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [How to accelerate workloads with NVIDIA GPUs on Red Hat Device Edge](https://cloud.redhat.com/blog/how-to-accelerate-workloads-with-nvidia-gpus-on-red-hat-device-edge)
-
-</div>
 
 # GPU sharing methods
 
@@ -217,17 +182,7 @@ Consider using separate VMs.
 Bare metal with OpenShift Virtualization and multiple GPUs
 Consider using pass-through for hosted VMs and time-slicing for containers.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Improving GPU Utilization](https://developer.nvidia.com/blog/improving-gpu-utilization-in-kubernetes/)
-
-</div>
 
 ## CUDA streams
 
@@ -237,17 +192,7 @@ A stream is a sequence of operations that executes in issue-order on the GPU. CU
 
 Asynchronous processing of operations across different streams allows for parallel execution of tasks. A task issued in one stream runs before, during, or after another task is issued into another stream. This allows the GPU to run multiple tasks simultaneously in no prescribed order, leading to improved performance.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Asynchronous Concurrent Execution](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#asynchronous-concurrent-execution)
-
-</div>
 
 ## Time-slicing
 
@@ -263,17 +208,7 @@ You can combine these two approaches by applying a cluster-wide default configur
 
 CUDA Multi-Process Service (MPS) allows a single GPU to use multiple CUDA processes. The processes run in parallel on the GPU, eliminating saturation of the GPU compute resources. MPS also enables concurrent execution, or overlapping, of kernel operations and memory copying from different processes to enhance utilization.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [CUDA MPS](https://docs.nvidia.com/deploy/mps/index.html)
-
-</div>
 
 ## Multi-instance GPU
 
@@ -283,17 +218,7 @@ MIG is useful when you have an application that does not require the full power 
 
 NVIDIA GPU Operator version 1.7.0 and higher provides MIG support for the A100 and A30 Ampere cards. These GPU instances are designed to support up to seven multiple independent CUDA applications so that they operate completely isolated with dedicated hardware resources.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [NVIDIA Multi-Instance GPU User Guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/)
-
-</div>
 
 ## Virtualization with vGPU
 
@@ -301,17 +226,7 @@ Virtual machines (VMs) can directly access a single physical GPU using NVIDIA vG
 
 This capability combines the power of GPU performance with the management and security benefits provided by vGPU. Additional benefits provided by vGPU includes proactive management and monitoring for your VM environment, workload balancing for mixed VDI and compute workloads, and resource sharing across multiple VMs.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Virtual GPUs](https://www.nvidia.com/en-us/data-center/virtual-solutions/)
-
-</div>
 
 # NVIDIA GPU features for OpenShift Container Platform
 
@@ -342,14 +257,6 @@ You can configure the GPU Operator to deploy different software components to wo
 GPU Monitoring dashboard
 You can install a monitoring dashboard to display GPU usage information on the cluster **Observe** page in the OpenShift Container Platform web console. GPU utilization information includes the number of available GPUs, power consumption (in watts), temperature (in degrees Celsius), utilization (in percent), and other metrics for each GPU.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [NVIDIA-Certified Systems](https://docs.nvidia.com/ngc/ngc-deploy-on-premises/nvidia-certified-systems/index.html)
 
 - [NVIDIA AI Enterprise](https://docs.nvidia.com/ai-enterprise/index.html#deployment-guides)
@@ -365,5 +272,3 @@ Additional resources
 - [Deploy GPU Operators in a disconnected or airgapped environment](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/mirror-gpu-ocp-disconnected.html)
 
 - [Node Feature Discovery Operator](../hardware_enablement/psap-node-feature-discovery-operator.html)
-
-</div>

@@ -14,25 +14,7 @@ The procedure requires a cluster administrator to create a `ConfigMap` and add a
 
 You can add certificate authorities (CA) to the cluster for use when pushing and pulling images with the following procedure.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have access to the public certificates of the registry, usually a `hostname/ca.crt` file located in the `/etc/docker/certs.d/` directory.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `ConfigMap` in the `openshift-config` namespace containing the trusted certificates for the registries that use self-signed certificates. For each CA file, ensure the key in the `ConfigMap` is the hostname of the registry in the `hostname[..port]` format:
 
@@ -47,8 +29,6 @@ Procedure
     ``` terminal
     $ oc patch image.config.openshift.io/cluster --patch '{"spec":{"additionalTrustedCA":{"name":"registry-cas"}}}' --type=merge
     ```
-
-</div>
 
 # Additional resources
 

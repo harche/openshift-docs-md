@@ -11,12 +11,12 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | ConsoleQuickStartSpec is the desired quick start configuration. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | ConsoleQuickStartSpec is the desired quick start configuration.                                                                                                                                                                                                                                      |
 
 ## .spec
 
@@ -37,21 +37,21 @@ Required
 
 - `tasks`
 
-| Property | Type | Description |
-|----|----|----|
-| `accessReviewResources` | `array` | accessReviewResources contains a list of resources that the user’s access will be reviewed against in order for the user to complete the Quick Start. The Quick Start will be hidden if any of the access reviews fail. |
-| `accessReviewResources[]` | `object` | ResourceAttributes includes the authorization attributes available for resource requests to the Authorizer interface |
-| `conclusion` | `string` | conclusion sums up the Quick Start and suggests the possible next steps. (includes markdown) |
-| `description` | `string` | description is the description of the Quick Start. (includes markdown) |
-| `displayName` | `string` | displayName is the display name of the Quick Start. |
-| `durationMinutes` | `integer` | durationMinutes describes approximately how many minutes it will take to complete the Quick Start. |
-| `icon` | `string` | icon is a base64 encoded image that will be displayed beside the Quick Start display name. The icon should be an vector image for easy scaling. The size of the icon should be 40x40. |
-| `introduction` | `string` | introduction describes the purpose of the Quick Start. (includes markdown) |
-| `nextQuickStart` | `array (string)` | nextQuickStart is a list of the following Quick Starts, suggested for the user to try. |
-| `prerequisites` | `array (string)` | prerequisites contains all prerequisites that need to be met before taking a Quick Start. (includes markdown) |
-| `tags` | `array (string)` | tags is a list of strings that describe the Quick Start. |
-| `tasks` | `array` | tasks is the list of steps the user has to perform to complete the Quick Start. |
-| `tasks[]` | `object` | ConsoleQuickStartTask is a single step in a Quick Start. |
+| Property                  | Type             | Description                                                                                                                                                                                                             |
+|---------------------------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `accessReviewResources`   | `array`          | accessReviewResources contains a list of resources that the user’s access will be reviewed against in order for the user to complete the Quick Start. The Quick Start will be hidden if any of the access reviews fail. |
+| `accessReviewResources[]` | `object`         | ResourceAttributes includes the authorization attributes available for resource requests to the Authorizer interface                                                                                                    |
+| `conclusion`              | `string`         | conclusion sums up the Quick Start and suggests the possible next steps. (includes markdown)                                                                                                                            |
+| `description`             | `string`         | description is the description of the Quick Start. (includes markdown)                                                                                                                                                  |
+| `displayName`             | `string`         | displayName is the display name of the Quick Start.                                                                                                                                                                     |
+| `durationMinutes`         | `integer`        | durationMinutes describes approximately how many minutes it will take to complete the Quick Start.                                                                                                                      |
+| `icon`                    | `string`         | icon is a base64 encoded image that will be displayed beside the Quick Start display name. The icon should be an vector image for easy scaling. The size of the icon should be 40x40.                                   |
+| `introduction`            | `string`         | introduction describes the purpose of the Quick Start. (includes markdown)                                                                                                                                              |
+| `nextQuickStart`          | `array (string)` | nextQuickStart is a list of the following Quick Starts, suggested for the user to try.                                                                                                                                  |
+| `prerequisites`           | `array (string)` | prerequisites contains all prerequisites that need to be met before taking a Quick Start. (includes markdown)                                                                                                           |
+| `tags`                    | `array (string)` | tags is a list of strings that describe the Quick Start.                                                                                                                                                                |
+| `tasks`                   | `array`          | tasks is the list of steps the user has to perform to complete the Quick Start.                                                                                                                                         |
+| `tasks[]`                 | `object`         | ConsoleQuickStartTask is a single step in a Quick Start.                                                                                                                                                                |
 
 ## .spec.accessReviewResources
 
@@ -69,17 +69,17 @@ ResourceAttributes includes the authorization attributes available for resource 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `fieldSelector` | `object` | fieldSelector describes the limitation on access based on field. It can only limit access, not broaden it. |
-| `group` | `string` | Group is the API Group of the Resource. "\*" means all. |
-| `labelSelector` | `object` | labelSelector describes the limitation on access based on labels. It can only limit access, not broaden it. |
-| `name` | `string` | Name is the name of the resource being requested for a "get" or deleted for a "delete". "" (empty) means all. |
-| `namespace` | `string` | Namespace is the namespace of the action being requested. Currently, there is no distinction between no namespace and all namespaces "" (empty) is defaulted for LocalSubjectAccessReviews "" (empty) is empty for cluster-scoped resources "" (empty) means "all" for namespace scoped resources from a SubjectAccessReview or SelfSubjectAccessReview |
-| `resource` | `string` | Resource is one of the existing resource types. "\*" means all. |
-| `subresource` | `string` | Subresource is one of the existing resource types. "" means none. |
-| `verb` | `string` | Verb is a kubernetes resource API verb, like: get, list, watch, create, update, delete, proxy. "\*" means all. |
-| `version` | `string` | Version is the API Version of the Resource. "\*" means all. |
+| Property        | Type     | Description                                                                                                                                                                                                                                                                                                                                             |
+|-----------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fieldSelector` | `object` | fieldSelector describes the limitation on access based on field. It can only limit access, not broaden it.                                                                                                                                                                                                                                              |
+| `group`         | `string` | Group is the API Group of the Resource. "\*" means all.                                                                                                                                                                                                                                                                                                 |
+| `labelSelector` | `object` | labelSelector describes the limitation on access based on labels. It can only limit access, not broaden it.                                                                                                                                                                                                                                             |
+| `name`          | `string` | Name is the name of the resource being requested for a "get" or deleted for a "delete". "" (empty) means all.                                                                                                                                                                                                                                           |
+| `namespace`     | `string` | Namespace is the namespace of the action being requested. Currently, there is no distinction between no namespace and all namespaces "" (empty) is defaulted for LocalSubjectAccessReviews "" (empty) is empty for cluster-scoped resources "" (empty) means "all" for namespace scoped resources from a SubjectAccessReview or SelfSubjectAccessReview |
+| `resource`      | `string` | Resource is one of the existing resource types. "\*" means all.                                                                                                                                                                                                                                                                                         |
+| `subresource`   | `string` | Subresource is one of the existing resource types. "" means none.                                                                                                                                                                                                                                                                                       |
+| `verb`          | `string` | Verb is a kubernetes resource API verb, like: get, list, watch, create, update, delete, proxy. "\*" means all.                                                                                                                                                                                                                                          |
+| `version`       | `string` | Version is the API Version of the Resource. "\*" means all.                                                                                                                                                                                                                                                                                             |
 
 ## .spec.accessReviewResources\[\].fieldSelector
 
@@ -89,11 +89,11 @@ fieldSelector describes the limitation on access based on field. It can only lim
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `rawSelector` | `string` | rawSelector is the serialization of a field selector that would be included in a query parameter. Webhook implementations are encouraged to ignore rawSelector. The kube-apiserver’s \*SubjectAccessReview will parse the rawSelector as long as the requirements are not present. |
-| `requirements` | `array` | requirements is the parsed interpretation of a field selector. All requirements must be met for a resource instance to match the selector. Webhook implementations should handle requirements, but how to handle them is up to the webhook. Since requirements can only limit the request, it is safe to authorize as unlimited request if the requirements are not understood. |
-| `requirements[]` | `object` | FieldSelectorRequirement is a selector that contains values, a key, and an operator that relates the key and values. |
+| Property         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                     |
+|------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `rawSelector`    | `string` | rawSelector is the serialization of a field selector that would be included in a query parameter. Webhook implementations are encouraged to ignore rawSelector. The kube-apiserver’s \*SubjectAccessReview will parse the rawSelector as long as the requirements are not present.                                                                                              |
+| `requirements`   | `array`  | requirements is the parsed interpretation of a field selector. All requirements must be met for a resource instance to match the selector. Webhook implementations should handle requirements, but how to handle them is up to the webhook. Since requirements can only limit the request, it is safe to authorize as unlimited request if the requirements are not understood. |
+| `requirements[]` | `object` | FieldSelectorRequirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                                                                                                                                            |
 
 ## .spec.accessReviewResources\[\].fieldSelector.requirements
 
@@ -116,11 +116,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the field selector key that the requirement applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. The list of operators may grow in the future. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. |
+| Property   | Type             | Description                                                                                                                                                                         |
+|------------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the field selector key that the requirement applies to.                                                                                                                      |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. The list of operators may grow in the future.                     |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. |
 
 ## .spec.accessReviewResources\[\].labelSelector
 
@@ -130,11 +130,11 @@ labelSelector describes the limitation on access based on labels. It can only li
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `rawSelector` | `string` | rawSelector is the serialization of a field selector that would be included in a query parameter. Webhook implementations are encouraged to ignore rawSelector. The kube-apiserver’s \*SubjectAccessReview will parse the rawSelector as long as the requirements are not present. |
-| `requirements` | `array` | requirements is the parsed interpretation of a label selector. All requirements must be met for a resource instance to match the selector. Webhook implementations should handle requirements, but how to handle them is up to the webhook. Since requirements can only limit the request, it is safe to authorize as unlimited request if the requirements are not understood. |
-| `requirements[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
+| Property         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                     |
+|------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `rawSelector`    | `string` | rawSelector is the serialization of a field selector that would be included in a query parameter. Webhook implementations are encouraged to ignore rawSelector. The kube-apiserver’s \*SubjectAccessReview will parse the rawSelector as long as the requirements are not present.                                                                                              |
+| `requirements`   | `array`  | requirements is the parsed interpretation of a label selector. All requirements must be met for a resource instance to match the selector. Webhook implementations should handle requirements, but how to handle them is up to the webhook. Since requirements can only limit the request, it is safe to authorize as unlimited request if the requirements are not understood. |
+| `requirements[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                                                                                                                                        |
 
 ## .spec.accessReviewResources\[\].labelSelector.requirements
 
@@ -157,11 +157,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.tasks
 
@@ -184,12 +184,12 @@ Required
 
 - `title`
 
-| Property | Type | Description |
-|----|----|----|
-| `description` | `string` | description describes the steps needed to complete the task. (includes markdown) |
-| `review` | `object` | review contains instructions to validate the task is complete. The user will select 'Yes' or 'No'. using a radio button, which indicates whether the step was completed successfully. |
-| `summary` | `object` | summary contains information about the passed step. |
-| `title` | `string` | title describes the task and is displayed as a step heading. |
+| Property      | Type     | Description                                                                                                                                                                           |
+|---------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `description` | `string` | description describes the steps needed to complete the task. (includes markdown)                                                                                                      |
+| `review`      | `object` | review contains instructions to validate the task is complete. The user will select 'Yes' or 'No'. using a radio button, which indicates whether the step was completed successfully. |
+| `summary`     | `object` | summary contains information about the passed step.                                                                                                                                   |
+| `title`       | `string` | title describes the task and is displayed as a step heading.                                                                                                                          |
 
 ## .spec.tasks\[\].review
 
@@ -204,10 +204,10 @@ Required
 
 - `instructions`
 
-| Property | Type | Description |
-|----|----|----|
-| `failedTaskHelp` | `string` | failedTaskHelp contains suggestions for a failed task review and is shown at the end of task. (includes markdown) |
-| `instructions` | `string` | instructions contains steps that user needs to take in order to validate his work after going through a task. (includes markdown) |
+| Property         | Type     | Description                                                                                                                       |
+|------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------|
+| `failedTaskHelp` | `string` | failedTaskHelp contains suggestions for a failed task review and is shown at the end of task. (includes markdown)                 |
+| `instructions`   | `string` | instructions contains steps that user needs to take in order to validate his work after going through a task. (includes markdown) |
 
 ## .spec.tasks\[\].summary
 
@@ -222,10 +222,10 @@ Required
 
 - `success`
 
-| Property | Type | Description |
-|----|----|----|
-| `failed` | `string` | failed briefly describes the unsuccessfully passed task. (includes markdown) |
-| `success` | `string` | success describes the succesfully passed task. |
+| Property  | Type     | Description                                                                  |
+|-----------|----------|------------------------------------------------------------------------------|
+| `failed`  | `string` | failed briefly describes the unsuccessfully passed task. (includes markdown) |
+| `success` | `string` | success describes the succesfully passed task.                               |
 
 # API endpoints
 
@@ -257,10 +257,10 @@ HTTP method
 Description
 delete collection of ConsoleQuickStart
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -270,10 +270,10 @@ HTTP method
 Description
 list objects of kind ConsoleQuickStart
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ConsoleQuickStartList`](../objects/index.xml#io-openshift-console-v1-ConsoleQuickStartList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                         |
+|--------------------|------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ConsoleQuickStartList`](../objects/index.xml#io-openshift-console-v1-ConsoleQuickStartList) schema |
+| 401 - Unauthorized | Empty                                                                                                |
 
 HTTP responses
 
@@ -283,25 +283,25 @@ HTTP method
 Description
 create a ConsoleQuickStart
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ConsoleQuickStart`](../console_apis/consolequickstart-console-openshift-io-v1.xml#consolequickstart-console-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                  | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ConsoleQuickStart`](../console_apis/consolequickstart-console-openshift-io-v1.xml#consolequickstart-console-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ConsoleQuickStart`](../console_apis/consolequickstart-console-openshift-io-v1.xml#consolequickstart-console-openshift-io-v1) schema |
-| 201 - Created | [`ConsoleQuickStart`](../console_apis/consolequickstart-console-openshift-io-v1.xml#consolequickstart-console-openshift-io-v1) schema |
-| 202 - Accepted | [`ConsoleQuickStart`](../console_apis/consolequickstart-console-openshift-io-v1.xml#consolequickstart-console-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                          |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ConsoleQuickStart`](../console_apis/consolequickstart-console-openshift-io-v1.xml#consolequickstart-console-openshift-io-v1) schema |
+| 201 - Created      | [`ConsoleQuickStart`](../console_apis/consolequickstart-console-openshift-io-v1.xml#consolequickstart-console-openshift-io-v1) schema |
+| 202 - Accepted     | [`ConsoleQuickStart`](../console_apis/consolequickstart-console-openshift-io-v1.xml#consolequickstart-console-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                 |
 
 HTTP responses
 
@@ -319,17 +319,17 @@ HTTP method
 Description
 delete a ConsoleQuickStart
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -339,10 +339,10 @@ HTTP method
 Description
 read the specified ConsoleQuickStart
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ConsoleQuickStart`](../console_apis/consolequickstart-console-openshift-io-v1.xml#consolequickstart-console-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                          |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ConsoleQuickStart`](../console_apis/consolequickstart-console-openshift-io-v1.xml#consolequickstart-console-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                 |
 
 HTTP responses
 
@@ -352,17 +352,17 @@ HTTP method
 Description
 partially update the specified ConsoleQuickStart
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ConsoleQuickStart`](../console_apis/consolequickstart-console-openshift-io-v1.xml#consolequickstart-console-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                          |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ConsoleQuickStart`](../console_apis/consolequickstart-console-openshift-io-v1.xml#consolequickstart-console-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                 |
 
 HTTP responses
 
@@ -372,23 +372,23 @@ HTTP method
 Description
 replace the specified ConsoleQuickStart
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ConsoleQuickStart`](../console_apis/consolequickstart-console-openshift-io-v1.xml#consolequickstart-console-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                  | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ConsoleQuickStart`](../console_apis/consolequickstart-console-openshift-io-v1.xml#consolequickstart-console-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ConsoleQuickStart`](../console_apis/consolequickstart-console-openshift-io-v1.xml#consolequickstart-console-openshift-io-v1) schema |
-| 201 - Created | [`ConsoleQuickStart`](../console_apis/consolequickstart-console-openshift-io-v1.xml#consolequickstart-console-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                          |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ConsoleQuickStart`](../console_apis/consolequickstart-console-openshift-io-v1.xml#consolequickstart-console-openshift-io-v1) schema |
+| 201 - Created      | [`ConsoleQuickStart`](../console_apis/consolequickstart-console-openshift-io-v1.xml#consolequickstart-console-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                 |
 
 HTTP responses

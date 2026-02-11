@@ -8,8 +8,11 @@
 
 You can create a single-node cluster with standard installation methods. OpenShift Container Platform on a single node is a specialized installation that requires the creation of a special Ignition configuration file. The primary use case is for edge computing workloads, including intermittent connectivity, portable clouds, and 5G radio access networks (RAN) close to a base station. The major tradeoff with an installation on a single node is the lack of high availability.
 
-> [!IMPORTANT]
-> The use of OpenShiftSDN with single-node OpenShift is not supported. OVN-Kubernetes is the default network plugin for single-node OpenShift deployments.
+<div class="important">
+
+The use of OpenShiftSDN with single-node OpenShift is not supported. OVN-Kubernetes is the default network plugin for single-node OpenShift deployments.
+
+</div>
 
 # Requirements for installing OpenShift on a single node
 
@@ -17,11 +20,17 @@ Installing OpenShift Container Platform on a single node alleviates some of the 
 
 - **Administration host:** You must have a computer to prepare the ISO, to create the USB boot drive, and to monitor the installation.
 
-  > [!NOTE]
-  > For the `ppc64le` platform, the host should prepare the ISO, but does not need to create the USB boot drive. The ISO can be mounted to PowerVM directly.
+  <div class="note">
 
-  > [!NOTE]
-  > ISO is not required for IBM Z® installations.
+  For the `ppc64le` platform, the host should prepare the ISO, but does not need to create the USB boot drive. The ISO can be mounted to PowerVM directly.
+
+  </div>
+
+  <div class="note">
+
+  ISO is not required for IBM Z® installations.
+
+  </div>
 
 - **CPU Architecture:** Installing OpenShift Container Platform on a single node supports `x86_64`, `arm64`,`ppc64le`, and `s390x` CPU architectures.
 
@@ -41,25 +50,34 @@ Installing OpenShift Container Platform on a single node alleviates some of the 
 
   Minimum resource requirements
 
-  > [!NOTE]
-  > One vCPU generally equals one physical core. However, if you enable simultaneous multithreading (SMT), or Hyper-Threading, each CPU thread counts as a vCPU.
-  >
-  > Adding Operators during the installation process might increase the minimum resource requirements.
+  <div class="note">
+
+  One vCPU generally equals one physical core. However, if you enable simultaneous multithreading (SMT), or Hyper-Threading, each CPU thread counts as a vCPU.
+
+  Adding Operators during the installation process might increase the minimum resource requirements.
+
+  </div>
 
   The server must have a Baseboard Management Controller (BMC) when booting with virtual media.
 
-  > [!NOTE]
-  > BMC is not supported on IBM Z® and IBM Power®.
+  <div class="note">
+
+  BMC is not supported on IBM Z® and IBM Power®.
+
+  </div>
 
 - **Networking:** The server must have access to the internet or access to a local registry if it is not connected to a routable network. The server must have a DHCP reservation or a static IP address for the Kubernetes API, ingress route, and cluster node domain names. You must configure the DNS to resolve the IP address to each of the following fully qualified domain names (FQDN):
 
-  | Usage | FQDN | Description |
-  |----|----|----|
-  | Kubernetes API | `api.<cluster_name>.<base_domain>` | Add a DNS A/AAAA or CNAME record. This record must be resolvable by both clients external to the cluster and within the cluster. |
-  | Internal API | `api-int.<cluster_name>.<base_domain>` | Add a DNS A/AAAA or CNAME record when creating the ISO manually. This record must be resolvable by nodes within the cluster. |
-  | Ingress route | `*.apps.<cluster_name>.<base_domain>` | Add a wildcard DNS A/AAAA or CNAME record that targets the node. This record must be resolvable by both clients external to the cluster and within the cluster. |
+  | Usage          | FQDN                                   | Description                                                                                                                                                     |
+  |----------------|----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+  | Kubernetes API | `api.<cluster_name>.<base_domain>`     | Add a DNS A/AAAA or CNAME record. This record must be resolvable by both clients external to the cluster and within the cluster.                                |
+  | Internal API   | `api-int.<cluster_name>.<base_domain>` | Add a DNS A/AAAA or CNAME record when creating the ISO manually. This record must be resolvable by nodes within the cluster.                                    |
+  | Ingress route  | `*.apps.<cluster_name>.<base_domain>`  | Add a wildcard DNS A/AAAA or CNAME record that targets the node. This record must be resolvable by both clients external to the cluster and within the cluster. |
 
   Required DNS records
 
-  > [!IMPORTANT]
-  > Without persistent IP addresses, communications between the `apiserver` and `etcd` might fail.
+  <div class="important">
+
+  Without persistent IP addresses, communications between the `apiserver` and `etcd` might fail.
+
+  </div>

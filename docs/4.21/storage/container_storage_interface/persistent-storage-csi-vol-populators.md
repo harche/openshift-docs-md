@@ -6,8 +6,11 @@ In OpenShift Container Platform versions 4.12 through 4.19, the `dataSource` fie
 
 Starting with OpenShift Container Platform version 4.20, the `dataSourceRef` field is used instead. With the `dataSourceRef` field, you can use any appropriate custom resource (CR) as the data source to prepopulate a new volume.
 
-> [!NOTE]
-> Volume populator functionality using the `dataSource` field is likely to be deprecated in future versions. If you have created any volume populators using this field, consider re-creating your volume populators to use the `dataSourceRef` field to avoid future issues.
+<div class="note">
+
+Volume populator functionality using the `dataSource` field is likely to be deprecated in future versions. If you have created any volume populators using this field, consider re-creating your volume populators to use the `dataSourceRef` field to avoid future issues.
+
+</div>
 
 Volume population is enabled by default and OpenShift Container Platform includes the installed `volume-data-source-validator` controller. However, OpenShift Container Platform does not ship with any volume populators.
 
@@ -25,35 +28,15 @@ The following procedure explains how to create an example "hello, world" custom 
 
 Users can then create instances of this CRD to populate persistent volume claims (PVCs).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the OpenShift Container Platform web console.
 
 - Access to the cluster with cluster-admin privileges.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a namespace for the logical grouping and operation of the populator, and related resources, using the following example YAML file:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example namespace YAML file
+    **Example namespace YAML file**
 
     </div>
 
@@ -64,15 +47,11 @@ Procedure
       name: hello
     ```
 
-    </div>
-
 2.  Create a CRD for your data source using the following example YAML file:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example CRD YAML file
+    **Example CRD YAML file**
 
     </div>
 
@@ -123,17 +102,13 @@ Procedure
         storage: true
     ```
 
-    </div>
-
 3.  Deploy the controller by creating a `ServiceAccount`, `ClusterRole`, `ClusterRoleBindering`, and `Deployment` to run the logic that implements the population:
 
     1.  Create a service account for the populator using the following example YAML file:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example service account YAML file
+        **Example service account YAML file**
 
         </div>
 
@@ -145,17 +120,13 @@ Procedure
           namespace: hello
         ```
 
-        </div>
-
         - Reference the namespace that you created earlier.
 
     2.  Create a cluster role for the populator using the following example YAML file:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example cluster role YAML file
+        **Example cluster role YAML file**
 
         </div>
 
@@ -170,15 +141,11 @@ Procedure
             verbs: [get, list, watch]
         ```
 
-        </div>
-
     3.  Create a cluster role binding using the following example YAML file:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example cluster role binding YAML file
+        **Example cluster role binding YAML file**
 
         </div>
 
@@ -197,8 +164,6 @@ Procedure
           apiGroup: rbac.authorization.k8s.io
         ```
 
-        </div>
-
         - Role binding name.
 
         - Reference the name of the service account that you created earlier.
@@ -209,11 +174,9 @@ Procedure
 
     4.  Create a Deployment for the populator using the following example YAML file:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example deployment YAML file
+        **Example deployment YAML file**
 
         </div>
 
@@ -247,19 +210,15 @@ Procedure
                       protocol: TCP
         ```
 
-        </div>
-
         - Reference the namespace that you created earlier.
 
         - Reference the service account that you created earlier.
 
 4.  Create a volume populator to register the `kind:Hello` resource as a valid data source for the volume using the following example YAML file:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example volume populator YAML file
+    **Example volume populator YAML file**
 
     </div>
 
@@ -273,25 +232,11 @@ Procedure
       kind: Hello
     ```
 
-    </div>
-
     - Volume populator name.
 
       PVCs that use an unregistered populator generate an event: "The datasource for this PVC does not match any registered VolumePopulator", indicating that the PVC might not be provisioned because you are using an unknown (unregistered) populator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - You can now create CR instances of this CRD to populate PVCs.
-
-</div>
 
 For information about how to prepopulate volumes using a volume populator, see [Creating prepoluated volumes with volume populators](../../storage/container_storage_interface/persistent-storage-csi-vol-populators.xml#persistent-storage-csi-vol-populator-procedure_persistent-storage-csi-vol-populators).
 
@@ -301,29 +246,11 @@ The following procedure explains how to create a prepopulated persistent volume 
 
 In this example, rather than using an actual data source, you are creating a file called "example.txt" that contains the string "Hello, world!" in the root directory of the volume. For a real-world implementation, you need to create your own volume populator.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to a running OpenShift Container Platform cluster.
 
 - There is an existing custom resource definition (CRD) for volume populators.
 
 - OpenShift Container Platform does not ship with any volume populators. You **must** create your own volume populator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a Custom Resource (CR) instance of the `Hello` CRD with the text "Hello, World!" passed in as `fileContents` parameter by running the following command:
 
@@ -341,11 +268,9 @@ Procedure
 
 2.  Create a PVC that references the Hello CR similar to the following example file:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example PVC YAML file
+    **Example PVC YAML file**
 
     </div>
 
@@ -367,21 +292,11 @@ Procedure
       volumeMode: Filesystem
     ```
 
-    </div>
-
     - The `dataSourceRef` field specifies the data source for the PVC.
 
     - The name of the CR that you are using as the data source. In this example, 'example-hello'.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  After a few minutes, ensure that the PVC is created and in the `Bound` status by running the following command:
 
@@ -391,11 +306,9 @@ Verification
 
     - In this example, the name of the PVC is `example-pvc`.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -404,15 +317,11 @@ Verification
       example-pvc   Bound     my-pv         10Mi       ReadWriteOnce  gp3-csi        <unset>                 14s
       ```
 
-      </div>
-
 2.  Create a job that reads from the PVC to verify that the data source information was applied using the following example file:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example job YAML file
+    **Example job YAML file**
 
     </div>
 
@@ -440,8 +349,6 @@ Verification
                 claimName: example-pvc
     ```
 
-    </div>
-
     - The location and name of the file with the "Hello, world!" text.
 
     - The name of the PVC you created in Step 2. In this example, `example-pvc`.
@@ -452,19 +359,15 @@ Verification
     $ oc run example-job --image=busybox --command -- sleep 30 --restart=OnFailure
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     pod/example-job created
     ```
-
-    </div>
 
 4.  Wait for the job, and all of its dependencies, to finish by running the following command:
 
@@ -478,11 +381,9 @@ Verification
     $ oc logs job/example-job
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Expected output
+    **Expected output**
 
     </div>
 
@@ -490,39 +391,21 @@ Verification
     Hello, world!
     ```
 
-    </div>
-
-</div>
-
 ## Uninstalling volume populators
 
 The following procedure explains how to uninstall volume populators.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Access to the OpenShift Container Platform web console.
 
 - Access to the cluster with cluster-admin privileges.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To uninstall volume populators, delete in reverse order all objects installed in the procedures under:
-
-</div>
 
 1.  Section *Creating prepopulated volumes using volume populators*.
 

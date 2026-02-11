@@ -4,14 +4,6 @@ In a highly available control plane, three etcd pods run as a part of a stateful
 
 You can check the status of the etcd cluster health by logging into any etcd pod.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Log in to an etcd pod by entering the following command:
 
     ``` terminal
@@ -24,11 +16,9 @@ Procedure
     sh-4.4# etcdctl endpoint status -w table
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -42,21 +32,9 @@ Procedure
     +-----------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+
     ```
 
-    </div>
-
-</div>
-
 # Recovering a failing etcd pod
 
 Each etcd pod of a 3-node cluster has its own persistent volume claim (PVC) to store its data. An etcd pod might fail because of corrupted or missing data. You can recover a failing etcd pod and its PVC.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To confirm that the etcd pod is failing, enter the following command:
 
@@ -64,11 +42,9 @@ Procedure
     $ oc get pods -l app=etcd -n openshift-etcd
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -79,8 +55,6 @@ Procedure
     etcd-2   1/2     CrashLoopBackOff   1 (5s ago)   64m
     ```
 
-    </div>
-
     The failing etcd pod might have the `CrashLoopBackOff` or `Error` status.
 
 2.  Delete the failing pod and its PVC by entering the following command:
@@ -89,27 +63,15 @@ Procedure
     $ oc delete pods etcd-2 -n openshift-etcd
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that a new etcd pod is up and running by entering the following command:
 
   ``` terminal
   $ oc get pods -l app=etcd -n openshift-etcd
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -119,7 +81,3 @@ Verification
   etcd-1   2/2     Running   0          48m
   etcd-2   2/2     Running   0          2m2s
   ```
-
-  </div>
-
-</div>

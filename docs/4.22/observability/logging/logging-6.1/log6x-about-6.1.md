@@ -48,36 +48,21 @@ OpenShift Logging supports two data models:
 
 You can select either of these data models based on your requirement by configuring the `lokiStack.dataModel` field in the `ClusterLogForwarder`. ViaQ is the default data model when forwarding logs to LokiStack.
 
-> [!NOTE]
-> In future releases of OpenShift Logging, the default data model will change from ViaQ to OpenTelemetry.
+<div class="note">
+
+In future releases of OpenShift Logging, the default data model will change from ViaQ to OpenTelemetry.
+
+</div>
 
 ## Quick start with ViaQ
 
 To use the default ViaQ data model, follow these steps:
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to an OpenShift Container Platform cluster with `cluster-admin` permissions.
 
 - You installed the OpenShift CLI (`oc`).
 
 - You have access to a supported object store. For example, AWS S3, Google Cloud Storage, Azure, Swift, Minio, or OpenShift Data Foundation.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Install the `Red Hat OpenShift Logging Operator`, `Loki Operator`, and `Cluster Observability Operator (COO)` from the software catalog.
 
@@ -104,8 +89,11 @@ Procedure
         mode: openshift-logging
     ```
 
-    > [!NOTE]
-    > Ensure that the `logging-loki-s3` secret is created beforehand. The contents of this secret vary depending on the object storage in use. For more information, see Secrets and TLS Configuration.
+    <div class="note">
+
+    Ensure that the `logging-loki-s3` secret is created beforehand. The contents of this secret vary depending on the object storage in use. For more information, see Secrets and TLS Configuration.
+
+    </div>
 
 3.  Create a service account for the collector:
 
@@ -119,8 +107,11 @@ Procedure
     $ oc adm policy add-cluster-role-to-user logging-collector-logs-writer -z collector -n openshift-logging
     ```
 
-    > [!NOTE]
-    > The `ClusterRole` resource is created automatically during the Cluster Logging Operator installation and does not need to be created manually.
+    <div class="note">
+
+    The `ClusterRole` resource is created automatically during the Cluster Logging Operator installation and does not need to be created manually.
+
+    </div>
 
 5.  To collect logs, use the service account of the collector by running the following commands:
 
@@ -136,8 +127,11 @@ Procedure
     $ oc adm policy add-cluster-role-to-user collect-infrastructure-logs -z collector -n openshift-logging
     ```
 
-    > [!NOTE]
-    > The example binds the collector to all three roles (application, infrastructure, and audit), but by default, only application and infrastructure logs are collected. To collect audit logs, update your `ClusterLogForwarder` configuration to include them. Assign roles based on the specific log types required for your environment.
+    <div class="note">
+
+    The example binds the collector to all three roles (application, infrastructure, and audit), but by default, only application and infrastructure logs are collected. To collect audit logs, update your `ClusterLogForwarder` configuration to include them. Assign roles based on the specific log types required for your environment.
+
+    </div>
 
 6.  Create a `UIPlugin` CR to enable the **Log** section in the **Observe** tab:
 
@@ -187,55 +181,31 @@ Procedure
         - default-lokistack
     ```
 
-    > [!NOTE]
-    > The `dataModel` field is optional and left unset (`dataModel: ""`) by default. This allows the Cluster Logging Operator (CLO) to automatically select a data model. Currently, the CLO defaults to the ViaQ model when the field is unset, but this will change in future releases. Specifying `dataModel: ViaQ` ensures the configuration remains compatible if the default changes.
+    <div class="note">
 
-</div>
+    The `dataModel` field is optional and left unset (`dataModel: ""`) by default. This allows the Cluster Logging Operator (CLO) to automatically select a data model. Currently, the CLO defaults to the ViaQ model when the field is unset, but this will change in future releases. Specifying `dataModel: ViaQ` ensures the configuration remains compatible if the default changes.
 
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+    </div>
 
 - Verify that logs are visible in the **Log** section of the **Observe** tab in the OpenShift Container Platform web console.
 
-</div>
-
 ## Quick start with OpenTelemetry
 
-> [!IMPORTANT]
-> The OpenTelemetry Protocol (OTLP) output log forwarder is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-To configure OTLP ingestion and enable the OpenTelemetry data model, follow these steps:
+The OpenTelemetry Protocol (OTLP) output log forwarder is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div>
-
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
+
+To configure OTLP ingestion and enable the OpenTelemetry data model, follow these steps:
 
 - You have access to an OpenShift Container Platform cluster with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have access to a supported object store. For example, AWS S3, Google Cloud Storage, Azure, Swift, Minio, or OpenShift Data Foundation.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Install the `Red Hat OpenShift Logging Operator`, `Loki Operator`, and `Cluster Observability Operator (COO)` from the software catalog.
 
@@ -262,8 +232,11 @@ Procedure
         mode: openshift-logging
     ```
 
-    > [!NOTE]
-    > Ensure that the `logging-loki-s3` secret is created beforehand. The contents of this secret vary depending on the object storage in use. For more information, see "Secrets and TLS Configuration".
+    <div class="note">
+
+    Ensure that the `logging-loki-s3` secret is created beforehand. The contents of this secret vary depending on the object storage in use. For more information, see "Secrets and TLS Configuration".
+
+    </div>
 
 3.  Create a service account for the collector:
 
@@ -277,8 +250,11 @@ Procedure
     $ oc adm policy add-cluster-role-to-user logging-collector-logs-writer -z collector -n openshift-logging
     ```
 
-    > [!NOTE]
-    > The `ClusterRole` resource is created automatically during the Cluster Logging Operator installation and does not need to be created manually.
+    <div class="note">
+
+    The `ClusterRole` resource is created automatically during the Cluster Logging Operator installation and does not need to be created manually.
+
+    </div>
 
 5.  To collect logs, use the service account of the collector by running the following commands:
 
@@ -294,8 +270,11 @@ Procedure
     $ oc adm policy add-cluster-role-to-user collect-infrastructure-logs -z collector -n openshift-logging
     ```
 
-    > [!NOTE]
-    > The example binds the collector to all three roles (application, infrastructure, and audit). By default, only application and infrastructure logs are collected. To collect audit logs, update your `ClusterLogForwarder` configuration to include them. Assign roles based on the specific log types required for your environment.
+    <div class="note">
+
+    The example binds the collector to all three roles (application, infrastructure, and audit). By default, only application and infrastructure logs are collected. To collect audit logs, update your `ClusterLogForwarder` configuration to include them. Assign roles based on the specific log types required for your environment.
+
+    </div>
 
 6.  Create a `UIPlugin` CR to enable the **Log** section in the **Observe** tab:
 
@@ -354,23 +333,14 @@ Procedure
 
     - Specifies the OpenTelemetry data model.
 
-      > [!NOTE]
-      > You cannot use `lokiStack.labelKeys` when `dataModel` is `Otel`. To achieve similar functionality when `dataModel` is `Otel`, refer to "Configuring LokiStack for OTLP data ingestion".
+      <div class="note">
 
-</div>
+      You cannot use `lokiStack.labelKeys` when `dataModel` is `Otel`. To achieve similar functionality when `dataModel` is `Otel`, refer to "Configuring LokiStack for OTLP data ingestion".
 
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+      </div>
 
 - To verify that OTLP is functioning correctly, complete the following steps:
 
   1.  In the OpenShift web console, click **Observe** → **OpenShift Logging** → **LokiStack** → **Writes**.
 
   2.  Check the **Distributor - Structured Metadata** section.
-
-</div>

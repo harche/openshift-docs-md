@@ -30,30 +30,15 @@ A cluster might function with fewer than recommended resources.
 
 Before you install OpenShift Container Platform, download the installation file on the host you are using for installation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have a computer that runs Linux or macOS, with 500 MB of local disk space.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to the [Cluster Type](https://console.redhat.com/openshift/install) page on the Red Hat Hybrid Cloud Console. If you have a Red Hat account, log in with your credentials. If you do not, create an account.
 
-    > [!TIP]
-    > You can also [download the binaries for a specific OpenShift Container Platform release](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/).
+    <div class="tip">
+
+    You can also [download the binaries for a specific OpenShift Container Platform release](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/).
+
+    </div>
 
 2.  Select your infrastructure provider from the **Run it yourself** section of the page.
 
@@ -62,10 +47,6 @@ Procedure
 4.  Place the downloaded file in the directory where you want to store the installation configuration files.
 
     <div class="important">
-
-    <div class="title">
-
-    </div>
 
     - The installation program creates several files on the computer that you use to install your cluster. You must keep the installation program and the files that the installation program creates after you finish installing the cluster. Both of the files are required to delete the cluster.
 
@@ -81,34 +62,17 @@ Procedure
 
 6.  Download your installation [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret). This pull secret allows you to authenticate with the services that are provided by the included authorities, including Quay.io, which serves the container images for OpenShift Container Platform components.
 
-    > [!TIP]
-    > Alternatively, you can retrieve the installation program from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/290/), where you can specify a version of the installation program to download. However, you must have an active subscription to access this page.
+    <div class="tip">
 
-</div>
+    Alternatively, you can retrieve the installation program from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/290/), where you can specify a version of the installation program to download. However, you must have an active subscription to access this page.
+
+    </div>
 
 # Creating the installation configuration file
 
 You can customize the OpenShift Container Platform cluster you install on IBM PowerVC.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have the OpenShift Container Platform installation program and the pull secret for your cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `install-config.yaml` file.
 
@@ -130,8 +94,11 @@ Procedure
 
         1.  Optional: Select an SSH key to use to access your cluster machines.
 
-            > [!NOTE]
-            > For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+            <div class="note">
+
+            For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+
+            </div>
 
         2.  Enter a descriptive name for your cluster.
 
@@ -139,35 +106,21 @@ Procedure
 
 3.  Back up the `install-config.yaml` file so that you can use it to install multiple clusters.
 
-    > [!IMPORTANT]
-    > The `install-config.yaml` file is consumed during the installation process. If you want to reuse the file, you must back it up now.
+    <div class="important">
 
-</div>
+    The `install-config.yaml` file is consumed during the installation process. If you want to reuse the file, you must back it up now.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+    </div>
 
 - [Installation configuration parameters for IBM PowerVC](../../installing/installing_ibm_powervc/installation-config-parameters-ibm-powervc.xml#installation-config-parameters-ibm-powervc)
-
-</div>
 
 # Deploying the cluster
 
 You can install OpenShift Container Platform on a compatible cloud platform.
 
-> [!IMPORTANT]
-> You can run the `create cluster` command of the installation program only once, during initial installation.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You can run the `create cluster` command of the installation program only once, during initial installation.
 
 </div>
 
@@ -177,15 +130,7 @@ Prerequisites
 
 - You have verified that the cloud provider account on your host has the correct permissions to deploy the cluster. An account with incorrect permissions causes the installation process to fail with an error message that displays the missing permissions.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - In the directory that contains the installation program, initialize the cluster deployment by running the following command:
 
@@ -198,32 +143,27 @@ Procedure
 
   - To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 When the cluster deployment completes successfully:
 
-</div>
-
 - The terminal displays directions for accessing your cluster, including a link to the web console and credentials for the `kubeadmin` user.
 
 - Credential information also outputs to `<installation_directory>/.openshift_install.log`.
 
-> [!IMPORTANT]
-> Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
+<div class="important">
 
-<div class="formalpara">
+Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
 
-<div class="title">
+</div>
 
-Example output
+<div class="formalpara-title">
+
+**Example output**
 
 </div>
 
@@ -236,13 +176,7 @@ INFO Login to the console with user: "kubeadmin", and password: "password"
 INFO Time elapsed: 36m22s
 ```
 
-</div>
-
 <div class="important">
-
-<div class="title">
-
-</div>
 
 - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
@@ -254,16 +188,11 @@ INFO Time elapsed: 36m22s
 
 To manage your cluster and deploy applications from the command line, install the OpenShift CLI (`oc`) binary on Linux.
 
-> [!IMPORTANT]
-> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
->
-> Download and install the new version of `oc`.
+<div class="important">
 
-<div>
+If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
 
-<div class="title">
-
-Procedure
+Download and install the new version of `oc`.
 
 </div>
 
@@ -289,38 +218,21 @@ Procedure
     $ echo $PATH
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - After you install the OpenShift CLI, it is available using the `oc` command:
 
   ``` terminal
   $ oc <command>
   ```
 
-</div>
-
 # Installing the OpenShift CLI on Windows
 
 To manage your cluster and deploy applications from the command line, install OpenShift CLI (`oc`) binary on Windows.
 
-> [!IMPORTANT]
-> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
->
-> Download and install the new version of `oc`.
+<div class="important">
 
-<div>
+If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
 
-<div class="title">
-
-Procedure
+Download and install the new version of `oc`.
 
 </div>
 
@@ -340,38 +252,21 @@ Procedure
     C:\> path
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - After you install the OpenShift CLI, it is available using the `oc` command:
 
   ``` terminal
   C:\> oc <command>
   ```
 
-</div>
-
 # Installing the OpenShift CLI on macOS
 
 To manage your cluster and deploy applications from the command line, install the OpenShift CLI (`oc`) binary on macOS.
 
-> [!IMPORTANT]
-> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
->
-> Download and install the new version of `oc`.
+<div class="important">
 
-<div>
+If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
 
-<div class="title">
-
-Procedure
+Download and install the new version of `oc`.
 
 </div>
 
@@ -383,8 +278,11 @@ Procedure
 
 4.  Click **Download Now** next to the **OpenShift v4.17 macOS Clients** entry and save the file.
 
-    > [!NOTE]
-    > For macOS arm64, choose the **OpenShift v4.17 macOS arm64 Client** entry.
+    <div class="note">
+
+    For macOS arm64, choose the **OpenShift v4.17 macOS arm64 Client** entry.
+
+    </div>
 
 5.  Unpack and unzip the archive.
 
@@ -396,35 +294,15 @@ Procedure
     $ echo $PATH
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify your installation by using an `oc` command:
 
   ``` terminal
   $ oc <command>
   ```
 
-</div>
-
 # Verifying cluster status
 
 You can verify your OpenShift Container Platform cluster’s status during or after installation.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the cluster environment, export the administrator’s kubeconfig file:
 
@@ -460,35 +338,15 @@ Procedure
     $ oc get pods -A
     ```
 
-</div>
-
 # Logging in to the cluster by using the CLI
 
 To log in to your cluster as the default system user, export the `kubeconfig` file. This configuration enables the CLI to authenticate and connect to the specific API server created during OpenShift Container Platform installation.
 
 The `kubeconfig` file is specific to a cluster and is created during OpenShift Container Platform installation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You deployed an OpenShift Container Platform cluster.
 
 - You installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Export the `kubeadmin` credentials by running the following command:
 
@@ -507,11 +365,9 @@ Procedure
     $ oc whoami
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -519,21 +375,7 @@ Procedure
     system:admin
     ```
 
-    </div>
-
-</div>
-
-<div id="additional-resources_installing-ibm-powervc-customizations-console">
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Accessing the web console](../../web_console/web-console.xml#web-console)
-
-</div>
 
 # Telemetry access for OpenShift Container Platform
 
@@ -541,14 +383,4 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
-<div id="additional-resources_installing-ibm-powervc-customizations-telemetry">
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
-
-</div>

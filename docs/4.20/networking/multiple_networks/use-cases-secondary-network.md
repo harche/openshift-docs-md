@@ -74,8 +74,11 @@ By creating a `ClusterUserDefinedNetwork` CR, administrators can create and defi
 
 User-defined networks and network attachment definitions can serve as both the primary and secondary network interface, and each support `layer2` and `layer3` topologies.
 
-> [!NOTE]
-> As of OpenShift Container Platform 4.19, the use of the `Localnet` topology by `ClusterUserDefinedNetwork` CRs is generally available. This configuration is the preferred method for connecting physical networks to virtual networks. Or, you can use the `NetworkAttachmentDefinition` CR to create secondary networks with `Localnet` topologies.
+<div class="note">
+
+As of OpenShift Container Platform 4.19, the use of the `Localnet` topology by `ClusterUserDefinedNetwork` CRs is generally available. This configuration is the preferred method for connecting physical networks to virtual networks. Or, you can use the `NetworkAttachmentDefinition` CR to create secondary networks with `Localnet` topologies.
+
+</div>
 
 The following section highlights the supported features of the `UserDefinedNetwork` and `NetworkAttachmentDefinition` CRs when used as either the primary or secondary network. A separate table for the `ClusterUserDefinedNetwork` CR is also included.
 
@@ -101,33 +104,33 @@ Must be enabled in the namespace, and it is only available between OVN-Kubernete
 `NetworkPolicy` resource
 When creating a `ClusterUserDefinedNetwork` CR with a primary network type, network policies must be created *after* the `UserDefinedNetwork` CR.
 
-| Network feature | Layer2 topology | Layer3 topology | Localnet topology |
-|----|----|----|----|
-| east-west traffic | ✓ | ✓ | ✓ (`NetworkAttachmentDefinition` CR only) |
-| north-south traffic | X | X | ✓ (`NetworkAttachmentDefinition` CR only) |
-| Persistent IPs | ✓ | X | ✓ (`NetworkAttachmentDefinition` CR only) |
-| Services | X | X | X |
-| Routes | X | X | X |
-| `EgressIP` resource | X | X | X |
-| Multicast | X | X | X |
-| `NetworkPolicy` resource | X | X | X |
-| `MultinetworkPolicy` resource | ✓ | ✓ | ✓ (`NetworkAttachmentDefinition` CR only) |
+| Network feature               | Layer2 topology | Layer3 topology | Localnet topology                         |
+|-------------------------------|-----------------|-----------------|-------------------------------------------|
+| east-west traffic             | ✓               | ✓               | ✓ (`NetworkAttachmentDefinition` CR only) |
+| north-south traffic           | X               | X               | ✓ (`NetworkAttachmentDefinition` CR only) |
+| Persistent IPs                | ✓               | X               | ✓ (`NetworkAttachmentDefinition` CR only) |
+| Services                      | X               | X               | X                                         |
+| Routes                        | X               | X               | X                                         |
+| `EgressIP` resource           | X               | X               | X                                         |
+| Multicast                     | X               | X               | X                                         |
+| `NetworkPolicy` resource      | X               | X               | X                                         |
+| `MultinetworkPolicy` resource | ✓               | ✓               | ✓ (`NetworkAttachmentDefinition` CR only) |
 
 Secondary network support matrix for `UserDefinedNetwork` and `NetworkAttachmentDefinition` CRs
 
 The Localnet topology is unavailable for use with the `UserDefinedNetwork` CR. It is only supported on secondary networks for `NetworkAttachmentDefinition` CRs.
 
-| Network feature | Layer2 topology | Layer3 topology | Localnet topology |
-|----|----|----|----|
-| east-west traffic | ✓ | ✓ | ✓ |
-| north-south traffic | ✓ | ✓ | ✓ |
-| Persistent IPs | ✓ | X | ✓ |
-| Services | ✓ | ✓ |  |
-| Routes | X | X |  |
-| `EgressIP` resource | ✓ | ✓ |  |
-| Multicast | X | ✓ |  |
-| `MultinetworkPolicy` resource | X | X | ✓ |
-| `NetworkPolicy` resource | ✓ | ✓ |  |
+| Network feature               | Layer2 topology | Layer3 topology | Localnet topology |
+|-------------------------------|-----------------|-----------------|-------------------|
+| east-west traffic             | ✓               | ✓               | ✓                 |
+| north-south traffic           | ✓               | ✓               | ✓                 |
+| Persistent IPs                | ✓               | X               | ✓                 |
+| Services                      | ✓               | ✓               |                   |
+| Routes                        | X               | X               |                   |
+| `EgressIP` resource           | ✓               | ✓               |                   |
+| Multicast                     | X               | ✓               |                   |
+| `MultinetworkPolicy` resource | X               | X               | ✓                 |
+| `NetworkPolicy` resource      | ✓               | ✓               |                   |
 
 Support matrix for `ClusterUserDefinedNetwork` CRs
 

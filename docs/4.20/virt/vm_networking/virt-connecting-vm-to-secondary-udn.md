@@ -2,8 +2,11 @@ You can connect a virtual machine (VM) to an OVN-Kubernetes localnet secondary n
 
 An OVN-Kubernetes secondary network is compatible with the [multi-network policy API](../../networking/multiple_networks/secondary_networks/configuring-multi-network-policy.xml#compatibility-with-multi-network-policy_configuring-additional-network) which provides the `MultiNetworkPolicy` custom resource definition (CRD) to control traffic flow to and from VMs.
 
-> [!IMPORTANT]
-> You must use the `ipBlock` attribute to define network policy ingress and egress rules for specific CIDR blocks. Using pod or namespace selector policy peers is not supported.
+<div class="important">
+
+You must use the `ipBlock` attribute to define network policy ingress and egress rules for specific CIDR blocks. Using pod or namespace selector policy peers is not supported.
+
+</div>
 
 A localnet topology connects the secondary network to the physical underlay. This enables both east-west cluster traffic and access to services running outside the cluster, but it requires additional configuration of the underlying Open vSwitch (OVS) system on cluster nodes.
 
@@ -11,29 +14,11 @@ A localnet topology connects the secondary network to the physical underlay. Thi
 
 You can create a secondary cluster-scoped user-defined-network (CUDN) for the localnet network topology by using the CLI.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to the cluster as a user with `cluster-admin` privileges.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You installed the Kubernetes NMState Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `NodeNetworkConfigurationPolicy` object to map the OVN-Kubernetes secondary network to an Open vSwitch (OVS) bridge.
 
@@ -65,8 +50,11 @@ Procedure
 
     - The state of the mapping. Must be either `present` to add the mapping or `absent` to remove the mapping. The default value is `present`.
 
-      > [!IMPORTANT]
-      > OpenShift Virtualization does not support Linux bridge bonding modes 0, 5, and 6. For more information, see [Which bonding modes work when used with a bridge that virtual machine guests or containers connect to?](https://access.redhat.com/solutions/67546).
+      <div class="important">
+
+      OpenShift Virtualization does not support Linux bridge bonding modes 0, 5, and 6. For more information, see [Which bonding modes work when used with a bridge that virtual machine guests or containers connect to?](https://access.redhat.com/solutions/67546).
+
+      </div>
 
 2.  Apply the `NodeNetworkConfigurationPolicy` manifest by running the following command:
 
@@ -131,33 +119,13 @@ Procedure
     \<filename\>
     Specifies the name of your `ClusterUserDefinedNetwork` manifest YAML file.
 
-</div>
-
 # Creating a namespace for secondary user-defined networks by using the CLI
 
 You can create a namespace to be used with an existing secondary cluster-scoped user-defined network (CUDN) by using the CLI.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to the cluster as a user with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `Namespace` object similar to the following example:
 
@@ -180,31 +148,11 @@ Procedure
     \<filename\>
     Specifies the name of your `Namespace` manifest YAML file.
 
-</div>
-
 # Attaching a virtual machine to secondary user-defined networks by using the CLI
 
 You can connect a virtual machine (VM) to multiple secondary cluster-scoped user-defined networks (CUDNs) by configuring the interface binding.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `VirtualMachine` manifest to add the CUDN interface details, as in the following example:
 
@@ -258,10 +206,11 @@ Procedure
     \<filename\>
     Specifies the name of your `VirtualMachine` manifest YAML file.
 
-    > [!NOTE]
-    > When running OpenShift Virtualization on IBM Z®, be aware that certain network interfaces, such as OSA, RoCE, and HiperSockets, only forward network traffic to devices that are registered with the respective interface. As a result, any traffic that is destined for unregistered devices is not forwarded. For more information, see [OSA interface traffic forwarding](https://www.ibm.com/docs/en/linux-on-systems?topic=choices-osa-interface-traffic-forwarding) (IBM documentation).
+    <div class="note">
 
-</div>
+    When running OpenShift Virtualization on IBM Z®, be aware that certain network interfaces, such as OSA, RoCE, and HiperSockets, only forward network traffic to devices that are registered with the respective interface. As a result, any traffic that is destined for unregistered devices is not forwarded. For more information, see [OSA interface traffic forwarding](https://www.ibm.com/docs/en/linux-on-systems?topic=choices-osa-interface-traffic-forwarding) (IBM documentation).
+
+    </div>
 
 # Additional resources
 

@@ -63,14 +63,17 @@ Cluster administrators can configure the timeout values for the kubelet’s live
 
 You can update the `timeoutSeconds` value on the `livenessProbe`, `readinessProbe`, and `startupProbe` parameters of the router container.
 
-| Parameter | Description |
-|----|----|
-| `livenessProbe` | The `livenessProbe` reports to the kubelet whether a pod is dead and needs to be restarted. |
+| Parameter        | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `livenessProbe`  | The `livenessProbe` reports to the kubelet whether a pod is dead and needs to be restarted.                                                                                                                                                                                                                                                                                                                                                                     |
 | `readinessProbe` | The `readinessProbe` reports whether a pod is healthy or unhealthy. When the readiness probe reports an unhealthy pod, then the kubelet marks the pod as not ready to accept traffic. Subsequently, the endpoints for that pod are marked as not ready, and this status propagates to the kube-proxy. On cloud platforms with a configured load balancer, the kube-proxy communicates to the cloud load-balancer not to send traffic to the node with that pod. |
-| `startupProbe` | The `startupProbe` gives the router pod up to 2 minutes to initialize before the kubelet begins sending the router liveness and readiness probes. This initialization time can prevent routers with many routes or endpoints from prematurely restarting. |
+| `startupProbe`   | The `startupProbe` gives the router pod up to 2 minutes to initialize before the kubelet begins sending the router liveness and readiness probes. This initialization time can prevent routers with many routes or endpoints from prematurely restarting.                                                                                                                                                                                                       |
 
-> [!IMPORTANT]
-> The timeout configuration option is an advanced tuning technique that can be used to work around issues. However, these issues should eventually be diagnosed and possibly a support case or [Jira issue](https://issues.redhat.com/secure/CreateIssueDetails!init.jspa?pid=12332330&summary=Summary&issuetype=1&priority=10200&versions=12385624) opened for any issues that causes probes to time out.
+<div class="important">
+
+The timeout configuration option is an advanced tuning technique that can be used to work around issues. However, these issues should eventually be diagnosed and possibly a support case or [Jira issue](https://issues.redhat.com/secure/CreateIssueDetails!init.jspa?pid=12332330&summary=Summary&issuetype=1&priority=10200&versions=12385624) opened for any issues that causes probes to time out.
+
+</div>
 
 The following example demonstrates how you can directly patch the default router deployment to set a 5-second timeout for the liveness and readiness probes:
 
@@ -78,11 +81,9 @@ The following example demonstrates how you can directly patch the default router
 $ oc -n openshift-ingress patch deploy/router-default --type=strategic --patch='{"spec":{"template":{"spec":{"containers":[{"name":"router","livenessProbe":{"timeoutSeconds":5},"readinessProbe":{"timeoutSeconds":5}}]}}}}'
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
@@ -92,8 +93,6 @@ $ oc -n openshift-ingress describe deploy/router-default | grep -e Liveness: -e 
     Readiness:  http-get http://:1936/healthz/ready delay=0s timeout=5s period=10s #success=1 #failure=3
 ```
 
-</div>
-
 # Configuring HAProxy reload interval
 
 When you update a route or an endpoint associated with a route, the OpenShift Container Platform router updates the configuration for HAProxy. Then, HAProxy reloads the updated configuration for those changes to take effect. When HAProxy reloads, it generates a new process that handles new connections using the updated configuration.
@@ -102,14 +101,9 @@ HAProxy keeps the old process running to handle existing connections until those
 
 The default minimum HAProxy reload interval is five seconds. You can configure an Ingress Controller using its `spec.tuningOptions.reloadInterval` field to set a longer minimum reload interval.
 
-> [!WARNING]
-> Setting a large value for the minimum HAProxy reload interval can cause latency in observing updates to routes and their endpoints. To lessen the risk, avoid setting a value larger than the tolerable latency for updates.
+<div class="warning">
 
-<div>
-
-<div class="title">
-
-Procedure
+Setting a large value for the minimum HAProxy reload interval can cause latency in observing updates to routes and their endpoints. To lessen the risk, avoid setting a value larger than the tolerable latency for updates.
 
 </div>
 
@@ -118,5 +112,3 @@ Procedure
   ``` terminal
   $ oc -n openshift-ingress-operator patch ingresscontrollers/default --type=merge --patch='{"spec":{"tuningOptions":{"reloadInterval":"15s"}}}'
   ```
-
-</div>

@@ -8,14 +8,14 @@ If `oc` command-specific issues arise, increase the `oc` log level to output API
 
 `oc` log levels range from 1 to 10. The following table provides a list of `oc` log levels, along with their descriptions.
 
-| Log level | Description |
-|----|----|
-| 1 to 5 | No additional logging to stderr. |
-| 6 | Log API requests to stderr. |
-| 7 | Log API requests and headers to stderr. |
-| 8 | Log API requests, headers, and body, plus API response headers and body to stderr. |
-| 9 | Log API requests, headers, and body, API response headers and body, plus `curl` requests to stderr. |
-| 10 | Log API requests, headers, and body, API response headers and body, plus `curl` requests to stderr, in verbose detail. |
+| Log level | Description                                                                                                            |
+|-----------|------------------------------------------------------------------------------------------------------------------------|
+| 1 to 5    | No additional logging to stderr.                                                                                       |
+| 6         | Log API requests to stderr.                                                                                            |
+| 7         | Log API requests and headers to stderr.                                                                                |
+| 8         | Log API requests, headers, and body, plus API response headers and body to stderr.                                     |
+| 9         | Log API requests, headers, and body, API response headers and body, plus `curl` requests to stderr.                    |
+| 10        | Log API requests, headers, and body, API response headers and body, plus `curl` requests to stderr, in verbose detail. |
 
 OpenShift CLI (`oc`) log levels
 
@@ -25,25 +25,9 @@ You can investigate OpenShift CLI (`oc`) issues by increasing the command’s lo
 
 The OpenShift Container Platform user’s current session token is typically included in logged `curl` requests where required. You can also obtain the current user’s session token manually, for use when testing aspects of an `oc` command’s underlying process step-by-step.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Specify the `oc` log level when running an `oc` command:
 
@@ -65,18 +49,12 @@ Procedure
   $ oc whoami -t
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
   ``` text
   sha256~RCV3Qcn7H-OEfqCGVI0CvnZ6...
   ```
-
-  </div>
-
-</div>

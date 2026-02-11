@@ -2,27 +2,11 @@
 
 Review cluster node health status, resource consumption statistics, and node logs. Additionally, query `kubelet` status on individual nodes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - List the name, status, and role for all nodes in the cluster:
 
@@ -42,35 +26,15 @@ Procedure
   $ oc adm top node my-node
   ```
 
-</div>
-
 # Querying the kubelet’s status on a node
 
 You can review cluster node health status, resource consumption statistics, and node logs. Additionally, you can query `kubelet` status on individual nodes.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - Your API service is still functional.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  The kubelet is managed using a systemd service on each node. Review the kubelet’s status by querying the `kubelet` systemd service within a debug pod.
 
@@ -80,8 +44,11 @@ Procedure
         $ oc debug node/my-node
         ```
 
-        > [!NOTE]
-        > If you are running `oc debug` on a control plane node, you can find administrative `kubeconfig` files in the `/etc/kubernetes/static-pod-resources/kube-apiserver-certs/secrets/node-kubeconfigs` directory.
+        <div class="note">
+
+        If you are running `oc debug` on a control plane node, you can find administrative `kubeconfig` files in the `/etc/kubernetes/static-pod-resources/kube-apiserver-certs/secrets/node-kubeconfigs` directory.
+
+        </div>
 
     2.  Set `/host` as the root directory within the debug shell. The debug pod mounts the host’s root file system in `/host` within the pod. By changing the root directory to `/host`, you can run binaries contained in the host’s executable paths:
 
@@ -89,8 +56,11 @@ Procedure
         # chroot /host
         ```
 
-        > [!NOTE]
-        > OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. However, if the OpenShift Container Platform API is not available, or `kubelet` is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>` instead.
+        <div class="note">
+
+        OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. However, if the OpenShift Container Platform API is not available, or `kubelet` is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>` instead.
+
+        </div>
 
     3.  Check whether the `kubelet` systemd service is active on the node:
 
@@ -104,19 +74,9 @@ Procedure
         # systemctl status kubelet
         ```
 
-</div>
-
 # Querying cluster node journal logs
 
 You can gather `journald` unit logs and other logs within `/var/log` on individual cluster nodes.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -125,16 +85,6 @@ Prerequisites
 - Your API service is still functional.
 
 - You have SSH access to your hosts.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Query `kubelet` `journald` unit logs from OpenShift Container Platform cluster nodes. The following example queries control plane nodes only:
 
@@ -164,7 +114,8 @@ Procedure
         $ ssh core@<master-node>.<cluster_name>.<base_domain> sudo tail -f /var/log/openshift-apiserver/audit.log
         ```
 
-        > [!NOTE]
-        > OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. Before attempting to collect diagnostic data over SSH, review whether the data collected by running `oc adm must gather` and other `oc` commands is sufficient instead. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>`.
+        <div class="note">
 
-</div>
+        OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. Before attempting to collect diagnostic data over SSH, review whether the data collected by running `oc adm must gather` and other `oc` commands is sufficient instead. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>`.
+
+        </div>

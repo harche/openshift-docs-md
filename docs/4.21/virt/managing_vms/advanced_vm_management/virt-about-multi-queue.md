@@ -2,8 +2,11 @@ Use multi-queue functionality to scale network throughput and performance on vir
 
 By default, the `queueCount` value, which is derived from the domain XML, is determined by the number of vCPUs allocated to a VM. Network performance does not scale as the number of vCPUs increases. Additionally, because virtio-net has only one Tx and Rx queue, guests cannot transmit or retrieve packs in parallel.
 
-> [!NOTE]
-> Enabling virtio-net multiqueue does not offer significant improvements when the number of vNICs in a guest instance is proportional to the number of vCPUs.
+<div class="note">
+
+Enabling virtio-net multiqueue does not offer significant improvements when the number of vNICs in a guest instance is proportional to the number of vCPUs.
+
+</div>
 
 # Known limitations
 
@@ -17,14 +20,6 @@ By default, the `queueCount` value, which is derived from the domain XML, is det
 
 You can enable multi-queue functionality for interfaces configured with a VirtIO model.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Set the `networkInterfaceMultiqueue` value to `true` in the `VirtualMachine` manifest file of your VM to enable multi-queue functionality:
 
     ``` yaml
@@ -37,5 +32,3 @@ Procedure
     ```
 
 2.  Save the `VirtualMachine` manifest file to apply your changes.
-
-</div>

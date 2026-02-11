@@ -4,21 +4,11 @@ When using the `cluster-compare` plugin, you might see unexpected results, such 
 
 The plugin might report a missing resource even though the cluster custom resource (CR) is present in the cluster.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Ensure you are using the latest version of the `cluster-compare` plugin. For more information, see "Installing the cluster-compare plugin".
 
 2.  Ensure you are using the most up-to-date version of the reference configuration.
 
 3.  Ensure that template has the same `apiVersion`, `kind`, `name`, and `namespace` fields as the cluster CR.
-
-</div>
 
 # Troubleshooting multiple template matches for the same CR
 
@@ -26,19 +16,9 @@ In some cases, more than one cluster CR can match a template because they featur
 
 You can optionally configure your reference configuration to avoid this situation.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Ensure the templates feature distinct `apiVersion`, `namespace`, and `kind` values to ensure no duplicate template matching.
 
 2.  Use a user configuration file to manually match a template to a CR. For more information, see "Configuring manual matching between CRs and templates".
-
-</div>
 
 # Additional resources
 

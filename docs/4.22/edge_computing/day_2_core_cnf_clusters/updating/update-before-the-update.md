@@ -4,17 +4,13 @@ Before you start the cluster update, you must pause worker nodes, back up the et
 
 You must pause the worker nodes before you proceed with the update. In the following example, there are 2 `mcp` groups, `mcp-1` and `mcp-2`. You patch the `spec.paused` field to `true` for each of the `MachineConfigPool` groups.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 \+ . Patch the `mcp` CRs to pause the nodes and drain and remove the pods from those nodes by running the following command:
-
-</div>
 
 \+
 
@@ -34,11 +30,9 @@ $ oc patch mcp/mcp-2 --type merge --patch '{"spec":{"paused":true}}'
     $ oc get mcp -o json | jq -r '["MCP","Paused"], ["---","------"], (.items[] | [(.metadata.name), (.spec.paused)]) | @tsv' | grep -v worker
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -50,10 +44,11 @@ $ oc patch mcp/mcp-2 --type merge --patch '{"spec":{"paused":true}}'
     mcp-2   true
     ```
 
-    </div>
+<div class="note">
 
-> [!NOTE]
-> The default control plane and worker `mcp` groups are not changed during an update.
+The default control plane and worker `mcp` groups are not changed during an update.
+
+</div>
 
 # Backup the etcd database before you proceed with the update
 
@@ -63,14 +58,9 @@ You must backup the etcd database before you proceed with the update.
 
 Follow these steps to back up etcd data by creating an etcd snapshot and backing up the resources for the static pods. This backup can be saved and used at a later time if you need to restore etcd.
 
-> [!IMPORTANT]
-> Only save a backup from a single control plane host. Do not take a backup from each control plane host in the cluster.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Only save a backup from a single control plane host. Do not take a backup from each control plane host in the cluster.
 
 </div>
 
@@ -78,18 +68,11 @@ Prerequisites
 
 - You have checked whether the cluster-wide proxy is enabled.
 
-  > [!TIP]
-  > You can check whether the proxy is enabled by reviewing the output of `oc get proxy cluster -o yaml`. The proxy is enabled if the `httpProxy`, `httpsProxy`, and `noProxy` fields have values set.
+  <div class="tip">
 
-</div>
+  You can check whether the proxy is enabled by reviewing the output of `oc get proxy cluster -o yaml`. The proxy is enabled if the `httpProxy`, `httpsProxy`, and `noProxy` fields have values set.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  Start a debug session as root for a control plane node:
 
@@ -119,18 +102,19 @@ Procedure
 
 4.  Run the `cluster-backup.sh` script in the debug shell and pass in the location to save the backup to.
 
-    > [!TIP]
-    > The `cluster-backup.sh` script is maintained as a component of the etcd Cluster Operator and is a wrapper around the `etcdctl snapshot save` command.
+    <div class="tip">
+
+    The `cluster-backup.sh` script is maintained as a component of the etcd Cluster Operator and is a wrapper around the `etcdctl snapshot save` command.
+
+    </div>
 
     ``` terminal
     sh-4.4# /usr/local/bin/cluster-backup.sh /home/core/assets/backup
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example script output
+    **Example script output**
 
     </div>
 
@@ -153,46 +137,29 @@ Procedure
     snapshot db and kube resources are successfully saved to /home/core/assets/backup
     ```
 
-    </div>
-
     In this example, two files are created in the `/home/core/assets/backup/` directory on the control plane host:
 
     - `snapshot_<datetimestamp>.db`: This file is the etcd snapshot. The `cluster-backup.sh` script confirms its validity.
 
     - `static_kuberesources_<datetimestamp>.tar.gz`: This file contains the resources for the static pods. If etcd encryption is enabled, it also contains the encryption keys for the etcd snapshot.
 
-      > [!NOTE]
-      > If etcd encryption is enabled, it is recommended to store this second file separately from the etcd snapshot for security reasons. However, this file is required to restore from the etcd snapshot.
-      >
-      > Keep in mind that etcd encryption only encrypts values, not keys. This means that resource types, namespaces, and object names are unencrypted.
+      <div class="note">
 
-</div>
+      If etcd encryption is enabled, it is recommended to store this second file separately from the etcd snapshot for security reasons. However, this file is required to restore from the etcd snapshot.
+
+      Keep in mind that etcd encryption only encrypts values, not keys. This means that resource types, namespaces, and object names are unencrypted.
+
+      </div>
 
 ## Creating a single automated etcd backup
 
 Follow these steps to create a single etcd backup by creating and applying a custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have access to the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - If dynamically-provisioned storage is available, complete the following steps to create a single automated etcd backup:
 
@@ -227,11 +194,9 @@ Procedure
       $ oc get pvc
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -240,10 +205,11 @@ Procedure
       etcd-backup-pvc   Bound                                                       51s
       ```
 
-      </div>
+      <div class="note">
 
-      > [!NOTE]
-      > Dynamic PVCs stay in the `Pending` state until they are mounted.
+      Dynamic PVCs stay in the `Pending` state until they are mounted.
+
+      </div>
 
   4.  Create a CR file named `etcd-single-backup.yaml` with contents such as the following example:
 
@@ -321,11 +287,9 @@ Procedure
       $ oc get pv
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -333,8 +297,6 @@ Procedure
       NAME                    CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS                REASON   AGE
       etcd-backup-pv-fs       100Gi      RWO            Retain           Available           etcd-backup-local-storage            10s
       ```
-
-      </div>
 
   5.  Create a PVC named `etcd-backup-pvc.yaml` with contents such as the following example:
 
@@ -381,31 +343,13 @@ Procedure
       $ oc apply -f etcd-single-backup.yaml
       ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Backing up etcd](../../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd)
-
-</div>
 
 # Checking the cluster health
 
 You should check the cluster health often during the update. Check for the node status, cluster Operators status and failed pods.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Check the status of the cluster Operators by running the following command:
 
@@ -413,11 +357,9 @@ Procedure
     $ oc get co
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -435,19 +377,15 @@ Procedure
     storage                                    4.14.34   True        False         False      4d22h
     ```
 
-    </div>
-
 2.  Check the status of the cluster nodes:
 
     ``` terminal
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -460,12 +398,8 @@ Procedure
     worker-1       Ready    mcp-2,worker           4d22h   v1.27.15+6147456
     ```
 
-    </div>
-
 3.  Check that there are no in-progress or failed pods. There should be no pods returned when you run the following command.
 
     ``` terminal
     $ oc get po -A | grep -E -iv 'running|complete'
     ```
-
-</div>

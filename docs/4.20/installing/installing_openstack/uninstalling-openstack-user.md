@@ -4,28 +4,13 @@ You can remove a cluster that you deployed to Red Hat OpenStack Platform (RHOSP
 
 The Ansible playbooks that simplify the removal process on user-provisioned infrastructure require several Python modules. On the machine where you will run the process, add the modules' repositories and then download them.
 
-> [!NOTE]
-> These instructions assume that you are using Red Hat Enterprise Linux (RHEL) 8.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+These instructions assume that you are using Red Hat Enterprise Linux (RHEL) 8.
 
 </div>
 
 - Python 3 is installed on your machine.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  On a command line, add the repositories:
 
@@ -68,19 +53,9 @@ Procedure
     $ sudo alternatives --set python /usr/bin/python3
     ```
 
-</div>
-
 # Removing a cluster from RHOSP that uses your own infrastructure
 
 You can remove an OpenShift Container Platform cluster on Red Hat OpenStack Platform (RHOSP) that uses your own infrastructure. To complete the removal process quickly, run several Ansible playbooks.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Python 3 is installed on your machine.
 
@@ -91,16 +66,6 @@ Prerequisites
 - You modified the playbooks that are prefixed with `down-` to reflect any changes that you made to their corresponding installation playbooks. For example, changes to the `bootstrap.yaml` file are reflected in the `down-bootstrap.yaml` file.
 
 - All of the playbooks are in a common directory.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  On a command line, run the playbooks that you downloaded:
 
@@ -115,7 +80,5 @@ Procedure
     ```
 
 2.  Remove any DNS record changes you made for the OpenShift Container Platform installation.
-
-</div>
 
 OpenShift Container Platform is removed from your infrastructure.

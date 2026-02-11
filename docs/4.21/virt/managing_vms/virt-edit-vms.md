@@ -8,25 +8,7 @@ To edit a VM to configure disk sharing by using virtual disks or LUN, see [Confi
 
 You can change the instance type associated with a running virtual machine (VM) by using the web console. The change takes effect immediately.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You created the VM by using an instance type.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform web console, click **Virtualization** → **VirtualMachines**.
 
@@ -44,15 +26,7 @@ Procedure
 
 6.  Click **Save**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Click the **YAML** tab.
 
@@ -60,19 +34,9 @@ Verification
 
 3.  Review the VM YAML to confirm that the instance type changed.
 
-</div>
-
 # Hot plugging memory on a virtual machine
 
 You can add or remove the amount of memory allocated to a virtual machine (VM) without having to restart the VM by using the OpenShift Container Platform web console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines**.
 
@@ -82,37 +46,33 @@ Procedure
 
 4.  Enter the required amount of memory and click **Save**.
 
-    > [!NOTE]
-    > By hot plugging, you can increase the total amount of memory of a VM up to four times the default initial amount. Exceeding this limit requires a restart.
+    <div class="note">
+
+    By hot plugging, you can increase the total amount of memory of a VM up to four times the default initial amount. Exceeding this limit requires a restart.
+
+    </div>
 
     The system applies these changes immediately. If the VM is able to be migrated, a live migration is triggered. If not, or if the changes cannot be live-updated, a `RestartRequired` condition is added to the VM.
 
-    > [!NOTE]
-    > Memory hot plugging for virtual machines requires guest operating system support for the `virtio-mem` driver. This support depends on the driver being included and enabled within the guest operating system, not on specific upstream kernel versions.
-    >
-    > Supported guest operating systems:
-    >
-    > - RHEL 9.4 and later
-    >
-    > - RHEL 8.10 and later (hot-unplug is disabled by default)
-    >
-    > - Other Linux guests require kernel version 5.16 or later and the `virtio-mem` kernel module
-    >
-    > - Windows guests require `virtio-mem` driver version 100.95.104.26200 or later
+    <div class="note">
 
-</div>
+    Memory hot plugging for virtual machines requires guest operating system support for the `virtio-mem` driver. This support depends on the driver being included and enabled within the guest operating system, not on specific upstream kernel versions.
+
+    Supported guest operating systems:
+
+    - RHEL 9.4 and later
+
+    - RHEL 8.10 and later (hot-unplug is disabled by default)
+
+    - Other Linux guests require kernel version 5.16 or later and the `virtio-mem` kernel module
+
+    - Windows guests require `virtio-mem` driver version 100.95.104.26200 or later
+
+    </div>
 
 # Hot plugging CPUs on a virtual machine
 
 You can increase or decrease the number of CPU sockets allocated to a virtual machine (VM) without having to restart the VM by using the OpenShift Container Platform web console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines**.
 
@@ -124,45 +84,31 @@ Procedure
 
 5.  Enter the desired number of vCPU sockets and click **Save**.
 
-    > [!NOTE]
-    > By hot plugging, you can increase the total number of vCPU sockets of a VM up to four times the default initial number. Exceeding this limit requires a restart.
+    <div class="note">
+
+    By hot plugging, you can increase the total number of vCPU sockets of a VM up to four times the default initial number. Exceeding this limit requires a restart.
+
+    </div>
 
     If the VM is migratable, a live migration is triggered. If not, or if the changes cannot be live-updated, a `RestartRequired` condition is added to the VM.
 
-    > [!NOTE]
-    > If a VM has the `spec.template.spec.domain.devices.networkInterfaceMultiQueue` field enabled and CPUs are hot plugged, the following behavior occurs:
-    >
-    > - Existing network interfaces that you attach before the CPU hot plug retain their original queue count, even after you add more virtual CPUs (vCPUs). The underlying virtualization technology causes this expected behavior.
-    >
-    > - To update the queue count of existing interfaces to match the new vCPU configuration, you can restart the VM. A restart is only necessary if the update improves performance.
-    >
-    > - New VirtIO network interfaces that you hot plugged after the CPU hotplug automatically receive a queue count that matches the updated vCPU configuration.
+    <div class="note">
 
-</div>
+    If a VM has the `spec.template.spec.domain.devices.networkInterfaceMultiQueue` field enabled and CPUs are hot plugged, the following behavior occurs:
+
+    - Existing network interfaces that you attach before the CPU hot plug retain their original queue count, even after you add more virtual CPUs (vCPUs). The underlying virtualization technology causes this expected behavior.
+
+    - To update the queue count of existing interfaces to match the new vCPU configuration, you can restart the VM. A restart is only necessary if the update improves performance.
+
+    - New VirtIO network interfaces that you hot plugged after the CPU hotplug automatically receive a queue count that matches the updated vCPU configuration.
+
+    </div>
 
 # Editing a virtual machine by using the CLI
 
 You can edit a virtual machine (VM) by using the command line.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You installed the `oc` CLI.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Obtain the virtual machine configuration by running the following command:
 
@@ -182,19 +128,9 @@ Procedure
       $ oc apply vm <vm_name> -n <namespace>
       ```
 
-</div>
-
 # Adding a disk to a virtual machine
 
 You can add a virtual disk to a virtual machine (VM) by using the OpenShift Container Platform web console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
 
@@ -210,28 +146,29 @@ Procedure
 
 5.  Click **Add**.
 
-    > [!NOTE]
-    > If the VM is running, you must restart the VM to apply the change.
+    <div class="note">
 
-</div>
+    If the VM is running, you must restart the VM to apply the change.
+
+    </div>
 
 ## Storage fields
 
 To optimize storage performance and ensure data availability for your workloads, configure the storage fields to define the source, size, and disk characteristics of your virtual machine (VM).
 
-| Field | Description |
-|----|----|
-| Blank (creates PVC) | Create an empty disk. |
-| Import via URL (creates PVC) | Import content via URL (HTTP or HTTPS endpoint). |
-| Use an existing PVC | Use a PVC that is already available in the cluster. |
-| Clone existing PVC (creates PVC) | Select an existing PVC available in the cluster and clone it. |
-| Import via Registry (creates PVC) | Import content via container registry. |
-| Container (ephemeral) | Upload content from a container located in a registry accessible from the cluster. The container disk should be used only for read-only filesystems such as CD-ROMs or temporary virtual machines. |
-| Name | Name of the disk. The name can contain lowercase letters (`a-z`), numbers (`0-9`), hyphens (`-`), and periods (`.`), up to a maximum of 253 characters. The first and last characters must be alphanumeric. The name must not contain uppercase letters, spaces, or special characters. |
-| Size | Size of the disk in GiB. |
-| Type | Type of disk. Example: Disk or CD-ROM |
-| Interface | Type of disk device. Supported interfaces are **virtIO**, **SATA**, and **SCSI**. |
-| Storage Class | The storage class that is used to create the disk. |
+| Field                             | Description                                                                                                                                                                                                                                                                             |
+|-----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Blank (creates PVC)               | Create an empty disk.                                                                                                                                                                                                                                                                   |
+| Import via URL (creates PVC)      | Import content via URL (HTTP or HTTPS endpoint).                                                                                                                                                                                                                                        |
+| Use an existing PVC               | Use a PVC that is already available in the cluster.                                                                                                                                                                                                                                     |
+| Clone existing PVC (creates PVC)  | Select an existing PVC available in the cluster and clone it.                                                                                                                                                                                                                           |
+| Import via Registry (creates PVC) | Import content via container registry.                                                                                                                                                                                                                                                  |
+| Container (ephemeral)             | Upload content from a container located in a registry accessible from the cluster. The container disk should be used only for read-only filesystems such as CD-ROMs or temporary virtual machines.                                                                                      |
+| Name                              | Name of the disk. The name can contain lowercase letters (`a-z`), numbers (`0-9`), hyphens (`-`), and periods (`.`), up to a maximum of 253 characters. The first and last characters must be alphanumeric. The name must not contain uppercase letters, spaces, or special characters. |
+| Size                              | Size of the disk in GiB.                                                                                                                                                                                                                                                                |
+| Type                              | Type of disk. Example: Disk or CD-ROM                                                                                                                                                                                                                                                   |
+| Interface                         | Type of disk device. Supported interfaces are **virtIO**, **SATA**, and **SCSI**.                                                                                                                                                                                                       |
+| Storage Class                     | The storage class that is used to create the disk.                                                                                                                                                                                                                                      |
 
 ### Advanced storage settings
 
@@ -246,39 +183,40 @@ If you do not specify these parameters, the system uses the default storage prof
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Option</th>
 <th style="text-align: left;">Parameter description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td rowspan="2" style="text-align: left;"><p>Volume Mode</p></td>
+<tr class="odd">
+<td style="text-align: left;"><p>Volume Mode</p></td>
 <td style="text-align: left;"><p>Filesystem</p></td>
 <td style="text-align: left;"><p>Stores the virtual disk on a file system-based volume.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Block</p></td>
 <td style="text-align: left;"><p>Stores the virtual disk directly on the block volume. Only use <code>Block</code> if the underlying storage supports it.</p></td>
+<td></td>
 </tr>
-<tr>
-<td rowspan="3" style="text-align: left;"><p>Access Mode</p></td>
+<tr class="odd">
+<td style="text-align: left;"><p>Access Mode</p></td>
 <td style="text-align: left;"><p>ReadWriteOnce (RWO)</p></td>
 <td style="text-align: left;"><p>Volume can be mounted as read-write by a single node.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>ReadWriteMany (RWX)</p></td>
 <td style="text-align: left;"><p>Volume can be mounted as read-write by many nodes at one time.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>This mode is required for live migration.</p>
 </div></td>
+<td></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>ReadOnlyMany (ROX)</p></td>
 <td style="text-align: left;"><p>Volume can be mounted as read only by many nodes.</p></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -286,14 +224,6 @@ If you do not specify these parameters, the system uses the default storage prof
 # Mounting a Windows driver disk on a virtual machine
 
 You can mount a Windows driver disk on a virtual machine (VM) by using the OpenShift Container Platform web console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines**.
 
@@ -305,8 +235,6 @@ Procedure
 
     The Windows driver disk is displayed in the list of mounted disks.
 
-</div>
-
 # Adding a secret, config map, or service account to a virtual machine
 
 You can add a secret, config map, or service account to a virtual machine by using the OpenShift Container Platform web console.
@@ -315,25 +243,7 @@ These resources are added to the virtual machine as disks. You then mount the se
 
 If the virtual machine is running, changes do not take effect until you restart the virtual machine. The newly added resources are marked as pending changes at the top of the page.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The secret, config map, or service account that you want to add must exist in the same namespace as the target virtual machine.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu.
 
@@ -349,21 +259,11 @@ Procedure
 
 7.  Click **Save**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  On the **VirtualMachine details** page, click **Configuration** → **Disks** and verify that the resource is displayed in the list of disks.
 
 2.  Restart the virtual machine by clicking **Actions** → **Restart**.
-
-</div>
 
 You can now mount the secret, config map, or service account as you would mount any other disk.
 
@@ -371,27 +271,9 @@ You can now mount the secret, config map, or service account as you would mount 
 
 You can use the command line interface (CLI) to update multiple virtual machines (VMs) at the same time.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You installed the `oc` CLI.
 
 - You have access to the OpenShift Container Platform cluster, and you have `cluster-admin` permissions.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a privileged service account by running the following commands:
 
@@ -450,8 +332,6 @@ Procedure
        serviceAccountName: kubevirt-api-lifecycle-automation
     ```
 
-</div>
-
 - Replace the image value with your pull URL for the image.
 
 - Replace the `MACHINE_TYPE_GLOB` value with your own pattern. This pattern is used to detect deprecated machine types that need to be upgraded.
@@ -466,14 +346,6 @@ Procedure
 
 You can perform bulk actions on multiple virtual machines (VMs) simultaneously by using the **VirtualMachines** list view in the web console. This allows you to efficiently manage a group of VMs with minimal manual effort.
 
-<div>
-
-<div class="title">
-
-Available bulk actions
-
-</div>
-
 - **Label VMs** - Add, edit, or remove labels that are applied across selected VMs.
 
 - **Delete VMs** - Select multiple VMs to delete. The confirmation dialog displays the number of VMs selected for deletion.
@@ -484,20 +356,13 @@ Available bulk actions
 
 - **Take snapshot** - Take snapshots of multiple VMs. The **Take snapshots** dialog allows you to enter a suffix for the names of the resulting snapshots.
 
-</div>
-
 # Configuring multiple IOThreads for fast storage access
 
 You can improve storage performance by configuring multiple IOThreads for a virtual machine (VM) that uses fast storage, such as solid-state drive (SSD) or non-volatile memory express (NVMe). This configuration option is only available by editing YAML of the VM.
 
-> [!NOTE]
-> Multiple IOThreads are supported only when `blockMultiQueue` is enabled and the disk bus is set to `virtio`. You must set this configuration for the configuration to work correctly.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+Multiple IOThreads are supported only when `blockMultiQueue` is enabled and the disk bus is set to `virtio`. You must set this configuration for the configuration to work correctly.
 
 </div>
 
@@ -525,10 +390,11 @@ Procedure
 
 5.  Click **Save**.
 
-    > [!IMPORTANT]
-    > The `spec.template.spec.domain` setting cannot be changed while the VM is running. You must stop the VM before applying the changes, and then restart the VM for the new settings to take effect.
+    <div class="important">
 
-</div>
+    The `spec.template.spec.domain` setting cannot be changed while the VM is running. You must stop the VM before applying the changes, and then restart the VM for the new settings to take effect.
+
+    </div>
 
 **Additional resources for config maps, secrets, and service accounts**
 

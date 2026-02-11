@@ -8,8 +8,11 @@ Using manual mode with long-term credentials allows each cluster component to ha
 
 For information about configuring your cloud provider to use manual mode, see the manual credentials management options for your cloud provider.
 
-> [!NOTE]
-> An AWS, global Azure, or Google Cloud cluster that uses manual mode might be configured to use short-term credentials for different components. For more information, see [Manual mode with short-term credentials for components](../../authentication/managing_cloud_provider_credentials/cco-short-term-creds.xml#cco-short-term-creds).
+<div class="note">
+
+An AWS, global Azure, or Google Cloud cluster that uses manual mode might be configured to use short-term credentials for different components. For more information, see [Manual mode with short-term credentials for components](../../authentication/managing_cloud_provider_credentials/cco-short-term-creds.xml#cco-short-term-creds).
+
+</div>
 
 # Additional resources
 

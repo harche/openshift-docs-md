@@ -4,14 +4,6 @@ To manage DNS records on your cloud infrastructure, install the External DNS Ope
 
 You can install the External DNS Operator by using the OpenShift Container Platform Software Catalog. You can then manage the Operator lifecycle directly from the web console.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Click **Ecosystem** → **Software Catalog** in the OpenShift Container Platform web console.
 
 2.  Click **External DNS Operator**. You can use the **Filter by keyword** text box or the filter list to search for External DNS Operator from the list of Operators.
@@ -36,53 +28,21 @@ Procedure
 
         If you select **Manual** updates, the OLM creates an update request. As a cluster administrator, you must then manually approve that update request to have the Operator updated to the new version.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the External DNS Operator shows the **Status** as **Succeeded** on the **Installed Operators** dashboard.
-
-</div>
 
 # Installing the External DNS Operator by using the CLI
 
 You can use the OpenShift CLI (`oc`) to install the External DNS Operator. The Operator manages the installation process directly from your terminal without you having to use the web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `Namespace` object:
 
     1.  Create a YAML file that defines the `Namespace` object:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `namespace.yaml` file
+        **Example `namespace.yaml` file**
 
         </div>
 
@@ -94,8 +54,6 @@ Procedure
         # ...
         ```
 
-        </div>
-
     2.  Create the `Namespace` object by running the following command:
 
         ``` terminal
@@ -106,11 +64,9 @@ Procedure
 
     1.  Create a YAML file that defines the `OperatorGroup` object:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `operatorgroup.yaml` file
+        **Example `operatorgroup.yaml` file**
 
         </div>
 
@@ -127,8 +83,6 @@ Procedure
         # ...
         ```
 
-        </div>
-
     2.  Create the `OperatorGroup` object by running the following command:
 
         ``` terminal
@@ -139,11 +93,9 @@ Procedure
 
     1.  Create a YAML file that defines the `Subscription` object:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `subscription.yaml` file
+        **Example `subscription.yaml` file**
 
         </div>
 
@@ -162,23 +114,13 @@ Procedure
         # ...
         ```
 
-        </div>
-
     2.  Create the `Subscription` object by running the following command:
 
         ``` terminal
         $ oc apply -f subscription.yaml
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Get the name of the install plan from the subscription by running the following command:
 
@@ -202,11 +144,9 @@ Verification
     $ oc -n external-dns-operator get pod
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -214,8 +154,6 @@ Verification
     NAME                                     READY   STATUS    RESTARTS   AGE
     external-dns-operator-5584585fd7-5lwqm   2/2     Running   0          11m
     ```
-
-    </div>
 
 4.  Verify that the catalog source of the subscription is `redhat-operators` by running the following command:
 
@@ -228,5 +166,3 @@ Verification
     ``` terminal
     $ oc -n external-dns-operator get csv
     ```
-
-</div>

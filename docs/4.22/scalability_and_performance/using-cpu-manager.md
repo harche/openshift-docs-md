@@ -22,14 +22,6 @@ To use Topology Manager you must configure CPU Manager with the `static` policy.
 
 To configure CPU manager, create a KubeletConfig custom resource (CR) and apply it to the desired set of nodes.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Label a node by running the following command:
 
     ``` terminal
@@ -90,11 +82,9 @@ Procedure
     # oc get machineconfig 99-worker-XXXXXX-XXXXX-XXXX-XXXXX-kubelet -o json | grep ownerReference -A7
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -109,8 +99,6 @@ Procedure
             ]
     ```
 
-    </div>
-
 7.  Check the compute node for the updated `kubelet.conf` file by running the following command:
 
     ``` terminal
@@ -118,11 +106,9 @@ Procedure
     sh-4.2# cat /host/etc/kubernetes/kubelet.conf | grep cpuManager
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -130,8 +116,6 @@ Procedure
     cpuManagerPolicy: static
     cpuManagerReconcilePeriod: 5s
     ```
-
-    </div>
 
     - `cpuManagerPolicy` is defined when you create the `KubeletConfig` CR.
 
@@ -149,11 +133,9 @@ Procedure
     # cat cpumanager-pod.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -185,23 +167,13 @@ Procedure
         cpumanager: "true"
     ```
 
-    </div>
-
 10. Create the pod:
 
     ``` terminal
     # oc create -f cpumanager-pod.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the pod is scheduled to the node that you labeled by running the following command:
 
@@ -209,11 +181,9 @@ Verification
     # oc describe pod cpumanager
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -235,19 +205,15 @@ Verification
     Node-Selectors:  cpumanager=true
     ```
 
-    </div>
-
 2.  Verify that a CPU has been exclusively assigned to the pod by running the following command:
 
     ``` terminal
     # oc describe node --selector='cpumanager=true' | grep -i cpumanager- -B2
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -255,8 +221,6 @@ Verification
     NAMESPACE    NAME                CPU Requests  CPU Limits  Memory Requests  Memory Limits  Age
     cpuman       cpumanager-mlrrz    1 (28%)       1 (28%)     1G (13%)         1G (13%)       27m
     ```
-
-    </div>
 
 3.  Verify that the `cgroups` are set up correctly. Get the process ID (PID) of the `pause` process by running the following commands:
 
@@ -268,14 +232,15 @@ Verification
     sh-4.2# systemctl status | grep -B5 pause
     ```
 
-    > [!NOTE]
-    > If the output returns multiple pause process entries, you must identify the correct pause process.
+    <div class="note">
 
-    <div class="formalpara">
+    If the output returns multiple pause process entries, you must identify the correct pause process.
 
-    <div class="title">
+    </div>
 
-    Example output
+    <div class="formalpara-title">
+
+    **Example output**
 
     </div>
 
@@ -288,8 +253,6 @@ Verification
       │ └─32706 /pause
     ```
 
-    </div>
-
 4.  Verify that pods of quality of service (QoS) tier `Guaranteed` are placed within the `kubepods.slice` subdirectory by running the following commands:
 
     ``` terminal
@@ -300,14 +263,15 @@ Verification
     # for i in `ls cpuset.cpus cgroup.procs` ; do echo -n "$i "; cat $i ; done
     ```
 
-    > [!NOTE]
-    > Pods of other QoS tiers end up in child `cgroups` of the parent `kubepods`.
+    <div class="note">
 
-    <div class="formalpara">
+    Pods of other QoS tiers end up in child `cgroups` of the parent `kubepods`.
 
-    <div class="title">
+    </div>
 
-    Example output
+    <div class="formalpara-title">
+
+    **Example output**
 
     </div>
 
@@ -316,27 +280,21 @@ Verification
     tasks 32706
     ```
 
-    </div>
-
 5.  Check the allowed CPU list for the task by running the following command:
 
     ``` terminal
     # grep ^Cpus_allowed_list /proc/32706/status
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
      Cpus_allowed_list:    1
     ```
-
-    </div>
 
 6.  Verify that another pod on the system cannot run on the core allocated for the `Guaranteed` pod. For example, to verify the pod in the `besteffort` QoS tier, run the following commands:
 
@@ -348,11 +306,9 @@ Verification
     # oc describe node perf-node.example.com
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -384,8 +340,6 @@ Verification
       cpu                         1440m (96%)       1 (66%)
     ```
 
-    </div>
-
     This VM has two CPU cores. The `system-reserved` setting reserves 500 millicores, meaning that half of one core is subtracted from the total capacity of the node to arrive at the `Node Allocatable` amount. You can see that `Allocatable CPU` is 1500 millicores. This means you can run one of the CPU Manager pods since each will take one whole core. A whole core is equivalent to 1000 millicores. If you try to schedule a second pod, the system will accept the pod, but it will never be scheduled:
 
     ``` terminal
@@ -393,8 +347,6 @@ Verification
     cpumanager-6cqz7        1/1     Running   0          33m
     cpumanager-7qc2t        0/1     Pending   0          11s
     ```
-
-</div>
 
 # Topology Manager policies
 
@@ -418,29 +370,15 @@ For each container in a pod with the `single-numa-node` topology management poli
 
 To use Topology Manager, you must configure an allocation policy in the `KubeletConfig` custom resource (CR) named `cpumanager-enabled`. This file might exist if you have set up CPU Manager. If the file does not exist, you can create the file.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Configure the CPU Manager policy to be `static`.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To activate Topology Manager:
-
-</div>
 
 1.  Configure the Topology Manager allocation policy in the custom resource.
 
@@ -518,14 +456,4 @@ Topology Manager would consider this pod. The Topology Manager would consult the
 
 Topology Manager will use this information to store the best topology for this container. In the case of this pod, CPU Manager and Device Manager will use this stored information at the resource allocation stage.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Topology Manager policies](../scalability_and_performance/using-cpu-manager.xml#topology-manager-policies_using-cpu-manager-and-topology-manager)
-
-</div>

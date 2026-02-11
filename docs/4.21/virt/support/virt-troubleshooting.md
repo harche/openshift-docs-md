@@ -32,25 +32,7 @@ You can view logs for OpenShift Virtualization pods by using the web console or 
 
 You can configure the verbosity level of OpenShift Virtualization pod logs by editing the `HyperConverged` custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To set log verbosity for specific components, open the `HyperConverged` CR in your default text editor by running the following command:
 
@@ -79,19 +61,9 @@ Procedure
 
 3.  Apply your changes by saving and exiting the editor.
 
-</div>
-
 ## Viewing virt-launcher pod logs with the web console
 
 You can view the `virt-launcher` pod logs for a virtual machine by using the OpenShift Container Platform web console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines**.
 
@@ -101,31 +73,11 @@ Procedure
 
 4.  Click the **Logs** tab to view the logs.
 
-</div>
-
 ## Viewing OpenShift Virtualization pod logs with the CLI
 
 You can view logs for the OpenShift Virtualization pods by using the `oc` CLI tool.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  View a list of pods in the OpenShift Virtualization namespace by running the following command:
 
@@ -155,10 +107,13 @@ Procedure
     $ oc logs -n openshift-cnv <pod_name>
     ```
 
-    > [!NOTE]
-    > If a pod fails to start, you can use the `--previous` option to view logs from the last attempt.
-    >
-    > To monitor log output in real time, use the `-f` option.
+    <div class="note">
+
+    If a pod fails to start, you can use the `--previous` option to view logs from the last attempt.
+
+    To monitor log output in real time, use the `-f` option.
+
+    </div>
 
     Example output:
 
@@ -171,8 +126,6 @@ Procedure
     {"component":"virt-handler","level":"info","msg":"node-labeller is running","pos":"node_labeller.go:94","timestamp":"2022-04-17T08:58:37.391011Z"}
     ```
 
-</div>
-
 # Guest system logs
 
 Viewing the boot logs of VM guests can help diagnose issues. You can configure access to guests' logs and view them by using either the OpenShift Container Platform web console or the OpenShift CLI (`oc`).
@@ -181,20 +134,15 @@ Even if the guest VM has no network, you can access it using its VNC or serial c
 
 This feature is disabled by default. If a VM does not explicitly have this setting enabled or disabled, it inherits the cluster-wide default setting.
 
-> [!IMPORTANT]
-> If sensitive information such as credentials or other personally identifiable information (PII) is written to the serial console, it is logged with all other visible text. Red Hat recommends using SSH to send sensitive data instead of the serial console.
+<div class="important">
+
+If sensitive information such as credentials or other personally identifiable information (PII) is written to the serial console, it is logged with all other visible text. Red Hat recommends using SSH to send sensitive data instead of the serial console.
+
+</div>
 
 ## Enabling default access to VM guest system logs with the web console
 
 You can enable default access to VM guest system logs by using the web console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  From the side menu, click **Virtualization** → **Overview**.
 
@@ -204,31 +152,11 @@ Procedure
 
 4.  Set **Enable guest system log access** to on.
 
-</div>
-
 ## Enabling default access to VM guest system logs with the CLI
 
 You can enable default access to VM guest system logs by editing the `HyperConverged` custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -250,19 +178,9 @@ Procedure
 
     Set the value of `disableSerialConsoleLog` to `false` if you want serial console access to be enabled on VMs by default.
 
-</div>
-
 ## Setting guest system log access for a single VM with the web console
 
 You can configure access to VM guest system logs for a single VM by using the web console. This setting takes precedence over the cluster-wide default configuration.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu.
 
@@ -272,31 +190,11 @@ Procedure
 
 4.  Set **Guest system log access** to on or off.
 
-</div>
-
 ## Setting guest system log access for a single VM with the CLI
 
 You can configure access to VM guest system logs for a single VM by editing the `VirtualMachine` CR. This setting takes precedence over the cluster-wide default configuration.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the virtual machine manifest by running the following command:
 
@@ -334,31 +232,11 @@ Procedure
     $ virtctl restart <vm_name> -n <namespace>
     ```
 
-</div>
-
 ## Viewing guest system logs with the web console
 
 You can view the serial console logs of a virtual machine (VM) guest by using the web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Guest system log access is enabled.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu.
 
@@ -368,41 +246,21 @@ Procedure
 
 4.  Click **Guest system logs** to load the serial console.
 
-</div>
-
 ## Viewing guest system logs with the CLI
 
 You can view the serial console logs of a VM guest by running the `oc logs` command.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Guest system log access is enabled.
 
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - View the logs by running the following command, substituting your own values for `<namespace>` and `<vm_name>`:
 
   ``` terminal
   $ oc logs -n <namespace> -l kubevirt.io/domain=<vm_name> --tail=-1 -c guest-console-log
   ```
-
-</div>
 
 # Log aggregation
 
@@ -412,25 +270,7 @@ You can facilitate troubleshooting by aggregating and filtering logs.
 
 You can view aggregated logs for OpenShift Virtualization pods and containers by using the LokiStack in the web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You deployed the LokiStack.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Observe** → **Logs** in the web console.
 
@@ -440,8 +280,6 @@ Procedure
 
 4.  Enter the LogQL query in the query field and click **Run Query** to display the filtered logs.
 
-</div>
-
 ## OpenShift Virtualization LogQL queries
 
 You can view and filter aggregated logs for OpenShift Virtualization components by running Loki Query Language (LogQL) queries on the **Observe** → **Logs** page in the web console.
@@ -450,8 +288,11 @@ The default log type is *infrastructure*. The `virt-launcher` log type is *appli
 
 Optional: You can include or exclude strings or regular expressions by using line filter expressions.
 
-> [!NOTE]
-> If the query matches a large number of logs, the query might time out.
+<div class="note">
+
+If the query matches a large number of logs, the query might time out.
+
+</div>
 
 <table>
 <caption>OpenShift Virtualization LogQL example queries</caption>
@@ -460,18 +301,18 @@ Optional: You can include or exclude strings or regular expressions by using lin
 <col style="width: 85%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Component</th>
 <th style="text-align: left;">LogQL query</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>All</p></td>
 <td style="text-align: left;"><pre class="text"><code>{log_type=~&quot;.+&quot;}|json
 |kubernetes_labels_app_kubernetes_io_part_of=&quot;hyperconverged-cluster&quot;</code></pre></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cdi-apiserver</code></p>
 <p><code>cdi-deployment</code></p>
 <p><code>cdi-operator</code></p></td>
@@ -479,19 +320,19 @@ Optional: You can include or exclude strings or regular expressions by using lin
 |kubernetes_labels_app_kubernetes_io_part_of=&quot;hyperconverged-cluster&quot;
 |kubernetes_labels_app_kubernetes_io_component=&quot;storage&quot;</code></pre></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>hco-operator</code></p></td>
 <td style="text-align: left;"><pre class="text"><code>{log_type=~&quot;.+&quot;}|json
 |kubernetes_labels_app_kubernetes_io_part_of=&quot;hyperconverged-cluster&quot;
 |kubernetes_labels_app_kubernetes_io_component=&quot;deployment&quot;</code></pre></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>kubemacpool</code></p></td>
 <td style="text-align: left;"><pre class="text"><code>{log_type=~&quot;.+&quot;}|json
 |kubernetes_labels_app_kubernetes_io_part_of=&quot;hyperconverged-cluster&quot;
 |kubernetes_labels_app_kubernetes_io_component=&quot;network&quot;</code></pre></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>virt-api</code></p>
 <p><code>virt-controller</code></p>
 <p><code>virt-handler</code></p>
@@ -500,19 +341,19 @@ Optional: You can include or exclude strings or regular expressions by using lin
 |kubernetes_labels_app_kubernetes_io_part_of=&quot;hyperconverged-cluster&quot;
 |kubernetes_labels_app_kubernetes_io_component=&quot;compute&quot;</code></pre></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>ssp-operator</code></p></td>
 <td style="text-align: left;"><pre class="text"><code>{log_type=~&quot;.+&quot;}|json
 |kubernetes_labels_app_kubernetes_io_part_of=&quot;hyperconverged-cluster&quot;
 |kubernetes_labels_app_kubernetes_io_component=&quot;schedule&quot;</code></pre></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Container</p></td>
 <td style="text-align: left;"><pre class="text"><code>{log_type=~&quot;.+&quot;,kubernetes_container_name=~&quot;&lt;container&gt;|&lt;container&gt;&quot;}
 |json|kubernetes_labels_app_kubernetes_io_part_of=&quot;hyperconverged-cluster&quot;</code></pre>
 <p>Specify one or more containers separated by a pipe (<code>|</code>).</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>virt-launcher</code></p></td>
 <td style="text-align: left;"><p>You must select <strong>application</strong> from the log type list before running this query.</p>
 <pre class="text"><code>{log_type=~&quot;.+&quot;, kubernetes_container_name=&quot;compute&quot;}|json
@@ -521,6 +362,8 @@ Optional: You can include or exclude strings or regular expressions by using lin
 </tr>
 </tbody>
 </table>
+
+OpenShift Virtualization LogQL example queries
 
 You can filter log lines to include or exclude strings or regular expressions by using line filter expressions.
 
@@ -533,33 +376,13 @@ You can filter log lines to include or exclude strings or regular expressions by
 
 Line filter expressions
 
-<div class="example">
-
-<div class="title">
-
-Example line filter expression
-
-</div>
-
 ``` text
 {log_type=~".+"}|json
 |kubernetes_labels_app_kubernetes_io_part_of="hyperconverged-cluster"
 |= "error" != "timeout"
 ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources for LokiStack and LogQL
-
-</div>
-
 - [LogQL log queries](https://grafana.com/docs/loki/latest/logql/log_queries/) in the Grafana documentation
-
-</div>
 
 # Common error messages
 

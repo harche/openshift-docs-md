@@ -50,17 +50,9 @@ Namespace `admin` users can perform the following Self-Service operations:
 
 - Request retrieval of relevant logs.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Configuring an htpasswd identity provider](../../../authentication/identity_providers/configuring-htpasswd-identity-provider.xml#configuring-htpasswd-identity-provider)
-
-</div>
 
 # OADP Self-Service custom resources
 
@@ -68,14 +60,14 @@ Use OADP Self-Service custom resources to control backup, restore, storage locat
 
 The OADP Self-Service feature has the following new custom resources (CRs) to perform the backup and restore operations for a namespace admin user:
 
-|  |  |
-|----|----|
-| **CR** | **Description** |
-| `NonAdminController` (NAC) | Controls and orchestrates the Self-Service operations. |
-| `NonAdminBackup` (NAB) | Manages namespace-scoped backup operations. |
-| `NonAdminRestore` (NAR) | Manages namespace-scoped restore operations. |
-| `NonAdminBackupStorageLocation` (NABSL) | Defines user-specific backup storage location. |
-| `NonAdminDownloadRequest` (NADR) | Manages namespace-scoped download request operations. |
+|                                         |                                                        |
+|-----------------------------------------|--------------------------------------------------------|
+| **CR**                                  | **Description**                                        |
+| `NonAdminController` (NAC)              | Controls and orchestrates the Self-Service operations. |
+| `NonAdminBackup` (NAB)                  | Manages namespace-scoped backup operations.            |
+| `NonAdminRestore` (NAR)                 | Manages namespace-scoped restore operations.           |
+| `NonAdminBackupStorageLocation` (NABSL) | Defines user-specific backup storage location.         |
+| `NonAdminDownloadRequest` (NADR)        | Manages namespace-scoped download request operations.  |
 
 Custom resources
 
@@ -138,11 +130,9 @@ A cluster administrator can also define their own specifications so that users c
 
 See the following role-based access control (RBAC) YAML file example with namespace permissions for a namespace `admin` user to perform a backup operation.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example RBAC manifest
+**Example RBAC manifest**
 
 </div>
 
@@ -171,8 +161,6 @@ Example RBAC manifest
     verbs:
       - get
 ```
-
-</div>
 
 # OADP Self-Service limitations
 
@@ -225,29 +213,31 @@ The phase of the CRs only progress forward. Once a phase transitions to the next
 <col style="width: 50%" />
 </colgroup>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><strong>Value</strong></p></td>
 <td style="text-align: left;"><p><strong>Description</strong></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>New</code></p></td>
 <td style="text-align: left;"><p>A creation request of the NAB or NAR CR is accepted by the NAC, but it has not yet been validated by the NAC.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>BackingOff</code></p></td>
 <td style="text-align: left;"><p>NAB or NAR CR is invalidated by the NAC CR because of an invalid <code>spec</code> of the NAB or NAR CR.</p>
 <p>The namespace admin user can update the NAB or NAR <code>spec</code> to comply with the policies set by the administrator. After the namespace admin user edits the CRs, the NAC reconciles the CR again.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>Created</code></p></td>
 <td style="text-align: left;"><p>NAB or NAR CR is validated by the NAC, and the <code>Velero</code> backup or restore object is created.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>Deletion</code></p></td>
 <td style="text-align: left;"><p>NAB or NAR CR is marked for deletion. The NAC deletes the corresponding <code>Velero</code> backup or restore object. When the <code>Velero</code> object is deleted, the NAB or NAR CR is also deleted.</p></td>
 </tr>
 </tbody>
 </table>
+
+Phases
 
 # About NonAdminBackupStorageLocation CR
 
@@ -273,5 +263,8 @@ You can create a NABSL CR by using one of the following workflows:
 
 - **Automatic approval workflow**: In this workflow, the cluster administrator does not enforce an approval process for the NABSL CR by setting the `nonAdmin.requireApprovalForBSL` field in the DPA to `false`. The default value of this field is `false`. Not setting the field results in an automatic approval of the NABSL. Therefore, the namespace admin user can create the NABSL CR from their authorized namespace.
 
-> [!IMPORTANT]
-> For security purposes, use either the administrator creation or the administrator approval workflow. The automatic approval workflow is less secure as it does not require administrator review.
+<div class="important">
+
+For security purposes, use either the administrator creation or the administrator approval workflow. The automatic approval workflow is less secure as it does not require administrator review.
+
+</div>

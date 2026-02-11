@@ -4,34 +4,25 @@ You can manage catalogs and extensions declaratively from the CLI by using custo
 
 *File-based catalogs* are the latest iteration of the catalog format in Operator Lifecycle Manager (OLM). It is a plain text-based (JSON or YAML) and declarative config evolution of the earlier SQLite database format, and it is fully backwards compatible.
 
-> [!IMPORTANT]
-> Kubernetes periodically deprecates certain APIs that are removed in subsequent releases. As a result, Operators are unable to use removed APIs starting with the version of OpenShift Container Platform that uses the Kubernetes version that removed the API.
+<div class="important">
+
+Kubernetes periodically deprecates certain APIs that are removed in subsequent releases. As a result, Operators are unable to use removed APIs starting with the version of OpenShift Container Platform that uses the Kubernetes version that removed the API.
+
+</div>
 
 # About catalogs in OLM v1
 
 You can discover installable content by querying a catalog for Kubernetes extensions, such as Operators and controllers, by using the catalogd component. Catalogd is a Kubernetes extension that unpacks catalog content for on-cluster clients and is part of the Operator Lifecycle Manager (OLM) v1 suite of microservices. Currently, catalogd unpacks catalog content that is packaged and distributed as container images.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [File-based catalogs](../../extensions/catalogs/fbc.xml#fbc)
-
-</div>
 
 # Red Hat-provided Operator catalogs in OLM v1
 
 Operator Lifecycle Manager (OLM) v1 includes the following Red Hat-provided Operator catalogs on the cluster by default. If you want to add an additional catalog to your cluster, create a custom resource (CR) for the catalog and apply it to the cluster. The following custom resource (CR) examples show the default catalogs installed on the cluster.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Red Hat Operators catalog
+**Red Hat Operators catalog**
 
 </div>
 
@@ -49,15 +40,11 @@ spec:
     type: Image
 ```
 
-</div>
-
 - Specify the interval in minutes for polling the remote registry for newer image digests. To disable polling, do not set the field.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Certified Operators catalog
+**Certified Operators catalog**
 
 </div>
 
@@ -76,13 +63,9 @@ priority: -200
     type: Image
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Red Hat Marketplace catalog
+**Red Hat Marketplace catalog**
 
 </div>
 
@@ -100,13 +83,9 @@ spec:
     type: Image
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Community Operators catalog
+**Community Operators catalog**
 
 </div>
 
@@ -124,15 +103,11 @@ spec:
     type: Image
 ```
 
-</div>
-
 The following command adds a catalog to your cluster:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Command syntax
+**Command syntax**
 
 </div>
 
@@ -140,29 +115,17 @@ Command syntax
 $ oc apply -f <catalog_name>.yaml
 ```
 
-</div>
-
 - Specifies the catalog CR, such as `my-catalog.yaml`.
 
 # Adding a catalog to a cluster
 
 To add a catalog to a cluster for Operator Lifecycle Manager (OLM) v1 usage, create a `ClusterCatalog` custom resource (CR) and apply it to the cluster.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a catalog custom resource (CR), similar to the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `my-redhat-operators.yaml` file
+    **Example `my-redhat-operators.yaml` file**
 
     </div>
 
@@ -180,8 +143,6 @@ Procedure
         type: Image
     ```
 
-    </div>
-
     - The catalog is automatically labeled with the value of the `metadata.name` field when it is applied to the cluster. For more information about labels and catalog selection, see "Catalog content resolution".
 
     - Optional: Specify the priority of the catalog in relation to the other catalogs on the cluster. For more information, see "Catalog selection by priority".
@@ -196,29 +157,15 @@ Procedure
     $ oc apply -f my-redhat-operators.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` text
     clustercatalog.olm.operatorframework.io/my-redhat-operators created
     ```
-
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Run the following commands to verify the status of your catalog:
 
@@ -228,11 +175,9 @@ Verification
       $ oc get clustercatalog
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -245,19 +190,15 @@ Verification
       openshift-redhat-operators      54m            True      84m
       ```
 
-      </div>
-
   2.  Check the status of your catalog by running the following command:
 
       ``` terminal
       $ oc describe clustercatalog my-redhat-operators
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -307,39 +248,19 @@ Verification
       Events:    <none>
       ```
 
-      </div>
-
       - Describes the status of the catalog.
 
       - Displays the reason the catalog is in the current state.
 
       - Displays the image reference of the catalog.
 
-</div>
-
 # Deleting a catalog
 
 You can delete a catalog by deleting its custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have a catalog installed.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Delete a catalog by running the following command:
 
@@ -347,11 +268,9 @@ Procedure
   $ oc delete clustercatalog <catalog_name>
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -359,17 +278,7 @@ Procedure
   clustercatalog.olm.operatorframework.io "my-redhat-operators" deleted
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - Verify the catalog is deleted by running the following command:
 
@@ -377,19 +286,9 @@ Verification
   $ oc get clustercatalog
   ```
 
-</div>
-
 # Disabling a default catalog
 
 You can disable the Red Hat-provided catalogs that are included with OpenShift Container Platform by default.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Disable a default catalog by running the following command:
 
@@ -398,11 +297,9 @@ Procedure
     '{"spec": {"availabilityMode": "Unavailable"}}' --type=merge
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -410,17 +307,7 @@ Procedure
   clustercatalog.olm.operatorframework.io/openshift-certified-operators patched
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - Verify the catalog is disabled by running the following command:
 
@@ -428,11 +315,9 @@ Verification
   $ oc get clustercatalog openshift-certified-operators
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -440,7 +325,3 @@ Verification
   NAME                            LASTUNPACKED   SERVING   AGE
   openshift-certified-operators                  False     6h54m
   ```
-
-  </div>
-
-</div>

@@ -2,14 +2,6 @@ Prepare your clusters for the upgrade by installing the Lifecycle Agent and the 
 
 To install the OADP Operator with the non-GitOps method, see "Installing the OADP Operator".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Installing the OADP Operator](../../../backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.xml#oadp-installing-operator-doc)
 
 - [About backup and snapshot locations and their secrets](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-ocs.xml#oadp-about-backup-snapshot-locations_installing-oadp-ocs)
@@ -18,33 +10,13 @@ Additional resources
 
 - [Creating a Restore CR](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/restoring-applications.xml#oadp-creating-restore-cr_restoring-applications)
 
-</div>
-
 # Installing the Lifecycle Agent by using the CLI
 
 You can use the OpenShift CLI (`oc`) to install the Lifecycle Agent.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `Namespace` object YAML file for the Lifecycle Agent:
 
@@ -103,15 +75,7 @@ Procedure
         $ oc create -f <subscription_filename>.yaml
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  To verify that the installation succeeded, inspect the CSV resource by running the following command:
 
@@ -119,11 +83,9 @@ Verification
     $ oc get csv -n openshift-lifecycle-agent
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -132,19 +94,15 @@ Verification
     lifecycle-agent.v4.17.0           Openshift Lifecycle Agent   4.17.0                Succeeded
     ```
 
-    </div>
-
 2.  Verify that the Lifecycle Agent is up and running by running the following command:
 
     ``` terminal
     $ oc get deploy -n openshift-lifecycle-agent
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -153,33 +111,11 @@ Verification
     lifecycle-agent-controller-manager   1/1     1            1           14s
     ```
 
-    </div>
-
-</div>
-
 # Installing the Lifecycle Agent by using the web console
 
 You can use the OpenShift Container Platform web console to install the Lifecycle Agent.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Ecosystem** → **Software Catalog**.
 
@@ -189,15 +125,7 @@ Procedure
 
 4.  Click **Install**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  To confirm that the installation is successful:
 
@@ -205,10 +133,11 @@ Verification
 
     2.  Ensure that the Lifecycle Agent is listed in the **openshift-lifecycle-agent** project with a **Status** of **InstallSucceeded**.
 
-        > [!NOTE]
-        > During installation an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
+        <div class="note">
 
-</div>
+        During installation an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
+
+        </div>
 
 If the Operator is not installed successfully:
 
@@ -220,21 +149,11 @@ If the Operator is not installed successfully:
 
 Install the Lifecycle Agent with GitOps Zero Touch Provisioning (ZTP) to do an image-based upgrade.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Extract the following CRs from the `ztp-site-generate` container image and push them to the `source-cr` directory:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `LcaSubscriptionNS.yaml` file
+    **Example `LcaSubscriptionNS.yaml` file**
 
     </div>
 
@@ -250,13 +169,9 @@ Procedure
         kubernetes.io/metadata.name: openshift-lifecycle-agent
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example `LcaSubscriptionOperGroup.yaml` file
+    **Example `LcaSubscriptionOperGroup.yaml` file**
 
     </div>
 
@@ -273,13 +188,9 @@ Procedure
         - openshift-lifecycle-agent
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example `LcaSubscription.yaml` file
+    **Example `LcaSubscription.yaml` file**
 
     </div>
 
@@ -301,13 +212,9 @@ Procedure
       state: AtLatestKnown
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example directory structure
+    **Example directory structure**
 
     </div>
 
@@ -324,8 +231,6 @@ Procedure
     │   ├── LcaSubscriptionOperGroup.yaml
     │   ├── LcaSubscription.yaml
     ```
-
-    </div>
 
 2.  Add the CRs to your common PolicyGenerator:
 
@@ -363,27 +268,15 @@ Procedure
     [...]
     ```
 
-</div>
-
 # Installing and configuring the OADP Operator with GitOps ZTP
 
 Install and configure the OADP Operator with GitOps ZTP before starting the upgrade.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Extract the following CRs from the `ztp-site-generate` container image and push them to the `source-cr` directory:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `OadpSubscriptionNS.yaml` file
+    **Example `OadpSubscriptionNS.yaml` file**
 
     </div>
 
@@ -398,13 +291,9 @@ Procedure
         kubernetes.io/metadata.name: openshift-adp
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example `OadpSubscriptionOperGroup.yaml` file
+    **Example `OadpSubscriptionOperGroup.yaml` file**
 
     </div>
 
@@ -421,13 +310,9 @@ Procedure
       - openshift-adp
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example `OadpSubscription.yaml` file
+    **Example `OadpSubscription.yaml` file**
 
     </div>
 
@@ -449,13 +334,9 @@ Procedure
       state: AtLatestKnown
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example `OadpOperatorStatus.yaml` file
+    **Example `OadpOperatorStatus.yaml` file**
 
     </div>
 
@@ -487,13 +368,9 @@ Procedure
             reason: InstallSucceeded
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example directory structure
+    **Example directory structure**
 
     </div>
 
@@ -511,8 +388,6 @@ Procedure
     │   ├── OadpSubscription.yaml
     │   ├── OadpOperatorStatus.yaml
     ```
-
-    </div>
 
 2.  Add the CRs to your common `PolicyGenTemplate`:
 
@@ -542,11 +417,9 @@ Procedure
 
     1.  Extract the following CRs from the `ztp-site-generate` container image and push them to the `source-cr` directory:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `OadpDataProtectionApplication.yaml` file
+        **Example `OadpDataProtectionApplication.yaml` file**
 
         </div>
 
@@ -590,17 +463,13 @@ Procedure
             type: Reconciled
         ```
 
-        </div>
-
         - The `spec.configuration.restic.enable` field must be set to `false` for an image-based upgrade because persistent volume contents are retained and reused after the upgrade.
 
         - The bucket defines the bucket name that is created in S3 backend. The prefix defines the name of the subdirectory that will be automatically created in the bucket. The combination of bucket and prefix must be unique for each target cluster to avoid interference between them. To ensure a unique storage directory for each target cluster, you can use the Red Hat Advanced Cluster Management hub template function, for example, `prefix: {{hub .ManagedClusterName hub}}`.
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `OadpSecret.yaml` file
+        **Example `OadpSecret.yaml` file**
 
         </div>
 
@@ -615,13 +484,9 @@ Procedure
         type: Opaque
         ```
 
-        </div>
+        <div class="formalpara-title">
 
-        <div class="formalpara">
-
-        <div class="title">
-
-        Example `OadpBackupStorageLocationStatus.yaml` file
+        **Example `OadpBackupStorageLocationStatus.yaml` file**
 
         </div>
 
@@ -636,8 +501,6 @@ Procedure
         status:
           phase: Available
         ```
-
-        </div>
 
         - The `name` value in the `BackupStorageLocation` resource must follow the `<DataProtectionApplication.metadata.name>-<index>` pattern. The `<index>` represents the position of the corresponding `backupLocations` entry in the `spec.backupLocations` field in the `DataProtectionApplication` resource. The position starts from `1`. If the `metadata.name` value of the `DataProtectionApplication` resource is changed in the `OadpDataProtectionApplication.yaml` file, update the `metadata.name` field in the `BackupStorageLocation` resource accordingly.
 
@@ -692,5 +555,3 @@ Procedure
         - Specify the URL for your S3-compatible bucket.
 
         - The `bucket` defines the bucket name that is created in S3 backend. The `prefix` defines the name of the subdirectory that will be automatically created in the `bucket`. The combination of `bucket` and `prefix` must be unique for each target cluster to avoid interference between them. To ensure a unique storage directory for each target cluster, you can use the Red Hat Advanced Cluster Management hub template function, for example, `prefix: {{hub .ManagedClusterName hub}}`.
-
-</div>

@@ -6,14 +6,6 @@ To explicitly define a list of CPUs that are reserved for specific nodes, create
 
 For more information on the `systemReserved` parameter, see "Allocating resources for nodes in an OpenShift Container Platform cluster".
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Obtain the label associated with the machine config pool (MCP) for the type of node you want to configure:
 
     ``` terminal
@@ -26,11 +18,9 @@ Procedure
     $ oc describe machineconfigpool worker
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -44,8 +34,6 @@ Procedure
     Kind:         MachineConfigPool
     #...
     ```
-
-    </div>
 
     - Get the MCP label.
 
@@ -77,16 +65,4 @@ Procedure
     $ oc create -f <file_name>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - For more information on the `systemReserved` parameter, see [Allocating resources for nodes in an OpenShift Container Platform cluster](../../nodes/nodes/nodes-nodes-resources-configuring.xml#nodes-nodes-resources-configuring-about_nodes-nodes-resources-configuring).
-
-</div>

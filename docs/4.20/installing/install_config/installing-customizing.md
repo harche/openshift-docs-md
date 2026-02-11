@@ -24,14 +24,9 @@ Butane is a command-line utility that OpenShift Container Platform uses to provi
 
 You can install the Butane tool (`butane`) to create OpenShift Container Platform machine configs from a command-line interface. You can install `butane` on Linux, Windows, or macOS by downloading the corresponding binary file.
 
-> [!TIP]
-> Butane releases are backwards-compatible with older releases and with the Fedora CoreOS Config Transpiler (FCCT).
+<div class="tip">
 
-<div>
-
-<div class="title">
-
-Procedure
+Butane releases are backwards-compatible with older releases and with the Fedora CoreOS Config Transpiler (FCCT).
 
 </div>
 
@@ -65,47 +60,17 @@ Procedure
     $ echo $PATH
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification steps
-
-</div>
-
 - You can now use the Butane tool by running the `butane` command:
 
   ``` terminal
   $ butane <butane_file>
   ```
 
-</div>
-
 ## Creating a MachineConfig object by using Butane
 
 You can use Butane to produce a `MachineConfig` object so that you can configure worker or control plane nodes at installation time or via the Machine Config Operator.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the `butane` utility.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a Butane config file. The following example creates a file named `99-worker-custom.bu` that configures the system console to show kernel debug messages and specifies custom settings for the chrony time service:
 
@@ -133,8 +98,11 @@ Procedure
               logdir /var/log/chrony
     ```
 
-    > [!NOTE]
-    > The `99-worker-custom.bu` file is set to create a machine config for worker nodes. To deploy on control plane nodes, change the role from `worker` to `master`. To do both, you could repeat the whole procedure using different file names for the two types of deployments.
+    <div class="note">
+
+    The `99-worker-custom.bu` file is set to create a machine config for worker nodes. To deploy on control plane nodes, change the role from `worker` to `master`. To do both, you could repeat the whole procedure using different file names for the two types of deployments.
+
+    </div>
 
 2.  Create a `MachineConfig` object by giving Butane the file that you created in the previous step:
 
@@ -152,21 +120,9 @@ Procedure
     $ oc create -f 99-worker-custom.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Adding kernel modules to nodes](../../installing/install_config/installing-customizing.xml#installation-special-config-kmod_installing-customizing)
 
 - [Encrypting and mirroring disks during installation](../../installing/install_config/installing-customizing.xml#installation-special-config-storage_installing-customizing)
-
-</div>
 
 # Adding day-1 kernel arguments
 
@@ -176,20 +132,15 @@ Although it is often preferable to modify kernel arguments as a day-2 activity, 
 
 - You want to disable a feature, such as SELinux, so it has no impact on the systems when they first come up.
 
-  > [!WARNING]
-  > Disabling SELinux on RHCOS in production is not supported. Once SELinux has been disabled on a node, it must be re-provisioned before re-inclusion in a production cluster.
+  <div class="warning">
+
+  Disabling SELinux on RHCOS in production is not supported. Once SELinux has been disabled on a node, it must be re-provisioned before re-inclusion in a production cluster.
+
+  </div>
 
 To add kernel arguments to master or worker nodes, you can create a `MachineConfig` object and inject that object into the set of manifest files used by Ignition during cluster setup.
 
 For a listing of arguments you can pass to a RHEL 8 kernel at boot time, see [Kernel.org kernel parameters](https://www.kernel.org/doc/Documentation/admin-guide/kernel-parameters.txt). It is best to only add kernel arguments with this procedure if they are needed to complete the initial OpenShift Container Platform installation.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Change to the directory that contains the installation program and generate the Kubernetes manifests for the cluster:
 
@@ -216,8 +167,6 @@ Procedure
     ```
 
     You can change `master` to `worker` to add kernel arguments to worker nodes instead. Create a separate YAML file to add to both master and worker nodes.
-
-</div>
 
 You can now continue on to create the cluster.
 
@@ -248,14 +197,6 @@ A few important issues to keep in mind:
 ## Building and testing the kernel module container
 
 Before deploying kernel modules to your OpenShift Container Platform cluster, you can test the process on a separate RHEL system. Gather the kernel module’s source code, the KVC framework, and the kmod-via-containers software. Then build and test the module. To do that on a RHEL 8 system, do the following:
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Register a RHEL 8 system:
 
@@ -329,11 +270,9 @@ Procedure
         $ cat simple-kmod.conf
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example Dockerfile
+        **Example Dockerfile**
 
         </div>
 
@@ -343,8 +282,6 @@ Procedure
         KMOD_SOFTWARE_VERSION=dd1a7d4
         KMOD_NAMES="simple-kmod simple-procfs-kmod"
         ```
-
-        </div>
 
 8.  Create an instance of `kmods-via-containers@.service` for your kernel module, `simple-kmod` in this example:
 
@@ -370,11 +307,9 @@ Procedure
         $ sudo systemctl status kmods-via-containers@simple-kmod.service
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -385,19 +320,15 @@ Procedure
            Active: active (exited) since Sun 2020-01-12 23:49:49 EST; 5s ago...
         ```
 
-        </div>
-
 11. To confirm that the kernel modules are loaded, use the `lsmod` command to list the modules:
 
     ``` terminal
     $ lsmod | grep simple_
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -405,8 +336,6 @@ Procedure
     simple_procfs_kmod     16384  0
     simple_kmod            16384  0
     ```
-
-    </div>
 
 12. Optional. Use other methods to check that the `simple-kmod` example is working:
 
@@ -416,11 +345,9 @@ Procedure
       $ dmesg | grep 'Hello world'
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -428,19 +355,15 @@ Procedure
       [ 6420.761332] Hello world from simple_kmod.
       ```
 
-      </div>
-
     - Check the value of `simple-procfs-kmod` in `/proc`:
 
       ``` terminal
       $ sudo cat /proc/simple-procfs-kmod
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -448,19 +371,15 @@ Procedure
       simple-procfs-kmod number = 0
       ```
 
-      </div>
-
     - Run the `spkut` command to get more information from the module:
 
       ``` terminal
       $ sudo spkut 44
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -472,10 +391,6 @@ Procedure
       simple-procfs-kmod number = 0
       simple-procfs-kmod number = 44
       ```
-
-      </div>
-
-</div>
 
 Going forward, when the system boots this service will check if a new kernel is running. If there is a new kernel, the service builds a new version of the kernel module and then loads it. If the module is already built, it will just load it.
 
@@ -498,14 +413,6 @@ In either case, each node needs to be able to get the kernel packages and relate
 ### Provision kernel modules via a MachineConfig object
 
 By packaging kernel module software with a `MachineConfig` object, you can deliver that software to worker or control plane nodes at installation time or via the Machine Config Operator.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Register a RHEL 8 system:
 
@@ -587,8 +494,11 @@ Procedure
 
 9.  Create a Butane config file, `99-simple-kmod.bu`, that embeds the kernel module tree and enables the systemd service.
 
-    > [!NOTE]
-    > See "Creating machine configs with Butane" for information about Butane.
+    <div class="note">
+
+    See "Creating machine configs with Butane" for information about Butane.
+
+    </div>
 
     ``` yaml
     variant: openshift
@@ -628,11 +538,9 @@ Procedure
     $ lsmod | grep simple_
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -640,10 +548,6 @@ Procedure
     simple_procfs_kmod     16384  0
     simple_kmod            16384  0
     ```
-
-    </div>
-
-</div>
 
 # Encrypting and mirroring disks during installation
 
@@ -659,8 +563,11 @@ This is the preferred mode. TPM v2 stores passphrases in a secure cryptoprocesso
 Tang
 Tang and Clevis are server and client components that enable network-bound disk encryption (NBDE). You can bind the boot disk data on your cluster nodes to one or more Tang servers. This prevents decryption of the data unless the nodes are on a secure network where the Tang servers are accessible. Clevis is an automated decryption framework used to implement decryption on the client side.
 
-> [!IMPORTANT]
-> The use of the Tang encryption mode to encrypt your disks is only supported for bare metal and vSphere installations on user-provisioned infrastructure.
+<div class="important">
+
+The use of the Tang encryption mode to encrypt your disks is only supported for bare metal and vSphere installations on user-provisioned infrastructure.
+
+</div>
 
 In earlier versions of Red Hat Enterprise Linux CoreOS (RHCOS), disk encryption was configured by specifying `/etc/clevis.json` in the Ignition config. That file is not supported in clusters created with OpenShift Container Platform 4.7 or later. Configure disk encryption by using the following procedure.
 
@@ -698,11 +605,9 @@ The threshold is met when the stated value is reached through any combination of
 
 For example, the `threshold` value of `2` in the following configuration can be reached by accessing two Tang servers, with the offline server available as a backup, or by accessing the TPM secure cryptoprocessor and one of the Tang servers:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example Butane configuration for disk encryption
+**Example Butane configuration for disk encryption**
 
 </div>
 
@@ -730,8 +635,6 @@ openshift:
   fips: true
 ```
 
-</div>
-
 - Set this field to the instruction set architecture of the cluster nodes. Some examples include, `x86_64`, `aarch64`, or `ppc64le`.
 
 - Include this field if you want to use a Trusted Platform Module (TPM) to encrypt the root file system.
@@ -742,11 +645,17 @@ openshift:
 
 - Specify the minimum number of TPM v2 and Tang encryption conditions required for decryption to occur.
 
-> [!IMPORTANT]
-> The default `threshold` value is `1`. If you include multiple encryption conditions in your configuration but do not specify a threshold, decryption can occur if any of the conditions are met.
+<div class="important">
 
-> [!NOTE]
-> If you require TPM v2 *and* Tang for decryption, the value of the `threshold` attribute must equal the total number of stated Tang servers plus one. If the `threshold` value is lower, it is possible to reach the threshold value by using a single encryption mode. For example, if you set `tpm2` to `true` and specify two Tang servers, a threshold of `2` can be met by accessing the two Tang servers, even if the TPM secure cryptoprocessor is not available.
+The default `threshold` value is `1`. If you include multiple encryption conditions in your configuration but do not specify a threshold, decryption can occur if any of the conditions are met.
+
+</div>
+
+<div class="note">
+
+If you require TPM v2 *and* Tang for decryption, the value of the `threshold` attribute must equal the total number of stated Tang servers plus one. If the `threshold` value is lower, it is possible to reach the threshold value by using a single encryption mode. For example, if you set `tpm2` to `true` and specify two Tang servers, a threshold of `2` can be met by accessing the two Tang servers, even if the TPM secure cryptoprocessor is not available.
+
+</div>
 
 ## About disk mirroring
 
@@ -754,39 +663,27 @@ During OpenShift Container Platform installation on control plane and worker nod
 
 Mirroring does not support replacement of a failed disk. Reprovision the node to restore the mirror to a pristine, non-degraded state.
 
-> [!NOTE]
-> For user-provisioned infrastructure deployments, mirroring is available only on RHCOS systems. Support for mirroring is available on `x86_64` nodes booted with BIOS or UEFI and on `ppc64le` nodes.
+<div class="note">
+
+For user-provisioned infrastructure deployments, mirroring is available only on RHCOS systems. Support for mirroring is available on `x86_64` nodes booted with BIOS or UEFI and on `ppc64le` nodes.
+
+</div>
 
 ## Configuring disk encryption and mirroring
 
 You can enable and configure encryption and mirroring during an OpenShift Container Platform installation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have downloaded the OpenShift Container Platform installation program on your installation node.
 
 - You installed Butane on your installation node.
 
-  > [!NOTE]
-  > Butane is a command-line utility that OpenShift Container Platform uses to offer convenient, short-hand syntax for writing and validating machine configs. For more information, see "Creating machine configs with Butane".
+  <div class="note">
+
+  Butane is a command-line utility that OpenShift Container Platform uses to offer convenient, short-hand syntax for writing and validating machine configs. For more information, see "Creating machine configs with Butane".
+
+  </div>
 
 - You have access to a Red Hat Enterprise Linux (RHEL) 8 machine that can be used to generate a thumbprint of the Tang exchange key.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  If you want to use TPM v2 to encrypt your cluster, check to see if TPM v2 encryption needs to be enabled in the host firmware for each node. This is required on most Dell systems. Check the manual for your specific system.
 
@@ -808,14 +705,15 @@ Procedure
 
         - In this example, `tangd.socket` is listening on port `7500` on the Tang server.
 
-          > [!NOTE]
-          > The `clevis-encrypt-tang` command generates a thumbprint of the exchange key. No data passes to the encryption command during this step; `/dev/null` exists here as an input instead of plain text. The encrypted output is also sent to `/dev/null`, because it is not required for this procedure.
+          <div class="note">
 
-          <div class="formalpara">
+          The `clevis-encrypt-tang` command generates a thumbprint of the exchange key. No data passes to the encryption command during this step; `/dev/null` exists here as an input instead of plain text. The encrypted output is also sent to `/dev/null`, because it is not required for this procedure.
 
-          <div class="title">
+          </div>
 
-          Example output
+          <div class="formalpara-title">
+
+          **Example output**
 
           </div>
 
@@ -824,8 +722,6 @@ Procedure
 
           PLjNyRdGw03zlRoGjQYMahSZGu9
           ```
-
-          </div>
 
         - The thumbprint of the exchange key.
 
@@ -839,19 +735,15 @@ Procedure
             $ curl -f http://tang2.example.com:7500/adv > adv.jws && cat adv.jws
             ```
 
-            <div class="formalpara">
+            <div class="formalpara-title">
 
-            <div class="title">
-
-            Expected output
+            **Expected output**
 
             </div>
 
             ``` text
             {"payload": "eyJrZXlzIjogW3siYWxnIjogIkV", "protected": "eyJhbGciOiJFUzUxMiIsImN0eSI", "signature": "ADLgk7fZdE3Yt4FyYsm0pHiau7Q"}
             ```
-
-            </div>
 
         2.  Provide the advertisement file to Clevis for encryption:
 
@@ -861,8 +753,11 @@ Procedure
 
     5.  If the nodes are configured with static IP addressing, run `coreos-installer iso customize --dest-karg-append` or use the `coreos-installer` `--append-karg` option when installing RHCOS nodes to set the IP address of the installed system. Append the `ip=` and other arguments needed for your network.
 
-        > [!IMPORTANT]
-        > Some methods for configuring static IPs do not affect the initramfs after the first boot and will not work with Tang encryption. These include the `coreos-installer` `--copy-network` option, the `coreos-installer iso customize` `--network-keyfile` option, and the `coreos-installer pxe customize` `--network-keyfile` option, as well as adding `ip=` arguments to the kernel command line of the live ISO or PXE image during installation. Incorrect static IP configuration causes the second boot of the node to fail.
+        <div class="important">
+
+        Some methods for configuring static IPs do not affect the initramfs after the first boot and will not work with Tang encryption. These include the `coreos-installer` `--copy-network` option, the `coreos-installer iso customize` `--network-keyfile` option, and the `coreos-installer pxe customize` `--network-keyfile` option, as well as adding `ip=` arguments to the kernel command line of the live ISO or PXE image during installation. Incorrect static IP configuration causes the second boot of the node to fail.
+
+        </div>
 
 3.  On your installation node, change to the directory that contains the installation program and generate the Kubernetes manifests for the cluster:
 
@@ -874,11 +769,9 @@ Procedure
 
 4.  Create a Butane config that configures disk encryption, mirroring, or both. For example, to configure storage for compute nodes, create a `$HOME/clusterconfig/worker-storage.bu` file.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Butane config example for a boot device
+    **Butane config example for a boot device**
 
     </div>
 
@@ -908,8 +801,6 @@ Procedure
       fips: true
     ```
 
-    </div>
-
     - For control plane configurations, replace `worker` with `master` in both of these locations.
 
     - Set this field to the instruction set architecture of the cluster nodes. Some examples include, `x86_64`, `aarch64`, or `ppc64le`.
@@ -934,8 +825,11 @@ Procedure
 
     - Include this directive to enable FIPS mode on your cluster.
 
-      > [!IMPORTANT]
-      > To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Installing the system in FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/assembly_installing-the-system-in-fips-mode_security-hardening). If you are configuring nodes to use both disk encryption and mirroring, both features must be configured in the same Butane configuration file. If you are configuring disk encryption on a node with FIPS mode enabled, you must include the `fips` directive in the same Butane configuration file, even if FIPS mode is also enabled in a separate manifest.
+      <div class="important">
+
+      To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Installing the system in FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/assembly_installing-the-system-in-fips-mode_security-hardening). If you are configuring nodes to use both disk encryption and mirroring, both features must be configured in the same Butane configuration file. If you are configuring disk encryption on a node with FIPS mode enabled, you must include the `fips` directive in the same Butane configuration file, even if FIPS mode is also enabled in a separate manifest.
+
+      </div>
 
 5.  Create a control plane or compute node manifest from the corresponding Butane configuration file and save it to the `<installation_directory>/openshift` directory. For example, to create a manifest for the compute nodes, run the following command:
 
@@ -960,25 +854,25 @@ Procedure
 
 8.  Continue with the remainder of the OpenShift Container Platform installation.
 
-    > [!TIP]
-    > You can monitor the console log on the RHCOS nodes during installation for error messages relating to disk encryption or mirroring.
+    <div class="tip">
 
-    > [!IMPORTANT]
-    > If you configure additional data partitions, they will not be encrypted unless encryption is explicitly requested.
+    You can monitor the console log on the RHCOS nodes during installation for error messages relating to disk encryption or mirroring.
 
-</div>
+    </div>
 
-<div class="formalpara">
+    <div class="important">
 
-<div class="title">
+    If you configure additional data partitions, they will not be encrypted unless encryption is explicitly requested.
 
-Verification
+    </div>
+
+<div class="formalpara-title">
+
+**Verification**
 
 </div>
 
 After installing OpenShift Container Platform, you can verify if boot disk encryption or mirroring is enabled on the cluster nodes.
-
-</div>
 
 1.  From the installation host, access a cluster node by using a debug pod:
 
@@ -994,8 +888,11 @@ After installing OpenShift Container Platform, you can verify if boot disk encry
         # chroot /host
         ```
 
-        > [!NOTE]
-        > OpenShift Container Platform cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes using SSH is not recommended. However, if the OpenShift Container Platform API is not available, or `kubelet` is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>` instead.
+        <div class="note">
+
+        OpenShift Container Platform cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes using SSH is not recommended. However, if the OpenShift Container Platform API is not available, or `kubelet` is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>` instead.
+
+        </div>
 
 2.  If you configured boot disk encryption, verify if it is enabled:
 
@@ -1005,11 +902,9 @@ After installing OpenShift Container Platform, you can verify if boot disk encry
         # cryptsetup status root
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1026,8 +921,6 @@ After installing OpenShift Container Platform, you can verify if boot disk encry
           mode:    read/write
         ```
 
-        </div>
-
         - The encryption format. When the TPM v2 or Tang encryption modes are enabled, the RHCOS boot disks are encrypted using the LUKS2 format.
 
         - The encryption algorithm used to encrypt the LUKS2 volume.
@@ -1042,19 +935,15 @@ After installing OpenShift Container Platform, you can verify if boot disk encry
 
         - Specify the device that is listed in the `device` field in the output of the preceding step.
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example output
+          **Example output**
 
           </div>
 
           ``` terminal
           1: sss '{"t":1,"pins":{"tang":[{"url":"http://tang.example.com:7500"}]}}'
           ```
-
-          </div>
 
         - In the example output, the Tang plugin is used by the Shamir’s Secret Sharing (SSS) Clevis plugin for the `/dev/sda4` device.
 
@@ -1066,11 +955,9 @@ After installing OpenShift Container Platform, you can verify if boot disk encry
         # cat /proc/mdstat
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1085,8 +972,6 @@ After installing OpenShift Container Platform, you can verify if boot disk encry
         unused devices: <none>
         ```
 
-        </div>
-
         - The `/dev/md126` software RAID mirror device uses the `/dev/sda3` and `/dev/sdb3` disk devices on the cluster node.
 
         - The `/dev/md127` software RAID mirror device uses the `/dev/sda4` and `/dev/sdb4` disk devices on the cluster node.
@@ -1097,11 +982,9 @@ After installing OpenShift Container Platform, you can verify if boot disk encry
         # mdadm --detail /dev/md126
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1134,8 +1017,6 @@ After installing OpenShift Container Platform, you can verify if boot disk encry
                1     252       19        1      active sync   /dev/sdb3
         ```
 
-        </div>
-
         - Specifies the RAID level of the device. `raid1` indicates RAID 1 disk mirroring.
 
         - Specifies the state of the RAID device.
@@ -1154,11 +1035,9 @@ After installing OpenShift Container Platform, you can verify if boot disk encry
         # mount | grep /dev/md
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1177,36 +1056,19 @@ After installing OpenShift Container Platform, you can verify if boot disk encry
         /dev/md126 on /boot type ext4 (rw,relatime,seclabel)
         ```
 
-        </div>
-
         In the example output, the `/boot` file system is mounted on the `/dev/md126` software RAID device and the root file system is mounted on `/dev/md127`.
 
 4.  Repeat the verification steps for each OpenShift Container Platform node type.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - For more information about the TPM v2 and Tang encryption modes, see [Configuring automated unlocking of encrypted volumes using policy-based decryption](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/security_hardening/configuring-automated-unlocking-of-encrypted-volumes-using-policy-based-decryption_security-hardening).
-
-</div>
 
 ## Configuring a RAID-enabled data volume
 
 You can enable software RAID partitioning to provide an external data volume. OpenShift Container Platform supports RAID 0, RAID 1, RAID 4, RAID 5, RAID 6, and RAID 10 for data protection and fault tolerance. See "About disk mirroring" for more details.
 
-> [!NOTE]
-> OpenShift Container Platform 4.17 does not support software RAIDs on the installation drive.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+OpenShift Container Platform 4.17 does not support software RAIDs on the installation drive.
 
 </div>
 
@@ -1214,28 +1076,19 @@ Prerequisites
 
 - You have installed Butane on your installation node.
 
-  > [!NOTE]
-  > Butane is a command-line utility that OpenShift Container Platform uses to provide convenient, short-hand syntax for writing machine configs, as well as for performing additional validation of machine configs. For more information, see the *Creating machine configs with Butane* section.
+  <div class="note">
 
-</div>
+  Butane is a command-line utility that OpenShift Container Platform uses to provide convenient, short-hand syntax for writing machine configs, as well as for performing additional validation of machine configs. For more information, see the *Creating machine configs with Butane* section.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  Create a Butane config that configures a data volume by using software RAID.
 
     - To configure a data volume with RAID 1 on the same disks that are used for a mirrored boot disk, create a `$HOME/clusterconfig/raid1-storage.bu` file, for example:
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      RAID 1 on mirrored boot disk
+      **RAID 1 on mirrored boot disk**
 
       </div>
 
@@ -1277,17 +1130,13 @@ Procedure
             with_mount_unit: true
       ```
 
-      </div>
-
       - When adding a data partition to the boot disk, a minimum value of 25000 mebibytes is recommended. If no value is specified, or if the specified value is smaller than the recommended minimum, the resulting root file system will be too small, and future reinstalls of RHCOS might overwrite the beginning of the data partition.
 
     - To configure a data volume with RAID 1 on secondary disks, create a `$HOME/clusterconfig/raid1-alt-storage.bu` file, for example:
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      RAID 1 on secondary disks
+      **RAID 1 on secondary disks**
 
       </div>
 
@@ -1322,8 +1171,6 @@ Procedure
             with_mount_unit: true
       ```
 
-      </div>
-
 2.  Create a RAID manifest from the Butane config you created in the previous step and save it to the `<installation_directory>/openshift` directory. For example, to create a manifest for the compute nodes, run the following command:
 
     ``` terminal
@@ -1336,33 +1183,13 @@ Procedure
 
 4.  Continue with the remainder of the OpenShift Container Platform installation.
 
-</div>
-
 ## Configuring an Intel® Virtual RAID on CPU (VROC) data volume
 
 Intel® VROC is a type of hybrid RAID, where some of the maintenance is offloaded to the hardware, but appears as software RAID to the operating system.
 
 The following procedure configures an Intel® VROC-enabled RAID1.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have a system with Intel® Volume Management Device (VMD) enabled.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the Intel® Matrix Storage Manager (IMSM) RAID container by running the following command:
 
@@ -1421,24 +1248,17 @@ Procedure
 
           Include any additional `coreos-installer` arguments you need to install RHCOS.
 
-</div>
-
 # Configuring chrony time service
 
 You can set the time server and related settings used by the chrony time service (`chronyd`) by modifying the contents of the `chrony.conf` file and passing those contents to your nodes as a machine config.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a Butane config including the contents of the `chrony.conf` file. For example, to configure chrony on worker nodes, create a `99-worker-chrony.bu` file.
 
-    > [!NOTE]
-    > The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+    <div class="note">
+
+    The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+
+    </div>
 
     ``` yaml
     variant: openshift
@@ -1467,8 +1287,11 @@ Procedure
 
     - Specify any valid, reachable time source, such as the one provided by your DHCP server.
 
-    > [!NOTE]
-    > For all-machine to all-machine communication, the Network Time Protocol (NTP) on UDP is port `123`. If an external NTP time server is configured, you must open UDP port `123`.
+    <div class="note">
+
+    For all-machine to all-machine communication, the Network Time Protocol (NTP) on UDP is port `123`. If an external NTP time server is configured, you must open UDP port `123`.
+
+    </div>
 
     Alternatively, you can specify any of the following NTP servers: `1.rhel.pool.ntp.org`, `2.rhel.pool.ntp.org`, or `3.rhel.pool.ntp.org`. When you use NTP with your DHCP server, you must set the `sourcedir /run/chrony-dhcp` parameter in the `chrony.conf` file.
 
@@ -1487,8 +1310,6 @@ Procedure
       ``` terminal
       $ oc apply -f ./99-worker-chrony.yaml
       ```
-
-</div>
 
 # Additional resources
 

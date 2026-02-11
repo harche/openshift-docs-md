@@ -18,29 +18,17 @@ In the following procedures, the `oc-mirror` tool is used, which is a binary tha
 
 - The extra images that you want to add to the repository.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - Ensure that the registry server is running before you start the mirroring process.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To configure image mirroring, complete the following steps:
-
-</div>
 
 1.  Ensure that your `${HOME}/.docker/config.json` file is updated with the registries that you are going to mirror from and with the private registry that you plan to push the images to.
 
@@ -131,19 +119,9 @@ To configure image mirroring, complete the following steps:
 
 7.  Mirror the latest multicluster engine Operator images by following the steps in [Install on disconnected networks](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#install-on-disconnected-networks).
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Mirroring an image set in a partially disconnected environment](../../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-workflows-partially-disconnected-v2_about-installing-oc-mirror-v2)
 
 - [Mirroring an image set in a fully disconnected environment](../../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-workflows-fully-disconnected-v2_about-installing-oc-mirror-v2)
-
-</div>
 
 # Applying objects in the management cluster
 
@@ -158,14 +136,6 @@ When you use the `oc-mirror` tool, the output artifacts are in a folder named `o
 The ICSP or IDMS initiates a `MachineConfig` change that does not restart your nodes but restarts the kubelet on each of them. After the nodes are marked as `READY`, you need to apply the newly generated catalog sources.
 
 The catalog sources initiate actions in the `openshift-marketplace` Operator, such as downloading the catalog image and processing it to retrieve all the `PackageManifests` that are included in that image.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To check the new sources, run the following command by using the new `CatalogSource` as a source:
 
@@ -203,33 +173,17 @@ Procedure
 
         - `hypershift.openshift.io/redhat-operators-catalog-image`
 
-</div>
-
 In this case, the image stream is not created, and you must update the value of the annotations when the internal mirror is refreshed to pull in Operator updates.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Next steps
+**Next steps**
 
 </div>
 
 Deploy the multicluster engine Operator by completing the steps in *Deploying multicluster engine Operator for a disconnected installation of hosted control planes*.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
-
-</div>
 
 # Deploying multicluster engine Operator for a disconnected installation of hosted control planes
 
@@ -246,14 +200,6 @@ To ensure proper function in a disconnected deployment, you need to configure th
 ## Adding the registry CA to the management cluster
 
 To add the registry CA to the management cluster, complete the following steps.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a config map that resembles the following example:
 
@@ -295,19 +241,9 @@ Procedure
 
     The process to patch the object might take several minutes to be completed.
 
-</div>
-
 ## Adding the registry CA to the worker nodes for the hosted cluster
 
 In order for the data plane workers in the hosted cluster to be able to retrieve images from the private registry, you need to add the registry CA to the worker nodes.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the `hc.spec.additionalTrustBundle` file, add the following specification:
 
@@ -345,8 +281,6 @@ Procedure
 
     - Specify the namespace where the `HostedCluster` object is created.
 
-</div>
-
 # Creating a hosted cluster on OpenShift Virtualization
 
 A hosted cluster is an OpenShift Container Platform cluster with its control plane and API endpoint hosted on a management cluster. The hosted cluster includes the control plane and its corresponding data plane.
@@ -368,14 +302,6 @@ As you prepare to deploy hosted control planes on OpenShift Virtualization, cons
 ## Creating a hosted cluster with the KubeVirt platform by using the CLI
 
 To create a hosted cluster, you can use the hosted control plane command-line interface (CLI), `hcp`.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a hosted cluster with the KubeVirt platform by entering the following command:
 
@@ -401,8 +327,11 @@ Procedure
 
     - Specify the etcd storage class name, for example, `lvm-storageclass`.
 
-      > [!NOTE]
-      > You can use the `--release-image` flag to set up the hosted cluster with a specific OpenShift Container Platform release.
+      <div class="note">
+
+      You can use the `--release-image` flag to set up the hosted cluster with a specific OpenShift Container Platform release.
+
+      </div>
 
       A default node pool is created for the cluster with two virtual machine worker replicas according to the `--node-pool-replicas` flag.
 
@@ -412,11 +341,9 @@ Procedure
     $ oc -n clusters-<hosted-cluster-name> get pods
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -432,19 +359,7 @@ Procedure
     redhat-operators-catalog-9d5fd4d44-z8qqk              1/1     Running   0          66s
     ```
 
-    </div>
-
     A hosted cluster that has worker nodes that are backed by KubeVirt virtual machines typically takes 10-15 minutes to be fully provisioned.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - To check the status of the hosted cluster, see the corresponding `HostedCluster` resource by entering the following command:
 
@@ -458,8 +373,6 @@ Verification
       clusters    my-hosted-cluster   <4.x.0>     example-admin-kubeconfig   Completed   True        False         The hosted control plane is available
 
   Replace `<4.x.0>` with the supported OpenShift Container Platform version that you want to use.
-
-</div>
 
 ## Configuring the default ingress and DNS for hosted control planes on OpenShift Virtualization
 
@@ -477,17 +390,13 @@ As a result, a KubeVirt hosted cluster that is named `guest` and that runs on th
 *.apps.guest.apps.mgmt-cluster.example.com
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 For the default ingress DNS to work properly, the cluster that hosts the KubeVirt virtual machines must allow wildcard DNS routes.
-
-</div>
 
 - You can configure this behavior by entering the following command:
 
@@ -497,8 +406,11 @@ For the default ingress DNS to work properly, the cluster that hosts the KubeVir
     -p '[{ "op": "add", "path": "/spec/routeAdmission", "value": {wildcardPolicy: "WildcardsAllowed"}}]'
   ```
 
-> [!NOTE]
-> When you use the default hosted cluster ingress, connectivity is limited to HTTPS traffic over port 443. Plain HTTP traffic over port 80 is rejected. This limitation applies to only the default ingress behavior.
+<div class="note">
+
+When you use the default hosted cluster ingress, connectivity is limited to HTTPS traffic over port 443. Plain HTTP traffic over port 80 is rejected. This limitation applies to only the default ingress behavior.
+
+</div>
 
 ## Customizing ingress and DNS behavior
 
@@ -507,14 +419,6 @@ If you do not want to use the default ingress and DNS behavior, you can configur
 ### Deploying a hosted cluster that specifies the base domain
 
 To create a hosted cluster that specifies a base domain, complete the following steps.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Enter the following command:
 
@@ -542,15 +446,7 @@ Procedure
 
       As a result, the hosted cluster has an ingress wildcard that is configured for the cluster name and the base domain, for example, `.apps.example.hypershift.lab`. The hosted cluster remains in `Partial` status because after you create a hosted cluster with unique base domain, you must configure the required DNS records and load balancer.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  View the status of your hosted cluster by entering the following command:
 
@@ -558,11 +454,9 @@ Verification
     $ oc get --namespace clusters hostedclusters
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -570,8 +464,6 @@ Verification
     NAME            VERSION   KUBECONFIG                       PROGRESS   AVAILABLE   PROGRESSING   MESSAGE
     example                   example-admin-kubeconfig         Partial    True        False         The hosted control plane is available
     ```
-
-    </div>
 
 2.  Access the cluster by entering the following commands:
 
@@ -584,11 +476,9 @@ Verification
     $ oc --kubeconfig <hosted_cluster_name>-kubeconfig get co
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -598,38 +488,25 @@ Verification
     ingress                                    <4.x.0>     True        False         True       28m     The "default" ingress controller reports Degraded=True: DegradedConditions: One or more other status conditions indicate a degraded state: CanaryChecksSucceeding=False (CanaryChecksRepetitiveFailures: Canary route checks for the default ingress controller are failing)
     ```
 
-    </div>
-
     Replace `<4.x.0>` with the supported OpenShift Container Platform version that you want to use.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Next steps
+**Next steps**
 
 </div>
 
 To fix the errors in the output, complete the steps in "Setting up the load balancer" and "Setting up a wildcard DNS".
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> If your hosted cluster is on bare metal, you might need MetalLB to set up load balancer services. For more information, see "Configuring MetalLB".
+If your hosted cluster is on bare metal, you might need MetalLB to set up load balancer services. For more information, see "Configuring MetalLB".
+
+</div>
 
 ### Setting up the load balancer
 
 Set up the load balancer service that routes ingress traffic to the KubeVirt VMs and assigns a wildcard DNS entry to the load balancer IP address.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  A `NodePort` service that exposes the hosted cluster ingress already exists. You can export the node ports and create the load balancer service that targets those ports.
 
@@ -688,19 +565,9 @@ Procedure
     $ oc create -f <file_name>.yaml
     ```
 
-</div>
-
 ### Setting up a wildcard DNS
 
 Set up a wildcard DNS record or CNAME that references the external IP of the load balancer service.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Get the external IP address by entering the following command:
 
@@ -709,19 +576,15 @@ Procedure
       -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     192.168.20.30
     ```
-
-    </div>
 
 2.  Configure a wildcard DNS entry that references the external IP address. View the following example DNS entry:
 
@@ -731,11 +594,9 @@ Procedure
 
     The DNS entry must be able to route inside and outside of the cluster.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    DNS resolutions example
+    **DNS resolutions example**
 
     </div>
 
@@ -745,29 +606,15 @@ Procedure
     192.168.20.30
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Check that hosted cluster status has moved from `Partial` to `Completed` by entering the following command:
 
   ``` terminal
   $ oc get --namespace clusters hostedclusters
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -776,11 +623,7 @@ Verification
   example         <4.x.0>     example-admin-kubeconfig         Completed   True        False         The hosted control plane is available
   ```
 
-  </div>
-
   Replace `<4.x.0>` with the supported OpenShift Container Platform version that you want to use.
-
-</div>
 
 # Finishing the deployment
 
@@ -802,13 +645,7 @@ While the deployment proceeds, you can monitor the control plane by gathering in
 
 - The `HostedCluster` and `NodePool` resources
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Enter the following commands to monitor the control plane:
 
@@ -826,8 +663,6 @@ Procedure
     oc get nodepool -A;echo;echo;"
   ```
 
-</div>
-
 ## Monitoring the data plane
 
 While the deployment proceeds, you can monitor the data plane by gathering information about the following artifacts:
@@ -838,13 +673,7 @@ While the deployment proceeds, you can monitor the data plane by gathering infor
 
 - The cluster Operators
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Enter the following commands:
 
@@ -854,5 +683,3 @@ Procedure
       $ export KUBECONFIG=/root/hc_admin_kubeconfig.yaml
 
       $ watch "oc get clusterversion,nodes,co"
-
-</div>

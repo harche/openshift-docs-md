@@ -4,8 +4,11 @@ As a developer, you can export your application in the ZIP file format. Based on
 
 - You have installed the gitops-primer Operator from the software catalog.
 
-  > [!NOTE]
-  > The **Export application** option is disabled in the **Topology** view even after installing the gitops-primer Operator.
+  <div class="note">
+
+  The **Export application** option is disabled in the **Topology** view even after installing the gitops-primer Operator.
+
+  </div>
 
 - You have created an application in the **Topology** view to enable **Export application**.
 

@@ -4,14 +4,6 @@ By default, the OpenShift image registry is secured during cluster installation 
 
 Instead of logging in to the default OpenShift image registry from within the cluster, you can gain external access to the OpenShift image registry by exposing the registry with a route. With this external access, you can log in to the registry from outside the cluster by using the route address. You can then tag and push images to an existing project by using the route host.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The following prerequisites are automatically performed:
 
   - Deploy the Registry Operator.
@@ -19,16 +11,6 @@ Prerequisites
   - Deploy the Ingress Operator.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To expose the registry by using the `defaultRoute` parameter that exists in the `configs.imageregistry.operator.openshift.io` resource, set defaultRoute\` to `true` by running the following command:
 
@@ -66,21 +48,11 @@ Procedure
     $ sudo podman login -u kubeadmin -p $(oc whoami -t) $HOST
     ```
 
-</div>
-
 # Exposing a secure registry manually
 
 Instead of logging in to the OpenShift image registry from within the cluster, you can gain external access to the OpenShift image registry by exposing the registry with a route. With this external access, you can log in to the registry from outside the cluster by using the route address. You can then tag and push images to an existing project by using the route host.
 
 You can expose the route by using `DefaultRoute` parameter in the `configs.imageregistry.operator.openshift.io` resource or by using custom routes.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - The following prerequisites are automatically performed:
 
@@ -89,16 +61,6 @@ Prerequisites
   - Deploy the Ingress Operator.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To expose the registry using `DefaultRoute` parameter, set `DefaultRoute` to `True`:
 
@@ -142,19 +104,10 @@ Procedure
     ...
     ```
 
-    > [!NOTE]
-    > Only set `secretName` if you are providing a custom TLS configuration for the route of the registry.
+    <div class="note">
 
-</div>
+    Only set `secretName` if you are providing a custom TLS configuration for the route of the registry.
 
-<div>
-
-<div class="title">
-
-Troubleshooting
-
-</div>
+    </div>
 
 - [Error creating TLS secret](https://access.redhat.com/solutions/5419501)
-
-</div>

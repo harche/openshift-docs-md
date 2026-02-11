@@ -6,12 +6,12 @@ Type
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | spec is the desired state of IPAddress. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | spec is the desired state of IPAddress.                                                                                                                                                                                                                                                              |
 
 ## .spec
 
@@ -30,13 +30,13 @@ Required
 
 - `prefix`
 
-| Property | Type | Description |
-|----|----|----|
-| `address` | `string` | address is the IP address. |
-| `claimRef` | `object` | claimRef is a reference to the claim this IPAddress was created for. |
-| `gateway` | `string` | gateway is the network gateway of the network the address is from. |
-| `poolRef` | `object` | poolRef is a reference to the pool that this IPAddress was created from. |
-| `prefix` | `integer` | prefix is the prefix of the address. |
+| Property   | Type      | Description                                                              |
+|------------|-----------|--------------------------------------------------------------------------|
+| `address`  | `string`  | address is the IP address.                                               |
+| `claimRef` | `object`  | claimRef is a reference to the claim this IPAddress was created for.     |
+| `gateway`  | `string`  | gateway is the network gateway of the network the address is from.       |
+| `poolRef`  | `object`  | poolRef is a reference to the pool that this IPAddress was created from. |
+| `prefix`   | `integer` | prefix is the prefix of the address.                                     |
 
 ## .spec.claimRef
 
@@ -46,9 +46,9 @@ claimRef is a reference to the claim this IPAddress was created for.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                  |
+|----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
 
 ## .spec.poolRef
 
@@ -63,11 +63,11 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                                                                                                                                     |
+|------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiGroup` | `string` | APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required. |
-| `kind` | `string` | Kind is the type of resource being referenced |
-| `name` | `string` | Name is the name of resource being referenced |
+| `kind`     | `string` | Kind is the type of resource being referenced                                                                                                                                                   |
+| `name`     | `string` | Name is the name of resource being referenced                                                                                                                                                   |
 
 # API endpoints
 
@@ -103,10 +103,10 @@ HTTP method
 Description
 list objects of kind IPAddress
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAddressList`](../objects/index.xml#io-x-k8s-cluster-ipam-v1beta1-IPAddressList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                               |
+|--------------------|--------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAddressList`](../objects/index.xml#io-x-k8s-cluster-ipam-v1beta1-IPAddressList) schema |
+| 401 - Unauthorized | Empty                                                                                      |
 
 HTTP responses
 
@@ -118,10 +118,10 @@ HTTP method
 Description
 delete collection of IPAddress
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -131,10 +131,10 @@ HTTP method
 Description
 list objects of kind IPAddress
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAddressList`](../objects/index.xml#io-x-k8s-cluster-ipam-v1beta1-IPAddressList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                               |
+|--------------------|--------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAddressList`](../objects/index.xml#io-x-k8s-cluster-ipam-v1beta1-IPAddressList) schema |
+| 401 - Unauthorized | Empty                                                                                      |
 
 HTTP responses
 
@@ -144,25 +144,25 @@ HTTP method
 Description
 create an IPAddress
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`IPAddress`](../cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddress-ipam-cluster-x-k8s-io-v1beta1) schema |  |
+| Parameter | Type                                                                                                                      | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`IPAddress`](../cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddress-ipam-cluster-x-k8s-io-v1beta1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAddress`](../cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddress-ipam-cluster-x-k8s-io-v1beta1) schema |
-| 201 - Created | [`IPAddress`](../cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddress-ipam-cluster-x-k8s-io-v1beta1) schema |
-| 202 - Accepted | [`IPAddress`](../cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddress-ipam-cluster-x-k8s-io-v1beta1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                              |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAddress`](../cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddress-ipam-cluster-x-k8s-io-v1beta1) schema |
+| 201 - Created      | [`IPAddress`](../cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddress-ipam-cluster-x-k8s-io-v1beta1) schema |
+| 202 - Accepted     | [`IPAddress`](../cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddress-ipam-cluster-x-k8s-io-v1beta1) schema |
+| 401 - Unauthorized | Empty                                                                                                                     |
 
 HTTP responses
 
@@ -180,17 +180,17 @@ HTTP method
 Description
 delete an IPAddress
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -200,10 +200,10 @@ HTTP method
 Description
 read the specified IPAddress
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAddress`](../cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddress-ipam-cluster-x-k8s-io-v1beta1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                              |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAddress`](../cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddress-ipam-cluster-x-k8s-io-v1beta1) schema |
+| 401 - Unauthorized | Empty                                                                                                                     |
 
 HTTP responses
 
@@ -213,17 +213,17 @@ HTTP method
 Description
 partially update the specified IPAddress
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAddress`](../cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddress-ipam-cluster-x-k8s-io-v1beta1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                              |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAddress`](../cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddress-ipam-cluster-x-k8s-io-v1beta1) schema |
+| 401 - Unauthorized | Empty                                                                                                                     |
 
 HTTP responses
 
@@ -233,23 +233,23 @@ HTTP method
 Description
 replace the specified IPAddress
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`IPAddress`](../cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddress-ipam-cluster-x-k8s-io-v1beta1) schema |  |
+| Parameter | Type                                                                                                                      | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`IPAddress`](../cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddress-ipam-cluster-x-k8s-io-v1beta1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAddress`](../cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddress-ipam-cluster-x-k8s-io-v1beta1) schema |
-| 201 - Created | [`IPAddress`](../cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddress-ipam-cluster-x-k8s-io-v1beta1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                              |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAddress`](../cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddress-ipam-cluster-x-k8s-io-v1beta1) schema |
+| 201 - Created      | [`IPAddress`](../cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddress-ipam-cluster-x-k8s-io-v1beta1) schema |
+| 401 - Unauthorized | Empty                                                                                                                     |
 
 HTTP responses

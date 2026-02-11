@@ -82,8 +82,11 @@ Before you migrate your application workloads with the Migration Toolkit for Con
 
 - [ ] The cluster has [storage classes](../storage/dynamic-provisioning.xml#defining-storage-classes_dynamic-provisioning) defined for the storage types used by the source cluster, for example, block volume, file system, or object storage.
 
-  > [!NOTE]
-  > NFS does not require a defined storage class.
+  <div class="note">
+
+  NFS does not require a defined storage class.
+
+  </div>
 
 - [ ] The cluster has the correct network configuration and permissions to access external services, for example, databases, source code repositories, container image registries, and CI/CD tools.
 
@@ -107,8 +110,11 @@ Before you migrate your application workloads with the Migration Toolkit for Con
 
 - [ ] If you migrate objects to an existing namespace on the target cluster that has the same name as the namespace being migrated from the source, the target namespace contains no objects of the same name and type as the objects being migrated.
 
-  > [!NOTE]
-  > Do not create namespaces for your application on the target cluster before migration because this might cause quotas to change.
+  <div class="note">
+
+  Do not create namespaces for your application on the target cluster before migration because this might cause quotas to change.
+
+  </div>
 
 # Performance
 
@@ -116,8 +122,11 @@ Before you migrate your application workloads with the Migration Toolkit for Con
 
 - [ ] The clusters have sufficient resources for migration.
 
-  > [!NOTE]
-  > Clusters require additional memory, CPUs, and storage in order to run a migration on top of normal workloads. Actual resource requirements depend on the number of Kubernetes resources being migrated in a single migration plan. You must test migrations in a non-production environment in order to estimate the resource requirements.
+  <div class="note">
+
+  Clusters require additional memory, CPUs, and storage in order to run a migration on top of normal workloads. Actual resource requirements depend on the number of Kubernetes resources being migrated in a single migration plan. You must test migrations in a non-production environment in order to estimate the resource requirements.
+
+  </div>
 
 - [ ] The [memory and CPU usage](../support/troubleshooting/verifying-node-health.xml#reviewing-node-status-use-and-configuration_verifying-node-health) of the nodes are healthy.
 

@@ -4,36 +4,19 @@ As an administrator, you can review the metrics collected by Telemetry and the I
 
 You can view the cluster and components time series data captured by Telemetry.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift Container Platform CLI (`oc`).
 
 - You have access to the cluster as a user with the `cluster-admin` role or the `cluster-monitoring-view` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to a cluster.
 
 2.  Run the following command, which queries a cluster’s Prometheus service and returns the full set of time series data captured by Telemetry:
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The following example contains some values that are specific to OpenShift Container Platform on AWS.
+The following example contains some values that are specific to OpenShift Container Platform on AWS.
+
+</div>
 
 ``` terminal
 $ curl -G -k -H "Authorization: Bearer $(oc whoami -t)" \
@@ -189,25 +172,7 @@ openshift-monitoring -o jsonpath="{.spec.host}")/federate \
 
 You can review the data that is collected by the Insights Operator.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Find the name of the currently running pod for the Insights Operator:
 
@@ -220,7 +185,5 @@ Procedure
     ``` terminal
     $ oc cp openshift-insights/$INSIGHTS_OPERATOR_POD:/var/lib/insights-operator ./insights-data
     ```
-
-</div>
 
 The recent Insights Operator archives are now available in the `insights-data` directory.

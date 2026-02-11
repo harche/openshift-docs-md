@@ -1,7 +1,10 @@
 You can manage the link state of a primary or secondary virtual machine (VM) interface by using the OpenShift Container Platform web console or the CLI. By specifying the link state, you can logically connect or disconnect the virtual network interface controller (vNIC) from a network.
 
-> [!NOTE]
-> OpenShift Virtualization does not support link state management for Single Root I/O Virtualization (SR-IOV) secondary network interfaces and their link states are not reported.
+<div class="note">
+
+OpenShift Virtualization does not support link state management for Single Root I/O Virtualization (SR-IOV) secondary network interfaces and their link states are not reported.
+
+</div>
 
 You can specify the desired link state when you first create a VM, by editing the configuration of an existing VM that is stopped or running, or when you hot plug a new network interface to a running VM. If you edit a running VM, you do not need to restart or migrate the VM for the changes to be applied. The current link state of a VM interface is reported in the `status.interfaces.linkState` field of the `VirtualMachineInstance` manifest.
 
@@ -9,25 +12,7 @@ You can specify the desired link state when you first create a VM, by editing th
 
 You can set the link state of a primary or secondary virtual machine (VM) network interface by using the web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged into the OpenShift Container Platform web console.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines**.
 
@@ -43,31 +28,11 @@ Procedure
 
     - If the current interface link state is `down`, select **Set link up**.
 
-</div>
-
 # Setting the VM interface link state by using the CLI
 
 You can set the link state of a primary or secondary virtual machine (VM) network interface by using the CLI.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the VM configuration to set the interface link state, as in the following example:
 
@@ -101,24 +66,17 @@ Procedure
 
       - `absent`: Represents a network interface that is hot unplugged.
 
-        > [!IMPORTANT]
-        > If you have defined readiness or liveness probes to run VM health checks, setting the primary interface’s link state to `down` causes the probes to fail. If a liveness probe fails, the VM is deleted and a new VM is created to restore responsiveness.
+        <div class="important">
+
+        If you have defined readiness or liveness probes to run VM health checks, setting the primary interface’s link state to `down` causes the probes to fail. If a liveness probe fails, the VM is deleted and a new VM is created to restore responsiveness.
+
+        </div>
 
 2.  Apply the `VirtualMachine` manifest:
 
     ``` terminal
     $ oc apply -f <filename>.yaml
     ```
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Verify that the desired link state is set by checking the `status.interfaces.linkState` field of the `VirtualMachineInstance` manifest.
 
@@ -149,5 +107,3 @@ Verification
         linkState: down
   # ...
   ```
-
-</div>

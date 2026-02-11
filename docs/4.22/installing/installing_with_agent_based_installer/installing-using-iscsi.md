@@ -12,19 +12,11 @@ The following configurations are necessary to enable iSCSI booting when using th
 
 - If the host on which you are booting the agent ISO image also has an installed disk, it might be necessary to specify the iSCSI disk name in the `rootDeviceHints` parameter to ensure that it is chosen as the boot disk for the final Red Hat Enterprise Linux CoreOS (RHCOS) image. You can also use a diskless environment for iSCSI booting, in which case you do not need to set the `rootDeviceHints` parameter.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [DHCP](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#agent-install-networking-DHCP_preparing-to-install-with-agent-based-installer)
 
 - [About root device hints](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#root-device-hints_preparing-to-install-with-agent-based-installer)
-
-</div>
 
 # Prerequisites
 
@@ -37,14 +29,6 @@ Additional resources
 # Downloading the Agent-based Installer
 
 Use this procedure to download the Agent-based Installer and the CLI needed for your installation.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the Red Hat Hybrid Cloud Console using your login credentials.
 
@@ -60,20 +44,13 @@ Procedure
 
 7.  Click **Download command-line tools** and place the `openshift-install` binary in a directory that is on your `PATH`.
 
-</div>
-
 # Creating the preferred configuration inputs
 
 Use this procedure to create the preferred configuration inputs used to create the agent image.
 
-> [!NOTE]
-> Configuring the `install-config.yaml` and `agent-config.yaml` files is the preferred method for using the Agent-based Installer. Using GitOps ZTP manifests is optional.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+Configuring the `install-config.yaml` and `agent-config.yaml` files is the preferred method for using the Agent-based Installer. Using GitOps ZTP manifests is optional.
 
 </div>
 
@@ -135,27 +112,31 @@ Procedure
 
     - Specify your platform.
 
-      > [!NOTE]
-      > For bare-metal platforms, host settings made in the platform section of the `install-config.yaml` file are used by default, unless they are overridden by configurations made in the `agent-config.yaml` file.
+      <div class="note">
+
+      For bare-metal platforms, host settings made in the platform section of the `install-config.yaml` file are used by default, unless they are overridden by configurations made in the `agent-config.yaml` file.
+
+      </div>
 
     - Specify your pull secret.
 
     - Specify your SSH public key.
 
-    > [!NOTE]
-    > If you set the platform to `vSphere`, `baremetal`, or `none`, you can configure IP address endpoints for cluster nodes in three ways:
-    >
-    > - IPv4
-    >
-    > - IPv6
-    >
-    > - IPv4 and IPv6 in parallel (dual-stack)
+    <div class="note">
 
-    <div class="formalpara">
+    If you set the platform to `vSphere`, `baremetal`, or `none`, you can configure IP address endpoints for cluster nodes in three ways:
 
-    <div class="title">
+    - IPv4
 
-    Example of dual-stack networking
+    - IPv6
+
+    - IPv4 and IPv6 in parallel (dual-stack)
+
+    </div>
+
+    <div class="formalpara-title">
+
+    **Example of dual-stack networking**
 
     </div>
 
@@ -183,10 +164,11 @@ Procedure
         - 2001:DB8::5
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > When you use a disconnected mirror registry, you must add the certificate file that you created previously for your mirror registry to the `additionalTrustBundle` field of the `install-config.yaml` file.
+    When you use a disconnected mirror registry, you must add the certificate file that you created previously for your mirror registry to the `additionalTrustBundle` field of the `install-config.yaml` file.
+
+    </div>
 
 5.  Create the `agent-config.yaml` file by running the following command:
 
@@ -238,22 +220,15 @@ Procedure
 
     - Enables provisioning of the Red Hat Enterprise Linux CoreOS (RHCOS) image to a particular device. The installation program examines the devices in the order it discovers them, and compares the discovered values with the hint values. It uses the first discovered device that matches the hint value.
 
-      > [!NOTE]
-      > This parameter is mandatory for FCP multipath configurations on IBM Z.
+      <div class="note">
+
+      This parameter is mandatory for FCP multipath configurations on IBM Z.
+
+      </div>
 
     - Optional: Configures the network interface of a host in NMState format.
 
     - Generates an ISO image without the rootfs image file, and instead provides details about where to pull the rootfs file from. You must set this parameter to `true` to enable iSCSI booting.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Deploying with dual-stack networking](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#modifying-install-config-for-dual-stack-network_ipi-install-installation-workflow)
 
@@ -269,19 +244,9 @@ Additional resources
 
 - [Verifying the supported architecture for an Agent-based installation](../../installing/installing_with_agent_based_installer/installing-with-agent-based-installer.xml#agent-install-verifying-architectures_installing-with-agent-based-installer)
 
-</div>
-
 # Creating the installation files
 
 Use the following procedure to generate the ISO image and create an iPXE script to upload to your iSCSI target.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the agent image by running the following command:
 
@@ -310,11 +275,9 @@ Procedure
     \<iscsi_target_base\>
     Specifies the iSCSI target name. This name can be the same as the initiator name.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example Command
+    **Example Command**
 
     </div>
 
@@ -325,7 +288,3 @@ Procedure
     sanboot --keep iscsi:192.168.45.1::::iqn.2023-01.com.example:\${hostname}
     EOF
     ```
-
-    </div>
-
-</div>

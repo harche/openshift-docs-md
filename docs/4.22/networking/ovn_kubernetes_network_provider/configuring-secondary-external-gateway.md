@@ -44,19 +44,19 @@ You can define an `AdminPolicyBasedExternalRoute` object, which is cluster scope
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>metadata.name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the name of the <code>AdminPolicyBasedExternalRoute</code> object.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.from</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies a namespace selector that the routing policies apply to. Only <code>namespaceSelector</code> is supported for external traffic. For example:</p>
@@ -66,7 +66,7 @@ You can define an `AdminPolicyBasedExternalRoute` object, which is cluster scope
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">kubernetes.io/metadata.name</span><span class="kw">:</span><span class="at"> novxlan-externalgw-ecmp-4059</span></span></code></pre></div>
 <p>A namespace can only be targeted by one <code>AdminPolicyBasedExternalRoute</code> CR. If a namespace is selected by more than one <code>AdminPolicyBasedExternalRoute</code> CR, a <code>failed</code> error status occurs on the second and subsequent CRs that target the same namespace. To apply updates, you must change the policy itself or related objects to the policy such as target namespaces, pod gateways, or namespaces hosting them from dynamic hops in order for the policy to be re-evaluated and your changes to be applied.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.nextHops</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Specifies the destinations where the packets are forwarded to. Must be either or both of <code>static</code> and <code>dynamic</code>. You must have at least one next hop defined.</p></td>
@@ -74,26 +74,28 @@ You can define an `AdminPolicyBasedExternalRoute` object, which is cluster scope
 </tbody>
 </table>
 
-| Field | Type | Description |
-|----|----|----|
-| `static` | `array` | Specifies an array of static IP addresses. |
+`AdminPolicyBasedExternalRoute` object
+
+| Field     | Type    | Description                                                                                                                                      |
+|-----------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| `static`  | `array` | Specifies an array of static IP addresses.                                                                                                       |
 | `dynamic` | `array` | Specifies an array of pod selectors corresponding to pods configured with a network attachment definition to use as the external gateway target. |
 
 `nextHops` object
 
-| Field | Type | Description |
-|----|----|----|
-| `ip` | `string` | Specifies either an IPv4 or IPv6 address of the next destination hop. |
+| Field        | Type      | Description                                                                                                                      |
+|--------------|-----------|----------------------------------------------------------------------------------------------------------------------------------|
+| `ip`         | `string`  | Specifies either an IPv4 or IPv6 address of the next destination hop.                                                            |
 | `bfdEnabled` | `boolean` | Optional: Specifies whether Bi-Directional Forwarding Detection (BFD) is supported by the network. The default value is `false`. |
 
 `nextHops.static` object
 
-| Field | Type | Description |
-|----|----|----|
-| `podSelector` | `string` | Specifies a \[set-based\](<https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#set-based-requirement>) label selector to filter the pods in the namespace that match this network configuration. |
-| `namespaceSelector` | `string` | Specifies a `set-based` selector to filter the namespaces that the `podSelector` applies to. You must specify a value for this field. |
-| `bfdEnabled` | `boolean` | Optional: Specifies whether Bi-Directional Forwarding Detection (BFD) is supported by the network. The default value is `false`. |
-| `networkAttachmentName` | `string` | Optional: Specifies the name of a network attachment definition. The name must match the list of logical networks associated with the pod. If this field is not specified, the host network of the pod is used. However, the pod must be configure as a host network pod to use the host network. |
+| Field                   | Type      | Description                                                                                                                                                                                                                                                                                       |
+|-------------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `podSelector`           | `string`  | Specifies a \[set-based\](<https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#set-based-requirement>) label selector to filter the pods in the namespace that match this network configuration.                                                                            |
+| `namespaceSelector`     | `string`  | Specifies a `set-based` selector to filter the namespaces that the `podSelector` applies to. You must specify a value for this field.                                                                                                                                                             |
+| `bfdEnabled`            | `boolean` | Optional: Specifies whether Bi-Directional Forwarding Detection (BFD) is supported by the network. The default value is `false`.                                                                                                                                                                  |
+| `networkAttachmentName` | `string`  | Optional: Specifies the name of a network attachment definition. The name must match the list of logical networks associated with the pod. If this field is not specified, the host network of the pod is used. However, the pod must be configure as a host network pod to use the host network. |
 
 `nextHops.dynamic` object
 
@@ -177,27 +179,9 @@ spec:
 
 You can configure an external gateway on the default network for a namespace in your cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You installed the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster with a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file that contains an `AdminPolicyBasedExternalRoute` object.
 
@@ -212,19 +196,15 @@ Procedure
     `<file>`
     Specifies the name of the YAML file that you created in the previous step.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` text
     adminpolicybasedexternalroute.k8s.ovn.org/default-route-policy created
     ```
-
-    </div>
 
 3.  To confirm that the admin policy based external route was created, enter the following command:
 
@@ -237,11 +217,9 @@ Procedure
     `<name>`
     Specifies the name of the `AdminPolicyBasedExternalRoute` object.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -253,10 +231,6 @@ Procedure
       Status:  Success
     Events:  <none>
     ```
-
-    </div>
-
-</div>
 
 # Additional resources
 

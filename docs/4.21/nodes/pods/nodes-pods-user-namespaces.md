@@ -6,8 +6,11 @@ Running containers in individual user namespaces can mitigate container breakout
 
 When running a pod in an isolated user namespace, the UID/GID inside a pod container no longer matches the UID/GID on the host. In order for file system ownership to work correctly, the Linux kernel uses ID-mapped mounts, which translate user IDs between the container and the host at the virtual file system (VFS) layer.
 
-> [!IMPORTANT]
-> Not all file systems currently support ID-mapped mounts, such as Network File Systems (NFS) and other network/distributed file systems. Any pod that is using an NFS-backed persistent volume from a vendor that does not support ID-mapped mounts might experience access or permission issues when running in a user namespace. This behavior is not specific to OpenShift Container Platform. It applies to all Kubernetes distributions from Kubernetes v1.33 onward.
+<div class="important">
+
+Not all file systems currently support ID-mapped mounts, such as Network File Systems (NFS) and other network/distributed file systems. Any pod that is using an NFS-backed persistent volume from a vendor that does not support ID-mapped mounts might experience access or permission issues when running in a user namespace. This behavior is not specific to OpenShift Container Platform. It applies to all Kubernetes distributions from Kubernetes v1.33 onward.
+
+</div>
 
 # Configuring Linux user namespace support
 
@@ -21,25 +24,7 @@ To require a specific SCC for a workload, you can add an SCC to a specific user 
 
 Also, you can optionally use the `procMount` parameter in a pod specification to configure the `/proc` file system in pods as `unmasked`. Setting `/proc` to `unmasked`, which is generally considered as safe, bypasses the default masking behavior of the container runtime, and should be used only with an SCC that sets `userNamespaceLevel` to `RequirePodLevel`.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Log into an OpenShift Container Platform cluster as a user configured with the `restricted-v3` or `nested-container` SCC, or as a user from a user group configured with either SCC. Alternatively, you can set the `restricted-v3` or `nested-container` SCC directly in the workload object.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the default user ID (UID) and group ID (GID) range of the OpenShift Container Platform namespace where your pod is deployed by running the following command:
 
@@ -47,11 +32,9 @@ Procedure
     $ oc edit ns/<namespace_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example namespace
+    **Example namespace**
 
     </div>
 
@@ -71,8 +54,6 @@ Procedure
     # ...
     ```
 
-    </div>
-
     where:
 
     `metadata.annotations.openshift.io/sa.scc.supplemental-groups`
@@ -81,18 +62,19 @@ Procedure
     `metadata.annotations.openshift.io/sa.scc.uid-range`
     Specifies the default UID to require in the pod spec. The range for a Linux user namespace must be `65535` or lower. The default is `1000000000/10000`.
 
-    > [!NOTE]
-    > The range 1000/10000 means 10,000 values starting with ID 1000, so it specifies the range of IDs from 1000 to 10,999.
+    <div class="note">
+
+    The range 1000/10000 means 10,000 values starting with ID 1000, so it specifies the range of IDs from 1000 to 10,999.
+
+    </div>
 
 2.  Enable the use of Linux user namespaces by creating a workload configured to run with an appropriate SCC and the `hostUsers` parameter set to `false`.
 
     1.  Create a YAML file similar to the following:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example pod specification
+        **Example pod specification**
 
         </div>
 
@@ -123,8 +105,6 @@ Procedure
         # ...
         ```
 
-        </div>
-
         where:
 
         `spec.hostUsers`
@@ -149,15 +129,7 @@ Procedure
 
             $ oc create -f <file_name>.yaml
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Check the user and group IDs being used by the container in the pod you created. The pod is inside the Linux user namespace.
 
@@ -167,11 +139,9 @@ Verification
         $ oc rsh -c <container_name> pod/<pod_name>
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example command
+        **Example command**
 
         </div>
 
@@ -179,27 +149,21 @@ Verification
         $ oc rsh -c userns-container pod/userns-pod
         ```
 
-        </div>
-
     2.  Display the user and group IDs being used inside the container:
 
         ``` terminal
         sh-5.1$ id
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
         ``` terminal
         uid=1000(1000) gid=1000(1000) groups=1000(1000)
         ```
-
-        </div>
 
         - The UID and group for the container should be the same as you set in the pod specification.
 
@@ -209,11 +173,9 @@ Verification
         sh-5.1$ lsns -t user
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -221,8 +183,6 @@ Verification
                 NS TYPE  NPROCS PID USER COMMAND
         4026532447 user       3   1 1000 /usr/bin/coreutils --coreutils-prog-shebang=sleep /usr/bin/sleep 1000
         ```
-
-        </div>
 
         - The UID for the process should be the same as you set in the pod spec.
 
@@ -240,19 +200,15 @@ Verification
         $ oc debug node/ci-ln-z5vppzb-72292-8zp2b-worker-c-q8sh9
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example command
+        **Example command**
 
         </div>
 
         ``` terminal
         $ oc debug node/ci-ln-z5vppzb-72292-8zp2b-worker-c-q8sh9
         ```
-
-        </div>
 
     2.  Set `/host` as the root directory within the debug shell:
 
@@ -266,11 +222,9 @@ Verification
         sh-5.1#  lsns -t user
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example command
+        **Example command**
 
         </div>
 
@@ -279,8 +233,6 @@ Verification
         4026531837 user     233     1 root       /usr/lib/systemd/systemd --switched-root --system --deserialize 28
         4026532447 user       1  4767 2908816384 /usr/bin/coreutils --coreutils-prog-shebang=sleep /usr/bin/sleep 1000
         ```
-
-        </div>
 
         - The UID should be different from what you set in the pod specification.
 
@@ -300,11 +252,9 @@ Verification
     $ oc exec <pod_name> -- mount | grep /proc
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -312,20 +262,6 @@ Verification
     proc on /proc type proc (rw,nosuid,nodev,noexec,relatime)
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Managing security context constraints](../../authentication/managing-security-context-constraints.xml#configuring-internal-oauth)
 
 - [OpenShift CLI administrator command reference](../../cli_reference/openshift_cli/administrator-cli-commands.xml#cli-administrator-commands)
-
-</div>

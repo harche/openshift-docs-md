@@ -16,8 +16,11 @@ A standalone VMI is created and started independently with a script, through aut
 
 When you delete a VM, the associated VMI is automatically deleted. You delete a standalone VMI directly because it is not owned by VMs or other objects.
 
-> [!NOTE]
-> Before you uninstall OpenShift Virtualization, list and view the standalone VMIs by using the CLI or the web console. Then, delete any outstanding VMIs.
+<div class="note">
+
+Before you uninstall OpenShift Virtualization, list and view the standalone VMIs by using the CLI or the web console. Then, delete any outstanding VMIs.
+
+</div>
 
 When you edit a VM, some settings might be applied to the VMIs dynamically and without the need for a restart. Any change made to a VM object that cannot be applied to the VMIs dynamically will trigger the `RestartRequired` VM condition. Changes are effective on the next reboot, and the condition is removed.
 
@@ -25,25 +28,9 @@ When you edit a VM, some settings might be applied to the VMIs dynamically and w
 
 You can list all virtual machine instances (VMIs) in your cluster, including standalone VMIs and those owned by virtual machines, by using the `oc` command-line interface (CLI).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - List all VMIs by running the following command:
 
@@ -51,20 +38,13 @@ Procedure
   $ oc get vmis -A
   ```
 
-</div>
-
 # Listing standalone virtual machine instances using the web console
 
 Using the web console, you can list and view standalone virtual machine instances (VMIs) in your cluster that are not owned by virtual machines (VMs).
 
-> [!NOTE]
-> VMIs that are owned by VMs or other objects are not displayed in the web console. The web console displays only standalone VMIs. If you want to list all VMIs in your cluster, you must use the CLI.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+VMIs that are owned by VMs or other objects are not displayed in the web console. The web console displays only standalone VMIs. If you want to list all VMIs in your cluster, you must use the CLI.
 
 </div>
 
@@ -72,19 +52,9 @@ Procedure
 
   You can identify a standalone VMI by a dark colored badge next to its name.
 
-</div>
-
 # Searching for standalone virtual machine instances by using the web console
 
 You can search for virtual machine instances (VMIs) by using the search bar on the **VirtualMachines** page. Use the advanced search to apply additional filters.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform console, click **Virtualization** → **VirtualMachines** from the side menu.
 
@@ -108,19 +78,9 @@ Procedure
 
 8.  Optional: Click the **Save search** icon to store your search in the `kubevirt-user-settings` ConfigMap.
 
-</div>
-
 # Editing a standalone virtual machine instance using the web console
 
 You can edit the annotations and labels of a standalone virtual machine instance (VMI) using the web console. Other fields are not editable.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform console, click **Virtualization** → **VirtualMachines** from the side menu.
 
@@ -130,33 +90,15 @@ Procedure
 
 4.  Make the relevant changes and click **Save**.
 
-</div>
-
 # Deleting a standalone virtual machine instance using the CLI
 
 You can delete a standalone virtual machine instance (VMI) by using the `oc` command-line interface (CLI).
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Identify the name of the VMI that you want to delete.
 
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Delete the VMI by running the following command:
 
@@ -164,24 +106,12 @@ Procedure
   $ oc delete vmi <vmi_name>
   ```
 
-</div>
-
 # Deleting a standalone virtual machine instance using the web console
 
 You can delete a standalone virtual machine instance (VMI) from the web console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform web console, click **Virtualization** → **VirtualMachines** from the side menu.
 
 2.  Click **Actions** → **Delete VirtualMachineInstance**.
 
 3.  In the confirmation pop-up window, click **Delete** to permanently delete the standalone VMI.
-
-</div>

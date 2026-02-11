@@ -4,8 +4,11 @@ Device plugins allow you to use a particular device type (GPU, InfiniBand, or ot
 
 The device plugin provides a consistent and portable solution to consume hardware devices across clusters. The device plugin provides support for these devices through an extension mechanism, which makes these devices available to Containers, provides health checks of these devices, and securely shares them.
 
-> [!IMPORTANT]
-> OpenShift Container Platform supports the device plugin API, but the device plugin Containers are supported by individual vendors.
+<div class="important">
+
+OpenShift Container Platform supports the device plugin API, but the device plugin Containers are supported by individual vendors.
+
+</div>
 
 A device plugin is a gRPC service running on the nodes (external to the `kubelet`) that is responsible for managing specific hardware resources. Any device plugin must support following remote procedure calls (RPCs):
 
@@ -45,8 +48,11 @@ service DevicePlugin {
 
 - [Kubernetes device plugin for IBM® Crypto Express (CEX) cards](https://github.com/ibm-s390-cloud/k8s-cex-dev-plugin)
 
-> [!NOTE]
-> For easy device plugin reference implementation, there is a stub device plugin in the Device Manager code: ***vendor/k8s.io/kubernetes/pkg/kubelet/cm/deviceplugin/device_plugin_stub.go***.
+<div class="note">
+
+For easy device plugin reference implementation, there is a stub device plugin in the Device Manager code: ***vendor/k8s.io/kubernetes/pkg/kubelet/cm/deviceplugin/device_plugin_stub.go***.
+
+</div>
 
 ## Methods for deploying a device plugin
 
@@ -64,8 +70,11 @@ Device Manager provides a mechanism for advertising specialized node hardware re
 
 You can advertise specialized hardware without requiring any upstream code changes.
 
-> [!IMPORTANT]
-> OpenShift Container Platform supports the device plugin API, but the device plugin Containers are supported by individual vendors.
+<div class="important">
+
+OpenShift Container Platform supports the device plugin API, but the device plugin Containers are supported by individual vendors.
+
+</div>
 
 Device Manager advertises devices as **Extended Resources**. User pods can consume devices, advertised by Device Manager, using the same **Limit/Request** mechanism, which is used for requesting any other **Extended Resource**.
 
@@ -97,11 +106,9 @@ Device Manager provides a mechanism for advertising specialized node hardware re
         # oc describe machineconfig 00-worker
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -111,25 +118,15 @@ Device Manager provides a mechanism for advertising specialized node hardware re
         Labels:       machineconfiguration.openshift.io/role=worker
         ```
 
-        </div>
-
         - Label required for the Device Manager.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 1.  Create a custom resource (CR) for your configuration change.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample configuration for a Device Manager CR
+    **Sample configuration for a Device Manager CR**
 
     </div>
 
@@ -147,8 +144,6 @@ Procedure
           - DevicePlugins=true
     ```
 
-    </div>
-
     - Assign a name to CR.
 
     - Enter the label from the Machine Config Pool.
@@ -161,11 +156,9 @@ Procedure
     $ oc create -f devicemgr.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -173,8 +166,4 @@ Procedure
     kubeletconfig.machineconfiguration.openshift.io/devicemgr created
     ```
 
-    </div>
-
 3.  Ensure that Device Manager was actually enabled by confirming that ***/var/lib/kubelet/device-plugins/kubelet.sock*** is created on the node. This is the UNIX domain socket on which the Device Manager gRPC server listens for new plugin registrations. This sock file is created when the Kubelet is started only if Device Manager is enabled.
-
-</div>

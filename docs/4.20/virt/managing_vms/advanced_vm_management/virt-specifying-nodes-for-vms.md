@@ -14,8 +14,11 @@ You might want to do this if:
 
 - You have a pod that adds capabilities to a node, and you want to place a VM on that node so that it can use those capabilities.
 
-> [!NOTE]
-> Virtual machine placement relies on any existing node placement rules for workloads. If workloads are excluded from specific nodes on the component level, virtual machines cannot be placed on those nodes.
+<div class="note">
+
+Virtual machine placement relies on any existing node placement rules for workloads. If workloads are excluded from specific nodes on the component level, virtual machines cannot be placed on those nodes.
+
+</div>
 
 You can use the following rule types in the `spec` field of a `VirtualMachine` manifest:
 
@@ -28,8 +31,11 @@ Enables you to use more expressive syntax to set rules that match nodes with vir
 `tolerations`
 Allows virtual machines to be scheduled on nodes that have matching taints. If a taint is applied to a node, that node only accepts virtual machines that tolerate the taint.
 
-> [!NOTE]
-> Affinity rules only apply during scheduling. OpenShift Container Platform does not reschedule running workloads if the constraints are no longer met.
+<div class="note">
+
+Affinity rules only apply during scheduling. OpenShift Container Platform does not reschedule running workloads if the constraints are no longer met.
+
+</div>
 
 # Node placement examples
 
@@ -39,14 +45,9 @@ The following example YAML file snippets use `nodePlacement`, `affinity`, and `t
 
 In this example, the virtual machine requires a node that has metadata containing both `example-key-1 = example-value-1` and `example-key-2 = example-value-2` labels.
 
-> [!WARNING]
-> If there are no nodes that fit this description, the virtual machine is not scheduled.
+<div class="warning">
 
-<div class="example">
-
-<div class="title">
-
-Example VM manifest
+If there are no nodes that fit this description, the virtual machine is not scheduled.
 
 </div>
 
@@ -64,21 +65,11 @@ spec:
 # ...
 ```
 
-</div>
-
 ## Example: VM node placement with pod affinity and pod anti-affinity
 
 In this example, the VM must be scheduled on a node that has a running pod with the label `example-key-1 = example-value-1`. If there is no such pod running on any node, the VM is not scheduled.
 
 If possible, the VM is not scheduled on a node that has any pod with the label `example-key-2 = example-value-2`. However, if all candidate nodes have a pod with this label, the scheduler ignores this constraint.
-
-<div class="example">
-
-<div class="title">
-
-Example VM manifest
-
-</div>
 
 ``` yaml
 metadata:
@@ -116,21 +107,11 @@ spec:
 
 - If you use the `preferredDuringSchedulingIgnoredDuringExecution` rule type, the VM is still scheduled if the constraint is not met, as long as all required constraints are met.
 
-</div>
-
 ## Example: VM node placement with node affinity
 
 In this example, the VM must be scheduled on a node that has the label `example.io/example-key = example-value-1` or the label `example.io/example-key = example-value-2`. The constraint is met if only one of the labels is present on the node. If neither label is present, the VM is not scheduled.
 
 If possible, the scheduler avoids nodes that have the label `example-node-label-key = example-node-label-value`. However, if all candidate nodes have this label, the scheduler ignores this constraint.
-
-<div class="example">
-
-<div class="title">
-
-Example VM manifest
-
-</div>
 
 ``` yaml
 metadata:
@@ -165,20 +146,13 @@ spec:
 
 - If you use the `preferredDuringSchedulingIgnoredDuringExecution` rule type, the VM is still scheduled if the constraint is not met, as long as all required constraints are met.
 
-</div>
-
 ## Example: VM node placement with tolerations
 
 In this example, nodes that are reserved for virtual machines are already labeled with the `key=virtualization:NoSchedule` taint. Because this virtual machine has matching `tolerations`, it can schedule onto the tainted nodes.
 
-> [!NOTE]
-> A virtual machine that tolerates a taint is not required to schedule onto a node with that taint.
+<div class="note">
 
-<div class="example">
-
-<div class="title">
-
-Example VM manifest
+A virtual machine that tolerates a taint is not required to schedule onto a node with that taint.
 
 </div>
 
@@ -195,8 +169,6 @@ spec:
     effect: "NoSchedule"
 # ...
 ```
-
-</div>
 
 # Additional resources
 

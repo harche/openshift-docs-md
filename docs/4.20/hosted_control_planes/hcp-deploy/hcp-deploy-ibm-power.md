@@ -1,7 +1,10 @@
 You can deploy hosted control planes by configuring a cluster to function as a hosting cluster. This configuration provides an efficient and scalable solution for managing many clusters. The hosting cluster is an OpenShift Container Platform cluster that hosts control planes. The hosting cluster is also known as the *management* cluster.
 
-> [!NOTE]
-> The *management* cluster is not the *managed* cluster. A managed cluster is a cluster that the hub cluster manages.
+<div class="note">
+
+The *management* cluster is not the *managed* cluster. A managed cluster is a cluster that the hub cluster manages.
+
+</div>
 
 The multicluster engine Operator supports only the default `local-cluster`, which is a managed hub cluster, and the hub cluster as the hosting cluster.
 
@@ -29,14 +32,6 @@ When you create a hosted cluster with the Agent platform, HyperShift installs th
 
 The hosted control planes feature is enabled by default. If you disabled the feature and want to manually enable the feature, see "Manually enabling the hosted control planes feature". If you need to disable the feature, see "Disabling the hosted control planes feature".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Advanced configuration](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#advanced-config-engine)
 
 - [Enabling the central infrastructure management service](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#enable-cim)
@@ -46,8 +41,6 @@ Additional resources
 - [Manually enabling the hosted control planes feature](../../hosted_control_planes/hcp-prepare/hcp-enable-disable.xml#hcp-enable-manual_hcp-enable-disable)
 
 - [Disabling the hosted control planes feature](../../hosted_control_planes/hcp-prepare/hcp-enable-disable.xml#hcp-disable_hcp-enable-disable)
-
-</div>
 
 # IBM Power infrastructure requirements
 
@@ -71,11 +64,9 @@ See the following example of a DNS configuration:
 $ cat /var/named/<example.krnl.es.zone>
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -96,17 +87,13 @@ api-int               IN A 1xx.2x.2xx.1xx
 ;EOF
 ```
 
-</div>
-
 - The record refers to the IP address of the API load balancer that handles ingress and egress traffic for hosted control planes.
 
 For IBM Power, add IP addresses that correspond to the IP address of the agent.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example configuration
+**Example configuration**
 
 </div>
 
@@ -114,8 +101,6 @@ Example configuration
 compute-0              IN A 1xx.2x.2xx.1yy
 compute-1              IN A 1xx.2x.2xx.1yy
 ```
-
-</div>
 
 ## Defining a custom DNS name
 
@@ -129,27 +114,11 @@ As a cluster administrator, you can create a hosted cluster with an external API
 
 You can define a DNS name either during your initial setup or during postinstallation operations, by entering a domain name in the `kubeAPIServerDNSName` parameter of a `HostedCluster` object.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have a valid TLS certificate that covers the DNS name that you set in the `kubeAPIServerDNSName` parameter.
 
 - You have a resolvable DNS name URI that can reach and point to the correct address.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - In the specification for the `HostedCluster` object, add the `kubeAPIServerDNSName` parameter and the address for the domain and specify which certificate to use, as shown in the following example:
 
@@ -170,30 +139,23 @@ Procedure
 
   - The value for the `kubeAPIServerDNSName` parameter must be a valid and addressable domain.
 
-</div>
-
 After you define the `kubeAPIServerDNSName` parameter and specify the certificate, the Control Plane Operator controllers create a `kubeconfig` file named `custom-admin-kubeconfig`, where the file gets stored in the `HostedControlPlane` namespace. The generation of certificates happen from the root CA, and the `HostedControlPlane` namespace manages their expiration and renewal.
 
 The Control Plane Operator reports a new `kubeconfig` file named `CustomKubeconfig` in the `HostedControlPlane` namespace. That file uses the defined new server in the `kubeAPIServerDNSName` parameter.
 
 A reference for the custom `kubeconfig` file exists in the `status` parameter as `CustomKubeconfig` of the `HostedCluster` object. The `CustomKubeConfig` parameter is optional, and you can add the parameter only if the `kubeAPIServerDNSName` parameter is not empty. After you set the `CustomKubeConfig` parameter, the parameter triggers the generation of a secret named `<hosted_cluster_name>-custom-admin-kubeconfig` in the `HostedCluster` namespace. You can use the secret to access the `HostedCluster` API server. If you remove the `CustomKubeConfig` parameter during postinstallation operations, deletion of all related secrets and status references occur.
 
-> [!NOTE]
-> Defining a custom DNS name does not directly impact the data plane, so no expected rollouts occur. The `HostedControlPlane` namespace receives the changes from the HyperShift Operator and deletes the corresponding parameters.
+<div class="note">
+
+Defining a custom DNS name does not directly impact the data plane, so no expected rollouts occur. The `HostedControlPlane` namespace receives the changes from the HyperShift Operator and deletes the corresponding parameters.
+
+</div>
 
 If you remove the `kubeAPIServerDNSName` parameter from the specification for the `HostedCluster` object, all newly generated secrets and the `CustomKubeconfig` reference are removed from the cluster and from the `status` parameter.
 
 # Creating a hosted cluster by using the CLI
 
 On bare-metal infrastructure, you can create or import a hosted cluster. After you enable the Assisted Installer as an add-on to multicluster engine Operator and you create a hosted cluster with the Agent platform, the HyperShift Operator installs the Agent Cluster API provider in the hosted control plane namespace. The Agent Cluster API provider connects a management cluster that hosts the control plane and a hosted cluster that consists of only the compute nodes.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Each hosted cluster must have a cluster-wide unique name. A hosted cluster name cannot be the same as any existing managed cluster. Otherwise, the multicluster engine Operator cannot manage the hosted cluster.
 
@@ -222,16 +184,6 @@ Prerequisites
   ```
 
 - Ensure that you have added bare-metal nodes to a hardware inventory.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a namespace by entering the following command:
 
@@ -480,11 +432,9 @@ Procedure
         $ oc get svc metallb-ingress -n openshift-ingress
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -492,8 +442,6 @@ Procedure
         NAME              TYPE           CLUSTER-IP       EXTERNAL-IP    PORT(S)                      AGE
         metallb-ingress   LoadBalancer   172.31.127.129   10.11.176.71   80:30961/TCP,443:32090/TCP   16h
         ```
-
-        </div>
 
 9.  Configure the DNS to work with the load balancer:
 
@@ -505,11 +453,9 @@ Procedure
         $ nslookup console-openshift-console.apps.<hosted_cluster_namespace>.<base_domain> <load_balancer_ip_address>
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -521,17 +467,7 @@ Procedure
         Address: 10.11.176.71
         ```
 
-        </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Check the cluster Operators by entering the following command:
 
@@ -555,16 +491,6 @@ Verification
     https://console-openshift-console.apps.<hosted_cluster_namespace>.<base_domain>
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Requirements for hosted control planes](../../hosted_control_planes/hcp-prepare/hcp-requirements.xml)
 
 - [DNS configurations on bare metal](../../hosted_control_planes/hcp-deploy/hcp-deploy-bm.xml#hcp-bm-dns_hcp-deploy-bm)
@@ -572,8 +498,6 @@ Additional resources
 - [Manually importing a hosted cluster](../../hosted_control_planes/hcp-import.xml)
 
 - [Extracting the release image digest](../../hosted_control_planes/hcp-disconnected/hcp-deploy-dc-bm.xml#hcp-dc-extract_hcp-deploy-dc-bm)
-
-</div>
 
 # About creating heterogeneous node pools on agent hosted clusters
 
@@ -598,14 +522,6 @@ Creating a heterogeneous node pool requires completion of the following general 
 ## Creating the AgentServiceConfig custom resource
 
 To create heterogeneous node pools on an agent hosted cluster, you need to create the `AgentServiceConfig` CR with two heterogeneous architecture operating system (OS) images.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Run the following command:
 
@@ -666,31 +582,11 @@ Procedure
 
   - Specify the CPU architecture for `ppc64le`.
 
-</div>
-
 ## Create an agent cluster
 
 An agent-based approach manages and provisions an agent cluster. An agent cluster can use heterogeneous node pools, allowing the use of different types of compute nodes within the same cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You used a multi-architecture release image to enable support for heterogeneous node pools when creating a hosted cluster. Find the latest multi-architecture images on the [Multi-arch release images](https://multi.ocp.releases.ci.openshift.org/) page.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an environment variable for the cluster namespace by running the following command:
 
@@ -732,19 +628,9 @@ Procedure
 
     - Specify the current OpenShift Container Platform release version.
 
-</div>
-
 ## Creating heterogeneous node pools
 
 You create heterogeneous node pools by using the `NodePool` custom resource (CR), so that you can optimize costs and performance by associating different workloads to specific hardware.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To define a `NodePool` CR, create a YAML file similar to the following example:
 
@@ -777,8 +663,6 @@ Procedure
 
   - The selector block selects the agents that match the specified label. To create a node pool of architecture `ppc64le` with zero replicas, specify `ppc64le`. This ensures that the selector block selects only agents from `ppc64le` architecture during a scaling operation.
 
-</div>
-
 ## DNS configuration for hosted control planes
 
 A Domain Name Service (DNS) configuration for hosted control planes means that external clients can reach ingress controllers, so that the clients can route traffic to internal components. Configuring this setting ensures that traffic gets routed to either a `ppc64le` or an `x86_64` compute node.
@@ -789,14 +673,9 @@ You can point an `*.apps.<cluster_name>` record to either of the compute nodes t
 
 For heterogeneous node pools, you must create an `infraEnv` custom resource (CR) for each architecture. This configuration ensures that the correct architecture-specific operating system and boot artifacts get used during the node provisioning process. For example, for node pools with `x86_64` and `ppc64le` architectures, create an `InfraEnv` CR for `x86_64` and `ppc64le`.
 
-> [!NOTE]
-> Before starting the procedure, ensure that you add the operating system images for both `x86_64` and `ppc64le` architectures to the `AgentServiceConfig` resource. After this, you can use the `InfraEnv` resources to get the minimal ISO image.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+Before starting the procedure, ensure that you add the operating system images for both `x86_64` and `ppc64le` architectures to the `AgentServiceConfig` resource. After this, you can use the `InfraEnv` resources to get the minimal ISO image.
 
 </div>
 
@@ -878,19 +757,9 @@ Procedure
         $ oc -n <hosted_control_plane_namespace> get InfraEnv <hosted_cluster_name>-<arch_ppc64le> -ojsonpath="{.status.isoDownloadURL}"
         ```
 
-</div>
-
 ## Adding agents to the heterogeneous cluster
 
 You add agents by manually configuring the machine to boot with a live ISO. You can download the live ISO and use it to boot a bare-metal node or a virtual machine. On boot, the node communicates with the `assisted-service` and registers as an agent in the same namespace as the `InfraEnv` resource. After the creation of each agent, you can optionally set its `installation_disk_id` and `hostname` parameters in the specifications. You can then approve the agent to indicate the agent as ready for use.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Obtain a list of agents by running the following command:
 
@@ -898,19 +767,15 @@ Procedure
     $ oc -n <hosted_control_plane_namespace> get agents
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
         NAME                                   CLUSTER   APPROVED   ROLE          STAGE
         86f7ac75-4fc4-4b36-8130-40fa12602218                        auto-assign
         e57a637f-745b-496e-971d-1abbf03341ba                        auto-assign
-
-    </div>
 
 2.  Patch an agent by running the following command:
 
@@ -930,11 +795,9 @@ Procedure
     $ oc -n <hosted_control_plane_namespace> get agents
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -942,21 +805,9 @@ Procedure
         86f7ac75-4fc4-4b36-8130-40fa12602218             true       auto-assign
         e57a637f-745b-496e-971d-1abbf03341ba             true       auto-assign
 
-    </div>
-
-</div>
-
 ## Scaling the node pool
 
 After you approve your agents, you can scale the node pools. The `agentLabelSelector` value that you configured in the node pool ensures that only matching agents get added to the cluster. This also helps scale down the node pool. To remove specific architecture nodes from the cluster, scale down the corresponding node pool.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Scale the node pool by running the following command:
 
@@ -964,18 +815,11 @@ Procedure
   $ oc -n <clusters_namespace> scale nodepool <nodepool_name> --replicas 2
   ```
 
-  > [!NOTE]
-  > The Cluster API agent provider picks two agents randomly to assign to the hosted cluster. These agents pass through different states and then join the hosted cluster as OpenShift Container Platform nodes. The various agent states are `binding`, `discovering`, `insufficient`, `installing`, `installing-in-progress`, and `added-to-existing-cluster`.
+  <div class="note">
 
-</div>
+  The Cluster API agent provider picks two agents randomly to assign to the hosted cluster. These agents pass through different states and then join the hosted cluster as OpenShift Container Platform nodes. The various agent states are `binding`, `discovering`, `insufficient`, `installing`, `installing-in-progress`, and `added-to-existing-cluster`.
 
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+  </div>
 
 1.  List the agents by running the following command:
 
@@ -983,11 +827,9 @@ Verification
     $ oc -n <hosted_control_plane_namespace> get agent
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -996,19 +838,15 @@ Verification
         d9198891-39f4-4930-a679-65fb142b108b                   true       auto-assign
         da503cf1-a347-44f2-875c-4960ddb04091   hypercluster1   true       auto-assign
 
-    </div>
-
 2.  Check the status of a specific scaled agent by running the following command:
 
     ``` terminal
     $ oc -n <hosted_control_plane_namespace> get agent -o jsonpath='{range .items[*]}BMH: {@.metadata.labels.agent-install\.openshift\.io/bmh} Agent: {@.metadata.name} State: {@.status.debugInfo.state}{"\n"}{end}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1016,19 +854,15 @@ Verification
         BMH: ocp-worker-0 Agent: d9198891-39f4-4930-a679-65fb142b108b State: known-unbound
         BMH: ocp-worker-1 Agent: da503cf1-a347-44f2-875c-4960ddb04091 State: insufficient
 
-    </div>
-
 3.  After the agents reach the `added-to-existing-cluster` state, verify that the OpenShift Container Platform nodes are ready by running the following command:
 
     ``` terminal
     $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1036,26 +870,18 @@ Verification
         ocp-worker-1   Ready    worker   5m41s   v1.24.0+3882f8f
         ocp-worker-2   Ready    worker   6m3s    v1.24.0+3882f8f
 
-    </div>
-
 4.  Adding workloads to the nodes can reconcile some cluster operators. The following command displays the creation of two machines that happened after scaling up the node pool:
 
     ``` terminal
     $ oc -n <hosted_control_plane_namespace> get machines
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
         NAME                            CLUSTER               NODENAME       PROVIDERID                                     PHASE     AGE   VERSION
         hypercluster1-c96b6f675-m5vch   hypercluster1-b2qhl   ocp-worker-1   agent://da503cf1-a347-44f2-875c-4960ddb04091   Running   15m   4.11.5
         hypercluster1-c96b6f675-tl42p   hypercluster1-b2qhl   ocp-worker-2   agent://4dac1ab2-7dd5-4894-a220-6a3473b67ee6   Running   15m   4.11.5
-
-    </div>
-
-</div>

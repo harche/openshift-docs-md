@@ -116,11 +116,9 @@ The `ComplianceSuite` CR is a wrapper around `ComplianceScan` CRs. The `Complian
 $ oc get cronjobs
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -128,8 +126,6 @@ Example output
 NAME                                           SCHEDULE    SUSPEND   ACTIVE   LAST SCHEDULE   AGE
 <cron_name>                                    0 1 * * *   False     0        <none>          151m
 ```
-
-</div>
 
 For the most important issues, events are emitted. View them with `oc describe compliancesuites/<name>`. The `Suite` objects also have a `Status` subresource that is updated when any of `Scan` objects that belong to this suite update their `Status` subresource. After all expected scans are created, control is passed to the scan controller.
 
@@ -164,11 +160,9 @@ Finally, the scanner pods are launched in this phase; one scanner pod for a `Pla
 $ oc get pods -lcompliance.openshift.io/scan-name=rhcos4-e8-worker,workload=scanner --show-labels
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -176,8 +170,6 @@ Example output
 NAME                                                              READY   STATUS      RESTARTS   AGE   LABELS
 rhcos4-e8-worker-ip-10-0-169-90.eu-north-1.compute.internal-pod   0/2     Completed   0          39m   compliance.openshift.io/scan-name=rhcos4-e8-worker,targetNode=ip-10-0-169-90.eu-north-1.compute.internal,workload=scanner
 ```
-
-</div>
 
 \+ The scan then proceeds to the Running phase.
 
@@ -195,11 +187,9 @@ The running phase waits until the scanner pods finish. The following terms and p
   $ oc describe cm/rhcos4-e8-worker-ip-10-0-169-90.eu-north-1.compute.internal-pod
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -224,8 +214,6 @@ The running phase waits until the scanner pods finish. The following terms and p
         ...
   ```
 
-  </div>
-
 Scanner pods for `Platform` scans are similar, except:
 
 - There is one extra init container called `api-resource-collector` that reads the OpenSCAP content provided by the content-container init, container, figures out which API resources the content needs to examine and stores those API resources to a shared directory where the `scanner` container would read them from.
@@ -244,11 +232,9 @@ When a config map is processed by an aggregator pod, it is labeled the `complian
 $ oc get compliancecheckresults -lcompliance.openshift.io/scan-name=rhcos4-e8-worker
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -258,19 +244,15 @@ rhcos4-e8-worker-accounts-no-uid-except-zero               PASS     high
 rhcos4-e8-worker-audit-rules-dac-modification-chmod        FAIL     medium
 ```
 
-</div>
-
 and `ComplianceRemediation` objects:
 
 ``` terminal
 $ oc get complianceremediations -lcompliance.openshift.io/scan-name=rhcos4-e8-worker
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -283,8 +265,6 @@ rhcos4-e8-worker-audit-rules-execution-restorecon          NotApplied
 rhcos4-e8-worker-audit-rules-execution-semanage            NotApplied
 rhcos4-e8-worker-audit-rules-execution-setfiles            NotApplied
 ```
-
-</div>
 
 After these CRs are created, the aggregator pod exits and the scan moves on to the Done phase.
 
@@ -317,11 +297,9 @@ The `MachineConfig` object always begins with `75-` and is named after the scan 
 $ oc get mc | grep 75-
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -329,19 +307,15 @@ Example output
 75-rhcos4-e8-worker-my-companys-compliance-requirements                                                3.2.0             2m46s
 ```
 
-</div>
-
 The remediations the `mc` currently consists of are listed in the machine config’s annotations:
 
 ``` terminal
 $ oc describe mc/75-rhcos4-e8-worker-my-companys-compliance-requirements
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -350,8 +324,6 @@ Name:         75-rhcos4-e8-worker-my-companys-compliance-requirements
 Labels:       machineconfiguration.openshift.io/role=worker
 Annotations:  remediation/rhcos4-e8-worker-audit-rules-dac-modification-chmod:
 ```
-
-</div>
 
 The `ComplianceRemediation` controller’s algorithm works like this:
 
@@ -379,11 +351,9 @@ $ oc -n openshift-compliance \
 get compliancecheckresults/rhcos4-e8-worker-audit-rules-dac-modification-chmod
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -391,8 +361,6 @@ Example output
 NAME                                                  STATUS   SEVERITY
 rhcos4-e8-worker-audit-rules-dac-modification-chmod   PASS     medium
 ```
-
-</div>
 
 ## Useful labels
 
@@ -422,14 +390,6 @@ In some cases, the Compliance Operator might require more memory than the defaul
 
 To increase the default memory and CPU limits of scanner pods, see *\`ScanSetting\` Custom resource*.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To increase the Operator’s memory limits to 500 Mi, create the following patch file named `co-memlimit-patch.yaml`:
 
     ``` yaml
@@ -446,20 +406,13 @@ Procedure
     $ oc patch sub compliance-operator -nopenshift-compliance --patch-file co-memlimit-patch.yaml --type=merge
     ```
 
-</div>
-
 # Configuring Operator resource constraints
 
 The `resources` field defines Resource Constraints for all the containers in the Pod created by the Operator Lifecycle Manager (OLM).
 
-> [!NOTE]
-> Resource Constraints applied in this process overwrites the existing resource constraints.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+Resource Constraints applied in this process overwrites the existing resource constraints.
 
 </div>
 
@@ -483,20 +436,13 @@ Procedure
           cpu: "500m"
   ```
 
-</div>
-
 # Configuring ScanSetting resources
 
 When using the Compliance Operator in a cluster that contains more than 500 MachineConfigs, the `ocp4-pci-dss-api-checks-pod` pod may pause in the `init` phase when performing a `Platform` scan.
 
-> [!NOTE]
-> Resource constraints applied in this process overwrites the existing resource constraints.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+Resource constraints applied in this process overwrites the existing resource constraints.
 
 </div>
 
@@ -506,11 +452,9 @@ Procedure
     $ oc get pod ocp4-pci-dss-api-checks-pod -w
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -519,8 +463,6 @@ Procedure
     ocp4-pci-dss-api-checks-pod   0/2     Init:1/2   8 (5m56s ago)   25m
     ocp4-pci-dss-api-checks-pod   0/2     Init:OOMKilled   8 (6m19s ago)   26m
     ```
-
-    </div>
 
 2.  Edit the `scanLimits` attribute in the `ScanSetting` CR to increase the available memory for the `ocp4-pci-dss-api-checks-pod` pod:
 
@@ -574,19 +516,9 @@ Procedure
     $ oc apply -f scansetting.yaml
     ```
 
-</div>
-
 # Configuring ScanSetting timeout
 
 The `ScanSetting` object has a timeout option that can be specified in the `ComplianceScanSetting` object as a duration string, such as `1h30m`. If the scan does not finish within the specified timeout, the scan reattempts until the `maxRetryOnTimeout` limit is reached.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To set a `timeout` and `maxRetryOnTimeout` in ScanSetting, modify an existing `ScanSetting` object:
 
@@ -614,8 +546,6 @@ Procedure
   - The `timeout` variable is defined as a duration string, such as `1h30m`. The default value is `30m`. To disable the timeout, set the value to `0s`.
 
   - The `maxRetryOnTimeout` variable defines how many times a retry is attempted. The default value is `3`.
-
-</div>
 
 # Getting support
 

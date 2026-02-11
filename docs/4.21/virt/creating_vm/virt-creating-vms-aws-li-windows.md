@@ -8,14 +8,6 @@ If you do not configure your Windows VMs so that they are license-compliant, the
 
 You can create license-compliant Windows virtual machines (VMs) by enabling the `dedicatedCpuPlacement` attribute. This attribute is enabled by default on instance types from the `d1` family. In the OpenShift Container Platform web console, you can create a compliant VM by selecting from a list of available bootable volumes.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  In the OpenShift Container Platform web console, go to **Virtualization** → **Catalog**. The **InstanceTypes** tab opens by default.
 
 2.  Click **Add volume** to create a Windows boot source. You can create a Windows boot source by uploading a new volume or by using an existing persistent volume claim (PVC), a volume snapshot, or a `containerDisk` volume.
@@ -35,5 +27,3 @@ Procedure
     3.  Select the **Mount Windows drivers** disk checkbox.
 
 7.  Click **Create VirtualMachine**.
-
-</div>

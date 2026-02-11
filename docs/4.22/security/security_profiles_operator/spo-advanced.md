@@ -4,14 +4,6 @@ Use advanced tasks to enable metrics, configure webhooks, or restrict syscalls.
 
 The Security Profiles Operator does not restrict `syscalls` in `seccomp` profiles by default. You can define the list of allowed `syscalls` in the `spod` configuration.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - To define the list of `allowedSyscalls`, adjust the `spec` parameter by running the following command:
 
   ``` terminal
@@ -19,24 +11,17 @@ Procedure
       -p '{"spec":{"allowedSyscalls": ["exit", "exit_group", "futex", "nanosleep"]}}'
   ```
 
-</div>
+<div class="important">
 
-> [!IMPORTANT]
-> The Operator will install only the `seccomp` profiles, which have a subset of `syscalls` defined into the allowed list. All profiles not complying with this ruleset are rejected.
->
-> When the list of allowed `syscalls` is modified in the `spod` configuration, the Operator will identify the already installed profiles which are non-compliant and remove them automatically.
+The Operator will install only the `seccomp` profiles, which have a subset of `syscalls` defined into the allowed list. All profiles not complying with this ruleset are rejected.
+
+When the list of allowed `syscalls` is modified in the `spod` configuration, the Operator will identify the already installed profiles which are non-compliant and remove them automatically.
+
+</div>
 
 # Base syscalls for a container runtime
 
 You can use the `baseProfileName` attribute to establish the minimum required `syscalls` for a given runtime to start a container.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Edit the `SeccompProfile` kind object and add `baseProfileName: runc-v1.0.0` to the `spec` field:
 
@@ -54,22 +39,15 @@ Procedure
           - exit_group
   ```
 
-</div>
-
 # Enabling memory optimization in the spod daemon
 
 The controller running inside of `spod` daemon process watches all pods available in the cluster when profile recording is enabled. This can lead to very high memory usage in large clusters, resulting in the `spod` daemon running out of memory or crashing.
 
 To prevent crashes, the `spod` daemon can be configured to only load the pods labeled for profile recording into the cache memory.
 
-> [!NOTE]
-> SPO memory optimization is not enabled by default.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+SPO memory optimization is not enabled by default.
 
 </div>
 
@@ -91,19 +69,9 @@ Procedure
     # ...
     ```
 
-</div>
-
 # Customizing daemon resource requirements
 
 The default resource requirements of the daemon container can be adjusted by using the field `daemonResourceRequirements` from the `spod` configuration.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To specify the memory and cpu requests and limits of the daemon container, run the following command:
 
@@ -114,19 +82,9 @@ Procedure
       "limits": {"memory": "512Mi", "cpu": "500m"}}}}'
   ```
 
-</div>
-
 # Setting a custom priority class name for the spod daemon pod
 
 The default priority class name of the `spod` daemon pod is set to `system-node-critical`. A custom priority class name can be configured in the `spod` configuration by setting a value in the `priorityClassName` field.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Configure the priority class name by running the following command:
 
@@ -134,21 +92,15 @@ Procedure
   $ oc -n openshift-security-profiles patch spod spod --type=merge -p '{"spec":{"priorityClassName":"my-priority-class"}}'
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
   ``` terminal
   securityprofilesoperatordaemon.openshift-security-profiles.x-k8s.io/spod patched
   ```
-
-  </div>
-
-</div>
 
 # Using metrics
 
@@ -160,25 +112,15 @@ The Security Profiles Operator includes a cluster role and corresponding binding
 
 - `metrics.openshift-security-profiles/metrics-spod`: for the Operator daemon metrics
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To view the status of the metrics service, run the following command:
 
     ``` terminal
     $ oc get svc/metrics -n openshift-security-profiles
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -186,8 +128,6 @@ Procedure
     NAME      TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
     metrics   ClusterIP   10.0.0.228   <none>        443/TCP   43s
     ```
-
-    </div>
 
 2.  To retrieve the metrics, query the service endpoint using the default `ServiceAccount` token in the `openshift-security-profiles` namespace by running the following command:
 
@@ -197,11 +137,9 @@ Procedure
         'curl -ks -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" https://metrics.openshift-security-profiles/metrics-spod'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -212,19 +150,15 @@ Procedure
     security_profiles_operator_seccomp_profile_total{operation="update"} 2
     ```
 
-    </div>
-
 3.  To retrieve metrics from a different namespace, link the `ServiceAccount` to the `spo-metrics-client` `ClusterRoleBinding` by running the following command:
 
     ``` terminal
     $ oc get clusterrolebinding spo-metrics-client -o wide
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -232,10 +166,6 @@ Procedure
     NAME                 ROLE                             AGE   USERS   GROUPS   SERVICEACCOUNTS
     spo-metrics-client   ClusterRole/spo-metrics-client   35m                    openshift-security-profiles/default
     ```
-
-    </div>
-
-</div>
 
 ## controller-runtime metrics
 
@@ -250,7 +180,7 @@ The controller-runtime `metrics` and the DaemonSet endpoint `metrics-spod` provi
 <col style="width: 25%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Metric key</th>
 <th style="text-align: left;">Possible labels</th>
 <th style="text-align: left;">Type</th>
@@ -258,25 +188,25 @@ The controller-runtime `metrics` and the DaemonSet endpoint `metrics-spod` provi
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>seccomp_profile_total</code></p></td>
 <td style="text-align: left;"><p><code>operation={delete,update}</code></p></td>
 <td style="text-align: left;"><p>Counter</p></td>
 <td style="text-align: left;"><p>Amount of seccomp profile operations.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>seccomp_profile_audit_total</code></p></td>
 <td style="text-align: left;"><p><code>node</code>, <code>namespace</code>, <code>pod</code>, <code>container</code>, <code>executable</code>, <code>syscall</code></p></td>
 <td style="text-align: left;"><p>Counter</p></td>
 <td style="text-align: left;"><p>Amount of seccomp profile audit operations. Requires the log enricher to be enabled.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>seccomp_profile_bpf_total</code></p></td>
 <td style="text-align: left;"><p><code>node</code>, <code>mount_namespace</code>, <code>profile</code></p></td>
 <td style="text-align: left;"><p>Counter</p></td>
 <td style="text-align: left;"><p>Amount of seccomp profile bpf operations. Requires the bpf recorder to be enabled.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>seccomp_profile_error_total</code></p></td>
 <td style="text-align: left;"><p><code>reason={</code><br />
 <code>SeccompNotSupportedOnNode,</code><br />
@@ -289,19 +219,19 @@ The controller-runtime `metrics` and the DaemonSet endpoint `metrics-spod` provi
 <td style="text-align: left;"><p>Counter</p></td>
 <td style="text-align: left;"><p>Amount of seccomp profile errors.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>selinux_profile_total</code></p></td>
 <td style="text-align: left;"><p><code>operation={delete,update}</code></p></td>
 <td style="text-align: left;"><p>Counter</p></td>
 <td style="text-align: left;"><p>Amount of SELinux profile operations.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>selinux_profile_audit_total</code></p></td>
 <td style="text-align: left;"><p><code>node</code>, <code>namespace</code>, <code>pod</code>, <code>container</code>, <code>executable</code>, <code>scontext</code>,<code>tcontext</code></p></td>
 <td style="text-align: left;"><p>Counter</p></td>
 <td style="text-align: left;"><p>Amount of SELinux profile audit operations. Requires the log enricher to be enabled.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>selinux_profile_error_total</code></p></td>
 <td style="text-align: left;"><p><code>reason={</code><br />
 <code>CannotSaveSelinuxPolicy,</code><br />
@@ -317,18 +247,15 @@ The controller-runtime `metrics` and the DaemonSet endpoint `metrics-spod` provi
 </tbody>
 </table>
 
+Available controller-runtime metrics
+
 # Using the log enricher
 
 The Security Profiles Operator contains a log enrichment feature, which is disabled by default. The log enricher container runs with `privileged` permissions to read the audit logs from the local node. The log enricher runs within the host PID namespace, `hostPID`.
 
-> [!IMPORTANT]
-> The log enricher must have permissions to read the host processes.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Procedure
+The log enricher must have permissions to read the host processes.
 
 </div>
 
@@ -339,11 +266,9 @@ Procedure
         --type=merge -p '{"spec":{"enableLogEnricher":true}}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -351,10 +276,11 @@ Procedure
     securityprofilesoperatordaemon.security-profiles-operator.x-k8s.io/spod patched
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > The Security Profiles Operator will re-deploy the `spod` daemon set automatically.
+    The Security Profiles Operator will re-deploy the `spod` daemon set automatically.
+
+    </div>
 
 2.  View the audit logs by running the following command:
 
@@ -362,11 +288,9 @@ Procedure
     $ oc -n openshift-security-profiles logs -f ds/spod log-enricher
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -378,21 +302,9 @@ Procedure
     2021/06/23 12:51:04 Seeked /var/log/audit/audit.log - &{Offset:0 Whence:2}
     ```
 
-    </div>
-
-</div>
-
 ## Using the log enricher to trace an application
 
 You can use the Security Profiles Operator log enricher to trace an application.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To trace an application, create a `SeccompProfile` logging profile:
 
@@ -434,14 +346,6 @@ Procedure
     $ oc -n openshift-security-profiles logs -f ds/spod log-enricher
     ```
 
-    <div class="example">
-
-    <div class="title">
-
-    Example output
-
-    </div>
-
     ``` terminal
     …
     I0623 12:59:11.479869 1854764 enricher.go:111] log-enricher "msg"="audit"  "container"="log-container" "executable"="/" "namespace"="default" "node"="127.0.0.1" "pid"=1905792 "pod"="log-pod" "syscallID"=3 "syscallName"="close" "timestamp"="1624453150.205:1061" "type"="seccomp"
@@ -458,23 +362,11 @@ Procedure
     …
     ```
 
-    </div>
-
-</div>
-
 # Configuring webhooks
 
 Profile binding and profile recording objects can use webhooks. Profile binding and recording object configurations are `MutatingWebhookConfiguration` CRs, managed by the Security Profiles Operator.
 
 To change the webhook configuration, the `spod` CR exposes a `webhookOptions` field that allows modification of the `failurePolicy`, `namespaceSelector`, and `objectSelector` variables. This allows you to set the webhooks to "soft-fail" or restrict them to a subset of a namespaces so that even if the webhooks failed, other namespaces or resources are not affected.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Set the `recording.spo.io` webhook configuration to record only pods labeled with `spo-record=true` by creating the following patch file:
 
@@ -503,5 +395,3 @@ Procedure
     $ oc get MutatingWebhookConfiguration \
         spo-mutating-webhook-configuration -oyaml
     ```
-
-</div>

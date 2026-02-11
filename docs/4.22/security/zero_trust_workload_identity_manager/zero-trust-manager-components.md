@@ -58,18 +58,8 @@ The following is a high-level workflow of the Zero Trust Workload Identity Manag
 
 11. The SPIRE Agent receives the workload SVID and Trust Bundle and passes it on to the workload. The workload can now present their SVIDs to other SPIFFE-aware devices to communicate with them.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Registering workloads](https://spiffe.io/docs/latest/deploying/registering/)
 
 - [SPIFFE Concepts](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/)
 
 - [SPIRE Use Cases](https://spiffe.io/docs/latest/spire-about/use-cases/)
-
-</div>

@@ -4,18 +4,13 @@ To get started using the dynamic plugin, you must set up your environment to wri
 
 You can run the plugin using a local development environment. The OpenShift Container Platform web console runs in a container connected to the cluster you have logged into.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have cloned the [`console-plugin-template`](https://github.com/openshift/console-plugin-template) repository, which contains a template for creating plugins.
 
-  > [!IMPORTANT]
-  > Red Hat does not support custom plugin code. Only [Cooperative community support](https://access.redhat.com/solutions/5893251) is available for your plugin.
+  <div class="important">
+
+  Red Hat does not support custom plugin code. Only [Cooperative community support](https://access.redhat.com/solutions/5893251) is available for your plugin.
+
+  </div>
 
 - You must have an OpenShift Container Platform cluster running.
 
@@ -24,16 +19,6 @@ Prerequisites
 - You must have [`yarn`](https://yarnpkg.com/) installed.
 
 - You must have [Docker](https://www.docker.com/) v3.2.0 or later or [Podman](https://podman.io/) v3.2.0 or later installed and running.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open two terminal windows.
 
@@ -61,35 +46,26 @@ Procedure
     $ yarn run start-console
     ```
 
-    > [!NOTE]
-    > The `yarn run start-console` command runs an `amd64` image and might fail when run with Apple Silicon and Podman. You can work around it with `qemu-user-static` by running the following commands:
-    >
-    > ``` terminal
-    > $ podman machine ssh
-    > ```
-    >
-    > ``` terminal
-    > $ sudo -i
-    > ```
-    >
-    > ``` terminal
-    > $ rpm-ostree install qemu-user-static
-    > ```
-    >
-    > ``` terminal
-    > $ systemctl reboot
-    > ```
+    <div class="note">
 
-</div>
+    The `yarn run start-console` command runs an `amd64` image and might fail when run with Apple Silicon and Podman. You can work around it with `qemu-user-static` by running the following commands:
 
-<div>
+    ``` terminal
+    $ podman machine ssh
+    ```
 
-<div class="title">
+    ``` terminal
+    $ sudo -i
+    ```
 
-Verification
+    ``` terminal
+    $ rpm-ostree install qemu-user-static
+    ```
 
-</div>
+    ``` terminal
+    $ systemctl reboot
+    ```
+
+    </div>
 
 - Visit [localhost:9000](http://localhost:9000/example) to view the running plugin. Inspect the value of `window.SERVER_FLAGS.consolePlugins` to see the list of plugins which load at runtime.
-
-</div>

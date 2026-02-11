@@ -4,31 +4,17 @@ You can remove the OpenShift Compliance Operator from your cluster by using the 
 
 To remove the Compliance Operator, you must first delete the objects in the namespace. After the objects are removed, you can remove the Operator and its namespace by deleting the **openshift-compliance** project.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
 
 - The OpenShift Compliance Operator must be installed.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To remove the Compliance Operator by using the OpenShift Container Platform web console:
-
-</div>
 
 1.  Go to the **Ecosystem** → **Installed Operators** → **Compliance Operator** page.
 
@@ -52,27 +38,9 @@ To remove the Compliance Operator by using the OpenShift Container Platform web 
 
 To remove the Compliance Operator, you must first delete the objects in the namespace. After the objects are removed, you can remove the Operator and its namespace by deleting the **openshift-compliance** project.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
 
 - The OpenShift Compliance Operator must be installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Delete all objects in the namespace.
 
@@ -124,11 +92,9 @@ Procedure
     $ oc delete project openshift-compliance
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -136,17 +102,7 @@ Procedure
     project.project.openshift.io "openshift-compliance" deleted
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Confirm the namespace is deleted:
 
@@ -154,18 +110,12 @@ Verification
     $ oc get project/openshift-compliance
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     Error from server (NotFound): namespaces "openshift-compliance" not found
     ```
-
-    </div>
-
-</div>

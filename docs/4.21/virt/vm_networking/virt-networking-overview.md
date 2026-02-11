@@ -2,10 +2,13 @@ To connect Virtual Machines (VMs) to cluster networks, configure default and use
 
 OpenShift Virtualization support for single-stack IPv6 clusters is limited to the OVN-Kubernetes localnet and Linux bridge Container Network Interface (CNI) plugins.
 
-> [!IMPORTANT]
-> Deploying OpenShift Virtualization on a single-stack IPv6 cluster is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Deploying OpenShift Virtualization on a single-stack IPv6 cluster is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 The following figure illustrates the typical network setup of OpenShift Virtualization. Other configurations are also possible.
 
@@ -28,11 +31,17 @@ The following figure illustrates the typical network setup of OpenShift Virtuali
 
 ![20](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAIAAABuYg/PAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQ1IDc5LjE2MzQ5OSwgMjAxOC8wOC8xMy0xNjo0MDoyMiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTkgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTUzQjc5MjNERUUyMTFFOTkxNEQ5Mjc1OTRERjU1NjIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTUzQjc5MjRERUUyMTFFOTkxNEQ5Mjc1OTRERjU1NjIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxNTNCNzkyMURFRTIxMUU5OTE0RDkyNzU5NERGNTU2MiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxNTNCNzkyMkRFRTIxMUU5OTE0RDkyNzU5NERGNTU2MiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgiZEKEAAAReSURBVHjarJdZKG1vGMbtZTtmGVNELoSiZMwQZZ4uKC4UF8iVuJCxFDJcuZKhDCkuhEiGhDKUK+FCKUKSMUNklvH8nOXPPv72svbhvdlrrf1937Pe53vf53uW4vn5WeuruLi4mJ2dnZycnJmZWV9ff3h4UCgUT09P5ubmXl5e4eHhfn5+rq6uX66jkAbb2Njo6ekZHx8H4+bmBoxPh1lbW4OanJwcEhKiq6urMdjh4WFtbW1HR8fx8bGOjg5LqEMiyPX29lapVPr6+ubl5cXExGgA1t/fX1ZWtrq6amBgwBJa8oKlyF5bWzs1NbW6utrU1PRrsJqaGoayJXp6elqaBxMvLy9Jsbm52cXFRQqMhADT19fnBbW+EeA5Ojp2dna6ubl9DgZMaWmpoaGhIAha3ws2GDxnZ+eBgQE7O7uPYENDQ3DNDn0zJ1W8s7Oz2NjY7u5uSownrxkcHByUlJQA/FNIYr2YmJiMjIzU19eLT17B6urqqL1/qwjpYPsB29raeqVxc3MzKCjo6urq0yqHDbGNJFaEDxZV17Ln5+cFBQWVlZUvq6MRR0dHpPzpUFrH29u7qqpKAmxpaSk/P18dMbxHV1dXdna2kj0cHR399euXhDpYWFgEBARIgFHADFP3L9Wxs7MzMTGhnJubQ/ckBI02gOH9/f0PLLE6QmxkZMT17u6uhJiJi0xNTSnRcgmFFUlYXFyMjIxEGlSRjI2Ne3t7AeMl2tvbpcGohrW1NSWnhvQ4/r27u4MH1YeQX1RU5ODgwPXCwgIUSVcyYHSXAKCc9tRRCZ44OTnl5OSI/zY0NFxfX0uLDuV6enoqPD4+ato60J6RkWFjYyOmNTw8zOHw5SyABGkO/x9QiuKlp6e/pUX5yNFSgATVbZcTdHdWVpaVlRXXy8vLY2NjVJBM9RLoIY2QaHD0Wrxtamo6OTmRI6ekBNWCp6enfDAqHiGghbleWVmh9OXslrhhkCHgjWQiUXJIaGJionjb1taGPZF5Stzf39va2gqBgYF4IwmxeWdcEHJzc8XS397e7uvrk5mWmBn8C5QWP9KiLpZ7fHx8dHS0eNvS0oJEyfRCvCgtHxUV9XLEIMRJSUnSr8mr4SmgQlTI+fl54GW6B/gPDg4eHBx8ASMtDm8UWaKIRdEi3gRTJpLo73AGcXFxLxPIsbi4mMkSPcccdsvwv5DviGj5sLAwOHy3BRERESkpKXj6n/UEFKGZmVlFRYW4u8IbSzzy8fHBf2kqYBKNDO34XXd3978MD2Fpadna2koV/AgeSNRFYWFhWlra+xGqOgK3jIelGbAo32SPouDAw1//dV5/GIdb5quCcxk85vyDV4QYugj79gFJ7VcMXDOa44POpcpF1ZBT4vAfGhpaXl7u4eGh2ccgX4KNjY00I56AVZR/QlUMmfvwJ2h5LJO/v39mZmZCQoK6xlB8+Zm7t7c3PT2NN8Iy47FwH+IUUYTQcnt7e/LgA/BF/ST777cAAwAcKGKk5hZhPwAAAABJRU5ErkJggg==) Secondary VM networks are typically bridged directly to a physical network, with or without VLAN encapsulation. It is also possible to create virtual overlay networks for secondary networks.
 
-> [!IMPORTANT]
-> Connecting VMs directly to the underlay network is not supported on Red Hat OpenShift Service on AWS, Azure for OpenShift Container Platform, Google Cloud, or Oracle® Cloud Infrastructure (OCI).
+<div class="important">
 
-> [!NOTE]
-> Connecting VMs to user-defined networks with the `layer2` topology is recommended on public clouds.
+Connecting VMs directly to the underlay network is not supported on Red Hat OpenShift Service on AWS, Azure for OpenShift Container Platform, Google Cloud, or Oracle® Cloud Infrastructure (OCI).
+
+</div>
+
+<div class="note">
+
+Connecting VMs to user-defined networks with the `layer2` topology is recommended on public clouds.
+
+</div>
 
 ![20](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAIAAABuYg/PAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQ1IDc5LjE2MzQ5OSwgMjAxOC8wOC8xMy0xNjo0MDoyMiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTkgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NUNCQ0YxRUVERUUxMTFFOTkxNEQ5Mjc1OTRERjU1NjIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTUzQjc5MjBERUUyMTFFOTkxNEQ5Mjc1OTRERjU1NjIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo1Q0JDRjFFQ0RFRTExMUU5OTE0RDkyNzU5NERGNTU2MiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo1Q0JDRjFFRERFRTExMUU5OTE0RDkyNzU5NERGNTU2MiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuRvZu8AAATVSURBVHjarJdbKN9/GMf9Ds6GOYzlcKXIRI6x0BznVKymZLtYsRC5UexPsVYupFbL4cKGSEKxUJLDKFciuRE2zMScF5uZs/+Lrwzx+f2M5+r7+/6ez/P+PKf383xlh4eHGqrk169f/f39nz596uvrm5iY2Nvbk8lkBwcHJiYm7u7uwcHB3t7eDx48UGlHJgabmppqaGjo6OgA48+fP2BcqmZhYQFqXFxcQECAtrb2tcGWlpbevXtXXV29srKiqamJiauQEHzd2tpSKpVeXl4ZGRnh4eHXAPv48WNeXt7nz5/19PQwoaGeYArvFQrF8+fP8/PzjY2NVYMVFhaiSkp0dHQ0ri8c3NjYwMWysjIHBwcRGA4BpqurywU1biDg2dnZ1dbWOjk5XQ4GTG5urr6+vlwu17iZkGDw7O3tm5ubbWxsLoK1trYSazJ0Q5/O4q2vr0dERNTX11NivDnxYHFxMScnB+DbQpLqxdDQsK2trbi4WHpzAlZUVETt/VtFiIX0AzYzM3MCNj09XVVVRZWrPLm9vf37vOzv74uPEMC5ubn379/zfNRDcMTy8jIuq+whV1dXckBZc99v377BLJ2dnZAZIREwEcp1dXVpaWmytbW1J0+eDA4OCmKIoZ2dnfT09KysLAMDg7N/wZkpKSmwmpaWlphdy8vLFUFBQZWVlZgTsBFUFBkZWVJSIlkcHR0dHx+HIOAwa2trR0fHpqYmelnMZ3fu3JHD5QKGPSWF+Ph46Zmb+fn5BQYGPn36lODzxtfX19nZmXQKLNBRX758kTM1xEiScC/poaWlZXV1lWrq6ur6+vWr1E+4KJ4egNFdCm6kcqQRBIqKSPIMHRBGHhISEpgpWBkZGXn79i3eC3iHvwCSmZmZqfSM26CamppKgZCqzc1NqOH+/fv8NTQ0lJSURApV9ihGlOrEEM/AuHv3rvRT71hOr2xkZIRb6rCXzNTUVEy7GILDampqQkJC+NnT01NRUfHz589Hjx4lJyfTQ5R1dHS0uHkkzxTkgMoWKFGrYWFhmZmZPI+NjUVFRRE6SAfSw6eHDx9SHRBCY2OjoNW48dEwcXNzUzkMWTHEOvfu3RMrwGrm5uZKdqPu7m5x1RKi3d1dCpLJC/GcDaOkQ2zFYBy3srKSUcexsbFwpWDXIM7/Hcul/w4PD2OB5hNYIK/Z2dlyhqmHh4c4bSSjoKDg5cuXAwMDcKn0EracnJxkA5OoRIBEaVA7jx8/PprU7e3tHBCPGNRoL1jY1tbW0tIS0z9+/JidnV1YWOAq0iC+Sjjo7+8P9RyB4RaDg1tTxyqLheiTbWmmK49Fnf2OzQACOuowfHz16hXdprI30aHQiQF1zCl1VkoGLIOFGP5dC2jYZ8+ekcbb3QkIA7zz5s0b6VryUy7hlaenJ/uXOgSm5rZKEbHvuri4nFt4EBj5w4cPbJa3ggcSdQHvvHjx4m8WzmrQs+ywNAM9e8PoURSMCPbrcym/oMe2zFdFaGgoeJz5h12RwFBBrG8XkK78iiHWaLN0wCz0g7iNzpY48WdjeP36NXvY9T4G2ZlKS0tpRpoXK1JXnV2ZObt3LHQeLeHj45OYmBgTE3PVzJKp3Am+f//e29sL1bIyz8/PM6OlIxIJweVwCn7wAQjtiUfj/wIMAK6TwUom7w/wAAAAAElFTkSuQmCC) Secondary VM networks can be defined on dedicated set of NICs, as shown in Figure 1, or they can use the machine network.
 
@@ -127,8 +136,11 @@ You can connect a VM to an SR-IOV network by performing the following steps:
 [Connecting a virtual machine to a Linux bridge network](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-connecting-vm-to-linux-bridge)
 [Install the Kubernetes NMState Operator](../../networking/networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator.xml#k8s-nmstate-about-the-k8s-nmstate-operator) to configure Linux bridges, VLANs, and bonding for your secondary networks. The OVN-Kubernetes `localnet` topology is the recommended way of connecting a VM to the underlying physical network, but OpenShift Virtualization also supports Linux bridge networks.
 
-> [!NOTE]
-> You cannot directly attach to the default machine network when using Linux bridge networks.
+<div class="note">
+
+You cannot directly attach to the default machine network when using Linux bridge networks.
+
+</div>
 
 You can create a Linux bridge network and attach a VM to the network by performing the following steps:
 
@@ -163,13 +175,13 @@ You can configure an IP address of a secondary network interface when you create
 
 The following table provides a comparison of features available when using the Linux bridge CNI compared to the `localnet` topology for an OVN-Kubernetes plugin:
 
-| Feature | Available on Linux bridge CNI | Available on OVN-Kubernetes localnet |
-|----|----|----|
-| Layer 2 access to the underlay native network | Only on secondary network interface controllers (NICs) | Yes |
-| Layer 2 access to underlay VLANs | Yes | Yes |
-| Layer 2 trunk access | Yes | No |
-| Network policies | No | Yes |
-| MAC spoof filtering | Yes | Yes (Always on) |
+| Feature                                       | Available on Linux bridge CNI                          | Available on OVN-Kubernetes localnet |
+|-----------------------------------------------|--------------------------------------------------------|--------------------------------------|
+| Layer 2 access to the underlay native network | Only on secondary network interface controllers (NICs) | Yes                                  |
+| Layer 2 access to underlay VLANs              | Yes                                                    | Yes                                  |
+| Layer 2 trunk access                          | Yes                                                    | No                                   |
+| Network policies                              | No                                                     | Yes                                  |
+| MAC spoof filtering                           | Yes                                                    | Yes (Always on)                      |
 
 Linux bridge CNI compared to an OVN-Kubernetes localnet topology
 

@@ -14,29 +14,27 @@ When discussing high availability (HA) features in the context of OpenShift Virt
 
 If you plan to use OpenShift Virtualization HA features, you must have three control plane nodes at the time of cluster installation. The `controlPlaneTopology` status in the `Infrastructure` CR for the cluster must be `HighlyAvailable`.
 
-> [!NOTE]
-> You can install OpenShift Virtualization on a single-node cluster, but single-node OpenShift does not support HA features.
+<div class="note">
+
+You can install OpenShift Virtualization on a single-node cluster, but single-node OpenShift does not support HA features.
+
+</div>
 
 ## Live migration requirements for OpenShift Virtualization
 
 - If you plan to use live migration, you must have multiple worker nodes. The `infrastructureTopology` status in the `Infrastructure` CR for the cluster must be `HighlyAvailable`, and a minimum of three worker nodes is recommended.
 
-  > [!NOTE]
-  > You can install OpenShift Virtualization on a single-node cluster, but single-node OpenShift does not support live migration.
+  <div class="note">
+
+  You can install OpenShift Virtualization on a single-node cluster, but single-node OpenShift does not support live migration.
+
+  </div>
 
 - Live migration requires shared storage. Storage for OpenShift Virtualization must support and use the ReadWriteMany (RWX) access mode.
 
 ## SR-IOV requirements for OpenShift Virtualization
 
 If you plan to use Single Root I/O Virtualization (SR-IOV), ensure that your network interface controllers (NICs) are supported by OpenShift Container Platform.
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Getting started with OpenShift Virtualization](../../virt/getting_started/virt-getting-started.xml#virt-getting-started)
 
@@ -46,47 +44,43 @@ Additional resources
 
 - [Connecting a virtual machine to an SR-IOV network](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#virt-connecting-vm-to-sriov)
 
-</div>
-
 # NIC partitioning for SR-IOV devices
 
 OpenShift Container Platform can be deployed on a server with a dual port network interface card (NIC). You can partition a single, high-speed dual port NIC into multiple virtual functions (VFs) and enable SR-IOV.
 
 This feature supports the use of bonds for high availability with the Link Aggregation Control Protocol (LACP).
 
-> [!NOTE]
-> Only one LACP can be declared by physical NIC.
+<div class="note">
+
+Only one LACP can be declared by physical NIC.
+
+</div>
 
 An OpenShift Container Platform cluster can be deployed on a bond interface with 2 VFs on 2 physical functions (PFs) using the following methods:
 
 - Agent-based installer
 
-  > [!NOTE]
-  > The minimum required version of `nmstate` is:
-  >
-  > - `1.4.2-4` for RHEL 8 versions
-  >
-  > - `2.2.7` for RHEL 9 versions
+  <div class="note">
+
+  The minimum required version of `nmstate` is:
+
+  - `1.4.2-4` for RHEL 8 versions
+
+  - `2.2.7` for RHEL 9 versions
+
+  </div>
 
 - Installer-provisioned infrastructure installation
 
 - User-provisioned infrastructure installation
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Example: Bonds and SR-IOV dual-nic node network configuration](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#agent-install-sample-config-bond-sriov_preparing-to-install-with-agent-based-installer)
 
 - [Optional: Configuring host network interfaces for dual port NIC](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#configuring-host-dual-network-interfaces-in-the-install-config-yaml-file_ipi-install-installation-workflow)
 
 - [Bonding multiple SR-IOV network interfaces to a dual port NIC interface](../../installing/installing_bare_metal/upi/installing-bare-metal.xml#bonding-multiple-sriov-network-interfaces-to-dual-port_installing-bare-metal)
-
-</div>
 
 # Choosing a method to install OpenShift Container Platform on bare metal
 

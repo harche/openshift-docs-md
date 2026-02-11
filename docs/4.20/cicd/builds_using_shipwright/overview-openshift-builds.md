@@ -14,5 +14,8 @@ Builds includes the following capabilities:
 
 - Integrated user experience with the **Developer** perspective of the OpenShift Container Platform web console
 
-> [!NOTE]
-> Because Builds releases on a different cadence from OpenShift Container Platform, the Builds documentation is now available as a separate documentation set at [Builds for Red Hat OpenShift](https://docs.redhat.com/en/documentation/builds_for_red_hat_openshift).
+<div class="note">
+
+Because Builds releases on a different cadence from OpenShift Container Platform, the Builds documentation is now available as a separate documentation set at [Builds for Red Hat OpenShift](https://docs.redhat.com/en/documentation/builds_for_red_hat_openshift).
+
+</div>

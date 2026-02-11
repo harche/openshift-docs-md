@@ -21,18 +21,8 @@ You can use the JobSet Operator to easily manage and run large-scale, coordinate
 
 For more information, see "JobSet Operator overview".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Introduction to Red Hat build of Kueue](../ai_workloads/kueue/about-kueue.xml#about-kueue)
 
 - [Leader Worker Set Operator overview](../ai_workloads/leader_worker_set/index.xml#lws-about)
 
 - [JobSet Operator overview](../ai_workloads/jobset_operator/index.xml#js-about)
-
-</div>

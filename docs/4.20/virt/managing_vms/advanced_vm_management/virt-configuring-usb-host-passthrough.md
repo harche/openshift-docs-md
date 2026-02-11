@@ -8,27 +8,9 @@ To attach a USB device to a virtual machine (VM), you must first enable USB host
 
 To do this, specify a resource name and USB device name for each device you want first to add and then assign to a VM. You can allocate more than one device, each of which is known as a `selector` in the `HyperConverged` custom resource (CR), to a single resource name. If you have multiple identical USB devices on the cluster, you can choose to allocate a VM to a specific device.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to an OpenShift Container Platform cluster as a user who has the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Ensure that the `HostDevices` feature gate is enabled:
 
@@ -97,16 +79,6 @@ Procedure
       }'
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Ensure that the HCO CR contains the required USB devices:
 
   ``` terminal
@@ -140,33 +112,13 @@ Verification
 
   - Uses `resourceName: deviceName` for each device you want to add and assign to the VM. In this example, the resource is bound to three devices, each of which is identified by `vendor` and `product` and is known as a `selector`.
 
-</div>
-
 # Connecting a USB device to a virtual machine
 
 You can configure virtual machine (VM) access to a USB device. This configuration enables the VM to connect to USB hardware that is attached to an OpenShift Container Platform node, as if the hardware and the VM are physically connected.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have attached the required USB device as a resource at the cluster level.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the `HyperConverged` custom resource (CR), find the assigned resource name of the USB device:
 
@@ -234,5 +186,3 @@ Procedure
 
     \<filename\>
     Specifies the name of the `VirtualMachineInstance` manifest YAML file.
-
-</div>

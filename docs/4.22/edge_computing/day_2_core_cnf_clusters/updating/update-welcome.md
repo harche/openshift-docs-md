@@ -6,8 +6,11 @@ Updating your cluster is a critical task that ensures that bugs and potential se
 
 You can minimize the effort required to stay current with updates by keeping up-to-date with EUS releases and upgrading to select important z-stream releases only.
 
-> [!NOTE]
-> The update path for the cluster can vary depending on the size and topology of the cluster.
+<div class="note">
+
+The update path for the cluster can vary depending on the size and topology of the cluster.
+
+</div>
 
 The following update scenarios are described:
 
@@ -17,5 +20,8 @@ The following update scenarios are described:
 
 - Z-stream updates
 
-> [!IMPORTANT]
-> Control Plane Only updates were previously known as EUS-to-EUS updates. Control Plane Only updates are only viable between even-numbered minor versions of OpenShift Container Platform.
+<div class="important">
+
+Control Plane Only updates were previously known as EUS-to-EUS updates. Control Plane Only updates are only viable between even-numbered minor versions of OpenShift Container Platform.
+
+</div>

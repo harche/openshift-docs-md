@@ -4,25 +4,9 @@ You can list available virtual machines (VMs) by using the web console or the Op
 
 You can either list all of the virtual machines (VMs) in your cluster or limit the list to VMs in a specified namespace by using the OpenShift CLI (`oc`).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - List all of the VMs in your cluster by running the following command:
 
@@ -36,19 +20,9 @@ Procedure
   $ oc get vms -n <namespace>
   ```
 
-</div>
-
 # Listing virtual machines by using the web console
 
 You can list all of the virtual machines (VMs) in your cluster by using the web console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu to access the tree view with all of the projects and VMs in your cluster.
 
@@ -56,19 +30,9 @@ Procedure
 
 3.  Optional: Click the **Advanced search** button next to the search bar to further filter VMs by one of the following: their name, the project they belong to, their labels, or the allocated vCPU and memory resources.
 
-</div>
-
 # Organizing virtual machines by using the web console
 
 In addition to creating virtual machines (VMs) in different projects, you can use the tree view to further organize them in folders.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu to access the tree view with all projects and VMs in your cluster.
 
@@ -93,5 +57,3 @@ Procedure
     - To move the VM from a folder to the project:
 
       - Click the name of the VM in the tree view and drag it on the project name. If the operation is permitted, the project name is highlighted in green when you drag the VM over it.
-
-</div>

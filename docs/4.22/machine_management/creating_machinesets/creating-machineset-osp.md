@@ -1,15 +1,18 @@
 You can create a different compute machine set to serve a specific purpose in your OpenShift Container Platform cluster on Red Hat OpenStack Platform (RHOSP). For example, you might create infrastructure machine sets and related machines so that you can move supporting workloads to the new machines.
 
-> [!IMPORTANT]
-> You can use the advanced machine management and scaling capabilities only in clusters where the Machine API is operational. Clusters with user-provisioned infrastructure require additional validation and configuration to use the Machine API.
->
-> Clusters with the infrastructure platform type `none` cannot use the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that supports the feature. This parameter cannot be changed after installation.
->
-> To view the platform type for your cluster, run the following command:
->
-> ``` terminal
-> $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
-> ```
+<div class="important">
+
+You can use the advanced machine management and scaling capabilities only in clusters where the Machine API is operational. Clusters with user-provisioned infrastructure require additional validation and configuration to use the Machine API.
+
+Clusters with the infrastructure platform type `none` cannot use the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that supports the feature. This parameter cannot be changed after installation.
+
+To view the platform type for your cluster, run the following command:
+
+``` terminal
+$ oc get infrastructure cluster -o jsonpath='{.status.platform}'
+```
+
+</div>
 
 # Sample YAML for a compute machine set custom resource on RHOSP
 
@@ -99,14 +102,15 @@ In this sample, `infrastructure_id` is the infrastructure ID label that is based
 
 The sample assumes two SR-IOV networks that are named "radio" and "uplink". The networks are used in port definitions in the `spec.template.spec.providerSpec.value.ports` list.
 
-> [!NOTE]
-> Only parameters that are specific to SR-IOV deployments are described in this sample. To review a more general sample, see "Sample YAML for a compute machine set custom resource on RHOSP".
+<div class="note">
 
-<div class="formalpara">
+Only parameters that are specific to SR-IOV deployments are described in this sample. To review a more general sample, see "Sample YAML for a compute machine set custom resource on RHOSP".
 
-<div class="title">
+</div>
 
-An example compute machine set that uses SR-IOV networks
+<div class="formalpara-title">
+
+**An example compute machine set that uses SR-IOV networks**
 
 </div>
 
@@ -184,8 +188,6 @@ spec:
           configDrive: true
 ```
 
-</div>
-
 - Enter a network UUID for each port.
 
 - Enter a subnet UUID for each port.
@@ -198,31 +200,27 @@ spec:
 
 - The value of the `configDrive` parameter must be `true`.
 
-> [!IMPORTANT]
-> After you deploy compute machines that are SR-IOV-capable, you must label them as such. For example, from a command line, enter:
->
-> ``` terminal
-> $ oc label node <NODE_NAME> feature.node.kubernetes.io/network-sriov.capable="true"
-> ```
+<div class="important">
 
-> [!NOTE]
-> Trunking is enabled for ports that are created by entries in the networks and subnets lists. The names of ports that are created from these lists follow the pattern `<machine_name>-<nameSuffix>`. The `nameSuffix` field is required in port definitions.
->
-> You can enable trunking for each port.
->
-> Optionally, you can add tags to ports as part of their `tags` lists.
+After you deploy compute machines that are SR-IOV-capable, you must label them as such. For example, from a command line, enter:
 
-<div>
+``` terminal
+$ oc label node <NODE_NAME> feature.node.kubernetes.io/network-sriov.capable="true"
+```
 
-<div class="title">
+</div>
 
-Additional resources
+<div class="note">
+
+Trunking is enabled for ports that are created by entries in the networks and subnets lists. The names of ports that are created from these lists follow the pattern `<machine_name>-<nameSuffix>`. The `nameSuffix` field is required in port definitions.
+
+You can enable trunking for each port.
+
+Optionally, you can add tags to ports as part of their `tags` lists.
 
 </div>
 
 - [Preparing to install a cluster that uses SR-IOV or OVS-DPDK on OpenStack](../../installing/installing_openstack/installing-openstack-nfv-preparing.xml#installing-openstack-nfv-preparing)
-
-</div>
 
 # Sample YAML for SR-IOV deployments where port security is disabled
 
@@ -236,14 +234,15 @@ Ports that you define for machines subnets require:
 
 - Attachment to the machines network and subnet
 
-> [!NOTE]
-> Only parameters that are specific to SR-IOV deployments where port security is disabled are described in this sample. To review a more general sample, see Sample YAML for a compute machine set custom resource that uses SR-IOV on RHOSP".
+<div class="note">
 
-<div class="formalpara">
+Only parameters that are specific to SR-IOV deployments where port security is disabled are described in this sample. To review a more general sample, see Sample YAML for a compute machine set custom resource that uses SR-IOV on RHOSP".
 
-<div class="title">
+</div>
 
-An example compute machine set that uses SR-IOV networks and has port security disabled
+<div class="formalpara-title">
+
+**An example compute machine set that uses SR-IOV networks and has port security disabled**
 
 </div>
 
@@ -312,8 +311,6 @@ spec:
           configDrive: true
 ```
 
-</div>
-
 - Specify allowed address pairs for the API and ingress ports.
 
 - Specify the machines network and subnet.
@@ -322,40 +319,25 @@ spec:
 
 - The value of the `configDrive` parameter must be `true`.
 
-> [!NOTE]
-> Trunking is enabled for ports that are created by entries in the networks and subnets lists. The names of ports that are created from these lists follow the pattern `<machine_name>-<nameSuffix>`. The `nameSuffix` field is required in port definitions.
->
-> You can enable trunking for each port.
->
-> Optionally, you can add tags to ports as part of their `tags` lists.
+<div class="note">
+
+Trunking is enabled for ports that are created by entries in the networks and subnets lists. The names of ports that are created from these lists follow the pattern `<machine_name>-<nameSuffix>`. The `nameSuffix` field is required in port definitions.
+
+You can enable trunking for each port.
+
+Optionally, you can add tags to ports as part of their `tags` lists.
+
+</div>
 
 # Creating a compute machine set
 
 In addition to the compute machine sets created by the installation program, you can create your own to dynamically manage the machine compute resources for specific workloads of your choice.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Deploy an OpenShift Container Platform cluster.
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in to `oc` as a user with `cluster-admin` permission.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a new YAML file that contains the compute machine set custom resource (CR) sample and is named `<file_name>.yaml`.
 
@@ -369,11 +351,9 @@ Procedure
         $ oc get machinesets -n openshift-machine-api
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -387,8 +367,6 @@ Procedure
         agl030519-vplxk-worker-us-east-1f   0         0                             55m
         ```
 
-        </div>
-
     2.  To view values of a specific compute machine set custom resource (CR), run the following command:
 
         ``` terminal
@@ -396,11 +374,9 @@ Procedure
           -n openshift-machine-api -o yaml
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -430,14 +406,15 @@ Procedure
                 ...
         ```
 
-        </div>
-
         - The cluster infrastructure ID.
 
         - A default node label.
 
-          > [!NOTE]
-          > For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
+          <div class="note">
+
+          For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
+
+          </div>
 
         - The values in the `<providerSpec>` section of the compute machine set CR are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
 
@@ -447,27 +424,15 @@ Procedure
     $ oc create -f <file_name>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - View the list of compute machine sets by running the following command:
 
   ``` terminal
   $ oc get machineset -n openshift-machine-api
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -482,35 +447,15 @@ Verification
   agl030519-vplxk-worker-us-east-1f   0         0                             55m
   ```
 
-  </div>
-
   When the new compute machine set is available, the `DESIRED` and `CURRENT` values match. If the compute machine set is not available, wait a few minutes and run the command again.
-
-</div>
 
 # Labeling GPU machine sets for the cluster autoscaler
 
 You can use a machine set label to indicate which machines the cluster autoscaler can use to deploy GPU-enabled nodes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Your cluster uses a cluster autoscaler.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - On the machine set that you want to create machines for the cluster autoscaler to use to deploy GPU-enabled nodes, add a `cluster-api/accelerator` label:
 
@@ -532,19 +477,12 @@ Procedure
   \<accelerator_name\>
   Specifies a label of your choice that consists of alphanumeric characters, `-`, `_`, or `.` and starts and ends with an alphanumeric character. For example, you might use `nvidia-t4` to represent Nvidia T4 GPUs, or `nvidia-a10g` for A10G GPUs.
 
-  > [!NOTE]
-  > You must specify the value of this label for the `spec.resourceLimits.gpus.type` parameter in your `ClusterAutoscaler` CR. For more information, see "Cluster autoscaler resource definition".
+  <div class="note">
 
-</div>
+  You must specify the value of this label for the `spec.resourceLimits.gpus.type` parameter in your `ClusterAutoscaler` CR. For more information, see "Cluster autoscaler resource definition".
 
-<div>
+  </div>
 
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Cluster autoscaler resource definition](../../machine_management/applying-autoscaling.xml#cluster-autoscaler-cr_applying-autoscaling)
-
-</div>

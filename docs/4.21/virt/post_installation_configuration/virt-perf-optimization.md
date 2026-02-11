@@ -16,29 +16,11 @@ Allocating only full physical cores is important on simultaneous multi-threading
 
 You can configure full physical core allocation by modifying the `cpuManagerPolicy` and `cpuManagerPolicyOptions` settings in the `KubeletConfig` custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have cluster administrator access to a OpenShift Container Platform cluster with OpenShift Virtualization installed.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have enabled CPU Manager on the node where your VM runs.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `KubeletConfig` CR to add the required `cpuManagerPolicy` and `cpuManagerPolicyOptions` configurations:
 
@@ -66,16 +48,6 @@ Procedure
     $ oc apply -f <filename>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Inspect the kubelet configuration on a node where the change you applied the change, by running the following command and inspecting the output:
 
   ``` terminal
@@ -92,5 +64,3 @@ Verification
   kubeReserved:
     cpu: "1"
   ```
-
-</div>

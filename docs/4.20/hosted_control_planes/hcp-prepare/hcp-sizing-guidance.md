@@ -12,19 +12,11 @@ See the following highly available hosted control planes requirements, which wer
 
 - Minimum memory: approximately 19 GiB
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Overriding resource utilization measurements](../../hosted_control_planes/hcp-prepare/hcp-override-resource-util.xml#hcp-override-resource-util)
 
 - [Distributing hosted cluster workloads](../../hosted_control_planes/hcp-prepare/hcp-distribute-workloads.xml#hcp-distribute-workloads)
-
-</div>
 
 # Pod limits
 
@@ -32,17 +24,7 @@ The `maxPods` setting for each node affects how many hosted clusters can fit in 
 
 For bare-metal nodes, the default `maxPods` setting of 250 is likely to be a limiting factor because roughly three hosted control planes fit for each node given the pod requirements, even if the machine has plenty of resources to spare. Setting the `maxPods` value to 500 by configuring the `KubeletConfig` value allows for greater hosted control plane density, which can help you take advantage of additional compute resources.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring the maximum number of pods per node](../../nodes/nodes/nodes-nodes-managing-max-pods.xml#nodes-nodes-managing-max-pods-proc_nodes-nodes-managing-max-pods)
-
-</div>
 
 # Request-based resource limit
 
@@ -70,8 +52,11 @@ As the load increases by 1000 QPS, the hosted control plane resource utilization
 
 For general sizing purposes, consider the 1000 QPS API rate that is a *medium* hosted cluster load, and a 2000 QPS API that is a *heavy* hosted cluster load.
 
-> [!NOTE]
-> This test provides an estimation factor to increase the compute resource utilization based on the expected API load. Exact utilization rates can vary based on the type and pace of the cluster workload.
+<div class="note">
+
+This test provides an estimation factor to increase the compute resource utilization based on the expected API load. Exact utilization rates can vary based on the type and pace of the cluster workload.
+
+</div>
 
 The following example shows hosted control plane resource scaling for the workload and API rate definitions:
 
@@ -105,27 +90,27 @@ This example provides sizing guidance for the following scenario:
 
 Limit inputs
 
-|  |  |  |  |
-|----|----|----|----|
-| Calculated values based on worker node size and API rate | Server 1 | Server 2 | Calculation notes |
-| Maximum hosted control planes per worker based on vCPU requests | 12.8 | 25.6 | Number of worker vCPUs ÷ 5 total vCPU requests per hosted control plane |
-| Maximum hosted control planes per worker based on vCPU usage | 5.4 | 10.7 | Number of vCPUS ÷ (2.9 measured idle vCPU usage + (QPS target rate ÷ 1000) × 9.0 measured vCPU usage per 1000 QPS increase) |
-| Maximum hosted control planes per worker based on memory requests | 7.1 | 14.2 | Worker memory GiB ÷ 18 GiB total memory request per hosted control plane |
-| Maximum hosted control planes per worker based on memory usage | 9.4 | 18.8 | Worker memory GiB ÷ (11.1 measured idle memory usage + (QPS target rate ÷ 1000) × 2.5 measured memory usage per 1000 QPS increase) |
-| Maximum hosted control planes per worker based on per node pod limit | 6.7 | 6.7 | 500 `maxPods` ÷ 75 pods per hosted control plane |
-| Minimum of previously mentioned maximums | 5.4 | 6.7 |  |
-|  | vCPU limiting factor | `maxPods` limiting factor |  |
-| Maximum number of hosted control planes within a management cluster | 16 | 20 | Minimum of previously mentioned maximums × 3 control-plane workers |
+|                                                                      |                      |                           |                                                                                                                                    |
+|----------------------------------------------------------------------|----------------------|---------------------------|------------------------------------------------------------------------------------------------------------------------------------|
+| Calculated values based on worker node size and API rate             | Server 1             | Server 2                  | Calculation notes                                                                                                                  |
+| Maximum hosted control planes per worker based on vCPU requests      | 12.8                 | 25.6                      | Number of worker vCPUs ÷ 5 total vCPU requests per hosted control plane                                                            |
+| Maximum hosted control planes per worker based on vCPU usage         | 5.4                  | 10.7                      | Number of vCPUS ÷ (2.9 measured idle vCPU usage + (QPS target rate ÷ 1000) × 9.0 measured vCPU usage per 1000 QPS increase)        |
+| Maximum hosted control planes per worker based on memory requests    | 7.1                  | 14.2                      | Worker memory GiB ÷ 18 GiB total memory request per hosted control plane                                                           |
+| Maximum hosted control planes per worker based on memory usage       | 9.4                  | 18.8                      | Worker memory GiB ÷ (11.1 measured idle memory usage + (QPS target rate ÷ 1000) × 2.5 measured memory usage per 1000 QPS increase) |
+| Maximum hosted control planes per worker based on per node pod limit | 6.7                  | 6.7                       | 500 `maxPods` ÷ 75 pods per hosted control plane                                                                                   |
+| Minimum of previously mentioned maximums                             | 5.4                  | 6.7                       |                                                                                                                                    |
+|                                                                      | vCPU limiting factor | `maxPods` limiting factor |                                                                                                                                    |
+| Maximum number of hosted control planes within a management cluster  | 16                   | 20                        | Minimum of previously mentioned maximums × 3 control-plane workers                                                                 |
 
 Sizing calculation example
 
-|  |  |
-|----|----|
-| Name | Description |
-| `mce_hs_addon_request_based_hcp_capacity_gauge` | Estimated maximum number of hosted control planes the cluster can host based on a highly available hosted control planes resource request. |
-| `mce_hs_addon_low_qps_based_hcp_capacity_gauge` | Estimated maximum number of hosted control planes the cluster can host if all hosted control planes make around 50 QPS to the clusters Kube API server. |
-| `mce_hs_addon_medium_qps_based_hcp_capacity_gauge` | Estimated maximum number of hosted control planes the cluster can host if all hosted control planes make around 1000 QPS to the clusters Kube API server. |
-| `mce_hs_addon_high_qps_based_hcp_capacity_gauge` | Estimated maximum number of hosted control planes the cluster can host if all hosted control planes make around 2000 QPS to the clusters Kube API server. |
+|                                                     |                                                                                                                                                                                                                |
+|-----------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Name                                                | Description                                                                                                                                                                                                    |
+| `mce_hs_addon_request_based_hcp_capacity_gauge`     | Estimated maximum number of hosted control planes the cluster can host based on a highly available hosted control planes resource request.                                                                     |
+| `mce_hs_addon_low_qps_based_hcp_capacity_gauge`     | Estimated maximum number of hosted control planes the cluster can host if all hosted control planes make around 50 QPS to the clusters Kube API server.                                                        |
+| `mce_hs_addon_medium_qps_based_hcp_capacity_gauge`  | Estimated maximum number of hosted control planes the cluster can host if all hosted control planes make around 1000 QPS to the clusters Kube API server.                                                      |
+| `mce_hs_addon_high_qps_based_hcp_capacity_gauge`    | Estimated maximum number of hosted control planes the cluster can host if all hosted control planes make around 2000 QPS to the clusters Kube API server.                                                      |
 | `mce_hs_addon_average_qps_based_hcp_capacity_gauge` | Estimated maximum number of hosted control planes the cluster can host based on the existing average QPS of hosted control planes. If you do not have an active hosted control planes, you can expect low QPS. |
 
 Hosted control planes capacity metrics
@@ -138,14 +123,4 @@ Sharing infrastructure can be beneficial in constrained environments, such as in
 
 Before you share infrastructure, ensure that your infrastructure has enough resources to support hosted control planes. On the OpenShift Container Platform management cluster, nothing else can be deployed except hosted control planes. Ensure that the management cluster has enough CPU, memory, storage, and network resources to handle the combined load of the hosted clusters. Workload must not be demanding, and it must fall within a low queries-per-second (QPS) profile. For more information about resources and workload, see "Sizing guidance for hosted control planes".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Sizing guidance for hosted control planes](../../hosted_control_planes/hcp-prepare/hcp-sizing-guidance.xml)
-
-</div>

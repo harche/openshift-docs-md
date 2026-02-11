@@ -6,27 +6,9 @@ You can execute the `ovnkube-trace` binary from a dedicated container. For relea
 
 The `ovnkube-trace` tool traces packet simulations for arbitrary UDP or TCP traffic between points in an OVN-Kubernetes driven OpenShift Container Platform cluster. Copy the `ovnkube-trace` binary to your local host making it available to run against the cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You installed the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster with a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a pod variable by using the following command:
 
@@ -40,8 +22,11 @@ Procedure
     $  oc cp -n openshift-ovn-kubernetes $POD:/usr/bin/ovnkube-trace -c ovnkube-cluster-manager ovnkube-trace
     ```
 
-    > [!NOTE]
-    > If you are using Red Hat Enterprise Linux (RHEL) 8 to run the `ovnkube-trace` tool, you must copy the file `/usr/lib/rhel8/ovnkube-trace` to your local host.
+    <div class="note">
+
+    If you are using Red Hat Enterprise Linux (RHEL) 8 to run the `ovnkube-trace` tool, you must copy the file `/usr/lib/rhel8/ovnkube-trace` to your local host.
+
+    </div>
 
 3.  Make `ovnkube-trace` executable by running the following command:
 
@@ -55,11 +40,9 @@ Procedure
     $  ./ovnkube-trace -help
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Expected output
+    **Expected output**
 
     </div>
 
@@ -95,8 +78,6 @@ Procedure
             use udp transport protocol
     ```
 
-    </div>
-
     The command-line arguments supported are familiar Kubernetes constructs, such as namespaces, pods, services so you do not need to find the MAC address, the IP address of the destination nodes, or the ICMP type.
 
     The log levels are:
@@ -107,19 +88,9 @@ Procedure
 
     - 5 (debug output)
 
-</div>
-
 # Running ovnkube-trace
 
 Run `ovn-trace` to simulate packet forwarding within an OVN logical network.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You installed the OpenShift CLI (`oc`).
 
@@ -127,27 +98,13 @@ Prerequisites
 
 - You have installed `ovnkube-trace` on local host
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example: Testing that DNS resolution works from a deployed pod
+**Example: Testing that DNS resolution works from a deployed pod**
 
 </div>
 
 This example illustrates how to test the DNS resolution from a deployed pod to the core DNS pod that runs in the cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Start a web service in the default namespace by entering the following command:
 
@@ -161,11 +118,9 @@ Procedure
     oc get pods -n openshift-dns
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -184,8 +139,6 @@ Procedure
     node-resolver-lm6z4   1/1     Running   0          5h8m
     node-resolver-zfx5k   1/1     Running   0          5h
     ```
-
-    </div>
 
 3.  Run the following `ovnkube-trace` command to verify DNS resolution is working:
 
@@ -211,11 +164,9 @@ Procedure
 
     - Set the log level to 0 (0 is minimal and 5 is debug)
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output if the `src&dst` pod lands on the same node
+      **Example output if the `src&dst` pod lands on the same node**
 
       </div>
 
@@ -228,13 +179,9 @@ Procedure
       ovn-detrace destination pod to source pod indicates success from dns-default-p8t5h to web
       ```
 
-      </div>
+      <div class="formalpara-title">
 
-      <div class="formalpara">
-
-      <div class="title">
-
-      Example output if the `src&dst` pod lands on a different node
+      **Example output if the `src&dst` pod lands on a different node**
 
       </div>
 
@@ -249,11 +196,7 @@ Procedure
       ovn-detrace destination pod to source pod indicates success from dns-default-8s42x to web
       ```
 
-      </div>
-
       The ouput indicates success from the deployed pod to the DNS port and also indicates that it is successful going back in the other direction. So you know bi-directional traffic is supported on UDP port 53 if my web pod wants to do dns resolution from core DNS.
-
-</div>
 
 If for example that did not work and you wanted to get the `ovn-trace`, the `ovs-appctl` of `proto/trace` and `ovn-detrace`, and more debug type information increase the log level to 2 and run the command again as follows:
 
@@ -269,25 +212,13 @@ $ ./ovnkube-trace \
 
 The output from this increased log level is too much to list here. In a failure situation the output of this command shows which flow is dropping that traffic. For example an egress or ingress network policy may be configured on the cluster that does not allow that traffic.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Verifying by using debug output a configured default deny
+**Example: Verifying by using debug output a configured default deny**
 
 </div>
 
 This example illustrates how to identify by using the debug output that an ingress default deny policy blocks traffic.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the following YAML that defines a `deny-by-default` policy to deny ingress from all pods in all namespaces. Save the YAML in the `deny-by-default.yaml` file:
 
@@ -308,19 +239,15 @@ Procedure
     $ oc apply -f deny-by-default.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     networkpolicy.networking.k8s.io/deny-by-default created
     ```
-
-    </div>
 
 3.  Start a web service in the `default` namespace by entering the following command:
 
@@ -360,19 +287,15 @@ Procedure
      -loglevel 0
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     ovn-trace source pod to destination pod indicates failure from test-6459 to web
     ```
-
-    </div>
 
 9.  Increase the log level to 2 to expose the reason for the failure by running the following command:
 
@@ -386,11 +309,9 @@ Procedure
      -loglevel 2
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -413,8 +334,6 @@ Procedure
         next;
     ...
     ```
-
-    </div>
 
     - Ingress traffic is blocked due to the default deny policy being in place.
 
@@ -457,11 +376,9 @@ Procedure
      -loglevel 0
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Expected output
+    **Expected output**
 
     </div>
 
@@ -474,19 +391,15 @@ Procedure
     ovn-detrace destination pod to source pod indicates success from web to test-6459
     ```
 
-    </div>
-
 13. Run the following command in the shell that was opened in step six to connect nginx to the web-server:
 
     ``` terminal
      wget -qO- --timeout=2 http://web.default
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Expected output
+    **Expected output**
 
     </div>
 
@@ -517,10 +430,6 @@ Procedure
     </body>
     </html>
     ```
-
-    </div>
-
-</div>
 
 # Additional resources
 

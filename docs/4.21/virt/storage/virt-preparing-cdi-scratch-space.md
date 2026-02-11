@@ -10,8 +10,11 @@ You can define the storage class that is used to bind the scratch space PVC in t
 
 If the defined storage class does not match a storage class in the cluster, then the default storage class defined for the cluster is used. If there is no default storage class defined in the cluster, the storage class used to provision the original DV or PVC is used.
 
-> [!NOTE]
-> CDI requires requesting scratch space with a `file` volume mode, regardless of the PVC backing the origin data volume. If the origin PVC is backed by `block` volume mode, you must define a storage class capable of provisioning `file` volume mode PVCs.
+<div class="note">
+
+CDI requires requesting scratch space with a `file` volume mode, regardless of the PVC backing the origin data volume. If the origin PVC is backed by `block` volume mode, you must define a storage class capable of provisioning `file` volume mode PVCs.
+
+</div>
 
 ## Manual provisioning
 
@@ -21,37 +24,19 @@ If there are no storage classes, CDI uses any PVCs in the project that match the
 
 To import and process virtual machine (VM) images, the Containerized Data Importer (CDI) uses scratch space as temporary storage during specific operations such as registry imports and image uploads.
 
-| Type | Reason |
-|----|----|
-| Registry imports | CDI must download the image to a scratch space and extract the layers to find the image file. The image file is then passed to QEMU-IMG for conversion to a raw disk. |
-| Upload image | QEMU-IMG does not accept input from STDIN. Instead, the image to upload is saved in scratch space before it can be passed to QEMU-IMG for conversion. |
-| HTTP imports of archived images | QEMU-IMG does not know how to handle the archive formats CDI supports. Instead, the image is unarchived and saved into scratch space before it is passed to QEMU-IMG. |
-| HTTP imports of authenticated images | QEMU-IMG inadequately handles authentication. Instead, the image is saved to scratch space and authenticated before it is passed to QEMU-IMG. |
-| HTTP imports of custom certificates | QEMU-IMG inadequately handles custom certificates of HTTPS endpoints. Instead, CDI downloads the image to scratch space before passing the file to QEMU-IMG. |
+| Type                                 | Reason                                                                                                                                                                |
+|--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Registry imports                     | CDI must download the image to a scratch space and extract the layers to find the image file. The image file is then passed to QEMU-IMG for conversion to a raw disk. |
+| Upload image                         | QEMU-IMG does not accept input from STDIN. Instead, the image to upload is saved in scratch space before it can be passed to QEMU-IMG for conversion.                 |
+| HTTP imports of archived images      | QEMU-IMG does not know how to handle the archive formats CDI supports. Instead, the image is unarchived and saved into scratch space before it is passed to QEMU-IMG. |
+| HTTP imports of authenticated images | QEMU-IMG inadequately handles authentication. Instead, the image is saved to scratch space and authenticated before it is passed to QEMU-IMG.                         |
+| HTTP imports of custom certificates  | QEMU-IMG inadequately handles custom certificates of HTTPS endpoints. Instead, CDI downloads the image to scratch space before passing the file to QEMU-IMG.          |
 
 # Defining a storage class
 
 You can define the storage class that the Containerized Data Importer (CDI) uses when allocating scratch space by adding the `spec.scratchSpaceStorageClass` field to the `HyperConverged` custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `HyperConverged` CR by running the following command:
 
@@ -74,8 +59,6 @@ Procedure
 
 3.  Save and exit your default editor to update the `HyperConverged` CR.
 
-</div>
-
 # CDI supported operations matrix
 
 This matrix shows the supported CDI operations for content types against endpoints, and which of these operations requires scratch space.
@@ -90,7 +73,7 @@ This matrix shows the supported CDI operations for content types against endpoin
 <col style="width: 16%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Content types</th>
 <th style="text-align: left;">HTTP</th>
 <th style="text-align: left;">HTTPS</th>
@@ -100,7 +83,7 @@ This matrix shows the supported CDI operations for content types against endpoin
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>KubeVirt (QCOW2)</p></td>
 <td style="text-align: left;"><p>✓ QCOW2</p>
 <p>✓ GZ*</p>
@@ -118,7 +101,7 @@ This matrix shows the supported CDI operations for content types against endpoin
 <p>✓ GZ*</p>
 <p>✓ XZ*</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>KubeVirt (RAW)</p></td>
 <td style="text-align: left;"><p>✓ RAW</p>
 <p>✓ GZ</p>

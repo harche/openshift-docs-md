@@ -20,30 +20,15 @@ The Cloud Credential Operator (CCO) manages cloud provider credentials as Kubern
 
 To create and manage cloud credentials from outside of the cluster when the Cloud Credential Operator (CCO) is operating in manual mode, extract and prepare the CCO utility (`ccoctl`) binary.
 
-> [!NOTE]
-> The `ccoctl` utility is a Linux binary that must run in a Linux environment.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The `ccoctl` utility is a Linux binary that must run in a Linux environment.
 
 </div>
 
 - You have access to an OpenShift Container Platform account with cluster administrator access.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Set a variable for the OpenShift Container Platform release image by running the following command:
 
@@ -57,8 +42,11 @@ Procedure
     $ CCO_IMAGE=$(oc adm release info --image-for='cloud-credential-operator' $RELEASE_IMAGE -a ~/.pull-secret)
     ```
 
-    > [!NOTE]
-    > Ensure that the architecture of the `$RELEASE_IMAGE` matches the architecture of the environment in which you will use the `ccoctl` tool.
+    <div class="note">
+
+    Ensure that the architecture of the `$RELEASE_IMAGE` matches the architecture of the environment in which you will use the `ccoctl` tool.
+
+    </div>
 
 3.  Extract the `ccoctl` binary from the CCO container image within the OpenShift Container Platform release image by running the following command:
 
@@ -74,8 +62,11 @@ Procedure
 
       - `rhel9`: Specify this value for hosts that use RHEL 9.
 
-    > [!NOTE]
-    > The `ccoctl` binary is created in the directory from where you executed the command and not in `/usr/bin/`. You must rename the directory or move the `ccoctl.<rhel_version>` binary to `ccoctl`.
+    <div class="note">
+
+    The `ccoctl` binary is created in the directory from where you executed the command and not in `/usr/bin/`. You must rename the directory or move the `ccoctl.<rhel_version>` binary to `ccoctl`.
+
+    </div>
 
 4.  Change the permissions to make `ccoctl` executable by running the following command:
 
@@ -83,27 +74,15 @@ Procedure
     $ chmod 775 ccoctl
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - To verify that `ccoctl` is ready to use, display the help file. Use a relative file name when you run the command, for example:
 
   ``` terminal
   $ ./ccoctl
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -127,21 +106,9 @@ Verification
   Use "ccoctl [command] --help" for more information about a command.
   ```
 
-  </div>
-
-</div>
-
-<div id="additional-resources_configuring-ibm-cloud-refreshing-ids">
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Rotating API keys](../../post_installation_configuration/changing-cloud-credentials-configuration.xml#refreshing-service-ids-ibm-cloud_changing-cloud-credentials-configuration)
-
-</div>
 
 # Next steps
 

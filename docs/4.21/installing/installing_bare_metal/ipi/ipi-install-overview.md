@@ -14,8 +14,11 @@ For the installation, the key elements in the previous diagram are:
 
 - **API VIP**: An API virtual IP address (VIP) is used to provide failover of the API server across the control plane nodes. The API VIP first resides on the bootstrap VM. A script generates the `keepalived.conf` configuration file before launching the service. The VIP moves to one of the control plane nodes after the bootstrap process has completed and the bootstrap VM stops.
 
-> [!IMPORTANT]
-> The provisioning network is optional, but it is required for PXE booting. If you deploy without a provisioning network, you must use a virtual media baseboard management controller (BMC) addressing option such as `redfish-virtualmedia` or `idrac-virtualmedia`. Installing a cluster using a provisioning network has not been tested and validated with Dell iDRAC 10. If you are installing a cluster with installer-provisioned infrastructure on iDRAC 10, it is recommended to use virtual media, which has been validated with iDRAC 10.
+<div class="important">
+
+The provisioning network is optional, but it is required for PXE booting. If you deploy without a provisioning network, you must use a virtual media baseboard management controller (BMC) addressing option such as `redfish-virtualmedia` or `idrac-virtualmedia`. Installing a cluster using a provisioning network has not been tested and validated with Dell iDRAC 10. If you are installing a cluster with installer-provisioned infrastructure on iDRAC 10, it is recommended to use virtual media, which has been validated with iDRAC 10.
+
+</div>
 
 In phase 2 of the deployment, the provisioner destroys the bootstrap VM automatically and moves the virtual IP addresses (VIPs) to the appropriate nodes.
 
@@ -31,17 +34,10 @@ The following diagram illustrates phase 2 of deployment:
 
 After this point, the node used by the provisioner can be removed or repurposed. From here, all additional provisioning tasks are carried out by the control plane.
 
-> [!NOTE]
-> For installer-provisioned infrastructure installations, CoreDNS exposes port 53 at the node level, making it accessible from other routable networks.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+For installer-provisioned infrastructure installations, CoreDNS exposes port 53 at the node level, making it accessible from other routable networks.
 
 </div>
 
 - [Using DNS forwarding](../../../networking/networking_operators/dns-operator.xml#nw-dns-forward_dns-operator)
-
-</div>

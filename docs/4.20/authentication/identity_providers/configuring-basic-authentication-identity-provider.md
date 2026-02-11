@@ -4,8 +4,11 @@ Configure the `basic-authentication` identity provider for users to log in to Op
 
 By default, only a `kubeadmin` user exists on your cluster. To specify an identity provider, you must create a custom resource (CR) that describes that identity provider and add it to the cluster.
 
-> [!NOTE]
-> OpenShift Container Platform user names containing `/`, `:`, and `%` are not supported.
+<div class="note">
+
+OpenShift Container Platform user names containing `/`, `:`, and `%` are not supported.
+
+</div>
 
 # About basic authentication
 
@@ -13,13 +16,19 @@ Basic authentication is a generic back-end integration mechanism that allows use
 
 Because basic authentication is generic, you can use this identity provider for advanced authentication configurations.
 
-> [!IMPORTANT]
-> Basic authentication must use an HTTPS connection to the remote server to prevent potential snooping of the user ID and password and man-in-the-middle attacks.
+<div class="important">
+
+Basic authentication must use an HTTPS connection to the remote server to prevent potential snooping of the user ID and password and man-in-the-middle attacks.
+
+</div>
 
 With basic authentication configured, users send their user name and password to OpenShift Container Platform, which then validates those credentials against a remote server by making a server-to-server request, passing the credentials as a basic authentication header. This requires users to send their credentials to OpenShift Container Platform during login.
 
-> [!NOTE]
-> This only works for user name/password login mechanisms, and OpenShift Container Platform must be able to make network requests to the remote authentication server.
+<div class="note">
+
+This only works for user name/password login mechanisms, and OpenShift Container Platform must be able to make network requests to the remote authentication server.
+
+</div>
 
 User names and passwords are validated against a remote URL that is protected by basic authentication and returns JSON.
 
@@ -63,48 +72,33 @@ A successful response can optionally provide additional data, such as:
 
 Identity providers use OpenShift Container Platform `Secret` objects in the `openshift-config` namespace to contain the client secret, client certificates, and keys.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Create a `Secret` object that contains the key and certificate by using the following command:
 
   ``` terminal
   $ oc create secret tls <secret_name> --key=key.pem --cert=cert.pem -n openshift-config
   ```
 
-  > [!TIP]
-  > You can alternatively apply the following YAML to create the secret:
-  >
-  > ``` yaml
-  > apiVersion: v1
-  > kind: Secret
-  > metadata:
-  >   name: <secret_name>
-  >   namespace: openshift-config
-  > type: kubernetes.io/tls
-  > data:
-  >   tls.crt: <base64_encoded_cert>
-  >   tls.key: <base64_encoded_key>
-  > ```
+  <div class="tip">
 
-</div>
+  You can alternatively apply the following YAML to create the secret:
+
+  ``` yaml
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: <secret_name>
+    namespace: openshift-config
+  type: kubernetes.io/tls
+  data:
+    tls.crt: <base64_encoded_cert>
+    tls.key: <base64_encoded_key>
+  ```
+
+  </div>
 
 # Creating a config map
 
 Identity providers use OpenShift Container Platform `ConfigMap` objects in the `openshift-config` namespace to contain the certificate authority bundle. These are primarily used to contain certificate bundles needed by the identity provider.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Define an OpenShift Container Platform `ConfigMap` object containing the certificate authority by using the following command. The certificate authority must be stored in the `ca.crt` key of the `ConfigMap` object.
 
@@ -112,31 +106,30 @@ Procedure
   $ oc create configmap ca-config-map --from-file=ca.crt=/path/to/ca -n openshift-config
   ```
 
-  > [!TIP]
-  > You can alternatively apply the following YAML to create the config map:
-  >
-  > ``` yaml
-  > apiVersion: v1
-  > kind: ConfigMap
-  > metadata:
-  >   name: ca-config-map
-  >   namespace: openshift-config
-  > data:
-  >   ca.crt: |
-  >     <CA_certificate_PEM>
-  > ```
+  <div class="tip">
 
-</div>
+  You can alternatively apply the following YAML to create the config map:
+
+  ``` yaml
+  apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: ca-config-map
+    namespace: openshift-config
+  data:
+    ca.crt: |
+      <CA_certificate_PEM>
+  ```
+
+  </div>
 
 # Sample basic authentication CR
 
 The following custom resource (CR) shows the parameters and acceptable values for a basic authentication identity provider.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Basic authentication CR
+**Basic authentication CR**
 
 </div>
 
@@ -160,8 +153,6 @@ spec:
         name: client-key-secret
 ```
 
-</div>
-
 - This provider name is prefixed to the returned user ID to form an identity name.
 
 - Controls how mappings are established between this provider’s identities and `User` objects.
@@ -174,29 +165,13 @@ spec:
 
 - Reference to an OpenShift Container Platform `Secret` object containing the key for the client certificate. Required if `tlsClientCert` is specified.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - See [Identity provider parameters](../../authentication/understanding-identity-provider.xml#identity-provider-parameters_understanding-identity-provider) for information on parameters, such as `mappingMethod`, that are common to all identity providers.
-
-</div>
 
 # Adding an identity provider to your cluster
 
 After you install your cluster, add an identity provider to it so your users can authenticate.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Create an OpenShift Container Platform cluster.
 
@@ -204,24 +179,17 @@ Prerequisites
 
 - You must be logged in as an administrator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Apply the defined CR:
 
     ``` terminal
     $ oc apply -f </path/to/CR>
     ```
 
-    > [!NOTE]
-    > If a CR does not exist, `oc apply` creates a new CR and might trigger the following warning: `Warning: oc apply should be used on resources created by either oc create --save-config or oc apply`. In this case you can safely ignore this warning.
+    <div class="note">
+
+    If a CR does not exist, `oc apply` creates a new CR and might trigger the following warning: `Warning: oc apply should be used on resources created by either oc create --save-config or oc apply`. In this case you can safely ignore this warning.
+
+    </div>
 
 2.  Log in to the cluster as a user from your identity provider, entering the password when prompted.
 
@@ -235,17 +203,13 @@ Procedure
     $ oc whoami
     ```
 
-</div>
-
 # Example Apache HTTPD configuration for basic identity providers
 
 The basic identify provider (IDP) configuration in OpenShift Container Platform 4 requires that the IDP server respond with JSON for success and failures. You can use CGI scripting in Apache HTTPD to accomplish this. This section provides examples.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `/etc/httpd/conf.d/login.conf`
+**Example `/etc/httpd/conf.d/login.conf`**
 
 </div>
 
@@ -276,13 +240,9 @@ Example `/etc/httpd/conf.d/login.conf`
       </Location>
     </VirtualHost>
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example `/var/www/cgi-bin/login.cgi`
+**Example `/var/www/cgi-bin/login.cgi`**
 
 </div>
 
@@ -292,13 +252,9 @@ Example `/var/www/cgi-bin/login.cgi`
     echo '{"sub":"userid", "name":"'$REMOTE_USER'"}'
     exit 0
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example `/var/www/cgi-bin/fail.cgi`
+**Example `/var/www/cgi-bin/fail.cgi`**
 
 </div>
 
@@ -307,8 +263,6 @@ Example `/var/www/cgi-bin/fail.cgi`
     echo ""
     echo '{"error": "Login failure"}'
     exit 0
-
-</div>
 
 ## File requirements
 

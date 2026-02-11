@@ -8,8 +8,11 @@ You can install a cluster on Amazon Web Services (AWS) in a restricted network b
 
 - You [mirrored the images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installation-about-mirror-registry_installing-mirroring-installation-images) to your registry and obtained the `imageContentSources` data for your version of OpenShift Container Platform.
 
-  > [!IMPORTANT]
-  > Because the installation media is on the mirror host, you can use that computer to complete all installation steps.
+  <div class="important">
+
+  Because the installation media is on the mirror host, you can use that computer to complete all installation steps.
+
+  </div>
 
 - You have an existing VPC in AWS. When installing to a restricted network using installer-provisioned infrastructure, you cannot use the installer-provisioned VPC. You must use a user-provisioned VPC that satisfies one of the following requirements:
 
@@ -19,15 +22,21 @@ You can install a cluster on Amazon Web Services (AWS) in a restricted network b
 
 - You [configured an AWS account](../../../installing/installing_aws/installing-aws-account.xml#installing-aws-account) to host the cluster.
 
-  > [!IMPORTANT]
-  > If you have an AWS profile stored on your computer, it must not use a temporary session token that you generated while using a multi-factor authentication device. The cluster continues to use your current AWS credentials to create AWS resources for the entire life of the cluster, so you must use key-based, long-term credentials. To generate appropriate keys, see [Managing Access Keys for IAM Users](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) in the AWS documentation. You can supply the keys when you run the installation program.
+  <div class="important">
+
+  If you have an AWS profile stored on your computer, it must not use a temporary session token that you generated while using a multi-factor authentication device. The cluster continues to use your current AWS credentials to create AWS resources for the entire life of the cluster, so you must use key-based, long-term credentials. To generate appropriate keys, see [Managing Access Keys for IAM Users](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) in the AWS documentation. You can supply the keys when you run the installation program.
+
+  </div>
 
 - You downloaded the AWS CLI and installed it on your computer. See [Install the AWS CLI Using the Bundled Installer (Linux, macOS, or UNIX)](https://docs.aws.amazon.com/cli/latest/userguide/install-bundle.html) in the AWS documentation.
 
 - If you use a firewall and plan to use the Telemetry service, you [configured the firewall to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall) that your cluster requires access to.
 
-  > [!NOTE]
-  > If you are configuring a proxy, be sure to also review this site list.
+  <div class="note">
+
+  If you are configuring a proxy, be sure to also review this site list.
+
+  </div>
 
 # About installations in restricted networks
 
@@ -69,8 +78,11 @@ The installation program no longer creates the following components:
 
 - VPC endpoints
 
-> [!NOTE]
-> The installation program requires that you use the cloud-provided DNS server. Using a custom DNS server is not supported and causes the installation to fail.
+<div class="note">
+
+The installation program requires that you use the cloud-provided DNS server. Using a custom DNS server is not supported and causes the installation to fail.
+
+</div>
 
 If you use a custom VPC, you must correctly configure it and its subnets for the installation program and the cluster to use. See [Create a VPC](https://docs.aws.amazon.com/vpc/latest/userguide/working-with-vpcs.html) in the Amazon Web Services documentation for more information about AWS VPC console wizard configurations and creating and managing an AWS VPC.
 
@@ -126,17 +138,13 @@ As part of the installation process, you can configure an HTTP or HTTPS proxy wi
 
 When configuring the proxy in the `install-config.yaml` file, add these endpoints to the `noProxy` field. With this option, the proxy prevents the cluster from accessing the internet directly. However, network traffic remains private between your VPC and the required AWS services.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Required VPC components
+**Required VPC components**
 
 </div>
 
 You must provide a suitable VPC and subnets that allow communication to your machines.
-
-</div>
 
 <table>
 <colgroup>
@@ -146,14 +154,14 @@ You must provide a suitable VPC and subnets that allow communication to your mac
 <col style="width: 20%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Component</th>
 <th style="text-align: left;">AWS type</th>
 <th colspan="2" style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>VPC</p></td>
 <td style="text-align: left;"><ul>
 <li><p><code>AWS::EC2::VPC</code></p></li>
@@ -161,7 +169,7 @@ You must provide a suitable VPC and subnets that allow communication to your mac
 </ul></td>
 <td colspan="2" style="text-align: left;"><p>You must provide a public VPC for the cluster to use. The VPC uses an endpoint that references the route tables for each subnet to improve communication with the registry that is hosted in S3.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Public subnets</p></td>
 <td style="text-align: left;"><ul>
 <li><p><code>AWS::EC2::Subnet</code></p></li>
@@ -169,7 +177,7 @@ You must provide a suitable VPC and subnets that allow communication to your mac
 </ul></td>
 <td colspan="2" style="text-align: left;"><p>Your VPC must have public subnets for between 1 and 3 availability zones and associate them with appropriate Ingress rules.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Internet gateway</p></td>
 <td style="text-align: left;"><ul>
 <li><p><code>AWS::EC2::InternetGateway</code></p></li>
@@ -182,39 +190,51 @@ You must provide a suitable VPC and subnets that allow communication to your mac
 </ul></td>
 <td colspan="2" style="text-align: left;"><p>You must have a public internet gateway, with public routes, attached to the VPC. In the provided templates, each public subnet has a NAT gateway with an EIP address. These NAT gateways allow cluster resources, like private subnet instances, to reach the internet and are not required for some restricted network or proxy scenarios.</p></td>
 </tr>
-<tr>
-<td rowspan="7" style="text-align: left;"><p>Network access control</p></td>
-<td rowspan="7" style="text-align: left;"><ul>
+<tr class="even">
+<td style="text-align: left;"><p>Network access control</p></td>
+<td style="text-align: left;"><ul>
 <li><p><code>AWS::EC2::NetworkAcl</code></p></li>
 <li><p><code>AWS::EC2::NetworkAclEntry</code></p></li>
 </ul></td>
 <td colspan="2" style="text-align: left;"><p>You must allow the VPC to access the following ports:</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><strong>Port</strong></p></td>
 <td style="text-align: left;"><p><strong>Reason</strong></p></td>
+<td></td>
+<td></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>80</code></p></td>
 <td style="text-align: left;"><p>Inbound HTTP traffic</p></td>
+<td></td>
+<td></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>443</code></p></td>
 <td style="text-align: left;"><p>Inbound HTTPS traffic</p></td>
+<td></td>
+<td></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>22</code></p></td>
 <td style="text-align: left;"><p>Inbound SSH traffic</p></td>
+<td></td>
+<td></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>1024</code> - <code>65535</code></p></td>
 <td style="text-align: left;"><p>Inbound ephemeral traffic</p></td>
+<td></td>
+<td></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>0</code> - <code>65535</code></p></td>
 <td style="text-align: left;"><p>Outbound ephemeral traffic</p></td>
+<td></td>
+<td></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Private subnets</p></td>
 <td style="text-align: left;"><ul>
 <li><p><code>AWS::EC2::Subnet</code></p></li>
@@ -266,29 +286,11 @@ If you deploy OpenShift Container Platform to an existing network, the isolation
 
 You can customize the OpenShift Container Platform cluster you install on Amazon Web Services (AWS).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have the OpenShift Container Platform installation program and the pull secret for your cluster. For a restricted network installation, these files are on your mirror host.
 
 - You have the `imageContentSources` values that were generated during mirror registry creation.
 
 - You have obtained the contents of the certificate for your mirror registry.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `install-config.yaml` file.
 
@@ -310,8 +312,11 @@ Procedure
 
         1.  Optional: Select an SSH key to use to access your cluster machines.
 
-            > [!NOTE]
-            > For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+            <div class="note">
+
+            For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+
+            </div>
 
         2.  Select **AWS** as the platform to target.
 
@@ -384,32 +389,23 @@ Procedure
 
 4.  Back up the `install-config.yaml` file so that you can use it to install multiple clusters.
 
-    > [!IMPORTANT]
-    > The `install-config.yaml` file is consumed during the installation process. If you want to reuse the file, you must back it up now.
+    <div class="important">
 
-</div>
+    The `install-config.yaml` file is consumed during the installation process. If you want to reuse the file, you must back it up now.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+    </div>
 
 - [Installation configuration parameters for AWS](../../../installing/installing_aws/installation-config-parameters-aws.xml#installation-config-parameters-aws)
-
-</div>
 
 ## Minimum resource requirements for cluster installation
 
 Each created cluster must meet minimum requirements so that the cluster runs as expected.
 
-| Machine | Operating System | vCPU <sup>\[1\]</sup> | Virtual RAM | Storage | Input/Output Per Second (IOPS)<sup>\[2\]</sup> |
-|----|----|----|----|----|----|
-| Bootstrap | RHCOS | 4 | 16 GB | 100 GB | 300 |
-| Control plane | RHCOS | 4 | 16 GB | 100 GB | 300 |
-| Compute | RHCOS | 2 | 8 GB | 100 GB | 300 |
+| Machine       | Operating System | vCPU <sup>\[1\]</sup> | Virtual RAM | Storage | Input/Output Per Second (IOPS)<sup>\[2\]</sup> |
+|---------------|------------------|-----------------------|-------------|---------|------------------------------------------------|
+| Bootstrap     | RHCOS            | 4                     | 16 GB       | 100 GB  | 300                                            |
+| Control plane | RHCOS            | 4                     | 16 GB       | 100 GB  | 300                                            |
+| Compute       | RHCOS            | 2                     | 8 GB        | 100 GB  | 300                                            |
 
 Minimum resource requirements
 
@@ -419,32 +415,25 @@ Minimum resource requirements
 
 3.  As with all user-provisioned installations, if you choose to use RHEL compute machines in your cluster, you take responsibility for all operating system life cycle management and maintenance, including performing system updates, applying patches, and completing all other required tasks. Use of RHEL 7 compute machines is deprecated and has been removed in OpenShift Container Platform 4.10 and later.
 
-> [!NOTE]
-> For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.6, which updates the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
->
-> - x86-64 architecture requires x86-64-v2 ISA
->
-> - ARM64 architecture requires ARMv8.0-A ISA
->
-> - IBM Power architecture requires Power 9 ISA
->
-> - s390x architecture requires z14 ISA
->
-> For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures) (RHEL documentation).
+<div class="note">
+
+For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.6, which updates the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
+
+- x86-64 architecture requires x86-64-v2 ISA
+
+- ARM64 architecture requires ARMv8.0-A ISA
+
+- IBM Power architecture requires Power 9 ISA
+
+- s390x architecture requires z14 ISA
+
+For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures) (RHEL documentation).
+
+</div>
 
 If an instance type for your platform meets the minimum requirements for cluster machines, it is supported to use in OpenShift Container Platform.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Optimizing storage](../../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage)
-
-</div>
 
 ## Enabling a user-managed DNS
 
@@ -454,16 +443,11 @@ For example, your organization’s security policies might not allow the use of 
 
 If you enable user-managed DNS during installation, the installation program provisions DNS records for the API and Ingress services only within the cluster. To ensure access from outside the cluster, you must provision the DNS records in an external DNS service of your choice for the API and Ingress services after installation.
 
-> [!IMPORTANT]
-> User-provisioned DNS is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div>
+User-provisioned DNS is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
-
-Procedure
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
@@ -487,32 +471,27 @@ Procedure
     `userProvisionedDNS`
     Enables user-provisioned DNS management.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Next steps
+**Next steps**
 
 </div>
 
 For information about provisioning your DNS records for the API server and the Ingress services, see "Provisioning your own DNS records".
 
-</div>
-
 ## Sample customized install-config.yaml file for AWS
 
 You can customize the installation configuration file (`install-config.yaml`) to specify more details about your OpenShift Container Platform cluster’s platform or modify the values of the required parameters.
 
-> [!IMPORTANT]
-> This sample YAML file is provided for reference only. You must obtain your `install-config.yaml` file by using the installation program and modify it. For a full list and description of all installation configuration parameters, see *Installation configuration parameters for AWS*.
+<div class="important">
 
-<div class="formalpara">
+This sample YAML file is provided for reference only. You must obtain your `install-config.yaml` file by using the installation program and modify it. For a full list and description of all installation configuration parameters, see *Installation configuration parameters for AWS*.
 
-<div class="title">
+</div>
 
-Sample `install-config.yaml` file for AWS
+<div class="formalpara-title">
+
+**Sample `install-config.yaml` file for AWS**
 
 </div>
 
@@ -544,8 +523,6 @@ platform:
     region: us-west-2
 ```
 
-</div>
-
 - Parameters at the first level of indentation apply to the cluster globally.
 
 - The `controlPlane` stanza applies to control plane machines.
@@ -556,48 +533,25 @@ platform:
 
 - The `platform` stanza applies to the infrastructure platform that hosts the cluster.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Installation configuration parameters for AWS](../../../installing/installing_aws/installation-config-parameters-aws.xml#installation-config-parameters-aws)
-
-</div>
 
 ## Configuring the cluster-wide proxy during installation
 
 To enable internet access in environments that deny direct connections, configure a cluster-wide proxy in the `install-config.yaml` file. This configuration ensures that the new OpenShift Container Platform cluster routes traffic through the specified HTTP or HTTPS proxy.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have an existing `install-config.yaml` file.
 
 - You have reviewed the sites that your cluster requires access to and determined whether any of them need to bypass the proxy. By default, all cluster egress traffic is proxied, including calls to hosting cloud provider APIs. You added sites to the `Proxy` object’s `spec.noProxy` field to bypass the proxy if necessary.
 
-  > [!NOTE]
-  > The `Proxy` object `status.noProxy` field is populated with the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
-  >
-  > For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field is also populated with the instance metadata endpoint (`169.254.169.254`).
+  <div class="note">
 
-</div>
+  The `Proxy` object `status.noProxy` field is populated with the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
 
-<div>
+  For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field is also populated with the instance metadata endpoint (`169.254.169.254`).
 
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  Edit your `install-config.yaml` file and add the proxy settings. For example:
 
@@ -633,26 +587,33 @@ Procedure
     `additionalTrustBundlePolicy`
     Specifies the policy that determines the configuration of the `Proxy` object to reference the `user-ca-bundle` config map in the `trustedCA` field. The allowed values are `Proxyonly` and `Always`. Use `Proxyonly` to reference the `user-ca-bundle` config map only when `http/https` proxy is configured. Use `Always` to always reference the `user-ca-bundle` config map. The default value is `Proxyonly`. Optional parameter.
 
-    > [!NOTE]
-    > The installation program does not support the proxy `readinessEndpoints` field.
+    <div class="note">
 
-    > [!NOTE]
-    > If the installer times out, restart and then complete the deployment by using the `wait-for` command of the installer. For example:
-    >
-    > \+
-    >
-    > ``` terminal
-    > $ ./openshift-install wait-for install-complete --log-level debug
-    > ```
+    The installation program does not support the proxy `readinessEndpoints` field.
+
+    </div>
+
+    <div class="note">
+
+    If the installer times out, restart and then complete the deployment by using the `wait-for` command of the installer. For example:
+
+    \+
+
+    ``` terminal
+    $ ./openshift-install wait-for install-complete --log-level debug
+    ```
+
+    </div>
 
 2.  Save the file and reference it when installing OpenShift Container Platform.
 
     The installation program creates a cluster-wide proxy that is named `cluster` that uses the proxy settings in the provided `install-config.yaml` file. If no proxy settings are provided, a `cluster` `Proxy` object is still created, but it will have a nil `spec`.
 
-    > [!NOTE]
-    > Only the `Proxy` object named `cluster` is supported, and no additional proxies can be created.
+    <div class="note">
 
-</div>
+    Only the `Proxy` object named `cluster` is supported, and no additional proxies can be created.
+
+    </div>
 
 # Alternatives to storing administrator-level secrets in the kube-system project
 
@@ -666,21 +627,11 @@ By default, administrator secrets are stored in the `kube-system` project. If yo
 
 The Cloud Credential Operator (CCO) can be put into manual mode prior to installation in environments where the cloud identity and access management (IAM) APIs are not reachable, or the administrator prefers not to store an administrator-level credential secret in the cluster `kube-system` namespace.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  If you did not set the `credentialsMode` parameter in the `install-config.yaml` configuration file to `Manual`, modify the value as shown:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample configuration file snippet
+    **Sample configuration file snippet**
 
     </div>
 
@@ -690,8 +641,6 @@ Procedure
     credentialsMode: Manual
     # ...
     ```
-
-    </div>
 
 2.  If you have not previously created installation manifest files, do so by running the following command:
 
@@ -726,11 +675,9 @@ Procedure
 
       This command creates a YAML file for each `CredentialsRequest` object.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Sample `CredentialsRequest` object
+      **Sample `CredentialsRequest` object**
 
       </div>
 
@@ -755,15 +702,11 @@ Procedure
         ...
       ```
 
-      </div>
-
 5.  Create YAML files for secrets in the `openshift-install` manifests directory that you generated previously. The secrets must be stored using the namespace and secret name defined in the `spec.secretRef` for each `CredentialsRequest` object.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample `CredentialsRequest` object with secrets
+    **Sample `CredentialsRequest` object with secrets**
 
     </div>
 
@@ -791,13 +734,9 @@ Procedure
       ...
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Sample `Secret` object
+    **Sample `Secret` object**
 
     </div>
 
@@ -812,12 +751,11 @@ Procedure
       aws_secret_access_key: <base64_encoded_aws_secret_access_key>
     ```
 
-    </div>
+<div class="important">
+
+Before upgrading a cluster that uses manually maintained credentials, you must ensure that the CCO is in an upgradeable state.
 
 </div>
-
-> [!IMPORTANT]
-> Before upgrading a cluster that uses manually maintained credentials, you must ensure that the CCO is in an upgradeable state.
 
 ## Configuring an AWS cluster to use short-term credentials
 
@@ -827,14 +765,9 @@ To install a cluster that is configured to use the AWS Security Token Service (S
 
 To create and manage cloud credentials from outside of the cluster when the Cloud Credential Operator (CCO) is operating in manual mode, extract and prepare the CCO utility (`ccoctl`) binary.
 
-> [!NOTE]
-> The `ccoctl` utility is a Linux binary that must run in a Linux environment.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The `ccoctl` utility is a Linux binary that must run in a Linux environment.
 
 </div>
 
@@ -842,7 +775,7 @@ Prerequisites
 
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
+<!-- -->
 
 - You have created an AWS account for the `ccoctl` utility to use with the following permissions:
 
@@ -938,16 +871,11 @@ Prerequisites
 
   - `cloudfront:UpdateDistribution`
 
-  > [!NOTE]
-  > These additional permissions support the use of the `--create-private-s3-bucket` option when processing credentials requests with the `ccoctl aws create-all` command.
+  <div class="note">
 
-<div>
+  These additional permissions support the use of the `--create-private-s3-bucket` option when processing credentials requests with the `ccoctl aws create-all` command.
 
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  Set a variable for the OpenShift Container Platform release image by running the following command:
 
@@ -961,8 +889,11 @@ Procedure
     $ CCO_IMAGE=$(oc adm release info --image-for='cloud-credential-operator' $RELEASE_IMAGE -a ~/.pull-secret)
     ```
 
-    > [!NOTE]
-    > Ensure that the architecture of the `$RELEASE_IMAGE` matches the architecture of the environment in which you will use the `ccoctl` tool.
+    <div class="note">
+
+    Ensure that the architecture of the `$RELEASE_IMAGE` matches the architecture of the environment in which you will use the `ccoctl` tool.
+
+    </div>
 
 3.  Extract the `ccoctl` binary from the CCO container image within the OpenShift Container Platform release image by running the following command:
 
@@ -978,8 +909,11 @@ Procedure
 
       - `rhel9`: Specify this value for hosts that use RHEL 9.
 
-    > [!NOTE]
-    > The `ccoctl` binary is created in the directory from where you executed the command and not in `/usr/bin/`. You must rename the directory or move the `ccoctl.<rhel_version>` binary to `ccoctl`.
+    <div class="note">
+
+    The `ccoctl` binary is created in the directory from where you executed the command and not in `/usr/bin/`. You must rename the directory or move the `ccoctl.<rhel_version>` binary to `ccoctl`.
+
+    </div>
 
 4.  Change the permissions to make `ccoctl` executable by running the following command:
 
@@ -987,27 +921,15 @@ Procedure
     $ chmod 775 ccoctl
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - To verify that `ccoctl` is ready to use, display the help file. Use a relative file name when you run the command, for example:
 
   ``` terminal
   $ ./ccoctl
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -1031,10 +953,6 @@ Verification
   Use "ccoctl [command] --help" for more information about a command.
   ```
 
-  </div>
-
-</div>
-
 ### Creating AWS resources with the Cloud Credential Operator utility
 
 You have the following options when creating AWS resources:
@@ -1049,30 +967,21 @@ If the process the `ccoctl` tool uses to create AWS resources automatically meet
 
 Otherwise, you can create the AWS resources individually. For more information, see "Creating AWS resources individually".
 
-> [!NOTE]
-> By default, `ccoctl` creates objects in the directory in which the commands are run. To create the objects in a different directory, use the `--output-dir` flag. This procedure uses `<path_to_ccoctl_output_dir>` to refer to this directory.
+<div class="note">
 
-<div class="formalpara">
+By default, `ccoctl` creates objects in the directory in which the commands are run. To create the objects in a different directory, use the `--output-dir` flag. This procedure uses `<path_to_ccoctl_output_dir>` to refer to this directory.
 
-<div class="title">
+</div>
 
-Prerequisites
+<div class="formalpara-title">
+
+**Prerequisites**
 
 </div>
 
 You must have:
 
-</div>
-
 - Extracted and prepared the `ccoctl` binary.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Set a `$RELEASE_IMAGE` variable with the release image from your installation file by running the following command:
 
@@ -1097,8 +1006,11 @@ Procedure
 
     - Specify the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
 
-      > [!NOTE]
-      > This command might take a few moments to run.
+      <div class="note">
+
+      This command might take a few moments to run.
+
+      </div>
 
 3.  Use the `ccoctl` tool to process all `CredentialsRequest` objects by running the following command:
 
@@ -1124,18 +1036,11 @@ Procedure
 
     - Optional: Specify the Amazon Resource Name (ARN) of the AWS IAM policy to use as the permissions boundary for the IAM roles created by the `ccoctl` utility.
 
-      > [!NOTE]
-      > If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
+      <div class="note">
 
-</div>
+      If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
 
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+      </div>
 
 - To verify that the OpenShift Container Platform secrets are created, list the files in the `<path_to_ccoctl_output_dir>/manifests` directory:
 
@@ -1143,11 +1048,9 @@ Verification
   $ ls <path_to_ccoctl_output_dir>/manifests
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -1162,11 +1065,7 @@ Verification
   openshift-machine-api-aws-cloud-credentials-credentials.yaml
   ```
 
-  </div>
-
   You can verify that the IAM roles are created by querying AWS. For more information, refer to AWS documentation on listing IAM roles.
-
-</div>
 
 #### Creating AWS resources individually
 
@@ -1174,30 +1073,15 @@ You can use the `ccoctl` tool to create AWS resources individually. This option 
 
 Otherwise, you can use the `ccoctl aws create-all` command to create the AWS resources automatically. For more information, see "Creating AWS resources with a single command".
 
-> [!NOTE]
-> By default, `ccoctl` creates objects in the directory in which the commands are run. To create the objects in a different directory, use the `--output-dir` flag. This procedure uses `<path_to_ccoctl_output_dir>` to refer to this directory.
->
-> Some `ccoctl` commands make AWS API calls to create or modify AWS resources. You can use the `--dry-run` flag to avoid making API calls. Using this flag creates JSON files on the local file system instead. You can review and modify the JSON files and then apply them with the AWS CLI tool using the `--cli-input-json` parameters.
+<div class="note">
 
-<div>
+By default, `ccoctl` creates objects in the directory in which the commands are run. To create the objects in a different directory, use the `--output-dir` flag. This procedure uses `<path_to_ccoctl_output_dir>` to refer to this directory.
 
-<div class="title">
-
-Prerequisites
+Some `ccoctl` commands make AWS API calls to create or modify AWS resources. You can use the `--dry-run` flag to avoid making API calls. Using this flag creates JSON files on the local file system instead. You can review and modify the JSON files and then apply them with the AWS CLI tool using the `--cli-input-json` parameters.
 
 </div>
 
 - Extract and prepare the `ccoctl` binary.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Generate the public and private RSA key files that are used to set up the OpenID Connect provider for the cluster by running the following command:
 
@@ -1205,11 +1089,9 @@ Procedure
     $ ccoctl aws create-key-pair
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1219,8 +1101,6 @@ Procedure
     2021/04/13 11:01:03 Writing public key to /<path_to_ccoctl_output_dir>/serviceaccount-signer.public
     2021/04/13 11:01:03 Copying signing key for use by installer
     ```
-
-    </div>
 
     where `serviceaccount-signer.private` and `serviceaccount-signer.public` are the generated key files.
 
@@ -1241,11 +1121,9 @@ Procedure
 
     - `<path_to_ccoctl_output_dir>` is the path to the public key file that the `ccoctl aws create-key-pair` command generated.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -1256,8 +1134,6 @@ Procedure
       2021/04/13 11:16:10 JSON web key set (JWKS) in the S3 bucket <name>-oidc at keys.json updated
       2021/04/13 11:16:18 Identity Provider created with ARN: arn:aws:iam::<aws_account_id>:oidc-provider/<name>-oidc.s3.<aws_region>.amazonaws.com
       ```
-
-      </div>
 
       where `openid-configuration` is a discovery document and `keys.json` is a JSON web key set file.
 
@@ -1298,22 +1174,15 @@ Procedure
           --identity-provider-arn=arn:aws:iam::<aws_account_id>:oidc-provider/<name>-oidc.s3.<aws_region>.amazonaws.com
         ```
 
-        > [!NOTE]
-        > For AWS environments that use alternative IAM API endpoints, such as GovCloud, you must also specify your region with the `--region` parameter.
-        >
-        > If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
+        <div class="note">
+
+        For AWS environments that use alternative IAM API endpoints, such as GovCloud, you must also specify your region with the `--region` parameter.
+
+        If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
+
+        </div>
 
         For each `CredentialsRequest` object, `ccoctl` creates an IAM role with a trust policy that is tied to the specified OIDC identity provider, and a permissions policy as defined in each `CredentialsRequest` object from the OpenShift Container Platform release image.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - To verify that the OpenShift Container Platform secrets are created, list the files in the `<path_to_ccoctl_output_dir>/manifests` directory:
 
@@ -1321,11 +1190,9 @@ Verification
   $ ls <path_to_ccoctl_output_dir>/manifests
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -1340,23 +1207,11 @@ Verification
   openshift-machine-api-aws-cloud-credentials-credentials.yaml
   ```
 
-  </div>
-
   You can verify that the IAM roles are created by querying AWS. For more information, refer to AWS documentation on listing IAM roles.
-
-</div>
 
 ### Incorporating the Cloud Credential Operator utility manifests
 
 To implement short-term security credentials managed outside the cluster for individual components, you must move the manifest files that the Cloud Credential Operator utility (`ccoctl`) created to the correct directories for the installation program.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have configured an account with the cloud platform that hosts your cluster.
 
@@ -1364,23 +1219,11 @@ Prerequisites
 
 - You have created the cloud provider resources that are required for your cluster with the `ccoctl` utility.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  If you did not set the `credentialsMode` parameter in the `install-config.yaml` configuration file to `Manual`, modify the value as shown:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample configuration file snippet
+    **Sample configuration file snippet**
 
     </div>
 
@@ -1390,8 +1233,6 @@ Procedure
     credentialsMode: Manual
     # ...
     ```
-
-    </div>
 
 2.  If you have not previously created installation manifest files, do so by running the following command:
 
@@ -1413,20 +1254,13 @@ Procedure
     $ cp -a /<path_to_ccoctl_output_dir>/tls .
     ```
 
-</div>
-
 # Deploying the cluster
 
 You can install OpenShift Container Platform on a compatible cloud platform.
 
-> [!IMPORTANT]
-> You can run the `create cluster` command of the installation program only once, during initial installation.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You can run the `create cluster` command of the installation program only once, during initial installation.
 
 </div>
 
@@ -1435,16 +1269,6 @@ Prerequisites
 - You have the OpenShift Container Platform installation program and the pull secret for your cluster.
 
 - You have verified that the cloud provider account on your host has the correct permissions to deploy the cluster. An account with incorrect permissions causes the installation process to fail with an error message that displays the missing permissions.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the directory that contains the installation program, initialize the cluster deployment by running the following command:
 
@@ -1459,35 +1283,33 @@ Procedure
 
 2.  Optional: Remove or disable the `AdministratorAccess` policy from the IAM account that you used to install the cluster.
 
-    > [!NOTE]
-    > The elevated permissions provided by the `AdministratorAccess` policy are required only during installation.
+    <div class="note">
 
-</div>
+    The elevated permissions provided by the `AdministratorAccess` policy are required only during installation.
 
-<div class="formalpara">
+    </div>
 
-<div class="title">
+<div class="formalpara-title">
 
-Verification
+**Verification**
 
 </div>
 
 When the cluster deployment completes successfully:
 
-</div>
-
 - The terminal displays directions for accessing your cluster, including a link to the web console and credentials for the `kubeadmin` user.
 
 - Credential information also outputs to `<installation_directory>/.openshift_install.log`.
 
-> [!IMPORTANT]
-> Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
+<div class="important">
 
-<div class="formalpara">
+Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
 
-<div class="title">
+</div>
 
-Example output
+<div class="formalpara-title">
+
+**Example output**
 
 </div>
 
@@ -1500,13 +1322,7 @@ INFO Login to the console with user: "kubeadmin", and password: "password"
 INFO Time elapsed: 36m22s
 ```
 
-</div>
-
 <div class="important">
-
-<div class="title">
-
-</div>
 
 - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
@@ -1518,30 +1334,15 @@ INFO Time elapsed: 36m22s
 
 Use your cluster name and base cluster domain to configure a CNAME record for the API service `api.<cluster_name>.<base_domain>.` with the API load balancer DNS name. Similarly, use the load balancer DNS name of the Ingress service to provision a CNAME record for the `*.apps.<cluster_name>.<base_domain>.` hostname by using your cluster name and base cluster domain.
 
-> [!IMPORTANT]
-> User-provisioned DNS is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div>
+User-provisioned DNS is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
 - You have installed the AWS CLI.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Add the `userProvisionedDNS` parameter to the `install-config.yaml` file and enable the parameter. For more information, see "Enabling a user-managed DNS".
 
@@ -1581,35 +1382,15 @@ Procedure
 
 9.  Use the DNS name and your cluster name and base cluster domain to configure your own DNS record with the `*.apps.<cluster_name>.<base_domain>.` hostname.
 
-</div>
-
 # Logging in to the cluster by using the CLI
 
 To log in to your cluster as the default system user, export the `kubeconfig` file. This configuration enables the CLI to authenticate and connect to the specific API server created during OpenShift Container Platform installation.
 
 The `kubeconfig` file is specific to a cluster and is created during OpenShift Container Platform installation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You deployed an OpenShift Container Platform cluster.
 
 - You installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Export the `kubeadmin` credentials by running the following command:
 
@@ -1628,11 +1409,9 @@ Procedure
     $ oc whoami
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1640,21 +1419,9 @@ Procedure
     system:admin
     ```
 
-    </div>
-
-</div>
-
 # Disabling the default software catalog sources
 
 Operator catalogs that source content provided by Red Hat and community projects are configured for the software catalog by default during an OpenShift Container Platform installation. In a restricted network environment, you must disable the default catalogs as a cluster administrator.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Disable the sources for the default catalogs by adding `disableAllDefaultSources: true` to the `OperatorHub` object:
 
@@ -1663,10 +1430,11 @@ Procedure
       -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
   ```
 
-</div>
+<div class="tip">
 
-> [!TIP]
-> Alternatively, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
+Alternatively, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
+
+</div>
 
 # Next steps
 

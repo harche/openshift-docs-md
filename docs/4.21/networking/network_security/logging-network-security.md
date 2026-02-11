@@ -1,17 +1,18 @@
 The OVN-Kubernetes network plugin uses Open Virtual Network (OVN) access control lists (ACLs) to manage `AdminNetworkPolicy`, `BaselineAdminNetworkPolicy`, `NetworkPolicy`, and `EgressFirewall` objects. Audit logging exposes `allow` and `deny` ACL events for `NetworkPolicy`, `EgressFirewall` and `BaselineAdminNetworkPolicy` custom resources (CR). Logging also exposes `allow`, `deny`, and `pass` ACL events for `AdminNetworkPolicy` (ANP) CR.
 
-> [!NOTE]
-> Audit logging is available for only the [OVN-Kubernetes network plugin](../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#about-ovn-kubernetes).
+<div class="note">
+
+Audit logging is available for only the [OVN-Kubernetes network plugin](../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#about-ovn-kubernetes).
+
+</div>
 
 # Audit configuration
 
 The configuration for audit logging is specified as part of the OVN-Kubernetes cluster network provider configuration. The following YAML illustrates the default values for the audit logging:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Audit logging configuration
+**Audit logging configuration**
 
 </div>
 
@@ -30,8 +31,6 @@ spec:
         syslogFacility: local0
 ```
 
-</div>
-
 The following table describes the configuration fields for audit logging.
 
 <table>
@@ -42,29 +41,29 @@ The following table describes the configuration fields for audit logging.
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>rateLimit</code></p></td>
 <td style="text-align: left;"><p>integer</p></td>
 <td style="text-align: left;"><p>The maximum number of messages to generate every second per node. The default value is <code>20</code> messages per second.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>maxFileSize</code></p></td>
 <td style="text-align: left;"><p>integer</p></td>
 <td style="text-align: left;"><p>The maximum size for the audit log in bytes. The default value is <code>50000000</code> or 50 MB.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxLogFiles</code></p></td>
 <td style="text-align: left;"><p>integer</p></td>
 <td style="text-align: left;"><p>The maximum number of log files that are retained.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>destination</code></p></td>
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>One of the following additional audit log targets:</p>
@@ -87,7 +86,7 @@ The following table describes the configuration fields for audit logging.
 </dd>
 </dl></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>syslogFacility</code></p></td>
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>The syslog facility, such as <code>kern</code>, as defined by RFC5424. The default value is <code>local0</code>.</p></td>
@@ -95,22 +94,25 @@ The following table describes the configuration fields for audit logging.
 </tbody>
 </table>
 
+`policyAuditConfig` object
+
 # Audit logging
 
 You can configure the destination for audit logs, such as a syslog server or a UNIX domain socket. Regardless of any additional configuration, an audit log is always saved to `/var/log/ovn/acl-audit-log.log` on each OVN-Kubernetes pod in the cluster.
 
 You can enable audit logging for each namespace by annotating each namespace configuration with a `k8s.ovn.org/acl-logging` section. In the `k8s.ovn.org/acl-logging` section, you must specify `allow`, `deny`, or both values to enable audit logging for a namespace.
 
-> [!NOTE]
-> A network policy does not support setting the `Pass` action set as a rule.
+<div class="note">
+
+A network policy does not support setting the `Pass` action set as a rule.
+
+</div>
 
 The ACL-logging implementation logs access control list (ACL) events for a network. You can view these logs to analyze any potential security issues.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example namespace annotation
+**Example namespace annotation**
 
 </div>
 
@@ -127,25 +129,19 @@ metadata:
       }
 ```
 
-</div>
-
 To view the default ACL logging configuration values, see the `policyAuditConfig` object in the `cluster-network-03-config.yml` file. If required, you can change the ACL logging configuration values for log file parameters in this file.
 
 The logging message format is compatible with syslog as defined by RFC5424. The syslog facility is configurable and defaults to `local0`. The following example shows key parameters and their values outputted in a log message:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example logging message that outputs parameters and their values
+**Example logging message that outputs parameters and their values**
 
 </div>
 
 ``` terminal
 <timestamp>|<message_serial>|acl_log(ovn_pinctrl0)|<severity>|name="<acl_name>", verdict="<verdict>", severity="<severity>", direction="<direction>": <flow>
 ```
-
-</div>
 
 Where:
 
@@ -167,19 +163,15 @@ Where:
 
 The following example shows OVS fields that the `flow` parameter uses to extract packet information from system memory:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example of OVS fields used by the `flow` parameter to extract packet information
+**Example of OVS fields used by the `flow` parameter to extract packet information**
 
 </div>
 
 ``` terminal
 <proto>,vlan_tci=0x0000,dl_src=<src_mac>,dl_dst=<source_mac>,nw_src=<source_ip>,nw_dst=<target_ip>,nw_tos=<tos_dscp>,nw_ecn=<tos_ecn>,nw_ttl=<ip_ttl>,nw_frag=<fragment>,tp_src=<tcp_src_port>,tp_dst=<tcp_dst_port>,tcp_flags=<tcp_flags>
 ```
-
-</div>
 
 Where:
 
@@ -209,14 +201,15 @@ Where:
 
 - `<tcp_flags>` supports numerous flags such as `SYN`, `ACK`, `PSH` and so on. If you need to set multiple values then each value is separated by a vertical bar (`|`). The UDP protocol does not support this parameter.
 
-> [!NOTE]
-> For more information about the previous field descriptions, go to the OVS manual page for `ovs-fields`.
+<div class="note">
 
-<div class="formalpara">
+For more information about the previous field descriptions, go to the OVS manual page for `ovs-fields`.
 
-<div class="title">
+</div>
 
-Example ACL deny log entry for a network policy
+<div class="formalpara-title">
+
+**Example ACL deny log entry for a network policy**
 
 </div>
 
@@ -226,41 +219,21 @@ Example ACL deny log entry for a network policy
 2023-11-02T16:28:57.235Z|00006|acl_log(ovn_pinctrl0)|INFO|name="NP:verify-audit-logging:Ingress", verdict=drop, severity=alert, direction=to-lport: tcp,vlan_tci=0x0000,dl_src=0a:58:0a:81:02:01,dl_dst=0a:58:0a:81:02:23,nw_src=10.131.0.39,nw_dst=10.129.2.35,nw_tos=0,nw_ecn=0,nw_ttl=62,nw_frag=no,tp_src=58496,tp_dst=8080,tcp_flags=syn
 ```
 
-</div>
-
 The following table describes namespace annotation values:
 
-| Field | Description |
-|----|----|
-| `deny` | Blocks namespace access to any traffic that matches an ACL rule with the `deny` action. The field supports `alert`, `warning`, `notice`, `info`, or `debug` values. |
-| `allow` | Permits namespace access to any traffic that matches an ACL rule with the `allow` action. The field supports `alert`, `warning`, `notice`, `info`, or `debug` values. |
-| `pass` | A `pass` action applies to an admin network policy’s ACL rule. A `pass` action allows either the network policy in the namespace or the baseline admin network policy rule to evaluate all incoming and outgoing traffic. A network policy does not support a `pass` action. |
+| Field   | Description                                                                                                                                                                                                                                                                  |
+|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `deny`  | Blocks namespace access to any traffic that matches an ACL rule with the `deny` action. The field supports `alert`, `warning`, `notice`, `info`, or `debug` values.                                                                                                          |
+| `allow` | Permits namespace access to any traffic that matches an ACL rule with the `allow` action. The field supports `alert`, `warning`, `notice`, `info`, or `debug` values.                                                                                                        |
+| `pass`  | A `pass` action applies to an admin network policy’s ACL rule. A `pass` action allows either the network policy in the namespace or the baseline admin network policy rule to evaluate all incoming and outgoing traffic. A network policy does not support a `pass` action. |
 
 Audit logging namespace annotation for `k8s.ovn.org/acl-logging`
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Understanding network policy APIs](../../networking/network_security/network-policy-apis.xml#network-policy-apis)
-
-</div>
 
 # AdminNetworkPolicy audit logging
 
 Audit logging is enabled per `AdminNetworkPolicy` CR by annotating an ANP policy with the `k8s.ovn.org/acl-logging` key such as in the following example:
-
-<div class="example">
-
-<div class="title">
-
-Example of annotation for `AdminNetworkPolicy` CR
-
-</div>
 
 ``` yaml
 apiVersion: policy.networking.k8s.io/v1alpha1
@@ -319,12 +292,13 @@ spec:
       - namespaces: {}
 ```
 
-</div>
-
 Logs are generated whenever a specific OVN ACL is hit and meets the action criteria set in your logging annotation. For example, an event in which any of the namespaces with the label `tenant: product-development` accesses the namespaces with the label `tenant: backend-storage`, a log is generated.
 
-> [!NOTE]
-> ACL logging is limited to 60 characters. If your ANP `name` field is long, the rest of the log will be truncated.
+<div class="note">
+
+ACL logging is limited to 60 characters. If your ANP `name` field is long, the rest of the log will be truncated.
+
+</div>
 
 The following is a direction index for the examples log entries that follow:
 
@@ -334,13 +308,13 @@ The following is a direction index for the examples log entries that follow:
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Direction</th>
 <th style="text-align: left;">Rule</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Ingress</p></td>
 <td style="text-align: left;"><dl>
 <dt>Rule0</dt>
@@ -357,7 +331,7 @@ The following is a direction index for the examples log entries that follow:
 </dd>
 </dl></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Egress</p></td>
 <td style="text-align: left;"><dl>
 <dt>Rule0</dt>
@@ -377,51 +351,21 @@ The following is a direction index for the examples log entries that follow:
 </tbody>
 </table>
 
-<div class="example">
-
-<div class="title">
-
-Example ACL log entry for `Allow` action of the `AdminNetworkPolicy` named `anp-tenant-log` with `Ingress:0` and `Egress:0`
-
-</div>
-
 ``` text
 2024-06-10T16:27:45.194Z|00052|acl_log(ovn_pinctrl0)|INFO|name="ANP:anp-tenant-log:Ingress:0", verdict=allow, severity=alert, direction=to-lport: tcp,vlan_tci=0x0000,dl_src=0a:58:0a:80:02:1a,dl_dst=0a:58:0a:80:02:19,nw_src=10.128.2.26,nw_dst=10.128.2.25,nw_tos=0,nw_ecn=0,nw_ttl=64,nw_frag=no,tp_src=57814,tp_dst=8080,tcp_flags=syn
 2024-06-10T16:28:23.130Z|00059|acl_log(ovn_pinctrl0)|INFO|name="ANP:anp-tenant-log:Ingress:0", verdict=allow, severity=alert, direction=to-lport: tcp,vlan_tci=0x0000,dl_src=0a:58:0a:80:02:18,dl_dst=0a:58:0a:80:02:19,nw_src=10.128.2.24,nw_dst=10.128.2.25,nw_tos=0,nw_ecn=0,nw_ttl=64,nw_frag=no,tp_src=38620,tp_dst=8080,tcp_flags=ack
 2024-06-10T16:28:38.293Z|00069|acl_log(ovn_pinctrl0)|INFO|name="ANP:anp-tenant-log:Egress:0", verdict=allow, severity=alert, direction=from-lport: tcp,vlan_tci=0x0000,dl_src=0a:58:0a:80:02:19,dl_dst=0a:58:0a:80:02:1a,nw_src=10.128.2.25,nw_dst=10.128.2.26,nw_tos=0,nw_ecn=0,nw_ttl=64,nw_frag=no,tp_src=47566,tp_dst=8080,tcp_flags=fin|ack=0,nw_ecn=0,nw_ttl=64,nw_frag=no,tp_src=55704,tp_dst=8080,tcp_flags=ack
 ```
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Example ACL log entry for `Pass` action of the `AdminNetworkPolicy` named `anp-tenant-log` with `Ingress:1` and `Egress:1`
-
-</div>
-
 ``` text
 2024-06-10T16:33:12.019Z|00075|acl_log(ovn_pinctrl0)|INFO|name="ANP:anp-tenant-log:Ingress:1", verdict=pass, severity=warning, direction=to-lport: tcp,vlan_tci=0x0000,dl_src=0a:58:0a:80:02:1b,dl_dst=0a:58:0a:80:02:19,nw_src=10.128.2.27,nw_dst=10.128.2.25,nw_tos=0,nw_ecn=0,nw_ttl=64,nw_frag=no,tp_src=37394,tp_dst=8080,tcp_flags=ack
 2024-06-10T16:35:04.209Z|00081|acl_log(ovn_pinctrl0)|INFO|name="ANP:anp-tenant-log:Egress:1", verdict=pass, severity=warning, direction=from-lport: tcp,vlan_tci=0x0000,dl_src=0a:58:0a:80:02:19,dl_dst=0a:58:0a:80:02:1b,nw_src=10.128.2.25,nw_dst=10.128.2.27,nw_tos=0,nw_ecn=0,nw_ttl=64,nw_frag=no,tp_src=34018,tp_dst=8080,tcp_flags=ack
 ```
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Example ACL log entry for `Deny` action of the `AdminNetworkPolicy` named `anp-tenant-log` with `Egress:2` and `Ingress2`
-
-</div>
-
 ``` text
 2024-06-10T16:43:05.287Z|00087|acl_log(ovn_pinctrl0)|INFO|name="ANP:anp-tenant-log:Egress:2", verdict=drop, severity=alert, direction=from-lport: tcp,vlan_tci=0x0000,dl_src=0a:58:0a:80:02:19,dl_dst=0a:58:0a:80:02:18,nw_src=10.128.2.25,nw_dst=10.128.2.24,nw_tos=0,nw_ecn=0,nw_ttl=64,nw_frag=no,tp_src=51598,tp_dst=8080,tcp_flags=syn
 2024-06-10T16:44:43.591Z|00090|acl_log(ovn_pinctrl0)|INFO|name="ANP:anp-tenant-log:Ingress:2", verdict=drop, severity=alert, direction=to-lport: tcp,vlan_tci=0x0000,dl_src=0a:58:0a:80:02:1c,dl_dst=0a:58:0a:80:02:19,nw_src=10.128.2.28,nw_dst=10.128.2.25,nw_tos=0,nw_ecn=0,nw_ttl=64,nw_frag=no,tp_src=33774,tp_dst=8080,tcp_flags=syn
 ```
-
-</div>
 
 The following table describes ANP annotation:
 
@@ -432,13 +376,13 @@ The following table describes ANP annotation:
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Annotation</th>
 <th style="text-align: left;">Value</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>k8s.ovn.org/acl-logging</code></p></td>
 <td style="text-align: left;"><p>You must specify at least one of <code>Allow</code>, <code>Deny</code>, or <code>Pass</code> to enable audit logging for a namespace.</p>
 <dl>
@@ -459,17 +403,11 @@ The following table describes ANP annotation:
 </tbody>
 </table>
 
+Audit logging AdminNetworkPolicy annotation
+
 # BaselineAdminNetworkPolicy audit logging
 
 Audit logging is enabled in the `BaselineAdminNetworkPolicy` CR by annotating an BANP policy with the `k8s.ovn.org/acl-logging` key such as in the following example:
-
-<div class="example">
-
-<div class="title">
-
-Example of annotation for `BaselineAdminNetworkPolicy` CR
-
-</div>
 
 ``` yaml
 apiVersion: policy.networking.k8s.io/v1alpha1
@@ -501,8 +439,6 @@ spec:
     - namespaces: {} # Use the empty selector with caution because it also selects OpenShift namespaces as well.
 ```
 
-</div>
-
 In the example, an event in which any of the namespaces with the label `tenant: dns` accesses the namespaces with the label `tenant: workloads`, a log is generated.
 
 The following is a direction index for the examples log entries that follow:
@@ -513,13 +449,13 @@ The following is a direction index for the examples log entries that follow:
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Direction</th>
 <th style="text-align: left;">Rule</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Ingress</p></td>
 <td style="text-align: left;"><dl>
 <dt>Rule0</dt>
@@ -532,7 +468,7 @@ The following is a direction index for the examples log entries that follow:
 </dd>
 </dl></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Egress</p></td>
 <td style="text-align: left;"><dl>
 <dt>Rule0</dt>
@@ -544,14 +480,6 @@ The following is a direction index for the examples log entries that follow:
 </tbody>
 </table>
 
-<div class="example">
-
-<div class="title">
-
-Example ACL allow log entry for `Allow` action of `default` BANP with `Ingress:0`
-
-</div>
-
 ``` text
 2024-06-10T18:11:58.263Z|00022|acl_log(ovn_pinctrl0)|INFO|name="BANP:default:Ingress:0", verdict=allow, severity=alert, direction=to-lport: tcp,vlan_tci=0x0000,dl_src=0a:58:0a:82:02:57,dl_dst=0a:58:0a:82:02:56,nw_src=10.130.2.87,nw_dst=10.130.2.86,nw_tos=0,nw_ecn=0,nw_ttl=64,nw_frag=no,tp_src=60510,tp_dst=8080,tcp_flags=syn
 2024-06-10T18:11:58.264Z|00023|acl_log(ovn_pinctrl0)|INFO|name="BANP:default:Ingress:0", verdict=allow, severity=alert, direction=to-lport: tcp,vlan_tci=0x0000,dl_src=0a:58:0a:82:02:57,dl_dst=0a:58:0a:82:02:56,nw_src=10.130.2.87,nw_dst=10.130.2.86,nw_tos=0,nw_ecn=0,nw_ttl=64,nw_frag=no,tp_src=60510,tp_dst=8080,tcp_flags=psh|ack
@@ -560,16 +488,6 @@ Example ACL allow log entry for `Allow` action of `default` BANP with `Ingress:0
 2024-06-10T18:11:58.264Z|00026|acl_log(ovn_pinctrl0)|INFO|name="BANP:default:Ingress:0", verdict=allow, severity=alert, direction=to-lport: tcp,vlan_tci=0x0000,dl_src=0a:58:0a:82:02:57,dl_dst=0a:58:0a:82:02:56,nw_src=10.130.2.87,nw_dst=10.130.2.86,nw_tos=0,nw_ecn=0,nw_ttl=64,nw_frag=no,tp_src=60510,tp_dst=8080,tcp_flags=fin|ack
 2024-06-10T18:11:58.264Z|00027|acl_log(ovn_pinctrl0)|INFO|name="BANP:default:Ingress:0", verdict=allow, severity=alert, direction=to-lport: tcp,vlan_tci=0x0000,dl_src=0a:58:0a:82:02:57,dl_dst=0a:58:0a:82:02:56,nw_src=10.130.2.87,nw_dst=10.130.2.86,nw_tos=0,nw_ecn=0,nw_ttl=64,nw_frag=no,tp_src=60510,tp_dst=8080,tcp_flags=ack
 ```
-
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Example ACL allow log entry for `Allow` action of `default` BANP with `Egress:0` and `Ingress:1`
-
-</div>
 
 ``` text
 2024-06-10T18:09:57.774Z|00016|acl_log(ovn_pinctrl0)|INFO|name="BANP:default:Egress:0", verdict=drop, severity=alert, direction=from-lport: tcp,vlan_tci=0x0000,dl_src=0a:58:0a:82:02:56,dl_dst=0a:58:0a:82:02:57,nw_src=10.130.2.86,nw_dst=10.130.2.87,nw_tos=0,nw_ecn=0,nw_ttl=64,nw_frag=no,tp_src=45614,tp_dst=8080,tcp_flags=syn
@@ -580,8 +498,6 @@ Example ACL allow log entry for `Allow` action of `default` BANP with `Egress:0`
 2024-06-10T18:10:28.505Z|00021|acl_log(ovn_pinctrl0)|INFO|name="BANP:default:Ingress:1", verdict=drop, severity=alert, direction=to-lport: tcp,vlan_tci=0x0000,dl_src=0a:58:0a:82:02:58,dl_dst=0a:58:0a:82:02:56,nw_src=10.130.2.88,nw_dst=10.130.2.86,nw_tos=0,nw_ecn=0,nw_ttl=64,nw_frag=no,tp_src=40630,tp_dst=8080,tcp_flags=syn
 ```
 
-</div>
-
 The following table describes BANP annotation:
 
 <table>
@@ -591,13 +507,13 @@ The following table describes BANP annotation:
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Annotation</th>
 <th style="text-align: left;">Value</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>k8s.ovn.org/acl-logging</code></p></td>
 <td style="text-align: left;"><p>You must specify at least one of <code>Allow</code> or <code>Deny</code> to enable audit logging for a namespace.</p>
 <dl>
@@ -614,31 +530,17 @@ The following table describes BANP annotation:
 </tbody>
 </table>
 
+Audit logging BaselineAdminNetworkPolicy annotation
+
 # Configuring egress firewall and network policy auditing for a cluster
 
 As a cluster administrator, you can customize audit logging for your cluster.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in to the cluster with a user with `cluster-admin` privileges.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To customize the audit logging configuration, enter the following command:
 
@@ -646,33 +548,26 @@ Procedure
   $ oc edit network.operator.openshift.io/cluster
   ```
 
-  > [!TIP]
-  > You can also customize and apply the following YAML to configure audit logging:
-  >
-  > ``` yaml
-  > apiVersion: operator.openshift.io/v1
-  > kind: Network
-  > metadata:
-  >   name: cluster
-  > spec:
-  >   defaultNetwork:
-  >     ovnKubernetesConfig:
-  >       policyAuditConfig:
-  >         destination: "null"
-  >         maxFileSize: 50
-  >         rateLimit: 20
-  >         syslogFacility: local0
-  > ```
+  <div class="tip">
 
-</div>
+  You can also customize and apply the following YAML to configure audit logging:
 
-<div>
+  ``` yaml
+  apiVersion: operator.openshift.io/v1
+  kind: Network
+  metadata:
+    name: cluster
+  spec:
+    defaultNetwork:
+      ovnKubernetesConfig:
+        policyAuditConfig:
+          destination: "null"
+          maxFileSize: 50
+          rateLimit: 20
+          syslogFacility: local0
+  ```
 
-<div class="title">
-
-Verification
-
-</div>
+  </div>
 
 1.  To create a namespace with network policies complete the following steps:
 
@@ -727,11 +622,9 @@ Verification
         EOF
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -739,8 +632,6 @@ Verification
         networkpolicy.networking.k8s.io/deny-all created
         networkpolicy.networking.k8s.io/allow-from-same-namespace created
         ```
-
-        </div>
 
 2.  Create a pod for source traffic in the `default` namespace:
 
@@ -796,11 +687,9 @@ Verification
         $ oc exec -it client -n default -- /bin/ping -c 2 $POD_IP
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -811,19 +700,15 @@ Verification
         2 packets transmitted, 0 received, 100% packet loss, time 2041ms
         ```
 
-        </div>
-
     3.  From the client pod in the `verify-audit-logging` namespace, ping the IP address stored in the `POD_IP shell` environment variable and confirm the system allows all packets.
 
         ``` terminal
         $ oc exec -it client -n verify-audit-logging -- /bin/ping -c 2 $POD_IP
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -837,8 +722,6 @@ Verification
         rtt min/avg/max/mdev = 0.440/1.329/2.219/0.890 ms
         ```
 
-        </div>
-
 5.  Display the latest entries in the network policy audit log:
 
     ``` terminal
@@ -847,11 +730,9 @@ Verification
       done
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -865,35 +746,15 @@ Verification
     2023-11-02T16:49:58.932Z|00031|acl_log(ovn_pinctrl0)|INFO|name="NP:verify-audit-logging:allow-from-same-namespace:Ingress:0", verdict=allow, severity=alert, direction=to-lport: icmp,vlan_tci=0x0000,dl_src=0a:58:0a:81:02:22,dl_dst=0a:58:0a:81:02:23,nw_src=10.129.2.34,nw_dst=10.129.2.35,nw_tos=0,nw_ecn=0,nw_ttl=64,nw_frag=no,icmp_type=8,icmp_code=0
     ```
 
-    </div>
-
-</div>
-
 # Enabling egress firewall and network policy audit logging for a namespace
 
 As a cluster administrator, you can enable audit logging for a namespace.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in to the cluster with a user with `cluster-admin` privileges.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To enable audit logging for a namespace, enter the following command:
 
@@ -907,33 +768,28 @@ Procedure
   `<namespace>`
   Specifies the name of the namespace.
 
-  > [!TIP]
-  > You can also apply the following YAML to enable audit logging:
-  >
-  > ``` yaml
-  > kind: Namespace
-  > apiVersion: v1
-  > metadata:
-  >   name: <namespace>
-  >   annotations:
-  >     k8s.ovn.org/acl-logging: |-
-  >       {
-  >         "deny": "alert",
-  >         "allow": "notice"
-  >       }
-  > ```
+  <div class="tip">
+
+  You can also apply the following YAML to enable audit logging:
+
+  ``` yaml
+  kind: Namespace
+  apiVersion: v1
+  metadata:
+    name: <namespace>
+    annotations:
+      k8s.ovn.org/acl-logging: |-
+        {
+          "deny": "alert",
+          "allow": "notice"
+        }
+  ```
+
+  </div>
 
   Successful output lists the audit logging name and the `annotated` status.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - Display the latest entries in the audit log:
 
@@ -943,11 +799,9 @@ Verification
     done
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -958,35 +812,15 @@ Verification
   2023-11-02T16:49:58.932Z|00031|acl_log(ovn_pinctrl0)|INFO|name="NP:verify-audit-logging:allow-from-same-namespace:Ingress:0", verdict=allow, severity=alert, direction=to-lport: icmp,vlan_tci=0x0000,dl_src=0a:58:0a:81:02:22,dl_dst=0a:58:0a:81:02:23,nw_src=10.129.2.34,nw_dst=10.129.2.35,nw_tos=0,nw_ecn=0,nw_ttl=64,nw_frag=no,icmp_type=8,icmp_code=0
   ```
 
-  </div>
-
-</div>
-
 # Disabling egress firewall and network policy audit logging for a namespace
 
 As a cluster administrator, you can disable audit logging for a namespace.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in to the cluster with a user with `cluster-admin` privileges.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To disable audit logging for a namespace, enter the following command:
 
@@ -999,21 +833,22 @@ Procedure
   `<namespace>`
   Specifies the name of the namespace.
 
-  > [!TIP]
-  > You can also apply the following YAML to disable audit logging:
-  >
-  > ``` yaml
-  > kind: Namespace
-  > apiVersion: v1
-  > metadata:
-  >   name: <namespace>
-  >   annotations:
-  >     k8s.ovn.org/acl-logging: null
-  > ```
+  <div class="tip">
+
+  You can also apply the following YAML to disable audit logging:
+
+  ``` yaml
+  kind: Namespace
+  apiVersion: v1
+  metadata:
+    name: <namespace>
+    annotations:
+      k8s.ovn.org/acl-logging: null
+  ```
+
+  </div>
 
   Successful output lists the audit logging name and the `annotated` status.
-
-</div>
 
 # Additional resources
 

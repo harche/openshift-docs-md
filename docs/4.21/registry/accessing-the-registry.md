@@ -28,14 +28,6 @@ After you logged in to the registry by using the `podman login` command, you can
 
 You can access the registry from inside the cluster by using internal routes.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Access the node by getting its name:
 
     ``` terminal
@@ -62,10 +54,13 @@ Procedure
     sh-4.2# podman login -u kubeadmin -p $(oc whoami -t) image-registry.openshift-image-registry.svc:5000
     ```
 
-    > [!NOTE]
-    > You can pass almost any value for the user name. The token contains all necessary information. Passing a user name that contains colons results in a login failure.
-    >
-    > The Image Registry Operator creates the route, such as `default-route-openshift-image-registry.<cluster_name>`.
+    <div class="note">
+
+    You can pass almost any value for the user name. The token contains all necessary information. Passing a user name that contains colons results in a login failure.
+
+    The Image Registry Operator creates the route, such as `default-route-openshift-image-registry.<cluster_name>`.
+
+    </div>
 
 4.  Perform `podman pull` and `podman push` operations against your registry. The following example commands demonstrate these operations.
 
@@ -75,8 +70,11 @@ Procedure
         sh-4.2# podman pull <name.io>/<image>
         ```
 
-        > [!IMPORTANT]
-        > You can pull arbitrary images, but if you have the **system:registry** role added, you can only push images to the registry in your project.
+        <div class="important">
+
+        You can pull arbitrary images, but if you have the **system:registry** role added, you can only push images to the registry in your project.
+
+        </div>
 
     2.  Tag the new image with the form `<registry_ip>:<port>/<project>/<image>`. For example, `172.30.124.220:5000/openshift/image`. The project name must show in the pull specification for OpenShift Container Platform to correctly place and later access the image in the registry.
 
@@ -84,8 +82,11 @@ Procedure
         sh-4.2# podman tag <name.io>/<image> image-registry.openshift-image-registry.svc:5000/openshift/<image>
         ```
 
-        > [!NOTE]
-        > You must have the `system:image-builder` role for the specified project, which allows the user to write or push an image. Otherwise, the `podman push` in the next step will fail. To test, you can create a new project to push the image.
+        <div class="note">
+
+        You must have the `system:image-builder` role for the specified project, which allows the user to write or push an image. Otherwise, the `podman push` in the next step will fail. To test, you can create a new project to push the image.
+
+        </div>
 
     3.  Push the newly tagged image to your registry:
 
@@ -93,34 +94,19 @@ Procedure
         sh-4.2# podman push image-registry.openshift-image-registry.svc:5000/openshift/<image>
         ```
 
-        > [!NOTE]
-        > When pushing images to the internal registry, the repository name must use the `<project>/<name>` format. Using multiple project levels in the repository name results in an authentication error.
+        <div class="note">
 
-</div>
+        When pushing images to the internal registry, the repository name must use the `<project>/<name>` format. Using multiple project levels in the repository name results in an authentication error.
+
+        </div>
 
 # Checking the status of the registry pods
 
 As a cluster administrator, you can list the image registry pods running in the `openshift-image-registry` project and check their status.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - List the pods in the `openshift-image-registry` project and view their status. Example output provided for demonstrative purposes.
 
@@ -137,19 +123,9 @@ Procedure
   node-ca-zvt9q 1/1 Running 0 74m
   ```
 
-</div>
-
 # Viewing registry logs
 
 You can view the logs for the registry by using the `oc logs` command.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Use the `oc logs` command with deployments to view the logs for the container image registry. Example output provided for demonstrative purposes.
 
@@ -165,19 +141,9 @@ Procedure
   2015-05-01T19:48:36.303439084Z time="2015-05-01T19:48:36Z" level=info msg="listening on :5000" instance.id=9ed6c43d-23ee-453f-9a4b-031fea646002
   ```
 
-</div>
-
 # Accessing registry metrics
 
 The OpenShift Container Registry provides an endpoint for [Prometheus metrics](https://prometheus.io/docs/introduction/overview/). Prometheus is a stand-alone, open source systems monitoring and alerting toolkit. The metrics get exposed at the ***/extensions/v2/metrics*** path of the registry endpoint. You can access the metrics by running a metrics query that includes a cluster role.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a cluster role if you do not already have one to access the metrics:
 
@@ -241,8 +207,6 @@ Procedure
       imageregistry_http_request_duration_seconds{method="get",quantile="0.99"} 0.015981195
       imageregistry_http_request_duration_seconds_sum{method="get"} 12.260727916000022
       ```
-
-</div>
 
 # Additional resources
 

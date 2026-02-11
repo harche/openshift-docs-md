@@ -1,35 +1,20 @@
 As a cluster administrator, you can configure your network policies to provide multitenant network isolation.
 
-> [!NOTE]
-> Configuring network policies as described in this section provides network isolation similar to the multitenant mode of OpenShift SDN in previous versions of OpenShift Container Platform.
+<div class="note">
+
+Configuring network policies as described in this section provides network isolation similar to the multitenant mode of OpenShift SDN in previous versions of OpenShift Container Platform.
+
+</div>
 
 # Configuring multitenant isolation by using network policy
 
 You can configure your project to isolate it from pods and services in other project namespaces.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Your cluster uses a network plugin that supports `NetworkPolicy` objects, such as the OVN-Kubernetes network plugin, with `mode: NetworkPolicy` set.
 
 - You installed the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster with a user with `admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the following `NetworkPolicy` objects:
 
@@ -53,8 +38,11 @@ Procedure
         EOF
         ```
 
-        > [!NOTE]
-        > `policy-group.network.openshift.io/ingress: ""` is the preferred namespace selector label for OVN-Kubernetes.
+        <div class="note">
+
+        `policy-group.network.openshift.io/ingress: ""` is the preferred namespace selector label for OVN-Kubernetes.
+
+        </div>
 
     2.  A policy named `allow-from-openshift-monitoring`:
 
@@ -122,11 +110,9 @@ Procedure
     $ oc describe networkpolicy
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -159,10 +145,6 @@ Procedure
       Not affecting egress traffic
       Policy Types: Ingress
     ```
-
-    </div>
-
-</div>
 
 # Next steps
 

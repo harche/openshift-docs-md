@@ -12,30 +12,27 @@ You add labels to a node, a compute machine set, or a machine config. Adding the
 
 To add node selectors to an existing pod, add a node selector to the controlling object for that pod, such as a `ReplicaSet` object, `DaemonSet` object, `StatefulSet` object, `Deployment` object, or `DeploymentConfig` object. Any existing pods under that controlling object are recreated on a node with a matching label. If you are creating a new pod, you can add the node selector directly to the pod spec. If the pod does not have a controlling object, you must delete the pod, edit the pod spec, and recreate the pod.
 
-> [!NOTE]
-> You cannot add a node selector directly to an existing scheduled pod.
+<div class="note">
 
-<div class="formalpara">
+You cannot add a node selector directly to an existing scheduled pod.
 
-<div class="title">
+</div>
 
-Prerequisites
+<div class="formalpara-title">
+
+**Prerequisites**
 
 </div>
 
 To add a node selector to existing pods, determine the controlling object for that pod. For example, the `router-default-66d5cf9464-m2g75` pod is controlled by the `router-default-66d5cf9464` replica set:
 
-</div>
-
 ``` terminal
 $ oc describe pod router-default-66d5cf9464-7pwkc
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -50,8 +47,6 @@ Namespace:          openshift-ingress
 Controlled By:      ReplicaSet/router-default-66d5cf9464
 # ...
 ```
-
-</div>
 
 The web console lists the controlling object under `ownerReferences` in the pod YAML:
 
@@ -71,14 +66,6 @@ metadata:
 # ...
 ```
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Add labels to a node by using a compute machine set or editing the node directly:
 
     - Use a `MachineSet` object to add labels to nodes managed by the compute machine set when a node is created:
@@ -95,24 +82,27 @@ Procedure
           $ oc patch MachineSet abc612-msrtw-worker-us-east-1c  --type='json' -p='[{"op":"add","path":"/spec/template/spec/metadata/labels", "value":{"type":"user-node","region":"east"}}]'  -n openshift-machine-api
           ```
 
-          > [!TIP]
-          > You can alternatively apply the following YAML to add labels to a compute machine set:
-          >
-          > ``` yaml
-          > apiVersion: machine.openshift.io/v1beta1
-          > kind: MachineSet
-          > metadata:
-          >   name: xf2bd-infra-us-east-2a
-          >   namespace: openshift-machine-api
-          > spec:
-          >   template:
-          >     spec:
-          >       metadata:
-          >         labels:
-          >           region: "east"
-          >           type: "user-node"
-          > # ...
-          > ```
+          <div class="tip">
+
+          You can alternatively apply the following YAML to add labels to a compute machine set:
+
+          ``` yaml
+          apiVersion: machine.openshift.io/v1beta1
+          kind: MachineSet
+          metadata:
+            name: xf2bd-infra-us-east-2a
+            namespace: openshift-machine-api
+          spec:
+            template:
+              spec:
+                metadata:
+                  labels:
+                    region: "east"
+                    type: "user-node"
+          # ...
+          ```
+
+          </div>
 
       2.  Verify that the labels are added to the `MachineSet` object by using the `oc edit` command:
 
@@ -122,11 +112,9 @@ Procedure
           $ oc edit MachineSet abc612-msrtw-worker-us-east-1c -n openshift-machine-api
           ```
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example `MachineSet` object
+          **Example `MachineSet` object**
 
           </div>
 
@@ -149,8 +137,6 @@ Procedure
           # ...
           ```
 
-          </div>
-
     - Add labels directly to a node:
 
       1.  Edit the `Node` object for the node:
@@ -165,19 +151,22 @@ Procedure
           $ oc label nodes ip-10-0-142-25.ec2.internal type=user-node region=east
           ```
 
-          > [!TIP]
-          > You can alternatively apply the following YAML to add labels to a node:
-          >
-          > ``` yaml
-          > kind: Node
-          > apiVersion: v1
-          > metadata:
-          >   name: hello-node-6fbccf8d9
-          >   labels:
-          >     type: "user-node"
-          >     region: "east"
-          > # ...
-          > ```
+          <div class="tip">
+
+          You can alternatively apply the following YAML to add labels to a node:
+
+          ``` yaml
+          kind: Node
+          apiVersion: v1
+          metadata:
+            name: hello-node-6fbccf8d9
+            labels:
+              type: "user-node"
+              region: "east"
+          # ...
+          ```
+
+          </div>
 
       2.  Verify that the labels are added to the node:
 
@@ -185,11 +174,9 @@ Procedure
           $ oc get nodes -l type=user-node,region=east
           ```
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example output
+          **Example output**
 
           </div>
 
@@ -198,17 +185,13 @@ Procedure
           ip-10-0-142-25.ec2.internal   Ready    worker   17m   v1.34.2
           ```
 
-          </div>
-
 2.  Add the matching node selector to a pod:
 
     - To add a node selector to existing and future pods, add a node selector to the controlling object for the pods:
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example `ReplicaSet` object with labels
+      **Example `ReplicaSet` object with labels**
 
       </div>
 
@@ -234,17 +217,13 @@ Procedure
       # ...
       ```
 
-      </div>
-
       - Add the node selector.
 
     - To add a node selector to a specific, new pod, add the selector to the `Pod` object directly:
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example `Pod` object with a node selector
+      **Example `Pod` object with a node selector**
 
       </div>
 
@@ -261,9 +240,8 @@ Procedure
       # ...
       ```
 
+      <div class="note">
+
+      You cannot add a node selector directly to an existing scheduled pod.
+
       </div>
-
-      > [!NOTE]
-      > You cannot add a node selector directly to an existing scheduled pod.
-
-</div>

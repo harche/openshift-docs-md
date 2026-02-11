@@ -16,8 +16,11 @@ Before you migrate your application workloads with the Migration Toolkit for Con
 
 - [ ] The clusters have sufficient resources for migration.
 
-  > [!NOTE]
-  > Clusters require additional memory, CPUs, and storage in order to run a migration on top of normal workloads. Actual resource requirements depend on the number of Kubernetes resources being migrated in a single migration plan. You must test migrations in a non-production environment in order to estimate the resource requirements.
+  <div class="note">
+
+  Clusters require additional memory, CPUs, and storage in order to run a migration on top of normal workloads. Actual resource requirements depend on the number of Kubernetes resources being migrated in a single migration plan. You must test migrations in a non-production environment in order to estimate the resource requirements.
+
+  </div>
 
 - [ ] The [etcd disk performance](https://access.redhat.com/solutions/4885641) of the clusters has been checked with `fio`.
 

@@ -10,14 +10,6 @@ The CA certificates are valid for 10 years. The peer, client, and server certifi
 
 The `etcd` certificate automatically rotates using the etcd cluster Operator. However, if a certificate must be rotated before it is automatically rotated, you can manually rotate it.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Make a backup copy of the current signer certificate by running the following command:
 
     ``` terminal
@@ -36,21 +28,11 @@ Procedure
     $ oc wait --for=condition=Progressing=False --timeout=15m clusteroperator/etcd
     ```
 
-</div>
-
 # Removing an unused certificate authority from the bundle
 
 A manual rotation does not immediately update the trust bundle to remove the public key of a previous signer certificate.
 
 The public key of the signer certificate is removed at the expiration date, however if the public key must be removed before it expires, you can delete it.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Delete the key by running the following command:
 
@@ -63,8 +45,6 @@ Procedure
     ``` terminal
     $ oc adm wait-for-stable-cluster --minimum-stable-period 2m
     ```
-
-</div>
 
 # etcd certificate rotation alerts and metrics signer certificates
 
@@ -84,8 +64,11 @@ You can rotate the certificate for the following reasons:
 
 - The private key is leaked.
 
-> [!IMPORTANT]
-> When a private key is leaked, you must rotate all of the certificates.
+<div class="important">
+
+When a private key is leaked, you must rotate all of the certificates.
+
+</div>
 
 There is an `etcd` signer for the OpenShift Container Platform metrics system. Substitute the following metrics parameters in *Rotating the etcd certificate*.
 

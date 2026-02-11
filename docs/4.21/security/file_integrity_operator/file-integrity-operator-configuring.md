@@ -12,17 +12,17 @@ $ oc explain fileintegrity.spec.config
 
 # Important attributes
 
-| Attribute | Description |
-|----|----|
-| `spec.nodeSelector` | A map of key-values pairs that must match with node’s labels in order for the AIDE pods to be schedulable on that node. The typical use is to set only a single key-value pair where `node-role.kubernetes.io/worker: ""` schedules AIDE on all worker nodes, `node.openshift.io/os_id: "rhcos"` schedules on all Red Hat Enterprise Linux CoreOS (RHCOS) nodes. |
-| `spec.debug` | A boolean attribute. If set to `true`, the daemon running in the AIDE deamon set’s pods would output extra information. |
-| `spec.tolerations` | Specify tolerations to schedule on nodes with custom taints. When not specified, a default toleration is applied, which allows tolerations to run on control plane nodes. |
-| `spec.config.gracePeriod` | The number of seconds to pause in between AIDE integrity checks. Frequent AIDE checks on a node can be resource intensive, so it can be useful to specify a longer interval. Defaults to `900`, or 15 minutes. |
-| `maxBackups` | The maximum number of AIDE database and log backups leftover from the `re-init` process to keep on a node. Older backups beyond this number are automatically pruned by the daemon. |
-| `spec.config.name` | Name of a configMap that contains custom AIDE configuration. If omitted, a default configuration is created. |
-| `spec.config.namespace` | Namespace of a configMap that contains custom AIDE configuration. If unset, the FIO generates a default configuration suitable for RHCOS systems. |
-| `spec.config.key` | Key that contains actual AIDE configuration in a config map specified by `name` and `namespace`. The default value is `aide.conf`. |
-| `spec.config.initialDelay` | The number of seconds to wait before starting the first AIDE integrity check. Default is set to 0. This attribute is optional. |
+| Attribute                  | Description                                                                                                                                                                                                                                                                                                                                                      |
+|----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `spec.nodeSelector`        | A map of key-values pairs that must match with node’s labels in order for the AIDE pods to be schedulable on that node. The typical use is to set only a single key-value pair where `node-role.kubernetes.io/worker: ""` schedules AIDE on all worker nodes, `node.openshift.io/os_id: "rhcos"` schedules on all Red Hat Enterprise Linux CoreOS (RHCOS) nodes. |
+| `spec.debug`               | A boolean attribute. If set to `true`, the daemon running in the AIDE deamon set’s pods would output extra information.                                                                                                                                                                                                                                          |
+| `spec.tolerations`         | Specify tolerations to schedule on nodes with custom taints. When not specified, a default toleration is applied, which allows tolerations to run on control plane nodes.                                                                                                                                                                                        |
+| `spec.config.gracePeriod`  | The number of seconds to pause in between AIDE integrity checks. Frequent AIDE checks on a node can be resource intensive, so it can be useful to specify a longer interval. Defaults to `900`, or 15 minutes.                                                                                                                                                   |
+| `maxBackups`               | The maximum number of AIDE database and log backups leftover from the `re-init` process to keep on a node. Older backups beyond this number are automatically pruned by the daemon.                                                                                                                                                                              |
+| `spec.config.name`         | Name of a configMap that contains custom AIDE configuration. If omitted, a default configuration is created.                                                                                                                                                                                                                                                     |
+| `spec.config.namespace`    | Namespace of a configMap that contains custom AIDE configuration. If unset, the FIO generates a default configuration suitable for RHCOS systems.                                                                                                                                                                                                                |
+| `spec.config.key`          | Key that contains actual AIDE configuration in a config map specified by `name` and `namespace`. The default value is `aide.conf`.                                                                                                                                                                                                                               |
+| `spec.config.initialDelay` | The number of seconds to wait before starting the first AIDE integrity check. Default is set to 0. This attribute is optional.                                                                                                                                                                                                                                   |
 
 Important `spec` and `spec.config` attributes
 
@@ -30,21 +30,11 @@ Important `spec` and `spec.config` attributes
 
 The default File Integrity Operator configuration is stored in a config map with the same name as the `FileIntegrity` CR.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - To examine the default config, run:
 
   ``` terminal
   $ oc describe cm/worker-fileintegrity
   ```
-
-</div>
 
 # Understanding the default File Integrity Operator configuration
 
@@ -89,20 +79,15 @@ The following directories are not covered:
 
 Any entries that configure AIDE internal behavior such as `DBDIR`, `LOGDIR`, `database`, and `database_out` are overwritten by the Operator. The Operator would add a prefix to `/hostroot/` before all paths to be watched for integrity changes. This makes reusing existing AIDE configs that might often not be tailored for a containerized environment and start from the root directory easier.
 
-> [!NOTE]
-> `/hostroot` is the directory where the pods running AIDE mount the host’s file system. Changing the configuration triggers a reinitializing of the database.
+<div class="note">
+
+`/hostroot` is the directory where the pods running AIDE mount the host’s file system. Changing the configuration triggers a reinitializing of the database.
+
+</div>
 
 # Defining a custom File Integrity Operator configuration
 
 This example focuses on defining a custom configuration for a scanner that runs on the control plane nodes based on the default configuration provided for the `worker-fileintegrity` CR. This workflow might be useful if you are planning to deploy a custom software running as a daemon set and storing its data under `/opt/mydaemon` on the control plane nodes.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Make a copy of the default configuration.
 
@@ -124,11 +109,9 @@ Procedure
     $ vim aide.conf
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -140,8 +123,6 @@ Procedure
     !/hostroot/etc/selinux/targeted
     !/hostroot/etc/openvswitch/conf.db
     ```
-
-    </div>
 
     Exclude a path specific to control plane nodes:
 
@@ -183,21 +164,15 @@ Procedure
     $ oc describe cm/master-fileintegrity | grep /opt/mydaemon
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     !/hostroot/opt/mydaemon
     ```
-
-    </div>
-
-</div>
 
 # Changing the custom File Integrity configuration
 

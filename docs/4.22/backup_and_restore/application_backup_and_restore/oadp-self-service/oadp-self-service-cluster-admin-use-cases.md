@@ -4,18 +4,13 @@ Configure and manage OADP Self-Service by enabling the feature, reviewing backup
 
 Enable or disable the OADP Self-Service feature to allow namespace administrators to manage their own backup and restore operations without cluster admin privileges. This helps you delegate backup responsibilities while maintaining administrative control.
 
-> [!NOTE]
-> You can install only one instance of the `NonAdminController` (NAC) CR in the cluster. If you install multiple instances of the NAC CR, you get the following error:
->
-> ``` terminal
-> message: only a single instance of Non-Admin Controller can be installed across the entire cluster. Non-Admin controller is already configured and installed in openshift-adp namespace.
-> ```
+<div class="note">
 
-<div>
+You can install only one instance of the `NonAdminController` (NAC) CR in the cluster. If you install multiple instances of the NAC CR, you get the following error:
 
-<div class="title">
-
-Prerequisites
+``` terminal
+message: only a single instance of Non-Admin Controller can be installed across the entire cluster. Non-Admin controller is already configured and installed in openshift-adp namespace.
+```
 
 </div>
 
@@ -25,23 +20,13 @@ Prerequisites
 
 - You have configured the DPA.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To enable OADP Self-Service, edit the DPA CR to configure the `nonAdmin.enable` section. See the following example configuration:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example `DataProtectionApplication` CR
+  **Example `DataProtectionApplication` CR**
 
   </div>
 
@@ -82,8 +67,6 @@ Procedure
             prefix: oadp
   ```
 
-  </div>
-
   where:
 
   `nonAdmin`
@@ -92,15 +75,7 @@ Procedure
   `enable`
   Specifies whether to enable the Self-Service feature. Set to `true` to enable the feature. Set to `false` to disable the feature.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - To verify that the `NonAdminController` (NAC) pod is running in the OADP namespace, run the following command:
 
@@ -108,11 +83,9 @@ Verification
   $ oc get pod -n openshift-adp -l control-plane=non-admin-controller
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -121,21 +94,9 @@ Verification
   non-admin-controller-5d....f5-p..9p   1/1     Running   0          99m
   ```
 
-  </div>
-
-</div>
-
 # Enabling NonAdminBackupStorageLocation administrator approval workflow
 
 Enable the administrator approval workflow for `NonAdminBackupStorageLocation` custom resource to review backup storage location requests from namespace administrators before they are applied. This helps you maintain control over backup storage configurations.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You are logged in to the cluster with the `cluster-admin` role.
 
@@ -143,23 +104,13 @@ Prerequisites
 
 - You have enabled OADP Self-Service in the `DataProtectionApplication` CR.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To enable the NABSL administrator approval workflow, edit the DPA CR by using the following example configuration:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example `DataProtectionApplication` CR
+  **Example `DataProtectionApplication` CR**
 
   </div>
 
@@ -185,8 +136,6 @@ Procedure
       requireApprovalForBSL: true
   ```
 
-  </div>
-
   where:
 
   `noDefaultBackupLocation`
@@ -195,19 +144,9 @@ Procedure
   `requireApprovalForBSL`
   Specifies whether the NABSL administrator approval workflow is enabled. Set to `true` to enable the approval workflow.
 
-</div>
-
 # Approving a NonAdminBackupStorageLocation request
 
 Approve `NonAdminBackupStorageLocation` (NABSL) custom resource requests from namespace administrators to grant access to their specified backup storage locations. This enables self-service backup and restore operations for namespace resources.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You are logged in to the cluster with the `cluster-admin` role.
 
@@ -217,27 +156,15 @@ Prerequisites
 
 - You have enabled the NABSL CR approval workflow in the DPA.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To see the NABSL CR requests that are in queue for administrator approval, run the following command:
 
     ``` terminal
     $ oc -n openshift-adp get NonAdminBackupStorageLocationRequests
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -249,8 +176,6 @@ Procedure
     non-admin-bsl-test-.....5e0   Pending         non-admin-bsl-test    waitingapproval-nabsl     4m20s
     ```
 
-    </div>
-
 2.  To approve the NABSL CR request, set the `approvalDecision` field to `approve` by running the following command:
 
     ``` terminal
@@ -259,27 +184,15 @@ Procedure
 
     Replace `<nabsl_name>` with the name of the `NonAdminBackupStorageLocationRequest` CR.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the Velero backup storage location is created and the phase is `Available` by running the following command:
 
   ``` terminal
   $ oc get velero.io.backupstoragelocation
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -288,21 +201,9 @@ Verification
   test-nac-test-bsl-cd...930   Available   62s              62s
   ```
 
-  </div>
-
-</div>
-
 # Rejecting a NonAdminBackupStorageLocation request
 
 Reject `NonAdminBackupStorageLocation` (NABSL) custom resource (CR) requests from namespace administrators to deny access to backup storage locations that do not meet requirements. This helps you maintain security and compliance standards.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You are logged in to the cluster with the `cluster-admin` role.
 
@@ -312,27 +213,15 @@ Prerequisites
 
 - You have enabled the NABSL CR approval workflow in the DPA.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To see the NABSL CR requests that are in queue for administrator approval, run the following command:
 
     ``` terminal
     $ oc -n openshift-adp get NonAdminBackupStorageLocationRequests
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -345,8 +234,6 @@ Procedure
     non-admin-bsl-test-.....5e0   Pending         non-admin-bsl-test    waitingapproval-nabsl     4m20s
     ```
 
-    </div>
-
 2.  To reject the NABSL CR request, set the `approvalDecision` field to `reject` by running the following command:
 
     ``` terminal
@@ -354,8 +241,6 @@ Procedure
     ```
 
     Replace `<nabsl_name>` with the name of the `NonAdminBackupStorageLocationRequest` CR.
-
-</div>
 
 # OADP Self-Service administrator DPA spec enforcement
 
@@ -392,11 +277,9 @@ You can enforce the following fields for a NABSL:
 
 For example, if you want to enforce a namespace admin user to use a specific storage bucket, you can set up the `DataProtectionApplication` (DPA) CR as following:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `DataProtectionApplication` CR
+**Example `DataProtectionApplication` CR**
 
 </div>
 
@@ -417,8 +300,6 @@ spec:
         prefix: velero
       provider: aws
 ```
-
-</div>
 
 where:
 
@@ -473,11 +354,9 @@ You can enforce the following fields for a NAB CR:
 
 If you want to enforce a `ttl` value and a Data Mover backup for a namespace admin user, you can set up the `DataProtectionApplication` (DPA) CR as shown in the following example:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `DataProtectionApplication` CR
+**Example `DataProtectionApplication` CR**
 
 </div>
 
@@ -492,8 +371,6 @@ spec:
       snapshotMoveData: true
       ttl: 158h0m0s
 ```
-
-</div>
 
 where:
 

@@ -67,17 +67,13 @@ A performance profile and its created products are applied to a node according t
 
 The only conditions returned by the MCP to the performance profile status is when the MCP is `Degraded`, which leads to `performanceProfile.status.condition.Degraded = true`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example
+**Example**
 
 </div>
 
 The following example is for a performance profile with an associated machine config pool (`worker-cnf`) that was created for it:
-
-</div>
 
 1.  The associated machine config pool is in a degraded state:
 
@@ -85,11 +81,9 @@ The following example is for a performance profile with an associated machine co
     # oc get mcp
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -100,19 +94,15 @@ The following example is for a performance profile with an associated machine co
     worker-cnf   rendered-worker-cnf-6c838641b8a08fff08dbd8b02fb63f7c   False     True       True       2              1                   1                     1                      2d20h
     ```
 
-    </div>
-
 2.  The `describe` section of the MCP shows the reason:
 
     ``` terminal
     # oc describe mcp worker-cnf
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -123,19 +113,15 @@ The following example is for a performance profile with an associated machine co
         Reason:                1 nodes are reporting degraded status on sync
     ```
 
-    </div>
-
 3.  The degraded state should also appear under the performance profile `status` field marked as `degraded = true`:
 
     ``` terminal
     # oc describe performanceprofiles performance
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -147,8 +133,6 @@ The following example is for a performance profile with an associated machine co
        Status:  True
        Type:    Degraded
     ```
-
-    </div>
 
 # Collecting low latency tuning debugging data for Red Hat Support
 
@@ -186,27 +170,11 @@ Use the `oc adm must-gather` CLI command to collect information about your clust
 
 - Basic PCI device information and NUMA locality.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - Access to the cluster as a user with the `cluster-admin` role.
 
 - The OpenShift Container Platform CLI (oc) installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to the directory where you want to store the `must-gather` data.
 
@@ -216,11 +184,9 @@ Procedure
     $ oc adm must-gather
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -250,8 +216,6 @@ Procedure
         All healthy and stable
     ```
 
-    </div>
-
 3.  Create a compressed file from the `must-gather` directory that was created in your working directory. For example, on a computer that uses a Linux operating system, run the following command:
 
     ``` terminal
@@ -260,20 +224,13 @@ Procedure
 
     - Replace `must-gather-local.5421342344627712289//` with the directory name created by the `must-gather` tool.
 
-      > [!NOTE]
-      > Create a compressed file to attach the data to a support case or to use with the Performance Profile Creator wrapper script when you create a performance profile.
+      <div class="note">
+
+      Create a compressed file to attach the data to a support case or to use with the Performance Profile Creator wrapper script when you create a performance profile.
+
+      </div>
 
 4.  Attach the compressed file to your support case on the [Red Hat Customer Portal](https://access.redhat.com/).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Gathering data about your cluster with the `must-gather` tool](../support/gathering-cluster-data.xml#gathering-cluster-data)
 
@@ -284,5 +241,3 @@ Additional resources
 - [Configuring huge pages at boot time](../scalability_and_performance/what-huge-pages-do-and-how-they-are-consumed-by-apps.xml#configuring-huge-pages_huge-pages)
 
 - [How huge pages are consumed by apps](../scalability_and_performance/what-huge-pages-do-and-how-they-are-consumed-by-apps.xml#how-huge-pages-are-consumed-by-apps_huge-pages)
-
-</div>

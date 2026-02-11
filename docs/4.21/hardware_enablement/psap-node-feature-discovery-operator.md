@@ -12,29 +12,11 @@ The Node Feature Discovery (NFD) Operator orchestrates all resources needed to r
 
 As a cluster administrator, you can install the NFD Operator using the CLI.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - An OpenShift Container Platform cluster
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a namespace for the NFD Operator.
 
@@ -80,11 +62,9 @@ Procedure
 
     3.  Create the following `Subscription` CR and save the YAML in the `nfd-sub.yaml` file:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example Subscription
+        **Example Subscription**
 
         </div>
 
@@ -102,8 +82,6 @@ Procedure
           sourceNamespace: openshift-marketplace
         ```
 
-        </div>
-
     4.  Create the subscription object by running the following command:
 
         ``` terminal
@@ -116,27 +94,15 @@ Procedure
         $ oc project openshift-nfd
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - To verify that the Operator deployment is successful, run:
 
   ``` terminal
   $ oc get pods
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -145,23 +111,11 @@ Verification
   nfd-controller-manager-7f86ccfb58-vgr4x   2/2     Running   0          10m
   ```
 
-  </div>
-
   A successful deployment shows a `Running` status.
-
-</div>
 
 ## Installing the NFD Operator using the web console
 
 As a cluster administrator, you can install the NFD Operator using the web console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform web console, click **Ecosystem** → **Software Catalog**.
 
@@ -169,38 +123,31 @@ Procedure
 
 3.  On the **Install Operator** page, select **A specific namespace on the cluster**, and then click **Install**. You do not need to create a namespace because it is created for you.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 To verify that the NFD Operator installed successfully:
 
-</div>
-
 1.  Navigate to the **Ecosystem** → **Installed Operators** page.
 
 2.  Ensure that **Node Feature Discovery** is listed in the **openshift-nfd** project with a **Status** of **InstallSucceeded**.
 
-    > [!NOTE]
-    > During installation an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
+    <div class="note">
 
-<div class="formalpara">
+    During installation an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
 
-<div class="title">
+    </div>
 
-Troubleshooting
+<div class="formalpara-title">
+
+**Troubleshooting**
 
 </div>
 
 If the Operator does not appear as installed, troubleshoot further:
-
-</div>
 
 1.  Navigate to the **Ecosystem** → **Installed Operators** page and inspect the **Operator Subscriptions** and **Install Plans** tabs for any failure or errors under **Status**.
 
@@ -212,25 +159,23 @@ The Node Feature Discovery (NFD) Operator orchestrates all resources needed to r
 
 As a cluster administrator, you can create a `NodeFeatureDiscovery` CR by using the OpenShift CLI (`oc`) or the web console.
 
-> [!NOTE]
-> Starting with version 4.12, the `operand.image` field in the `NodeFeatureDiscovery` CR is mandatory. If the NFD Operator is deployed by using Operator Lifecycle Manager (OLM), OLM automatically sets the `operand.image` field. If you create the `NodeFeatureDiscovery` CR by using the OpenShift Container Platform CLI or the OpenShift Container Platform web console, you must set the `operand.image` field explicitly.
+<div class="note">
+
+Starting with version 4.12, the `operand.image` field in the `NodeFeatureDiscovery` CR is mandatory. If the NFD Operator is deployed by using Operator Lifecycle Manager (OLM), OLM automatically sets the `operand.image` field. If you create the `NodeFeatureDiscovery` CR by using the OpenShift Container Platform CLI or the OpenShift Container Platform web console, you must set the `operand.image` field explicitly.
+
+</div>
 
 ## Creating a NodeFeatureDiscovery CR by using the CLI
 
 As a cluster administrator, you can create a `NodeFeatureDiscovery` CR instance by using the OpenShift CLI (`oc`).
 
-> [!NOTE]
-> The `spec.operand.image` setting requires a `-rhel9` image to be defined for use with OpenShift Container Platform releases 4.13 and later.
+<div class="note">
 
-The following example shows the use of `-rhel9` to acquire the correct image.
-
-<div>
-
-<div class="title">
-
-Prerequisites
+The `spec.operand.image` setting requires a `-rhel9` image to be defined for use with OpenShift Container Platform releases 4.13 and later.
 
 </div>
+
+The following example shows the use of `-rhel9` to acquire the correct image.
 
 - You have access to an OpenShift Container Platform cluster
 
@@ -240,23 +185,11 @@ Prerequisites
 
 - You installed the NFD Operator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a `NodeFeatureDiscovery` CR:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `NodeFeatureDiscovery` CR
+    **Example `NodeFeatureDiscovery` CR**
 
     </div>
 
@@ -343,8 +276,6 @@ Procedure
                 - loadedKMod: ["example_kmod3"]
     ```
 
-    </div>
-
     - The `operand.image` field is mandatory.
 
 2.  Create the `NodeFeatureDiscovery` CR by running the following command:
@@ -353,15 +284,7 @@ Procedure
     $ oc apply -f <filename>
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Check that the `NodeFeatureDiscovery` CR was created by running the following command:
 
@@ -369,11 +292,9 @@ Verification
     $ oc get pods
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -387,23 +308,11 @@ Verification
     nfd-worker-xqbws                          1/1     Running   0          60s
     ```
 
-    </div>
-
     A successful deployment shows a `Running` status.
-
-</div>
 
 ## Creating a NodeFeatureDiscovery CR by using the CLI in a disconnected environment
 
 As a cluster administrator, you can create a `NodeFeatureDiscovery` CR instance by using the OpenShift CLI (`oc`).
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to an OpenShift Container Platform cluster
 
@@ -417,16 +326,6 @@ Prerequisites
 
 - You installed the `skopeo` CLI tool.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Determine the digest of the registry image:
 
     1.  Run the following command:
@@ -435,11 +334,9 @@ Procedure
         $ skopeo inspect docker://registry.redhat.io/openshift4/ose-node-feature-discovery:<openshift_version>
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example command
+        **Example command**
 
         </div>
 
@@ -447,15 +344,11 @@ Procedure
         $ skopeo inspect docker://registry.redhat.io/openshift4/ose-node-feature-discovery:v4.12
         ```
 
-        </div>
-
     2.  Inspect the output to identify the image digest:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -467,19 +360,15 @@ Procedure
         }
         ```
 
-        </div>
-
 2.  Use the `skopeo` CLI tool to copy the image from `registry.redhat.io` to your mirror registry, by running the following command:
 
     ``` terminal
     skopeo copy docker://registry.redhat.io/openshift4/ose-node-feature-discovery@<image_digest> docker://<mirror_registry>/openshift4/ose-node-feature-discovery@<image_digest>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example command
+    **Example command**
 
     </div>
 
@@ -487,15 +376,11 @@ Procedure
     skopeo copy docker://registry.redhat.io/openshift4/ose-node-feature-discovery@sha256:1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef docker://<your-mirror-registry>/openshift4/ose-node-feature-discovery@sha256:1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
     ```
 
-    </div>
-
 3.  Create a `NodeFeatureDiscovery` CR:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `NodeFeatureDiscovery` CR
+    **Example `NodeFeatureDiscovery` CR**
 
     </div>
 
@@ -579,8 +464,6 @@ Procedure
                 - loadedKMod: ["example_kmod3"]
     ```
 
-    </div>
-
     - The `operand.image` field is mandatory.
 
 4.  Create the `NodeFeatureDiscovery` CR by running the following command:
@@ -589,15 +472,7 @@ Procedure
     $ oc apply -f <filename>
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Check the status of the `NodeFeatureDiscovery` CR by running the following command:
 
@@ -611,35 +486,15 @@ Verification
     $ oc get pods -n <nfd_namespace>
     ```
 
-</div>
-
 ## Creating a NodeFeatureDiscovery CR by using the web console
 
 As a cluster administrator, you can create a `NodeFeatureDiscovery` CR by using the OpenShift Container Platform web console.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to an OpenShift Container Platform cluster
 
 - You logged in as a user with `cluster-admin` privileges.
 
 - You installed the NFD Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to the **Ecosystem** → **Installed Operators** page.
 
@@ -649,10 +504,11 @@ Procedure
 
 4.  Click **Create**.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> Starting with version 4.12, the `operand.image` field in the `NodeFeatureDiscovery` CR is mandatory. If the NFD Operator is deployed by using Operator Lifecycle Manager (OLM), OLM automatically sets the `operand.image` field. If you create the `NodeFeatureDiscovery` CR by using the OpenShift Container Platform CLI or the OpenShift Container Platform web console, you must set the `operand.image` field explicitly.
+Starting with version 4.12, the `operand.image` field in the `NodeFeatureDiscovery` CR is mandatory. If the NFD Operator is deployed by using Operator Lifecycle Manager (OLM), OLM automatically sets the `operand.image` field. If you create the `NodeFeatureDiscovery` CR by using the OpenShift Container Platform CLI or the OpenShift Container Platform web console, you must set the `operand.image` field explicitly.
+
+</div>
 
 # Configuring the Node Feature Discovery Operator
 
@@ -666,11 +522,9 @@ The `core` section contains common configuration settings that are not specific 
 
 This value is overridden by the deprecated `--sleep-interval` command-line flag, if specified.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -678,8 +532,6 @@ Example usage
 core:
   sleepInterval: 60s
 ```
-
-</div>
 
 The default value is `60s`.
 
@@ -691,11 +543,9 @@ This value is overridden by the deprecated `--sources` command-line flag, if spe
 
 Default: `[all]`
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -705,8 +555,6 @@ core:
     - system
     - custom
 ```
-
-</div>
 
 ### core.labelWhiteList
 
@@ -718,11 +566,9 @@ This value is overridden by the deprecated `--label-whitelist` command-line flag
 
 Default: `null`
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -730,8 +576,6 @@ Example usage
 core:
   labelWhiteList: '^cpu-cpuid'
 ```
-
-</div>
 
 ### core.noPublish
 
@@ -741,11 +585,9 @@ This value is overridden by the `--no-publish` command-line flag, if specified.
 
 Example:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -753,8 +595,6 @@ Example usage
 core:
   noPublish: true
 ```
-
-</div>
 
 The default value is `false`.
 
@@ -872,11 +712,9 @@ This value is overridden by `sources.cpu.cpuid.attributeWhitelist`, if specified
 
 Default: `[BMI1, BMI2, CLMUL, CMOV, CX16, ERMS, F16C, HTT, LZCNT, MMX, MMXEXT, NX, POPCNT, RDRAND, RDSEED, RDTSCP, SGX, SGXLC, SSE, SSE2, SSE3, SSE4.1, SSE4.2, SSSE3]`
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -887,8 +725,6 @@ sources:
       attributeBlacklist: [MMX, MMXEXT]
 ```
 
-</div>
-
 ### sources.cpu.cpuid.attributeWhitelist
 
 Only publish the `cpuid` features listed in this option.
@@ -897,11 +733,9 @@ Only publish the `cpuid` features listed in this option.
 
 Default: **empty**
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -912,19 +746,15 @@ sources:
       attributeWhitelist: [AVX512BW, AVX512CD, AVX512DQ, AVX512F, AVX512VL]
 ```
 
-</div>
-
 ### sources.kernel.kconfigFile
 
 `sources.kernel.kconfigFile` is the path of the kernel config file. If empty, NFD runs a search in the well-known standard locations.
 
 Default: **empty**
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -934,19 +764,15 @@ sources:
     kconfigFile: "/path/to/kconfig"
 ```
 
-</div>
-
 ### sources.kernel.configOpts
 
 `sources.kernel.configOpts` represents kernel configuration options to publish as feature labels.
 
 Default: `[NO_HZ, NO_HZ_IDLE, NO_HZ_FULL, PREEMPT]`
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -956,19 +782,15 @@ sources:
     configOpts: [NO_HZ, X86, DMI]
 ```
 
-</div>
-
 ### sources.pci.deviceClassWhitelist
 
 `sources.pci.deviceClassWhitelist` is a list of [PCI device class IDs](https://pci-ids.ucw.cz/read/PD) for which to publish a label. It can be specified as a main class only (for example, `03`) or full class-subclass combination (for example `0300`). The former implies that all subclasses are accepted. The format of the labels can be further configured with `deviceLabelFields`.
 
 Default: `["03", "0b40", "12"]`
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -978,19 +800,15 @@ sources:
     deviceClassWhitelist: ["0200", "03"]
 ```
 
-</div>
-
 ### sources.pci.deviceLabelFields
 
 `sources.pci.deviceLabelFields` is the set of PCI ID fields to use when constructing the name of the feature label. Valid fields are `class`, `vendor`, `device`, `subsystem_vendor` and `subsystem_device`.
 
 Default: `[class, vendor]`
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1000,8 +818,6 @@ sources:
     deviceLabelFields: [class, vendor, device]
 ```
 
-</div>
-
 With the example config above, NFD would publish labels such as `feature.node.kubernetes.io/pci-<class-id>_<vendor-id>_<device-id>.present=true`
 
 ### sources.usb.deviceClassWhitelist
@@ -1010,11 +826,9 @@ With the example config above, NFD would publish labels such as `feature.node.ku
 
 Default: `["0e", "ef", "fe", "ff"]`
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1024,19 +838,15 @@ sources:
     deviceClassWhitelist: ["ef", "ff"]
 ```
 
-</div>
-
 ### sources.usb.deviceLabelFields
 
 `sources.usb.deviceLabelFields` is the set of USB ID fields from which to compose the name of the feature label. Valid fields are `class`, `vendor`, and `device`.
 
 Default: `[class, vendor, device]`
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1046,8 +856,6 @@ sources:
     deviceLabelFields: [class, vendor]
 ```
 
-</div>
-
 With the example config above, NFD would publish labels like: `feature.node.kubernetes.io/usb-<class-id>_<vendor-id>.present=true`.
 
 ### sources.custom
@@ -1056,11 +864,9 @@ With the example config above, NFD would publish labels like: `feature.node.kube
 
 Default: **empty**
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1075,8 +881,6 @@ source:
         vendor: ["8086"]
 ```
 
-</div>
-
 # About the NodeFeatureRule custom resource
 
 `NodeFeatureRule` objects are a `NodeFeatureDiscovery` custom resource designed for rule-based custom labeling of nodes. Some use cases include application-specific labeling or distribution by hardware vendors to create specific labels for their devices.
@@ -1086,14 +890,6 @@ source:
 # Using the NodeFeatureRule custom resource
 
 Create a `NodeFeatureRule` object to label nodes if a set of rules match the conditions.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a custom resource file named `nodefeaturerule.yaml` that contains the following text:
 
@@ -1129,10 +925,11 @@ Procedure
 
     The example applies the feature label on nodes with the `veth` module loaded and any PCI device with vendor code `8086` exists.
 
-    > [!NOTE]
-    > A relabeling delay of up to 1 minute might occur.
+    <div class="note">
 
-</div>
+    A relabeling delay of up to 1 minute might occur.
+
+    </div>
 
 # Using the NFD Topology Updater
 
@@ -1200,14 +997,15 @@ The `-ca-file` flag is one of the three flags, together with the `-cert-file` an
 
 Default: empty
 
-> [!IMPORTANT]
-> The `-ca-file` flag must be specified together with the `-cert-file` and `-key-file` flags.
+<div class="important">
 
-<div class="formalpara">
+The `-ca-file` flag must be specified together with the `-cert-file` and `-key-file` flags.
 
-<div class="title">
+</div>
 
-Example
+<div class="formalpara-title">
+
+**Example**
 
 </div>
 
@@ -1215,30 +1013,27 @@ Example
 $ nfd-topology-updater -ca-file=/opt/nfd/ca.crt -cert-file=/opt/nfd/updater.crt -key-file=/opt/nfd/updater.key
 ```
 
-</div>
-
 ### -cert-file
 
 The `-cert-file` flag is one of the three flags, together with the `-ca-file` and `-key-file flags`, that controls mutual TLS authentication on the NFD Topology Updater. This flag specifies the TLS certificate presented for authenticating outgoing requests.
 
 Default: empty
 
-> [!IMPORTANT]
-> The `-cert-file` flag must be specified together with the `-ca-file` and `-key-file` flags.
+<div class="important">
 
-<div class="formalpara">
+The `-cert-file` flag must be specified together with the `-ca-file` and `-key-file` flags.
 
-<div class="title">
+</div>
 
-Example
+<div class="formalpara-title">
+
+**Example**
 
 </div>
 
 ``` terminal
 $ nfd-topology-updater -cert-file=/opt/nfd/updater.crt -key-file=/opt/nfd/updater.key -ca-file=/opt/nfd/ca.crt
 ```
-
-</div>
 
 ### -h, -help
 
@@ -1250,14 +1045,15 @@ The `-key-file` flag is one of the three flags, together with the `-ca-file` and
 
 Default: empty
 
-> [!IMPORTANT]
-> The `-key-file` flag must be specified together with the `-ca-file` and `-cert-file` flags.
+<div class="important">
 
-<div class="formalpara">
+The `-key-file` flag must be specified together with the `-ca-file` and `-cert-file` flags.
 
-<div class="title">
+</div>
 
-Example
+<div class="formalpara-title">
+
+**Example**
 
 </div>
 
@@ -1265,19 +1061,15 @@ Example
 $ nfd-topology-updater -key-file=/opt/nfd/updater.key -cert-file=/opt/nfd/updater.crt -ca-file=/opt/nfd/ca.crt
 ```
 
-</div>
-
 ### -kubelet-config-file
 
 The `-kubelet-config-file` specifies the path to the Kubelet’s configuration file.
 
 Default: `/host-var/lib/kubelet/config.yaml`
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example
+**Example**
 
 </div>
 
@@ -1285,19 +1077,15 @@ Example
 $ nfd-topology-updater -kubelet-config-file=/var/lib/kubelet/config.yaml
 ```
 
-</div>
-
 ### -no-publish
 
 The `-no-publish` flag disables all communication with the nfd-master, making it a dry run flag for nfd-topology-updater. NFD Topology Updater runs resource hardware topology detection normally, but no CR requests are sent to nfd-master.
 
 Default: `false`
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example
+**Example**
 
 </div>
 
@@ -1305,19 +1093,15 @@ Example
 $ nfd-topology-updater -no-publish
 ```
 
-</div>
-
 ### -oneshot
 
 The `-oneshot` flag causes the NFD Topology Updater to exit after one pass of resource hardware topology detection.
 
 Default: `false`
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example
+**Example**
 
 </div>
 
@@ -1325,19 +1109,15 @@ Example
 $ nfd-topology-updater -oneshot -no-publish
 ```
 
-</div>
-
 ### -podresources-socket
 
 The `-podresources-socket` flag specifies the path to the Unix socket where kubelet exports a gRPC service to enable discovery of in-use CPUs and devices, and to provide metadata for them.
 
 Default: `/host-var/liblib/kubelet/pod-resources/kubelet.sock`
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example
+**Example**
 
 </div>
 
@@ -1345,19 +1125,15 @@ Example
 $ nfd-topology-updater -podresources-socket=/var/lib/kubelet/pod-resources/kubelet.sock
 ```
 
-</div>
-
 ### -server
 
 The `-server` flag specifies the address of the nfd-master endpoint to connect to.
 
 Default: `localhost:8080`
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example
+**Example**
 
 </div>
 
@@ -1365,19 +1141,15 @@ Example
 $ nfd-topology-updater -server=nfd-master.nfd.svc.cluster.local:443
 ```
 
-</div>
-
 ### -server-name-override
 
 The `-server-name-override` flag specifies the common name (CN) which to expect from the nfd-master TLS certificate. This flag is mostly intended for development and debugging purposes.
 
 Default: empty
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example
+**Example**
 
 </div>
 
@@ -1385,27 +1157,21 @@ Example
 $ nfd-topology-updater -server-name-override=localhost
 ```
 
-</div>
-
 ### -sleep-interval
 
 The `-sleep-interval` flag specifies the interval between resource hardware topology re-examination and custom resource updates. A non-positive value implies infinite sleep interval and no re-detection is done.
 
 Default: `60s`
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example
+**Example**
 
 </div>
 
 ``` terminal
 $ nfd-topology-updater -sleep-interval=1h
 ```
-
-</div>
 
 ### -version
 
@@ -1417,16 +1183,12 @@ The `-watch-namespace` flag specifies the namespace to ensure that resource hard
 
 Default: `*`
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example
+**Example**
 
 </div>
 
 ``` terminal
 $ nfd-topology-updater -watch-namespace=rte
 ```
-
-</div>

@@ -1,11 +1,14 @@
-> [!WARNING]
-> The deprecated Red Hat OpenShift Distributed Tracing Platform (Jaeger) 3.5 was the last release of the Red Hat OpenShift Distributed Tracing Platform (Jaeger) that Red Hat supported.
->
-> All support and maintenance for the deprecated Red Hat OpenShift Distributed Tracing Platform (Jaeger) 3.5 ended on November 3, 2025.
->
-> If you still use Red Hat OpenShift Distributed Tracing Platform (Jaeger), you must migrate to Red Hat build of OpenTelemetry Operator and Tempo Operator for distributed tracing collection and storage. For more information, see "Migrating" in the Red Hat build of OpenTelemetry documentation, "Installing" in the Red Hat build of OpenTelemetry documentation, and "Installing" in the Red Hat OpenShift Distributed Tracing Platform documentation.
->
-> For more information, see the Red Hat Knowledgebase solution [Jaeger Deprecation and Removal in OpenShift](https://access.redhat.com/solutions/7083722).
+<div class="warning">
+
+The deprecated Red Hat OpenShift Distributed Tracing Platform (Jaeger) 3.5 was the last release of the Red Hat OpenShift Distributed Tracing Platform (Jaeger) that Red Hat supported.
+
+All support and maintenance for the deprecated Red Hat OpenShift Distributed Tracing Platform (Jaeger) 3.5 ended on November 3, 2025.
+
+If you still use Red Hat OpenShift Distributed Tracing Platform (Jaeger), you must migrate to Red Hat build of OpenTelemetry Operator and Tempo Operator for distributed tracing collection and storage. For more information, see "Migrating" in the Red Hat build of OpenTelemetry documentation, "Installing" in the Red Hat build of OpenTelemetry documentation, and "Installing" in the Red Hat OpenShift Distributed Tracing Platform documentation.
+
+For more information, see the Red Hat Knowledgebase solution [Jaeger Deprecation and Removal in OpenShift](https://access.redhat.com/solutions/7083722).
+
+</div>
 
 If you are already using the Red Hat OpenShift Distributed Tracing Platform (Jaeger) for your applications, you can migrate to the Red Hat build of OpenTelemetry, which is based on the [OpenTelemetry](https://opentelemetry.io/) open-source project.
 
@@ -17,27 +20,9 @@ Migration from the Distributed Tracing Platform (Jaeger) to the Red Hat build o
 
 The Red Hat build of OpenTelemetry Operator supports sidecar injection into deployment workloads, so you can migrate from a Distributed Tracing Platform (Jaeger) sidecar to a Red Hat build of OpenTelemetry sidecar.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The Red Hat OpenShift Distributed Tracing Platform (Jaeger) is used on the cluster.
 
 - The Red Hat build of OpenTelemetry is installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Configure the OpenTelemetry Collector as a sidecar.
 
@@ -131,33 +116,13 @@ Procedure
 
 8.  Use the created service account for the deployment of your application to allow the processors to get the correct information and add it to your traces.
 
-</div>
-
 # Migrating without sidecars
 
 You can migrate from the Distributed Tracing Platform (Jaeger) to the Red Hat build of OpenTelemetry without sidecar deployment.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The Red Hat OpenShift Distributed Tracing Platform (Jaeger) is used on the cluster.
 
 - The Red Hat build of OpenTelemetry is installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Configure OpenTelemetry Collector deployment.
 
@@ -218,8 +183,11 @@ Procedure
 
 6.  Create the OpenTelemetry Collector instance.
 
-    > [!NOTE]
-    > This collector will export traces to a TempoStack instance. You must create your TempoStack instance by using the Red Hat Tempo Operator and place here the correct endpoint.
+    <div class="note">
+
+    This collector will export traces to a TempoStack instance. You must create your TempoStack instance by using the Red Hat Tempo Operator and place here the correct endpoint.
+
+    </div>
 
     ``` yaml
     apiVersion: opentelemetry.io/v1beta1
@@ -264,11 +232,9 @@ Procedure
 
 8.  If you are exporting your traces directly from your application to Jaeger, change the API endpoint from the Jaeger endpoint to the OpenTelemetry Collector endpoint.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example of exporting traces by using the `jaegerexporter` with Golang
+    **Example of exporting traces by using the `jaegerexporter` with Golang**
 
     </div>
 
@@ -276,8 +242,4 @@ Procedure
     exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(url)))
     ```
 
-    </div>
-
     - The URL points to the OpenTelemetry Collector API endpoint.
-
-</div>

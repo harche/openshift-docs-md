@@ -4,25 +4,9 @@ Automatic route creation, also known as Istio OpenShift Routing (IOR), is a depr
 
 This procedure explains how to disable Istio OpenShift Routing (IOR) in Red Hat OpenShift Service Mesh, and how to continue to use and manage Routes that were originally created using IOR. This procedure also provides an example of how to explicitly create a new Route targeting an existing gateway `Service` object.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Before migrating to explicitly-managed routes, export the existing route configurations managed by Istio OpenShift Routing (IOR) to files. Save the files so that in the future you can recreate the route configurations without requiring IOR.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Modify the `ServiceMeshControlPlane` resource to disable IOR:
 
@@ -57,8 +41,6 @@ Procedure
   - Specify new routes in the same namespace as the ingress gateway `Service` object.
 
   - Use the name of ingress gateway `Service` object that is the target.
-
-</div>
 
 # Additional resources
 

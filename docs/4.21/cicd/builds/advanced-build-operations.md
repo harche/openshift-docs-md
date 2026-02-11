@@ -4,17 +4,13 @@ You can set build resources and maximum duration, assign builds to nodes, chain 
 
 By default, builds are completed by pods using unbound resources, such as memory and CPU. These resources can be limited.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 You can limit resource use in two ways:
-
-</div>
 
 - Limit resource use by specifying resource limits in the default container limits of a project.
 
@@ -61,14 +57,6 @@ When defining a `BuildConfig` object, you can define its maximum duration by set
 
 The maximum duration is counted from the time when a build pod gets scheduled in the system, and defines how long it can be active, including the time needed to pull the builder image. After reaching the specified timeout, the build is terminated by OpenShift Container Platform.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - To set maximum duration, specify `completionDeadlineSeconds` in your `BuildConfig`. The following example shows the part of a `BuildConfig` specifying `completionDeadlineSeconds` field for 30 minutes:
 
   ``` yaml
@@ -76,10 +64,11 @@ Procedure
     completionDeadlineSeconds: 1800
   ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> This setting is not supported with the Pipeline Strategy option.
+This setting is not supported with the Pipeline Strategy option.
+
+</div>
 
 # Assigning builds to specific nodes
 
@@ -87,14 +76,9 @@ Builds can be targeted to run on specific nodes by specifying labels in the `nod
 
 The `nodeSelector` value can also be controlled by cluster-wide default and override values. Defaults will only be applied if the build configuration does not define any key-value pairs for the `nodeSelector` and also does not define an explicitly empty map value of `nodeSelector:{}`. Override values will replace values in the build configuration on a key by key basis.
 
-> [!NOTE]
-> If the specified `NodeSelector` cannot be matched to a node with those labels, the build still stay in the `Pending` state indefinitely.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+If the specified `NodeSelector` cannot be matched to a node with those labels, the build still stay in the `Pending` state indefinitely.
 
 </div>
 
@@ -113,8 +97,6 @@ Procedure
 
   - Builds associated with this build configuration will run only on nodes with the `key1=value2` and `key2=value2` labels.
 
-</div>
-
 # Chained builds
 
 For compiled languages such as Go, C, C++, and Java, including the dependencies necessary for compilation in the application image might increase the size of the image or introduce vulnerabilities that can be exploited.
@@ -123,8 +105,11 @@ To avoid these problems, two builds can be chained together. One build that prod
 
 In the following example, a source-to-image (S2I) build is combined with a docker build to compile an artifact that is then placed in a separate runtime image.
 
-> [!NOTE]
-> Although this example chains a S2I build and a docker build, the first build can use any strategy that produces an image containing the desired artifacts, and the second build can use any strategy that can consume input content from an image.
+<div class="note">
+
+Although this example chains a S2I build and a docker build, the first build can use any strategy that produces an image containing the desired artifacts, and the second build can use any strategy that can consume input content from an image.
+
+</div>
 
 The first build takes the application source and produces an image containing a `WAR` file. The image is pushed to the `artifact-image` image stream. The path of the output artifact depends on the `assemble` script of the S2I builder used. In this case, it is output to `/wildfly/standalone/deployments/ROOT.war`.
 
@@ -195,14 +180,6 @@ The result of this setup is that the output image of the second build does not h
 
 By default, builds that have completed their lifecycle are persisted indefinitely. You can limit the number of previous builds that are retained.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Limit the number of previous builds that are retained by supplying a positive integer value for `successfulBuildsHistoryLimit` or `failedBuildsHistoryLimit` in your `BuildConfig`, for example:
 
     ``` yaml
@@ -225,12 +202,13 @@ Procedure
 
     - Waiting for a build to complete its lifecycle.
 
-</div>
-
 Builds are sorted by their creation timestamp with the oldest builds being pruned first.
 
-> [!NOTE]
-> Administrators can manually prune builds using the 'oc adm' object pruning command.
+<div class="note">
+
+Administrators can manually prune builds using the 'oc adm' object pruning command.
+
+</div>
 
 # Build run policy
 

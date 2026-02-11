@@ -18,46 +18,21 @@ You can deprovision a bare metal host in the web console. Deprovisioning a host 
 
 2.  Scales down the related compute machine set
 
-> [!NOTE]
-> Powering off the host without first moving the daemon set and unmanaged static pods to another node can cause service disruption and loss of data.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+Powering off the host without first moving the daemon set and unmanaged static pods to another node can cause service disruption and loss of data.
 
 </div>
 
 - [Adding compute machines to bare metal](../machine_management/user_infra/adding-bare-metal-compute-user-infra.xml#adding-bare-metal-compute-user-infra)
 
-</div>
-
 ## Adding a bare metal host to the cluster using the web console
 
 You can add bare metal hosts to the cluster in the web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install an RHCOS cluster on bare metal.
 
 - Log in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the web console, navigate to **Compute** → **Bare Metal Hosts**.
 
@@ -75,38 +50,21 @@ Procedure
 
 8.  Scale up the number of replicas to match the number of available bare metal hosts. Navigate to **Compute** → **MachineSets**, and increase the number of machine replicas in the cluster by selecting **Edit Machine count** from the **Actions** drop-down menu.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> You can also manage the number of bare metal nodes using the `oc scale` command and the appropriate bare metal compute machine set.
+You can also manage the number of bare metal nodes using the `oc scale` command and the appropriate bare metal compute machine set.
+
+</div>
 
 ## Adding a bare metal host to the cluster using YAML in the web console
 
 You can add bare metal hosts to the cluster in the web console using a YAML file that describes the bare metal host.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Install a RHCOS compute machine on bare metal infrastructure for use in the cluster.
 
 - Log in as a user with `cluster-admin` privileges.
 
 - Create a `Secret` CR for the bare metal host.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the web console, navigate to **Compute** → **Bare Metal Hosts**.
 
@@ -136,38 +94,21 @@ Procedure
 
 5.  Scale up the number of replicas to match the number of available bare metal hosts. Navigate to **Compute** → **MachineSets**, and increase the number of machines in the cluster by selecting **Edit Machine count** from the **Actions** drop-down menu.
 
-    > [!NOTE]
-    > You can also manage the number of bare metal nodes using the `oc scale` command and the appropriate bare metal compute machine set.
+    <div class="note">
 
-</div>
+    You can also manage the number of bare metal nodes using the `oc scale` command and the appropriate bare metal compute machine set.
+
+    </div>
 
 ## Automatically scaling machines to the number of available bare metal hosts
 
 To automatically create the number of `Machine` objects that matches the number of available `BareMetalHost` objects, add a `metal3.io/autoscale-to-hosts` annotation to the `MachineSet` object.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Install RHCOS bare metal compute machines for use in the cluster, and create corresponding `BareMetalHost` objects.
 
 - Install the OpenShift Container Platform CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Annotate the compute machine set that you want to configure for automatic scaling by adding the `metal3.io/autoscale-to-hosts` annotation. Replace `<machineset>` with the name of the compute machine set.
 
@@ -177,10 +118,11 @@ Procedure
 
     Wait for the new scaled machines to start.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> When you use a `BareMetalHost` object to create a machine in the cluster and labels or selectors are subsequently changed on the `BareMetalHost`, the `BareMetalHost` object continues be counted against the `MachineSet` that the `Machine` object was created from.
+When you use a `BareMetalHost` object to create a machine in the cluster and labels or selectors are subsequently changed on the `BareMetalHost`, the `BareMetalHost` object continues be counted against the `MachineSet` that the `Machine` object was created from.
+
+</div>
 
 ## Removing bare metal hosts from the provisioner node
 
@@ -188,14 +130,9 @@ In certain circumstances, you might want to temporarily remove bare metal hosts 
 
 To prevent the management of the number of `Machine` objects that matches the number of available `BareMetalHost` objects, add a `baremetalhost.metal3.io/detached` annotation to the `MachineSet` object.
 
-> [!NOTE]
-> This annotation has an effect for only `BareMetalHost` objects that are in either `Provisioned`, `ExternallyProvisioned` or `Ready/Available` state.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+This annotation has an effect for only `BareMetalHost` objects that are in either `Provisioned`, `ExternallyProvisioned` or `Ready/Available` state.
 
 </div>
 
@@ -205,16 +142,6 @@ Prerequisites
 
 - Log in as a user with `cluster-admin` privileges.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Annotate the compute machine set that you want to remove from the provisioner node by adding the `baremetalhost.metal3.io/detached` annotation.
 
     ``` terminal
@@ -223,8 +150,11 @@ Procedure
 
     Wait for the new machines to start.
 
-    > [!NOTE]
-    > When you use a `BareMetalHost` object to create a machine in the cluster and labels or selectors are subsequently changed on the `BareMetalHost`, the `BareMetalHost` object continues be counted against the `MachineSet` that the `Machine` object was created from.
+    <div class="note">
+
+    When you use a `BareMetalHost` object to create a machine in the cluster and labels or selectors are subsequently changed on the `BareMetalHost`, the `BareMetalHost` object continues be counted against the `MachineSet` that the `Machine` object was created from.
+
+    </div>
 
 2.  In the provisioning use case, remove the annotation after the reboot is complete by using the following command:
 
@@ -232,49 +162,19 @@ Procedure
     $ oc annotate machineset <machineset> -n openshift-machine-api 'baremetalhost.metal3.io/detached-'
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Expanding the cluster](../installing/installing_bare_metal/bare-metal-expanding-the-cluster.xml#bare-metal-expanding-the-cluster)
 
 - [MachineHealthChecks on bare metal](../machine_management/deploying-machine-health-checks.xml#machine-health-checks-bare-metal_deploying-machine-health-checks)
 
-</div>
-
 ## Powering off bare-metal hosts
 
 You can power off bare-metal cluster hosts in the web console or by applying a patch in the cluster by using the OpenShift CLI (`oc`). Before you power off a host, you should mark the node as unschedulable and drain all pods and workloads from the node.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed a RHCOS compute machine on bare-metal infrastructure for use in the cluster.
 
 - You have logged in as a user with `cluster-admin` privileges.
 
 - You have configured the host to be managed and have added BMC credentials for the cluster host. You can add BMC credentials by applying a `Secret` custom resource (CR) in the cluster or by logging in to the web console and configuring the bare-metal host to be managed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the web console, mark the node that you want to power off as unschedulable. Perform the following steps:
 
@@ -294,11 +194,9 @@ Procedure
         $ oc get baremetalhosts -n openshift-machine-api -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.provisioning.state}{"\n"}{end}'
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -310,8 +208,6 @@ Procedure
         worker-1.example.com  managed
         worker-2.example.com  managed
         ```
-
-        </div>
 
     2.  Mark the node as unschedulable:
 
@@ -340,5 +236,3 @@ Procedure
         ``` terminal
         $ oc adm uncordon <bare_metal_host>
         ```
-
-</div>

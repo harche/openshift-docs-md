@@ -14,34 +14,19 @@ The following list details key aspects for a unmanaged DNS management policy:
 
 - The Unmanaged DNS management policy for Ingress Controllers ensures that the lifecycle of the wildcard DNS record on the cloud provider is not automatically managed; instead, it becomes the responsibility of the cluster administrator.
 
-  > [!NOTE]
-  > For Google Cloud installations, you can use a custom DNS solution. Refer to the `DNSRecord` CR for information on what you need to include in the DNS record. For more information, see [Enabling a user-managed DNS](../../../installing/installing_gcp/installing-gcp-customizations.xml#installation-gcp-enabling-user-managed-DNS_installing-gcp-customizations) and [Provisioning your own DNS records](../../../installing/installing_gcp/installing-gcp-customizations.xml#installation-gcp-provisioning-own-dns-records_installing-gcp-customizations).
+  <div class="note">
+
+  For Google Cloud installations, you can use a custom DNS solution. Refer to the `DNSRecord` CR for information on what you need to include in the DNS record. For more information, see [Enabling a user-managed DNS](../../../installing/installing_gcp/installing-gcp-customizations.xml#installation-gcp-enabling-user-managed-DNS_installing-gcp-customizations) and [Provisioning your own DNS records](../../../installing/installing_gcp/installing-gcp-customizations.xml#installation-gcp-provisioning-own-dns-records_installing-gcp-customizations).
+
+  </div>
 
 # Creating an Ingress Controller for manual DNS management
 
 As a cluster administrator, you can create a new custom Ingress Controller with the Unmanaged DNS management policy.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You are logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an `IngressController` custom resource (CR) file named `sample-ingress.yaml` with the following content:
 
@@ -85,33 +70,13 @@ Procedure
 
     Inspect the output and confirm that `dnsManagementPolicy` is set to `Unmanaged`.
 
-</div>
-
 # Modifying an existing Ingress Controller for manual DNS management
 
 As a cluster administrator, you can modify an existing Ingress Controller to manually manage the DNS record lifecycle.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You are logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Modify the chosen Ingress Controller to set the `dnsManagementPolicy` parameter:
 
@@ -131,8 +96,6 @@ Procedure
     ```
 
     Inspect the output and confirm that `dnsManagementPolicy` is set to `Unmanaged`.
-
-</div>
 
 # Additional resources
 

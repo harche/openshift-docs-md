@@ -33,28 +33,21 @@ Allocate and manage system resources, such as CPU and memory for processes and c
 CRI-O
 Serves as a lightweight container runtime that enforces security boundaries and manages container workloads.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [About RHCOS](../../../architecture/architecture-rhcos.xml#rhcos-about_architecture-rhcos)
 
 - [Red Hat Enterprise Linux CoreOS (RHCOS)](../../../architecture/architecture-rhcos.xml)
 
 - [Linux capabilities](../../../edge_computing/day_2_core_cnf_clusters/security/security-host-sec.xml#security-linux-capabilities-overview_security-host-sec)
 
-</div>
-
 # Command-line host access
 
 Direct access to a host must be restricted to avoid modifying the host or accessing pods that should not be accessed. For users who need direct access to a host, it is recommended to use an external authenticator, like SSSD with LDAP, to manage access. This helps maintain consistency across the cluster through the Machine Config Operator.
 
-> [!IMPORTANT]
-> Do not configure direct access to the root ID on any OpenShift Container Platform cluster server.
+<div class="important">
+
+Do not configure direct access to the root ID on any OpenShift Container Platform cluster server.
+
+</div>
 
 You can connect to a node in the cluster using the following methods:
 
@@ -80,8 +73,11 @@ Avoid using the root user. Instead, use the core user ID (or your own ID). To co
 $ ssh core@<worker_node_name>
 ```
 
-> [!IMPORTANT]
-> The core user ID is initially given `sudo` privileges within the cluster.
+<div class="important">
+
+The core user ID is initially given `sudo` privileges within the cluster.
+
+</div>
 
 If you cannot connect to a node using SSH, see [How to connect to OpenShift Container Platform 4.x Cluster nodes using SSH bastion pod](https://access.redhat.com/solutions/4073041) to add your SSH key to the core user.
 
@@ -94,20 +90,13 @@ $ sudo -i
 Console Access
 Ensure that consoles are secure. Do not allow direct login with the root ID, instead use individual IDs.
 
-> [!NOTE]
-> Follow the best practices of your organization for securing console access.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+Follow the best practices of your organization for securing console access.
 
 </div>
 
 - [Starting debug pods with root access](../../../support/troubleshooting/investigating-pod-issues.xml#starting-debug-pods-with-root-access_investigating-pod-issues)
-
-</div>
 
 # Linux capabilities
 
@@ -133,11 +122,14 @@ Linux capabilities define the actions a process can perform on the host system. 
 
 You can modify which capabilities that a pod can receive by configuring Security Context Constraints (SCCs).
 
-> [!IMPORTANT]
-> You must not assign the following capabilities to a pod:
->
-> - `SYS_ADMIN`: A powerful capability that grants elevated privileges. Allowing this capability can break security boundaries and pose a significant security risk.
->
-> - `NET_ADMIN`: Allows control over networking, like SR-IOV ports, but can be replaced with alternative solutions in modern setups.
->
-> For more information about Linux capabilities, see the [Linux capabilities](https://man7.org/linux/man-pages/man7/capabilities.7.html) man page.
+<div class="important">
+
+You must not assign the following capabilities to a pod:
+
+- `SYS_ADMIN`: A powerful capability that grants elevated privileges. Allowing this capability can break security boundaries and pose a significant security risk.
+
+- `NET_ADMIN`: Allows control over networking, like SR-IOV ports, but can be replaced with alternative solutions in modern setups.
+
+For more information about Linux capabilities, see the [Linux capabilities](https://man7.org/linux/man-pages/man7/capabilities.7.html) man page.
+
+</div>

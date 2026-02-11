@@ -22,8 +22,11 @@ Before migrating from OpenShift Container Platform 3 to 4, review the [differenc
 
 You can migrate stateful application workloads from OpenShift Container Platform 3 to 4 at the granularity of a namespace. To learn more about MTC see [Understanding MTC](../migrating_from_ocp_3_to_4/about-mtc-3-4.xml#about-mtc-3-4).
 
-> [!NOTE]
-> If you are migrating from OpenShift Container Platform 3, see [About migrating from OpenShift Container Platform 3 to 4](../migrating_from_ocp_3_to_4/about-migrating-from-3-to-4.xml#about-migrating-from-3-to-4) and [Installing the legacy Migration Toolkit for Containers Operator on OpenShift Container Platform 3](../migrating_from_ocp_3_to_4/installing-3-4.xml#migration-installing-legacy-operator_installing-3-4).
+<div class="note">
+
+If you are migrating from OpenShift Container Platform 3, see [About migrating from OpenShift Container Platform 3 to 4](../migrating_from_ocp_3_to_4/about-migrating-from-3-to-4.xml#about-migrating-from-3-to-4) and [Installing the legacy Migration Toolkit for Containers Operator on OpenShift Container Platform 3](../migrating_from_ocp_3_to_4/installing-3-4.xml#migration-installing-legacy-operator_installing-3-4).
+
+</div>
 
 # Installing MTC
 

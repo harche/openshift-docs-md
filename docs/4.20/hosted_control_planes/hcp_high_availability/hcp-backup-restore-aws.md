@@ -4,14 +4,9 @@ You can back up and restore etcd on a hosted cluster on Amazon Web Services (AWS
 
 To back up etcd for a hosted cluster, you must take a snapshot of etcd. Later, you can restore etcd by using the snapshot.
 
-> [!IMPORTANT]
-> This procedure requires API downtime.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Procedure
+This procedure requires API downtime.
 
 </div>
 
@@ -51,14 +46,15 @@ Procedure
 
 5.  Copy the snapshot data to a location where you can retrieve it later, such as an S3 bucket. See the following example.
 
-    > [!NOTE]
-    > The following example uses signature version 2. If you are in a region that supports signature version 4, such as the `us-east-2` region, use signature version 4. Otherwise, when copying the snapshot to an S3 bucket, the upload fails.
+    <div class="note">
 
-    <div class="formalpara">
+    The following example uses signature version 2. If you are in a region that supports signature version 4, such as the `us-east-2` region, use signature version 4. Otherwise, when copying the snapshot to an S3 bucket, the upload fails.
 
-    <div class="title">
+    </div>
 
-    Example
+    <div class="formalpara-title">
+
+    **Example**
 
     </div>
 
@@ -81,8 +77,6 @@ Procedure
       -H "Authorization: AWS ${ACCESS_KEY}:${SIGNATURE_HASH}" \
       https://${BUCKET_NAME}.s3.amazonaws.com/${CLUSTER_NAME}-snapshot.db
     ```
-
-    </div>
 
 6.  To restore the snapshot on a new cluster later, save the encryption secret that the hosted cluster references.
 
@@ -117,19 +111,13 @@ Procedure
       -p '[\{"op": "remove", "path": "/spec/pausedUntil"}]' --type=json
     ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Next steps
+**Next steps**
 
 </div>
 
 Restore the etcd snapshot.
-
-</div>
 
 # Restoring an etcd snapshot on a hosted cluster
 
@@ -137,28 +125,19 @@ If you have a snapshot of etcd from your hosted cluster, you can restore it. Cur
 
 To restore an etcd snapshot, you modify the output from the `create cluster --render` command and define a `restoreSnapshotURL` value in the etcd section of the `HostedCluster` specification.
 
-> [!NOTE]
-> The `--render` flag in the `hcp create` command does not render the secrets. To render the secrets, you must use both the `--render` and the `--render-sensitive` flags in the `hcp create` command.
+<div class="note">
 
-<div class="formalpara">
+The `--render` flag in the `hcp create` command does not render the secrets. To render the secrets, you must use both the `--render` and the `--render-sensitive` flags in the `hcp create` command.
 
-<div class="title">
+</div>
 
-Prerequisites
+<div class="formalpara-title">
+
+**Prerequisites**
 
 </div>
 
 You took an etcd snapshot on a hosted cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  On the `aws` command-line interface (CLI), create a pre-signed URL so that you can download your etcd snapshot from S3 without passing credentials to the etcd deployment:
 
@@ -183,5 +162,3 @@ Procedure
     ```
 
 3.  Ensure that the secret that you referenced from the `spec.secretEncryption.aescbc` value contains the same AES key that you saved in the previous steps.
-
-</div>

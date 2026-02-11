@@ -1,33 +1,18 @@
 When installing a cluster on bare-metal infrastructure, you can manually scale up to 4 or 5 control plane nodes for your cluster. Consider this use case in situations where you need to recover your cluster from a degraded state, perform deep-level debugging, or ensure stability and security of the control planes in complex scenarios.
 
-> [!IMPORTANT]
-> Red Hat supports a cluster that has 4 or 5 control plane nodes only on bare-metal infrastructure.
+<div class="important">
+
+Red Hat supports a cluster that has 4 or 5 control plane nodes only on bare-metal infrastructure.
+
+</div>
 
 # Adding a control plane node to your cluster
 
 When installing a cluster on bare-metal infrastructure, you can manually scale up to 4 or 5 control plane nodes for your cluster. The example in the procedure uses `node-5` as the new control plane node.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed a healthy cluster with at least three control plane nodes.
 
 - You have created a single control plane node that you intend to add to your cluster as a postinstalltion task.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Retrieve pending Certificate Signing Requests (CSRs) for the new control plane node by entering the following command:
 
@@ -41,8 +26,11 @@ Procedure
     $ oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs --no-run-if-empty oc adm certificate approve
     ```
 
-    > [!IMPORTANT]
-    > You must approve the CSRs to complete the installation.
+    <div class="important">
+
+    You must approve the CSRs to complete the installation.
+
+    </div>
 
 3.  Confirm that the control plane node is in the `Ready` status by entering the following command:
 
@@ -50,8 +38,11 @@ Procedure
     $ oc get nodes
     ```
 
-    > [!NOTE]
-    > On installer-provisioned infrastructure, the etcd Operator relies on the Machine API to manage the control plane and ensure etcd quorum. The Machine API then uses `Machine` CRs to represent and manage the underlying control plane nodes.
+    <div class="note">
+
+    On installer-provisioned infrastructure, the etcd Operator relies on the Machine API to manage the control plane and ensure etcd quorum. The Machine API then uses `Machine` CRs to represent and manage the underlying control plane nodes.
+
+    </div>
 
 4.  Create the `BareMetalHost` and `Machine` CRs and link them to the `Node` CR of the control plane node.
 
@@ -307,18 +298,13 @@ Procedure
             $ bash link-machine-and-node.sh node-5 node-5
             ```
 
-            > [!NOTE]
-            > The first `node-5` instance represents the machine, and the second instance represents the node.
+            <div class="note">
 
-</div>
+            The first `node-5` instance represents the machine, and the second instance represents the node.
 
-<div>
+            </div>
 
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Confirm members of etcd by executing into one of the pre-existing control plane nodes:
 
@@ -372,11 +358,9 @@ Verification
     $ oc get ClusterVersion
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -384,7 +368,3 @@ Verification
     NAME      VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
     version   OpenShift Container Platform.5    True        False         5h57m   Cluster version is OpenShift Container Platform.5
     ```
-
-    </div>
-
-</div>

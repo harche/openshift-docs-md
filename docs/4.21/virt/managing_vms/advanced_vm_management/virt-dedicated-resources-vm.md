@@ -10,27 +10,9 @@ By using dedicated resources, you can improve the performance of the virtual mac
 
 You can enable dedicated resources for a virtual machine in the **Details** tab. Virtual machines that were created from a Red Hat template can be configured with dedicated resources.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The CPU Manager must be configured on the node. Verify that the node has the `cpumanager = true` label before scheduling virtual machine workloads.
 
 - The virtual machine must be powered off.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform console, click **Virtualization** → **VirtualMachines** from the side menu.
 
@@ -41,5 +23,3 @@ Procedure
 4.  Select **Schedule this workload with dedicated resources (guaranteed policy)**.
 
 5.  Click **Save**.
-
-</div>

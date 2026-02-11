@@ -1,13 +1,16 @@
-> [!IMPORTANT]
-> Openshift Jenkins receives periodic updates from Jenkins LTS releases and associated plugins. These updates may include bug fixes, security vulnerability patches, and occasionally new features. However, Red Hat does not plan to introduce further enhancements or major changes to the functionality or contents of the OpenShift Jenkins container image, other than updates to its dependent plugins.
->
-> Additionally, the following three Red Hat-maintained Jenkins plugins are now in maintenance mode. Only critical bug fixes will be addressed, and no new enhancements or feature development are planned.
->
-> - Jenkins Client Plugin
->
-> - Jenkins Login Plugin
->
-> - Jenkins Sync Plugin
+<div class="important">
+
+Openshift Jenkins receives periodic updates from Jenkins LTS releases and associated plugins. These updates may include bug fixes, security vulnerability patches, and occasionally new features. However, Red Hat does not plan to introduce further enhancements or major changes to the functionality or contents of the OpenShift Jenkins container image, other than updates to its dependent plugins.
+
+Additionally, the following three Red Hat-maintained Jenkins plugins are now in maintenance mode. Only critical bug fixes will be addressed, and no new enhancements or feature development are planned.
+
+- Jenkins Client Plugin
+
+- Jenkins Login Plugin
+
+- Jenkins Sync Plugin
+
+</div>
 
 OpenShift Container Platform 4.11 moves the OpenShift Jenkins and OpenShift Agent Base images to the `ocp-tools-4` repository at `registry.redhat.io`. It also removes the OpenShift Jenkins Maven and NodeJS Agent images from its payload:
 
@@ -21,14 +24,6 @@ These changes support the OpenShift Container Platform 4.10 recommendation to us
 
 OpenShift Container Platform 4.11 makes significant changes to the location and availability of specific OpenShift Jenkins images. Additionally, you can configure when and how to update these images.
 
-<div>
-
-<div class="title">
-
-What stays the same with the OpenShift Jenkins images?
-
-</div>
-
 - The Cluster Samples Operator manages the `ImageStream` and `Template` objects for operating the OpenShift Jenkins images.
 
 - By default, the Jenkins `DeploymentConfig` object from the Jenkins pod template triggers a redeployment when the Jenkins image changes. By default, this image is referenced by the `jenkins:2` image stream tag of Jenkins image stream in the `openshift` namespace in the `ImageStream` YAML file in the Samples Operator payload.
@@ -37,33 +32,23 @@ What stays the same with the OpenShift Jenkins images?
 
 - If you upgrade from OpenShift Container Platform 4.10 and earlier to 4.11, the `jenkins-agent-maven` and `jenkins-agent-nodejs` image streams still exist in your cluster. To maintain these image streams, see the following section, "What happens with the `jenkins-agent-maven` and `jenkins-agent-nodejs` image streams in the `openshift` namespace?"
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-What changes in the support matrix of the OpenShift Jenkins image?
+**What changes in the support matrix of the OpenShift Jenkins image?**
 
 </div>
 
 Each new image in the `ocp-tools-4` repository in the `registry.redhat.io` registry supports multiple versions of OpenShift Container Platform. When Red Hat updates one of these new images, it is simultaneously available for all versions. This availability is ideal when Red Hat updates an image in response to a security advisory. Initially, this change applies to OpenShift Container Platform 4.11 and later. It is planned that this change will eventually apply to OpenShift Container Platform 4.9 and later.
 
-</div>
-
 Previously, each Jenkins image supported only one version of OpenShift Container Platform and Red Hat might update those images sequentially over time.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-What additions are there with the OpenShift Jenkins and Jenkins Agent Base ImageStream and ImageStreamTag objects?
+**What additions are there with the OpenShift Jenkins and Jenkins Agent Base ImageStream and ImageStreamTag objects?**
 
 </div>
 
 By moving from an in-payload image stream to an image stream that references non-payload images, OpenShift Container Platform can define additional image stream tags. Red Hat has created a series of new image stream tags to go along with the existing `"value": "jenkins:2"` and `"value": "image-registry.openshift-image-registry.svc:5000/openshift/jenkins-agent-base-rhel8:latest"` image stream tags present in OpenShift Container Platform 4.10 and earlier. These new image stream tags address some requests to improve how the Jenkins-related image streams are maintained.
-
-</div>
 
 About the new image stream tags:
 
@@ -76,17 +61,13 @@ To manually redeploy Jenkins after you upgrade OpenShift Container Platform, use
 `scheduled-upgrade-redeploy`
 To automatically redeploy the latest version of the Jenkins image when it is released, use this image stream tag in your Jenkins deployment configuration. This image stream tag uses the periodic importing of image stream tags feature of the OpenShift Container Platform image stream controller, which checks for changes in the backing image. If the image changes, for example, due to a recent Jenkins security advisory, OpenShift Container Platform triggers a redeployment of your Jenkins deployment configuration. See "Configuring periodic importing of image stream tags" in the following "Additional resources."
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-What happens with the `jenkins-agent-maven` and `jenkins-agent-nodejs` image streams in the `openshift` namespace?
+**What happens with the `jenkins-agent-maven` and `jenkins-agent-nodejs` image streams in the `openshift` namespace?**
 
 </div>
 
 The OpenShift Jenkins Maven and NodeJS Agent images for OpenShift Container Platform were deprecated in 4.10, and are removed from the OpenShift Container Platform install payload in 4.11. They do not have alternatives defined in the `ocp-tools-4` repository. However, you can work around this by using the sidecar pattern described in the "Jenkins agent" topic mentioned in the following "Additional resources" section.
-
-</div>
 
 However, the Cluster Samples Operator does not delete the `jenkins-agent-maven` and `jenkins-agent-nodejs` image streams created by prior releases, which point to the tags of the respective OpenShift Container Platform payload images on `registry.redhat.io`. Therefore, you can pull updates to these images by running the following commands:
 
@@ -98,17 +79,13 @@ $ oc import-image jenkins-agent-nodejs -n openshift
 $ oc import-image jenkins-agent-maven -n openshift
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-What OpenShift Container Platform architectures and versions does OpenShift Jenkins support?
+**What OpenShift Container Platform architectures and versions does OpenShift Jenkins support?**
 
 </div>
 
 Jenkins supports the following architectures across OpenShift Container Platform releases:
-
-</div>
 
 - `amd64`
 
@@ -120,83 +97,53 @@ Jenkins supports the following architectures across OpenShift Container Platform
 
 However, for OpenShift Container Platform Extended Update Support (EUS) releases, only the `amd64` architecture is officially supported. As a result, OpenShift Jenkins images are shipped exclusively for `amd64` on these releases. This is because the OpenShift Container Platform platform itself supports only the `amd64` architecture for EUS releases. For more information, see [Support Matrix for OpenShift Jenkins releases](https://access.redhat.com/articles/7115356).
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-When Red Hat updates Jenkins container images, are they available for all OpenShift Container Platform versions simultaneously?
+**When Red Hat updates Jenkins container images, are they available for all OpenShift Container Platform versions simultaneously?**
 
 </div>
 
 Yes, Jenkins container images are updated on a quarterly basis, and the updates are made available for all supported Jenkins images across all supported OpenShift Container Platform releases.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-How long are the released Jenkins images supported?
+**How long are the released Jenkins images supported?**
 
 </div>
 
 Red Hat supports only the latest Long-Term Support (LTS) version of the Jenkins core, as provided in our latest container images. We do not support multiple core versions. Our policy is to align with the latest Jenkins LTS version released by the upstream community.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Does the Jenkins release align with OpenShift Container Platform versions?
+**Does the Jenkins release align with OpenShift Container Platform versions?**
 
 </div>
 
 Yes. Our goal is to maintain platform alignment. This means that Jenkins controller and agent images are built and tested for each supported OpenShift Container Platform releases.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Are Jenkins release timelines aligned with OpenShift Container Platform release cycles?
+**Are Jenkins release timelines aligned with OpenShift Container Platform release cycles?**
 
 </div>
 
 Jenkins is no longer part of the OpenShift Container Platform core payload. Releases are managed separately. However, our intent is to publish updated OpenShift Jenkins images for newly released OpenShift Container Platform releases within a few weeks of the OpenShift Container Platform GA release.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Does Red Hat follow the upstream Jenkins lifecycle and LTS versions?
+**Does Red Hat follow the upstream Jenkins lifecycle and LTS versions?**
 
 </div>
 
 Yes. We align with the Jenkins upstream lifecycle and follow the LTS version. Red Hat typically ships OpenShift Jenkins image updates quarterly unless a critical fix requires an out-of-cycle release.
 
-</div>
-
 To verify the current Jenkins LTS version: - Navigate to the Jenkins Catalog → Packages section - Search for “Jenkins” - The result will show two packages, one of which is the Jenkins LTS package.
-
-<div>
-
-<div class="title">
-
-What is not supported?
-
-</div>
 
 - Jenkins versions older than the current OpenShift Jenkins LTS are not supported.
 
 - Running Jenkins outside of OpenShift Container Platform is not supported.
 
 - Multiple core versions of Jenkins are not supported. Plugins bundled with our OpenShift Jenkins images follow the same versioning across all supported OpenShift Container Platform releases.
-
-</div>
 
 # Customizing the Jenkins image stream tag
 
@@ -212,14 +159,9 @@ For new deployments, to override that default value, you change the value of the
 
 - `scheduled-upgrade-redeploy` periodically checks the given `<image>:<tag>` combination for changes and upgrades the image when it changes. The image change controller pulls the changed image and redeploys the Jenkins deployment configuration provisioned by the templates. For more information about this scheduled import policy, see the "Adding tags to image streams" in the following "Additional resources."
 
-> [!NOTE]
-> To override the current upgrade value for existing deployments, change the values of the environment variables that correspond to those template parameters.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+To override the current upgrade value for existing deployments, change the values of the environment variables that correspond to those template parameters.
 
 </div>
 
@@ -227,23 +169,13 @@ Prerequisites
 
 - You know the namespace where OpenShift Jenkins is deployed.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Set the image stream tag value, replacing `<namespace>` with namespace where OpenShift Jenkins is deployed and `<image_stream_tag>` with an image stream tag:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example
+  **Example**
 
   </div>
 
@@ -251,12 +183,11 @@ Procedure
   $ oc patch dc jenkins -p '{"spec":{"triggers":[{"type":"ImageChange","imageChangeParams":{"automatic":true,"containerNames":["jenkins"],"from":{"kind":"ImageStreamTag","namespace":"<namespace>","name":"jenkins:<image_stream_tag>"}}}]}}'
   ```
 
+  <div class="tip">
+
+  Alternatively, to edit the Jenkins deployment configuration YAML, enter `$ oc edit dc/jenkins -n <namespace>` and update the `value: 'jenkins:<image_stream_tag>'` line.
+
   </div>
-
-  > [!TIP]
-  > Alternatively, to edit the Jenkins deployment configuration YAML, enter `$ oc edit dc/jenkins -n <namespace>` and update the `value: 'jenkins:<image_stream_tag>'` line.
-
-</div>
 
 # About the OpenShift CLI tool in OpenShift Jenkins images
 
@@ -270,39 +201,27 @@ If your Jenkins pipelines require a **specific** `oc` client version for compati
 
 Use the following table to understand which version of OpenShift CLI (`oc`) is shipped with your OpenShift Jenkins images.
 
-| OpenShift Jenkins release | Default `oc` version | Bundled `oc` version |
-|----|----|----|
-| 4.12 | 4.13 | 4.12, 4.13 |
-| 4.13 | 4.13 | 4.12, 4.13 |
-| 4.14 | 4.15 | 4.14, 4.15 |
-| 4.15 | 4.15 | 4.14, 4.15 |
-| 4.16 | 4.20 | 4.16, 4.17, 4.18, 4.19, 4.20 |
-| 4.17 | 4.20 | 4.16, 4.17, 4.18, 4.19, 4.20 |
-| 4.18 | 4.20 | 4.16, 4.17, 4.18, 4.19, 4.20 |
-| 4.19 | 4.20 | 4.16, 4.17, 4.18, 4.19, 4.20 |
-| 4.20 | 4.20 | 4.16, 4.17, 4.18, 4.19, 4.20 |
+| OpenShift Jenkins release | Default `oc` version | Bundled `oc` version         |
+|---------------------------|----------------------|------------------------------|
+| 4.12                      | 4.13                 | 4.12, 4.13                   |
+| 4.13                      | 4.13                 | 4.12, 4.13                   |
+| 4.14                      | 4.15                 | 4.14, 4.15                   |
+| 4.15                      | 4.15                 | 4.14, 4.15                   |
+| 4.16                      | 4.20                 | 4.16, 4.17, 4.18, 4.19, 4.20 |
+| 4.17                      | 4.20                 | 4.16, 4.17, 4.18, 4.19, 4.20 |
+| 4.18                      | 4.20                 | 4.16, 4.17, 4.18, 4.19, 4.20 |
+| 4.19                      | 4.20                 | 4.16, 4.17, 4.18, 4.19, 4.20 |
+| 4.20                      | 4.20                 | 4.16, 4.17, 4.18, 4.19, 4.20 |
 
 # Specifying a fixed `oc` client version for OpenShift Jenkins images
 
 You can ensure that your Jenkins pipeline uses your specified `oc` client version with the Jenkins container image by configuring the version you require.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Define the `oc` tool version explicitly in the pipeline configuration to use a specific OpenShift client version in a Jenkins pipeline as shown in the following example:
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example pipeline configuration:
+**Example pipeline configuration:**
 
 </div>
 
@@ -323,8 +242,6 @@ pipeline {
     }
 }
 ```
-
-</div>
 
 # Additional resources
 

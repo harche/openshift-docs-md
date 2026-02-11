@@ -1,33 +1,18 @@
 You can create virtual machines (VMs) from the command line by editing or creating a `VirtualMachine` manifest. You can simplify VM configuration by using an [instance type](../../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types) in your VM manifest.
 
-> [!NOTE]
-> You can also [create VMs from instance types by using the web console](../../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types).
+<div class="note">
+
+You can also [create VMs from instance types by using the web console](../../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types).
+
+</div>
 
 # Creating a VM from a VirtualMachine manifest
 
 You can create a virtual machine (VM) from a `VirtualMachine` manifest. To simplify the creation of these manifests, you can use the `virtctl` command-line tool.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the `virtctl` CLI.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `VirtualMachine` manifest for your VM and save it as a YAML file. For example, to create a minimal Red Hat Enterprise Linux (RHEL) VM, run the following command:
 
@@ -37,14 +22,15 @@ Procedure
 
 2.  Review the `VirtualMachine` manifest for your VM:
 
-    > [!NOTE]
-    > This example manifest does not configure VM authentication.
+    <div class="note">
 
-    <div class="formalpara">
+    This example manifest does not configure VM authentication.
 
-    <div class="title">
+    </div>
 
-    Example manifest for a RHEL VM
+    <div class="formalpara-title">
+
+    **Example manifest for a RHEL VM**
 
     </div>
 
@@ -85,8 +71,6 @@ Procedure
             name: imported-volume-mk4lj
     ```
 
-    </div>
-
     - The VM name.
 
     - The boot source for the guest operating system.
@@ -109,16 +93,4 @@ Procedure
     $ virtctl start <vm_name>
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - [Configuring SSH access to virtual machines](../../../virt/managing_vms/virt-accessing-vm-ssh.xml#virt-accessing-vm-ssh)
-
-</div>

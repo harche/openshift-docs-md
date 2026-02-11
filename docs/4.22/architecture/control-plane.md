@@ -10,36 +10,35 @@ For worker nodes, you can create additional MCPs, or custom pools, to manage nod
 
 Custom pools are pools that inherit their configurations from the worker pool. They use any machine config targeted for the worker pool, but add the ability to deploy changes only targeted at the custom pool. Since a custom pool inherits its configuration from the worker pool, any change to the worker pool is applied to the custom pool as well. Custom pools that do not inherit their configurations from the worker pool are not supported by the MCO.
 
-> [!NOTE]
-> A node can only be included in one MCP. If a node has multiple labels that correspond to several MCPs, like `worker,infra`, it is managed by the infra custom pool, not the worker pool. Custom pools take priority on selecting nodes to manage based on node labels; nodes that do not belong to a custom pool are managed by the worker pool.
+<div class="note">
+
+A node can only be included in one MCP. If a node has multiple labels that correspond to several MCPs, like `worker,infra`, it is managed by the infra custom pool, not the worker pool. Custom pools take priority on selecting nodes to manage based on node labels; nodes that do not belong to a custom pool are managed by the worker pool.
+
+</div>
 
 It is recommended to have a custom pool for every node role you want to manage in your cluster. For example, if you create infra nodes to handle infra workloads, it is recommended to create a custom infra MCP to group those nodes together. If you apply an `infra` role label to a worker node so it has the `worker,infra` dual label, but do not have a custom infra MCP, the MCO considers it a worker node. If you remove the `worker` label from a node and apply the `infra` label without grouping it in a custom pool, the node is not recognized by the MCO and is unmanaged by the cluster.
 
-> [!IMPORTANT]
-> Any node labeled with the `infra` role that is only running infra workloads is not counted toward the total number of subscriptions. The MCP managing an infra node is mutually exclusive from how the cluster determines subscription charges; tagging a node with the appropriate `infra` role and using taints to prevent user workloads from being scheduled on that node are the only requirements for avoiding subscription charges for infra workloads.
+<div class="important">
+
+Any node labeled with the `infra` role that is only running infra workloads is not counted toward the total number of subscriptions. The MCP managing an infra node is mutually exclusive from how the cluster determines subscription charges; tagging a node with the appropriate `infra` role and using taints to prevent user workloads from being scheduled on that node are the only requirements for avoiding subscription charges for infra workloads.
+
+</div>
 
 The MCO applies updates for pools independently; for example, if there is an update that affects all pools, nodes from each pool update in parallel with each other. If you add a custom pool, nodes from that pool also attempt to update concurrently with the master and worker nodes.
 
 There might be situations where the configuration on a node does not fully match what the currently-applied machine config specifies. This state is called *configuration drift*. The Machine Config Daemon (MCD) regularly checks the nodes for configuration drift. If the MCD detects configuration drift, the MCO marks the node `degraded` until an administrator corrects the node configuration. A degraded node is online and operational, but, it cannot be updated.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Understanding configuration drift detection](../machine_configuration/index.xml#machine-config-drift-detection_machine-config-overview)
-
-</div>
 
 # Machine roles in OpenShift Container Platform
 
 OpenShift Container Platform assigns hosts different roles. These roles define the function of the machine within the cluster. The cluster contains definitions for the standard `master` and `worker` role types.
 
-> [!NOTE]
-> The cluster also contains the definition for the `bootstrap` role. Because the bootstrap machine is used only during cluster installation, its function is explained in the cluster installation documentation.
+<div class="note">
+
+The cluster also contains the definition for the `bootstrap` role. Because the bootstrap machine is used only during cluster installation, its function is explained in the cluster installation documentation.
+
+</div>
 
 ## Control plane and node host compatibility
 
@@ -49,9 +48,9 @@ Temporary mismatches during cluster upgrades are acceptable. For example, when u
 
 The `kubelet` service must not be newer than `kube-apiserver`, and can be up to two minor versions older depending on whether your OpenShift Container Platform version is odd or even. The table below shows the appropriate version compatibility:
 
-| OpenShift Container Platform version | Supported `kubelet` skew |
-|----|----|
-| Odd OpenShift Container Platform minor versions <sup>\[1\]</sup> | Up to one version older |
+| OpenShift Container Platform version                              | Supported `kubelet` skew |
+|-------------------------------------------------------------------|--------------------------|
+| Odd OpenShift Container Platform minor versions <sup>\[1\]</sup>  | Up to one version older  |
 | Even OpenShift Container Platform minor versions <sup>\[2\]</sup> | Up to two versions older |
 
 1.  For example, OpenShift Container Platform 4.11, 4.13.
@@ -70,13 +69,19 @@ In a Kubernetes cluster, worker nodes run and manage the actual workloads reques
 
 - The crun or runC low-level container runtime, which creates and runs containers.
 
-> [!NOTE]
-> For information about how to enable runC instead of the default crun, see the documentation for creating a `ContainerRuntimeConfig` CR.
+<div class="note">
+
+For information about how to enable runC instead of the default crun, see the documentation for creating a `ContainerRuntimeConfig` CR.
+
+</div>
 
 In OpenShift Container Platform, compute machine sets control the compute machines, which are assigned the `worker` machine role. Machines with the `worker` role drive compute workloads that are governed by a specific machine pool that autoscales them. Because OpenShift Container Platform has the capacity to support multiple machine types, the machines with the `worker` role are classed as *compute* machines. In this release, the terms *worker machine* and *compute machine* are used interchangeably because the only default type of compute machine is the worker machine. In future versions of OpenShift Container Platform, different types of compute machines, such as infrastructure machines, might be used by default.
 
-> [!NOTE]
-> Compute machine sets are groupings of compute machine resources under the `machine-api` namespace. Compute machine sets are configurations that are designed to start new compute machines on a specific cloud provider. Conversely, machine config pools (MCPs) are part of the Machine Config Operator (MCO) namespace. An MCP is used to group machines together so the MCO can manage their configurations and facilitate their upgrades.
+<div class="note">
+
+Compute machine sets are groupings of compute machine resources under the `machine-api` namespace. Compute machine sets are configurations that are designed to start new compute machines on a specific cloud provider. Conversely, machine config pools (MCPs) are part of the Machine Config Operator (MCO) namespace. An MCP is used to group machines together so the MCO can manage their configurations and facilitate their upgrades.
+
+</div>
 
 ## Cluster control planes
 
@@ -84,17 +89,20 @@ In a Kubernetes cluster, the *master* nodes run services that are required to co
 
 For most OpenShift Container Platform clusters, control plane machines are defined by a series of standalone machine API resources. For supported cloud provider and OpenShift Container Platform version combinations, control planes can be managed with control plane machine sets. Extra controls apply to control plane machines to prevent you from deleting all of the control plane machines and breaking your cluster.
 
-> [!NOTE]
-> Exactly three control plane nodes must be used for all production deployments. However, on bare metal platforms, clusters can be scaled up to five control plane nodes.
+<div class="note">
+
+Exactly three control plane nodes must be used for all production deployments. However, on bare metal platforms, clusters can be scaled up to five control plane nodes.
+
+</div>
 
 Services that fall under the Kubernetes category on the control plane include the Kubernetes API server, etcd, the Kubernetes controller manager, and the Kubernetes scheduler.
 
-| Component | Description |
-|----|----|
-| Kubernetes API server | The Kubernetes API server validates and configures the data for pods, services, and replication controllers. It also provides a focal point for the shared state of the cluster. |
-| etcd | etcd stores the persistent control plane state while other components watch etcd for changes to bring themselves into the specified state. |
+| Component                     | Description                                                                                                                                                                                                                                                                   |
+|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Kubernetes API server         | The Kubernetes API server validates and configures the data for pods, services, and replication controllers. It also provides a focal point for the shared state of the cluster.                                                                                              |
+| etcd                          | etcd stores the persistent control plane state while other components watch etcd for changes to bring themselves into the specified state.                                                                                                                                    |
 | Kubernetes controller manager | The Kubernetes controller manager watches etcd for changes to objects such as replication, namespace, and service account controller objects, and then uses the API to enforce the specified state. Several such processes create a cluster with one active leader at a time. |
-| Kubernetes scheduler | The Kubernetes scheduler watches for newly created pods without an assigned node and selects the best node to host the pod. |
+| Kubernetes scheduler          | The Kubernetes scheduler watches for newly created pods without an assigned node and selects the best node to host the pod.                                                                                                                                                   |
 
 Kubernetes services that run on the control plane
 
@@ -107,34 +115,36 @@ There are also OpenShift services that run on the control plane, which include t
 <col style="width: 66%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>OpenShift API server</p></td>
 <td style="text-align: left;"><p>The OpenShift API server validates and configures the data for OpenShift resources, such as projects, routes, and templates.</p>
 <p>The OpenShift API server is managed by the OpenShift API Server Operator.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>OpenShift controller manager</p></td>
 <td style="text-align: left;"><p>The OpenShift controller manager watches etcd for changes to OpenShift objects, such as project, route, and template controller objects, and then uses the API to enforce the specified state.</p>
 <p>The OpenShift controller manager is managed by the OpenShift Controller Manager Operator.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>OpenShift OAuth API server</p></td>
 <td style="text-align: left;"><p>The OpenShift OAuth API server validates and configures the data to authenticate to OpenShift Container Platform, such as users, groups, and OAuth tokens.</p>
 <p>The OpenShift OAuth API server is managed by the Cluster Authentication Operator.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>OpenShift OAuth server</p></td>
 <td style="text-align: left;"><p>Users request tokens from the OpenShift OAuth server to authenticate themselves to the API.</p>
 <p>The OpenShift OAuth server is managed by the Cluster Authentication Operator.</p></td>
 </tr>
 </tbody>
 </table>
+
+OpenShift services that run on the control plane
 
 Some of these services on the control plane machines run as systemd services, while others run as static pods.
 
@@ -180,17 +190,7 @@ In OpenShift Container Platform, all cluster functions are divided into a series
 
 Cluster Operators are represented by a `ClusterOperator` object, which cluster administrators can view in the OpenShift Container Platform web console from the **Administration** → **Cluster Settings** page. Each cluster Operator provides a simple API for determining cluster functionality. The Operator hides the details of managing the lifecycle of that component. Operators can manage a single component or tens of components, but the end goal is always to reduce operational burden by automating common actions.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Cluster Operators reference](../operators/operator-reference.xml#operator-reference)
-
-</div>
 
 ## Add-on Operators
 
@@ -200,22 +200,15 @@ Using the software catalog in the OpenShift Container Platform web console, clus
 
 Default catalog sources are available that include Red Hat Operators, certified Operators, and community Operators. Cluster administrators can also add their own custom catalog sources, which can contain a custom set of Operators.
 
-> [!NOTE]
-> OLM does not manage the cluster Operators that comprise the OpenShift Container Platform architecture.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+OLM does not manage the cluster Operators that comprise the OpenShift Container Platform architecture.
 
 </div>
 
 - [Operator Lifecycle Manager (OLM) concepts and resources](../operators/understanding/olm/olm-understanding-olm.xml#olm-understanding-olm)
 
 - [Understanding the software catalog](../operators/understanding/olm-understanding-software-catalog.xml#olm-understanding-software-catalog).
-
-</div>
 
 # Overview of etcd
 
@@ -245,16 +238,6 @@ The etcd Operator observes, analyzes, and acts:
 
 etcd holds the cluster state, which is constantly updated. This state is continuously persisted, which leads to a high number of small changes at high frequency. As a result, it is critical to back the etcd cluster member with fast, low-latency I/O. For more information about best practices for etcd, see "Recommended etcd practices".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Recommended etcd practices](../etcd/etcd-practices.xml#recommended-etcd-practices)
 
 - [Backing up etcd](../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backing-up-etcd)
-
-</div>

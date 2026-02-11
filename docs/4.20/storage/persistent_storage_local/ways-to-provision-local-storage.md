@@ -6,8 +6,11 @@ You can use any of the following solutions to provision local storage:
 
 - Logical Volume Manager (LVM) Storage
 
-> [!WARNING]
-> These solutions support provisioning only node-local storage. The workloads are bound to the nodes that provide the storage. If the node becomes unavailable, the workload also becomes unavailable. To maintain workload availability despite node failures, you must ensure storage data replication through active or passive replication mechanisms.
+<div class="warning">
+
+These solutions support provisioning only node-local storage. The workloads are bound to the nodes that provide the storage. If the node becomes unavailable, the workload also becomes unavailable. To maintain workload availability despite node failures, you must ensure storage data replication through active or passive replication mechanisms.
+
+</div>
 
 # Overview of HostPath Provisioner functionality
 
@@ -21,8 +24,11 @@ You can perform the following actions using HostPath Provisioner (HPP):
 
 - Create workloads and PersistentVolumeClaims (PVCs) while being aware of the underlying storage topology.
 
-> [!NOTE]
-> HPP is available in upstream Kubernetes. However, it is not recommended to use HPP from upstream Kubernetes.
+<div class="note">
+
+HPP is available in upstream Kubernetes. However, it is not recommended to use HPP from upstream Kubernetes.
+
+</div>
 
 # Overview of Local Storage Operator functionality
 
@@ -34,8 +40,11 @@ You can perform the following actions using Local Storage Operator (LSO):
 
 - Create workloads and PVCs while being aware of the underlying storage topology.
 
-> [!NOTE]
-> LSO is developed and delivered by Red Hat.
+<div class="note">
+
+LSO is developed and delivered by Red Hat.
+
+</div>
 
 # Overview of LVM Storage functionality
 
@@ -47,8 +56,11 @@ You can perform the following actions using Logical Volume Manager (LVM) Storage
 
 LVM Storage uses the TopoLVM CSI driver to dynamically allocate storage space to the nodes in the topology and provision PVs.
 
-> [!NOTE]
-> LVM Storage is developed and maintained by Red Hat. The CSI driver provided with LVM Storage is the upstream project "topolvm".
+<div class="note">
+
+LVM Storage is developed and maintained by Red Hat. The CSI driver provided with LVM Storage is the upstream project "topolvm".
+
+</div>
 
 # Comparison of LVM Storage, LSO, and HPP
 
@@ -58,12 +70,12 @@ The following sections compare the functionalities provided by LVM Storage, Loca
 
 The following table compares the support for storage types and filesystems provided by LVM Storage, Local Storage Operator (LSO), and HostPath Provisioner (HPP) to provision local storage:
 
-| Functionality | LVM Storage | LSO | HPP |
-|----|----|----|----|
-| Support for block storage | Yes | Yes | No |
-| Support for file storage | Yes | Yes | Yes |
-| Support for object storage <sup>\[1\]</sup> | No | No | No |
-| Available filesystems | `ext4`, `xfs` | `ext4`, `xfs` | Any mounted system available on the node is supported. |
+| Functionality                               | LVM Storage   | LSO           | HPP                                                    |
+|---------------------------------------------|---------------|---------------|--------------------------------------------------------|
+| Support for block storage                   | Yes           | Yes           | No                                                     |
+| Support for file storage                    | Yes           | Yes           | Yes                                                    |
+| Support for object storage <sup>\[1\]</sup> | No            | No            | No                                                     |
+| Available filesystems                       | `ext4`, `xfs` | `ext4`, `xfs` | Any mounted system available on the node is supported. |
 
 Comparison of the support for storage types and filesystems
 
@@ -82,7 +94,7 @@ The following table compares how LVM Storage, Local Storage Operator (LSO), and 
 <col style="width: 23%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Functionality</th>
 <th style="text-align: left;">LVM Storage</th>
 <th style="text-align: left;">LSO</th>
@@ -90,57 +102,57 @@ The following table compares how LVM Storage, Local Storage Operator (LSO), and 
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Support for automatic file system formatting</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 <td style="text-align: left;"><p>N/A</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Support for dynamic provisioning</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 <td style="text-align: left;"><p>No</p></td>
 <td style="text-align: left;"><p>No</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Support for using software Redundant Array of Independent Disks (RAID) arrays</p></td>
 <td style="text-align: left;"><p>Yes</p>
 <p>Supported on 4.15 and later.</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Support for transparent disk encryption</p></td>
 <td style="text-align: left;"><p>Yes</p>
 <p>Supported on 4.16 and later.</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Support for volume based disk encryption</p></td>
 <td style="text-align: left;"><p>No</p></td>
 <td style="text-align: left;"><p>No</p></td>
 <td style="text-align: left;"><p>No</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Support for disconnected installation</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Support for PVC expansion</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 <td style="text-align: left;"><p>No</p></td>
 <td style="text-align: left;"><p>No</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Support for volume snapshots and volume clones</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 <td style="text-align: left;"><p>No</p></td>
 <td style="text-align: left;"><p>No</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Support for thin provisioning</p></td>
 <td style="text-align: left;"><p>Yes</p>
 <p>Devices are thin-provisioned by default.</p></td>
@@ -149,7 +161,7 @@ The following table compares how LVM Storage, Local Storage Operator (LSO), and 
 <td style="text-align: left;"><p>Yes</p>
 <p>You can configure a path to point to the thin-provisioned volumes.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Support for automatic disk discovery and setup</p></td>
 <td style="text-align: left;"><p>Yes</p>
 <p>Automatic disk discovery is available during installation and runtime. You can also dynamically add the disks to the <code>LVMCluster</code> custom resource (CR) to increase the storage capacity of the existing storage classes.</p></td>
@@ -159,6 +171,8 @@ The following table compares how LVM Storage, Local Storage Operator (LSO), and 
 </tr>
 </tbody>
 </table>
+
+Comparison of the support for core functionalities
 
 ## Comparison of performance and isolation capabilities
 
@@ -173,7 +187,7 @@ The following table compares the performance and isolation capabilities of LVM S
 <col style="width: 26%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Functionality</th>
 <th style="text-align: left;">LVM Storage</th>
 <th style="text-align: left;">LSO</th>
@@ -181,7 +195,7 @@ The following table compares the performance and isolation capabilities of LVM S
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Performance</p></td>
 <td style="text-align: left;"><p>I/O speed is shared for all workloads that use the same storage class.</p>
 <p>Block storage allows direct I/O operations.</p>
@@ -191,7 +205,7 @@ The following table compares the performance and isolation capabilities of LVM S
 <td style="text-align: left;"><p>I/O speed is shared for all workloads that use the same storage class.</p>
 <p>The restrictions imposed by the underlying filesystem can affect the I/O speed.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Isolation boundary <sup>[1]</sup></p></td>
 <td style="text-align: left;"><p>LVM Logical Volume (LV)</p>
 <p>It provides higher level of isolation compared to HPP.</p></td>
@@ -202,6 +216,8 @@ The following table compares the performance and isolation capabilities of LVM S
 </tr>
 </tbody>
 </table>
+
+Comparison of performance and isolation capabilities
 
 1.  Isolation boundary refers to the level of separation between different workloads or applications that use local storage resources.
 
@@ -218,7 +234,7 @@ The following table compares the additional features provided by LVM Storage, Lo
 <col style="width: 23%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Functionality</th>
 <th style="text-align: left;">LVM Storage</th>
 <th style="text-align: left;">LSO</th>
@@ -226,19 +242,19 @@ The following table compares the additional features provided by LVM Storage, Lo
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Support for generic ephemeral volumes</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 <td style="text-align: left;"><p>No</p></td>
 <td style="text-align: left;"><p>No</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Support for CSI inline ephemeral volumes</p></td>
 <td style="text-align: left;"><p>No</p></td>
 <td style="text-align: left;"><p>No</p></td>
 <td style="text-align: left;"><p>No</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Support for storage topology</p></td>
 <td style="text-align: left;"><p>Yes</p>
 <p>Supports CSI node topology</p></td>
@@ -246,7 +262,7 @@ The following table compares the additional features provided by LVM Storage, Lo
 <p>LSO provides partial support for storage topology through node tolerations.</p></td>
 <td style="text-align: left;"><p>No</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Support for <code>ReadWriteMany</code> (RWX) access mode <sup>[1]</sup></p></td>
 <td style="text-align: left;"><p>No</p></td>
 <td style="text-align: left;"><p>No</p></td>
@@ -254,5 +270,7 @@ The following table compares the additional features provided by LVM Storage, Lo
 </tr>
 </tbody>
 </table>
+
+Comparison of the support for additional functionalities
 
 1.  All of the solutions (LVM Storage, LSO, and HPP) have the `ReadWriteOnce` (RWO) access mode. RWO access mode allows access from multiple pods on the same node.

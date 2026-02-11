@@ -6,13 +6,13 @@ Type
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | spec is the desired state of IPAddressClaim. |
-| `status` | `object` | status is the observed state of IPAddressClaim. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | spec is the desired state of IPAddressClaim.                                                                                                                                                                                                                                                         |
+| `status`     | `object`                                                                             | status is the observed state of IPAddressClaim.                                                                                                                                                                                                                                                      |
 
 ## .spec
 
@@ -25,10 +25,10 @@ Type
 Required
 - `poolRef`
 
-| Property | Type | Description |
-|----|----|----|
-| `clusterName` | `string` | clusterName is the name of the Cluster this object belongs to. |
-| `poolRef` | `object` | poolRef is a reference to the pool from which an IP address should be created. |
+| Property      | Type     | Description                                                                    |
+|---------------|----------|--------------------------------------------------------------------------------|
+| `clusterName` | `string` | clusterName is the name of the Cluster this object belongs to.                 |
+| `poolRef`     | `object` | poolRef is a reference to the pool from which an IP address should be created. |
 
 ## .spec.poolRef
 
@@ -43,11 +43,11 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                                                                                                                                     |
+|------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiGroup` | `string` | APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required. |
-| `kind` | `string` | Kind is the type of resource being referenced |
-| `name` | `string` | Name is the name of resource being referenced |
+| `kind`     | `string` | Kind is the type of resource being referenced                                                                                                                                                   |
+| `name`     | `string` | Name is the name of resource being referenced                                                                                                                                                   |
 
 ## .status
 
@@ -57,12 +57,12 @@ status is the observed state of IPAddressClaim.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `addressRef` | `object` | addressRef is a reference to the address that was created for this claim. |
-| `conditions` | `array` | conditions summarises the current state of the IPAddressClaim |
-| `conditions[]` | `object` | Condition defines an observation of a Cluster API resource operational state. |
-| `v1beta2` | `object` | v1beta2 groups all the fields that will be added or modified in IPAddressClaim’s status with the V1Beta2 version. |
+| Property       | Type     | Description                                                                                                       |
+|----------------|----------|-------------------------------------------------------------------------------------------------------------------|
+| `addressRef`   | `object` | addressRef is a reference to the address that was created for this claim.                                         |
+| `conditions`   | `array`  | conditions summarises the current state of the IPAddressClaim                                                     |
+| `conditions[]` | `object` | Condition defines an observation of a Cluster API resource operational state.                                     |
+| `v1beta2`      | `object` | v1beta2 groups all the fields that will be added or modified in IPAddressClaim’s status with the V1Beta2 version. |
 
 ## .status.addressRef
 
@@ -72,9 +72,9 @@ addressRef is a reference to the address that was created for this claim.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                  |
+|----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
 
 ## .status.conditions
 
@@ -99,14 +99,14 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastTransitionTime` | `string` | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable. |
-| `message` | `string` | message is a human readable message indicating details about the transition. This field may be empty. |
-| `reason` | `string` | reason is the reason for the condition’s last transition in CamelCase. The specific API may choose whether or not this field is considered a guaranteed API. This field may be empty. |
-| `severity` | `string` | severity provides an explicit classification of Reason code, so the users or machines can immediately understand the current situation and act accordingly. The Severity field MUST be set only when Status=False. |
-| `status` | `string` | status of the condition, one of True, False, Unknown. |
-| `type` | `string` | type of condition in CamelCase or in foo.example.com/CamelCase. Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important. |
+| Property             | Type     | Description                                                                                                                                                                                                                                                       |
+|----------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string` | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable.                              |
+| `message`            | `string` | message is a human readable message indicating details about the transition. This field may be empty.                                                                                                                                                             |
+| `reason`             | `string` | reason is the reason for the condition’s last transition in CamelCase. The specific API may choose whether or not this field is considered a guaranteed API. This field may be empty.                                                                             |
+| `severity`           | `string` | severity provides an explicit classification of Reason code, so the users or machines can immediately understand the current situation and act accordingly. The Severity field MUST be set only when Status=False.                                                |
+| `status`             | `string` | status of the condition, one of True, False, Unknown.                                                                                                                                                                                                             |
+| `type`               | `string` | type of condition in CamelCase or in foo.example.com/CamelCase. Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important. |
 
 ## .status.v1beta2
 
@@ -116,9 +116,9 @@ v1beta2 groups all the fields that will be added or modified in IPAddressClaim�
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `conditions` | `array` | conditions represents the observations of a IPAddressClaim’s current state. |
+| Property       | Type     | Description                                                                          |
+|----------------|----------|--------------------------------------------------------------------------------------|
+| `conditions`   | `array`  | conditions represents the observations of a IPAddressClaim’s current state.          |
 | `conditions[]` | `object` | Condition contains details for one aspect of the current state of this API Resource. |
 
 ## .status.v1beta2.conditions
@@ -148,14 +148,14 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastTransitionTime` | `string` | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable. |
-| `message` | `string` | message is a human readable message indicating details about the transition. This may be an empty string. |
-| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance. |
-| `reason` | `string` | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
-| `status` | `string` | status of the condition, one of True, False, Unknown. |
-| `type` | `string` | type of condition in CamelCase or in foo.example.com/CamelCase. |
+| Property             | Type      | Description                                                                                                                                                                                                                                                                                                                     |
+|----------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string`  | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable.                                                                                            |
+| `message`            | `string`  | message is a human readable message indicating details about the transition. This may be an empty string.                                                                                                                                                                                                                       |
+| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.                                   |
+| `reason`             | `string`  | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
+| `status`             | `string`  | status of the condition, one of True, False, Unknown.                                                                                                                                                                                                                                                                           |
+| `type`               | `string`  | type of condition in CamelCase or in foo.example.com/CamelCase.                                                                                                                                                                                                                                                                 |
 
 # API endpoints
 
@@ -199,10 +199,10 @@ HTTP method
 Description
 list objects of kind IPAddressClaim
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAddressClaimList`](../objects/index.xml#io-x-k8s-cluster-ipam-v1beta1-IPAddressClaimList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                         |
+|--------------------|------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAddressClaimList`](../objects/index.xml#io-x-k8s-cluster-ipam-v1beta1-IPAddressClaimList) schema |
+| 401 - Unauthorized | Empty                                                                                                |
 
 HTTP responses
 
@@ -214,10 +214,10 @@ HTTP method
 Description
 delete collection of IPAddressClaim
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -227,10 +227,10 @@ HTTP method
 Description
 list objects of kind IPAddressClaim
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAddressClaimList`](../objects/index.xml#io-x-k8s-cluster-ipam-v1beta1-IPAddressClaimList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                         |
+|--------------------|------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAddressClaimList`](../objects/index.xml#io-x-k8s-cluster-ipam-v1beta1-IPAddressClaimList) schema |
+| 401 - Unauthorized | Empty                                                                                                |
 
 HTTP responses
 
@@ -240,25 +240,25 @@ HTTP method
 Description
 create an IPAddressClaim
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |  |
+| Parameter | Type                                                                                                                                     | Description |
+|-----------|------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
-| 201 - Created | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
-| 202 - Accepted | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                             |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
+| 201 - Created      | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
+| 202 - Accepted     | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                    |
 
 HTTP responses
 
@@ -276,17 +276,17 @@ HTTP method
 Description
 delete an IPAddressClaim
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -296,10 +296,10 @@ HTTP method
 Description
 read the specified IPAddressClaim
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                             |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                    |
 
 HTTP responses
 
@@ -309,17 +309,17 @@ HTTP method
 Description
 partially update the specified IPAddressClaim
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                             |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                    |
 
 HTTP responses
 
@@ -329,24 +329,24 @@ HTTP method
 Description
 replace the specified IPAddressClaim
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |  |
+| Parameter | Type                                                                                                                                     | Description |
+|-----------|------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
-| 201 - Created | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                             |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
+| 201 - Created      | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                    |
 
 HTTP responses
 
@@ -364,10 +364,10 @@ HTTP method
 Description
 read status of the specified IPAddressClaim
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                             |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                    |
 
 HTTP responses
 
@@ -377,17 +377,17 @@ HTTP method
 Description
 partially update status of the specified IPAddressClaim
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                             |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                    |
 
 HTTP responses
 
@@ -397,23 +397,23 @@ HTTP method
 Description
 replace status of the specified IPAddressClaim
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |  |
+| Parameter | Type                                                                                                                                     | Description |
+|-----------|------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
-| 201 - Created | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                             |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
+| 201 - Created      | [`IPAddressClaim`](../network_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.xml#ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                    |
 
 HTTP responses

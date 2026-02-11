@@ -27,8 +27,11 @@ Roles are categorized into the following types:
 Bindings
 Associations between users and groups with a role. You can create a role binding to connect the rules in a role to a specific user ID or group. This brings together the role and the user or group, defining what actions they can perform.
 
-> [!NOTE]
-> You can bind more than one role to a user or group.
+<div class="note">
+
+You can bind more than one role to a user or group.
+
+</div>
 
 For more information on RBAC, see "Using RBAC to define and apply permissions".
 
@@ -36,17 +39,7 @@ For more information on RBAC, see "Using RBAC to define and apply permissions".
 
 To reduce operational overhead, manage access through groups rather than handling individual user IDs across multiple clusters. By managing groups at an organizational level, you can streamline access control and simplify administration across your organization.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Using RBAC to define and apply permissions](../../../authentication/using-rbac.xml#authorization-overview_using-rbac)
-
-</div>
 
 # Security accounts overview
 
@@ -56,17 +49,7 @@ You can use service accounts to apply role-based access control (RBAC) to pods. 
 
 For more information about service accounts, see "Understanding and creating service accounts".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Understanding and creating service accounts](../../../authentication/understanding-and-creating-service-accounts.xml#understanding-and-creating-service-accounts)
-
-</div>
 
 # Identity provider configuration
 
@@ -74,8 +57,11 @@ Configuring an identity provider is the first step in setting up users on the cl
 
 The identity provider can pull in specific user groups that are maintained at the organizational level, rather than the cluster level. This allows you to add and remove users from groups that follow your organization’s established practices.
 
-> [!NOTE]
-> You must set up a cron job to run frequently to pull any changes into the cluster.
+<div class="note">
+
+You must set up a cron job to run frequently to pull any changes into the cluster.
+
+</div>
 
 You can use an identity provider to manage access levels for specific groups within your organization. For example, you can perform the following actions to manage access levels:
 
@@ -87,45 +73,17 @@ You can use an identity provider to manage access levels for specific groups wit
 
 For information about configuring an identity provider, see "Understanding identity provider configuration".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Understanding identity provider configuration](../../../authentication/understanding-identity-provider.xml#understanding-identity-provider)
-
-</div>
 
 # Replacing the kubeadmin user with a cluster-admin user
 
 The `kubeadmin` user with the `cluster-admin` privileges is created on every cluster by default. To enhance the cluster security, you can replace the\`kubeadmin\` user with a `cluster-admin` user and then disable or remove the `kubeadmin` user.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have created a user with `cluster-admin` privileges.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have administrative access to a virtual vault for secure storage.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an emergency `cluster-admin` user by using the `htpasswd` identity provider. For more information, see "About htpasswd authentication".
 
@@ -149,8 +107,11 @@ Procedure
 
 4.  Store the password or authentication key for the emergency user securely in a virtual vault.
 
-    > [!NOTE]
-    > Follow the best practices of your organization for securing sensitive credentials.
+    <div class="note">
+
+    Follow the best practices of your organization for securing sensitive credentials.
+
+    </div>
 
 5.  Disable or remove the `kubeadmin` user to reduce security risks by running the following command:
 
@@ -158,19 +119,7 @@ Procedure
     $ oc delete secrets kubeadmin -n kube-system
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring an htpasswd identity provider](../../../authentication/identity_providers/configuring-htpasswd-identity-provider.xml#identity-provider-htpasswd-about_configuring-htpasswd-identity-provider)
-
-</div>
 
 # Security considerations
 
@@ -204,14 +153,4 @@ Upgrades are critical for security. When a vulnerability is discovered, it is pa
 
 For more information about lifecycle management and upgrades, see "Upgrading OpenShift Container Platform clusters".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Upgrading an OpenShift cluster](../../../edge_computing/day_2_core_cnf_clusters/updating/update-welcome.xml#update-welcome)
-
-</div>

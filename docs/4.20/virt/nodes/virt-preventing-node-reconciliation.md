@@ -4,25 +4,9 @@ Use `skip-node` annotation to prevent the `node-labeller` from reconciling a nod
 
 If you want the `node-labeller` to skip a node, annotate that node by using the OpenShift CLI (`oc`).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Annotate the node that you want to skip by running the following command:
 
@@ -33,8 +17,6 @@ Procedure
   Replace `<node_name>` with the name of the relevant node to skip.
 
   Reconciliation resumes on the next cycle after the node annotation is removed or set to false.
-
-</div>
 
 # Additional resources
 

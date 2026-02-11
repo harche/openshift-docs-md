@@ -18,8 +18,11 @@ You can specify that:
 
 For more information about the `encryptionKey` parameter, see [Additional IBM Cloud configuration parameters](../../installing/installing_ibm_cloud/installation-config-parameters-ibm-cloud-vpc.xml#installation-configuration-parameters-additional-ibm-cloud_installation-config-parameters-ibm-cloud-vpc).
 
-> [!NOTE]
-> Make sure you have integrated Key Protect with your IBM Cloud Block Storage service. For more information, see the Key Protect [documentation](https://cloud.ibm.com/docs/key-protect?topic=key-protect-integrate-services#grant-access).
+<div class="note">
+
+Make sure you have integrated Key Protect with your IBM Cloud Block Storage service. For more information, see the Key Protect [documentation](https://cloud.ibm.com/docs/key-protect?topic=key-protect-integrate-services#grant-access).
+
+</div>
 
 # Next steps
 

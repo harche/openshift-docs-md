@@ -6,13 +6,13 @@ Type
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | metadata is the standard object metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | HorizontalPodAutoscalerSpec describes the desired functionality of the HorizontalPodAutoscaler. |
-| `status` | `object` | HorizontalPodAutoscalerStatus describes the current status of a horizontal pod autoscaler. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | metadata is the standard object metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                  |
+| `spec`       | `object`                                                                             | HorizontalPodAutoscalerSpec describes the desired functionality of the HorizontalPodAutoscaler.                                                                                                                                                                                                      |
+| `status`     | `object`                                                                             | HorizontalPodAutoscalerStatus describes the current status of a horizontal pod autoscaler.                                                                                                                                                                                                           |
 
 ## .spec
 
@@ -27,14 +27,14 @@ Required
 
 - `maxReplicas`
 
-| Property | Type | Description |
-|----|----|----|
-| `behavior` | `object` | HorizontalPodAutoscalerBehavior configures the scaling behavior of the target in both Up and Down directions (scaleUp and scaleDown fields respectively). |
-| `maxReplicas` | `integer` | maxReplicas is the upper limit for the number of replicas to which the autoscaler can scale up. It cannot be less that minReplicas. |
-| `metrics` | `array` | metrics contains the specifications for which to use to calculate the desired replica count (the maximum replica count across all metrics will be used). The desired replica count is calculated multiplying the ratio between the target value and the current value by the current number of pods. Ergo, metrics used must decrease as the pod count is increased, and vice-versa. See the individual metric source types for more information about how each type of metric must respond. If not set, the default metric will be set to 80% average CPU utilization. |
-| `metrics[]` | `object` | MetricSpec specifies how to scale based on a single metric (only `type` and one other matching field should be set at once). |
-| `minReplicas` | `integer` | minReplicas is the lower limit for the number of replicas to which the autoscaler can scale down. It defaults to 1 pod. minReplicas is allowed to be 0 if the alpha feature gate HPAScaleToZero is enabled and at least one Object or External metric is configured. Scaling is active as long as at least one metric value is available. |
-| `scaleTargetRef` | `object` | CrossVersionObjectReference contains enough information to let you identify the referred resource. |
+| Property         | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+|------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `behavior`       | `object`  | HorizontalPodAutoscalerBehavior configures the scaling behavior of the target in both Up and Down directions (scaleUp and scaleDown fields respectively).                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `maxReplicas`    | `integer` | maxReplicas is the upper limit for the number of replicas to which the autoscaler can scale up. It cannot be less that minReplicas.                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `metrics`        | `array`   | metrics contains the specifications for which to use to calculate the desired replica count (the maximum replica count across all metrics will be used). The desired replica count is calculated multiplying the ratio between the target value and the current value by the current number of pods. Ergo, metrics used must decrease as the pod count is increased, and vice-versa. See the individual metric source types for more information about how each type of metric must respond. If not set, the default metric will be set to 80% average CPU utilization. |
+| `metrics[]`      | `object`  | MetricSpec specifies how to scale based on a single metric (only `type` and one other matching field should be set at once).                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `minReplicas`    | `integer` | minReplicas is the lower limit for the number of replicas to which the autoscaler can scale down. It defaults to 1 pod. minReplicas is allowed to be 0 if the alpha feature gate HPAScaleToZero is enabled and at least one Object or External metric is configured. Scaling is active as long as at least one metric value is available.                                                                                                                                                                                                                               |
+| `scaleTargetRef` | `object`  | CrossVersionObjectReference contains enough information to let you identify the referred resource.                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 ## .spec.behavior
 
@@ -51,21 +51,21 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>scaleDown</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HPAScalingRules configures the scaling behavior for one direction via scaling Policy Rules and a configurable metric tolerance.</p>
 <p>Scaling Policy Rules are applied after calculating DesiredReplicas from metrics for the HPA. They can limit the scaling velocity by specifying scaling policies. They can prevent flapping by specifying the stabilization window, so that the number of replicas is not set instantly, instead, the safest value from the stabilization window is chosen.</p>
 <p>The tolerance is applied to the metric values and prevents scaling too eagerly for small metric variations. (Note that setting a tolerance requires enabling the alpha HPAConfigurableTolerance feature gate.)</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scaleUp</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HPAScalingRules configures the scaling behavior for one direction via scaling Policy Rules and a configurable metric tolerance.</p>
@@ -94,34 +94,34 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>policies</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>policies is a list of potential scaling polices which can be used during scaling. If not set, use the default values: - For scale up: allow doubling the number of pods, or an absolute change of 4 pods in a 15s window. - For scale down: allow all pods to be removed in a 15s window.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>policies[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HPAScalingPolicy is a single policy which must hold true for a specified past interval.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>selectPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>selectPolicy is used to specify which policy should be used. If not set, the default value Max is used.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>stabilizationWindowSeconds</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>stabilizationWindowSeconds is the number of seconds for which past recommendations should be considered while scaling up or scaling down. StabilizationWindowSeconds must be greater than or equal to zero and less than or equal to 3600 (one hour). If not set, use the default values: - For scale up: 0 (i.e. no stabilization is done). - For scale down: 300 (i.e. the stabilization window is 300 seconds long).</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tolerance</code></p></td>
 <td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity"><code>Quantity</code></a></p></td>
 <td style="text-align: left;"><p>tolerance is the tolerance on the ratio between the current and desired metric value under which no updates are made to the desired number of replicas (e.g. 0.01 for 1%). Must be greater than or equal to zero. If not set, the default cluster-wide tolerance is applied (by default 10%).</p>
@@ -154,11 +154,11 @@ Required
 
 - `periodSeconds`
 
-| Property | Type | Description |
-|----|----|----|
+| Property        | Type      | Description                                                                                                                                                        |
+|-----------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `periodSeconds` | `integer` | periodSeconds specifies the window of time for which the policy should hold true. PeriodSeconds must be greater than zero and less than or equal to 1800 (30 min). |
-| `type` | `string` | type is used to specify the scaling policy. |
-| `value` | `integer` | value contains the amount of change which is permitted by the policy. It must be greater than zero |
+| `type`          | `string`  | type is used to specify the scaling policy.                                                                                                                        |
+| `value`         | `integer` | value contains the amount of change which is permitted by the policy. It must be greater than zero                                                                 |
 
 ## .spec.behavior.scaleUp
 
@@ -179,34 +179,34 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>policies</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>policies is a list of potential scaling polices which can be used during scaling. If not set, use the default values: - For scale up: allow doubling the number of pods, or an absolute change of 4 pods in a 15s window. - For scale down: allow all pods to be removed in a 15s window.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>policies[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HPAScalingPolicy is a single policy which must hold true for a specified past interval.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>selectPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>selectPolicy is used to specify which policy should be used. If not set, the default value Max is used.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>stabilizationWindowSeconds</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>stabilizationWindowSeconds is the number of seconds for which past recommendations should be considered while scaling up or scaling down. StabilizationWindowSeconds must be greater than or equal to zero and less than or equal to 3600 (one hour). If not set, use the default values: - For scale up: 0 (i.e. no stabilization is done). - For scale down: 300 (i.e. the stabilization window is 300 seconds long).</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tolerance</code></p></td>
 <td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity"><code>Quantity</code></a></p></td>
 <td style="text-align: left;"><p>tolerance is the tolerance on the ratio between the current and desired metric value under which no updates are made to the desired number of replicas (e.g. 0.01 for 1%). Must be greater than or equal to zero. If not set, the default cluster-wide tolerance is applied (by default 10%).</p>
@@ -239,11 +239,11 @@ Required
 
 - `periodSeconds`
 
-| Property | Type | Description |
-|----|----|----|
+| Property        | Type      | Description                                                                                                                                                        |
+|-----------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `periodSeconds` | `integer` | periodSeconds specifies the window of time for which the policy should hold true. PeriodSeconds must be greater than zero and less than or equal to 1800 (30 min). |
-| `type` | `string` | type is used to specify the scaling policy. |
-| `value` | `integer` | value contains the amount of change which is permitted by the policy. It must be greater than zero |
+| `type`          | `string`  | type is used to specify the scaling policy.                                                                                                                        |
+| `value`         | `integer` | value contains the amount of change which is permitted by the policy. It must be greater than zero                                                                 |
 
 ## .spec.metrics
 
@@ -264,14 +264,14 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
+| Property            | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|---------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `containerResource` | `object` | ContainerResourceMetricSource indicates how to scale on a resource metric known to Kubernetes, as specified in requests and limits, describing each pod in the current scale target (e.g. CPU or memory). The values will be averaged together before being compared to the target. Such metrics are built in to Kubernetes, and have special scaling options on top of those available to normal per-pod metrics using the "pods" source. Only one "target" type should be set. |
-| `external` | `object` | ExternalMetricSource indicates how to scale on a metric not associated with any Kubernetes object (for example length of queue in cloud messaging service, or QPS from loadbalancer running outside of cluster). |
-| `object` | `object` | ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object). |
-| `pods` | `object` | PodsMetricSource indicates how to scale on a metric describing each pod in the current scale target (for example, transactions-processed-per-second). The values will be averaged together before being compared to the target value. |
-| `resource` | `object` | ResourceMetricSource indicates how to scale on a resource metric known to Kubernetes, as specified in requests and limits, describing each pod in the current scale target (e.g. CPU or memory). The values will be averaged together before being compared to the target. Such metrics are built in to Kubernetes, and have special scaling options on top of those available to normal per-pod metrics using the "pods" source. Only one "target" type should be set. |
-| `type` | `string` | type is the type of metric source. It should be one of "ContainerResource", "External", "Object", "Pods" or "Resource", each mapping to a matching field in the object. |
+| `external`          | `object` | ExternalMetricSource indicates how to scale on a metric not associated with any Kubernetes object (for example length of queue in cloud messaging service, or QPS from loadbalancer running outside of cluster).                                                                                                                                                                                                                                                                 |
+| `object`            | `object` | ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).                                                                                                                                                                                                                                                                                                                                        |
+| `pods`              | `object` | PodsMetricSource indicates how to scale on a metric describing each pod in the current scale target (for example, transactions-processed-per-second). The values will be averaged together before being compared to the target value.                                                                                                                                                                                                                                            |
+| `resource`          | `object` | ResourceMetricSource indicates how to scale on a resource metric known to Kubernetes, as specified in requests and limits, describing each pod in the current scale target (e.g. CPU or memory). The values will be averaged together before being compared to the target. Such metrics are built in to Kubernetes, and have special scaling options on top of those available to normal per-pod metrics using the "pods" source. Only one "target" type should be set.          |
+| `type`              | `string` | type is the type of metric source. It should be one of "ContainerResource", "External", "Object", "Pods" or "Resource", each mapping to a matching field in the object.                                                                                                                                                                                                                                                                                                          |
 
 ## .spec.metrics\[\].containerResource
 
@@ -288,11 +288,11 @@ Required
 
 - `container`
 
-| Property | Type | Description |
-|----|----|----|
-| `container` | `string` | container is the name of the container in the pods of the scaling target |
-| `name` | `string` | name is the name of the resource in question. |
-| `target` | `object` | MetricTarget defines the target value, average value, or average utilization of a specific metric |
+| Property    | Type     | Description                                                                                       |
+|-------------|----------|---------------------------------------------------------------------------------------------------|
+| `container` | `string` | container is the name of the container in the pods of the scaling target                          |
+| `name`      | `string` | name is the name of the resource in question.                                                     |
+| `target`    | `object` | MetricTarget defines the target value, average value, or average utilization of a specific metric |
 
 ## .spec.metrics\[\].containerResource.target
 
@@ -305,12 +305,12 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `averageUtilization` | `integer` | averageUtilization is the target value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. Currently only valid for Resource metric source type |
-| `averageValue` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the target value of the average of the metric across all relevant pods (as a quantity) |
-| `type` | `string` | type represents whether the metric type is Utilization, Value, or AverageValue |
-| `value` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the target value of the metric (as a quantity). |
+| Property             | Type                                                                             | Description                                                                                                                                                                                                                                  |
+|----------------------|----------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `averageUtilization` | `integer`                                                                        | averageUtilization is the target value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. Currently only valid for Resource metric source type |
+| `averageValue`       | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the target value of the average of the metric across all relevant pods (as a quantity)                                                                                                                                       |
+| `type`               | `string`                                                                         | type represents whether the metric type is Utilization, Value, or AverageValue                                                                                                                                                               |
+| `value`              | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the target value of the metric (as a quantity).                                                                                                                                                                                     |
 
 ## .spec.metrics\[\].external
 
@@ -325,9 +325,9 @@ Required
 
 - `target`
 
-| Property | Type | Description |
-|----|----|----|
-| `metric` | `object` | MetricIdentifier defines the name and optionally selector for a metric |
+| Property | Type     | Description                                                                                       |
+|----------|----------|---------------------------------------------------------------------------------------------------|
+| `metric` | `object` | MetricIdentifier defines the name and optionally selector for a metric                            |
 | `target` | `object` | MetricTarget defines the target value, average value, or average utilization of a specific metric |
 
 ## .spec.metrics\[\].external.metric
@@ -341,9 +341,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name is the name of the given metric |
+| Property   | Type                                                                                       | Description                                                                                                                                                                                                                                                                 |
+|------------|--------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`     | `string`                                                                                   | name is the name of the given metric                                                                                                                                                                                                                                        |
 | `selector` | [`LabelSelector`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-LabelSelector) | selector is the string-encoded form of a standard kubernetes label selector for the given metric When set, it is passed as an additional parameter to the metrics server for more specific metrics scoping. When unset, just the metricName will be used to gather metrics. |
 
 ## .spec.metrics\[\].external.target
@@ -357,12 +357,12 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `averageUtilization` | `integer` | averageUtilization is the target value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. Currently only valid for Resource metric source type |
-| `averageValue` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the target value of the average of the metric across all relevant pods (as a quantity) |
-| `type` | `string` | type represents whether the metric type is Utilization, Value, or AverageValue |
-| `value` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the target value of the metric (as a quantity). |
+| Property             | Type                                                                             | Description                                                                                                                                                                                                                                  |
+|----------------------|----------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `averageUtilization` | `integer`                                                                        | averageUtilization is the target value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. Currently only valid for Resource metric source type |
+| `averageValue`       | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the target value of the average of the metric across all relevant pods (as a quantity)                                                                                                                                       |
+| `type`               | `string`                                                                         | type represents whether the metric type is Utilization, Value, or AverageValue                                                                                                                                                               |
+| `value`              | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the target value of the metric (as a quantity).                                                                                                                                                                                     |
 
 ## .spec.metrics\[\].object
 
@@ -379,11 +379,11 @@ Required
 
 - `metric`
 
-| Property | Type | Description |
-|----|----|----|
+| Property          | Type     | Description                                                                                        |
+|-------------------|----------|----------------------------------------------------------------------------------------------------|
 | `describedObject` | `object` | CrossVersionObjectReference contains enough information to let you identify the referred resource. |
-| `metric` | `object` | MetricIdentifier defines the name and optionally selector for a metric |
-| `target` | `object` | MetricTarget defines the target value, average value, or average utilization of a specific metric |
+| `metric`          | `object` | MetricIdentifier defines the name and optionally selector for a metric                             |
+| `target`          | `object` | MetricTarget defines the target value, average value, or average utilization of a specific metric  |
 
 ## .spec.metrics\[\].object.describedObject
 
@@ -398,11 +398,11 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | apiVersion is the API version of the referent |
-| `kind` | `string` | kind is the kind of the referent; More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `name` | `string` | name is the name of the referent; More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| Property     | Type     | Description                                                                                                                                    |
+|--------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string` | apiVersion is the API version of the referent                                                                                                  |
+| `kind`       | `string` | kind is the kind of the referent; More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `name`       | `string` | name is the name of the referent; More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names>                  |
 
 ## .spec.metrics\[\].object.metric
 
@@ -415,9 +415,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name is the name of the given metric |
+| Property   | Type                                                                                       | Description                                                                                                                                                                                                                                                                 |
+|------------|--------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`     | `string`                                                                                   | name is the name of the given metric                                                                                                                                                                                                                                        |
 | `selector` | [`LabelSelector`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-LabelSelector) | selector is the string-encoded form of a standard kubernetes label selector for the given metric When set, it is passed as an additional parameter to the metrics server for more specific metrics scoping. When unset, just the metricName will be used to gather metrics. |
 
 ## .spec.metrics\[\].object.target
@@ -431,12 +431,12 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `averageUtilization` | `integer` | averageUtilization is the target value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. Currently only valid for Resource metric source type |
-| `averageValue` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the target value of the average of the metric across all relevant pods (as a quantity) |
-| `type` | `string` | type represents whether the metric type is Utilization, Value, or AverageValue |
-| `value` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the target value of the metric (as a quantity). |
+| Property             | Type                                                                             | Description                                                                                                                                                                                                                                  |
+|----------------------|----------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `averageUtilization` | `integer`                                                                        | averageUtilization is the target value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. Currently only valid for Resource metric source type |
+| `averageValue`       | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the target value of the average of the metric across all relevant pods (as a quantity)                                                                                                                                       |
+| `type`               | `string`                                                                         | type represents whether the metric type is Utilization, Value, or AverageValue                                                                                                                                                               |
+| `value`              | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the target value of the metric (as a quantity).                                                                                                                                                                                     |
 
 ## .spec.metrics\[\].pods
 
@@ -451,9 +451,9 @@ Required
 
 - `target`
 
-| Property | Type | Description |
-|----|----|----|
-| `metric` | `object` | MetricIdentifier defines the name and optionally selector for a metric |
+| Property | Type     | Description                                                                                       |
+|----------|----------|---------------------------------------------------------------------------------------------------|
+| `metric` | `object` | MetricIdentifier defines the name and optionally selector for a metric                            |
 | `target` | `object` | MetricTarget defines the target value, average value, or average utilization of a specific metric |
 
 ## .spec.metrics\[\].pods.metric
@@ -467,9 +467,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name is the name of the given metric |
+| Property   | Type                                                                                       | Description                                                                                                                                                                                                                                                                 |
+|------------|--------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`     | `string`                                                                                   | name is the name of the given metric                                                                                                                                                                                                                                        |
 | `selector` | [`LabelSelector`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-LabelSelector) | selector is the string-encoded form of a standard kubernetes label selector for the given metric When set, it is passed as an additional parameter to the metrics server for more specific metrics scoping. When unset, just the metricName will be used to gather metrics. |
 
 ## .spec.metrics\[\].pods.target
@@ -483,12 +483,12 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `averageUtilization` | `integer` | averageUtilization is the target value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. Currently only valid for Resource metric source type |
-| `averageValue` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the target value of the average of the metric across all relevant pods (as a quantity) |
-| `type` | `string` | type represents whether the metric type is Utilization, Value, or AverageValue |
-| `value` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the target value of the metric (as a quantity). |
+| Property             | Type                                                                             | Description                                                                                                                                                                                                                                  |
+|----------------------|----------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `averageUtilization` | `integer`                                                                        | averageUtilization is the target value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. Currently only valid for Resource metric source type |
+| `averageValue`       | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the target value of the average of the metric across all relevant pods (as a quantity)                                                                                                                                       |
+| `type`               | `string`                                                                         | type represents whether the metric type is Utilization, Value, or AverageValue                                                                                                                                                               |
+| `value`              | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the target value of the metric (as a quantity).                                                                                                                                                                                     |
 
 ## .spec.metrics\[\].resource
 
@@ -503,9 +503,9 @@ Required
 
 - `target`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name is the name of the resource in question. |
+| Property | Type     | Description                                                                                       |
+|----------|----------|---------------------------------------------------------------------------------------------------|
+| `name`   | `string` | name is the name of the resource in question.                                                     |
 | `target` | `object` | MetricTarget defines the target value, average value, or average utilization of a specific metric |
 
 ## .spec.metrics\[\].resource.target
@@ -519,12 +519,12 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `averageUtilization` | `integer` | averageUtilization is the target value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. Currently only valid for Resource metric source type |
-| `averageValue` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the target value of the average of the metric across all relevant pods (as a quantity) |
-| `type` | `string` | type represents whether the metric type is Utilization, Value, or AverageValue |
-| `value` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the target value of the metric (as a quantity). |
+| Property             | Type                                                                             | Description                                                                                                                                                                                                                                  |
+|----------------------|----------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `averageUtilization` | `integer`                                                                        | averageUtilization is the target value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. Currently only valid for Resource metric source type |
+| `averageValue`       | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the target value of the average of the metric across all relevant pods (as a quantity)                                                                                                                                       |
+| `type`               | `string`                                                                         | type represents whether the metric type is Utilization, Value, or AverageValue                                                                                                                                                               |
+| `value`              | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the target value of the metric (as a quantity).                                                                                                                                                                                     |
 
 ## .spec.scaleTargetRef
 
@@ -539,11 +539,11 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | apiVersion is the API version of the referent |
-| `kind` | `string` | kind is the kind of the referent; More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `name` | `string` | name is the name of the referent; More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| Property     | Type     | Description                                                                                                                                    |
+|--------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string` | apiVersion is the API version of the referent                                                                                                  |
+| `kind`       | `string` | kind is the kind of the referent; More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `name`       | `string` | name is the name of the referent; More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names>                  |
 
 ## .status
 
@@ -556,16 +556,16 @@ Type
 Required
 - `desiredReplicas`
 
-| Property | Type | Description |
-|----|----|----|
-| `conditions` | `array` | conditions is the set of conditions required for this autoscaler to scale its target, and indicates whether or not those conditions are met. |
-| `conditions[]` | `object` | HorizontalPodAutoscalerCondition describes the state of a HorizontalPodAutoscaler at a certain point. |
-| `currentMetrics` | `array` | currentMetrics is the last read state of the metrics used by this autoscaler. |
-| `currentMetrics[]` | `object` | MetricStatus describes the last-read state of a single metric. |
-| `currentReplicas` | `integer` | currentReplicas is current number of replicas of pods managed by this autoscaler, as last seen by the autoscaler. |
-| `desiredReplicas` | `integer` | desiredReplicas is the desired number of replicas of pods managed by this autoscaler, as last calculated by the autoscaler. |
-| `lastScaleTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | lastScaleTime is the last time the HorizontalPodAutoscaler scaled the number of pods, used by the autoscaler to control how often the number of pods is changed. |
-| `observedGeneration` | `integer` | observedGeneration is the most recent generation observed by this autoscaler. |
+| Property             | Type                                                                     | Description                                                                                                                                                      |
+|----------------------|--------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `conditions`         | `array`                                                                  | conditions is the set of conditions required for this autoscaler to scale its target, and indicates whether or not those conditions are met.                     |
+| `conditions[]`       | `object`                                                                 | HorizontalPodAutoscalerCondition describes the state of a HorizontalPodAutoscaler at a certain point.                                                            |
+| `currentMetrics`     | `array`                                                                  | currentMetrics is the last read state of the metrics used by this autoscaler.                                                                                    |
+| `currentMetrics[]`   | `object`                                                                 | MetricStatus describes the last-read state of a single metric.                                                                                                   |
+| `currentReplicas`    | `integer`                                                                | currentReplicas is current number of replicas of pods managed by this autoscaler, as last seen by the autoscaler.                                                |
+| `desiredReplicas`    | `integer`                                                                | desiredReplicas is the desired number of replicas of pods managed by this autoscaler, as last calculated by the autoscaler.                                      |
+| `lastScaleTime`      | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | lastScaleTime is the last time the HorizontalPodAutoscaler scaled the number of pods, used by the autoscaler to control how often the number of pods is changed. |
+| `observedGeneration` | `integer`                                                                | observedGeneration is the most recent generation observed by this autoscaler.                                                                                    |
 
 ## .status.conditions
 
@@ -588,13 +588,13 @@ Required
 
 - `status`
 
-| Property | Type | Description |
-|----|----|----|
+| Property             | Type                                                                     | Description                                                                               |
+|----------------------|--------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
 | `lastTransitionTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | lastTransitionTime is the last time the condition transitioned from one status to another |
-| `message` | `string` | message is a human-readable explanation containing details about the transition |
-| `reason` | `string` | reason is the reason for the condition’s last transition. |
-| `status` | `string` | status is the status of the condition (True, False, Unknown) |
-| `type` | `string` | type describes the current condition |
+| `message`            | `string`                                                                 | message is a human-readable explanation containing details about the transition           |
+| `reason`             | `string`                                                                 | reason is the reason for the condition’s last transition.                                 |
+| `status`             | `string`                                                                 | status is the status of the condition (True, False, Unknown)                              |
+| `type`               | `string`                                                                 | type describes the current condition                                                      |
 
 ## .status.currentMetrics
 
@@ -615,14 +615,14 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
+| Property            | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                 |
+|---------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `containerResource` | `object` | ContainerResourceMetricStatus indicates the current value of a resource metric known to Kubernetes, as specified in requests and limits, describing a single container in each pod in the current scale target (e.g. CPU or memory). Such metrics are built in to Kubernetes, and have special scaling options on top of those available to normal per-pod metrics using the "pods" source. |
-| `external` | `object` | ExternalMetricStatus indicates the current value of a global metric not associated with any Kubernetes object. |
-| `object` | `object` | ObjectMetricStatus indicates the current value of a metric describing a kubernetes object (for example, hits-per-second on an Ingress object). |
-| `pods` | `object` | PodsMetricStatus indicates the current value of a metric describing each pod in the current scale target (for example, transactions-processed-per-second). |
-| `resource` | `object` | ResourceMetricStatus indicates the current value of a resource metric known to Kubernetes, as specified in requests and limits, describing each pod in the current scale target (e.g. CPU or memory). Such metrics are built in to Kubernetes, and have special scaling options on top of those available to normal per-pod metrics using the "pods" source. |
-| `type` | `string` | type is the type of metric source. It will be one of "ContainerResource", "External", "Object", "Pods" or "Resource", each corresponds to a matching field in the object. |
+| `external`          | `object` | ExternalMetricStatus indicates the current value of a global metric not associated with any Kubernetes object.                                                                                                                                                                                                                                                                              |
+| `object`            | `object` | ObjectMetricStatus indicates the current value of a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).                                                                                                                                                                                                                                              |
+| `pods`              | `object` | PodsMetricStatus indicates the current value of a metric describing each pod in the current scale target (for example, transactions-processed-per-second).                                                                                                                                                                                                                                  |
+| `resource`          | `object` | ResourceMetricStatus indicates the current value of a resource metric known to Kubernetes, as specified in requests and limits, describing each pod in the current scale target (e.g. CPU or memory). Such metrics are built in to Kubernetes, and have special scaling options on top of those available to normal per-pod metrics using the "pods" source.                                |
+| `type`              | `string` | type is the type of metric source. It will be one of "ContainerResource", "External", "Object", "Pods" or "Resource", each corresponds to a matching field in the object.                                                                                                                                                                                                                   |
 
 ## .status.currentMetrics\[\].containerResource
 
@@ -639,11 +639,11 @@ Required
 
 - `container`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type     | Description                                                              |
+|-------------|----------|--------------------------------------------------------------------------|
 | `container` | `string` | container is the name of the container in the pods of the scaling target |
-| `current` | `object` | MetricValueStatus holds the current value for a metric |
-| `name` | `string` | name is the name of the resource in question. |
+| `current`   | `object` | MetricValueStatus holds the current value for a metric                   |
+| `name`      | `string` | name is the name of the resource in question.                            |
 
 ## .status.currentMetrics\[\].containerResource.current
 
@@ -653,11 +653,11 @@ MetricValueStatus holds the current value for a metric
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `averageUtilization` | `integer` | currentAverageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. |
-| `averageValue` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the current value of the average of the metric across all relevant pods (as a quantity) |
-| `value` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the current value of the metric (as a quantity). |
+| Property             | Type                                                                             | Description                                                                                                                                                                                     |
+|----------------------|----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `averageUtilization` | `integer`                                                                        | currentAverageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. |
+| `averageValue`       | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the current value of the average of the metric across all relevant pods (as a quantity)                                                                                         |
+| `value`              | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the current value of the metric (as a quantity).                                                                                                                                       |
 
 ## .status.currentMetrics\[\].external
 
@@ -672,10 +672,10 @@ Required
 
 - `current`
 
-| Property | Type | Description |
-|----|----|----|
-| `current` | `object` | MetricValueStatus holds the current value for a metric |
-| `metric` | `object` | MetricIdentifier defines the name and optionally selector for a metric |
+| Property  | Type     | Description                                                            |
+|-----------|----------|------------------------------------------------------------------------|
+| `current` | `object` | MetricValueStatus holds the current value for a metric                 |
+| `metric`  | `object` | MetricIdentifier defines the name and optionally selector for a metric |
 
 ## .status.currentMetrics\[\].external.current
 
@@ -685,11 +685,11 @@ MetricValueStatus holds the current value for a metric
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `averageUtilization` | `integer` | currentAverageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. |
-| `averageValue` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the current value of the average of the metric across all relevant pods (as a quantity) |
-| `value` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the current value of the metric (as a quantity). |
+| Property             | Type                                                                             | Description                                                                                                                                                                                     |
+|----------------------|----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `averageUtilization` | `integer`                                                                        | currentAverageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. |
+| `averageValue`       | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the current value of the average of the metric across all relevant pods (as a quantity)                                                                                         |
+| `value`              | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the current value of the metric (as a quantity).                                                                                                                                       |
 
 ## .status.currentMetrics\[\].external.metric
 
@@ -702,9 +702,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name is the name of the given metric |
+| Property   | Type                                                                                       | Description                                                                                                                                                                                                                                                                 |
+|------------|--------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`     | `string`                                                                                   | name is the name of the given metric                                                                                                                                                                                                                                        |
 | `selector` | [`LabelSelector`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-LabelSelector) | selector is the string-encoded form of a standard kubernetes label selector for the given metric When set, it is passed as an additional parameter to the metrics server for more specific metrics scoping. When unset, just the metricName will be used to gather metrics. |
 
 ## .status.currentMetrics\[\].object
@@ -722,11 +722,11 @@ Required
 
 - `describedObject`
 
-| Property | Type | Description |
-|----|----|----|
-| `current` | `object` | MetricValueStatus holds the current value for a metric |
+| Property          | Type     | Description                                                                                        |
+|-------------------|----------|----------------------------------------------------------------------------------------------------|
+| `current`         | `object` | MetricValueStatus holds the current value for a metric                                             |
 | `describedObject` | `object` | CrossVersionObjectReference contains enough information to let you identify the referred resource. |
-| `metric` | `object` | MetricIdentifier defines the name and optionally selector for a metric |
+| `metric`          | `object` | MetricIdentifier defines the name and optionally selector for a metric                             |
 
 ## .status.currentMetrics\[\].object.current
 
@@ -736,11 +736,11 @@ MetricValueStatus holds the current value for a metric
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `averageUtilization` | `integer` | currentAverageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. |
-| `averageValue` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the current value of the average of the metric across all relevant pods (as a quantity) |
-| `value` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the current value of the metric (as a quantity). |
+| Property             | Type                                                                             | Description                                                                                                                                                                                     |
+|----------------------|----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `averageUtilization` | `integer`                                                                        | currentAverageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. |
+| `averageValue`       | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the current value of the average of the metric across all relevant pods (as a quantity)                                                                                         |
+| `value`              | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the current value of the metric (as a quantity).                                                                                                                                       |
 
 ## .status.currentMetrics\[\].object.describedObject
 
@@ -755,11 +755,11 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | apiVersion is the API version of the referent |
-| `kind` | `string` | kind is the kind of the referent; More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `name` | `string` | name is the name of the referent; More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| Property     | Type     | Description                                                                                                                                    |
+|--------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string` | apiVersion is the API version of the referent                                                                                                  |
+| `kind`       | `string` | kind is the kind of the referent; More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `name`       | `string` | name is the name of the referent; More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names>                  |
 
 ## .status.currentMetrics\[\].object.metric
 
@@ -772,9 +772,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name is the name of the given metric |
+| Property   | Type                                                                                       | Description                                                                                                                                                                                                                                                                 |
+|------------|--------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`     | `string`                                                                                   | name is the name of the given metric                                                                                                                                                                                                                                        |
 | `selector` | [`LabelSelector`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-LabelSelector) | selector is the string-encoded form of a standard kubernetes label selector for the given metric When set, it is passed as an additional parameter to the metrics server for more specific metrics scoping. When unset, just the metricName will be used to gather metrics. |
 
 ## .status.currentMetrics\[\].pods
@@ -790,10 +790,10 @@ Required
 
 - `current`
 
-| Property | Type | Description |
-|----|----|----|
-| `current` | `object` | MetricValueStatus holds the current value for a metric |
-| `metric` | `object` | MetricIdentifier defines the name and optionally selector for a metric |
+| Property  | Type     | Description                                                            |
+|-----------|----------|------------------------------------------------------------------------|
+| `current` | `object` | MetricValueStatus holds the current value for a metric                 |
+| `metric`  | `object` | MetricIdentifier defines the name and optionally selector for a metric |
 
 ## .status.currentMetrics\[\].pods.current
 
@@ -803,11 +803,11 @@ MetricValueStatus holds the current value for a metric
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `averageUtilization` | `integer` | currentAverageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. |
-| `averageValue` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the current value of the average of the metric across all relevant pods (as a quantity) |
-| `value` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the current value of the metric (as a quantity). |
+| Property             | Type                                                                             | Description                                                                                                                                                                                     |
+|----------------------|----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `averageUtilization` | `integer`                                                                        | currentAverageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. |
+| `averageValue`       | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the current value of the average of the metric across all relevant pods (as a quantity)                                                                                         |
+| `value`              | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the current value of the metric (as a quantity).                                                                                                                                       |
 
 ## .status.currentMetrics\[\].pods.metric
 
@@ -820,9 +820,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name is the name of the given metric |
+| Property   | Type                                                                                       | Description                                                                                                                                                                                                                                                                 |
+|------------|--------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`     | `string`                                                                                   | name is the name of the given metric                                                                                                                                                                                                                                        |
 | `selector` | [`LabelSelector`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-LabelSelector) | selector is the string-encoded form of a standard kubernetes label selector for the given metric When set, it is passed as an additional parameter to the metrics server for more specific metrics scoping. When unset, just the metricName will be used to gather metrics. |
 
 ## .status.currentMetrics\[\].resource
@@ -851,11 +851,11 @@ MetricValueStatus holds the current value for a metric
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `averageUtilization` | `integer` | currentAverageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. |
-| `averageValue` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the current value of the average of the metric across all relevant pods (as a quantity) |
-| `value` | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the current value of the metric (as a quantity). |
+| Property             | Type                                                                             | Description                                                                                                                                                                                     |
+|----------------------|----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `averageUtilization` | `integer`                                                                        | currentAverageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. |
+| `averageValue`       | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | averageValue is the current value of the average of the metric across all relevant pods (as a quantity)                                                                                         |
+| `value`              | [`Quantity`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | value is the current value of the metric (as a quantity).                                                                                                                                       |
 
 # API endpoints
 
@@ -911,10 +911,10 @@ HTTP method
 Description
 list or watch objects of kind HorizontalPodAutoscaler
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`HorizontalPodAutoscalerList`](../objects/index.xml#io-k8s-api-autoscaling-v2-HorizontalPodAutoscalerList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                       |
+|--------------------|--------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`HorizontalPodAutoscalerList`](../objects/index.xml#io-k8s-api-autoscaling-v2-HorizontalPodAutoscalerList) schema |
+| 401 - Unauthorized | Empty                                                                                                              |
 
 HTTP responses
 
@@ -926,10 +926,10 @@ HTTP method
 Description
 watch individual changes to a list of HorizontalPodAutoscaler. deprecated: use the 'watch' parameter with a list operation instead.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -941,16 +941,16 @@ HTTP method
 Description
 delete collection of HorizontalPodAutoscaler
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -960,10 +960,10 @@ HTTP method
 Description
 list or watch objects of kind HorizontalPodAutoscaler
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`HorizontalPodAutoscalerList`](../objects/index.xml#io-k8s-api-autoscaling-v2-HorizontalPodAutoscalerList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                       |
+|--------------------|--------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`HorizontalPodAutoscalerList`](../objects/index.xml#io-k8s-api-autoscaling-v2-HorizontalPodAutoscalerList) schema |
+| 401 - Unauthorized | Empty                                                                                                              |
 
 HTTP responses
 
@@ -973,25 +973,25 @@ HTTP method
 Description
 create a HorizontalPodAutoscaler
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |  |
+| Parameter | Type                                                                                                                                    | Description |
+|-----------|-----------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
-| 201 - Created | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
-| 202 - Accepted | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                            |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
+| 201 - Created      | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
+| 202 - Accepted     | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
+| 401 - Unauthorized | Empty                                                                                                                                   |
 
 HTTP responses
 
@@ -1003,10 +1003,10 @@ HTTP method
 Description
 watch individual changes to a list of HorizontalPodAutoscaler. deprecated: use the 'watch' parameter with a list operation instead.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -1024,17 +1024,17 @@ HTTP method
 Description
 delete a HorizontalPodAutoscaler
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -1044,10 +1044,10 @@ HTTP method
 Description
 read the specified HorizontalPodAutoscaler
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                            |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
+| 401 - Unauthorized | Empty                                                                                                                                   |
 
 HTTP responses
 
@@ -1057,18 +1057,18 @@ HTTP method
 Description
 partially update the specified HorizontalPodAutoscaler
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
-| 201 - Created | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                            |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
+| 201 - Created      | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
+| 401 - Unauthorized | Empty                                                                                                                                   |
 
 HTTP responses
 
@@ -1078,24 +1078,24 @@ HTTP method
 Description
 replace the specified HorizontalPodAutoscaler
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |  |
+| Parameter | Type                                                                                                                                    | Description |
+|-----------|-----------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
-| 201 - Created | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                            |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
+| 201 - Created      | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
+| 401 - Unauthorized | Empty                                                                                                                                   |
 
 HTTP responses
 
@@ -1113,10 +1113,10 @@ HTTP method
 Description
 watch changes to an object of kind HorizontalPodAutoscaler. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -1134,10 +1134,10 @@ HTTP method
 Description
 read status of the specified HorizontalPodAutoscaler
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                            |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
+| 401 - Unauthorized | Empty                                                                                                                                   |
 
 HTTP responses
 
@@ -1147,18 +1147,18 @@ HTTP method
 Description
 partially update status of the specified HorizontalPodAutoscaler
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
-| 201 - Created | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                            |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
+| 201 - Created      | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
+| 401 - Unauthorized | Empty                                                                                                                                   |
 
 HTTP responses
 
@@ -1168,23 +1168,23 @@ HTTP method
 Description
 replace status of the specified HorizontalPodAutoscaler
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |  |
+| Parameter | Type                                                                                                                                    | Description |
+|-----------|-----------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
-| 201 - Created | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                            |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
+| 201 - Created      | [`HorizontalPodAutoscaler`](../autoscale_apis/horizontalpodautoscaler-autoscaling-v2.xml#horizontalpodautoscaler-autoscaling-v2) schema |
+| 401 - Unauthorized | Empty                                                                                                                                   |
 
 HTTP responses

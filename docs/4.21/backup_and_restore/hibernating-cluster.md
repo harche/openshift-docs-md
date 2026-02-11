@@ -6,8 +6,11 @@ OpenShift Container Platform clusters can be hibernated in order to save money o
 
 You must wait at least 24 hours after cluster installation before hibernating your cluster to allow for the first certification rotation.
 
-> [!IMPORTANT]
-> If you must hibernate your cluster before the 24 hour certificate rotation, use the following procedure instead: [Enabling OpenShift 4 Clusters to Stop and Resume Cluster VMs](https://www.redhat.com/en/blog/enabling-openshift-4-clusters-to-stop-and-resume-cluster-vms).
+<div class="important">
+
+If you must hibernate your cluster before the 24 hour certificate rotation, use the following procedure instead: [Enabling OpenShift 4 Clusters to Stop and Resume Cluster VMs](https://www.redhat.com/en/blog/enabling-openshift-4-clusters-to-stop-and-resume-cluster-vms).
+
+</div>
 
 When hibernating a cluster, you must hibernate all cluster nodes. It is not supported to suspend only certain nodes.
 
@@ -17,49 +20,37 @@ After resuming, it can take up to 45 minutes for the cluster to become ready.
 
 - Take an [etcd backup](../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backing-up-etcd-data_backup-etcd) prior to hibernating the cluster.
 
-  > [!IMPORTANT]
-  > It is important to take an etcd backup before hibernating so that your cluster can be restored if you encounter any issues when resuming the cluster.
-  >
-  > For example, the following conditions can cause the resumed cluster to malfunction:
-  >
-  > - etcd data corruption during hibernation
-  >
-  > - Node failure due to hardware
-  >
-  > - Network connectivity issues
-  >
-  > If your cluster fails to recover, follow the steps to [restore to a previous cluster state](../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state).
+  <div class="important">
+
+  It is important to take an etcd backup before hibernating so that your cluster can be restored if you encounter any issues when resuming the cluster.
+
+  For example, the following conditions can cause the resumed cluster to malfunction:
+
+  - etcd data corruption during hibernation
+
+  - Node failure due to hardware
+
+  - Network connectivity issues
+
+  If your cluster fails to recover, follow the steps to [restore to a previous cluster state](../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state).
+
+  </div>
 
 # Hibernating a cluster
 
 You can hibernate a cluster for up to 90 days. The cluster can recover if certificates expire while the cluster was in hibernation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The cluster has been running for at least 24 hours to allow the first certificate rotation to complete.
 
-  > [!IMPORTANT]
-  > If you must hibernate your cluster before the 24 hour certificate rotation, use the following procedure instead: [Enabling OpenShift 4 Clusters to Stop and Resume Cluster VMs](https://www.redhat.com/en/blog/enabling-openshift-4-clusters-to-stop-and-resume-cluster-vms).
+  <div class="important">
+
+  If you must hibernate your cluster before the 24 hour certificate rotation, use the following procedure instead: [Enabling OpenShift 4 Clusters to Stop and Resume Cluster VMs](https://www.redhat.com/en/blog/enabling-openshift-4-clusters-to-stop-and-resume-cluster-vms).
+
+  </div>
 
 - You have taken an etcd backup.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Confirm that your cluster has been installed for at least 24 hours.
 
@@ -69,11 +60,9 @@ Procedure
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -87,8 +76,6 @@ Procedure
     ci-ln-812tb4k-72292-8bcj7-worker-c-q8mw2  Ready   worker                19m   v1.34.2
     ```
 
-    </div>
-
     All nodes should show `Ready` in the `STATUS` column.
 
 3.  Ensure that all cluster Operators are in a good state by running the following command:
@@ -97,11 +84,9 @@ Procedure
     $ oc get clusteroperators
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -118,8 +103,6 @@ Procedure
     ...
     ```
 
-    </div>
-
     All cluster Operators should show `AVAILABLE`=`True`, `PROGRESSING`=`False`, and `DEGRADED`=`False`.
 
 4.  Ensure that all machine config pools are in a good state by running the following command:
@@ -128,11 +111,9 @@ Procedure
     $ oc get mcp
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -142,30 +123,19 @@ Procedure
     worker  rendered-worker-3c4c459dc5d90017983d7e72928b8aed  True     False     False     3             3                  3                    0                     96m
     ```
 
-    </div>
-
     All machine config pools should show `UPDATING`=`False` and `DEGRADED`=`False`.
 
 5.  Stop the cluster virtual machines:
 
     Use the tools native to your cluster’s cloud environment to shut down the cluster’s virtual machines.
 
-    > [!IMPORTANT]
-    > If you use a bastion virtual machine, do not shut down this virtual machine.
+    <div class="important">
 
-</div>
+    If you use a bastion virtual machine, do not shut down this virtual machine.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+    </div>
 
 - [Backing up etcd](../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd)
-
-</div>
 
 # Resuming a hibernated cluster
 
@@ -173,27 +143,9 @@ When you resume a hibernated cluster within 90 days, you might have to approve c
 
 It can take around 45 minutes for the cluster to resume, depending on the size of your cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You hibernated your cluster less than 90 days ago.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Within 90 days of cluster hibernation, resume the cluster virtual machines:
 
@@ -209,11 +161,9 @@ Procedure
         $ oc get csr
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -224,8 +174,6 @@ Procedure
         csr-4wk5x  51m  kubernetes.io/kubelet-serving                system:node:ci-ln-812tb4k-72292-8bcj7-master-1                             <none>             Pending
         csr-84vb6  51m  kubernetes.io/kube-apiserver-client-kubelet  system:serviceaccount:openshift-machine-config-operator:node-bootstrapper  <none>             Pending
         ```
-
-        </div>
 
     2.  Approve each valid CSR by running the following command:
 
@@ -239,11 +187,9 @@ Procedure
         $ oc get csr
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -255,8 +201,6 @@ Procedure
         csr-84vb6  51m  kubernetes.io/kube-apiserver-client-kubelet  system:serviceaccount:openshift-machine-config-operator:node-bootstrapper  <none>             Approved,Issued
         ```
 
-        </div>
-
         CSRs should show `Approved,Issued` in the `CONDITION` column.
 
 4.  Verify that all nodes now show as ready by running the following command:
@@ -265,11 +209,9 @@ Procedure
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -283,8 +225,6 @@ Procedure
     ci-ln-812tb4k-72292-8bcj7-worker-c-q8mw2  Ready   worker                19m   v1.34.2
     ```
 
-    </div>
-
     All nodes should show `Ready` in the `STATUS` column. It might take a few minutes for all nodes to become ready after approving the CSRs.
 
 5.  Wait for cluster Operators to restart to load the new certificates.
@@ -297,11 +237,9 @@ Procedure
     $ oc get clusteroperators
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -318,8 +256,4 @@ Procedure
     ...
     ```
 
-    </div>
-
     All cluster Operators should show `AVAILABLE`=`True`, `PROGRESSING`=`False`, and `DEGRADED`=`False`.
-
-</div>

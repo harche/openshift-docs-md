@@ -32,14 +32,4 @@ This features supports the following storage types:
 
 For information about installing with user-managed encryption for IBM Cloud, see [User-managed encryption for IBM Cloud](../../installing/installing_ibm_cloud/user-managed-encryption-ibm-cloud.xml#user-managed-encryption-ibm-cloud) and [Preparing to install on IBM Cloud](../../installing/installing_ibm_cloud/preparing-to-install-on-ibm-cloud.xml#prerequisites_preparing-to-install-on-ibm-cloud).
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
-
-</div>

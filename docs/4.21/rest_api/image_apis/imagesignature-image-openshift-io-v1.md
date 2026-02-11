@@ -13,20 +13,20 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `conditions` | `array` | Conditions represent the latest available observations of a signature’s current state. |
-| `conditions[]` | `object` | SignatureCondition describes an image signature condition of particular kind at particular probe time. |
-| `content` | `string` | Required: An opaque binary string which is an image’s signature. |
-| `created` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | If specified, it is the time of signature’s creation. |
-| `imageIdentity` | `string` | A human readable string representing image’s identity. It could be a product name and version, or an image pull spec (e.g. "registry.access.redhat.com/rhel7/rhel:7.2"). |
-| `issuedBy` | `object` | SignatureIssuer holds information about an issuer of signing certificate or key. |
-| `issuedTo` | `object` | SignatureSubject holds information about a person or entity who created the signature. |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta_v2) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `signedClaims` | `object (string)` | Contains claims from the signature. |
-| `type` | `string` | Required: Describes a type of stored blob. |
+| Property        | Type                                                                                       | Description                                                                                                                                                                                                                                                                                          |
+|-----------------|--------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion`    | `string`                                                                                   | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `conditions`    | `array`                                                                                    | Conditions represent the latest available observations of a signature’s current state.                                                                                                                                                                                                               |
+| `conditions[]`  | `object`                                                                                   | SignatureCondition describes an image signature condition of particular kind at particular probe time.                                                                                                                                                                                               |
+| `content`       | `string`                                                                                   | Required: An opaque binary string which is an image’s signature.                                                                                                                                                                                                                                     |
+| `created`       | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time)                   | If specified, it is the time of signature’s creation.                                                                                                                                                                                                                                                |
+| `imageIdentity` | `string`                                                                                   | A human readable string representing image’s identity. It could be a product name and version, or an image pull spec (e.g. "registry.access.redhat.com/rhel7/rhel:7.2").                                                                                                                             |
+| `issuedBy`      | `object`                                                                                   | SignatureIssuer holds information about an issuer of signing certificate or key.                                                                                                                                                                                                                     |
+| `issuedTo`      | `object`                                                                                   | SignatureSubject holds information about a person or entity who created the signature.                                                                                                                                                                                                               |
+| `kind`          | `string`                                                                                   | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`      | [`ObjectMeta_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta_v2) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                |
+| `signedClaims`  | `object (string)`                                                                          | Contains claims from the signature.                                                                                                                                                                                                                                                                  |
+| `type`          | `string`                                                                                   | Required: Describes a type of stored blob.                                                                                                                                                                                                                                                           |
 
 ## .conditions
 
@@ -49,14 +49,14 @@ Required
 
 - `status`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastProbeTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | Last time the condition was checked. |
-| `lastTransitionTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | Last time the condition transit from one status to another. |
-| `message` | `string` | Human readable message indicating details about last transition. |
-| `reason` | `string` | (brief) reason for the condition’s last transition. |
-| `status` | `string` | Status of the condition, one of True, False, Unknown. |
-| `type` | `string` | Type of signature condition, Complete or Failed. |
+| Property             | Type                                                                     | Description                                                      |
+|----------------------|--------------------------------------------------------------------------|------------------------------------------------------------------|
+| `lastProbeTime`      | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | Last time the condition was checked.                             |
+| `lastTransitionTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | Last time the condition transit from one status to another.      |
+| `message`            | `string`                                                                 | Human readable message indicating details about last transition. |
+| `reason`             | `string`                                                                 | (brief) reason for the condition’s last transition.              |
+| `status`             | `string`                                                                 | Status of the condition, one of True, False, Unknown.            |
+| `type`               | `string`                                                                 | Type of signature condition, Complete or Failed.                 |
 
 ## .issuedBy
 
@@ -82,11 +82,11 @@ Type
 Required
 - `publicKeyID`
 
-| Property | Type | Description |
-|----|----|----|
-| `commonName` | `string` | Common name (e.g. openshift-signing-service). |
-| `organization` | `string` | Organization name. |
-| `publicKeyID` | `string` | If present, it is a human readable key id of public key belonging to the subject used to verify image signature. It should contain at least 64 lowest bits of public key’s fingerprint (e.g. 0x685ebe62bf278440). |
+| Property       | Type     | Description                                                                                                                                                                                                       |
+|----------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `commonName`   | `string` | Common name (e.g. openshift-signing-service).                                                                                                                                                                     |
+| `organization` | `string` | Organization name.                                                                                                                                                                                                |
+| `publicKeyID`  | `string` | If present, it is a human readable key id of public key belonging to the subject used to verify image signature. It should contain at least 64 lowest bits of public key’s fingerprint (e.g. 0x685ebe62bf278440). |
 
 # API endpoints
 
@@ -102,9 +102,9 @@ The following API endpoints are available:
 
 ## /apis/image.openshift.io/v1/imagesignatures
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Global query parameters
@@ -115,18 +115,18 @@ HTTP method
 Description
 create an ImageSignature
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ImageSignature`](../image_apis/imagesignature-image-openshift-io-v1.xml#imagesignature-image-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                   | Description |
+|-----------|------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ImageSignature`](../image_apis/imagesignature-image-openshift-io-v1.xml#imagesignature-image-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImageSignature`](../image_apis/imagesignature-image-openshift-io-v1.xml#imagesignature-image-openshift-io-v1) schema |
-| 201 - Created | [`ImageSignature`](../image_apis/imagesignature-image-openshift-io-v1.xml#imagesignature-image-openshift-io-v1) schema |
-| 202 - Accepted | [`ImageSignature`](../image_apis/imagesignature-image-openshift-io-v1.xml#imagesignature-image-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                           |
+|--------------------|------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImageSignature`](../image_apis/imagesignature-image-openshift-io-v1.xml#imagesignature-image-openshift-io-v1) schema |
+| 201 - Created      | [`ImageSignature`](../image_apis/imagesignature-image-openshift-io-v1.xml#imagesignature-image-openshift-io-v1) schema |
+| 202 - Accepted     | [`ImageSignature`](../image_apis/imagesignature-image-openshift-io-v1.xml#imagesignature-image-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                  |
 
 HTTP responses
 
@@ -138,9 +138,9 @@ HTTP responses
 
 Global path parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Global query parameters
 
@@ -150,10 +150,10 @@ HTTP method
 Description
 delete an ImageSignature
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status_v5`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v5) schema |
-| 202 - Accepted | [`Status_v5`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v5) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                              |
+|--------------------|-------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status_v5`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v5) schema |
+| 202 - Accepted     | [`Status_v5`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v5) schema |
+| 401 - Unauthorized | Empty                                                                                     |
 
 HTTP responses

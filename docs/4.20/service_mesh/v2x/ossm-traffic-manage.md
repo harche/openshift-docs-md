@@ -10,17 +10,13 @@ The Red Hat OpenShift Service Mesh gateway resource can use layer 4-6 load bala
 
 Gateways are primarily used to manage ingress traffic, but you can also configure egress gateways. An egress gateway lets you configure a dedicated exit node for the traffic leaving the mesh. This enables you to limit which services have access to external networks, which adds security control to your service mesh. You can also use a gateway to configure a purely internal proxy.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Gateway example
+**Gateway example**
 
 </div>
 
 A gateway resource describes a load balancer operating at the edge of the mesh receiving incoming or outgoing HTTP/TCP connections. The specification describes a set of ports that should be exposed, the type of protocol to use, SNI configuration for the load balancer, and so on.
-
-</div>
 
 The following example shows a sample gateway configuration for external HTTPS ingress traffic:
 
@@ -69,32 +65,17 @@ Gateway configurations apply to standalone Envoy proxies running at the edge of 
 
 Using automatic injection for gateways, you can deploy and manage gateways independent from the `ServiceMeshControlPlane` resource and manage the gateways with your user applications. Using auto-injection for gateway deployments gives developers full control over the gateway deployment while simplifying operations. When a new upgrade is available, or a configuration has changed, you restart the gateway pods to update them. Doing so makes the experience of operating a gateway deployment the same as operating sidecars.
 
-> [!NOTE]
-> Injection is disabled by default for the `ServiceMeshControlPlane` namespace, for example the `istio-system` namespace. As a security best practice, deploy gateways in a different namespace from the control plane.
+<div class="note">
+
+Injection is disabled by default for the `ServiceMeshControlPlane` namespace, for example the `istio-system` namespace. As a security best practice, deploy gateways in a different namespace from the control plane.
+
+</div>
 
 ## Deploying automatic gateway injection
 
 When deploying a gateway, you must opt-in to injection by adding an injection label or annotation to the gateway `deployment` object. The following example deploys a gateway.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The namespace must be a member of the mesh by defining it in the `ServiceMeshMemberRoll` or by creating a `ServiceMeshMember` resource.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Set a unique label for the Istio ingress gateway. This setting is required to ensure that the gateway can select the workload. This example uses `ingressgateway` as the name of the gateway.
 
@@ -232,8 +213,6 @@ Procedure
           istio: ingressgateway
     ```
 
-</div>
-
 ## Managing ingress traffic
 
 In Red Hat OpenShift Service Mesh, the Ingress Gateway enables features such as monitoring, security, and route rules to apply to traffic that enters the cluster. Use a Service Mesh gateway to expose a service outside of the service mesh.
@@ -255,14 +234,6 @@ If the `EXTERNAL-IP` value is `<none>`, or perpetually `<pending>`, your environ
 #### Determining ingress ports with a load balancer
 
 Follow these instructions if your environment has an external load balancer.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the following command to set the ingress IP and ports. This command sets a variable in your terminal.
 
@@ -288,12 +259,13 @@ Procedure
     $ export TCP_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="tcp")].port}')
     ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> In some environments, the load balancer may be exposed using a hostname instead of an IP address. For that case, the ingress gateway’s `EXTERNAL-IP` value is not an IP address. Instead, it is a hostname, and the previous command fails to set the `INGRESS_HOST` environment variable.
->
-> In that case, use the following command to correct the `INGRESS_HOST` value:
+In some environments, the load balancer may be exposed using a hostname instead of an IP address. For that case, the ingress gateway’s `EXTERNAL-IP` value is not an IP address. Instead, it is a hostname, and the previous command fails to set the `INGRESS_HOST` environment variable.
+
+In that case, use the following command to correct the `INGRESS_HOST` value:
+
+</div>
 
 ``` terminal
 $ export INGRESS_HOST=$(oc -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
@@ -302,14 +274,6 @@ $ export INGRESS_HOST=$(oc -n istio-system get service istio-ingressgateway -o j
 #### Determining ingress ports without a load balancer
 
 If your environment does not have an external load balancer, determine the ingress ports and use a node port instead.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Set the ingress ports.
 
@@ -329,19 +293,7 @@ Procedure
     $ export TCP_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="tcp")].nodePort}')
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring the node port service range](../../networking/configuring_network_settings/configuring-node-port-service-range.xml#configuring-node-port-service-range)
-
-</div>
 
 ## Configuring an ingress gateway
 
@@ -349,23 +301,13 @@ An ingress gateway is a load balancer operating at the edge of the mesh that rec
 
 The following steps show how to create a gateway and configure a `VirtualService` to expose a service in the Bookinfo sample application to outside traffic for paths `/productpage` and `/login`.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a gateway to accept traffic.
 
     1.  Create a YAML file, and copy the following YAML into it.
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Gateway example gateway.yaml
+        **Gateway example gateway.yaml**
 
         </div>
 
@@ -386,8 +328,6 @@ Procedure
             - "*"
         ```
 
-        </div>
-
     2.  Apply the YAML file.
 
         ``` terminal
@@ -398,11 +338,9 @@ Procedure
 
     1.  Create a YAML file, and copy the following YAML into it.
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Virtual service example
+        **Virtual service example**
 
         </div>
 
@@ -435,8 +373,6 @@ Procedure
                   number: 9080
         ```
 
-        </div>
-
     2.  Apply the YAML file.
 
         ``` terminal
@@ -465,19 +401,23 @@ Procedure
 
         The expected result is `200`.
 
-</div>
-
 # Understanding automatic routes
 
-> [!IMPORTANT]
-> Istio OpenShift Routing (IOR) is a deprecated feature. Deprecated functionality is still included in OpenShift Container Platform and continues to be supported; however, it will be removed in a future release of this product and is not recommended for new deployments.
->
-> For the most recent list of major functionality that has been deprecated or removed within OpenShift Container Platform, refer to the *Deprecated and removed features* section of the OpenShift Container Platform release notes.
+<div class="important">
+
+Istio OpenShift Routing (IOR) is a deprecated feature. Deprecated functionality is still included in OpenShift Container Platform and continues to be supported; however, it will be removed in a future release of this product and is not recommended for new deployments.
+
+For the most recent list of major functionality that has been deprecated or removed within OpenShift Container Platform, refer to the *Deprecated and removed features* section of the OpenShift Container Platform release notes.
+
+</div>
 
 OpenShift routes for gateways are automatically managed in Service Mesh. Every time an Istio Gateway is created, updated or deleted inside the service mesh, an OpenShift route is created, updated or deleted.
 
-> [!NOTE]
-> Starting with Service Mesh 2.5, automatic routes are disabled by default for new instances of the `ServiceMeshControlPlane` resource.
+<div class="note">
+
+Starting with Service Mesh 2.5, automatic routes are disabled by default for new instances of the `ServiceMeshControlPlane` resource.
+
+</div>
 
 ## Routes with subdomains
 
@@ -513,11 +453,9 @@ The `Gateway` resource creates the following OpenShift routes. You can check tha
 $ oc -n istio-system get routes
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Expected output
+**Expected output**
 
 </div>
 
@@ -526,8 +464,6 @@ NAME           HOST/PORT             PATH  SERVICES               PORT  TERMINAT
 gateway1-lvlfn bookinfo.example.com        istio-ingressgateway   <all>               None
 gateway1-scqhv www.bookinfo.com            istio-ingressgateway   <all>               None
 ```
-
-</div>
 
 If you delete the gateway, Red Hat OpenShift Service Mesh deletes the routes. However, routes you have manually created are never modified by Red Hat OpenShift Service Mesh.
 
@@ -539,17 +475,7 @@ For this and other use cases, Red Hat OpenShift Service Mesh will copy all labe
 
 If you need specific labels or annotations in the OpenShift routes created by Service Mesh, create them in the Istio gateway resource and they will be copied into the OpenShift route resources managed by the Service Mesh.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Route-specific annotations](../../networking/ingress_load_balancing/routes/nw-configuring-routes.xml#nw-route-specific-annotations).
-
-</div>
 
 ## Disabling automatic route creation
 
@@ -588,20 +514,19 @@ A service entry adds an entry to the service registry that Red Hat OpenShift Se
 
 - Run a mesh service in a Virtual Machine (VM) by adding VMs to your mesh.
 
-> [!NOTE]
-> Add services from a different cluster to the mesh to configure a multicluster Red Hat OpenShift Service Mesh mesh on Kubernetes.
+<div class="note">
 
-<div class="formalpara">
+Add services from a different cluster to the mesh to configure a multicluster Red Hat OpenShift Service Mesh mesh on Kubernetes.
 
-<div class="title">
+</div>
 
-Service entry examples
+<div class="formalpara-title">
+
+**Service entry examples**
 
 </div>
 
 The following example is a mesh-external service entry that adds the `ext-resource` external dependency to the Red Hat OpenShift Service Mesh service registry:
-
-</div>
 
 ``` yaml
 apiVersion: networking.istio.io/v1alpha3
@@ -652,21 +577,11 @@ Requests are routed to services within a service mesh with virtual services. Eac
 
 Without virtual services, Red Hat OpenShift Service Mesh distributes traffic using least requests load balancing between all service instances. With a virtual service, you can specify traffic behavior for one or more hostnames. Routing rules in the virtual service tell Red Hat OpenShift Service Mesh how to send the traffic for the virtual service to appropriate destinations. Route destinations can be versions of the same service or entirely different services.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a YAML file using the following example to route requests to different versions of the Bookinfo sample application service depending on which user connects to the application.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example VirtualService.yaml
+    **Example VirtualService.yaml**
 
     </div>
 
@@ -693,15 +608,11 @@ Procedure
             subset: v3
     ```
 
-    </div>
-
 2.  Run the following command to apply `VirtualService.yaml`, where `VirtualService.yaml` is the path to the file.
 
     ``` terminal
     $ oc apply -f <VirtualService.yaml>
     ```
-
-</div>
 
 ## VirtualService configuration reference
 
@@ -711,24 +622,24 @@ Procedure
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   hosts:</code></pre></td>
 <td style="text-align: left;"><p>The <code>hosts</code> field lists the virtual service’s destination address to which the routing rules apply. This is the address(es) that are used to send requests to the service. The virtual service hostname can be an IP address, a DNS name, or a short name that resolves to a fully qualified domain name.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>spec:
   http:
   - match:</code></pre></td>
 <td style="text-align: left;"><p>The <code>http</code> section contains the virtual service’s routing rules which describe match conditions and actions for routing HTTP/1.1, HTTP2, and gRPC traffic sent to the destination as specified in the hosts field. A routing rule consists of the destination where you want the traffic to go and any specified match conditions. The first routing rule in the example has a condition that begins with the match field. In this example, this routing applies to all requests from the user <code>jason</code>. Add the <code>headers</code>, <code>end-user</code>, and <code>exact</code> fields to select the appropriate requests.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   http:
   - match:
@@ -750,17 +661,13 @@ By default, Red Hat OpenShift Service Mesh uses a least requests load balancing
 
 - Least requests: Requests are forwarded to instances with the least number of requests.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Destination rule example
+**Destination rule example**
 
 </div>
 
 The following example destination rule configures three different subsets for the `my-svc` destination service, with different load balancing policies:
-
-</div>
 
 ``` yaml
 apiVersion: networking.istio.io/v1alpha3
@@ -797,30 +704,15 @@ For example, if you have configured your OpenShift Container Platform cluster to
 
 If you want to disable the automatic creation and management of `NetworkPolicy` resources, for example to enforce company security policies, or to allow direct access to pods in the mesh, you can do so. You can edit the `ServiceMeshControlPlane` and set `spec.security.manageNetworkPolicy` to `false`.
 
-> [!NOTE]
-> When you disable `spec.security.manageNetworkPolicy` Red Hat OpenShift Service Mesh will not create **any** `NetworkPolicy` objects. The system administrator is responsible for managing the network and fixing any issues this might cause.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+When you disable `spec.security.manageNetworkPolicy` Red Hat OpenShift Service Mesh will not create **any** `NetworkPolicy` objects. The system administrator is responsible for managing the network and fixing any issues this might cause.
 
 </div>
 
 - Red Hat OpenShift Service Mesh Operator version 2.1.1 or higher installed.
 
 - `ServiceMeshControlPlane` resource updated to version 2.1 or higher.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform web console, click **Ecosystem** → **Installed Operators**.
 
@@ -842,8 +734,6 @@ Procedure
 
 6.  Click **Save**.
 
-</div>
-
 # Configuring sidecars for traffic management
 
 By default, Red Hat OpenShift Service Mesh configures every Envoy proxy to accept traffic on all the ports of its associated workload, and to reach every workload in the mesh when forwarding traffic. You can use a sidecar configuration to do the following:
@@ -852,26 +742,19 @@ By default, Red Hat OpenShift Service Mesh configures every Envoy proxy to acce
 
 - Limit the set of services that the Envoy proxy can reach.
 
-> [!NOTE]
-> To optimize performance of your service mesh, consider limiting Envoy proxy configurations.
+<div class="note">
 
-In the Bookinfo sample application, configure a Sidecar so all services can reach other services running in the same namespace and control plane. This Sidecar configuration is required for using Red Hat OpenShift Service Mesh policy and telemetry features.
-
-<div>
-
-<div class="title">
-
-Procedure
+To optimize performance of your service mesh, consider limiting Envoy proxy configurations.
 
 </div>
 
+In the Bookinfo sample application, configure a Sidecar so all services can reach other services running in the same namespace and control plane. This Sidecar configuration is required for using Red Hat OpenShift Service Mesh policy and telemetry features.
+
 1.  Create a YAML file using the following example to specify that you want a sidecar configuration to apply to all workloads in a particular namespace. Otherwise, choose specific workloads using a `workloadSelector`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example sidecar.yaml
+    **Example sidecar.yaml**
 
     </div>
 
@@ -888,8 +771,6 @@ Procedure
         - "istio-system/*"
     ```
 
-    </div>
-
 2.  Run the following command to apply `sidecar.yaml`, where `sidecar.yaml` is the path to the file.
 
     ``` terminal
@@ -901,8 +782,6 @@ Procedure
     ``` terminal
     $ oc get sidecar
     ```
-
-</div>
 
 # Routing Tutorial
 
@@ -916,29 +795,11 @@ When you access the Bookinfo app `/product` page in a browser and refresh severa
 
 This tutorial helps you apply rules that route all traffic to `v1` (version 1) of the microservices. Later, you can apply a rule to route traffic based on the value of an HTTP request header.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Deploy the Bookinfo sample application to work with the following examples.
-
-</div>
 
 ## Applying a virtual service
 
 In the following procedure, the virtual service routes all traffic to `v1` of each micro-service by applying virtual services that set the default version for the micro-services.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Apply the virtual services.
 
@@ -954,21 +815,11 @@ Procedure
 
     That command returns a resource of `kind: VirtualService` in YAML format.
 
-</div>
-
 You have configured Service Mesh to route to the `v1` version of the Bookinfo microservices including the `reviews` service version 1.
 
 ## Testing the new route configuration
 
 Test the new configuration by refreshing the `/productpage` of the Bookinfo application.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Set the value for the `GATEWAY_URL` parameter. You can use this variable to find the URL for your Bookinfo product page later. In this example, istio-system is the name of the control plane project.
 
@@ -984,8 +835,6 @@ Procedure
 
 3.  Open the Bookinfo site in your browser.
 
-</div>
-
 The reviews part of the page displays with no rating stars, no matter how many times you refresh. This is because you configured Service Mesh to route all traffic for the reviews service to the version `reviews:v1` and this version of the service does not access the star ratings service.
 
 Your service mesh now routes traffic to one version of a service.
@@ -995,14 +844,6 @@ Your service mesh now routes traffic to one version of a service.
 Change the route configuration so that all traffic from a specific user is routed to a specific service version. In this case, all traffic from a user named `jason` will be routed to the service `reviews:v2`.
 
 Service Mesh does not have any special, built-in understanding of user identity. This example is enabled by the fact that the `productpage` service adds a custom `end-user` header to all outbound HTTP requests to the reviews service.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the following command to enable user-based routing in the Bookinfo sample application.
 
@@ -1021,7 +862,5 @@ Procedure
 4.  Refresh the browser. The star ratings appear next to each review.
 
 5.  Log in as another user (pick any name you want). Refresh the browser. Now the stars are gone. Traffic is now routed to `reviews:v1` for all users except Jason.
-
-</div>
 
 You have successfully configured the Bookinfo sample application to route traffic based on user identity.

@@ -4,14 +4,6 @@ The Network Observability Operator uses the `flowlogs-pipeline` component to gen
 
 View network observability metrics dashboards using the **Overview** tab in the OpenShift Container Platform console to monitor overall traffic flow and system health, with options to filter metrics by node, namespace, owner, pod, and service.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  In the web console **Observe** → **Dashboards**, select the **Netobserv** dashboard.
 
 2.  View network traffic metrics in the following categories, with each having the subset per node, namespace, source, and destination:
@@ -39,8 +31,6 @@ Procedure
     - **Processor**
 
     - **Operator**
-
-</div>
 
 **Infrastructure** and **Application** metrics are shown in a split-view for namespace and workloads.
 
@@ -129,27 +119,9 @@ When `NetworkEvents` feature is enabled, this metric is available by default:
 
 Create custom `AlertingRule` resources based on `Netobserv` dashboard metrics to define conditions that trigger alerts in the OpenShift Container Platform console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the cluster-admin role or with view permissions for all projects.
 
 - You have the Network Observability Operator installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file by clicking the import icon, **+**.
 
@@ -180,8 +152,6 @@ Procedure
 
 3.  Click **Create** to apply the configuration file to the cluster.
 
-</div>
-
 # Custom metrics
 
 Define custom metrics from flowlog data using the `FlowMetric` API, leveraging log fields as Prometheus labels to customize dashboard information and monitor specific cluster data.
@@ -191,14 +161,6 @@ In every flowlogs data that is collected, there are several fields labeled per l
 # Configuring custom metrics by using FlowMetric API
 
 Configure the `FlowMetric` API to create custom Prometheus metrics by mapping flow log fields as labels to meet specific monitoring needs.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -210,11 +172,9 @@ Procedure
 
 5.  Configure the `FlowMetric` resource, similar to the following sample configurations:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Generate a metric that tracks ingress bytes received from cluster external sources
+    **Generate a metric that tracks ingress bytes received from cluster external sources**
 
     </div>
 
@@ -235,8 +195,6 @@ Procedure
         matchType: Absence
     ```
 
-    </div>
-
     - The `FlowMetric` resources need to be created in the namespace defined in the `FlowCollector` `spec.namespace`, which is `netobserv` by default.
 
     - The name of the Prometheus metric, which in the web console appears with the prefix `netobserv-<metricName>`.
@@ -249,25 +207,15 @@ Procedure
 
     - Refines results based on the listed criteria. In this example, selecting only the cluster external traffic is done by matching only flows where `SrcSubnetLabel` is absent. This assumes the subnet labels feature is enabled (via `spec.processor.subnetLabels`), which is done by default.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Once the pods refresh, navigate to **Observe** → **Metrics**.
 
 2.  In the **Expression** field, type the metric name to view the corresponding result. You can also enter an expression, such as `topk(5, sum(rate(netobserv_cluster_external_ingress_bytes_total{DstK8S_Namespace="my-namespace"}[2m])) by (DstK8S_HostName, DstK8S_OwnerName, DstK8S_OwnerType))`
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Show RTT latency for cluster external ingress traffic
+    **Show RTT latency for cluster external ingress traffic**
 
     </div>
 
@@ -292,8 +240,6 @@ Verification
       buckets: [".001", ".005", ".01", ".02", ".03", ".04", ".05", ".075", ".1", ".25", "1"]
     ```
 
-    </div>
-
     - The `FlowMetric` resources need to be created in the namespace defined in the `FlowCollector` `spec.namespace`, which is `netobserv` by default.
 
     - The `type` specifies the type of metric. The `Histogram` `type` is useful for a latency value (`TimeFlowRttNs`).
@@ -302,57 +248,35 @@ Verification
 
     - The custom buckets specify precision on RTT, with optimal precision ranging between 5ms and 250ms.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Once the pods refresh, navigate to **Observe** → **Metrics**.
 
 2.  In the **Expression** field, you can type the metric name to view the corresponding result.
 
-</div>
-
 # Creating metrics from nested or array fields in the Traffic flows table
 
 Create a `FlowMetric` custom resource to generate metrics for nested or array fields in the **Traffic flows** table, such as **Network events** or **Interfaces**.
 
-> [!IMPORTANT]
-> OVN Observability / Viewing `NetworkEvents` is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-> [!IMPORTANT]
-> OVN Observability and the ability to view and track network events is available only in OpenShift Container Platform 4.17 and 4.18.
+OVN Observability / Viewing `NetworkEvents` is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-The following example shows how to generate metrics from the **Network events** field for network policy events.
-
-<div>
-
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
+
+<div class="important">
+
+OVN Observability and the ability to view and track network events is available only in OpenShift Container Platform 4.17 and 4.18.
+
+</div>
+
+The following example shows how to generate metrics from the **Network events** field for network policy events.
 
 - Enable `NetworkEvents feature`. See the Additional resources for how to do this.
 
 - A network policy specified.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -364,11 +288,9 @@ Procedure
 
 5.  Create `FlowMetric` resources to add the following configurations:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Configuration counting network policy events per policy name and namespace
+    **Configuration counting network policy events per policy name and namespace**
 
     </div>
 
@@ -393,46 +315,29 @@ Procedure
         "NetworkEvents>Direction": direction
     ```
 
-    </div>
-
     - These labels represent the nested fields for **Network Events** from the **Traffic flows** table. Each network event has a specific type, namespace, name, action, and direction. You can alternatively specify the `Interfaces` if `NetworkEvents` is unavailable in your OpenShift Container Platform version.
 
     - Optional: You can choose to represent a field that contains a list of items as distinct items.
 
     - Optional: You can rename the fields in Prometheus.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  In the web console, navigate to **Observe** → **Dashboards** and scroll down to see the **Network Policy** tab.
 
 2.  You should begin seeing metrics filter in based on the metric you created along with the network policy specifications.
 
-</div>
+<div class="important">
 
-> [!IMPORTANT]
-> High cardinality can affect the memory usage of Prometheus. You can check whether specific labels have high cardinality in the [Network Flows format reference](../../observability/network_observability/json-flows-format-reference.xml#network-observability-flows-format_json_reference).
+High cardinality can affect the memory usage of Prometheus. You can check whether specific labels have high cardinality in the [Network Flows format reference](../../observability/network_observability/json-flows-format-reference.xml#network-observability-flows-format_json_reference).
+
+</div>
 
 # Configuring custom charts using FlowMetric API
 
 Generate custom charts for OpenShift Container Platform web console dashboards by defining the charts section of the `FlowMetric` custom resource.
 
 You can view custom charts as an administrator in the **Dashboard** menu.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -444,11 +349,9 @@ Procedure
 
 5.  Configure the `FlowMetric` resource, similar to the following sample configurations:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Chart for tracking ingress bytes received from cluster external sources
+    **Chart for tracking ingress bytes received from cluster external sources**
 
     </div>
 
@@ -478,19 +381,9 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - The `FlowMetric` resources need to be created in the namespace defined in the `FlowCollector` `spec.namespace`, which is `netobserv` by default.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Once the pods refresh, navigate to **Observe** → **Dashboards**.
 
@@ -500,15 +393,11 @@ Verification
 
     - A timeseries graph showing the same metric per destination workload
 
-</div>
-
 For more information about the query language, refer to the [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/querying/basics/).
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Chart for RTT latency for cluster external ingress traffic
+**Chart for RTT latency for cluster external ingress traffic**
 
 </div>
 
@@ -546,8 +435,6 @@ metadata:
 # ...
 ```
 
-</div>
-
 - The `FlowMetric` resources need to be created in the namespace defined in the `FlowCollector` `spec.namespace`, which is `netobserv` by default.
 
 - Using a different `dashboardName` creates a new dashboard that is prefixed with `Netobserv`. For example, **Netobserv / \<dashboard_name\>**.
@@ -560,33 +447,15 @@ You can show averages of histograms by dividing the metric, `$METRIC_sum`, by th
 promQL: "(sum(rate($METRIC_sum{DstK8S_Namespace!=\"\"}[2m])) by (DstK8S_Namespace,DstK8S_OwnerName) / sum(rate($METRIC_count{DstK8S_Namespace!=\"\"}[2m])) by (DstK8S_Namespace,DstK8S_OwnerName))*1000"
 ```
 
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 1.  Once the pods refresh, navigate to **Observe** → **Dashboards**.
 
 2.  Search for the **NetObserv / Main** dashboard. View the new panel under the **NetObserv / Main** dashboard, or optionally a dashboard name that you create.
-
-</div>
 
 For more information about the query language, refer to the [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/querying/basics/).
 
 # Detecting SYN flooding using the FlowMetric API and TCP flags
 
 Deploy a custom `AlertingRule` and `FlowMetric` configuration to monitor TCP flags, enabling real-time detection and alerting for SYN flooding attacks on the cluster.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -598,11 +467,9 @@ Procedure
 
 5.  Create `FlowMetric` resources to add the following configurations:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Configuration counting flows per destination host and resource, with TCP flags
+    **Configuration counting flows per destination host and resource, with TCP flags**
 
     </div>
 
@@ -617,13 +484,9 @@ Procedure
       labels: [SrcSubnetLabel,DstSubnetLabel,DstK8S_Name,DstK8S_Type,DstK8S_HostName,DstK8S_Namespace,Flags]
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Configuration counting flows per source host and resource, with TCP flags
+    **Configuration counting flows per source host and resource, with TCP flags**
 
     </div>
 
@@ -638,15 +501,11 @@ Procedure
       labels: [DstSubnetLabel,SrcSubnetLabel,SrcK8S_Name,SrcK8S_Type,SrcK8S_HostName,SrcK8S_Namespace,Flags]
     ```
 
-    </div>
-
 6.  Deploy the following `AlertingRule` resource to alert for SYN flooding:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    `AlertingRule` for SYN flooding
+    **`AlertingRule` for SYN flooding**
 
     </div>
 
@@ -684,19 +543,9 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - In this example, the threshold for the alert is `300`; however, you can adapt this value empirically. A threshold that is too low might produce false-positives, and if it’s too high it might miss actual attacks.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  In the web console, click **Manage Columns** in the **Network Traffic** table view and click **TCP flags**.
 
@@ -706,20 +555,8 @@ Verification
 
 4.  Filter on **netobserv-synflood-in alert**. The alert should fire when SYN flooding occurs.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Filtering eBPF flow data using a global rule](../../observability/network_observability/observing-network-traffic.xml#network-observability-filtering-ebpf-rule_nw-observe-network-traffic)
 
 - [Creating alerting rules for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/managing_alerts/managing-alerts-as-a-developer#creating-alerting-rules-for-user-defined-projects_managing-alerts-as-a-developer)
 
 - [Troubleshooting high cardinality metrics- Determining why Prometheus is consuming a lot of disk space](../../support/troubleshooting/investigating-monitoring-issues.xml#determining-why-prometheus-is-consuming-disk-space_investigating-monitoring-issues)
-
-</div>

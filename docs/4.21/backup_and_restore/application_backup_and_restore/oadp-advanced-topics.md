@@ -12,17 +12,7 @@ To return to the above example, if `example.com/v1` is the preferred API, then V
 
 Therefore, you need to generate a list of the Kubernetes API group versions on your target cluster to be sure the preferred API version is registered in its set of available API resources.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Enter the following command:
-
-</div>
 
 ``` terminal
 $ oc api-resources
@@ -38,8 +28,11 @@ Without the Enable API Group Versions feature enabled, Velero backs up only the 
 
 When the Enable API Group Versions feature is enabled on the destination cluster, Velero selects the version to restore on the basis of the order of priority of API group versions.
 
-> [!NOTE]
-> Enable API Group Versions is still in beta.
+<div class="note">
+
+Enable API Group Versions is still in beta.
+
+</div>
 
 Velero uses the following algorithm to assign priorities to API versions, with `1` as the top priority:
 
@@ -49,36 +42,19 @@ Velero uses the following algorithm to assign priorities to API versions, with `
 
 3.  Common non-preferred supported version with the highest Kubernetes version priority
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Enable API Group Versions Feature](https://velero.io/docs/v1.9/enable-api-group-versions-feature/)
-
-</div>
 
 ## Using Enable API Group Versions
 
 You can use Velero’s Enable API Group Versions feature to back up *all* Kubernetes API group versions that are supported on a cluster, not only the preferred one.
 
-> [!NOTE]
-> Enable API Group Versions is still in beta.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+Enable API Group Versions is still in beta.
 
 </div>
 
 - Configure the `EnableAPIGroupVersions` feature flag:
-
-</div>
 
 ``` yaml
 apiVersion: oadp.openshift.io/vialpha1
@@ -91,17 +67,7 @@ spec:
       - EnableAPIGroupVersions
 ```
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Enable API Group Versions Feature](https://velero.io/docs/v1.9/enable-api-group-versions-feature/)
-
-</div>
 
 # Backing up data from one cluster and restoring it to another cluster
 
@@ -127,8 +93,11 @@ You must exclude Operators from the backup of an application for backup and rest
 
 Velero, which OADP is built upon, does not natively support migrating persistent volume snapshots across cloud providers. To migrate volume snapshot data between cloud platforms, you must *either* enable the Velero Restic file system backup option, which backs up volume contents at the file system level, *or* use the OADP Data Mover for CSI snapshots.
 
-> [!NOTE]
-> In OADP 1.1 and earlier, the Velero Restic file system backup option is called `restic`. In OADP 1.2 and later, the Velero Restic file system backup option is called `file-system-backup`.
+<div class="note">
+
+In OADP 1.1 and earlier, the Velero Restic file system backup option is called `restic`. In OADP 1.2 and later, the Velero Restic file system backup option is called `file-system-backup`.
+
+</div>
 
 - You must also use Velero’s [File System Backup](https://velero.io/docs/main/file-system-backup/) to migrate data between AWS regions or between Microsoft Azure regions.
 
@@ -166,14 +135,6 @@ Velero supports two approaches for determining pod volumes. Use the opt-in or th
 
 You can use the opt-in method to specify which volumes need to be backed up by File System Backup (FSB). You can do this by using the `backup.velero.io/backup-volumes` command.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - On each pod that contains one or more volumes that you want to back up, enter the following command:
 
   ``` terminal
@@ -186,8 +147,6 @@ Procedure
   `<your_volume_name_x>`
   specifies the name of the xth volume in the pod specification.
 
-</div>
-
 ### Backing up pod volumes by using the opt-out method
 
 When using the opt-out approach, all pod volumes are backed up by using File System Backup (FSB), although there are some exceptions:
@@ -197,14 +156,6 @@ When using the opt-out approach, all pod volumes are backed up by using File Sys
 - `hostPath` volumes
 
 You can use the opt-out method to specify which volumes **not** to back up. You can do this by using the `backup.velero.io/backup-volumes-excludes` command.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - On each pod that contains one or more volumes that you do not want to back up, run the following command:
 
@@ -218,10 +169,11 @@ Procedure
   `<your_volume_name_x>`
   specifies the name of the xth volume in the pod specification.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> You can enable this behavior for all Velero backups by running the `velero install` command with the `--default-volumes-to-fs-backup` flag.
+You can enable this behavior for all Velero backups by running the `velero install` command with the `--default-volumes-to-fs-backup` flag.
+
+</div>
 
 ## UID and GID ranges
 
@@ -270,25 +222,7 @@ For an in-depth discussion of UID and GID ranges in OpenShift Container Platform
 
 In general, you back up data from one OpenShift Container Platform cluster and restore it on another OpenShift Container Platform cluster in the same way that you back up and restore data to the same cluster. However, there are some additional prerequisites and differences in the procedure when backing up data from one OpenShift Container Platform cluster and restoring it on another.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - All relevant prerequisites for backing up and restoring on your platform (for example, AWS, Microsoft Azure, Google Cloud, and so on), especially the prerequisites for the Data Protection Application (DPA), are described in the relevant sections of this guide.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Make the following additions to the procedures given for your platform:
 
@@ -304,13 +238,17 @@ Procedure
       $ velero backup create <backup_name> --default-volumes-to-fs-backup <any_other_options>
       ```
 
-      > [!NOTE]
-      > In OADP 1.2 and later, the Velero Restic option is called `file-system-backup`.
+      <div class="note">
+
+      In OADP 1.2 and later, the Velero Restic option is called `file-system-backup`.
+
+      </div>
+
+<div class="important">
+
+Before restoring a CSI back up, edit the `VolumeSnapshotClass` custom resource (CR), and set the `snapshot.storage.kubernetes.io/is-default-class parameter` to false. Otherwise, the restore will partially fail due to the same value in the `VolumeSnapshotClass` in the target cluster for the same drive.
 
 </div>
-
-> [!IMPORTANT]
-> Before restoring a CSI back up, edit the `VolumeSnapshotClass` custom resource (CR), and set the `snapshot.storage.kubernetes.io/is-default-class parameter` to false. Otherwise, the restore will partially fail due to the same value in the `VolumeSnapshotClass` in the target cluster for the same drive.
 
 # OADP storage class mapping
 
@@ -330,14 +268,6 @@ You can use OpenShift API for Data Protection (OADP) with the Velero plugin v1.1
 
 To deploy ConfigMap with OADP, use the `change-storage-class-config` field. You must change the storage class mapping based on your cloud provider.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Change the storage class mapping by running the following command:
 
     ``` terminal
@@ -346,11 +276,9 @@ Procedure
 
 2.  Create a config map in the Velero namespace as shown in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example
+    **Example**
 
     </div>
 
@@ -367,15 +295,11 @@ Procedure
       standard-csi: ssd-csi
     ```
 
-    </div>
-
 3.  Save your storage class mapping preferences by running the following command:
 
     ``` terminal
     $ oc create -f change-storage-class-config
     ```
-
-</div>
 
 # Additional resources
 

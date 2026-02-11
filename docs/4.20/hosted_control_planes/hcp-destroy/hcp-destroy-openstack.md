@@ -2,25 +2,9 @@
 
 You can destroy a hosted cluster and its associated resources on Red Hat OpenStack Platform (RHOSP) by using the `hcp` CLI tool.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You installed the hosted control planes CLI, `hcp`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To destroy the cluster and its associated resources, run the following command:
 
@@ -32,7 +16,5 @@ Procedure
 
   `<cluster_name>`
   is the name of the hosted cluster.
-
-</div>
 
 After the process completes, all your cluster and all resources that are associated with it are destroyed.

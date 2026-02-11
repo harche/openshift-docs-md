@@ -10,8 +10,11 @@ One of the resources that the Cluster Version Operator (CVO) monitors is the `Cl
 
 Administrators and OpenShift components can communicate or interact with the CVO through the `ClusterVersion` object. The desired CVO state is declared through the `ClusterVersion` object and the current CVO state is reflected in the object’s status.
 
-> [!NOTE]
-> Do not directly modify the `ClusterVersion` object. Instead, use interfaces such as the `oc` CLI or the web console to declare your update target.
+<div class="note">
+
+Do not directly modify the `ClusterVersion` object. Instead, use interfaces such as the `oc` CLI or the web console to declare your update target.
+
+</div>
 
 The CVO continually reconciles the cluster with the target state declared in the `spec` property of the `ClusterVersion` resource. When the desired release differs from the actual release, that reconciliation updates the cluster.
 
@@ -25,14 +28,15 @@ The `ClusterVersion` resource also contains information about updates that are a
   $ oc adm upgrade --include-not-recommended
   ```
 
-  > [!NOTE]
-  > The additional `--include-not-recommended` parameter includes updates that are available with known issues that apply to the cluster.
+  <div class="note">
 
-  <div class="formalpara">
+  The additional `--include-not-recommended` parameter includes updates that are available with known issues that apply to the cluster.
 
-  <div class="title">
+  </div>
 
-  Example output
+  <div class="formalpara-title">
+
+  **Example output**
 
   </div>
 
@@ -72,8 +76,6 @@ The `ClusterVersion` resource also contains information about updates that are a
     Incoming HTTP requests to services exposed by Routes may fail while routers reload their configuration, especially when made with Apache HTTPClient versions before 5.0. The problem is more likely to occur in clusters with higher number of Routes and corresponding endpoints. https://issues.redhat.com/browse/NE-1689
   ```
 
-  </div>
-
   The `oc adm upgrade` command queries the `ClusterVersion` resource for information about available updates and presents it in a human-readable format.
 
 - One way to directly inspect the underlying availability data created by the CVO is by querying the `ClusterVersion` resource with the following command:
@@ -82,11 +84,9 @@ The `ClusterVersion` resource also contains information about updates that are a
   $ oc get clusterversion version -o json | jq '.status.availableUpdates'
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -107,19 +107,15 @@ The `ClusterVersion` resource also contains information about updates that are a
   ]
   ```
 
-  </div>
-
 - A similar command can be used to check conditional updates:
 
   ``` terminal
   $ oc get clusterversion version -o json | jq '.status.conditionalUpdates'
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -147,8 +143,6 @@ The `ClusterVersion` resource also contains information about updates that are a
   ]
   ```
 
-  </div>
-
 ## Evaluation of update availability
 
 The Cluster Version Operator (CVO) periodically queries the OpenShift Update Service (OSUS) for the most recent data about update possibilities. This data is based on the cluster’s subscribed channel. The CVO then saves information about update recommendations into either the `availableUpdates` or `conditionalUpdates` field of its `ClusterVersion` resource.
@@ -159,17 +153,7 @@ The CVO continuously evaluates its cluster characteristics against the condition
 
 The user interface, either the web console or the OpenShift CLI (`oc`), presents this information in sectioned headings to the administrator. Each known issue associated with the update path contains a link to further resources about the risk so that the administrator can make an informed decision about the update.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Update recommendation removals and Conditional Updates](../../updating/understanding_updates/understanding-update-channels-release.xml#conditional-updates-overview_understanding-update-channels-releases)
-
-</div>
 
 # Release images
 
@@ -264,8 +248,11 @@ The CVO internally builds a dependency graph for the manifests, where the CVO ob
 
 The CVO then applies manifests following the generated dependency graph.
 
-> [!NOTE]
-> For some resource types, the CVO monitors the resource after its manifest is applied, and considers it to be successfully updated only after the resource reaches a stable state. Achieving this state can take some time. This is especially true for `ClusterOperator` resources, while the CVO waits for a cluster Operator to update itself and then update its `ClusterOperator` status.
+<div class="note">
+
+For some resource types, the CVO monitors the resource after its manifest is applied, and considers it to be successfully updated only after the resource reaches a stable state. Achieving this state can take some time. This is especially true for `ClusterOperator` resources, while the CVO waits for a cluster Operator to update itself and then update its `ClusterOperator` status.
+
+</div>
 
 The CVO waits until all cluster Operators in the Runlevel meet the following conditions before it proceeds to the next Runlevel:
 
@@ -285,31 +272,27 @@ Some actions can take significant time to finish. The CVO waits for the actions 
 
 In the previous example diagram, the CVO is waiting until all work is completed at Runlevel 20. The CVO has applied all manifests to the Operators in the Runlevel, but the `kube-apiserver-operator ClusterOperator` performs some actions after its new version was deployed. The `kube-apiserver-operator ClusterOperator` declares this progress through the `Progressing=True` condition and by not declaring the new version as reconciled in its `status.versions`. The CVO waits until the ClusterOperator reports an acceptable status, and then it will start reconciling manifests at Runlevel 25.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Understanding OpenShift Container Platform update duration](../../updating/understanding_updates/understanding-openshift-update-duration.xml#understanding-openshift-update-duration)
-
-</div>
 
 # Understanding how the Machine Config Operator updates nodes
 
 The Machine Config Operator (MCO) applies a new machine configuration to each control plane node and compute node. During the machine configuration update, control plane nodes and compute nodes are organized into their own machine config pools, where the pools of machines are updated in parallel. The `.spec.maxUnavailable` parameter, which has a default value of `1`, determines how many nodes in a machine config pool can simultaneously undergo the update process.
 
-> [!WARNING]
-> The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
+<div class="warning">
+
+The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
+
+</div>
 
 When the machine configuration update process begins, the MCO checks the amount of currently unavailable nodes in a pool. If there are fewer unavailable nodes than the value of `.spec.maxUnavailable`, the MCO initiates the following sequence of actions on available nodes in the pool:
 
 1.  Cordon and drain the node
 
-    > [!NOTE]
-    > When a node is cordoned, workloads cannot be scheduled to it.
+    <div class="note">
+
+    When a node is cordoned, workloads cannot be scheduled to it.
+
+    </div>
 
 2.  Update the system configuration and operating system (OS) of the node
 
@@ -343,11 +326,9 @@ You can check the status of the machine configuration update by running the foll
 $ oc get mcp
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -357,16 +338,4 @@ master       rendered-master-acd1358917e9f98cbdb599aea622d78b       True      Fa
 worker       rendered-worker-1d871ac76e1951d32b2fe92369879826       False     True       False      2              1                   1                     0                      22h
 ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Machine Config Overview](../../machine_configuration/index.xml#machine-config-overview)
-
-</div>

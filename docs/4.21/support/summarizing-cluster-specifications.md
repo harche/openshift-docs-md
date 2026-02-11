@@ -4,27 +4,9 @@ You can summarize your cluster specifications by querying the `clusterversion` r
 
 You can obtain a summary of OpenShift Container Platform cluster specifications by querying the `clusterversion` resource.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Query cluster version, availability, uptime, and general status:
 
@@ -32,11 +14,9 @@ Procedure
     $ oc get clusterversion
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -45,19 +25,15 @@ Procedure
     version   4.13.8    True        False         8h      Cluster version is 4.13.8
     ```
 
-    </div>
-
 2.  Obtain a detailed summary of cluster specifications, update availability, and update history:
 
     ``` terminal
     $ oc describe clusterversion
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -81,7 +57,3 @@ Procedure
         Version:            4.13.8
     # ...
     ```
-
-    </div>
-
-</div>

@@ -14,32 +14,17 @@ You can configure virtual machines to use pre-allocated huge pages by including 
 
 The memory request must be divisible by the page size. For example, you cannot request `500Mi` memory with a page size of `1Gi`.
 
-> [!NOTE]
-> The memory layouts of the host and the guest OS are unrelated. Huge pages requested in the virtual machine manifest apply to QEMU. Huge pages inside the guest can only be configured based on the amount of available memory of the virtual machine instance.
+<div class="note">
 
-If you edit a running virtual machine, the virtual machine must be rebooted for the changes to take effect.
-
-<div>
-
-<div class="title">
-
-Prerequisites
+The memory layouts of the host and the guest OS are unrelated. Huge pages requested in the virtual machine manifest apply to QEMU. Huge pages inside the guest can only be configured based on the amount of available memory of the virtual machine instance.
 
 </div>
+
+If you edit a running virtual machine, the virtual machine must be rebooted for the changes to take effect.
 
 - Nodes must have pre-allocated huge pages configured.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In your virtual machine configuration, add the `resources.requests.memory` and `memory.hugepages.pageSize` parameters to the `spec.domain`. The following configuration snippet is for a virtual machine that requests a total of `4Gi` memory with a page size of `1Gi`:
 
@@ -66,5 +51,3 @@ Procedure
     ``` terminal
     $ oc apply -f <virtual_machine>.yaml
     ```
-
-</div>

@@ -1,31 +1,16 @@
 You can remove the custom metrics autoscaler from your OpenShift Container Platform cluster. After removing the Custom Metrics Autoscaler Operator, remove other components associated with the Operator to avoid potential issues.
 
-> [!NOTE]
-> Delete the `KedaController` custom resource (CR) first. If you do not delete the `KedaController` CR, OpenShift Container Platform can hang when you delete the `openshift-keda` project. If you delete the Custom Metrics Autoscaler Operator before deleting the CR, you are not able to delete the CR.
+<div class="note">
+
+Delete the `KedaController` custom resource (CR) first. If you do not delete the `KedaController` CR, OpenShift Container Platform can hang when you delete the `openshift-keda` project. If you delete the Custom Metrics Autoscaler Operator before deleting the CR, you are not able to delete the CR.
+
+</div>
 
 # Uninstalling the Custom Metrics Autoscaler Operator
 
 Use the following procedure to remove the custom metrics autoscaler from your OpenShift Container Platform cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The Custom Metrics Autoscaler Operator must be installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform web console, click **Ecosystem** → **Installed Operators**.
 
@@ -102,5 +87,3 @@ Procedure
     ``` terminal
     $ oc delete operator/openshift-custom-metrics-autoscaler-operator.openshift-keda
     ```
-
-</div>

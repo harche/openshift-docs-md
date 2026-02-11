@@ -12,5 +12,8 @@ To ensure successful backup and restore operations for deployments with remote S
 
 Ensure that your OpenShift Container Platform network performs optimally and meets OpenShift Container Platform network requirements.
 
-> [!IMPORTANT]
-> Although Red Hat provides supports for standard backup and restore failures, it does not provide support for failures caused by network settings that do not meet the recommended thresholds.
+<div class="important">
+
+Although Red Hat provides supports for standard backup and restore failures, it does not provide support for failures caused by network settings that do not meet the recommended thresholds.
+
+</div>

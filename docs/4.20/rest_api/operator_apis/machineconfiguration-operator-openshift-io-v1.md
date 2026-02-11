@@ -11,13 +11,13 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | spec is the specification of the desired behavior of the Machine Config Operator |
-| `status` | `object` | status is the most recently observed status of the Machine Config Operator |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | spec is the specification of the desired behavior of the Machine Config Operator                                                                                                                                                                                                                     |
+| `status`     | `object`                                                                             | status is the most recently observed status of the Machine Config Operator                                                                                                                                                                                                                           |
 
 ## .spec
 
@@ -34,61 +34,61 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>failedRevisionLimit</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>failedRevisionLimit is the number of failed static pod installer revisions to keep on disk and in the api -1 = unlimited, 0 or unset = 5 (default)</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>forceRedeploymentReason</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>forceRedeploymentReason can be used to force the redeployment of the operand by providing a unique string. This provides a mechanism to kick a previously failed deployment and provide a reason why you think it will work this time instead of failing again on the same config.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>logLevel</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>logLevel is an intent based logging for an overall component. It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands.</p>
 <p>Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>managedBootImages</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>managedBootImages allows configuration for the management of boot images for machine resources within the cluster. This configuration allows users to select resources that should be updated to the latest boot images during cluster upgrades, ensuring that new machines always boot with the current cluster version’s boot image. When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The default for each machine manager mode is All for GCP and AWS platforms, and None for all other platforms.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>managementState</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>managementState indicates whether and how the operator should manage the component</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>nodeDisruptionPolicy</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>nodeDisruptionPolicy allows an admin to set granular node disruption actions for MachineConfig-based updates, such as drains, service reloads, etc. Specifying this will allow for less downtime when doing small configuration updates to the cluster. This configuration has no effect on cluster upgrades which will still incur node disruption where required.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>observedConfig</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>observedConfig holds a sparse config that controller has observed from the cluster state. It exists in spec because it is an input to the level for the operator</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>operatorLogLevel</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>operatorLogLevel is an intent based logging for the operator itself. It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves.</p>
 <p>Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>succeededRevisionLimit</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>succeededRevisionLimit is the number of successful static pod installer revisions to keep on disk and in the api -1 = unlimited, 0 or unset = 5 (default)</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>unsupportedConfigOverrides</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>unsupportedConfigOverrides overrides the final configuration that was computed by the operator. Red Hat does not support the use of this field. Misuse of this field could lead to unexpected behavior or conflict with other configuration options. Seek guidance from the Red Hat support before using this field. Use of this property blocks cluster upgrades, it must be removed before upgrading your cluster.</p></td>
@@ -104,9 +104,9 @@ managedBootImages allows configuration for the management of boot images for mac
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `machineManagers` | `array` | machineManagers can be used to register machine management resources for boot image updates. The Machine Config Operator will watch for changes to this list. Only one entry is permitted per type of machine management resource. |
+| Property            | Type     | Description                                                                                                                                                                                                                                             |
+|---------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `machineManagers`   | `array`  | machineManagers can be used to register machine management resources for boot image updates. The Machine Config Operator will watch for changes to this list. Only one entry is permitted per type of machine management resource.                      |
 | `machineManagers[]` | `object` | MachineManager describes a target machine resource that is registered for boot image updates. It stores identifying information such as the resource type and the API Group of the resource. It also provides granular control via the selection field. |
 
 ## .spec.managedBootImages.machineManagers
@@ -132,11 +132,11 @@ Required
 
 - `selection`
 
-| Property | Type | Description |
-|----|----|----|
-| `apiGroup` | `string` | apiGroup is name of the APIGroup that the machine management resource belongs to. The only current valid value is machine.openshift.io. machine.openshift.io means that the machine manager will only register resources that belong to OpenShift machine API group. |
-| `resource` | `string` | resource is the machine management resource’s type. The only current valid value is machinesets. machinesets means that the machine manager will only register resources of the kind MachineSet. |
-| `selection` | `object` | selection allows granular control of the machine management resources that will be registered for boot image updates. |
+| Property    | Type     | Description                                                                                                                                                                                                                                                          |
+|-------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiGroup`  | `string` | apiGroup is name of the APIGroup that the machine management resource belongs to. The only current valid value is machine.openshift.io. machine.openshift.io means that the machine manager will only register resources that belong to OpenShift machine API group. |
+| `resource`  | `string` | resource is the machine management resource’s type. The only current valid value is machinesets. machinesets means that the machine manager will only register resources of the kind MachineSet.                                                                     |
+| `selection` | `object` | selection allows granular control of the machine management resources that will be registered for boot image updates.                                                                                                                                                |
 
 ## .spec.managedBootImages.machineManagers\[\].selection
 
@@ -149,10 +149,10 @@ Type
 Required
 - `mode`
 
-| Property | Type | Description |
-|----|----|----|
-| `mode` | `string` | mode determines how machine managers will be selected for updates. Valid values are All and Partial. All means that every resource matched by the machine manager will be updated. Partial requires specified selector(s) and allows customisation of which resources matched by the machine manager will be updated. None means that every resource matched by the machine manager will not be updated. |
-| `partial` | `object` | partial provides label selector(s) that can be used to match machine management resources. Only permitted when mode is set to "Partial". |
+| Property  | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `mode`    | `string` | mode determines how machine managers will be selected for updates. Valid values are All and Partial. All means that every resource matched by the machine manager will be updated. Partial requires specified selector(s) and allows customisation of which resources matched by the machine manager will be updated. None means that every resource matched by the machine manager will not be updated. |
+| `partial` | `object` | partial provides label selector(s) that can be used to match machine management resources. Only permitted when mode is set to "Partial".                                                                                                                                                                                                                                                                 |
 
 ## .spec.managedBootImages.machineManagers\[\].selection.partial
 
@@ -165,8 +165,8 @@ Type
 Required
 - `machineResourceSelector`
 
-| Property | Type | Description |
-|----|----|----|
+| Property                  | Type     | Description                                                                                                |
+|---------------------------|----------|------------------------------------------------------------------------------------------------------------|
 | `machineResourceSelector` | `object` | machineResourceSelector is a label selector that can be used to select machine resources like MachineSets. |
 
 ## .spec.managedBootImages.machineManagers\[\].selection.partial.machineResourceSelector
@@ -177,11 +177,11 @@ machineResourceSelector is a label selector that can be used to select machine r
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.managedBootImages.machineManagers\[\].selection.partial.machineResourceSelector.matchExpressions
 
@@ -204,11 +204,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.nodeDisruptionPolicy
 
@@ -218,13 +218,13 @@ nodeDisruptionPolicy allows an admin to set granular node disruption actions for
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `files` | `array` | files is a list of MachineConfig file definitions and actions to take to changes on those paths This list supports a maximum of 50 entries. |
-| `files[]` | `object` | NodeDisruptionPolicySpecFile is a file entry and corresponding actions to take and is used in the NodeDisruptionPolicyConfig object |
-| `sshkey` | `object` | sshkey maps to the ignition.sshkeys field in the MachineConfig object, definition an action for this will apply to all sshkey changes in the cluster |
-| `units` | `array` | units is a list MachineConfig unit definitions and actions to take on changes to those services This list supports a maximum of 50 entries. |
-| `units[]` | `object` | NodeDisruptionPolicySpecUnit is a systemd unit name and corresponding actions to take and is used in the NodeDisruptionPolicyConfig object |
+| Property  | Type     | Description                                                                                                                                          |
+|-----------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `files`   | `array`  | files is a list of MachineConfig file definitions and actions to take to changes on those paths This list supports a maximum of 50 entries.          |
+| `files[]` | `object` | NodeDisruptionPolicySpecFile is a file entry and corresponding actions to take and is used in the NodeDisruptionPolicyConfig object                  |
+| `sshkey`  | `object` | sshkey maps to the ignition.sshkeys field in the MachineConfig object, definition an action for this will apply to all sshkey changes in the cluster |
+| `units`   | `array`  | units is a list MachineConfig unit definitions and actions to take on changes to those services This list supports a maximum of 50 entries.          |
+| `units[]` | `object` | NodeDisruptionPolicySpecUnit is a systemd unit name and corresponding actions to take and is used in the NodeDisruptionPolicyConfig object           |
 
 ## .spec.nodeDisruptionPolicy.files
 
@@ -247,11 +247,11 @@ Required
 
 - `path`
 
-| Property | Type | Description |
-|----|----|----|
-| `actions` | `array` | actions represents the series of commands to be executed on changes to the file at the corresponding file path. Actions will be applied in the order that they are set in this list. If there are other incoming changes to other MachineConfig entries in the same update that require a reboot, the reboot will supercede these actions. Valid actions are Reboot, Drain, Reload, DaemonReload and None. The Reboot action and the None action cannot be used in conjunction with any of the other actions. This list supports a maximum of 10 entries. |
-| `actions[]` | `object` |  |
-| `path` | `string` | path is the location of a file being managed through a MachineConfig. The Actions in the policy will apply to changes to the file at this path. |
+| Property    | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|-------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `actions`   | `array`  | actions represents the series of commands to be executed on changes to the file at the corresponding file path. Actions will be applied in the order that they are set in this list. If there are other incoming changes to other MachineConfig entries in the same update that require a reboot, the reboot will supercede these actions. Valid actions are Reboot, Drain, Reload, DaemonReload and None. The Reboot action and the None action cannot be used in conjunction with any of the other actions. This list supports a maximum of 10 entries. |
+| `actions[]` | `object` |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `path`      | `string` | path is the location of a file being managed through a MachineConfig. The Actions in the policy will apply to changes to the file at this path.                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ## .spec.nodeDisruptionPolicy.files\[\].actions
 
@@ -271,11 +271,11 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `reload` | `object` | reload specifies the service to reload, only valid if type is reload |
-| `restart` | `object` | restart specifies the service to restart, only valid if type is restart |
-| `type` | `string` | type represents the commands that will be carried out if this NodeDisruptionPolicySpecActionType is executed Valid values are Reboot, Drain, Reload, Restart, DaemonReload and None. reload/restart requires a corresponding service target specified in the reload/restart field. Other values require no further configuration |
+| Property  | Type     | Description                                                                                                                                                                                                                                                                                                                      |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `reload`  | `object` | reload specifies the service to reload, only valid if type is reload                                                                                                                                                                                                                                                             |
+| `restart` | `object` | restart specifies the service to restart, only valid if type is restart                                                                                                                                                                                                                                                          |
+| `type`    | `string` | type represents the commands that will be carried out if this NodeDisruptionPolicySpecActionType is executed Valid values are Reboot, Drain, Reload, Restart, DaemonReload and None. reload/restart requires a corresponding service target specified in the reload/restart field. Other values require no further configuration |
 
 ## .spec.nodeDisruptionPolicy.files\[\].actions\[\].reload
 
@@ -288,8 +288,8 @@ Type
 Required
 - `serviceName`
 
-| Property | Type | Description |
-|----|----|----|
+| Property      | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|---------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `serviceName` | `string` | serviceName is the full name (e.g. crio.service) of the service to be reloaded Service names should be of the format \${NAME}\${SERVICETYPE} and can up to 255 characters long. \${NAME} must be atleast 1 character long and can only consist of alphabets, digits, ":", "-", "\_", ".", and "\\. \${SERVICETYPE} must be one of ".service", ".socket", ".device", ".mount", ".automount", ".swap", ".target", ".path", ".timer", ".snapshot", ".slice" or ".scope". |
 
 ## .spec.nodeDisruptionPolicy.files\[\].actions\[\].restart
@@ -303,8 +303,8 @@ Type
 Required
 - `serviceName`
 
-| Property | Type | Description |
-|----|----|----|
+| Property      | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|---------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `serviceName` | `string` | serviceName is the full name (e.g. crio.service) of the service to be restarted Service names should be of the format \${NAME}\${SERVICETYPE} and can up to 255 characters long. \${NAME} must be atleast 1 character long and can only consist of alphabets, digits, ":", "-", "\_", ".", and "\\. \${SERVICETYPE} must be one of ".service", ".socket", ".device", ".mount", ".automount", ".swap", ".target", ".path", ".timer", ".snapshot", ".slice" or ".scope". |
 
 ## .spec.nodeDisruptionPolicy.sshkey
@@ -318,10 +318,10 @@ Type
 Required
 - `actions`
 
-| Property | Type | Description |
-|----|----|----|
-| `actions` | `array` | actions represents the series of commands to be executed on changes to the file at the corresponding file path. Actions will be applied in the order that they are set in this list. If there are other incoming changes to other MachineConfig entries in the same update that require a reboot, the reboot will supercede these actions. Valid actions are Reboot, Drain, Reload, DaemonReload and None. The Reboot action and the None action cannot be used in conjunction with any of the other actions. This list supports a maximum of 10 entries. |
-| `actions[]` | `object` |  |
+| Property    | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|-------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `actions`   | `array`  | actions represents the series of commands to be executed on changes to the file at the corresponding file path. Actions will be applied in the order that they are set in this list. If there are other incoming changes to other MachineConfig entries in the same update that require a reboot, the reboot will supercede these actions. Valid actions are Reboot, Drain, Reload, DaemonReload and None. The Reboot action and the None action cannot be used in conjunction with any of the other actions. This list supports a maximum of 10 entries. |
+| `actions[]` | `object` |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ## .spec.nodeDisruptionPolicy.sshkey.actions
 
@@ -341,11 +341,11 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `reload` | `object` | reload specifies the service to reload, only valid if type is reload |
-| `restart` | `object` | restart specifies the service to restart, only valid if type is restart |
-| `type` | `string` | type represents the commands that will be carried out if this NodeDisruptionPolicySpecActionType is executed Valid values are Reboot, Drain, Reload, Restart, DaemonReload and None. reload/restart requires a corresponding service target specified in the reload/restart field. Other values require no further configuration |
+| Property  | Type     | Description                                                                                                                                                                                                                                                                                                                      |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `reload`  | `object` | reload specifies the service to reload, only valid if type is reload                                                                                                                                                                                                                                                             |
+| `restart` | `object` | restart specifies the service to restart, only valid if type is restart                                                                                                                                                                                                                                                          |
+| `type`    | `string` | type represents the commands that will be carried out if this NodeDisruptionPolicySpecActionType is executed Valid values are Reboot, Drain, Reload, Restart, DaemonReload and None. reload/restart requires a corresponding service target specified in the reload/restart field. Other values require no further configuration |
 
 ## .spec.nodeDisruptionPolicy.sshkey.actions\[\].reload
 
@@ -358,8 +358,8 @@ Type
 Required
 - `serviceName`
 
-| Property | Type | Description |
-|----|----|----|
+| Property      | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|---------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `serviceName` | `string` | serviceName is the full name (e.g. crio.service) of the service to be reloaded Service names should be of the format \${NAME}\${SERVICETYPE} and can up to 255 characters long. \${NAME} must be atleast 1 character long and can only consist of alphabets, digits, ":", "-", "\_", ".", and "\\. \${SERVICETYPE} must be one of ".service", ".socket", ".device", ".mount", ".automount", ".swap", ".target", ".path", ".timer", ".snapshot", ".slice" or ".scope". |
 
 ## .spec.nodeDisruptionPolicy.sshkey.actions\[\].restart
@@ -373,8 +373,8 @@ Type
 Required
 - `serviceName`
 
-| Property | Type | Description |
-|----|----|----|
+| Property      | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|---------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `serviceName` | `string` | serviceName is the full name (e.g. crio.service) of the service to be restarted Service names should be of the format \${NAME}\${SERVICETYPE} and can up to 255 characters long. \${NAME} must be atleast 1 character long and can only consist of alphabets, digits, ":", "-", "\_", ".", and "\\. \${SERVICETYPE} must be one of ".service", ".socket", ".device", ".mount", ".automount", ".swap", ".target", ".path", ".timer", ".snapshot", ".slice" or ".scope". |
 
 ## .spec.nodeDisruptionPolicy.units
@@ -398,11 +398,11 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `actions` | `array` | actions represents the series of commands to be executed on changes to the file at the corresponding file path. Actions will be applied in the order that they are set in this list. If there are other incoming changes to other MachineConfig entries in the same update that require a reboot, the reboot will supercede these actions. Valid actions are Reboot, Drain, Reload, DaemonReload and None. The Reboot action and the None action cannot be used in conjunction with any of the other actions. This list supports a maximum of 10 entries. |
-| `actions[]` | `object` |  |
-| `name` | `string` | name represents the service name of a systemd service managed through a MachineConfig Actions specified will be applied for changes to the named service. Service names should be of the format \${NAME}\${SERVICETYPE} and can up to 255 characters long. \${NAME} must be atleast 1 character long and can only consist of alphabets, digits, ":", "-", "\_", ".", and "\\. \${SERVICETYPE} must be one of ".service", ".socket", ".device", ".mount", ".automount", ".swap", ".target", ".path", ".timer", ".snapshot", ".slice" or ".scope". |
+| Property    | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|-------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `actions`   | `array`  | actions represents the series of commands to be executed on changes to the file at the corresponding file path. Actions will be applied in the order that they are set in this list. If there are other incoming changes to other MachineConfig entries in the same update that require a reboot, the reboot will supercede these actions. Valid actions are Reboot, Drain, Reload, DaemonReload and None. The Reboot action and the None action cannot be used in conjunction with any of the other actions. This list supports a maximum of 10 entries. |
+| `actions[]` | `object` |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `name`      | `string` | name represents the service name of a systemd service managed through a MachineConfig Actions specified will be applied for changes to the named service. Service names should be of the format \${NAME}\${SERVICETYPE} and can up to 255 characters long. \${NAME} must be atleast 1 character long and can only consist of alphabets, digits, ":", "-", "\_", ".", and "\\. \${SERVICETYPE} must be one of ".service", ".socket", ".device", ".mount", ".automount", ".swap", ".target", ".path", ".timer", ".snapshot", ".slice" or ".scope".          |
 
 ## .spec.nodeDisruptionPolicy.units\[\].actions
 
@@ -422,11 +422,11 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `reload` | `object` | reload specifies the service to reload, only valid if type is reload |
-| `restart` | `object` | restart specifies the service to restart, only valid if type is restart |
-| `type` | `string` | type represents the commands that will be carried out if this NodeDisruptionPolicySpecActionType is executed Valid values are Reboot, Drain, Reload, Restart, DaemonReload and None. reload/restart requires a corresponding service target specified in the reload/restart field. Other values require no further configuration |
+| Property  | Type     | Description                                                                                                                                                                                                                                                                                                                      |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `reload`  | `object` | reload specifies the service to reload, only valid if type is reload                                                                                                                                                                                                                                                             |
+| `restart` | `object` | restart specifies the service to restart, only valid if type is restart                                                                                                                                                                                                                                                          |
+| `type`    | `string` | type represents the commands that will be carried out if this NodeDisruptionPolicySpecActionType is executed Valid values are Reboot, Drain, Reload, Restart, DaemonReload and None. reload/restart requires a corresponding service target specified in the reload/restart field. Other values require no further configuration |
 
 ## .spec.nodeDisruptionPolicy.units\[\].actions\[\].reload
 
@@ -439,8 +439,8 @@ Type
 Required
 - `serviceName`
 
-| Property | Type | Description |
-|----|----|----|
+| Property      | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|---------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `serviceName` | `string` | serviceName is the full name (e.g. crio.service) of the service to be reloaded Service names should be of the format \${NAME}\${SERVICETYPE} and can up to 255 characters long. \${NAME} must be atleast 1 character long and can only consist of alphabets, digits, ":", "-", "\_", ".", and "\\. \${SERVICETYPE} must be one of ".service", ".socket", ".device", ".mount", ".automount", ".swap", ".target", ".path", ".timer", ".snapshot", ".slice" or ".scope". |
 
 ## .spec.nodeDisruptionPolicy.units\[\].actions\[\].restart
@@ -454,8 +454,8 @@ Type
 Required
 - `serviceName`
 
-| Property | Type | Description |
-|----|----|----|
+| Property      | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|---------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `serviceName` | `string` | serviceName is the full name (e.g. crio.service) of the service to be restarted Service names should be of the format \${NAME}\${SERVICETYPE} and can up to 255 characters long. \${NAME} must be atleast 1 character long and can only consist of alphabets, digits, ":", "-", "\_", ".", and "\\. \${SERVICETYPE} must be one of ".service", ".socket", ".device", ".mount", ".automount", ".swap", ".target", ".path", ".timer", ".snapshot", ".slice" or ".scope". |
 
 ## .status
@@ -466,13 +466,13 @@ status is the most recently observed status of the Machine Config Operator
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `conditions` | `array` | conditions is a list of conditions and their status |
-| `conditions[]` | `object` | Condition contains details for one aspect of the current state of this API Resource. |
-| `managedBootImagesStatus` | `object` | managedBootImagesStatus reflects what the latest cluster-validated boot image configuration is and will be used by Machine Config Controller while performing boot image updates. |
-| `nodeDisruptionPolicyStatus` | `object` | nodeDisruptionPolicyStatus status reflects what the latest cluster-validated policies are, and will be used by the Machine Config Daemon during future node updates. |
-| `observedGeneration` | `integer` | observedGeneration is the last generation change you’ve dealt with |
+| Property                     | Type      | Description                                                                                                                                                                       |
+|------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `conditions`                 | `array`   | conditions is a list of conditions and their status                                                                                                                               |
+| `conditions[]`               | `object`  | Condition contains details for one aspect of the current state of this API Resource.                                                                                              |
+| `managedBootImagesStatus`    | `object`  | managedBootImagesStatus reflects what the latest cluster-validated boot image configuration is and will be used by Machine Config Controller while performing boot image updates. |
+| `nodeDisruptionPolicyStatus` | `object`  | nodeDisruptionPolicyStatus status reflects what the latest cluster-validated policies are, and will be used by the Machine Config Daemon during future node updates.              |
+| `observedGeneration`         | `integer` | observedGeneration is the last generation change you’ve dealt with                                                                                                                |
 
 ## .status.conditions
 
@@ -501,14 +501,14 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastTransitionTime` | `string` | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable. |
-| `message` | `string` | message is a human readable message indicating details about the transition. This may be an empty string. |
-| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance. |
-| `reason` | `string` | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
-| `status` | `string` | status of the condition, one of True, False, Unknown. |
-| `type` | `string` | type of condition in CamelCase or in foo.example.com/CamelCase. |
+| Property             | Type      | Description                                                                                                                                                                                                                                                                                                                     |
+|----------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string`  | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable.                                                                                            |
+| `message`            | `string`  | message is a human readable message indicating details about the transition. This may be an empty string.                                                                                                                                                                                                                       |
+| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.                                   |
+| `reason`             | `string`  | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
+| `status`             | `string`  | status of the condition, one of True, False, Unknown.                                                                                                                                                                                                                                                                           |
+| `type`               | `string`  | type of condition in CamelCase or in foo.example.com/CamelCase.                                                                                                                                                                                                                                                                 |
 
 ## .status.managedBootImagesStatus
 
@@ -518,9 +518,9 @@ managedBootImagesStatus reflects what the latest cluster-validated boot image co
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `machineManagers` | `array` | machineManagers can be used to register machine management resources for boot image updates. The Machine Config Operator will watch for changes to this list. Only one entry is permitted per type of machine management resource. |
+| Property            | Type     | Description                                                                                                                                                                                                                                             |
+|---------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `machineManagers`   | `array`  | machineManagers can be used to register machine management resources for boot image updates. The Machine Config Operator will watch for changes to this list. Only one entry is permitted per type of machine management resource.                      |
 | `machineManagers[]` | `object` | MachineManager describes a target machine resource that is registered for boot image updates. It stores identifying information such as the resource type and the API Group of the resource. It also provides granular control via the selection field. |
 
 ## .status.managedBootImagesStatus.machineManagers
@@ -546,11 +546,11 @@ Required
 
 - `selection`
 
-| Property | Type | Description |
-|----|----|----|
-| `apiGroup` | `string` | apiGroup is name of the APIGroup that the machine management resource belongs to. The only current valid value is machine.openshift.io. machine.openshift.io means that the machine manager will only register resources that belong to OpenShift machine API group. |
-| `resource` | `string` | resource is the machine management resource’s type. The only current valid value is machinesets. machinesets means that the machine manager will only register resources of the kind MachineSet. |
-| `selection` | `object` | selection allows granular control of the machine management resources that will be registered for boot image updates. |
+| Property    | Type     | Description                                                                                                                                                                                                                                                          |
+|-------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiGroup`  | `string` | apiGroup is name of the APIGroup that the machine management resource belongs to. The only current valid value is machine.openshift.io. machine.openshift.io means that the machine manager will only register resources that belong to OpenShift machine API group. |
+| `resource`  | `string` | resource is the machine management resource’s type. The only current valid value is machinesets. machinesets means that the machine manager will only register resources of the kind MachineSet.                                                                     |
+| `selection` | `object` | selection allows granular control of the machine management resources that will be registered for boot image updates.                                                                                                                                                |
 
 ## .status.managedBootImagesStatus.machineManagers\[\].selection
 
@@ -563,10 +563,10 @@ Type
 Required
 - `mode`
 
-| Property | Type | Description |
-|----|----|----|
-| `mode` | `string` | mode determines how machine managers will be selected for updates. Valid values are All and Partial. All means that every resource matched by the machine manager will be updated. Partial requires specified selector(s) and allows customisation of which resources matched by the machine manager will be updated. None means that every resource matched by the machine manager will not be updated. |
-| `partial` | `object` | partial provides label selector(s) that can be used to match machine management resources. Only permitted when mode is set to "Partial". |
+| Property  | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `mode`    | `string` | mode determines how machine managers will be selected for updates. Valid values are All and Partial. All means that every resource matched by the machine manager will be updated. Partial requires specified selector(s) and allows customisation of which resources matched by the machine manager will be updated. None means that every resource matched by the machine manager will not be updated. |
+| `partial` | `object` | partial provides label selector(s) that can be used to match machine management resources. Only permitted when mode is set to "Partial".                                                                                                                                                                                                                                                                 |
 
 ## .status.managedBootImagesStatus.machineManagers\[\].selection.partial
 
@@ -579,8 +579,8 @@ Type
 Required
 - `machineResourceSelector`
 
-| Property | Type | Description |
-|----|----|----|
+| Property                  | Type     | Description                                                                                                |
+|---------------------------|----------|------------------------------------------------------------------------------------------------------------|
 | `machineResourceSelector` | `object` | machineResourceSelector is a label selector that can be used to select machine resources like MachineSets. |
 
 ## .status.managedBootImagesStatus.machineManagers\[\].selection.partial.machineResourceSelector
@@ -591,11 +591,11 @@ machineResourceSelector is a label selector that can be used to select machine r
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .status.managedBootImagesStatus.machineManagers\[\].selection.partial.machineResourceSelector.matchExpressions
 
@@ -618,11 +618,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .status.nodeDisruptionPolicyStatus
 
@@ -632,8 +632,8 @@ nodeDisruptionPolicyStatus status reflects what the latest cluster-validated pol
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property          | Type     | Description                                                                               |
+|-------------------|----------|-------------------------------------------------------------------------------------------|
 | `clusterPolicies` | `object` | clusterPolicies is a merge of cluster default and user provided node disruption policies. |
 
 ## .status.nodeDisruptionPolicyStatus.clusterPolicies
@@ -644,12 +644,12 @@ clusterPolicies is a merge of cluster default and user provided node disruption 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `files` | `array` | files is a list of MachineConfig file definitions and actions to take to changes on those paths |
-| `files[]` | `object` | NodeDisruptionPolicyStatusFile is a file entry and corresponding actions to take and is used in the NodeDisruptionPolicyClusterStatus object |
-| `sshkey` | `object` | sshkey is the overall sshkey MachineConfig definition |
-| `units` | `array` | units is a list MachineConfig unit definitions and actions to take on changes to those services |
+| Property  | Type     | Description                                                                                                                                         |
+|-----------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `files`   | `array`  | files is a list of MachineConfig file definitions and actions to take to changes on those paths                                                     |
+| `files[]` | `object` | NodeDisruptionPolicyStatusFile is a file entry and corresponding actions to take and is used in the NodeDisruptionPolicyClusterStatus object        |
+| `sshkey`  | `object` | sshkey is the overall sshkey MachineConfig definition                                                                                               |
+| `units`   | `array`  | units is a list MachineConfig unit definitions and actions to take on changes to those services                                                     |
 | `units[]` | `object` | NodeDisruptionPolicyStatusUnit is a systemd unit name and corresponding actions to take and is used in the NodeDisruptionPolicyClusterStatus object |
 
 ## .status.nodeDisruptionPolicyStatus.clusterPolicies.files
@@ -673,11 +673,11 @@ Required
 
 - `path`
 
-| Property | Type | Description |
-|----|----|----|
-| `actions` | `array` | actions represents the series of commands to be executed on changes to the file at the corresponding file path. Actions will be applied in the order that they are set in this list. If there are other incoming changes to other MachineConfig entries in the same update that require a reboot, the reboot will supercede these actions. Valid actions are Reboot, Drain, Reload, DaemonReload and None. The Reboot action and the None action cannot be used in conjunction with any of the other actions. This list supports a maximum of 10 entries. |
-| `actions[]` | `object` |  |
-| `path` | `string` | path is the location of a file being managed through a MachineConfig. The Actions in the policy will apply to changes to the file at this path. |
+| Property    | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|-------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `actions`   | `array`  | actions represents the series of commands to be executed on changes to the file at the corresponding file path. Actions will be applied in the order that they are set in this list. If there are other incoming changes to other MachineConfig entries in the same update that require a reboot, the reboot will supercede these actions. Valid actions are Reboot, Drain, Reload, DaemonReload and None. The Reboot action and the None action cannot be used in conjunction with any of the other actions. This list supports a maximum of 10 entries. |
+| `actions[]` | `object` |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `path`      | `string` | path is the location of a file being managed through a MachineConfig. The Actions in the policy will apply to changes to the file at this path.                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ## .status.nodeDisruptionPolicyStatus.clusterPolicies.files\[\].actions
 
@@ -697,11 +697,11 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `reload` | `object` | reload specifies the service to reload, only valid if type is reload |
-| `restart` | `object` | restart specifies the service to restart, only valid if type is restart |
-| `type` | `string` | type represents the commands that will be carried out if this NodeDisruptionPolicyStatusActionType is executed Valid values are Reboot, Drain, Reload, Restart, DaemonReload, None and Special. reload/restart requires a corresponding service target specified in the reload/restart field. Other values require no further configuration |
+| Property  | Type     | Description                                                                                                                                                                                                                                                                                                                                 |
+|-----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `reload`  | `object` | reload specifies the service to reload, only valid if type is reload                                                                                                                                                                                                                                                                        |
+| `restart` | `object` | restart specifies the service to restart, only valid if type is restart                                                                                                                                                                                                                                                                     |
+| `type`    | `string` | type represents the commands that will be carried out if this NodeDisruptionPolicyStatusActionType is executed Valid values are Reboot, Drain, Reload, Restart, DaemonReload, None and Special. reload/restart requires a corresponding service target specified in the reload/restart field. Other values require no further configuration |
 
 ## .status.nodeDisruptionPolicyStatus.clusterPolicies.files\[\].actions\[\].reload
 
@@ -714,8 +714,8 @@ Type
 Required
 - `serviceName`
 
-| Property | Type | Description |
-|----|----|----|
+| Property      | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|---------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `serviceName` | `string` | serviceName is the full name (e.g. crio.service) of the service to be reloaded Service names should be of the format \${NAME}\${SERVICETYPE} and can up to 255 characters long. \${NAME} must be atleast 1 character long and can only consist of alphabets, digits, ":", "-", "\_", ".", and "\\. \${SERVICETYPE} must be one of ".service", ".socket", ".device", ".mount", ".automount", ".swap", ".target", ".path", ".timer", ".snapshot", ".slice" or ".scope". |
 
 ## .status.nodeDisruptionPolicyStatus.clusterPolicies.files\[\].actions\[\].restart
@@ -729,8 +729,8 @@ Type
 Required
 - `serviceName`
 
-| Property | Type | Description |
-|----|----|----|
+| Property      | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|---------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `serviceName` | `string` | serviceName is the full name (e.g. crio.service) of the service to be restarted Service names should be of the format \${NAME}\${SERVICETYPE} and can up to 255 characters long. \${NAME} must be atleast 1 character long and can only consist of alphabets, digits, ":", "-", "\_", ".", and "\\. \${SERVICETYPE} must be one of ".service", ".socket", ".device", ".mount", ".automount", ".swap", ".target", ".path", ".timer", ".snapshot", ".slice" or ".scope". |
 
 ## .status.nodeDisruptionPolicyStatus.clusterPolicies.sshkey
@@ -744,10 +744,10 @@ Type
 Required
 - `actions`
 
-| Property | Type | Description |
-|----|----|----|
-| `actions` | `array` | actions represents the series of commands to be executed on changes to the file at the corresponding file path. Actions will be applied in the order that they are set in this list. If there are other incoming changes to other MachineConfig entries in the same update that require a reboot, the reboot will supercede these actions. Valid actions are Reboot, Drain, Reload, DaemonReload and None. The Reboot action and the None action cannot be used in conjunction with any of the other actions. This list supports a maximum of 10 entries. |
-| `actions[]` | `object` |  |
+| Property    | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|-------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `actions`   | `array`  | actions represents the series of commands to be executed on changes to the file at the corresponding file path. Actions will be applied in the order that they are set in this list. If there are other incoming changes to other MachineConfig entries in the same update that require a reboot, the reboot will supercede these actions. Valid actions are Reboot, Drain, Reload, DaemonReload and None. The Reboot action and the None action cannot be used in conjunction with any of the other actions. This list supports a maximum of 10 entries. |
+| `actions[]` | `object` |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ## .status.nodeDisruptionPolicyStatus.clusterPolicies.sshkey.actions
 
@@ -767,11 +767,11 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `reload` | `object` | reload specifies the service to reload, only valid if type is reload |
-| `restart` | `object` | restart specifies the service to restart, only valid if type is restart |
-| `type` | `string` | type represents the commands that will be carried out if this NodeDisruptionPolicyStatusActionType is executed Valid values are Reboot, Drain, Reload, Restart, DaemonReload, None and Special. reload/restart requires a corresponding service target specified in the reload/restart field. Other values require no further configuration |
+| Property  | Type     | Description                                                                                                                                                                                                                                                                                                                                 |
+|-----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `reload`  | `object` | reload specifies the service to reload, only valid if type is reload                                                                                                                                                                                                                                                                        |
+| `restart` | `object` | restart specifies the service to restart, only valid if type is restart                                                                                                                                                                                                                                                                     |
+| `type`    | `string` | type represents the commands that will be carried out if this NodeDisruptionPolicyStatusActionType is executed Valid values are Reboot, Drain, Reload, Restart, DaemonReload, None and Special. reload/restart requires a corresponding service target specified in the reload/restart field. Other values require no further configuration |
 
 ## .status.nodeDisruptionPolicyStatus.clusterPolicies.sshkey.actions\[\].reload
 
@@ -784,8 +784,8 @@ Type
 Required
 - `serviceName`
 
-| Property | Type | Description |
-|----|----|----|
+| Property      | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|---------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `serviceName` | `string` | serviceName is the full name (e.g. crio.service) of the service to be reloaded Service names should be of the format \${NAME}\${SERVICETYPE} and can up to 255 characters long. \${NAME} must be atleast 1 character long and can only consist of alphabets, digits, ":", "-", "\_", ".", and "\\. \${SERVICETYPE} must be one of ".service", ".socket", ".device", ".mount", ".automount", ".swap", ".target", ".path", ".timer", ".snapshot", ".slice" or ".scope". |
 
 ## .status.nodeDisruptionPolicyStatus.clusterPolicies.sshkey.actions\[\].restart
@@ -799,8 +799,8 @@ Type
 Required
 - `serviceName`
 
-| Property | Type | Description |
-|----|----|----|
+| Property      | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|---------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `serviceName` | `string` | serviceName is the full name (e.g. crio.service) of the service to be restarted Service names should be of the format \${NAME}\${SERVICETYPE} and can up to 255 characters long. \${NAME} must be atleast 1 character long and can only consist of alphabets, digits, ":", "-", "\_", ".", and "\\. \${SERVICETYPE} must be one of ".service", ".socket", ".device", ".mount", ".automount", ".swap", ".target", ".path", ".timer", ".snapshot", ".slice" or ".scope". |
 
 ## .status.nodeDisruptionPolicyStatus.clusterPolicies.units
@@ -824,11 +824,11 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `actions` | `array` | actions represents the series of commands to be executed on changes to the file at the corresponding file path. Actions will be applied in the order that they are set in this list. If there are other incoming changes to other MachineConfig entries in the same update that require a reboot, the reboot will supercede these actions. Valid actions are Reboot, Drain, Reload, DaemonReload and None. The Reboot action and the None action cannot be used in conjunction with any of the other actions. This list supports a maximum of 10 entries. |
-| `actions[]` | `object` |  |
-| `name` | `string` | name represents the service name of a systemd service managed through a MachineConfig Actions specified will be applied for changes to the named service. Service names should be of the format \${NAME}\${SERVICETYPE} and can up to 255 characters long. \${NAME} must be atleast 1 character long and can only consist of alphabets, digits, ":", "-", "\_", ".", and "\\. \${SERVICETYPE} must be one of ".service", ".socket", ".device", ".mount", ".automount", ".swap", ".target", ".path", ".timer", ".snapshot", ".slice" or ".scope". |
+| Property    | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|-------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `actions`   | `array`  | actions represents the series of commands to be executed on changes to the file at the corresponding file path. Actions will be applied in the order that they are set in this list. If there are other incoming changes to other MachineConfig entries in the same update that require a reboot, the reboot will supercede these actions. Valid actions are Reboot, Drain, Reload, DaemonReload and None. The Reboot action and the None action cannot be used in conjunction with any of the other actions. This list supports a maximum of 10 entries. |
+| `actions[]` | `object` |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `name`      | `string` | name represents the service name of a systemd service managed through a MachineConfig Actions specified will be applied for changes to the named service. Service names should be of the format \${NAME}\${SERVICETYPE} and can up to 255 characters long. \${NAME} must be atleast 1 character long and can only consist of alphabets, digits, ":", "-", "\_", ".", and "\\. \${SERVICETYPE} must be one of ".service", ".socket", ".device", ".mount", ".automount", ".swap", ".target", ".path", ".timer", ".snapshot", ".slice" or ".scope".          |
 
 ## .status.nodeDisruptionPolicyStatus.clusterPolicies.units\[\].actions
 
@@ -848,11 +848,11 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `reload` | `object` | reload specifies the service to reload, only valid if type is reload |
-| `restart` | `object` | restart specifies the service to restart, only valid if type is restart |
-| `type` | `string` | type represents the commands that will be carried out if this NodeDisruptionPolicyStatusActionType is executed Valid values are Reboot, Drain, Reload, Restart, DaemonReload, None and Special. reload/restart requires a corresponding service target specified in the reload/restart field. Other values require no further configuration |
+| Property  | Type     | Description                                                                                                                                                                                                                                                                                                                                 |
+|-----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `reload`  | `object` | reload specifies the service to reload, only valid if type is reload                                                                                                                                                                                                                                                                        |
+| `restart` | `object` | restart specifies the service to restart, only valid if type is restart                                                                                                                                                                                                                                                                     |
+| `type`    | `string` | type represents the commands that will be carried out if this NodeDisruptionPolicyStatusActionType is executed Valid values are Reboot, Drain, Reload, Restart, DaemonReload, None and Special. reload/restart requires a corresponding service target specified in the reload/restart field. Other values require no further configuration |
 
 ## .status.nodeDisruptionPolicyStatus.clusterPolicies.units\[\].actions\[\].reload
 
@@ -865,8 +865,8 @@ Type
 Required
 - `serviceName`
 
-| Property | Type | Description |
-|----|----|----|
+| Property      | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|---------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `serviceName` | `string` | serviceName is the full name (e.g. crio.service) of the service to be reloaded Service names should be of the format \${NAME}\${SERVICETYPE} and can up to 255 characters long. \${NAME} must be atleast 1 character long and can only consist of alphabets, digits, ":", "-", "\_", ".", and "\\. \${SERVICETYPE} must be one of ".service", ".socket", ".device", ".mount", ".automount", ".swap", ".target", ".path", ".timer", ".snapshot", ".slice" or ".scope". |
 
 ## .status.nodeDisruptionPolicyStatus.clusterPolicies.units\[\].actions\[\].restart
@@ -880,8 +880,8 @@ Type
 Required
 - `serviceName`
 
-| Property | Type | Description |
-|----|----|----|
+| Property      | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|---------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `serviceName` | `string` | serviceName is the full name (e.g. crio.service) of the service to be restarted Service names should be of the format \${NAME}\${SERVICETYPE} and can up to 255 characters long. \${NAME} must be atleast 1 character long and can only consist of alphabets, digits, ":", "-", "\_", ".", and "\\. \${SERVICETYPE} must be one of ".service", ".socket", ".device", ".mount", ".automount", ".swap", ".target", ".path", ".timer", ".snapshot", ".slice" or ".scope". |
 
 # API endpoints
@@ -922,10 +922,10 @@ HTTP method
 Description
 delete collection of MachineConfiguration
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -935,10 +935,10 @@ HTTP method
 Description
 list objects of kind MachineConfiguration
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`MachineConfigurationList`](../objects/index.xml#io-openshift-operator-v1-MachineConfigurationList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                |
+|--------------------|-------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`MachineConfigurationList`](../objects/index.xml#io-openshift-operator-v1-MachineConfigurationList) schema |
+| 401 - Unauthorized | Empty                                                                                                       |
 
 HTTP responses
 
@@ -948,25 +948,25 @@ HTTP method
 Description
 create a MachineConfiguration
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                              | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
-| 201 - Created | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
-| 202 - Accepted | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                      |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
+| 201 - Created      | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
+| 202 - Accepted     | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                             |
 
 HTTP responses
 
@@ -984,17 +984,17 @@ HTTP method
 Description
 delete a MachineConfiguration
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -1004,10 +1004,10 @@ HTTP method
 Description
 read the specified MachineConfiguration
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                      |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                             |
 
 HTTP responses
 
@@ -1017,17 +1017,17 @@ HTTP method
 Description
 partially update the specified MachineConfiguration
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                      |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                             |
 
 HTTP responses
 
@@ -1037,24 +1037,24 @@ HTTP method
 Description
 replace the specified MachineConfiguration
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                              | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
-| 201 - Created | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                      |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
+| 201 - Created      | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                             |
 
 HTTP responses
 
@@ -1072,10 +1072,10 @@ HTTP method
 Description
 read status of the specified MachineConfiguration
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                      |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                             |
 
 HTTP responses
 
@@ -1085,17 +1085,17 @@ HTTP method
 Description
 partially update status of the specified MachineConfiguration
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                      |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                             |
 
 HTTP responses
 
@@ -1105,23 +1105,23 @@ HTTP method
 Description
 replace status of the specified MachineConfiguration
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                              | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
-| 201 - Created | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                      |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
+| 201 - Created      | [`MachineConfiguration`](../operator_apis/machineconfiguration-operator-openshift-io-v1.xml#machineconfiguration-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                             |
 
 HTTP responses

@@ -4,30 +4,15 @@ You can back up and restore etcd on a hosted cluster in an on-premise environmen
 
 By backing up and restoring etcd on a hosted cluster, you can fix failures, such as corrupted or missing data in an etcd member of a three node cluster. If multiple members of the etcd cluster encounter data loss or have a `CrashLoopBackOff` status, this approach helps prevent an etcd quorum loss.
 
-> [!IMPORTANT]
-> Restoring etcd on a different management cluster for bare metal is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div>
+Restoring etcd on a different management cluster for bare metal is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
 - The `oc` and `jq` binaries have been installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  First, set up your environment variables:
 
@@ -275,5 +260,3 @@ Procedure
     ```
 
     After a few minutes, the control plane pods start running.
-
-</div>

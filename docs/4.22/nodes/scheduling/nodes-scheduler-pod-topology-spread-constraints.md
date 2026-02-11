@@ -38,11 +38,9 @@ You can specify which pods to group together, which topology domains they are sp
 
 The following examples demonstrate pod topology spread constraint configurations.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example to distribute pods that match the specified labels based on their zone
+**Example to distribute pods that match the specified labels based on their zone**
 
 </div>
 
@@ -76,8 +74,6 @@ spec:
         drop: [ALL]
 ```
 
-</div>
-
 - The maximum difference in number of pods between any two topology domains. The default is `1`, and you cannot specify a value of `0`.
 
 - The key of a node label. Nodes with this key and identical value are considered to be in the same topology.
@@ -90,11 +86,9 @@ spec:
 
 - A list of pod label keys to select which pods to calculate spreading over.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example demonstrating a single pod topology spread constraint
+**Example demonstrating a single pod topology spread constraint**
 
 </div>
 
@@ -126,15 +120,11 @@ spec:
         drop: [ALL]
 ```
 
-</div>
-
 The previous example defines a `Pod` spec with a one pod topology spread constraint. It matches on pods labeled `region: us-east`, distributes among zones, specifies a skew of `1`, and does not schedule the pod if it does not meet these requirements.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example demonstrating multiple pod topology spread constraints
+**Example demonstrating multiple pod topology spread constraints**
 
 </div>
 
@@ -171,8 +161,6 @@ spec:
       capabilities:
         drop: [ALL]
 ```
-
-</div>
 
 The previous example defines a `Pod` spec with two pod topology spread constraints. Both match on pods labeled `region: us-east`, specify a skew of `1`, and do not schedule the pod if it does not meet these requirements.
 

@@ -6,13 +6,13 @@ Type
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | `metadata` is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | PriorityLevelConfigurationSpec specifies the configuration of a priority level. |
-| `status` | `object` | PriorityLevelConfigurationStatus represents the current state of a "request-priority". |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | `metadata` is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                              |
+| `spec`       | `object`                                                                             | PriorityLevelConfigurationSpec specifies the configuration of a priority level.                                                                                                                                                                                                                      |
+| `status`     | `object`                                                                             | PriorityLevelConfigurationStatus represents the current state of a "request-priority".                                                                                                                                                                                                               |
 
 ## .spec
 
@@ -25,11 +25,11 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `exempt` | `object` | ExemptPriorityLevelConfiguration describes the configurable aspects of the handling of exempt requests. In the mandatory exempt configuration object the values in the fields here can be modified by authorized users, unlike the rest of the `spec`. |
-| `limited` | `object` | LimitedPriorityLevelConfiguration specifies how to handle requests that are subject to limits. It addresses two issues: - How are requests for this priority level limited? - What should be done with requests that exceed the limit? |
-| `type` | `string` | `type` indicates whether this priority level is subject to limitation on request execution. A value of `"Exempt"` means that requests of this priority level are not subject to a limit (and thus are never queued) and do not detract from the capacity made available to other priority levels. A value of `"Limited"` means that (a) requests of this priority level *are* subject to limits and (b) some of the server’s limited capacity is made available exclusively to this priority level. Required. |
+| Property  | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `exempt`  | `object` | ExemptPriorityLevelConfiguration describes the configurable aspects of the handling of exempt requests. In the mandatory exempt configuration object the values in the fields here can be modified by authorized users, unlike the rest of the `spec`.                                                                                                                                                                                                                                                        |
+| `limited` | `object` | LimitedPriorityLevelConfiguration specifies how to handle requests that are subject to limits. It addresses two issues: - How are requests for this priority level limited? - What should be done with requests that exceed the limit?                                                                                                                                                                                                                                                                        |
+| `type`    | `string` | `type` indicates whether this priority level is subject to limitation on request execution. A value of `"Exempt"` means that requests of this priority level are not subject to a limit (and thus are never queued) and do not detract from the capacity made available to other priority levels. A value of `"Limited"` means that (a) requests of this priority level *are* subject to limits and (b) some of the server’s limited capacity is made available exclusively to this priority level. Required. |
 
 ## .spec.exempt
 
@@ -46,20 +46,20 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>lendablePercent</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p><code>lendablePercent</code> prescribes the fraction of the level’s NominalCL that can be borrowed by other priority levels. This value of this field must be between 0 and 100, inclusive, and it defaults to 0. The number of seats that other levels can borrow from this level, known as this level’s LendableConcurrencyLimit (LendableCL), is defined as follows.</p>
 <p>LendableCL(i) = round( NominalCL(i) * lendablePercent(i)/100.0 )</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>nominalConcurrencyShares</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p><code>nominalConcurrencyShares</code> (NCS) contributes to the computation of the NominalConcurrencyLimit (NominalCL) of this level. This is the number of execution seats nominally reserved for this priority level. This DOES NOT limit the dispatching from this priority level but affects the other priority levels through the borrowing mechanism. The server’s concurrency limit (ServerCL) is divided among all the priority levels in proportion to their NCS values:</p>
@@ -84,32 +84,32 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>borrowingLimitPercent</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p><code>borrowingLimitPercent</code>, if present, configures a limit on how many seats this priority level can borrow from other priority levels. The limit is known as this level’s BorrowingConcurrencyLimit (BorrowingCL) and is a limit on the total number of seats that this level may borrow at any one time. This field holds the ratio of that limit to the level’s nominal concurrency limit. When this field is non-nil, it must hold a non-negative integer and the limit is calculated as follows.</p>
 <p>BorrowingCL(i) = round( NominalCL(i) * borrowingLimitPercent(i)/100.0 )</p>
 <p>The value of this field can be more than 100, implying that this priority level can borrow a number of seats that is greater than its own nominal concurrency limit (NominalCL). When this field is left <code>nil</code>, the limit is effectively infinite.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>lendablePercent</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p><code>lendablePercent</code> prescribes the fraction of the level’s NominalCL that can be borrowed by other priority levels. The value of this field must be between 0 and 100, inclusive, and it defaults to 0. The number of seats that other levels can borrow from this level, known as this level’s LendableConcurrencyLimit (LendableCL), is defined as follows.</p>
 <p>LendableCL(i) = round( NominalCL(i) * lendablePercent(i)/100.0 )</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>limitResponse</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>LimitResponse defines how to handle requests that can not be executed right now.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>nominalConcurrencyShares</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p><code>nominalConcurrencyShares</code> (NCS) contributes to the computation of the NominalConcurrencyLimit (NominalCL) of this level. This is the number of execution seats available at this priority level. This is used both for requests dispatched from this priority level as well as requests dispatched from other priority levels borrowing seats from this level. The server’s concurrency limit (ServerCL) is divided among the Limited priority levels in proportion to their NCS values:</p>
@@ -132,10 +132,10 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `queuing` | `object` | QueuingConfiguration holds the configuration parameters for queuing |
-| `type` | `string` | `type` is "Queue" or "Reject". "Queue" means that requests that can not be executed upon arrival are held in a queue until they can be executed or a queuing limit is reached. "Reject" means that requests that can not be executed upon arrival are rejected. Required. |
+| Property  | Type     | Description                                                                                                                                                                                                                                                               |
+|-----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `queuing` | `object` | QueuingConfiguration holds the configuration parameters for queuing                                                                                                                                                                                                       |
+| `type`    | `string` | `type` is "Queue" or "Reject". "Queue" means that requests that can not be executed upon arrival are held in a queue until they can be executed or a queuing limit is reached. "Reject" means that requests that can not be executed upon arrival are rejected. Required. |
 
 ## .spec.limited.limitResponse.queuing
 
@@ -145,11 +145,11 @@ QueuingConfiguration holds the configuration parameters for queuing
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `handSize` | `integer` | `handSize` is a small positive number that configures the shuffle sharding of requests into queues. When enqueuing a request at this priority level the request’s flow identifier (a string pair) is hashed and the hash value is used to shuffle the list of queues and deal a hand of the size specified here. The request is put into one of the shortest queues in that hand. `handSize` must be no larger than `queues`, and should be significantly smaller (so that a few heavy flows do not saturate most of the queues). See the user-facing documentation for more extensive guidance on setting this field. This field has a default value of 8. |
-| `queueLengthLimit` | `integer` | `queueLengthLimit` is the maximum number of requests allowed to be waiting in a given queue of this priority level at a time; excess requests are rejected. This value must be positive. If not specified, it will be defaulted to 50. |
-| `queues` | `integer` | `queues` is the number of queues for this priority level. The queues exist independently at each apiserver. The value must be positive. Setting it to 1 effectively precludes shufflesharding and thus makes the distinguisher method of associated flow schemas irrelevant. This field has a default value of 64. |
+| Property           | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|--------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `handSize`         | `integer` | `handSize` is a small positive number that configures the shuffle sharding of requests into queues. When enqueuing a request at this priority level the request’s flow identifier (a string pair) is hashed and the hash value is used to shuffle the list of queues and deal a hand of the size specified here. The request is put into one of the shortest queues in that hand. `handSize` must be no larger than `queues`, and should be significantly smaller (so that a few heavy flows do not saturate most of the queues). See the user-facing documentation for more extensive guidance on setting this field. This field has a default value of 8. |
+| `queueLengthLimit` | `integer` | `queueLengthLimit` is the maximum number of requests allowed to be waiting in a given queue of this priority level at a time; excess requests are rejected. This value must be positive. If not specified, it will be defaulted to 50.                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `queues`           | `integer` | `queues` is the number of queues for this priority level. The queues exist independently at each apiserver. The value must be positive. Setting it to 1 effectively precludes shufflesharding and thus makes the distinguisher method of associated flow schemas irrelevant. This field has a default value of 64.                                                                                                                                                                                                                                                                                                                                          |
 
 ## .status
 
@@ -159,9 +159,9 @@ PriorityLevelConfigurationStatus represents the current state of a "request-prio
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `conditions` | `array` | `conditions` is the current state of "request-priority". |
+| Property       | Type     | Description                                                                  |
+|----------------|----------|------------------------------------------------------------------------------|
+| `conditions`   | `array`  | `conditions` is the current state of "request-priority".                     |
 | `conditions[]` | `object` | PriorityLevelConfigurationCondition defines the condition of priority level. |
 
 ## .status.conditions
@@ -180,13 +180,13 @@ PriorityLevelConfigurationCondition defines the condition of priority level.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property             | Type                                                                     | Description                                                                                  |
+|----------------------|--------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
 | `lastTransitionTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | `lastTransitionTime` is the last time the condition transitioned from one status to another. |
-| `message` | `string` | `message` is a human-readable message indicating details about last transition. |
-| `reason` | `string` | `reason` is a unique, one-word, CamelCase reason for the condition’s last transition. |
-| `status` | `string` | `status` is the status of the condition. Can be True, False, Unknown. Required. |
-| `type` | `string` | `type` is the type of the condition. Required. |
+| `message`            | `string`                                                                 | `message` is a human-readable message indicating details about last transition.              |
+| `reason`             | `string`                                                                 | `reason` is a unique, one-word, CamelCase reason for the condition’s last transition.        |
+| `status`             | `string`                                                                 | `status` is the status of the condition. Can be True, False, Unknown. Required.              |
+| `type`               | `string`                                                                 | `type` is the type of the condition. Required.                                               |
 
 # API endpoints
 
@@ -234,16 +234,16 @@ HTTP method
 Description
 delete collection of PriorityLevelConfiguration
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -253,10 +253,10 @@ HTTP method
 Description
 list or watch objects of kind PriorityLevelConfiguration
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PriorityLevelConfigurationList`](../objects/index.xml#io-k8s-api-flowcontrol-v1-PriorityLevelConfigurationList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                             |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PriorityLevelConfigurationList`](../objects/index.xml#io-k8s-api-flowcontrol-v1-PriorityLevelConfigurationList) schema |
+| 401 - Unauthorized | Empty                                                                                                                    |
 
 HTTP responses
 
@@ -266,25 +266,25 @@ HTTP method
 Description
 create a PriorityLevelConfiguration
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |  |
+| Parameter | Type                                                                                                                                                                                        | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
-| 201 - Created | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
-| 202 - Accepted | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
+| 201 - Created      | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
+| 202 - Accepted     | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                       |
 
 HTTP responses
 
@@ -296,10 +296,10 @@ HTTP method
 Description
 watch individual changes to a list of PriorityLevelConfiguration. deprecated: use the 'watch' parameter with a list operation instead.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -317,17 +317,17 @@ HTTP method
 Description
 delete a PriorityLevelConfiguration
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -337,10 +337,10 @@ HTTP method
 Description
 read the specified PriorityLevelConfiguration
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                       |
 
 HTTP responses
 
@@ -350,18 +350,18 @@ HTTP method
 Description
 partially update the specified PriorityLevelConfiguration
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
-| 201 - Created | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
+| 201 - Created      | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                       |
 
 HTTP responses
 
@@ -371,24 +371,24 @@ HTTP method
 Description
 replace the specified PriorityLevelConfiguration
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |  |
+| Parameter | Type                                                                                                                                                                                        | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
-| 201 - Created | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
+| 201 - Created      | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                       |
 
 HTTP responses
 
@@ -406,10 +406,10 @@ HTTP method
 Description
 watch changes to an object of kind PriorityLevelConfiguration. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -427,10 +427,10 @@ HTTP method
 Description
 read status of the specified PriorityLevelConfiguration
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                       |
 
 HTTP responses
 
@@ -440,18 +440,18 @@ HTTP method
 Description
 partially update status of the specified PriorityLevelConfiguration
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
-| 201 - Created | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
+| 201 - Created      | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                       |
 
 HTTP responses
 
@@ -461,23 +461,23 @@ HTTP method
 Description
 replace status of the specified PriorityLevelConfiguration
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |  |
+| Parameter | Type                                                                                                                                                                                        | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
-| 201 - Created | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
+| 201 - Created      | [`PriorityLevelConfiguration`](../schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.xml#prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                       |
 
 HTTP responses

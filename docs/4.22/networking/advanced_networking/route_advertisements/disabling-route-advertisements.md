@@ -4,29 +4,13 @@ As a cluster administrator, you can disable additional route advertisements for 
 
 As a cluster administrator, you can disable additional route advertisements for your cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster as a user with the `cluster-admin` role.
 
 - The cluster is installed on compatible infrastructure.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To disable additional routing support, enter the following command:
 
@@ -41,5 +25,3 @@ Procedure
     }
   }'
   ```
-
-</div>

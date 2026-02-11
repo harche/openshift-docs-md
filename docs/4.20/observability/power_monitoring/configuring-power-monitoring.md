@@ -1,7 +1,10 @@
-> [!IMPORTANT]
-> Power monitoring is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Power monitoring is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 The `PowerMonitor` resource is a Kubernetes custom resource definition (CRD) that enables you to configure the deployment and monitor the status of the `PowerMonitor` resource.
 
@@ -9,30 +12,31 @@ The `PowerMonitor` resource is a Kubernetes custom resource definition (CRD) tha
 
 You can configure Kepler with the `spec` field of the `PowerMonitor` resource.
 
-> [!IMPORTANT]
-> Ensure that the name of your `PowerMonitor` instance is `power-monitor`. All other instances are rejected by the Power Monitoring Operator Webhook.
+<div class="important">
+
+Ensure that the name of your `PowerMonitor` instance is `power-monitor`. All other instances are rejected by the Power Monitoring Operator Webhook.
+
+</div>
 
 The following is the list of configuration options:
 
-| Name | Description | Default Behavior |
-|----|----|----|
-| deployment.nodeSelector | The nodes on which Kepler (created by PowerMonitor) pods are scheduled. | kubernetes.io/os: linux |
-| deployment.tolerations | The tolerations for Power Monitor that allow the pods to be scheduled on nodes with specific characteristics. | \- operator: "Exists" |
-| deployment.security.mode | Security mode can be set to either `none`, allowing unrestricted access to Kepler’s metrics by any entity, or `rbac`, securing the metrics endpoint with TLS encryption and restricting access to authorized service accounts listed in `allowedSANames`. | Set to `rbac` by default and only user workload prometheus is allowed access. |
-| deployment.security.allowedSANames | A list of Service Account Names that can access Kepler’s metrics endpoint when security mode is `rbac`. | In OpenShift, set to `openshift-user-workload-monitoring:prometheus-user-workload` to allow user workload monitoring to scrape Kepler. |
-| config.logLevel | The level of logs to expose by Kepler. | Set to info. |
-| config.metricLevels | A list of energy metric levels to expose. Possible values include `node`, `process`, `container`, `vm`, and `pod`. | The default list includes `node`, `pod`, and `vm`. |
-| config.staleness | Specifies how long to wait before considering calculated power values as stale. | 500ms (500 milliseconds). |
-| config.sampleRate | Specifies the interval for monitoring resources such as processes, containers, and VMs. | 5s (5 seconds). |
-| config.maxTerminated | Controls terminated workload tracking. A negative value tracks unlimited workloads, zero disables tracking, and a positive value tracks the top N terminated workloads by energy consumption. | 500\. |
+| Name                               | Description                                                                                                                                                                                                                                               | Default Behavior                                                                                                                       |
+|------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| deployment.nodeSelector            | The nodes on which Kepler (created by PowerMonitor) pods are scheduled.                                                                                                                                                                                   | kubernetes.io/os: linux                                                                                                                |
+| deployment.tolerations             | The tolerations for Power Monitor that allow the pods to be scheduled on nodes with specific characteristics.                                                                                                                                             | \- operator: "Exists"                                                                                                                  |
+| deployment.security.mode           | Security mode can be set to either `none`, allowing unrestricted access to Kepler’s metrics by any entity, or `rbac`, securing the metrics endpoint with TLS encryption and restricting access to authorized service accounts listed in `allowedSANames`. | Set to `rbac` by default and only user workload prometheus is allowed access.                                                          |
+| deployment.security.allowedSANames | A list of Service Account Names that can access Kepler’s metrics endpoint when security mode is `rbac`.                                                                                                                                                   | In OpenShift, set to `openshift-user-workload-monitoring:prometheus-user-workload` to allow user workload monitoring to scrape Kepler. |
+| config.logLevel                    | The level of logs to expose by Kepler.                                                                                                                                                                                                                    | Set to info.                                                                                                                           |
+| config.metricLevels                | A list of energy metric levels to expose. Possible values include `node`, `process`, `container`, `vm`, and `pod`.                                                                                                                                        | The default list includes `node`, `pod`, and `vm`.                                                                                     |
+| config.staleness                   | Specifies how long to wait before considering calculated power values as stale.                                                                                                                                                                           | 500ms (500 milliseconds).                                                                                                              |
+| config.sampleRate                  | Specifies the interval for monitoring resources such as processes, containers, and VMs.                                                                                                                                                                   | 5s (5 seconds).                                                                                                                        |
+| config.maxTerminated               | Controls terminated workload tracking. A negative value tracks unlimited workloads, zero disables tracking, and a positive value tracks the top N terminated workloads by energy consumption.                                                             | 500\.                                                                                                                                  |
 
 PowerMonitor configuration options
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `PowerMonitor` resource with default configuration
+**Example `PowerMonitor` resource with default configuration**
 
 </div>
 
@@ -70,8 +74,6 @@ spec:
       maxTerminated: 1000
 ```
 
-</div>
-
 # Monitoring the Kepler status
 
 You can monitor the state of the Kepler exporter with the `status` field of the `PowerMonitor` resource.
@@ -86,11 +88,9 @@ The `status` field includes information, such as the following:
 
 This provides you with valuable insights into the changes made through the `spec` field.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example state of the `PowerMonitor` resource
+**Example state of the `PowerMonitor` resource**
 
 </div>
 
@@ -118,8 +118,6 @@ status:
    currentNumberScheduled: 2
    desiredNumberScheduled: 2
 ```
-
-</div>
 
 - The health of the `PowerMonitor` resource. In this example, the `PowerMonitor` resource is successfully reconciled and ready.
 

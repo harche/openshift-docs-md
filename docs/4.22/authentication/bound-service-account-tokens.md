@@ -8,36 +8,21 @@ You can use bound service account tokens to limit the scope of permissions for a
 
 You can configure pods to request bound service account tokens by using volume projection.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have created a service account. This procedure assumes that the service account is named `build-robot`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Optional: Set the service account issuer.
 
     This step is typically not required if the bound tokens are used only within the cluster.
 
-    > [!IMPORTANT]
-    > If you change the service account issuer to a custom one, the previous service account issuer is still trusted for the next 24 hours.
-    >
-    > You can force all holders to request a new bound token either by manually restarting all pods in the cluster or by performing a rolling node restart. Before performing either action, wait for a new revision of the Kubernetes API server pods to roll out with your service account issuer changes.
+    <div class="important">
+
+    If you change the service account issuer to a custom one, the previous service account issuer is still trusted for the next 24 hours.
+
+    You can force all holders to request a new bound token either by manually restarting all pods in the cluster or by performing a rolling node restart. Before performing either action, wait for a new revision of the Kubernetes API server pods to roll out with your service account issuer changes.
+
+    </div>
 
     1.  Edit the `cluster` `Authentication` object:
 
@@ -81,15 +66,21 @@ Procedure
 
         - Perform a rolling node restart:
 
-          > [!WARNING]
-          > It is not recommended to perform a rolling node restart if you have custom workloads running on your cluster, because it can cause a service interruption. Instead, manually restart all pods in the cluster.
+          <div class="warning">
+
+          It is not recommended to perform a rolling node restart if you have custom workloads running on your cluster, because it can cause a service interruption. Instead, manually restart all pods in the cluster.
+
+          </div>
 
           Restart nodes sequentially. Wait for the node to become fully available before restarting the next node. See *Rebooting a node gracefully* for instructions on how to drain, restart, and mark a node as schedulable again.
 
         - Manually restart all pods in the cluster:
 
-          > [!WARNING]
-          > Be aware that running this command causes a service interruption, because it deletes every running pod in every namespace. These pods will automatically restart after they are deleted.
+          <div class="warning">
+
+          Be aware that running this command causes a service interruption, because it deletes every running pod in every namespace. These pods will automatically restart after they are deleted.
+
+          </div>
 
           Run the following command:
 
@@ -147,8 +138,11 @@ Procedure
 
         - Optionally set the intended audience of the token. The recipient of a token should verify that the recipient identity matches the audience claim of the token, and should otherwise reject the token. The audience defaults to the identifier of the API server.
 
-          > [!NOTE]
-          > In order to prevent unexpected failure, OpenShift Container Platform overrides the `expirationSeconds` value to be one year from the initial token generation with the `--service-account-extend-token-expiration` default of `true`. You cannot change this setting.
+          <div class="note">
+
+          In order to prevent unexpected failure, OpenShift Container Platform overrides the `expirationSeconds` value to be one year from the initial token generation with the `--service-account-extend-token-expiration` default of `true`. You cannot change this setting.
+
+          </div>
 
     2.  Create the pod:
 
@@ -162,29 +156,11 @@ Procedure
 
     The kubelet rotates the token if it is older than 80 percent of its time to live, or if the token is older than 24 hours.
 
-</div>
-
 # Creating bound service account tokens outside the pod
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have created a service account. This procedure assumes that the service account is named `build-robot`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Create the bound service account token outside the pod by running the following command:
 
@@ -192,11 +168,9 @@ Procedure
   $ oc create token build-robot
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -204,20 +178,8 @@ Procedure
   eyJhbGciOiJSUzI1NiIsImtpZCI6IkY2M1N4MHRvc2xFNnFSQlA4eG9GYzVPdnN3NkhIV0tRWmFrUDRNcWx4S0kifQ.eyJhdWQiOlsiaHR0cHM6Ly9pc3N1ZXIyLnRlc3QuY29tIiwiaHR0cHM6Ly9pc3N1ZXIxLnRlc3QuY29tIiwiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjIl0sImV4cCI6MTY3OTU0MzgzMCwiaWF0IjoxNjc5NTQwMjMwLCJpc3MiOiJodHRwczovL2lzc3VlcjIudGVzdC5jb20iLCJrdWJlcm5ldGVzLmlvIjp7Im5hbWVzcGFjZSI6ImRlZmF1bHQiLCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoidGVzdC1zYSIsInVpZCI6ImM3ZjA4MjkwLWIzOTUtNGM4NC04NjI4LTMzMTM1NTVhNWY1OSJ9fSwibmJmIjoxNjc5NTQwMjMwLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6ZGVmYXVsdDp0ZXN0LXNhIn0.WyAOPvh1BFMUl3LNhBCrQeaB5wSynbnCfojWuNNPSilT4YvFnKibxwREwmzHpV4LO1xOFZHSi6bXBOmG_o-m0XNDYL3FrGHd65mymiFyluztxa2lgHVxjw5reIV5ZLgNSol3Y8bJqQqmNg3rtQQWRML2kpJBXdDHNww0E5XOypmffYkfkadli8lN5QQD-MhsCbiAF8waCYs8bj6V6Y7uUKTcxee8sCjiRMVtXKjQtooERKm-CH_p57wxCljIBeM89VdaR51NJGued4hVV5lxvVrYZFu89lBEAq4oyQN_d6N1vBWGXQMyoihnt_fQjn-NfnlJWk-3NSZDIluDJAv7e-MTEk3geDrHVQKNEzDei2-Un64hSzb-n1g1M0Vn0885wQBQAePC9UlZm8YZlMNk1tq6wIUKQTMv3HPfi5HtBRqVc2eVs0EfMX4-x-PHhPCasJ6qLJWyj6DvyQ08dP4DW_TWZVGvKlmId0hzwpg59TTcLR0iCklSEJgAVEEd13Aa_M0-faD11L3MhUGxw0qxgOsPczdXUsolSISbefs7OKymzFSIkTAn9sDQ8PHMOsuyxsK8vzfrR-E0z7MAeguZ2kaIY7cZqbN6WFy0caWgx46hrKem9vCKALefElRYbCg3hcBmowBcRTOqaFHLNnHghhU1LaRpoFzH7OUarqX9SGQ
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Rebooting a node gracefully](../nodes/nodes/nodes-nodes-rebooting.xml#nodes-nodes-rebooting-gracefully_nodes-nodes-rebooting)
 
 - [Creating service accounts](../authentication/understanding-and-creating-service-accounts.xml#service-accounts-managing_understanding-service-accounts)
-
-</div>

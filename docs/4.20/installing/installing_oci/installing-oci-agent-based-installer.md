@@ -38,8 +38,11 @@ The following diagrams show workflows for connected and disconnected environment
 
 Oracle Distributed Cloud provides services that can meet your regulatory compliance, performance, and cost-effectiveness needs. Oracle Distributed Cloud supports 64-bit `x86` instances and 64-bit `ARM` instances.
 
-> [!NOTE]
-> Consider selecting a nonvolatile memory express (NVMe) drive or a solid-state drive (SSD) for your boot disk, because these drives offer low latency and high throughput capabilities for your boot disk.
+<div class="note">
+
+Consider selecting a nonvolatile memory express (NVMe) drive or a solid-state drive (SSD) for your boot disk, because these drives offer low latency and high throughput capabilities for your boot disk.
+
+</div>
 
 By running your OpenShift Container Platform cluster on Oracle Distributed Cloud, you can access the following capabilities:
 
@@ -47,22 +50,17 @@ By running your OpenShift Container Platform cluster on Oracle Distributed Cloud
 
 - Block Volume storage, where you can configure scaling and auto-tuning settings for your storage volume, so that the Block Volume service automatically adjusts the performance level to optimize performance.
 
-> [!IMPORTANT]
-> To ensure the best performance conditions for your cluster workloads that operate on Oracle Distributed Cloud and on the OCVS service, ensure volume performance units (VPUs) for your block volume is sized for your workloads. The following list provides some guidance in selecting the VPUs needed for specific performance needs:
->
-> - Test or proof of concept environment: 100 GB, and 20 to 30 VPUs.
->
-> - Basic environment: 500 GB, and 60 VPUs.
->
-> - Heavy production environment: More than 500 GB, and 100 or more VPUs.
->
-> Consider reserving additional VPUs to provide sufficient capacity for updates and scaling activities. For more information about VPUs, see Volume Performance Units (Oracle documentation).
+<div class="important">
 
-<div>
+To ensure the best performance conditions for your cluster workloads that operate on Oracle Distributed Cloud and on the OCVS service, ensure volume performance units (VPUs) for your block volume is sized for your workloads. The following list provides some guidance in selecting the VPUs needed for specific performance needs:
 
-<div class="title">
+- Test or proof of concept environment: 100 GB, and 20 to 30 VPUs.
 
-Additional resources
+- Basic environment: 500 GB, and 60 VPUs.
+
+- Heavy production environment: More than 500 GB, and 100 or more VPUs.
+
+Consider reserving additional VPUs to provide sufficient capacity for updates and scaling activities. For more information about VPUs, see Volume Performance Units (Oracle documentation).
 
 </div>
 
@@ -77,8 +75,6 @@ Additional resources
 - [Volume Performance Units (Oracle documentation)](https://docs.oracle.com/en-us/iaas/Content/Block/Concepts/blockvolumeperformance.htm#vpus)
 
 - [Instance Sizing Recommendations for OpenShift Container Platform Nodes (Oracle documentation)](https://docs.oracle.com/iaas/Content/openshift-on-oci/installing-agent-about-instance-configurations.htm)
-
-</div>
 
 # Installation process workflow
 
@@ -110,36 +106,23 @@ You must create an Oracle Distributed Cloud environment on your virtual machine 
 
 The Agent-based Installer method for installing an OpenShift Container Platform cluster on Oracle Distributed Cloud requires that you manually create OCI resources and services.
 
-> [!IMPORTANT]
-> To ensure compatibility with OpenShift Container Platform, you must set `A` as the record type for each DNS record and name records as follows:
->
-> - `api.<cluster_name>.<base_domain>`, which targets the `apiVIP` parameter of the API load balancer
->
-> - `api-int.<cluster_name>.<base_domain>`, which targets the `apiVIP` parameter of the API load balancer
->
-> - `*.apps.<cluster_name>.<base_domain>`, which targets the `ingressVIP` parameter of the Ingress load balancer
->
-> The `api.*` and `api-int.*` DNS records relate to control plane machines, so you must ensure that all nodes in your installed OpenShift Container Platform cluster can access these DNS records.
+<div class="important">
 
-<div>
+To ensure compatibility with OpenShift Container Platform, you must set `A` as the record type for each DNS record and name records as follows:
 
-<div class="title">
+- `api.<cluster_name>.<base_domain>`, which targets the `apiVIP` parameter of the API load balancer
 
-Prerequisites
+- `api-int.<cluster_name>.<base_domain>`, which targets the `apiVIP` parameter of the API load balancer
+
+- `*.apps.<cluster_name>.<base_domain>`, which targets the `ingressVIP` parameter of the Ingress load balancer
+
+The `api.*` and `api-int.*` DNS records relate to control plane machines, so you must ensure that all nodes in your installed OpenShift Container Platform cluster can access these DNS records.
 
 </div>
 
 - You configured an OCI account to host the OpenShift Container Platform cluster. See [Prerequisites (Oracle documentation)](https://docs.oracle.com/iaas/Content/openshift-on-oci/install-prereq.htm).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Create the required OCI resources and services.
 
@@ -147,32 +130,17 @@ Procedure
 
   For installations in a disconnected environment, see [Provisioning OCI Resources for the Agent-based Installer in Disconnected Environments (Oracle documentation)](https://docs.oracle.com/iaas/Content/openshift-on-oci/agent-prereq.htm).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Learn About Oracle Cloud Basics (Oracle documentation)](https://docs.oracle.com/en-us/iaas/Content/GSG/Concepts/concepts.htm)
-
-</div>
 
 # Creating configuration files for installing a cluster on Oracle Distributed Cloud
 
 You must create the `install-config.yaml` and the `agent-config.yaml` configuration files so that you can use the Agent-based Installer to generate a bootable ISO image. The Agent-based installation comprises a bootable ISO that has the Assisted discovery agent and the Assisted Service. Both of these components are required to perform the cluster installation, but the latter component runs on only one of the hosts.
 
-> [!NOTE]
-> You can also use the Agent-based Installer to generate or accept Zero Touch Provisioning (ZTP) custom resources.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You can also use the Agent-based Installer to generate or accept Zero Touch Provisioning (ZTP) custom resources.
 
 </div>
 
@@ -186,41 +154,30 @@ Prerequisites
 
 - If you are installing in a disconnected environment, you have prepared a mirror registry in your environment and mirrored release images to the registry.
 
-  > [!IMPORTANT]
-  > Check that your `openshift-install` binary version relates to your local image container registry and not a shared registry, such as Red Hat Quay, by running the following command:
-  >
-  > ``` terminal
-  > $ ./openshift-install version
-  > ```
-  >
-  > <div class="formalpara">
-  >
-  > <div class="title">
-  >
-  > Example output for a shared registry binary
-  >
-  > </div>
-  >
-  > ``` terminal
-  > ./openshift-install 4.20.0
-  > built from commit ae7977b7d1ca908674a0d45c5c243c766fa4b2ca
-  > release image registry.ci.openshift.org/origin/release:4.20ocp-release@sha256:0da6316466d60a3a4535d5fed3589feb0391989982fba59d47d4c729912d6363
-  > release architecture amd64
-  > ```
-  >
-  > </div>
+  <div class="important">
+
+  Check that your `openshift-install` binary version relates to your local image container registry and not a shared registry, such as Red Hat Quay, by running the following command:
+
+  ``` terminal
+  $ ./openshift-install version
+  ```
+
+  <div class="formalpara-title">
+
+  **Example output for a shared registry binary**
+
+  </div>
+
+  ``` terminal
+  ./openshift-install 4.20.0
+  built from commit ae7977b7d1ca908674a0d45c5c243c766fa4b2ca
+  release image registry.ci.openshift.org/origin/release:4.20ocp-release@sha256:0da6316466d60a3a4535d5fed3589feb0391989982fba59d47d4c729912d6363
+  release architecture amd64
+  ```
+
+  </div>
 
 - You have logged in to the OpenShift Container Platform with administrator privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an installation directory to store configuration files in by running the following command:
 
@@ -230,11 +187,9 @@ Procedure
 
 2.  Configure the `install-config.yaml` configuration file to meet the needs of your organization and save the file in the directory you created.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    `install-config.yaml` file that sets an external platform
+    **`install-config.yaml` file that sets an external platform**
 
     </div>
 
@@ -270,8 +225,6 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - The base domain of your cloud provider.
 
     - The IP address from the virtual cloud network (VCN) that the CIDR allocates to resources and components that operate on your network.
@@ -286,8 +239,11 @@ Procedure
 
 3.  Create a directory on your local system named `openshift`. This must be a subdirectory of the installation directory.
 
-    > [!IMPORTANT]
-    > Do not move the `install-config.yaml` or `agent-config.yaml` configuration files to the `openshift` directory.
+    <div class="important">
+
+    Do not move the `install-config.yaml` or `agent-config.yaml` configuration files to the `openshift` directory.
+
+    </div>
 
 4.  If you used a stack to provision OCI infrastructure resources: Copy and paste the `dynamic_custom_manifest` output of the OCI stack into a file titled `manifest.yaml` and save the file in the `openshift` directory.
 
@@ -301,11 +257,9 @@ Procedure
 
 6.  Configure the `agent-config.yaml` configuration file to meet your organization’s requirements.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample `agent-config.yaml` file for an IPv4 network.
+    **Sample `agent-config.yaml` file for an IPv4 network.**
 
     </div>
 
@@ -318,8 +272,6 @@ Procedure
     bootArtifactsBaseURL: <server_URL>
     # ...
     ```
-
-    </div>
 
     - The cluster name that you specified in your DNS record.
 
@@ -343,8 +295,11 @@ Procedure
 
     - Optional: Any modifications you made to `agent-config.yaml` and `install-config.yaml` configuration files get imported to the Zero Touch Provisioning (ZTP) custom resources.
 
-      > [!IMPORTANT]
-      > The Agent-based Installer uses Red Hat Enterprise Linux CoreOS (RHCOS). The rootfs image, which is mentioned in a later step, is required for booting, recovering, and repairing your operating system.
+      <div class="important">
+
+      The Agent-based Installer uses Red Hat Enterprise Linux CoreOS (RHCOS). The rootfs image, which is mentioned in a later step, is required for booting, recovering, and repairing your operating system.
+
+      </div>
 
 8.  Disconnected environments only: Upload the rootfs image to a web server.
 
@@ -354,21 +309,17 @@ Procedure
 
         For example, if the `bootArtifactsBaseURL` parameter states `http://192.168.122.20`, you would upload the generated rootfs image to this location so that the Agent-based installer can access the image from `http://192.168.122.20/agent.x86_64-rootfs.img`. After the Agent-based installer boots the minimal ISO for the external platform, the Agent-based Installer downloads the rootfs image from the `http://192.168.122.20/agent.x86_64-rootfs.img` location into the system memory.
 
-        > [!NOTE]
-        > The Agent-based Installer also adds the value of the `bootArtifactsBaseURL` to the minimal ISO Image’s configuration, so that when the Operator boots a cluster’s node, the Agent-based Installer downloads the rootfs image into system memory.
+        <div class="note">
 
-        > [!IMPORTANT]
-        > Consider that the full ISO image, which is in excess of `1` GB, includes the rootfs image. The image is larger than the minimal ISO Image, which is typically less than `150` MB.
+        The Agent-based Installer also adds the value of the `bootArtifactsBaseURL` to the minimal ISO Image’s configuration, so that when the Operator boots a cluster’s node, the Agent-based Installer downloads the rootfs image into system memory.
 
-</div>
+        </div>
 
-<div>
+        <div class="important">
 
-<div class="title">
+        Consider that the full ISO image, which is in excess of `1` GB, includes the rootfs image. The image is larger than the minimal ISO Image, which is typically less than `150` MB.
 
-Additional resources
-
-</div>
+        </div>
 
 - [About OpenShift Container Platform installation](../../architecture/architecture-installation.xml#installation-overview_architecture-installation)
 
@@ -384,43 +335,36 @@ Additional resources
 
 - [Optional: Using ZTP manifests](../../installing/installing_with_agent_based_installer/installing-with-agent-based-installer.xml#installing-ocp-agent-ztp_installing-with-agent-based-installer)
 
-</div>
-
 # Configuring your firewall for OpenShift Container Platform
 
 Before you install OpenShift Container Platform, you must configure your firewall to grant access to the sites that OpenShift Container Platform requires. When using a firewall, make additional configurations to the firewall so that OpenShift Container Platform can access the sites that it requires to function.
 
 For a disconnected environment, you must mirror content from both Red Hat and Oracle. This environment requires that you create firewall rules to expose your firewall to specific ports and registries.
 
-> [!NOTE]
-> If your environment has a dedicated load balancer in front of your OpenShift Container Platform cluster, review the allowlists between your firewall and load balancer to prevent unwanted network restrictions to your cluster.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+If your environment has a dedicated load balancer in front of your OpenShift Container Platform cluster, review the allowlists between your firewall and load balancer to prevent unwanted network restrictions to your cluster.
 
 </div>
 
 1.  Set the following registry URLs for your firewall’s allowlist:
 
-    | URL | Port | Function |
-    |----|----|----|
-    | `registry.redhat.io` | 443 | Provides core container images |
-    | `access.redhat.com` | 443 | Hosts a signature store that a container client requires for verifying images pulled from `registry.access.redhat.com`. In a firewall environment, ensure that this resource is on the allowlist. |
-    | `registry.access.redhat.com` | 443 | Hosts all the container images that are stored on the Red Hat Ecosystem Catalog, including core container images. |
-    | `quay.io` | 443 | Provides core container images |
-    | `cdn.quay.io` | 443 | Provides core container images |
-    | `cdn01.quay.io` | 443 | Provides core container images |
-    | `cdn02.quay.io` | 443 | Provides core container images |
-    | `cdn03.quay.io` | 443 | Provides core container images |
-    | `cdn04.quay.io` | 443 | Provides core container images |
-    | `cdn05.quay.io` | 443 | Provides core container images |
-    | `cdn06.quay.io` | 443 | Provides core container images |
-    | `sso.redhat.com` | 443 | The `https://console.redhat.com` site uses authentication from `sso.redhat.com` |
-    | `icr.io` | 443 | Provides IBM Cloud Pak container images. This domain is only required if you use IBM Cloud Paks. |
-    | `cp.icr.io` | 443 | Provides IBM Cloud Pak container images. This domain is only required if you use IBM Cloud Paks. |
+    | URL                          | Port | Function                                                                                                                                                                                          |
+    |------------------------------|------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | `registry.redhat.io`         | 443  | Provides core container images                                                                                                                                                                    |
+    | `access.redhat.com`          | 443  | Hosts a signature store that a container client requires for verifying images pulled from `registry.access.redhat.com`. In a firewall environment, ensure that this resource is on the allowlist. |
+    | `registry.access.redhat.com` | 443  | Hosts all the container images that are stored on the Red Hat Ecosystem Catalog, including core container images.                                                                                 |
+    | `quay.io`                    | 443  | Provides core container images                                                                                                                                                                    |
+    | `cdn.quay.io`                | 443  | Provides core container images                                                                                                                                                                    |
+    | `cdn01.quay.io`              | 443  | Provides core container images                                                                                                                                                                    |
+    | `cdn02.quay.io`              | 443  | Provides core container images                                                                                                                                                                    |
+    | `cdn03.quay.io`              | 443  | Provides core container images                                                                                                                                                                    |
+    | `cdn04.quay.io`              | 443  | Provides core container images                                                                                                                                                                    |
+    | `cdn05.quay.io`              | 443  | Provides core container images                                                                                                                                                                    |
+    | `cdn06.quay.io`              | 443  | Provides core container images                                                                                                                                                                    |
+    | `sso.redhat.com`             | 443  | The `https://console.redhat.com` site uses authentication from `sso.redhat.com`                                                                                                                   |
+    | `icr.io`                     | 443  | Provides IBM Cloud Pak container images. This domain is only required if you use IBM Cloud Paks.                                                                                                  |
+    | `cp.icr.io`                  | 443  | Provides IBM Cloud Pak container images. This domain is only required if you use IBM Cloud Paks.                                                                                                  |
 
     - You can use the wildcard `*.quay.io` instead of `cdn.quay.io` and `cdn0[1-6].quay.io` in your allowlist.
 
@@ -432,80 +376,56 @@ Procedure
 
 3.  If you do not disable Telemetry, you must grant access to the following URLs to access Red Hat Lightspeed:
 
-    | URL | Port | Function |
-    |----|----|----|
-    | `cert-api.access.redhat.com` | 443 | Required for Telemetry |
-    | `api.access.redhat.com` | 443 | Required for Telemetry |
-    | `infogw.api.openshift.com` | 443 | Required for Telemetry |
-    | `console.redhat.com` | 443 | Required for Telemetry and for `insights-operator` |
+    | URL                          | Port | Function                                           |
+    |------------------------------|------|----------------------------------------------------|
+    | `cert-api.access.redhat.com` | 443  | Required for Telemetry                             |
+    | `api.access.redhat.com`      | 443  | Required for Telemetry                             |
+    | `infogw.api.openshift.com`   | 443  | Required for Telemetry                             |
+    | `console.redhat.com`         | 443  | Required for Telemetry and for `insights-operator` |
 
 4.  Set your firewall’s allowlist to include the following registry URLs:
 
-    | URL | Port | Function |
-    |----|----|----|
-    | `api.openshift.com` | 443 | Required both for your cluster token and to check if updates are available for the cluster. |
-    | `rhcos.mirror.openshift.com` | 443 | Required to download Red Hat Enterprise Linux CoreOS (RHCOS) images. |
+    | URL                          | Port | Function                                                                                    |
+    |------------------------------|------|---------------------------------------------------------------------------------------------|
+    | `api.openshift.com`          | 443  | Required both for your cluster token and to check if updates are available for the cluster. |
+    | `rhcos.mirror.openshift.com` | 443  | Required to download Red Hat Enterprise Linux CoreOS (RHCOS) images.                        |
 
 5.  Set your firewall’s allowlist to include the following external URLs. Each repository URL hosts OCI containers. Consider mirroring images to as few repositories as possible to reduce any performance issues.
 
-    | URL | Port | Function |
-    |----|----|----|
-    | `k8s.gcr.io` | port | A Kubernetes registry that hosts container images for a community-based image registry. This image registry is hosted on a custom Google Container Registry (GCR) domain. |
-    | `ghcr.io` | port | A GitHub image registry where you can store and manage Open Container Initiative images. Requires an access token to publish, install, and delete private, internal, and public packages. |
-    | `storage.googleapis.com` | 443 | A source of release image signatures, although the Cluster Version Operator needs only a single functioning source. |
-    | `registry.k8s.io` | port | Replaces the `k8s.gcr.io` image registry because the `k8s.gcr.io` image registry does not support other platforms and vendors. |
-
-</div>
+    | URL                      | Port | Function                                                                                                                                                                                  |
+    |--------------------------|------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | `k8s.gcr.io`             | port | A Kubernetes registry that hosts container images for a community-based image registry. This image registry is hosted on a custom Google Container Registry (GCR) domain.                 |
+    | `ghcr.io`                | port | A GitHub image registry where you can store and manage Open Container Initiative images. Requires an access token to publish, install, and delete private, internal, and public packages. |
+    | `storage.googleapis.com` | 443  | A source of release image signatures, although the Cluster Version Operator needs only a single functioning source.                                                                       |
+    | `registry.k8s.io`        | port | Replaces the `k8s.gcr.io` image registry because the `k8s.gcr.io` image registry does not support other platforms and vendors.                                                            |
 
 # Running a cluster on Oracle Distributed Cloud
 
 To run a cluster on Oracle® Distributed Cloud, you must upload the generated agent ISO image to the default Object Storage bucket on Oracle Distributed Cloud. Additionally, you must create a compute instance from the supplied base image, so that OpenShift Container Platform and Oracle Distributed Cloud can communicate with each other for the purposes of running the cluster on Oracle Distributed Cloud.
 
-> [!NOTE]
-> Oracle Distributed Cloud supports the following OpenShift Container Platform cluster topologies:
->
-> - Installing an OpenShift Container Platform cluster on a single node.
->
-> - A highly available cluster that has a minimum of three control plane instances and two compute instances.
->
-> - A compact three-node cluster that has a minimum of three control plane instances.
+<div class="note">
 
-<div>
+Oracle Distributed Cloud supports the following OpenShift Container Platform cluster topologies:
 
-<div class="title">
+- Installing an OpenShift Container Platform cluster on a single node.
 
-Prerequisites
+- A highly available cluster that has a minimum of three control plane instances and two compute instances.
+
+- A compact three-node cluster that has a minimum of three control plane instances.
 
 </div>
 
 - You generated an agent ISO image. See the "Creating configuration files for installing a cluster on OCI" section.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Upload the agent ISO image to Oracle’s default Object Storage bucket and import the agent ISO image as a custom image to this bucket. Ensure you that you configure the custom image to boot in Unified Extensible Firmware Interface (UEFI) mode. For more information, see [Creating the OpenShift Container Platform ISO Image (Oracle documentation)](https://docs.oracle.com/iaas/Content/openshift-on-oci/installing-agent-image-creation.htm).
 
 2.  Create a compute instance from the supplied base image for your cluster topology. See [Creating the OpenShift Container Platform cluster on OCI (Oracle documentation)](https://docs.oracle.com/iaas/Content/openshift-on-oci/installing-agent-first-node.htm).
 
-    > [!IMPORTANT]
-    > Before you create the compute instance, check that you have enough memory and disk resources for your cluster. Additionally, ensure that at least one compute instance has the same IP address as the address stated under `rendezvousIP` in the `agent-config.yaml` file.
+    <div class="important">
 
-</div>
+    Before you create the compute instance, check that you have enough memory and disk resources for your cluster. Additionally, ensure that at least one compute instance has the same IP address as the address stated under `rendezvousIP` in the `agent-config.yaml` file.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+    </div>
 
 - [Recommended resources for topologies](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#agent-based-installer-recommended-resources_preparing-to-install-with-agent-based-installer)
 
@@ -513,19 +433,9 @@ Additional resources
 
 - [Troubleshooting OpenShift Container Platform on OCI (Oracle documentation)](https://docs.oracle.com/iaas/Content/openshift-on-oci/openshift-troubleshooting.htm)
 
-</div>
-
 # Verifying that your Agent-based cluster installation runs on Oracle Distributed Cloud
 
 Verify that your cluster was installed and is running effectively on Oracle® Distributed Cloud.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You created all the required OCI resources and services. See the "Creating Oracle Distributed Cloud infrastructure resources and services" section.
 
@@ -533,19 +443,13 @@ Prerequisites
 
 - You uploaded the agent ISO image to a default Oracle Object Storage bucket, and you created a compute instance on Oracle Distributed Cloud. For more information, see "Running a cluster on Oracle Distributed Cloud".
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 After you deploy the compute instance on a self-managed node in your OpenShift Container Platform cluster, you can monitor the cluster’s status by choosing one of the following options:
-
-</div>
 
 - From the OpenShift Container Platform CLI, enter the following command:
 
@@ -567,11 +471,9 @@ After you deploy the compute instance on a self-managed node in your OpenShift C
   $ oc get nodes -A
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Output example
+  **Output example**
 
   </div>
 
@@ -582,19 +484,15 @@ After you deploy the compute instance on a self-managed node in your OpenShift C
   main-2.private.agenttest.oraclevcn.com Ready  control-plane, master 15m v1.27.4+d7fa83f
   ```
 
-  </div>
-
   Check the status of each of the cluster’s Operators, with the CCM Operator status being a good indicator that your cluster is running.
 
   ``` terminal
   $ oc get co
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Truncated output example
+  **Truncated output example**
 
   </div>
 
@@ -605,8 +503,6 @@ After you deploy the compute instance on a self-managed node in your OpenShift C
   network        4.20.0-0    True       True           False      5m58s  Progressing: …
       …
   ```
-
-  </div>
 
 # Additional resources
 

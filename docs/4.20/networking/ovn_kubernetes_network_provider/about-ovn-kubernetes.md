@@ -2,8 +2,11 @@ The OpenShift Container Platform cluster uses a virtualized network for pod and 
 
 Part of Red Hat OpenShift Networking, the OVN-Kubernetes network plugin is the default network provider for OpenShift Container Platform. OVN-Kubernetes is based on Open Virtual Network (OVN) and provides an overlay-based networking implementation. A cluster that uses the OVN-Kubernetes plugin also runs Open vSwitch (OVS) on each node. OVN configures OVS on each node to implement the declared network configuration.
 
-> [!NOTE]
-> OVN-Kubernetes is the default networking solution for OpenShift Container Platform and single-node OpenShift deployments.
+<div class="note">
+
+OVN-Kubernetes is the default networking solution for OpenShift Container Platform and single-node OpenShift deployments.
+
+</div>
 
 OVN-Kubernetes, which arose from the OVS project, uses many of the same constructs, such as open flow rules, to decide how packets travel through the network. For more information, see the [Open Virtual Network website](https://www.ovn.org/en/).
 
@@ -116,14 +119,6 @@ Session affinity is a feature that applies to Kubernetes `Service` objects. You 
 
 The OVN-Kubernetes network plugin for OpenShift Container Platform calculates the stickiness timeout for a session from a client based on the last packet. For example, if you run a `curl` command 10 times, the sticky session timer starts from the tenth packet not the first. As a result, if the client is continuously contacting the service, then the session never times out. The timeout starts when the service has not received a packet for the amount of time set by the [`timeoutSeconds`](https://kubernetes.io/docs/reference/networking/virtual-ips/#session-stickiness-timeout) parameter.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring an egress firewall for a project](../../networking/network_security/egress_firewall/configuring-egress-firewall-ovn.xml#configuring-egress-firewall-ovn)
 
 - [About network policy](../../networking/network_security/network_policy/about-network-policy.xml#about-network-policy)
@@ -135,5 +130,3 @@ Additional resources
 - [Configuring IPsec encryption](../../networking/network_security/configuring-ipsec-ovn.xml#configuring-ipsec-ovn)
 
 - xref:../../rest_api/operator_apis/network-operator-openshift-io-v1.adoc#network-operator-openshift-io-v1\[Network \[operator.openshift.io/v1\\
-
-</div>

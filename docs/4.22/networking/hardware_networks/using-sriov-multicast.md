@@ -16,27 +16,9 @@ When using additional SR-IOV interfaces for multicast:
 
 The follow procedure creates an example SR-IOV interface for multicast.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - You must log in to the cluster with a user that has the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `SriovNetworkNodePolicy` object:
 
@@ -105,5 +87,3 @@ Procedure
     ```
 
     - The `NET_ADMIN` capability is required only if your application needs to assign the multicast IP address to the SR-IOV interface. Otherwise, it can be omitted.
-
-</div>

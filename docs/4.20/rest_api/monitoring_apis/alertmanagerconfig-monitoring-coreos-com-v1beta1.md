@@ -11,12 +11,12 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | AlertmanagerConfigSpec is a specification of the desired behavior of the Alertmanager configuration. By definition, the Alertmanager configuration only applies to alerts for which the `namespace` label is equal to the namespace of the AlertmanagerConfig resource. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | AlertmanagerConfigSpec is a specification of the desired behavior of the Alertmanager configuration. By definition, the Alertmanager configuration only applies to alerts for which the `namespace` label is equal to the namespace of the AlertmanagerConfig resource.                              |
 
 ## .spec
 
@@ -26,15 +26,15 @@ AlertmanagerConfigSpec is a specification of the desired behavior of the Alertma
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `inhibitRules` | `array` | List of inhibition rules. The rules will only apply to alerts matching the resource’s namespace. |
-| `inhibitRules[]` | `object` | InhibitRule defines an inhibition rule that allows to mute alerts when other alerts are already firing. See <https://prometheus.io/docs/alerting/latest/configuration/#inhibit_rule> |
-| `receivers` | `array` | List of receivers. |
-| `receivers[]` | `object` | Receiver defines one or more notification integrations. |
-| `route` | `object` | The Alertmanager route definition for alerts matching the resource’s namespace. If present, it will be added to the generated Alertmanager configuration as a first-level route. |
-| `timeIntervals` | `array` | List of TimeInterval specifying when the routes should be muted or active. |
-| `timeIntervals[]` | `object` | TimeInterval specifies the periods in time when notifications will be muted or active. |
+| Property          | Type     | Description                                                                                                                                                                          |
+|-------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `inhibitRules`    | `array`  | List of inhibition rules. The rules will only apply to alerts matching the resource’s namespace.                                                                                     |
+| `inhibitRules[]`  | `object` | InhibitRule defines an inhibition rule that allows to mute alerts when other alerts are already firing. See <https://prometheus.io/docs/alerting/latest/configuration/#inhibit_rule> |
+| `receivers`       | `array`  | List of receivers.                                                                                                                                                                   |
+| `receivers[]`     | `object` | Receiver defines one or more notification integrations.                                                                                                                              |
+| `route`           | `object` | The Alertmanager route definition for alerts matching the resource’s namespace. If present, it will be added to the generated Alertmanager configuration as a first-level route.     |
+| `timeIntervals`   | `array`  | List of TimeInterval specifying when the routes should be muted or active.                                                                                                           |
+| `timeIntervals[]` | `object` | TimeInterval specifies the periods in time when notifications will be muted or active.                                                                                               |
 
 ## .spec.inhibitRules
 
@@ -52,13 +52,13 @@ InhibitRule defines an inhibition rule that allows to mute alerts when other ale
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `equal` | `array (string)` | Labels that must have an equal value in the source and target alert for the inhibition to take effect. |
-| `sourceMatch` | `array` | Matchers for which one or more alerts have to exist for the inhibition to take effect. The operator enforces that the alert matches the resource’s namespace. |
-| `sourceMatch[]` | `object` | Matcher defines how to match on alert’s labels. |
-| `targetMatch` | `array` | Matchers that have to be fulfilled in the alerts to be muted. The operator enforces that the alert matches the resource’s namespace. |
-| `targetMatch[]` | `object` | Matcher defines how to match on alert’s labels. |
+| Property        | Type             | Description                                                                                                                                                   |
+|-----------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `equal`         | `array (string)` | Labels that must have an equal value in the source and target alert for the inhibition to take effect.                                                        |
+| `sourceMatch`   | `array`          | Matchers for which one or more alerts have to exist for the inhibition to take effect. The operator enforces that the alert matches the resource’s namespace. |
+| `sourceMatch[]` | `object`         | Matcher defines how to match on alert’s labels.                                                                                                               |
+| `targetMatch`   | `array`          | Matchers that have to be fulfilled in the alerts to be muted. The operator enforces that the alert matches the resource’s namespace.                          |
+| `targetMatch[]` | `object`         | Matcher defines how to match on alert’s labels.                                                                                                               |
 
 ## .spec.inhibitRules\[\].sourceMatch
 
@@ -79,11 +79,11 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type     | Description                                                                                                                                                                    |
+|-------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `matchType` | `string` | Match operator, one of `=` (equal to), `!=` (not equal to), `=~` (regex match) or `!~` (not regex match). Negative operators (`!=` and `!~`) require Alertmanager \>= v0.22.0. |
-| `name` | `string` | Label to match. |
-| `value` | `string` | Label value to match. |
+| `name`      | `string` | Label to match.                                                                                                                                                                |
+| `value`     | `string` | Label value to match.                                                                                                                                                          |
 
 ## .spec.inhibitRules\[\].targetMatch
 
@@ -104,11 +104,11 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type     | Description                                                                                                                                                                    |
+|-------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `matchType` | `string` | Match operator, one of `=` (equal to), `!=` (not equal to), `=~` (regex match) or `!~` (not regex match). Negative operators (`!=` and `!~`) require Alertmanager \>= v0.22.0. |
-| `name` | `string` | Label to match. |
-| `value` | `string` | Label value to match. |
+| `name`      | `string` | Label to match.                                                                                                                                                                |
+| `value`     | `string` | Label value to match.                                                                                                                                                          |
 
 ## .spec.receivers
 
@@ -129,39 +129,39 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `discordConfigs` | `array` | List of Slack configurations. |
-| `discordConfigs[]` | `object` | DiscordConfig configures notifications via Discord. See <https://prometheus.io/docs/alerting/latest/configuration/#discord_config> |
-| `emailConfigs` | `array` | List of Email configurations. |
-| `emailConfigs[]` | `object` | EmailConfig configures notifications via Email. |
-| `msteamsConfigs` | `array` | List of MSTeams configurations. It requires Alertmanager \>= 0.26.0. |
-| `msteamsConfigs[]` | `object` | MSTeamsConfig configures notifications via Microsoft Teams. It requires Alertmanager \>= 0.26.0. |
-| `msteamsv2Configs` | `array` | List of MSTeamsV2 configurations. It requires Alertmanager \>= 0.28.0. |
-| `msteamsv2Configs[]` | `object` | MSTeamsV2Config configures notifications via Microsoft Teams using the new message format with adaptive cards as required by flows See <https://prometheus.io/docs/alerting/latest/configuration/#msteamsv2_config> It requires Alertmanager \>= 0.28.0. |
-| `name` | `string` | Name of the receiver. Must be unique across all items from the list. |
-| `opsgenieConfigs` | `array` | List of OpsGenie configurations. |
-| `opsgenieConfigs[]` | `object` | OpsGenieConfig configures notifications via OpsGenie. See <https://prometheus.io/docs/alerting/latest/configuration/#opsgenie_config> |
-| `pagerdutyConfigs` | `array` | List of PagerDuty configurations. |
-| `pagerdutyConfigs[]` | `object` | PagerDutyConfig configures notifications via PagerDuty. See <https://prometheus.io/docs/alerting/latest/configuration/#pagerduty_config> |
-| `pushoverConfigs` | `array` | List of Pushover configurations. |
-| `pushoverConfigs[]` | `object` | PushoverConfig configures notifications via Pushover. See <https://prometheus.io/docs/alerting/latest/configuration/#pushover_config> |
-| `rocketchatConfigs` | `array` | List of RocketChat configurations. It requires Alertmanager \>= 0.28.0. |
-| `rocketchatConfigs[]` | `object` | RocketChatConfig configures notifications via RocketChat. It requires Alertmanager \>= 0.28.0. |
-| `slackConfigs` | `array` | List of Slack configurations. |
-| `slackConfigs[]` | `object` | SlackConfig configures notifications via Slack. See <https://prometheus.io/docs/alerting/latest/configuration/#slack_config> |
-| `snsConfigs` | `array` | List of SNS configurations |
-| `snsConfigs[]` | `object` | SNSConfig configures notifications via AWS SNS. See <https://prometheus.io/docs/alerting/latest/configuration/#sns_configs> |
-| `telegramConfigs` | `array` | List of Telegram configurations. |
-| `telegramConfigs[]` | `object` | TelegramConfig configures notifications via Telegram. See <https://prometheus.io/docs/alerting/latest/configuration/#telegram_config> |
-| `victoropsConfigs` | `array` | List of VictorOps configurations. |
-| `victoropsConfigs[]` | `object` | VictorOpsConfig configures notifications via VictorOps. See <https://prometheus.io/docs/alerting/latest/configuration/#victorops_config> |
-| `webexConfigs` | `array` | List of Webex configurations. |
-| `webexConfigs[]` | `object` | WebexConfig configures notification via Cisco Webex See <https://prometheus.io/docs/alerting/latest/configuration/#webex_config> |
-| `webhookConfigs` | `array` | List of webhook configurations. |
-| `webhookConfigs[]` | `object` | WebhookConfig configures notifications via a generic receiver supporting the webhook payload. See <https://prometheus.io/docs/alerting/latest/configuration/#webhook_config> |
-| `wechatConfigs` | `array` | List of WeChat configurations. |
-| `wechatConfigs[]` | `object` | WeChatConfig configures notifications via WeChat. See <https://prometheus.io/docs/alerting/latest/configuration/#wechat_config> |
+| Property              | Type     | Description                                                                                                                                                                                                                                              |
+|-----------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `discordConfigs`      | `array`  | List of Slack configurations.                                                                                                                                                                                                                            |
+| `discordConfigs[]`    | `object` | DiscordConfig configures notifications via Discord. See <https://prometheus.io/docs/alerting/latest/configuration/#discord_config>                                                                                                                       |
+| `emailConfigs`        | `array`  | List of Email configurations.                                                                                                                                                                                                                            |
+| `emailConfigs[]`      | `object` | EmailConfig configures notifications via Email.                                                                                                                                                                                                          |
+| `msteamsConfigs`      | `array`  | List of MSTeams configurations. It requires Alertmanager \>= 0.26.0.                                                                                                                                                                                     |
+| `msteamsConfigs[]`    | `object` | MSTeamsConfig configures notifications via Microsoft Teams. It requires Alertmanager \>= 0.26.0.                                                                                                                                                         |
+| `msteamsv2Configs`    | `array`  | List of MSTeamsV2 configurations. It requires Alertmanager \>= 0.28.0.                                                                                                                                                                                   |
+| `msteamsv2Configs[]`  | `object` | MSTeamsV2Config configures notifications via Microsoft Teams using the new message format with adaptive cards as required by flows See <https://prometheus.io/docs/alerting/latest/configuration/#msteamsv2_config> It requires Alertmanager \>= 0.28.0. |
+| `name`                | `string` | Name of the receiver. Must be unique across all items from the list.                                                                                                                                                                                     |
+| `opsgenieConfigs`     | `array`  | List of OpsGenie configurations.                                                                                                                                                                                                                         |
+| `opsgenieConfigs[]`   | `object` | OpsGenieConfig configures notifications via OpsGenie. See <https://prometheus.io/docs/alerting/latest/configuration/#opsgenie_config>                                                                                                                    |
+| `pagerdutyConfigs`    | `array`  | List of PagerDuty configurations.                                                                                                                                                                                                                        |
+| `pagerdutyConfigs[]`  | `object` | PagerDutyConfig configures notifications via PagerDuty. See <https://prometheus.io/docs/alerting/latest/configuration/#pagerduty_config>                                                                                                                 |
+| `pushoverConfigs`     | `array`  | List of Pushover configurations.                                                                                                                                                                                                                         |
+| `pushoverConfigs[]`   | `object` | PushoverConfig configures notifications via Pushover. See <https://prometheus.io/docs/alerting/latest/configuration/#pushover_config>                                                                                                                    |
+| `rocketchatConfigs`   | `array`  | List of RocketChat configurations. It requires Alertmanager \>= 0.28.0.                                                                                                                                                                                  |
+| `rocketchatConfigs[]` | `object` | RocketChatConfig configures notifications via RocketChat. It requires Alertmanager \>= 0.28.0.                                                                                                                                                           |
+| `slackConfigs`        | `array`  | List of Slack configurations.                                                                                                                                                                                                                            |
+| `slackConfigs[]`      | `object` | SlackConfig configures notifications via Slack. See <https://prometheus.io/docs/alerting/latest/configuration/#slack_config>                                                                                                                             |
+| `snsConfigs`          | `array`  | List of SNS configurations                                                                                                                                                                                                                               |
+| `snsConfigs[]`        | `object` | SNSConfig configures notifications via AWS SNS. See <https://prometheus.io/docs/alerting/latest/configuration/#sns_configs>                                                                                                                              |
+| `telegramConfigs`     | `array`  | List of Telegram configurations.                                                                                                                                                                                                                         |
+| `telegramConfigs[]`   | `object` | TelegramConfig configures notifications via Telegram. See <https://prometheus.io/docs/alerting/latest/configuration/#telegram_config>                                                                                                                    |
+| `victoropsConfigs`    | `array`  | List of VictorOps configurations.                                                                                                                                                                                                                        |
+| `victoropsConfigs[]`  | `object` | VictorOpsConfig configures notifications via VictorOps. See <https://prometheus.io/docs/alerting/latest/configuration/#victorops_config>                                                                                                                 |
+| `webexConfigs`        | `array`  | List of Webex configurations.                                                                                                                                                                                                                            |
+| `webexConfigs[]`      | `object` | WebexConfig configures notification via Cisco Webex See <https://prometheus.io/docs/alerting/latest/configuration/#webex_config>                                                                                                                         |
+| `webhookConfigs`      | `array`  | List of webhook configurations.                                                                                                                                                                                                                          |
+| `webhookConfigs[]`    | `object` | WebhookConfig configures notifications via a generic receiver supporting the webhook payload. See <https://prometheus.io/docs/alerting/latest/configuration/#webhook_config>                                                                             |
+| `wechatConfigs`       | `array`  | List of WeChat configurations.                                                                                                                                                                                                                           |
+| `wechatConfigs[]`     | `object` | WeChatConfig configures notifications via WeChat. See <https://prometheus.io/docs/alerting/latest/configuration/#wechat_config>                                                                                                                          |
 
 ## .spec.receivers\[\].discordConfigs
 
@@ -182,16 +182,16 @@ Type
 Required
 - `apiURL`
 
-| Property | Type | Description |
-|----|----|----|
-| `apiURL` | `object` | The secret’s key that contains the Discord webhook URL. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
-| `avatarURL` | `string` | The avatar url of the message sender. |
-| `content` | `string` | The template of the content’s body. |
-| `httpConfig` | `object` | HTTP client configuration. |
-| `message` | `string` | The template of the message’s body. |
-| `sendResolved` | `boolean` | Whether or not to notify about resolved alerts. |
-| `title` | `string` | The template of the message’s title. |
-| `username` | `string` | The username of the message sender. |
+| Property       | Type      | Description                                                                                                                                                                      |
+|----------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiURL`       | `object`  | The secret’s key that contains the Discord webhook URL. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
+| `avatarURL`    | `string`  | The avatar url of the message sender.                                                                                                                                            |
+| `content`      | `string`  | The template of the content’s body.                                                                                                                                              |
+| `httpConfig`   | `object`  | HTTP client configuration.                                                                                                                                                       |
+| `message`      | `string`  | The template of the message’s body.                                                                                                                                              |
+| `sendResolved` | `boolean` | Whether or not to notify about resolved alerts.                                                                                                                                  |
+| `title`        | `string`  | The template of the message’s title.                                                                                                                                             |
+| `username`     | `string`  | The username of the message sender.                                                                                                                                              |
 
 ## .spec.receivers\[\].discordConfigs\[\].apiURL
 
@@ -204,11 +204,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig
 
@@ -225,78 +225,78 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>authorization</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>basicAuth</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bearerTokenSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The secret’s key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>followRedirects</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>FollowRedirects specifies whether the client should follow HTTP 3xx redirects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>oauth2</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>OAuth2 client credentials used to fetch a token for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyURL</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional proxy URL.</p>
 <p>If defined, this field takes precedence over <code>proxyUrl</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration for the client.</p></td>
@@ -319,19 +319,19 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>credentials</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Selects a key of a Secret in the namespace that contains the credentials for authentication.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Defines the authentication type. The value is case-insensitive.</p>
@@ -352,11 +352,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig.basicAuth
 
@@ -366,8 +366,8 @@ BasicAuth for the client. This is mutually exclusive with Authorization. If both
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                        |
+|------------|----------|------------------------------------------------------------------------------------|
 | `password` | `object` | `password` specifies a key of a Secret containing the password for authentication. |
 | `username` | `object` | `username` specifies a key of a Secret containing the username for authentication. |
 
@@ -382,11 +382,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig.basicAuth.username
 
@@ -399,11 +399,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig.bearerTokenSecret
 
@@ -418,10 +418,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig.oauth2
 
@@ -445,72 +445,72 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clientId</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientId</code> specifies a key of a Secret or ConfigMap containing the OAuth2 client’s ID.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>clientSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientSecret</code> specifies a key of a Secret containing the OAuth2 client’s secret.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>endpointParams</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p><code>endpointParams</code> configures the HTTP parameters to append to the token URL.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scopes</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p><code>scopes</code> defines the OAuth2 scopes used for the token request.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration to use when connecting to the OAuth2 server. It requires Prometheus &gt;= v2.43.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tokenUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>tokenURL</code> configures the URL to fetch the token from.</p></td>
@@ -542,11 +542,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig.oauth2.clientId.secret
 
@@ -559,11 +559,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig.oauth2.clientSecret
 
@@ -576,11 +576,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig.oauth2.proxyConnectHeader
 
@@ -610,11 +610,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig.oauth2.tlsConfig
 
@@ -631,46 +631,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -702,11 +702,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig.oauth2.tlsConfig.ca.secret
 
@@ -719,11 +719,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig.oauth2.tlsConfig.cert
 
@@ -749,11 +749,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig.oauth2.tlsConfig.cert.secret
 
@@ -766,11 +766,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig.oauth2.tlsConfig.keySecret
 
@@ -783,11 +783,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig.proxyConnectHeader
 
@@ -817,11 +817,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig.tlsConfig
 
@@ -838,46 +838,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -909,11 +909,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig.tlsConfig.ca.secret
 
@@ -926,11 +926,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig.tlsConfig.cert
 
@@ -956,11 +956,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig.tlsConfig.cert.secret
 
@@ -973,11 +973,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].discordConfigs\[\].httpConfig.tlsConfig.keySecret
 
@@ -990,11 +990,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].emailConfigs
 
@@ -1012,23 +1012,23 @@ EmailConfig configures notifications via Email.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `authIdentity` | `string` | The identity to use for authentication. |
-| `authPassword` | `object` | The secret’s key that contains the password to use for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
-| `authSecret` | `object` | The secret’s key that contains the CRAM-MD5 secret. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
-| `authUsername` | `string` | The username to use for authentication. |
-| `from` | `string` | The sender address. |
-| `headers` | `array` | Further headers email header key/value pairs. Overrides any headers previously set by the notification implementation. |
-| `headers[]` | `object` | KeyValue defines a (key, value) tuple. |
-| `hello` | `string` | The hostname to identify to the SMTP server. |
-| `html` | `string` | The HTML body of the email notification. |
-| `requireTLS` | `boolean` | The SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints. |
-| `sendResolved` | `boolean` | Whether or not to notify about resolved alerts. |
-| `smarthost` | `string` | The SMTP host and port through which emails are sent. E.g. example.com:25 |
-| `text` | `string` | The text body of the email notification. |
-| `tlsConfig` | `object` | TLS configuration |
-| `to` | `string` | The email address to send notifications to. |
+| Property       | Type      | Description                                                                                                                                                                                     |
+|----------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `authIdentity` | `string`  | The identity to use for authentication.                                                                                                                                                         |
+| `authPassword` | `object`  | The secret’s key that contains the password to use for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
+| `authSecret`   | `object`  | The secret’s key that contains the CRAM-MD5 secret. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.                    |
+| `authUsername` | `string`  | The username to use for authentication.                                                                                                                                                         |
+| `from`         | `string`  | The sender address.                                                                                                                                                                             |
+| `headers`      | `array`   | Further headers email header key/value pairs. Overrides any headers previously set by the notification implementation.                                                                          |
+| `headers[]`    | `object`  | KeyValue defines a (key, value) tuple.                                                                                                                                                          |
+| `hello`        | `string`  | The hostname to identify to the SMTP server.                                                                                                                                                    |
+| `html`         | `string`  | The HTML body of the email notification.                                                                                                                                                        |
+| `requireTLS`   | `boolean` | The SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.                                                                                       |
+| `sendResolved` | `boolean` | Whether or not to notify about resolved alerts.                                                                                                                                                 |
+| `smarthost`    | `string`  | The SMTP host and port through which emails are sent. E.g. example.com:25                                                                                                                       |
+| `text`         | `string`  | The text body of the email notification.                                                                                                                                                        |
+| `tlsConfig`    | `object`  | TLS configuration                                                                                                                                                                               |
+| `to`           | `string`  | The email address to send notifications to.                                                                                                                                                     |
 
 ## .spec.receivers\[\].emailConfigs\[\].authPassword
 
@@ -1043,10 +1043,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].emailConfigs\[\].authSecret
 
@@ -1061,10 +1061,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].emailConfigs\[\].headers
 
@@ -1107,46 +1107,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -1178,11 +1178,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].emailConfigs\[\].tlsConfig.ca.secret
 
@@ -1195,11 +1195,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].emailConfigs\[\].tlsConfig.cert
 
@@ -1225,11 +1225,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].emailConfigs\[\].tlsConfig.cert.secret
 
@@ -1242,11 +1242,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].emailConfigs\[\].tlsConfig.keySecret
 
@@ -1259,11 +1259,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsConfigs
 
@@ -1284,14 +1284,14 @@ Type
 Required
 - `webhookUrl`
 
-| Property | Type | Description |
-|----|----|----|
-| `httpConfig` | `object` | HTTP client configuration. |
-| `sendResolved` | `boolean` | Whether to notify about resolved alerts. |
-| `summary` | `string` | Message summary template. It requires Alertmanager \>= 0.27.0. |
-| `text` | `string` | Message body template. |
-| `title` | `string` | Message title template. |
-| `webhookUrl` | `object` | MSTeams webhook URL. |
+| Property       | Type      | Description                                                    |
+|----------------|-----------|----------------------------------------------------------------|
+| `httpConfig`   | `object`  | HTTP client configuration.                                     |
+| `sendResolved` | `boolean` | Whether to notify about resolved alerts.                       |
+| `summary`      | `string`  | Message summary template. It requires Alertmanager \>= 0.27.0. |
+| `text`         | `string`  | Message body template.                                         |
+| `title`        | `string`  | Message title template.                                        |
+| `webhookUrl`   | `object`  | MSTeams webhook URL.                                           |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig
 
@@ -1308,78 +1308,78 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>authorization</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>basicAuth</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bearerTokenSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The secret’s key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>followRedirects</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>FollowRedirects specifies whether the client should follow HTTP 3xx redirects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>oauth2</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>OAuth2 client credentials used to fetch a token for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyURL</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional proxy URL.</p>
 <p>If defined, this field takes precedence over <code>proxyUrl</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration for the client.</p></td>
@@ -1402,19 +1402,19 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>credentials</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Selects a key of a Secret in the namespace that contains the credentials for authentication.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Defines the authentication type. The value is case-insensitive.</p>
@@ -1435,11 +1435,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig.basicAuth
 
@@ -1449,8 +1449,8 @@ BasicAuth for the client. This is mutually exclusive with Authorization. If both
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                        |
+|------------|----------|------------------------------------------------------------------------------------|
 | `password` | `object` | `password` specifies a key of a Secret containing the password for authentication. |
 | `username` | `object` | `username` specifies a key of a Secret containing the username for authentication. |
 
@@ -1465,11 +1465,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig.basicAuth.username
 
@@ -1482,11 +1482,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig.bearerTokenSecret
 
@@ -1501,10 +1501,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig.oauth2
 
@@ -1528,72 +1528,72 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clientId</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientId</code> specifies a key of a Secret or ConfigMap containing the OAuth2 client’s ID.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>clientSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientSecret</code> specifies a key of a Secret containing the OAuth2 client’s secret.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>endpointParams</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p><code>endpointParams</code> configures the HTTP parameters to append to the token URL.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scopes</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p><code>scopes</code> defines the OAuth2 scopes used for the token request.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration to use when connecting to the OAuth2 server. It requires Prometheus &gt;= v2.43.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tokenUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>tokenURL</code> configures the URL to fetch the token from.</p></td>
@@ -1625,11 +1625,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig.oauth2.clientId.secret
 
@@ -1642,11 +1642,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig.oauth2.clientSecret
 
@@ -1659,11 +1659,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig.oauth2.proxyConnectHeader
 
@@ -1693,11 +1693,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig.oauth2.tlsConfig
 
@@ -1714,46 +1714,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -1785,11 +1785,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig.oauth2.tlsConfig.ca.secret
 
@@ -1802,11 +1802,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig.oauth2.tlsConfig.cert
 
@@ -1832,11 +1832,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig.oauth2.tlsConfig.cert.secret
 
@@ -1849,11 +1849,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig.oauth2.tlsConfig.keySecret
 
@@ -1866,11 +1866,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig.proxyConnectHeader
 
@@ -1900,11 +1900,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig.tlsConfig
 
@@ -1921,46 +1921,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -1992,11 +1992,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig.tlsConfig.ca.secret
 
@@ -2009,11 +2009,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig.tlsConfig.cert
 
@@ -2039,11 +2039,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig.tlsConfig.cert.secret
 
@@ -2056,11 +2056,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].httpConfig.tlsConfig.keySecret
 
@@ -2073,11 +2073,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsConfigs\[\].webhookUrl
 
@@ -2090,11 +2090,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsv2Configs
 
@@ -2135,78 +2135,78 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>authorization</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>basicAuth</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bearerTokenSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The secret’s key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>followRedirects</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>FollowRedirects specifies whether the client should follow HTTP 3xx redirects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>oauth2</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>OAuth2 client credentials used to fetch a token for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyURL</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional proxy URL.</p>
 <p>If defined, this field takes precedence over <code>proxyUrl</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration for the client.</p></td>
@@ -2229,19 +2229,19 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>credentials</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Selects a key of a Secret in the namespace that contains the credentials for authentication.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Defines the authentication type. The value is case-insensitive.</p>
@@ -2262,11 +2262,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].httpConfig.basicAuth
 
@@ -2276,8 +2276,8 @@ BasicAuth for the client. This is mutually exclusive with Authorization. If both
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                        |
+|------------|----------|------------------------------------------------------------------------------------|
 | `password` | `object` | `password` specifies a key of a Secret containing the password for authentication. |
 | `username` | `object` | `username` specifies a key of a Secret containing the username for authentication. |
 
@@ -2292,11 +2292,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].httpConfig.basicAuth.username
 
@@ -2309,11 +2309,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].httpConfig.bearerTokenSecret
 
@@ -2328,10 +2328,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].httpConfig.oauth2
 
@@ -2355,72 +2355,72 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clientId</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientId</code> specifies a key of a Secret or ConfigMap containing the OAuth2 client’s ID.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>clientSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientSecret</code> specifies a key of a Secret containing the OAuth2 client’s secret.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>endpointParams</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p><code>endpointParams</code> configures the HTTP parameters to append to the token URL.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scopes</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p><code>scopes</code> defines the OAuth2 scopes used for the token request.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration to use when connecting to the OAuth2 server. It requires Prometheus &gt;= v2.43.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tokenUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>tokenURL</code> configures the URL to fetch the token from.</p></td>
@@ -2452,11 +2452,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].httpConfig.oauth2.clientId.secret
 
@@ -2469,11 +2469,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].httpConfig.oauth2.clientSecret
 
@@ -2486,11 +2486,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].httpConfig.oauth2.proxyConnectHeader
 
@@ -2520,11 +2520,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].httpConfig.oauth2.tlsConfig
 
@@ -2541,46 +2541,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -2612,11 +2612,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].httpConfig.oauth2.tlsConfig.ca.secret
 
@@ -2629,11 +2629,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].httpConfig.oauth2.tlsConfig.cert
 
@@ -2659,11 +2659,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].httpConfig.oauth2.tlsConfig.cert.secret
 
@@ -2676,11 +2676,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].httpConfig.oauth2.tlsConfig.keySecret
 
@@ -2693,11 +2693,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].httpConfig.proxyConnectHeader
 
@@ -2727,11 +2727,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].httpConfig.tlsConfig
 
@@ -2748,46 +2748,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -2819,11 +2819,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].httpConfig.tlsConfig.ca.secret
 
@@ -2836,11 +2836,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].httpConfig.tlsConfig.cert
 
@@ -2866,11 +2866,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].httpConfig.tlsConfig.cert.secret
 
@@ -2883,11 +2883,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].httpConfig.tlsConfig.keySecret
 
@@ -2900,11 +2900,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].msteamsv2Configs\[\].webhookURL
 
@@ -2917,11 +2917,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].opsgenieConfigs
 
@@ -2939,24 +2939,24 @@ OpsGenieConfig configures notifications via OpsGenie. See <https://prometheus.io
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `actions` | `string` | Comma separated list of actions that will be available for the alert. |
-| `apiKey` | `object` | The secret’s key that contains the OpsGenie API key. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
-| `apiURL` | `string` | The URL to send OpsGenie API requests to. |
-| `description` | `string` | Description of the incident. |
-| `details` | `array` | A set of arbitrary key/value pairs that provide further detail about the incident. |
-| `details[]` | `object` | KeyValue defines a (key, value) tuple. |
-| `entity` | `string` | Optional field that can be used to specify which domain alert is related to. |
-| `httpConfig` | `object` | HTTP client configuration. |
-| `message` | `string` | Alert text limited to 130 characters. |
-| `note` | `string` | Additional alert note. |
-| `priority` | `string` | Priority level of alert. Possible values are P1, P2, P3, P4, and P5. |
-| `responders` | `array` | List of responders responsible for notifications. |
-| `responders[]` | `object` | OpsGenieConfigResponder defines a responder to an incident. One of `id`, `name` or `username` has to be defined. |
-| `sendResolved` | `boolean` | Whether or not to notify about resolved alerts. |
-| `source` | `string` | Backlink to the sender of the notification. |
-| `tags` | `string` | Comma separated list of tags attached to the notifications. |
+| Property       | Type      | Description                                                                                                                                                                   |
+|----------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `actions`      | `string`  | Comma separated list of actions that will be available for the alert.                                                                                                         |
+| `apiKey`       | `object`  | The secret’s key that contains the OpsGenie API key. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
+| `apiURL`       | `string`  | The URL to send OpsGenie API requests to.                                                                                                                                     |
+| `description`  | `string`  | Description of the incident.                                                                                                                                                  |
+| `details`      | `array`   | A set of arbitrary key/value pairs that provide further detail about the incident.                                                                                            |
+| `details[]`    | `object`  | KeyValue defines a (key, value) tuple.                                                                                                                                        |
+| `entity`       | `string`  | Optional field that can be used to specify which domain alert is related to.                                                                                                  |
+| `httpConfig`   | `object`  | HTTP client configuration.                                                                                                                                                    |
+| `message`      | `string`  | Alert text limited to 130 characters.                                                                                                                                         |
+| `note`         | `string`  | Additional alert note.                                                                                                                                                        |
+| `priority`     | `string`  | Priority level of alert. Possible values are P1, P2, P3, P4, and P5.                                                                                                          |
+| `responders`   | `array`   | List of responders responsible for notifications.                                                                                                                             |
+| `responders[]` | `object`  | OpsGenieConfigResponder defines a responder to an incident. One of `id`, `name` or `username` has to be defined.                                                              |
+| `sendResolved` | `boolean` | Whether or not to notify about resolved alerts.                                                                                                                               |
+| `source`       | `string`  | Backlink to the sender of the notification.                                                                                                                                   |
+| `tags`         | `string`  | Comma separated list of tags attached to the notifications.                                                                                                                   |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].apiKey
 
@@ -2971,10 +2971,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].details
 
@@ -3017,78 +3017,78 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>authorization</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>basicAuth</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bearerTokenSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The secret’s key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>followRedirects</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>FollowRedirects specifies whether the client should follow HTTP 3xx redirects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>oauth2</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>OAuth2 client credentials used to fetch a token for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyURL</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional proxy URL.</p>
 <p>If defined, this field takes precedence over <code>proxyUrl</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration for the client.</p></td>
@@ -3111,19 +3111,19 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>credentials</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Selects a key of a Secret in the namespace that contains the credentials for authentication.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Defines the authentication type. The value is case-insensitive.</p>
@@ -3144,11 +3144,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].httpConfig.basicAuth
 
@@ -3158,8 +3158,8 @@ BasicAuth for the client. This is mutually exclusive with Authorization. If both
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                        |
+|------------|----------|------------------------------------------------------------------------------------|
 | `password` | `object` | `password` specifies a key of a Secret containing the password for authentication. |
 | `username` | `object` | `username` specifies a key of a Secret containing the username for authentication. |
 
@@ -3174,11 +3174,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].httpConfig.basicAuth.username
 
@@ -3191,11 +3191,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].httpConfig.bearerTokenSecret
 
@@ -3210,10 +3210,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].httpConfig.oauth2
 
@@ -3237,72 +3237,72 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clientId</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientId</code> specifies a key of a Secret or ConfigMap containing the OAuth2 client’s ID.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>clientSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientSecret</code> specifies a key of a Secret containing the OAuth2 client’s secret.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>endpointParams</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p><code>endpointParams</code> configures the HTTP parameters to append to the token URL.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scopes</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p><code>scopes</code> defines the OAuth2 scopes used for the token request.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration to use when connecting to the OAuth2 server. It requires Prometheus &gt;= v2.43.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tokenUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>tokenURL</code> configures the URL to fetch the token from.</p></td>
@@ -3334,11 +3334,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].httpConfig.oauth2.clientId.secret
 
@@ -3351,11 +3351,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].httpConfig.oauth2.clientSecret
 
@@ -3368,11 +3368,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].httpConfig.oauth2.proxyConnectHeader
 
@@ -3402,11 +3402,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].httpConfig.oauth2.tlsConfig
 
@@ -3423,46 +3423,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -3494,11 +3494,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].httpConfig.oauth2.tlsConfig.ca.secret
 
@@ -3511,11 +3511,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].httpConfig.oauth2.tlsConfig.cert
 
@@ -3541,11 +3541,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].httpConfig.oauth2.tlsConfig.cert.secret
 
@@ -3558,11 +3558,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].httpConfig.oauth2.tlsConfig.keySecret
 
@@ -3575,11 +3575,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].httpConfig.proxyConnectHeader
 
@@ -3609,11 +3609,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].httpConfig.tlsConfig
 
@@ -3630,46 +3630,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -3701,11 +3701,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].httpConfig.tlsConfig.ca.secret
 
@@ -3718,11 +3718,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].httpConfig.tlsConfig.cert
 
@@ -3748,11 +3748,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].httpConfig.tlsConfig.cert.secret
 
@@ -3765,11 +3765,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].httpConfig.tlsConfig.keySecret
 
@@ -3782,11 +3782,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].opsgenieConfigs\[\].responders
 
@@ -3830,27 +3830,27 @@ PagerDutyConfig configures notifications via PagerDuty. See <https://prometheus.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `class` | `string` | The class/type of the event. |
-| `client` | `string` | Client identification. |
-| `clientURL` | `string` | Backlink to the sender of notification. |
-| `component` | `string` | The part or component of the affected system that is broken. |
-| `description` | `string` | Description of the incident. |
-| `details` | `array` | Arbitrary key/value pairs that provide further detail about the incident. |
-| `details[]` | `object` | KeyValue defines a (key, value) tuple. |
-| `group` | `string` | A cluster or grouping of sources. |
-| `httpConfig` | `object` | HTTP client configuration. |
-| `pagerDutyImageConfigs` | `array` | A list of image details to attach that provide further detail about an incident. |
-| `pagerDutyImageConfigs[]` | `object` | PagerDutyImageConfig attaches images to an incident |
-| `pagerDutyLinkConfigs` | `array` | A list of link details to attach that provide further detail about an incident. |
-| `pagerDutyLinkConfigs[]` | `object` | PagerDutyLinkConfig attaches text links to an incident |
-| `routingKey` | `object` | The secret’s key that contains the PagerDuty integration key (when using Events API v2). Either this field or `serviceKey` needs to be defined. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
-| `sendResolved` | `boolean` | Whether or not to notify about resolved alerts. |
-| `serviceKey` | `object` | The secret’s key that contains the PagerDuty service key (when using integration type "Prometheus"). Either this field or `routingKey` needs to be defined. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
-| `severity` | `string` | Severity of the incident. |
-| `source` | `string` | Unique location of the affected system. |
-| `url` | `string` | The URL to send requests to. |
+| Property                  | Type      | Description                                                                                                                                                                                                                                                                          |
+|---------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `class`                   | `string`  | The class/type of the event.                                                                                                                                                                                                                                                         |
+| `client`                  | `string`  | Client identification.                                                                                                                                                                                                                                                               |
+| `clientURL`               | `string`  | Backlink to the sender of notification.                                                                                                                                                                                                                                              |
+| `component`               | `string`  | The part or component of the affected system that is broken.                                                                                                                                                                                                                         |
+| `description`             | `string`  | Description of the incident.                                                                                                                                                                                                                                                         |
+| `details`                 | `array`   | Arbitrary key/value pairs that provide further detail about the incident.                                                                                                                                                                                                            |
+| `details[]`               | `object`  | KeyValue defines a (key, value) tuple.                                                                                                                                                                                                                                               |
+| `group`                   | `string`  | A cluster or grouping of sources.                                                                                                                                                                                                                                                    |
+| `httpConfig`              | `object`  | HTTP client configuration.                                                                                                                                                                                                                                                           |
+| `pagerDutyImageConfigs`   | `array`   | A list of image details to attach that provide further detail about an incident.                                                                                                                                                                                                     |
+| `pagerDutyImageConfigs[]` | `object`  | PagerDutyImageConfig attaches images to an incident                                                                                                                                                                                                                                  |
+| `pagerDutyLinkConfigs`    | `array`   | A list of link details to attach that provide further detail about an incident.                                                                                                                                                                                                      |
+| `pagerDutyLinkConfigs[]`  | `object`  | PagerDutyLinkConfig attaches text links to an incident                                                                                                                                                                                                                               |
+| `routingKey`              | `object`  | The secret’s key that contains the PagerDuty integration key (when using Events API v2). Either this field or `serviceKey` needs to be defined. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.             |
+| `sendResolved`            | `boolean` | Whether or not to notify about resolved alerts.                                                                                                                                                                                                                                      |
+| `serviceKey`              | `object`  | The secret’s key that contains the PagerDuty service key (when using integration type "Prometheus"). Either this field or `routingKey` needs to be defined. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
+| `severity`                | `string`  | Severity of the incident.                                                                                                                                                                                                                                                            |
+| `source`                  | `string`  | Unique location of the affected system.                                                                                                                                                                                                                                              |
+| `url`                     | `string`  | The URL to send requests to.                                                                                                                                                                                                                                                         |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].details
 
@@ -3893,78 +3893,78 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>authorization</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>basicAuth</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bearerTokenSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The secret’s key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>followRedirects</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>FollowRedirects specifies whether the client should follow HTTP 3xx redirects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>oauth2</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>OAuth2 client credentials used to fetch a token for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyURL</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional proxy URL.</p>
 <p>If defined, this field takes precedence over <code>proxyUrl</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration for the client.</p></td>
@@ -3987,19 +3987,19 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>credentials</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Selects a key of a Secret in the namespace that contains the credentials for authentication.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Defines the authentication type. The value is case-insensitive.</p>
@@ -4020,11 +4020,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].httpConfig.basicAuth
 
@@ -4034,8 +4034,8 @@ BasicAuth for the client. This is mutually exclusive with Authorization. If both
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                        |
+|------------|----------|------------------------------------------------------------------------------------|
 | `password` | `object` | `password` specifies a key of a Secret containing the password for authentication. |
 | `username` | `object` | `username` specifies a key of a Secret containing the username for authentication. |
 
@@ -4050,11 +4050,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].httpConfig.basicAuth.username
 
@@ -4067,11 +4067,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].httpConfig.bearerTokenSecret
 
@@ -4086,10 +4086,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].httpConfig.oauth2
 
@@ -4113,72 +4113,72 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clientId</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientId</code> specifies a key of a Secret or ConfigMap containing the OAuth2 client’s ID.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>clientSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientSecret</code> specifies a key of a Secret containing the OAuth2 client’s secret.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>endpointParams</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p><code>endpointParams</code> configures the HTTP parameters to append to the token URL.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scopes</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p><code>scopes</code> defines the OAuth2 scopes used for the token request.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration to use when connecting to the OAuth2 server. It requires Prometheus &gt;= v2.43.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tokenUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>tokenURL</code> configures the URL to fetch the token from.</p></td>
@@ -4210,11 +4210,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].httpConfig.oauth2.clientId.secret
 
@@ -4227,11 +4227,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].httpConfig.oauth2.clientSecret
 
@@ -4244,11 +4244,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].httpConfig.oauth2.proxyConnectHeader
 
@@ -4278,11 +4278,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].httpConfig.oauth2.tlsConfig
 
@@ -4299,46 +4299,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -4370,11 +4370,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].httpConfig.oauth2.tlsConfig.ca.secret
 
@@ -4387,11 +4387,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].httpConfig.oauth2.tlsConfig.cert
 
@@ -4417,11 +4417,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].httpConfig.oauth2.tlsConfig.cert.secret
 
@@ -4434,11 +4434,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].httpConfig.oauth2.tlsConfig.keySecret
 
@@ -4451,11 +4451,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].httpConfig.proxyConnectHeader
 
@@ -4485,11 +4485,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].httpConfig.tlsConfig
 
@@ -4506,46 +4506,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -4577,11 +4577,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].httpConfig.tlsConfig.ca.secret
 
@@ -4594,11 +4594,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].httpConfig.tlsConfig.cert
 
@@ -4624,11 +4624,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].httpConfig.tlsConfig.cert.secret
 
@@ -4641,11 +4641,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].httpConfig.tlsConfig.keySecret
 
@@ -4658,11 +4658,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].pagerDutyImageConfigs
 
@@ -4702,10 +4702,10 @@ PagerDutyLinkConfig attaches text links to an incident
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `alt` | `string` | Text that describes the purpose of the link, and can be used as the link’s text. |
-| `href` | `string` | Href is the URL of the link to be attached |
+| Property | Type     | Description                                                                      |
+|----------|----------|----------------------------------------------------------------------------------|
+| `alt`    | `string` | Text that describes the purpose of the link, and can be used as the link’s text. |
+| `href`   | `string` | Href is the URL of the link to be attached                                       |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].routingKey
 
@@ -4720,10 +4720,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].serviceKey
 
@@ -4738,10 +4738,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].pushoverConfigs
 
@@ -4759,25 +4759,25 @@ PushoverConfig configures notifications via Pushover. See <https://prometheus.io
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `device` | `string` | The name of a device to send the notification to |
-| `expire` | `string` | How long your notification will continue to be retried for, unless the user acknowledges the notification. |
-| `html` | `boolean` | Whether notification message is HTML or plain text. |
-| `httpConfig` | `object` | HTTP client configuration. |
-| `message` | `string` | Notification message. |
-| `priority` | `string` | Priority, see <https://pushover.net/api#priority> |
-| `retry` | `string` | How often the Pushover servers will send the same notification to the user. Must be at least 30 seconds. |
-| `sendResolved` | `boolean` | Whether or not to notify about resolved alerts. |
-| `sound` | `string` | The name of one of the sounds supported by device clients to override the user’s default sound choice |
-| `title` | `string` | Notification title. |
-| `token` | `object` | The secret’s key that contains the registered application’s API token, see <https://pushover.net/apps>. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. Either `token` or `tokenFile` is required. |
-| `tokenFile` | `string` | The token file that contains the registered application’s API token, see <https://pushover.net/apps>. Either `token` or `tokenFile` is required. It requires Alertmanager \>= v0.26.0. |
-| `ttl` | `string` | The time to live definition for the alert notification |
-| `url` | `string` | A supplementary URL shown alongside the message. |
-| `urlTitle` | `string` | A title for supplementary URL, otherwise just the URL is shown |
-| `userKey` | `object` | The secret’s key that contains the recipient user’s user key. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. Either `userKey` or `userKeyFile` is required. |
-| `userKeyFile` | `string` | The user key file that contains the recipient user’s user key. Either `userKey` or `userKeyFile` is required. It requires Alertmanager \>= v0.26.0. |
+| Property       | Type      | Description                                                                                                                                                                                                                                                                 |
+|----------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `device`       | `string`  | The name of a device to send the notification to                                                                                                                                                                                                                            |
+| `expire`       | `string`  | How long your notification will continue to be retried for, unless the user acknowledges the notification.                                                                                                                                                                  |
+| `html`         | `boolean` | Whether notification message is HTML or plain text.                                                                                                                                                                                                                         |
+| `httpConfig`   | `object`  | HTTP client configuration.                                                                                                                                                                                                                                                  |
+| `message`      | `string`  | Notification message.                                                                                                                                                                                                                                                       |
+| `priority`     | `string`  | Priority, see <https://pushover.net/api#priority>                                                                                                                                                                                                                           |
+| `retry`        | `string`  | How often the Pushover servers will send the same notification to the user. Must be at least 30 seconds.                                                                                                                                                                    |
+| `sendResolved` | `boolean` | Whether or not to notify about resolved alerts.                                                                                                                                                                                                                             |
+| `sound`        | `string`  | The name of one of the sounds supported by device clients to override the user’s default sound choice                                                                                                                                                                       |
+| `title`        | `string`  | Notification title.                                                                                                                                                                                                                                                         |
+| `token`        | `object`  | The secret’s key that contains the registered application’s API token, see <https://pushover.net/apps>. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. Either `token` or `tokenFile` is required. |
+| `tokenFile`    | `string`  | The token file that contains the registered application’s API token, see <https://pushover.net/apps>. Either `token` or `tokenFile` is required. It requires Alertmanager \>= v0.26.0.                                                                                      |
+| `ttl`          | `string`  | The time to live definition for the alert notification                                                                                                                                                                                                                      |
+| `url`          | `string`  | A supplementary URL shown alongside the message.                                                                                                                                                                                                                            |
+| `urlTitle`     | `string`  | A title for supplementary URL, otherwise just the URL is shown                                                                                                                                                                                                              |
+| `userKey`      | `object`  | The secret’s key that contains the recipient user’s user key. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. Either `userKey` or `userKeyFile` is required.                                       |
+| `userKeyFile`  | `string`  | The user key file that contains the recipient user’s user key. Either `userKey` or `userKeyFile` is required. It requires Alertmanager \>= v0.26.0.                                                                                                                         |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig
 
@@ -4794,78 +4794,78 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>authorization</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>basicAuth</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bearerTokenSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The secret’s key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>followRedirects</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>FollowRedirects specifies whether the client should follow HTTP 3xx redirects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>oauth2</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>OAuth2 client credentials used to fetch a token for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyURL</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional proxy URL.</p>
 <p>If defined, this field takes precedence over <code>proxyUrl</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration for the client.</p></td>
@@ -4888,19 +4888,19 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>credentials</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Selects a key of a Secret in the namespace that contains the credentials for authentication.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Defines the authentication type. The value is case-insensitive.</p>
@@ -4921,11 +4921,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig.basicAuth
 
@@ -4935,8 +4935,8 @@ BasicAuth for the client. This is mutually exclusive with Authorization. If both
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                        |
+|------------|----------|------------------------------------------------------------------------------------|
 | `password` | `object` | `password` specifies a key of a Secret containing the password for authentication. |
 | `username` | `object` | `username` specifies a key of a Secret containing the username for authentication. |
 
@@ -4951,11 +4951,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig.basicAuth.username
 
@@ -4968,11 +4968,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig.bearerTokenSecret
 
@@ -4987,10 +4987,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig.oauth2
 
@@ -5014,72 +5014,72 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clientId</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientId</code> specifies a key of a Secret or ConfigMap containing the OAuth2 client’s ID.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>clientSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientSecret</code> specifies a key of a Secret containing the OAuth2 client’s secret.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>endpointParams</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p><code>endpointParams</code> configures the HTTP parameters to append to the token URL.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scopes</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p><code>scopes</code> defines the OAuth2 scopes used for the token request.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration to use when connecting to the OAuth2 server. It requires Prometheus &gt;= v2.43.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tokenUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>tokenURL</code> configures the URL to fetch the token from.</p></td>
@@ -5111,11 +5111,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig.oauth2.clientId.secret
 
@@ -5128,11 +5128,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig.oauth2.clientSecret
 
@@ -5145,11 +5145,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig.oauth2.proxyConnectHeader
 
@@ -5179,11 +5179,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig.oauth2.tlsConfig
 
@@ -5200,46 +5200,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -5271,11 +5271,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig.oauth2.tlsConfig.ca.secret
 
@@ -5288,11 +5288,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig.oauth2.tlsConfig.cert
 
@@ -5318,11 +5318,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig.oauth2.tlsConfig.cert.secret
 
@@ -5335,11 +5335,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig.oauth2.tlsConfig.keySecret
 
@@ -5352,11 +5352,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig.proxyConnectHeader
 
@@ -5386,11 +5386,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig.tlsConfig
 
@@ -5407,46 +5407,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -5478,11 +5478,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig.tlsConfig.ca.secret
 
@@ -5495,11 +5495,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig.tlsConfig.cert
 
@@ -5525,11 +5525,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig.tlsConfig.cert.secret
 
@@ -5542,11 +5542,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].httpConfig.tlsConfig.keySecret
 
@@ -5559,11 +5559,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].token
 
@@ -5578,10 +5578,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].pushoverConfigs\[\].userKey
 
@@ -5596,10 +5596,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].rocketchatConfigs
 
@@ -5622,28 +5622,28 @@ Required
 
 - `tokenID`
 
-| Property | Type | Description |
-|----|----|----|
-| `actions` | `array` | Actions to include in the message. |
-| `actions[]` | `object` | RocketChatActionConfig defines actions for RocketChat messages. |
-| `apiURL` | `string` | The API URL for RocketChat. Defaults to <https://open.rocket.chat/> if not specified. |
-| `channel` | `string` | The channel to send alerts to. |
-| `color` | `string` | The message color. |
-| `emoji` | `string` | If provided, the avatar will be displayed as an emoji. |
-| `fields` | `array` | Additional fields for the message. |
-| `fields[]` | `object` | RocketChatFieldConfig defines a field for RocketChat messages. |
-| `httpConfig` | `object` | HTTP client configuration. |
-| `iconURL` | `string` | Icon URL for the message. |
-| `imageURL` | `string` | Image URL for the message. |
-| `linkNames` | `boolean` | Whether to enable link names. |
-| `sendResolved` | `boolean` | Whether to notify about resolved alerts. |
-| `shortFields` | `boolean` | Whether to use short fields. |
-| `text` | `string` | The main message text. |
-| `thumbURL` | `string` | Thumbnail URL for the message. |
-| `title` | `string` | The message title. |
-| `titleLink` | `string` | The title link for the message. |
-| `token` | `object` | The sender token. |
-| `tokenID` | `object` | The sender token ID. |
+| Property       | Type      | Description                                                                           |
+|----------------|-----------|---------------------------------------------------------------------------------------|
+| `actions`      | `array`   | Actions to include in the message.                                                    |
+| `actions[]`    | `object`  | RocketChatActionConfig defines actions for RocketChat messages.                       |
+| `apiURL`       | `string`  | The API URL for RocketChat. Defaults to <https://open.rocket.chat/> if not specified. |
+| `channel`      | `string`  | The channel to send alerts to.                                                        |
+| `color`        | `string`  | The message color.                                                                    |
+| `emoji`        | `string`  | If provided, the avatar will be displayed as an emoji.                                |
+| `fields`       | `array`   | Additional fields for the message.                                                    |
+| `fields[]`     | `object`  | RocketChatFieldConfig defines a field for RocketChat messages.                        |
+| `httpConfig`   | `object`  | HTTP client configuration.                                                            |
+| `iconURL`      | `string`  | Icon URL for the message.                                                             |
+| `imageURL`     | `string`  | Image URL for the message.                                                            |
+| `linkNames`    | `boolean` | Whether to enable link names.                                                         |
+| `sendResolved` | `boolean` | Whether to notify about resolved alerts.                                              |
+| `shortFields`  | `boolean` | Whether to use short fields.                                                          |
+| `text`         | `string`  | The main message text.                                                                |
+| `thumbURL`     | `string`  | Thumbnail URL for the message.                                                        |
+| `title`        | `string`  | The message title.                                                                    |
+| `titleLink`    | `string`  | The title link for the message.                                                       |
+| `token`        | `object`  | The sender token.                                                                     |
+| `tokenID`      | `object`  | The sender token ID.                                                                  |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].actions
 
@@ -5704,78 +5704,78 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>authorization</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>basicAuth</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bearerTokenSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The secret’s key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>followRedirects</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>FollowRedirects specifies whether the client should follow HTTP 3xx redirects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>oauth2</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>OAuth2 client credentials used to fetch a token for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyURL</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional proxy URL.</p>
 <p>If defined, this field takes precedence over <code>proxyUrl</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration for the client.</p></td>
@@ -5798,19 +5798,19 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>credentials</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Selects a key of a Secret in the namespace that contains the credentials for authentication.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Defines the authentication type. The value is case-insensitive.</p>
@@ -5831,11 +5831,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].httpConfig.basicAuth
 
@@ -5845,8 +5845,8 @@ BasicAuth for the client. This is mutually exclusive with Authorization. If both
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                        |
+|------------|----------|------------------------------------------------------------------------------------|
 | `password` | `object` | `password` specifies a key of a Secret containing the password for authentication. |
 | `username` | `object` | `username` specifies a key of a Secret containing the username for authentication. |
 
@@ -5861,11 +5861,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].httpConfig.basicAuth.username
 
@@ -5878,11 +5878,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].httpConfig.bearerTokenSecret
 
@@ -5897,10 +5897,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].httpConfig.oauth2
 
@@ -5924,72 +5924,72 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clientId</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientId</code> specifies a key of a Secret or ConfigMap containing the OAuth2 client’s ID.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>clientSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientSecret</code> specifies a key of a Secret containing the OAuth2 client’s secret.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>endpointParams</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p><code>endpointParams</code> configures the HTTP parameters to append to the token URL.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scopes</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p><code>scopes</code> defines the OAuth2 scopes used for the token request.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration to use when connecting to the OAuth2 server. It requires Prometheus &gt;= v2.43.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tokenUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>tokenURL</code> configures the URL to fetch the token from.</p></td>
@@ -6021,11 +6021,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].httpConfig.oauth2.clientId.secret
 
@@ -6038,11 +6038,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].httpConfig.oauth2.clientSecret
 
@@ -6055,11 +6055,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].httpConfig.oauth2.proxyConnectHeader
 
@@ -6089,11 +6089,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].httpConfig.oauth2.tlsConfig
 
@@ -6110,46 +6110,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -6181,11 +6181,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].httpConfig.oauth2.tlsConfig.ca.secret
 
@@ -6198,11 +6198,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].httpConfig.oauth2.tlsConfig.cert
 
@@ -6228,11 +6228,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].httpConfig.oauth2.tlsConfig.cert.secret
 
@@ -6245,11 +6245,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].httpConfig.oauth2.tlsConfig.keySecret
 
@@ -6262,11 +6262,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].httpConfig.proxyConnectHeader
 
@@ -6296,11 +6296,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].httpConfig.tlsConfig
 
@@ -6317,46 +6317,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -6388,11 +6388,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].httpConfig.tlsConfig.ca.secret
 
@@ -6405,11 +6405,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].httpConfig.tlsConfig.cert
 
@@ -6435,11 +6435,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].httpConfig.tlsConfig.cert.secret
 
@@ -6452,11 +6452,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].httpConfig.tlsConfig.keySecret
 
@@ -6469,11 +6469,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].token
 
@@ -6486,11 +6486,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].tokenID
 
@@ -6503,11 +6503,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].slackConfigs
 
@@ -6525,32 +6525,32 @@ SlackConfig configures notifications via Slack. See <https://prometheus.io/docs/
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `actions` | `array` | A list of Slack actions that are sent with each notification. |
-| `actions[]` | `object` | SlackAction configures a single Slack action that is sent with each notification. See <https://api.slack.com/docs/message-attachments#action_fields> and <https://api.slack.com/docs/message-buttons> for more information. |
-| `apiURL` | `object` | The secret’s key that contains the Slack webhook URL. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
-| `callbackId` | `string` |  |
-| `channel` | `string` | The channel or user to send notifications to. |
-| `color` | `string` |  |
-| `fallback` | `string` |  |
-| `fields` | `array` | A list of Slack fields that are sent with each notification. |
-| `fields[]` | `object` | SlackField configures a single Slack field that is sent with each notification. Each field must contain a title, value, and optionally, a boolean value to indicate if the field is short enough to be displayed next to other fields designated as short. See <https://api.slack.com/docs/message-attachments#fields> for more information. |
-| `footer` | `string` |  |
-| `httpConfig` | `object` | HTTP client configuration. |
-| `iconEmoji` | `string` |  |
-| `iconURL` | `string` |  |
-| `imageURL` | `string` |  |
-| `linkNames` | `boolean` |  |
-| `mrkdwnIn` | `array (string)` |  |
-| `pretext` | `string` |  |
-| `sendResolved` | `boolean` | Whether or not to notify about resolved alerts. |
-| `shortFields` | `boolean` |  |
-| `text` | `string` |  |
-| `thumbURL` | `string` |  |
-| `title` | `string` |  |
-| `titleLink` | `string` |  |
-| `username` | `string` |  |
+| Property       | Type             | Description                                                                                                                                                                                                                                                                                                                                  |
+|----------------|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `actions`      | `array`          | A list of Slack actions that are sent with each notification.                                                                                                                                                                                                                                                                                |
+| `actions[]`    | `object`         | SlackAction configures a single Slack action that is sent with each notification. See <https://api.slack.com/docs/message-attachments#action_fields> and <https://api.slack.com/docs/message-buttons> for more information.                                                                                                                  |
+| `apiURL`       | `object`         | The secret’s key that contains the Slack webhook URL. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.                                                                                                                                                               |
+| `callbackId`   | `string`         |                                                                                                                                                                                                                                                                                                                                              |
+| `channel`      | `string`         | The channel or user to send notifications to.                                                                                                                                                                                                                                                                                                |
+| `color`        | `string`         |                                                                                                                                                                                                                                                                                                                                              |
+| `fallback`     | `string`         |                                                                                                                                                                                                                                                                                                                                              |
+| `fields`       | `array`          | A list of Slack fields that are sent with each notification.                                                                                                                                                                                                                                                                                 |
+| `fields[]`     | `object`         | SlackField configures a single Slack field that is sent with each notification. Each field must contain a title, value, and optionally, a boolean value to indicate if the field is short enough to be displayed next to other fields designated as short. See <https://api.slack.com/docs/message-attachments#fields> for more information. |
+| `footer`       | `string`         |                                                                                                                                                                                                                                                                                                                                              |
+| `httpConfig`   | `object`         | HTTP client configuration.                                                                                                                                                                                                                                                                                                                   |
+| `iconEmoji`    | `string`         |                                                                                                                                                                                                                                                                                                                                              |
+| `iconURL`      | `string`         |                                                                                                                                                                                                                                                                                                                                              |
+| `imageURL`     | `string`         |                                                                                                                                                                                                                                                                                                                                              |
+| `linkNames`    | `boolean`        |                                                                                                                                                                                                                                                                                                                                              |
+| `mrkdwnIn`     | `array (string)` |                                                                                                                                                                                                                                                                                                                                              |
+| `pretext`      | `string`         |                                                                                                                                                                                                                                                                                                                                              |
+| `sendResolved` | `boolean`        | Whether or not to notify about resolved alerts.                                                                                                                                                                                                                                                                                              |
+| `shortFields`  | `boolean`        |                                                                                                                                                                                                                                                                                                                                              |
+| `text`         | `string`         |                                                                                                                                                                                                                                                                                                                                              |
+| `thumbURL`     | `string`         |                                                                                                                                                                                                                                                                                                                                              |
+| `title`        | `string`         |                                                                                                                                                                                                                                                                                                                                              |
+| `titleLink`    | `string`         |                                                                                                                                                                                                                                                                                                                                              |
+| `username`     | `string`         |                                                                                                                                                                                                                                                                                                                                              |
 
 ## .spec.receivers\[\].slackConfigs\[\].actions
 
@@ -6573,15 +6573,15 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
+| Property  | Type     | Description                                                                                                                                                                                                                                                                  |
+|-----------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `confirm` | `object` | SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See <https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields> for more information. |
-| `name` | `string` |  |
-| `style` | `string` |  |
-| `text` | `string` |  |
-| `type` | `string` |  |
-| `url` | `string` |  |
-| `value` | `string` |  |
+| `name`    | `string` |                                                                                                                                                                                                                                                                              |
+| `style`   | `string` |                                                                                                                                                                                                                                                                              |
+| `text`    | `string` |                                                                                                                                                                                                                                                                              |
+| `type`    | `string` |                                                                                                                                                                                                                                                                              |
+| `url`     | `string` |                                                                                                                                                                                                                                                                              |
+| `value`   | `string` |                                                                                                                                                                                                                                                                              |
 
 ## .spec.receivers\[\].slackConfigs\[\].actions\[\].confirm
 
@@ -6614,10 +6614,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].slackConfigs\[\].fields
 
@@ -6661,78 +6661,78 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>authorization</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>basicAuth</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bearerTokenSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The secret’s key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>followRedirects</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>FollowRedirects specifies whether the client should follow HTTP 3xx redirects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>oauth2</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>OAuth2 client credentials used to fetch a token for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyURL</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional proxy URL.</p>
 <p>If defined, this field takes precedence over <code>proxyUrl</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration for the client.</p></td>
@@ -6755,19 +6755,19 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>credentials</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Selects a key of a Secret in the namespace that contains the credentials for authentication.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Defines the authentication type. The value is case-insensitive.</p>
@@ -6788,11 +6788,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].slackConfigs\[\].httpConfig.basicAuth
 
@@ -6802,8 +6802,8 @@ BasicAuth for the client. This is mutually exclusive with Authorization. If both
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                        |
+|------------|----------|------------------------------------------------------------------------------------|
 | `password` | `object` | `password` specifies a key of a Secret containing the password for authentication. |
 | `username` | `object` | `username` specifies a key of a Secret containing the username for authentication. |
 
@@ -6818,11 +6818,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].slackConfigs\[\].httpConfig.basicAuth.username
 
@@ -6835,11 +6835,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].slackConfigs\[\].httpConfig.bearerTokenSecret
 
@@ -6854,10 +6854,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].slackConfigs\[\].httpConfig.oauth2
 
@@ -6881,72 +6881,72 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clientId</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientId</code> specifies a key of a Secret or ConfigMap containing the OAuth2 client’s ID.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>clientSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientSecret</code> specifies a key of a Secret containing the OAuth2 client’s secret.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>endpointParams</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p><code>endpointParams</code> configures the HTTP parameters to append to the token URL.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scopes</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p><code>scopes</code> defines the OAuth2 scopes used for the token request.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration to use when connecting to the OAuth2 server. It requires Prometheus &gt;= v2.43.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tokenUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>tokenURL</code> configures the URL to fetch the token from.</p></td>
@@ -6978,11 +6978,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].slackConfigs\[\].httpConfig.oauth2.clientId.secret
 
@@ -6995,11 +6995,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].slackConfigs\[\].httpConfig.oauth2.clientSecret
 
@@ -7012,11 +7012,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].slackConfigs\[\].httpConfig.oauth2.proxyConnectHeader
 
@@ -7046,11 +7046,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].slackConfigs\[\].httpConfig.oauth2.tlsConfig
 
@@ -7067,46 +7067,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -7138,11 +7138,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].slackConfigs\[\].httpConfig.oauth2.tlsConfig.ca.secret
 
@@ -7155,11 +7155,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].slackConfigs\[\].httpConfig.oauth2.tlsConfig.cert
 
@@ -7185,11 +7185,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].slackConfigs\[\].httpConfig.oauth2.tlsConfig.cert.secret
 
@@ -7202,11 +7202,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].slackConfigs\[\].httpConfig.oauth2.tlsConfig.keySecret
 
@@ -7219,11 +7219,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].slackConfigs\[\].httpConfig.proxyConnectHeader
 
@@ -7253,11 +7253,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].slackConfigs\[\].httpConfig.tlsConfig
 
@@ -7274,46 +7274,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -7345,11 +7345,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].slackConfigs\[\].httpConfig.tlsConfig.ca.secret
 
@@ -7362,11 +7362,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].slackConfigs\[\].httpConfig.tlsConfig.cert
 
@@ -7392,11 +7392,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].slackConfigs\[\].httpConfig.tlsConfig.cert.secret
 
@@ -7409,11 +7409,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].slackConfigs\[\].httpConfig.tlsConfig.keySecret
 
@@ -7426,11 +7426,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].snsConfigs
 
@@ -7448,18 +7448,18 @@ SNSConfig configures notifications via AWS SNS. See <https://prometheus.io/docs/
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `apiURL` | `string` | The SNS API URL i.e. <https://sns.us-east-2.amazonaws.com>. If not specified, the SNS API URL from the SNS SDK will be used. |
-| `attributes` | `object (string)` | SNS message attributes. |
-| `httpConfig` | `object` | HTTP client configuration. |
-| `message` | `string` | The message content of the SNS notification. |
-| `phoneNumber` | `string` | Phone number if message is delivered via SMS in E.164 format. If you don’t specify this value, you must specify a value for the TopicARN or TargetARN. |
-| `sendResolved` | `boolean` | Whether or not to notify about resolved alerts. |
-| `sigv4` | `object` | Configures AWS’s Signature Verification 4 signing process to sign requests. |
-| `subject` | `string` | Subject line when the message is delivered to email endpoints. |
-| `targetARN` | `string` | The mobile platform endpoint ARN if message is delivered via mobile notifications. If you don’t specify this value, you must specify a value for the topic_arn or PhoneNumber. |
-| `topicARN` | `string` | SNS topic ARN, i.e. arn:aws:sns:us-east-2:698519295917:My-Topic If you don’t specify this value, you must specify a value for the PhoneNumber or TargetARN. |
+| Property       | Type              | Description                                                                                                                                                                    |
+|----------------|-------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiURL`       | `string`          | The SNS API URL i.e. <https://sns.us-east-2.amazonaws.com>. If not specified, the SNS API URL from the SNS SDK will be used.                                                   |
+| `attributes`   | `object (string)` | SNS message attributes.                                                                                                                                                        |
+| `httpConfig`   | `object`          | HTTP client configuration.                                                                                                                                                     |
+| `message`      | `string`          | The message content of the SNS notification.                                                                                                                                   |
+| `phoneNumber`  | `string`          | Phone number if message is delivered via SMS in E.164 format. If you don’t specify this value, you must specify a value for the TopicARN or TargetARN.                         |
+| `sendResolved` | `boolean`         | Whether or not to notify about resolved alerts.                                                                                                                                |
+| `sigv4`        | `object`          | Configures AWS’s Signature Verification 4 signing process to sign requests.                                                                                                    |
+| `subject`      | `string`          | Subject line when the message is delivered to email endpoints.                                                                                                                 |
+| `targetARN`    | `string`          | The mobile platform endpoint ARN if message is delivered via mobile notifications. If you don’t specify this value, you must specify a value for the topic_arn or PhoneNumber. |
+| `topicARN`     | `string`          | SNS topic ARN, i.e. arn:aws:sns:us-east-2:698519295917:My-Topic If you don’t specify this value, you must specify a value for the PhoneNumber or TargetARN.                    |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig
 
@@ -7476,78 +7476,78 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>authorization</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>basicAuth</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bearerTokenSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The secret’s key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>followRedirects</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>FollowRedirects specifies whether the client should follow HTTP 3xx redirects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>oauth2</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>OAuth2 client credentials used to fetch a token for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyURL</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional proxy URL.</p>
 <p>If defined, this field takes precedence over <code>proxyUrl</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration for the client.</p></td>
@@ -7570,19 +7570,19 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>credentials</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Selects a key of a Secret in the namespace that contains the credentials for authentication.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Defines the authentication type. The value is case-insensitive.</p>
@@ -7603,11 +7603,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig.basicAuth
 
@@ -7617,8 +7617,8 @@ BasicAuth for the client. This is mutually exclusive with Authorization. If both
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                        |
+|------------|----------|------------------------------------------------------------------------------------|
 | `password` | `object` | `password` specifies a key of a Secret containing the password for authentication. |
 | `username` | `object` | `username` specifies a key of a Secret containing the username for authentication. |
 
@@ -7633,11 +7633,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig.basicAuth.username
 
@@ -7650,11 +7650,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig.bearerTokenSecret
 
@@ -7669,10 +7669,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig.oauth2
 
@@ -7696,72 +7696,72 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clientId</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientId</code> specifies a key of a Secret or ConfigMap containing the OAuth2 client’s ID.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>clientSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientSecret</code> specifies a key of a Secret containing the OAuth2 client’s secret.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>endpointParams</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p><code>endpointParams</code> configures the HTTP parameters to append to the token URL.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scopes</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p><code>scopes</code> defines the OAuth2 scopes used for the token request.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration to use when connecting to the OAuth2 server. It requires Prometheus &gt;= v2.43.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tokenUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>tokenURL</code> configures the URL to fetch the token from.</p></td>
@@ -7793,11 +7793,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig.oauth2.clientId.secret
 
@@ -7810,11 +7810,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig.oauth2.clientSecret
 
@@ -7827,11 +7827,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig.oauth2.proxyConnectHeader
 
@@ -7861,11 +7861,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig.oauth2.tlsConfig
 
@@ -7882,46 +7882,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -7953,11 +7953,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig.oauth2.tlsConfig.ca.secret
 
@@ -7970,11 +7970,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig.oauth2.tlsConfig.cert
 
@@ -8000,11 +8000,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig.oauth2.tlsConfig.cert.secret
 
@@ -8017,11 +8017,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig.oauth2.tlsConfig.keySecret
 
@@ -8034,11 +8034,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig.proxyConnectHeader
 
@@ -8068,11 +8068,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig.tlsConfig
 
@@ -8089,46 +8089,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -8160,11 +8160,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig.tlsConfig.ca.secret
 
@@ -8177,11 +8177,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig.tlsConfig.cert
 
@@ -8207,11 +8207,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig.tlsConfig.cert.secret
 
@@ -8224,11 +8224,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig.tlsConfig.keySecret
 
@@ -8241,11 +8241,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].snsConfigs\[\].sigv4
 
@@ -8255,12 +8255,12 @@ Configures AWS’s Signature Verification 4 signing process to sign requests.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `accessKey` | `object` | AccessKey is the AWS API key. If not specified, the environment variable `AWS_ACCESS_KEY_ID` is used. |
-| `profile` | `string` | Profile is the named AWS profile used to authenticate. |
-| `region` | `string` | Region is the AWS region. If blank, the region from the default credentials chain used. |
-| `roleArn` | `string` | RoleArn is the named AWS profile used to authenticate. |
+| Property    | Type     | Description                                                                                                  |
+|-------------|----------|--------------------------------------------------------------------------------------------------------------|
+| `accessKey` | `object` | AccessKey is the AWS API key. If not specified, the environment variable `AWS_ACCESS_KEY_ID` is used.        |
+| `profile`   | `string` | Profile is the named AWS profile used to authenticate.                                                       |
+| `region`    | `string` | Region is the AWS region. If blank, the region from the default credentials chain used.                      |
+| `roleArn`   | `string` | RoleArn is the named AWS profile used to authenticate.                                                       |
 | `secretKey` | `object` | SecretKey is the AWS API secret. If not specified, the environment variable `AWS_SECRET_ACCESS_KEY` is used. |
 
 ## .spec.receivers\[\].snsConfigs\[\].sigv4.accessKey
@@ -8274,11 +8274,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].snsConfigs\[\].sigv4.secretKey
 
@@ -8291,11 +8291,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].telegramConfigs
 
@@ -8323,61 +8323,61 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>apiURL</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The Telegram API URL i.e. <a href="https://api.telegram.org">https://api.telegram.org</a>. If not specified, default API URL will be used.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>botToken</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Telegram bot token. It is mutually exclusive with <code>botTokenFile</code>. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.</p>
 <p>Either <code>botToken</code> or <code>botTokenFile</code> is required.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>botTokenFile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>File to read the Telegram bot token from. It is mutually exclusive with <code>botToken</code>. Either <code>botToken</code> or <code>botTokenFile</code> is required.</p>
 <p>It requires Alertmanager &gt;= v0.26.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>chatID</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>The Telegram chat ID.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>disableNotifications</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable telegram notifications</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>httpConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HTTP client configuration.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>message</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Message template</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>messageThreadID</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>The Telegram Group Topic ID. It requires Alertmanager &gt;= 0.26.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>parseMode</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Parse mode for telegram message</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>sendResolved</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to notify about resolved alerts.</p></td>
@@ -8400,10 +8400,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig
 
@@ -8420,78 +8420,78 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>authorization</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>basicAuth</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bearerTokenSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The secret’s key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>followRedirects</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>FollowRedirects specifies whether the client should follow HTTP 3xx redirects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>oauth2</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>OAuth2 client credentials used to fetch a token for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyURL</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional proxy URL.</p>
 <p>If defined, this field takes precedence over <code>proxyUrl</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration for the client.</p></td>
@@ -8514,19 +8514,19 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>credentials</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Selects a key of a Secret in the namespace that contains the credentials for authentication.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Defines the authentication type. The value is case-insensitive.</p>
@@ -8547,11 +8547,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig.basicAuth
 
@@ -8561,8 +8561,8 @@ BasicAuth for the client. This is mutually exclusive with Authorization. If both
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                        |
+|------------|----------|------------------------------------------------------------------------------------|
 | `password` | `object` | `password` specifies a key of a Secret containing the password for authentication. |
 | `username` | `object` | `username` specifies a key of a Secret containing the username for authentication. |
 
@@ -8577,11 +8577,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig.basicAuth.username
 
@@ -8594,11 +8594,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig.bearerTokenSecret
 
@@ -8613,10 +8613,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig.oauth2
 
@@ -8640,72 +8640,72 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clientId</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientId</code> specifies a key of a Secret or ConfigMap containing the OAuth2 client’s ID.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>clientSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientSecret</code> specifies a key of a Secret containing the OAuth2 client’s secret.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>endpointParams</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p><code>endpointParams</code> configures the HTTP parameters to append to the token URL.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scopes</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p><code>scopes</code> defines the OAuth2 scopes used for the token request.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration to use when connecting to the OAuth2 server. It requires Prometheus &gt;= v2.43.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tokenUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>tokenURL</code> configures the URL to fetch the token from.</p></td>
@@ -8737,11 +8737,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig.oauth2.clientId.secret
 
@@ -8754,11 +8754,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig.oauth2.clientSecret
 
@@ -8771,11 +8771,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig.oauth2.proxyConnectHeader
 
@@ -8805,11 +8805,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig.oauth2.tlsConfig
 
@@ -8826,46 +8826,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -8897,11 +8897,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig.oauth2.tlsConfig.ca.secret
 
@@ -8914,11 +8914,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig.oauth2.tlsConfig.cert
 
@@ -8944,11 +8944,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig.oauth2.tlsConfig.cert.secret
 
@@ -8961,11 +8961,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig.oauth2.tlsConfig.keySecret
 
@@ -8978,11 +8978,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig.proxyConnectHeader
 
@@ -9012,11 +9012,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig.tlsConfig
 
@@ -9033,46 +9033,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -9104,11 +9104,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig.tlsConfig.ca.secret
 
@@ -9121,11 +9121,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig.tlsConfig.cert
 
@@ -9151,11 +9151,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig.tlsConfig.cert.secret
 
@@ -9168,11 +9168,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].telegramConfigs\[\].httpConfig.tlsConfig.keySecret
 
@@ -9185,11 +9185,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].victoropsConfigs
 
@@ -9207,19 +9207,19 @@ VictorOpsConfig configures notifications via VictorOps. See <https://prometheus.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `apiKey` | `object` | The secret’s key that contains the API key to use when talking to the VictorOps API. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
-| `apiUrl` | `string` | The VictorOps API URL. |
-| `customFields` | `array` | Additional custom fields for notification. |
-| `customFields[]` | `object` | KeyValue defines a (key, value) tuple. |
-| `entityDisplayName` | `string` | Contains summary of the alerted problem. |
-| `httpConfig` | `object` | The HTTP client’s configuration. |
-| `messageType` | `string` | Describes the behavior of the alert (CRITICAL, WARNING, INFO). |
-| `monitoringTool` | `string` | The monitoring tool the state message is from. |
-| `routingKey` | `string` | A key used to map the alert to a team. |
-| `sendResolved` | `boolean` | Whether or not to notify about resolved alerts. |
-| `stateMessage` | `string` | Contains long explanation of the alerted problem. |
+| Property            | Type      | Description                                                                                                                                                                                                   |
+|---------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiKey`            | `object`  | The secret’s key that contains the API key to use when talking to the VictorOps API. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
+| `apiUrl`            | `string`  | The VictorOps API URL.                                                                                                                                                                                        |
+| `customFields`      | `array`   | Additional custom fields for notification.                                                                                                                                                                    |
+| `customFields[]`    | `object`  | KeyValue defines a (key, value) tuple.                                                                                                                                                                        |
+| `entityDisplayName` | `string`  | Contains summary of the alerted problem.                                                                                                                                                                      |
+| `httpConfig`        | `object`  | The HTTP client’s configuration.                                                                                                                                                                              |
+| `messageType`       | `string`  | Describes the behavior of the alert (CRITICAL, WARNING, INFO).                                                                                                                                                |
+| `monitoringTool`    | `string`  | The monitoring tool the state message is from.                                                                                                                                                                |
+| `routingKey`        | `string`  | A key used to map the alert to a team.                                                                                                                                                                        |
+| `sendResolved`      | `boolean` | Whether or not to notify about resolved alerts.                                                                                                                                                               |
+| `stateMessage`      | `string`  | Contains long explanation of the alerted problem.                                                                                                                                                             |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].apiKey
 
@@ -9234,10 +9234,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].customFields
 
@@ -9280,78 +9280,78 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>authorization</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>basicAuth</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bearerTokenSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The secret’s key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>followRedirects</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>FollowRedirects specifies whether the client should follow HTTP 3xx redirects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>oauth2</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>OAuth2 client credentials used to fetch a token for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyURL</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional proxy URL.</p>
 <p>If defined, this field takes precedence over <code>proxyUrl</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration for the client.</p></td>
@@ -9374,19 +9374,19 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>credentials</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Selects a key of a Secret in the namespace that contains the credentials for authentication.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Defines the authentication type. The value is case-insensitive.</p>
@@ -9407,11 +9407,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].httpConfig.basicAuth
 
@@ -9421,8 +9421,8 @@ BasicAuth for the client. This is mutually exclusive with Authorization. If both
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                        |
+|------------|----------|------------------------------------------------------------------------------------|
 | `password` | `object` | `password` specifies a key of a Secret containing the password for authentication. |
 | `username` | `object` | `username` specifies a key of a Secret containing the username for authentication. |
 
@@ -9437,11 +9437,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].httpConfig.basicAuth.username
 
@@ -9454,11 +9454,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].httpConfig.bearerTokenSecret
 
@@ -9473,10 +9473,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].httpConfig.oauth2
 
@@ -9500,72 +9500,72 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clientId</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientId</code> specifies a key of a Secret or ConfigMap containing the OAuth2 client’s ID.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>clientSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientSecret</code> specifies a key of a Secret containing the OAuth2 client’s secret.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>endpointParams</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p><code>endpointParams</code> configures the HTTP parameters to append to the token URL.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scopes</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p><code>scopes</code> defines the OAuth2 scopes used for the token request.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration to use when connecting to the OAuth2 server. It requires Prometheus &gt;= v2.43.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tokenUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>tokenURL</code> configures the URL to fetch the token from.</p></td>
@@ -9597,11 +9597,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].httpConfig.oauth2.clientId.secret
 
@@ -9614,11 +9614,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].httpConfig.oauth2.clientSecret
 
@@ -9631,11 +9631,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].httpConfig.oauth2.proxyConnectHeader
 
@@ -9665,11 +9665,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].httpConfig.oauth2.tlsConfig
 
@@ -9686,46 +9686,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -9757,11 +9757,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].httpConfig.oauth2.tlsConfig.ca.secret
 
@@ -9774,11 +9774,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].httpConfig.oauth2.tlsConfig.cert
 
@@ -9804,11 +9804,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].httpConfig.oauth2.tlsConfig.cert.secret
 
@@ -9821,11 +9821,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].httpConfig.oauth2.tlsConfig.keySecret
 
@@ -9838,11 +9838,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].httpConfig.proxyConnectHeader
 
@@ -9872,11 +9872,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].httpConfig.tlsConfig
 
@@ -9893,46 +9893,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -9964,11 +9964,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].httpConfig.tlsConfig.ca.secret
 
@@ -9981,11 +9981,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].httpConfig.tlsConfig.cert
 
@@ -10011,11 +10011,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].httpConfig.tlsConfig.cert.secret
 
@@ -10028,11 +10028,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].victoropsConfigs\[\].httpConfig.tlsConfig.keySecret
 
@@ -10045,11 +10045,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webexConfigs
 
@@ -10070,13 +10070,13 @@ Type
 Required
 - `roomID`
 
-| Property | Type | Description |
-|----|----|----|
-| `apiURL` | `string` | The Webex Teams API URL i.e. <https://webexapis.com/v1/messages> |
-| `httpConfig` | `object` | The HTTP client’s configuration. You must use this configuration to supply the bot token as part of the HTTP `Authorization` header. |
-| `message` | `string` | Message template |
-| `roomID` | `string` | ID of the Webex Teams room where to send the messages. |
-| `sendResolved` | `boolean` | Whether to notify about resolved alerts. |
+| Property       | Type      | Description                                                                                                                          |
+|----------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------|
+| `apiURL`       | `string`  | The Webex Teams API URL i.e. <https://webexapis.com/v1/messages>                                                                     |
+| `httpConfig`   | `object`  | The HTTP client’s configuration. You must use this configuration to supply the bot token as part of the HTTP `Authorization` header. |
+| `message`      | `string`  | Message template                                                                                                                     |
+| `roomID`       | `string`  | ID of the Webex Teams room where to send the messages.                                                                               |
+| `sendResolved` | `boolean` | Whether to notify about resolved alerts.                                                                                             |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig
 
@@ -10093,78 +10093,78 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>authorization</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>basicAuth</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bearerTokenSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The secret’s key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>followRedirects</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>FollowRedirects specifies whether the client should follow HTTP 3xx redirects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>oauth2</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>OAuth2 client credentials used to fetch a token for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyURL</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional proxy URL.</p>
 <p>If defined, this field takes precedence over <code>proxyUrl</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration for the client.</p></td>
@@ -10187,19 +10187,19 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>credentials</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Selects a key of a Secret in the namespace that contains the credentials for authentication.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Defines the authentication type. The value is case-insensitive.</p>
@@ -10220,11 +10220,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig.basicAuth
 
@@ -10234,8 +10234,8 @@ BasicAuth for the client. This is mutually exclusive with Authorization. If both
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                        |
+|------------|----------|------------------------------------------------------------------------------------|
 | `password` | `object` | `password` specifies a key of a Secret containing the password for authentication. |
 | `username` | `object` | `username` specifies a key of a Secret containing the username for authentication. |
 
@@ -10250,11 +10250,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig.basicAuth.username
 
@@ -10267,11 +10267,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig.bearerTokenSecret
 
@@ -10286,10 +10286,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig.oauth2
 
@@ -10313,72 +10313,72 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clientId</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientId</code> specifies a key of a Secret or ConfigMap containing the OAuth2 client’s ID.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>clientSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientSecret</code> specifies a key of a Secret containing the OAuth2 client’s secret.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>endpointParams</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p><code>endpointParams</code> configures the HTTP parameters to append to the token URL.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scopes</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p><code>scopes</code> defines the OAuth2 scopes used for the token request.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration to use when connecting to the OAuth2 server. It requires Prometheus &gt;= v2.43.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tokenUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>tokenURL</code> configures the URL to fetch the token from.</p></td>
@@ -10410,11 +10410,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig.oauth2.clientId.secret
 
@@ -10427,11 +10427,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig.oauth2.clientSecret
 
@@ -10444,11 +10444,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig.oauth2.proxyConnectHeader
 
@@ -10478,11 +10478,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig.oauth2.tlsConfig
 
@@ -10499,46 +10499,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -10570,11 +10570,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig.oauth2.tlsConfig.ca.secret
 
@@ -10587,11 +10587,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig.oauth2.tlsConfig.cert
 
@@ -10617,11 +10617,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig.oauth2.tlsConfig.cert.secret
 
@@ -10634,11 +10634,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig.oauth2.tlsConfig.keySecret
 
@@ -10651,11 +10651,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig.proxyConnectHeader
 
@@ -10685,11 +10685,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig.tlsConfig
 
@@ -10706,46 +10706,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -10777,11 +10777,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig.tlsConfig.ca.secret
 
@@ -10794,11 +10794,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig.tlsConfig.cert
 
@@ -10824,11 +10824,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig.tlsConfig.cert.secret
 
@@ -10841,11 +10841,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webexConfigs\[\].httpConfig.tlsConfig.keySecret
 
@@ -10858,11 +10858,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webhookConfigs
 
@@ -10880,14 +10880,14 @@ WebhookConfig configures notifications via a generic receiver supporting the web
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `httpConfig` | `object` | HTTP client configuration. |
-| `maxAlerts` | `integer` | Maximum number of alerts to be sent per webhook message. When 0, all alerts are included. |
-| `sendResolved` | `boolean` | Whether or not to notify about resolved alerts. |
-| `timeout` | `string` | The maximum time to wait for a webhook request to complete, before failing the request and allowing it to be retried. It requires Alertmanager \>= v0.28.0. |
-| `url` | `string` | The URL to send HTTP POST requests to. `urlSecret` takes precedence over `url`. One of `urlSecret` and `url` should be defined. |
-| `urlSecret` | `object` | The secret’s key that contains the webhook URL to send HTTP requests to. `urlSecret` takes precedence over `url`. One of `urlSecret` and `url` should be defined. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
+| Property       | Type      | Description                                                                                                                                                                                                                                                                                |
+|----------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `httpConfig`   | `object`  | HTTP client configuration.                                                                                                                                                                                                                                                                 |
+| `maxAlerts`    | `integer` | Maximum number of alerts to be sent per webhook message. When 0, all alerts are included.                                                                                                                                                                                                  |
+| `sendResolved` | `boolean` | Whether or not to notify about resolved alerts.                                                                                                                                                                                                                                            |
+| `timeout`      | `string`  | The maximum time to wait for a webhook request to complete, before failing the request and allowing it to be retried. It requires Alertmanager \>= v0.28.0.                                                                                                                                |
+| `url`          | `string`  | The URL to send HTTP POST requests to. `urlSecret` takes precedence over `url`. One of `urlSecret` and `url` should be defined.                                                                                                                                                            |
+| `urlSecret`    | `object`  | The secret’s key that contains the webhook URL to send HTTP requests to. `urlSecret` takes precedence over `url`. One of `urlSecret` and `url` should be defined. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig
 
@@ -10904,78 +10904,78 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>authorization</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>basicAuth</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bearerTokenSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The secret’s key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>followRedirects</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>FollowRedirects specifies whether the client should follow HTTP 3xx redirects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>oauth2</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>OAuth2 client credentials used to fetch a token for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyURL</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional proxy URL.</p>
 <p>If defined, this field takes precedence over <code>proxyUrl</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration for the client.</p></td>
@@ -10998,19 +10998,19 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>credentials</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Selects a key of a Secret in the namespace that contains the credentials for authentication.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Defines the authentication type. The value is case-insensitive.</p>
@@ -11031,11 +11031,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig.basicAuth
 
@@ -11045,8 +11045,8 @@ BasicAuth for the client. This is mutually exclusive with Authorization. If both
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                        |
+|------------|----------|------------------------------------------------------------------------------------|
 | `password` | `object` | `password` specifies a key of a Secret containing the password for authentication. |
 | `username` | `object` | `username` specifies a key of a Secret containing the username for authentication. |
 
@@ -11061,11 +11061,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig.basicAuth.username
 
@@ -11078,11 +11078,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig.bearerTokenSecret
 
@@ -11097,10 +11097,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig.oauth2
 
@@ -11124,72 +11124,72 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clientId</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientId</code> specifies a key of a Secret or ConfigMap containing the OAuth2 client’s ID.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>clientSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientSecret</code> specifies a key of a Secret containing the OAuth2 client’s secret.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>endpointParams</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p><code>endpointParams</code> configures the HTTP parameters to append to the token URL.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scopes</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p><code>scopes</code> defines the OAuth2 scopes used for the token request.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration to use when connecting to the OAuth2 server. It requires Prometheus &gt;= v2.43.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tokenUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>tokenURL</code> configures the URL to fetch the token from.</p></td>
@@ -11221,11 +11221,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig.oauth2.clientId.secret
 
@@ -11238,11 +11238,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig.oauth2.clientSecret
 
@@ -11255,11 +11255,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig.oauth2.proxyConnectHeader
 
@@ -11289,11 +11289,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig.oauth2.tlsConfig
 
@@ -11310,46 +11310,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -11381,11 +11381,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig.oauth2.tlsConfig.ca.secret
 
@@ -11398,11 +11398,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig.oauth2.tlsConfig.cert
 
@@ -11428,11 +11428,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig.oauth2.tlsConfig.cert.secret
 
@@ -11445,11 +11445,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig.oauth2.tlsConfig.keySecret
 
@@ -11462,11 +11462,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig.proxyConnectHeader
 
@@ -11496,11 +11496,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig.tlsConfig
 
@@ -11517,46 +11517,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -11588,11 +11588,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig.tlsConfig.ca.secret
 
@@ -11605,11 +11605,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig.tlsConfig.cert
 
@@ -11635,11 +11635,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig.tlsConfig.cert.secret
 
@@ -11652,11 +11652,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webhookConfigs\[\].httpConfig.tlsConfig.keySecret
 
@@ -11669,11 +11669,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].webhookConfigs\[\].urlSecret
 
@@ -11688,10 +11688,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].wechatConfigs
 
@@ -11709,19 +11709,19 @@ WeChatConfig configures notifications via WeChat. See <https://prometheus.io/doc
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `agentID` | `string` |  |
-| `apiSecret` | `object` | The secret’s key that contains the WeChat API key. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
-| `apiURL` | `string` | The WeChat API URL. |
-| `corpID` | `string` | The corp id for authentication. |
-| `httpConfig` | `object` | HTTP client configuration. |
-| `message` | `string` | API request data as defined by the WeChat API. |
-| `messageType` | `string` |  |
-| `sendResolved` | `boolean` | Whether or not to notify about resolved alerts. |
-| `toParty` | `string` |  |
-| `toTag` | `string` |  |
-| `toUser` | `string` |  |
+| Property       | Type      | Description                                                                                                                                                                 |
+|----------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `agentID`      | `string`  |                                                                                                                                                                             |
+| `apiSecret`    | `object`  | The secret’s key that contains the WeChat API key. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
+| `apiURL`       | `string`  | The WeChat API URL.                                                                                                                                                         |
+| `corpID`       | `string`  | The corp id for authentication.                                                                                                                                             |
+| `httpConfig`   | `object`  | HTTP client configuration.                                                                                                                                                  |
+| `message`      | `string`  | API request data as defined by the WeChat API.                                                                                                                              |
+| `messageType`  | `string`  |                                                                                                                                                                             |
+| `sendResolved` | `boolean` | Whether or not to notify about resolved alerts.                                                                                                                             |
+| `toParty`      | `string`  |                                                                                                                                                                             |
+| `toTag`        | `string`  |                                                                                                                                                                             |
+| `toUser`       | `string`  |                                                                                                                                                                             |
 
 ## .spec.receivers\[\].wechatConfigs\[\].apiSecret
 
@@ -11736,10 +11736,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig
 
@@ -11756,78 +11756,78 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>authorization</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>basicAuth</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bearerTokenSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The secret’s key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>followRedirects</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>FollowRedirects specifies whether the client should follow HTTP 3xx redirects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>oauth2</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>OAuth2 client credentials used to fetch a token for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyURL</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional proxy URL.</p>
 <p>If defined, this field takes precedence over <code>proxyUrl</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration for the client.</p></td>
@@ -11850,19 +11850,19 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>credentials</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Selects a key of a Secret in the namespace that contains the credentials for authentication.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Defines the authentication type. The value is case-insensitive.</p>
@@ -11883,11 +11883,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig.basicAuth
 
@@ -11897,8 +11897,8 @@ BasicAuth for the client. This is mutually exclusive with Authorization. If both
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                        |
+|------------|----------|------------------------------------------------------------------------------------|
 | `password` | `object` | `password` specifies a key of a Secret containing the password for authentication. |
 | `username` | `object` | `username` specifies a key of a Secret containing the username for authentication. |
 
@@ -11913,11 +11913,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig.basicAuth.username
 
@@ -11930,11 +11930,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig.bearerTokenSecret
 
@@ -11949,10 +11949,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | The name of the secret in the object’s namespace to select from. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `key`    | `string` | The key of the secret to select from. Must be a valid secret key. |
+| `name`   | `string` | The name of the secret in the object’s namespace to select from.  |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig.oauth2
 
@@ -11976,72 +11976,72 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clientId</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientId</code> specifies a key of a Secret or ConfigMap containing the OAuth2 client’s ID.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>clientSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>clientSecret</code> specifies a key of a Secret containing the OAuth2 client’s secret.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>endpointParams</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p><code>endpointParams</code> configures the HTTP parameters to append to the token URL.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>noProxy</code> is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyConnectHeader{}[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>SecretKeySelector selects a key of a Secret.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxyFromEnvironment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).</p>
 <p>It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxyUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>proxyURL</code> defines the HTTP proxy server to use.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scopes</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p><code>scopes</code> defines the OAuth2 scopes used for the token request.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TLS configuration to use when connecting to the OAuth2 server. It requires Prometheus &gt;= v2.43.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tokenUrl</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>tokenURL</code> configures the URL to fetch the token from.</p></td>
@@ -12073,11 +12073,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig.oauth2.clientId.secret
 
@@ -12090,11 +12090,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig.oauth2.clientSecret
 
@@ -12107,11 +12107,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig.oauth2.proxyConnectHeader
 
@@ -12141,11 +12141,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig.oauth2.tlsConfig
 
@@ -12162,46 +12162,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -12233,11 +12233,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig.oauth2.tlsConfig.ca.secret
 
@@ -12250,11 +12250,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig.oauth2.tlsConfig.cert
 
@@ -12280,11 +12280,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig.oauth2.tlsConfig.cert.secret
 
@@ -12297,11 +12297,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig.oauth2.tlsConfig.keySecret
 
@@ -12314,11 +12314,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig.proxyConnectHeader
 
@@ -12348,11 +12348,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig.tlsConfig
 
@@ -12369,46 +12369,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ca</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Certificate authority used when verifying server certificates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>cert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Client certificate to present when doing client-authentication.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Disable target certificate validation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>keySecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Secret containing the client key file for the targets.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Maximum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Minimum acceptable TLS version.</p>
 <p>It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Used to verify the hostname for the targets.</p></td>
@@ -12440,11 +12440,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig.tlsConfig.ca.secret
 
@@ -12457,11 +12457,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig.tlsConfig.cert
 
@@ -12487,11 +12487,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig.tlsConfig.cert.secret
 
@@ -12504,11 +12504,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.receivers\[\].wechatConfigs\[\].httpConfig.tlsConfig.keySecret
 
@@ -12521,11 +12521,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.route
 
@@ -12535,19 +12535,19 @@ The Alertmanager route definition for alerts matching the resource’s namespace
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `activeTimeIntervals` | `array (string)` | ActiveTimeIntervals is a list of TimeInterval names when this route should be active. |
-| `continue` | `boolean` | Boolean indicating whether an alert should continue matching subsequent sibling nodes. It will always be overridden to true for the first-level route by the Prometheus operator. |
-| `groupBy` | `array (string)` | List of labels to group by. Labels must not be repeated (unique list). Special label "…​" (aggregate by all possible labels), if provided, must be the only element in the list. |
-| `groupInterval` | `string` | How long to wait before sending an updated notification. Must match the regular expression\`^((<span class="0-9">)y)?((\[0-9\]</span>)w)?((<span class="0-9">)d)?((\[0-9\]</span>)h)?((<span class="0-9">)m)?((\[0-9\]</span>)s)?((\[0-9\]+)ms)?\$\` Example: "5m" |
-| `groupWait` | `string` | How long to wait before sending the initial notification. Must match the regular expression\`^((<span class="0-9">)y)?((\[0-9\]</span>)w)?((<span class="0-9">)d)?((\[0-9\]</span>)h)?((<span class="0-9">)m)?((\[0-9\]</span>)s)?((\[0-9\]+)ms)?\$\` Example: "30s" |
-| `matchers` | `array` | List of matchers that the alert’s labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: <object namespace>` matcher. |
-| `matchers[]` | `object` | Matcher defines how to match on alert’s labels. |
-| `muteTimeIntervals` | `array (string)` | Note: this comment applies to the field definition above but appears below otherwise it gets included in the generated manifest. CRD schema doesn’t support self-referential types for now (see <https://github.com/kubernetes/kubernetes/issues/62872>). We have to use an alternative type to circumvent the limitation. The downside is that the Kube API can’t validate the data beyond the fact that it is a valid JSON representation. MuteTimeIntervals is a list of TimeInterval names that will mute this route when matched. |
-| `receiver` | `string` | Name of the receiver for this route. If not empty, it should be listed in the `receivers` field. |
-| `repeatInterval` | `string` | How long to wait before repeating the last notification. Must match the regular expression\`^((<span class="0-9">)y)?((\[0-9\]</span>)w)?((<span class="0-9">)d)?((\[0-9\]</span>)h)?((<span class="0-9">)m)?((\[0-9\]</span>)s)?((\[0-9\]+)ms)?\$\` Example: "4h" |
-| `routes` | `array (undefined)` | Child routes. |
+| Property              | Type                | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|-----------------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `activeTimeIntervals` | `array (string)`    | ActiveTimeIntervals is a list of TimeInterval names when this route should be active.                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `continue`            | `boolean`           | Boolean indicating whether an alert should continue matching subsequent sibling nodes. It will always be overridden to true for the first-level route by the Prometheus operator.                                                                                                                                                                                                                                                                                                                                                      |
+| `groupBy`             | `array (string)`    | List of labels to group by. Labels must not be repeated (unique list). Special label "…​" (aggregate by all possible labels), if provided, must be the only element in the list.                                                                                                                                                                                                                                                                                                                                                        |
+| `groupInterval`       | `string`            | How long to wait before sending an updated notification. Must match the regular expression\`^((<span class="0-9">)y)?((\[0-9\]</span>)w)?((<span class="0-9">)d)?((\[0-9\]</span>)h)?((<span class="0-9">)m)?((\[0-9\]</span>)s)?((\[0-9\]+)ms)?\$\` Example: "5m"                                                                                                                                                                                                                                                                     |
+| `groupWait`           | `string`            | How long to wait before sending the initial notification. Must match the regular expression\`^((<span class="0-9">)y)?((\[0-9\]</span>)w)?((<span class="0-9">)d)?((\[0-9\]</span>)h)?((<span class="0-9">)m)?((\[0-9\]</span>)s)?((\[0-9\]+)ms)?\$\` Example: "30s"                                                                                                                                                                                                                                                                   |
+| `matchers`            | `array`             | List of matchers that the alert’s labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: <object namespace>` matcher.                                                                                                                                                                                                                                                                                                           |
+| `matchers[]`          | `object`            | Matcher defines how to match on alert’s labels.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `muteTimeIntervals`   | `array (string)`    | Note: this comment applies to the field definition above but appears below otherwise it gets included in the generated manifest. CRD schema doesn’t support self-referential types for now (see <https://github.com/kubernetes/kubernetes/issues/62872>). We have to use an alternative type to circumvent the limitation. The downside is that the Kube API can’t validate the data beyond the fact that it is a valid JSON representation. MuteTimeIntervals is a list of TimeInterval names that will mute this route when matched. |
+| `receiver`            | `string`            | Name of the receiver for this route. If not empty, it should be listed in the `receivers` field.                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `repeatInterval`      | `string`            | How long to wait before repeating the last notification. Must match the regular expression\`^((<span class="0-9">)y)?((\[0-9\]</span>)w)?((<span class="0-9">)d)?((\[0-9\]</span>)h)?((<span class="0-9">)m)?((\[0-9\]</span>)s)?((\[0-9\]+)ms)?\$\` Example: "4h"                                                                                                                                                                                                                                                                     |
+| `routes`              | `array (undefined)` | Child routes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ## .spec.route.matchers
 
@@ -12568,11 +12568,11 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type     | Description                                                                                                                                                                    |
+|-------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `matchType` | `string` | Match operator, one of `=` (equal to), `!=` (not equal to), `=~` (regex match) or `!~` (not regex match). Negative operators (`!=` and `!~`) require Alertmanager \>= v0.22.0. |
-| `name` | `string` | Label to match. |
-| `value` | `string` | Label value to match. |
+| `name`      | `string` | Label to match.                                                                                                                                                                |
+| `value`     | `string` | Label value to match.                                                                                                                                                          |
 
 ## .spec.timeIntervals
 
@@ -12615,15 +12615,15 @@ TimePeriod describes periods of time.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `daysOfMonth` | `array` | DaysOfMonth is a list of DayOfMonthRange |
-| `daysOfMonth[]` | `object` | DayOfMonthRange is an inclusive range of days of the month beginning at 1 |
-| `months` | `array (string)` | Months is a list of MonthRange |
-| `times` | `array` | Times is a list of TimeRange |
-| `times[]` | `object` | TimeRange defines a start and end time in 24hr format |
-| `weekdays` | `array (string)` | Weekdays is a list of WeekdayRange |
-| `years` | `array (string)` | Years is a list of YearRange |
+| Property        | Type             | Description                                                               |
+|-----------------|------------------|---------------------------------------------------------------------------|
+| `daysOfMonth`   | `array`          | DaysOfMonth is a list of DayOfMonthRange                                  |
+| `daysOfMonth[]` | `object`         | DayOfMonthRange is an inclusive range of days of the month beginning at 1 |
+| `months`        | `array (string)` | Months is a list of MonthRange                                            |
+| `times`         | `array`          | Times is a list of TimeRange                                              |
+| `times[]`       | `object`         | TimeRange defines a start and end time in 24hr format                     |
+| `weekdays`      | `array (string)` | Weekdays is a list of WeekdayRange                                        |
+| `years`         | `array (string)` | Years is a list of YearRange                                              |
 
 ## .spec.timeIntervals\[\].timeIntervals\[\].daysOfMonth
 
@@ -12701,10 +12701,10 @@ HTTP method
 Description
 list objects of kind AlertmanagerConfig
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AlertmanagerConfigList`](../objects/index.xml#com-coreos-monitoring-v1beta1-AlertmanagerConfigList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                 |
+|--------------------|--------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AlertmanagerConfigList`](../objects/index.xml#com-coreos-monitoring-v1beta1-AlertmanagerConfigList) schema |
+| 401 - Unauthorized | Empty                                                                                                        |
 
 HTTP responses
 
@@ -12716,10 +12716,10 @@ HTTP method
 Description
 delete collection of AlertmanagerConfig
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -12729,10 +12729,10 @@ HTTP method
 Description
 list objects of kind AlertmanagerConfig
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AlertmanagerConfigList`](../objects/index.xml#com-coreos-monitoring-v1beta1-AlertmanagerConfigList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                 |
+|--------------------|--------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AlertmanagerConfigList`](../objects/index.xml#com-coreos-monitoring-v1beta1-AlertmanagerConfigList) schema |
+| 401 - Unauthorized | Empty                                                                                                        |
 
 HTTP responses
 
@@ -12742,25 +12742,25 @@ HTTP method
 Description
 create an AlertmanagerConfig
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |  |
+| Parameter | Type                                                                                                                                                    | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |
-| 201 - Created | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |
-| 202 - Accepted | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                            |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |
+| 201 - Created      | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |
+| 202 - Accepted     | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                   |
 
 HTTP responses
 
@@ -12778,17 +12778,17 @@ HTTP method
 Description
 delete an AlertmanagerConfig
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -12798,10 +12798,10 @@ HTTP method
 Description
 read the specified AlertmanagerConfig
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                            |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                   |
 
 HTTP responses
 
@@ -12811,17 +12811,17 @@ HTTP method
 Description
 partially update the specified AlertmanagerConfig
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                            |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                   |
 
 HTTP responses
 
@@ -12831,23 +12831,23 @@ HTTP method
 Description
 replace the specified AlertmanagerConfig
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |  |
+| Parameter | Type                                                                                                                                                    | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |
-| 201 - Created | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                            |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |
+| 201 - Created      | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                   |
 
 HTTP responses

@@ -6,25 +6,9 @@ You can configure live migration policies to apply different migration configura
 
 Configure live migration limits and timeouts for the cluster by updating the `HyperConverged` custom resource (CR), which is located in the `openshift-cnv` namespace.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Edit the `HyperConverged` CR and add the necessary live migration parameters:
 
@@ -62,10 +46,11 @@ Procedure
 
   - If a VM is running a heavy workload and the memory dirty rate is too high, this can prevent the migration from one node to another from converging. To prevent this, you can enable post copy mode. By default, `allowPostCopy` is set to `false`.
 
-  > [!NOTE]
-  > You can restore the default value for any `spec.liveMigrationConfig` field by deleting that key/value pair and saving the file. For example, delete `progressTimeout: <value>` to restore the default `progressTimeout: 150`.
+  <div class="note">
 
-</div>
+  You can restore the default value for any `spec.liveMigrationConfig` field by deleting that key/value pair and saving the file. For example, delete `progressTimeout: <value>` to restore the default `progressTimeout: 150`.
+
+  </div>
 
 # Configure live migration for heavy workloads
 
@@ -77,25 +62,7 @@ Post copy mode triggers if the initial pre-copy phase does not complete within t
 
 Configure live migration for heavy workloads by updating the `HyperConverged` custom resource (CR), which is located in the `openshift-cnv` namespace.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `HyperConverged` CR and add the necessary parameters for migrating heavy workloads:
 
@@ -135,10 +102,11 @@ Procedure
 
 2.  Optional: If your main network is too busy for the migration, configure a secondary, dedicated migration network.
 
-    > [!NOTE]
-    > Post copy mode can impact performance during the transfer, and should not be used for critical data, or with unstable networks.
+    <div class="note">
 
-</div>
+    Post copy mode can impact performance during the transfer, and should not be used for critical data, or with unstable networks.
+
+    </div>
 
 # Additional resources
 
@@ -148,8 +116,11 @@ Procedure
 
 You can create live migration policies to apply different migration configurations to groups of VMs that are defined by VM or project labels.
 
-> [!TIP]
-> You can create live migration policies by using the OpenShift Container Platform web console.
+<div class="tip">
+
+You can create live migration policies by using the OpenShift Container Platform web console.
+
+</div>
 
 ## Creating a live migration policy by using the CLI
 
@@ -163,30 +134,15 @@ KubeVirt applies the live migration policy to selected virtual machines (VMs) by
 
 For the policy to apply to a specific group of VMs, all labels on the group of VMs must match the labels of the policy.
 
-> [!NOTE]
-> If multiple live migration policies apply to a VM, the policy with the greatest number of matching labels takes precedence.
->
-> If multiple policies meet this criteria, the policies are sorted by alphabetical order of the matching label keys, and the first one in that order takes precedence.
+<div class="note">
 
-<div>
+If multiple live migration policies apply to a VM, the policy with the greatest number of matching labels takes precedence.
 
-<div class="title">
-
-Prerequisites
+If multiple policies meet this criteria, the policies are sorted by alphabetical order of the matching label keys, and the first one in that order takes precedence.
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the VM object to which you want to apply a live migration policy, and add the corresponding VM labels.
 
@@ -245,21 +201,11 @@ Procedure
     $ oc create -f <migration_policy>.yaml
     ```
 
-</div>
-
 # Migrating a VM to a specific node
 
 You can migrate a running virtual machine (VM) to a specific subset of nodes by using the `addedNodeSelector` field on the `VirtualMachineInstanceMigration` object.
 
 The `addedNodeSelector` field lets you apply additional node selection rules for a **one-time** migration attempt, without affecting the VM configuration or future migrations.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -268,16 +214,6 @@ Prerequisites
 - You have identified the labels of the target nodes. Multiple labels can be specified and are combined with logical `AND`.
 
 - The `oc` CLI tool is installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a migration manifest YAML file. For example:
 
@@ -308,8 +244,6 @@ Procedure
     ```
 
     If no nodes satisfy the constraints, the migration is declared a failure after a timeout. The VM remains unaffected.
-
-</div>
 
 # Additional resources
 

@@ -10,25 +10,28 @@ An egress IP address assigned to a namespace is different from an egress router,
 
 In some cluster configurations, application pods and ingress router pods run on the same node. If you configure an egress IP address for an application project in this scenario, the IP address is not used when you send a request to a route from the application project.
 
-> [!IMPORTANT]
-> Egress IP addresses must not be configured in any Linux network configuration files, such as `ifcfg-eth0`.
+<div class="important">
+
+Egress IP addresses must not be configured in any Linux network configuration files, such as `ifcfg-eth0`.
+
+</div>
 
 ## Platform support
 
 The Egress IP address feature that runs on a primary host network is supported on the following platforms:
 
-| Platform | Supported |
-|----|----|
-| Bare metal | Yes |
-| VMware vSphere | Yes |
-| Red Hat OpenStack Platform (RHOSP) | Yes |
-| Amazon Web Services (AWS) | Yes |
-| Google Cloud | Yes |
-| Microsoft Azure | Yes |
-| IBM Z® and IBM® LinuxONE | Yes |
-| IBM Z® and IBM® LinuxONE for Red Hat Enterprise Linux (RHEL) KVM | Yes |
-| IBM Power® | Yes |
-| Nutanix | Yes |
+| Platform                                                         | Supported |
+|------------------------------------------------------------------|-----------|
+| Bare metal                                                       | Yes       |
+| VMware vSphere                                                   | Yes       |
+| Red Hat OpenStack Platform (RHOSP)                               | Yes       |
+| Amazon Web Services (AWS)                                        | Yes       |
+| Google Cloud                                                     | Yes       |
+| Microsoft Azure                                                  | Yes       |
+| IBM Z® and IBM® LinuxONE                                         | Yes       |
+| IBM Z® and IBM® LinuxONE for Red Hat Enterprise Linux (RHEL) KVM | Yes       |
+| IBM Power®                                                       | Yes       |
+| Nutanix                                                          | Yes       |
 
 The Egress IP address feature that runs on secondary host networks is supported on the following platform:
 
@@ -36,8 +39,11 @@ The Egress IP address feature that runs on secondary host networks is supported 
 |------------|-----------|
 | Bare metal | Yes       |
 
-> [!IMPORTANT]
-> The assignment of egress IP addresses to control plane nodes with the EgressIP feature is not supported on a cluster provisioned on Amazon Web Services (AWS). ([**BZ#2039656**](https://bugzilla.redhat.com/show_bug.cgi?id=2039656)).
+<div class="important">
+
+The assignment of egress IP addresses to control plane nodes with the EgressIP feature is not supported on a cluster provisioned on Amazon Web Services (AWS). ([**BZ#2039656**](https://bugzilla.redhat.com/show_bug.cgi?id=2039656)).
+
+</div>
 
 ## Public cloud platform considerations
 
@@ -61,19 +67,23 @@ The annotation value is an array with a single object with fields that provide t
 
 Automatic attachment and detachment of egress IP addresses for traffic between nodes are available. This allows for traffic from many pods in namespaces to have a consistent source IP address to locations outside of the cluster. This also supports OpenShift SDN and OVN-Kubernetes, which is the default networking plugin in Red Hat OpenShift Networking in OpenShift Container Platform 4.17.
 
-> [!NOTE]
-> The RHOSP egress IP address feature creates a Neutron reservation port called `egressip-<IP address>`. Using the same RHOSP user as the one used for the OpenShift Container Platform cluster installation, you can assign a floating IP address to this reservation port to have a predictable SNAT address for egress traffic. When an egress IP address on an RHOSP network is moved from one node to another, because of a node failover, for example, the Neutron reservation port is removed and recreated. This means that the floating IP association is lost and you need to manually reassign the floating IP address to the new reservation port.
+<div class="note">
 
-> [!NOTE]
-> When an RHOSP cluster administrator assigns a floating IP to the reservation port, OpenShift Container Platform cannot delete the reservation port. The `CloudPrivateIPConfig` object cannot perform delete and move operations until an RHOSP cluster administrator unassigns the floating IP from the reservation port.
+The RHOSP egress IP address feature creates a Neutron reservation port called `egressip-<IP address>`. Using the same RHOSP user as the one used for the OpenShift Container Platform cluster installation, you can assign a floating IP address to this reservation port to have a predictable SNAT address for egress traffic. When an egress IP address on an RHOSP network is moved from one node to another, because of a node failover, for example, the Neutron reservation port is removed and recreated. This means that the floating IP association is lost and you need to manually reassign the floating IP address to the new reservation port.
+
+</div>
+
+<div class="note">
+
+When an RHOSP cluster administrator assigns a floating IP to the reservation port, OpenShift Container Platform cannot delete the reservation port. The `CloudPrivateIPConfig` object cannot perform delete and move operations until an RHOSP cluster administrator unassigns the floating IP from the reservation port.
+
+</div>
 
 The following examples illustrate the annotation from nodes on several public cloud providers. The annotations are indented for readability.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `cloud.network.openshift.io/egress-ipconfig` annotation on AWS
+**Example `cloud.network.openshift.io/egress-ipconfig` annotation on AWS**
 
 </div>
 
@@ -87,13 +97,9 @@ cloud.network.openshift.io/egress-ipconfig: [
 ]
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example `cloud.network.openshift.io/egress-ipconfig` annotation on Google Cloud
+**Example `cloud.network.openshift.io/egress-ipconfig` annotation on Google Cloud**
 
 </div>
 
@@ -106,8 +112,6 @@ cloud.network.openshift.io/egress-ipconfig: [
   }
 ]
 ```
-
-</div>
 
 The following sections describe the IP address capacity for supported public cloud environments for use in your capacity calculation.
 
@@ -151,11 +155,9 @@ The dashed lines in the diagram depict the traffic flow from pod1, pod2, and pod
 
 Based on the diagram, the following manifest file defines namespaces:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Namespace objects
+**Namespace objects**
 
 </div>
 
@@ -175,15 +177,11 @@ metadata:
     env: prod
 ```
 
-</div>
-
 Based on the diagram, the following `EgressIP` object describes a configuration that selects all pods in any namespace with the `env` label set to `prod`. The egress IP addresses for the selected pods are `192.168.126.10` and `192.168.126.102`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-`EgressIP` object
+**`EgressIP` object**
 
 </div>
 
@@ -207,8 +205,6 @@ status:
     egressIP: 192.168.126.102
 ```
 
-</div>
-
 For the configuration in the previous example, OpenShift Container Platform assigns both egress IP addresses to the available nodes. The `status` field reflects whether and where the egress IP addresses are assigned.
 
 ## Considerations for using an egress IP address on additional network interfaces
@@ -229,8 +225,11 @@ If the egress IP address is not within the subnet of the primary network interfa
 
 You can determine which other network interfaces might support egress IP address addresses by inspecting the `k8s.ovn.org/host-cidrs` Kubernetes node annotation. This annotation contains the addresses and subnet mask found for the primary network interface. It also contains additional network interface addresses and subnet mask information. These addresses and subnet masks are assigned to network interfaces that use the [longest prefix match routing](https://networklessons.com/cisco/ccna-200-301/longest-prefix-match-routing) mechanism to determine which network interface supports the egress IP address.
 
-> [!NOTE]
-> OVN-Kubernetes provides a mechanism to control and direct outbound network traffic from specific namespaces and pods. This ensures that it exits the cluster through a particular network interface and with a specific egress IP address.
+<div class="note">
+
+OVN-Kubernetes provides a mechanism to control and direct outbound network traffic from specific namespaces and pods. This ensures that it exits the cluster through a particular network interface and with a specific egress IP address.
+
+</div>
 
 As an administrator who wants an egress IP address and traffic to route over a particular interface that is not the primary network interface, you must meet the following conditions:
 
@@ -260,8 +259,11 @@ When the `EgressIP` namespace selector matches the label on multiple namespaces,
 
 - Packets must move from a pod that exists in a node to the named host node that is referenced in the `EgressIP` object. This approach adds a network hop.
 
-> [!IMPORTANT]
-> Do not create egress rules, such as a single label selector, that forces all namespaces that exist in a cluster to use the same outbound IP address. This configuration can cause the node that hosts the IP address to crash during times of high network traffic.
+<div class="important">
+
+Do not create egress rules, such as a single label selector, that forces all namespaces that exist in a cluster to use the same outbound IP address. This configuration can cause the node that hosts the IP address to crash during times of high network traffic.
+
+</div>
 
 The following YAML describes the API for the `EgressIP` object. The scope of the object is cluster-wide and is not created in a namespace.
 
@@ -295,11 +297,9 @@ Optional parameter. One or more selectors for pods in the specified namespaces t
 
 The following YAML describes the stanza for the namespace selector:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Namespace selector stanza
+**Namespace selector stanza**
 
 </div>
 
@@ -309,8 +309,6 @@ namespaceSelector:
     <label_name>: <label_value>
 ```
 
-</div>
-
 where:
 
 `<namespaceSelector>`
@@ -318,11 +316,9 @@ One or more matching rules for namespaces. If more than one match rule is provid
 
 The following YAML describes the optional stanza for the pod selector:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Pod selector stanza
+**Pod selector stanza**
 
 </div>
 
@@ -332,8 +328,6 @@ podSelector:
     <label_name>: <label_value>
 ```
 
-</div>
-
 where:
 
 `<podSelector>`
@@ -341,11 +335,9 @@ Optional parameter. One or more matching rules for pods in the namespaces that m
 
 In the following example, the `EgressIP` object associates the `192.168.126.11` and `192.168.126.102` egress IP addresses with pods that have the `app` label set to `web` and are in the namespaces that have the `env` label set to `prod`:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `EgressIP` object
+**Example `EgressIP` object**
 
 </div>
 
@@ -366,15 +358,11 @@ spec:
       env: prod
 ```
 
-</div>
-
 In the following example, the `EgressIP` object associates the `192.168.127.30` and `192.168.127.40` egress IP addresses with any pods that do not have the `environment` label set to `development`:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `EgressIP` object
+**Example `EgressIP` object**
 
 </div>
 
@@ -395,8 +383,6 @@ spec:
       - development
 ```
 
-</div>
-
 # Assignment of egress IPs to a namespace, nodes, and pods
 
 To assign one or more egress IPs to a namespace or specific pods in a namespace, the following conditions must be satisfied:
@@ -405,10 +391,13 @@ To assign one or more egress IPs to a namespace or specific pods in a namespace,
 
 - An `EgressIP` object exists that defines one or more egress IP addresses to use as the source IP address for traffic leaving the cluster from pods in a namespace.
 
-> [!IMPORTANT]
-> If you create `EgressIP` objects prior to labeling any nodes in your cluster for egress IP assignment, OpenShift Container Platform might assign every egress IP address to the first node with the `k8s.ovn.org/egress-assignable: ""` label.
->
-> To ensure that egress IP addresses are widely distributed across nodes in the cluster, always apply the label to the nodes you intent to host the egress IP addresses before creating any `EgressIP` objects.
+<div class="important">
+
+If you create `EgressIP` objects prior to labeling any nodes in your cluster for egress IP assignment, OpenShift Container Platform might assign every egress IP address to the first node with the `k8s.ovn.org/egress-assignable: ""` label.
+
+To ensure that egress IP addresses are widely distributed across nodes in the cluster, always apply the label to the nodes you intent to host the egress IP addresses before creating any `EgressIP` objects.
+
+</div>
 
 When creating an `EgressIP` object, the following conditions apply to nodes that are labeled with the `k8s.ovn.org/egress-assignable: ""` label:
 
@@ -432,29 +421,11 @@ Additionally, if an `EgressIP` object specifies multiple egress IP addresses, th
 
 You can assign one or more egress IP addresses to a namespace or to specific pods in a namespace.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in to the cluster as a cluster administrator.
 
 - Configure at least one node to host an egress IP address.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an `EgressIP` object.
 
@@ -487,19 +458,15 @@ Procedure
     `<egressips_name>`
     Replace `<egressips_name>` with the name of the object.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     egressips.k8s.ovn.org/<egressips_name> created
     ```
-
-    </div>
 
 3.  Optional: Store the `<egressips_name>.yaml` file so that you can make changes later.
 
@@ -514,30 +481,21 @@ Procedure
     `<namespace>`
     Replace `<namespace>` with the namespace that requires egress IP addresses.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - To show all egress IP addresses that are in use in your cluster, enter the following command:
 
   ``` terminal
   $ oc get egressip -o yaml
   ```
 
-  > [!NOTE]
-  > The command `oc get egressip` only returns one egress IP address regardless of how many are configured. This is not a bug and is a limitation of Kubernetes. As a workaround, you can pass in the `-o yaml` or `-o json` flags to return all egress IPs addresses in use.
+  <div class="note">
 
-  <div class="formalpara">
+  The command `oc get egressip` only returns one egress IP address regardless of how many are configured. This is not a bug and is a limitation of Kubernetes. As a workaround, you can pass in the `-o yaml` or `-o json` flags to return all egress IPs addresses in use.
 
-  <div class="title">
+  </div>
 
-  Example output
+  <div class="formalpara-title">
+
+  **Example output**
 
   </div>
 
@@ -550,16 +508,15 @@ Verification
   # ...
   ```
 
-  </div>
-
-</div>
-
 # Understanding EgressIP failover control
 
 The `reachabilityTotalTimeoutSeconds` parameter controls how quickly the system detects a failing `egressIP` node and initiates a failover. This parameter directly determines the maximum time the platform waits before declaring a node unreachable.
 
-> [!IMPORTANT]
-> When you configure `egressIP` with multiple egress nodes, the complete failover time from node failure to recovery on a new node is expected to be on the order of seconds or longer. This is because the new IP assignment can only begin after the `reachabilityTotalTimeoutSeconds` period has fully elapsed without a successful check.
+<div class="important">
+
+When you configure `egressIP` with multiple egress nodes, the complete failover time from node failure to recovery on a new node is expected to be on the order of seconds or longer. This is because the new IP assignment can only begin after the `reachabilityTotalTimeoutSeconds` period has fully elapsed without a successful check.
+
+</div>
 
 To ensure traffic uses the correct external path, `egressIP` traffic on a node will always egress through the network interface on which the `egressIP` address has been assigned.
 
@@ -567,27 +524,9 @@ To ensure traffic uses the correct external path, `egressIP` traffic on a node w
 
 Follow this procedure to configure the `reachabilityTotalTimeoutSeconds` parameter and control how quickly the system detects a failing `egressIP` node and initiates a failover.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in to the cluster as a cluster administrator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `Network` custom resource by running the following command:
 
@@ -606,20 +545,15 @@ Procedure
             reachabilityTotalTimeoutSeconds: 5
     ```
 
-    > [!NOTE]
-    > The value must be an integer between 0 and 60. For details on possible values, see the "EgressIP failover settings" section.
+    <div class="note">
+
+    The value must be an integer between 0 and 60. For details on possible values, see the "EgressIP failover settings" section.
+
+    </div>
 
 4.  Save and exit the editor. The operator automatically applies the changes.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the system correctly accepted the `reachabilityTotalTimeoutSeconds` parameter by running the following command:
 
@@ -641,44 +575,26 @@ Verification
       # ...
     ```
 
-</div>
-
 ## EgressIP failover settings
 
 The `reachabilityTotalTimeoutSeconds` parameter defines the total time limit in seconds for the platform health check process before a node is declared down.
 
 The following table summarizes the acceptable values and their implications:
 
-| Parameter Value (Seconds) | Effect on reachability check | Failover impact and use case |
-|----|----|----|
-| `0` | Disables the reachability check. | No automatic failover: Use only if an external system handles node health monitoring and failover. The platform will not automatically react to node failures. |
-| `1 - 60` | Sets the total time limit for reachability probing. | Directly controls detection time: This value defines the lower limit for your overall failover time. A smaller value leads to faster failover but might increase network traffic. Default: 1 second. The maximum accepted integer value is 60. |
+| Parameter Value (Seconds) | Effect on reachability check                        | Failover impact and use case                                                                                                                                                                                                                   |
+|---------------------------|-----------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `0`                       | Disables the reachability check.                    | No automatic failover: Use only if an external system handles node health monitoring and failover. The platform will not automatically react to node failures.                                                                                 |
+| `1 - 60`                  | Sets the total time limit for reachability probing. | Directly controls detection time: This value defines the lower limit for your overall failover time. A smaller value leads to faster failover but might increase network traffic. Default: 1 second. The maximum accepted integer value is 60. |
 
 # Labeling a node to host egress IP addresses
 
 You can apply the `k8s.ovn.org/egress-assignable=""` label to a node in your cluster so that OpenShift Container Platform can assign one or more egress IP addresses to the node.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in to the cluster as a cluster administrator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To label a node so that it can host one or more egress IP addresses, enter the following command:
 
@@ -688,46 +604,34 @@ Procedure
 
   - The name of the node to label.
 
-    > [!TIP]
-    > You can alternatively apply the following YAML to add the label to a node:
-    >
-    > ``` yaml
-    > apiVersion: v1
-    > kind: Node
-    > metadata:
-    >   labels:
-    >     k8s.ovn.org/egress-assignable: ""
-    >   name: <node_name>
-    > ```
+    <div class="tip">
 
-</div>
+    You can alternatively apply the following YAML to add the label to a node:
+
+    ``` yaml
+    apiVersion: v1
+    kind: Node
+    metadata:
+      labels:
+        k8s.ovn.org/egress-assignable: ""
+      name: <node_name>
+    ```
+
+    </div>
 
 # Configuring dual-stack networking for an EgressIP object
 
 For a cluster configured for dual-stack networking, you can apply dual-stack networking to a single `EgressIP` object. The `EgressIP` object can then extend dual-stack networking capabilities to a pod.
 
-> [!IMPORTANT]
-> Red Hat does not support creating two `EgressIP` objects to represent dual-stack networking capabilities. For example, specifying IPv4 addresses with one object and using another object to specify IPv6 addresses. This configuration limit impacts address-type assignments to pods.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Red Hat does not support creating two `EgressIP` objects to represent dual-stack networking capabilities. For example, specifying IPv4 addresses with one object and using another object to specify IPv6 addresses. This configuration limit impacts address-type assignments to pods.
 
 </div>
 
 - You created two egress nodes so that an `EgressIP` object can allocate IPv4 addresses to one node and IPv6 addresses to the other node. For more information, see "Assignment of egress IP addresses to nodes".
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Create an `EgressIP` object and configure IPv4 and IPv6 addresses for the object. The following example `EgressIP` object uses selectors to identify which pods use the specified egress IP addresses for their outbound traffic:
 
@@ -747,16 +651,6 @@ Procedure
         egressip: ds
   # ...
   ```
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 1.  Create a `Pod` manifest file to test and validate your `EgressIP` object. The pod serves as a client workload that sends outbound traffic to verify that your `EgressIP` policy works as expected.
 
@@ -791,8 +685,6 @@ Verification
 
     `<ipv_address>`
     Depending on the `EgressIP` object, enter an IPv4 or IPv6 address.
-
-</div>
 
 # Additional resources
 

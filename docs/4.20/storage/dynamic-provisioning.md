@@ -10,26 +10,32 @@ Many storage types are available for use as persistent volumes in OpenShift Cont
 
 OpenShift Container Platform provides the following provisioner plugins, which have generic implementations for dynamic provisioning that use the cluster’s configured provider’s API to create new storage resources:
 
-| Storage type | Provisioner plugin name | Notes |
-|----|----|----|
-| Red Hat OpenStack Platform (RHOSP) Cinder | `kubernetes.io/cinder` |  |
-| RHOSP Manila Container Storage Interface (CSI) | `manila.csi.openstack.org` | Once installed, the OpenStack Manila CSI Driver Operator and ManilaDriver automatically create the required storage classes for all available Manila share types needed for dynamic provisioning. |
-| Amazon Elastic Block Store (Amazon EBS) | `ebs.csi.aws.com` | For dynamic provisioning when using multiple clusters in different zones, tag each node with `Key=kubernetes.io/cluster/<cluster_name>,Value=<cluster_id>` where `<cluster_name>` and `<cluster_id>` are unique per cluster. |
-| Azure Disk | `kubernetes.io/azure-disk` |  |
-| Azure File | `kubernetes.io/azure-file` | The `persistent-volume-binder` service account requires permissions to create and get secrets to store the Azure storage account and keys. |
-| GCE Persistent Disk (gcePD) | `kubernetes.io/gce-pd` | In multi-zone configurations, it is advisable to run one OpenShift Container Platform cluster per GCE project to avoid PVs from being created in zones where no node in the current cluster exists. |
-| IBM Power® Virtual Server Block | `powervs.csi.ibm.com` | After installation, the IBM Power® Virtual Server Block CSI Driver Operator and IBM Power® Virtual Server Block CSI Driver automatically create the required storage classes for dynamic provisioning. |
-| [VMware vSphere](https://www.vmware.com/support/vsphere.html) | `kubernetes.io/vsphere-volume` |  |
+| Storage type                                                  | Provisioner plugin name        | Notes                                                                                                                                                                                                                        |
+|---------------------------------------------------------------|--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Red Hat OpenStack Platform (RHOSP) Cinder                     | `kubernetes.io/cinder`         |                                                                                                                                                                                                                              |
+| RHOSP Manila Container Storage Interface (CSI)                | `manila.csi.openstack.org`     | Once installed, the OpenStack Manila CSI Driver Operator and ManilaDriver automatically create the required storage classes for all available Manila share types needed for dynamic provisioning.                            |
+| Amazon Elastic Block Store (Amazon EBS)                       | `ebs.csi.aws.com`              | For dynamic provisioning when using multiple clusters in different zones, tag each node with `Key=kubernetes.io/cluster/<cluster_name>,Value=<cluster_id>` where `<cluster_name>` and `<cluster_id>` are unique per cluster. |
+| Azure Disk                                                    | `kubernetes.io/azure-disk`     |                                                                                                                                                                                                                              |
+| Azure File                                                    | `kubernetes.io/azure-file`     | The `persistent-volume-binder` service account requires permissions to create and get secrets to store the Azure storage account and keys.                                                                                   |
+| GCE Persistent Disk (gcePD)                                   | `kubernetes.io/gce-pd`         | In multi-zone configurations, it is advisable to run one OpenShift Container Platform cluster per GCE project to avoid PVs from being created in zones where no node in the current cluster exists.                          |
+| IBM Power® Virtual Server Block                               | `powervs.csi.ibm.com`          | After installation, the IBM Power® Virtual Server Block CSI Driver Operator and IBM Power® Virtual Server Block CSI Driver automatically create the required storage classes for dynamic provisioning.                       |
+| [VMware vSphere](https://www.vmware.com/support/vsphere.html) | `kubernetes.io/vsphere-volume` |                                                                                                                                                                                                                              |
 
-> [!IMPORTANT]
-> Any chosen provisioner plugin also requires configuration for the relevant cloud, host, or third-party provider as per the relevant documentation.
+<div class="important">
+
+Any chosen provisioner plugin also requires configuration for the relevant cloud, host, or third-party provider as per the relevant documentation.
+
+</div>
 
 # Defining a storage class
 
 `StorageClass` objects are currently a globally scoped object and must be created by `cluster-admin` or `storage-admin` users.
 
-> [!IMPORTANT]
-> The Cluster Storage Operator might install a default storage class depending on the platform in use. This storage class is owned and controlled by the Operator. It cannot be deleted or modified beyond defining annotations and labels. If different behavior is desired, you must define a custom storage class.
+<div class="important">
+
+The Cluster Storage Operator might install a default storage class depending on the platform in use. This storage class is owned and controlled by the Operator. It cannot be deleted or modified beyond defining annotations and labels. If different behavior is desired, you must define a custom storage class.
+
+</div>
 
 The following sections describe the basic definition for a `StorageClass` object and specific examples for each of the supported plugin types.
 
@@ -37,11 +43,9 @@ The following sections describe the basic definition for a `StorageClass` object
 
 The following resource shows the parameters and default values that you use to configure a storage class. This example uses the AWS ElasticBlockStore (EBS) object definition.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample `StorageClass` definition
+**Sample `StorageClass` definition**
 
 </div>
 
@@ -58,8 +62,6 @@ parameters:
   type: gp3
 ...
 ```
-
-</div>
 
 - (required) The API object type.
 
@@ -94,8 +96,11 @@ metadata:
 
 This enables any persistent volume claim (PVC) that does not specify a specific storage class to automatically be provisioned through the default storage class. However, your cluster can have more than one storage class, but only one of them can be the default storage class.
 
-> [!NOTE]
-> The beta annotation `storageclass.beta.kubernetes.io/is-default-class` is still working; however, it will be removed in a future release.
+<div class="note">
+
+The beta annotation `storageclass.beta.kubernetes.io/is-default-class` is still working; however, it will be removed in a future release.
+
+</div>
 
 To set a storage class description, add the following annotation to your storage class metadata:
 
@@ -116,11 +121,9 @@ metadata:
 
 ## RHOSP Cinder object definition
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-cinder-storageclass.yaml
+**cinder-storageclass.yaml**
 
 </div>
 
@@ -136,8 +139,6 @@ parameters:
   fsType: ext4
 ```
 
-</div>
-
 - Name of the storage class. The persistent volume claim uses this storage class for provisioning the associated persistent volumes.
 
 - Volume type created in Cinder. Default is empty.
@@ -152,11 +153,9 @@ Once installed, the OpenStack Manila CSI Driver Operator and ManilaDriver automa
 
 ## AWS Elastic Block Store (EBS) object definition
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-aws-ebs-storageclass.yaml
+**aws-ebs-storageclass.yaml**
 
 </div>
 
@@ -174,8 +173,6 @@ parameters:
   fsType: ext4
 ```
 
-</div>
-
 - (required) Name of the storage class. The persistent volume claim uses this storage class for provisioning the associated persistent volumes.
 
 - (required) Select from `io1`, `gp3`, `sc1`, `st1`. The default is `gp3`. See the [AWS documentation](http://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) for valid Amazon Resource Name (ARN) values.
@@ -190,11 +187,9 @@ parameters:
 
 ## Azure Disk object definition
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-azure-advanced-disk-storageclass.yaml
+**azure-advanced-disk-storageclass.yaml**
 
 </div>
 
@@ -212,18 +207,19 @@ parameters:
 reclaimPolicy: Delete
 ```
 
-</div>
-
 - Name of the storage class. The persistent volume claim uses this storage class for provisioning the associated persistent volumes.
 
 - Using `WaitForFirstConsumer` is strongly recommended. This provisions the volume while allowing enough storage to schedule the pod on a free worker node from an available zone.
 
 - Possible values are `Shared` (default), `Managed`, and `Dedicated`.
 
-  > [!IMPORTANT]
-  > Red Hat only supports the use of `kind: Managed` in the storage class.
-  >
-  > With `Shared` and `Dedicated`, Azure creates unmanaged disks, while OpenShift Container Platform creates a managed disk for machine OS (root) disks. But because Azure Disk does not allow the use of both managed and unmanaged disks on a node, unmanaged disks created with `Shared` or `Dedicated` cannot be attached to OpenShift Container Platform nodes.
+  <div class="important">
+
+  Red Hat only supports the use of `kind: Managed` in the storage class.
+
+  With `Shared` and `Dedicated`, Azure creates unmanaged disks, while OpenShift Container Platform creates a managed disk for machine OS (root) disks. But because Azure Disk does not allow the use of both managed and unmanaged disks on a node, unmanaged disks created with `Shared` or `Dedicated` cannot be attached to OpenShift Container Platform nodes.
+
+  </div>
 
 - Azure storage account SKU tier. Default is empty. Note that Premium VMs can attach both `Standard_LRS` and `Premium_LRS` disks, Standard VMs can only attach `Standard_LRS` disks, Managed VMs can only attach managed disks, and unmanaged VMs can only attach unmanaged disks.
 
@@ -242,14 +238,6 @@ reclaimPolicy: Delete
 ## Azure File object definition
 
 The Azure File storage class uses secrets to store the Azure storage account name and the storage account key that are required to create an Azure Files share. These permissions are created as part of the following procedure.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Define a `ClusterRole` object that allows access to create and view secrets:
 
@@ -297,8 +285,6 @@ Procedure
 
     - Name of the Azure storage account. If a storage account is provided, then `skuName` and `location` are ignored. If no storage account is provided, then the storage class searches for any storage account that is associated with the resource group for any accounts that match the defined `skuName` and `location`.
 
-</div>
-
 ### Considerations when using Azure File
 
 The following file system features are not supported by the default Azure File storage class:
@@ -342,11 +328,9 @@ volumeBindingMode: Immediate
 
 ## GCE PersistentDisk (gcePD) object definition
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-gce-pd-storageclass.yaml
+**gce-pd-storageclass.yaml**
 
 </div>
 
@@ -364,19 +348,15 @@ allowVolumeExpansion: true
 reclaimPolicy: Delete
 ```
 
-</div>
-
 - Name of the storage class. The persistent volume claim uses this storage class for provisioning the associated persistent volumes.
 
 - Select `pd-ssd`, `pd-standard`, or `hyperdisk-balanced`. The default is `pd-ssd`.
 
 ## VMware vSphere object definition
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-vsphere-storageclass.yaml
+**vsphere-storageclass.yaml**
 
 </div>
 
@@ -388,8 +368,6 @@ metadata:
 provisioner: csi.vsphere.vmware.com
 ```
 
-</div>
-
 - Name of the storage class. The persistent volume claim uses this storage class for provisioning the associated persistent volumes.
 
 - For more information about using VMware vSphere CSI with OpenShift Container Platform, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/volumes/#vsphere-csi-migration).
@@ -400,29 +378,15 @@ Use the following procedure to change the default storage class.
 
 For example, if you have two defined storage classes, `gp3` and `standard`, and you want to change the default storage class from `gp3` to `standard`.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the cluster with cluster-admin privileges.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To change the default storage class:
-
-</div>
 
 1.  List the storage classes:
 
@@ -430,11 +394,9 @@ To change the default storage class:
     $ oc get storageclass
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -443,8 +405,6 @@ To change the default storage class:
     gp3 (default)        ebs.csi.aws.com
     standard             ebs.csi.aws.com
     ```
-
-    </div>
 
     - `(default)` indicates the default storage class.
 
@@ -456,10 +416,13 @@ To change the default storage class:
     $ oc patch storageclass standard -p '{"metadata": {"annotations": {"storageclass.kubernetes.io/is-default-class": "true"}}}'
     ```
 
-    > [!NOTE]
-    > You can have multiple default storage classes for a short time. However, you should ensure that only one default storage class exists eventually.
-    >
-    > With multiple default storage classes present, any persistent volume claim (PVC) requesting the default storage class (`pvc.spec.storageClassName`=nil) gets the most recently created default storage class, regardless of the default status of that storage class, and the administrator receives an alert in the alerts dashboard that there are multiple default storage classes, `MultipleDefaultStorageClasses`.
+    <div class="note">
+
+    You can have multiple default storage classes for a short time. However, you should ensure that only one default storage class exists eventually.
+
+    With multiple default storage classes present, any persistent volume claim (PVC) requesting the default storage class (`pvc.spec.storageClassName`=nil) gets the most recently created default storage class, regardless of the default status of that storage class, and the administrator receives an alert in the alerts dashboard that there are multiple default storage classes, `MultipleDefaultStorageClasses`.
+
+    </div>
 
 3.  Remove the default storage class setting from the old default storage class.
 
@@ -475,11 +438,9 @@ To change the default storage class:
     $ oc get storageclass
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -488,5 +449,3 @@ To change the default storage class:
     gp3                  ebs.csi.aws.com
     standard (default)   ebs.csi.aws.com
     ```
-
-    </div>

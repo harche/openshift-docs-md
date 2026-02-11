@@ -2,14 +2,6 @@
 
 If the File Integrity Operator detects a change that was planned, it might be required to reinitialize the database.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Annotate the `FileIntegrity` custom resource (CR) with `file-integrity.openshift.io/re-init`:
 
   ``` terminal
@@ -18,11 +10,9 @@ Procedure
 
   The old database and log files are backed up and a new database is initialized. The old database and logs are retained on the nodes under `/etc/kubernetes`, as seen in the following output from a pod spawned using `oc debug`:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -36,11 +26,7 @@ Procedure
   -rw-r--r--. 1 root root       0 Sep 17 15:07 /host/etc/kubernetes/aide.log.backup-20200917T15_07_55
   ```
 
-  </div>
-
   To provide some permanence of record, the resulting config maps are not owned by the `FileIntegrity` object, so manual cleanup is necessary. As a result, any previous integrity failures would still be visible in the `FileIntegrityNodeStatus` object.
-
-</div>
 
 # Machine config integration
 
@@ -70,11 +56,9 @@ To view logs of a single AIDE pod, call `oc logs` on one of the pods.
 $ oc -n openshift-file-integrity logs pod/aide-worker-fileintegrity-mr8x6
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -85,7 +69,5 @@ initialization finished
 running aide check
 ...
 ```
-
-</div>
 
 The config maps created by the AIDE daemon are not retained and are deleted after the File Integrity Operator processes them. However, on failure and error, the contents of these config maps are copied to the config map that the `FileIntegrityNodeStatus` object points to.

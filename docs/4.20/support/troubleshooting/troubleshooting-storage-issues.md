@@ -6,11 +6,9 @@ However, mounting on a new node is not possible because the failed node is unabl
 
 A multi-attach error is reported:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -19,19 +17,13 @@ Unable to attach or mount volumes: unmounted volumes=[sso-mysql-pvol], unattache
 Multi-Attach error for volume "pvc-8837384d-69d7-40b2-b2e6-5df86943eef9" Volume is already used by pod(s) sso-mysql-1-ns6b4
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To resolve the multi-attach issue, use one of the following solutions:
-
-</div>
 
 - Enable multiple attachments by using RWX volumes.
 

@@ -10,8 +10,11 @@ You create a custom layered image by using a Containerfile and applying it to no
 
 With image mode for OpenShift, you can install RPMs into your base image, and your custom content will be booted alongside RHCOS. The Machine Config Operator (MCO) can roll out these custom layered images and monitor these custom containers in the same way it does for the default RHCOS image. Image mode for OpenShift gives you greater flexibility in how you manage your RHCOS nodes.
 
-> [!IMPORTANT]
-> Installing realtime kernel and extensions RPMs as custom layered content is not recommended. This is because these RPMs can conflict with RPMs installed by using a machine config. If there is a conflict, the MCO enters a `degraded` state when it tries to install the machine config RPM. You need to remove the conflicting extension from your machine config before proceeding.
+<div class="important">
+
+Installing realtime kernel and extensions RPMs as custom layered content is not recommended. This is because these RPMs can conflict with RPMs installed by using a machine config. If there is a conflict, the MCO enters a `degraded` state when it tries to install the machine config RPM. You need to remove the conflicting extension from your machine config before proceeding.
+
+</div>
 
 When you apply the custom layered image to your cluster, you assume the responsibility for the package you applied with the custom layered image and any issues that might arise with the package.
 
@@ -23,8 +26,11 @@ With [on-cluster image mode](../machine_configuration/mco-coreos-layering.xml#co
 Out-of-cluster image mode
 With [out-of-cluster image mode](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring_mco-coreos-layering), you create a Containerfile that references an OpenShift Container Platform image and the RPM that you want to apply, build the layered image in your own environment, and push the image to your repository. Then, in your cluster, create a `MachineConfig` object for the targeted node pool that points to the new image. The Machine Config Operator overrides the base RHCOS image, as specified by the `osImageURL` value in the associated machine config, and boots the new image.
 
-> [!IMPORTANT]
-> For both methods, use the same base RHCOS image installed on the rest of your cluster. Use the `oc adm release info --image-for rhel-coreos` command to obtain the base image used in your cluster.
+<div class="important">
+
+For both methods, use the same base RHCOS image installed on the rest of your cluster. Use the `oc adm release info --image-for rhel-coreos` command to obtain the base image used in your cluster.
+
+</div>
 
 # Example Containerfiles
 
@@ -32,16 +38,17 @@ Image mode for OpenShift allows you to use the following types of images to crea
 
 - **OpenShift Container Platform Hotfixes**. You can work with Customer Experience and Engagement (CEE) to obtain and apply [Hotfix packages](https://access.redhat.com/solutions/2996001) on top of your RHCOS image. In some instances, you might want a bug fix or enhancement before it is included in an official OpenShift Container Platform release. Image mode for OpenShift allows you to easily add the Hotfix before it is officially released and remove the Hotfix when the underlying RHCOS image incorporates the fix.
 
-  > [!IMPORTANT]
-  > Some Hotfixes require a Red Hat Support Exception and are outside of the normal scope of OpenShift Container Platform support coverage or life cycle policies.
+  <div class="important">
+
+  Some Hotfixes require a Red Hat Support Exception and are outside of the normal scope of OpenShift Container Platform support coverage or life cycle policies.
+
+  </div>
 
   Hotfixes are provided to you based on [Red Hat Hotfix policy](https://access.redhat.com/solutions/2996001). Apply it on top of the base image and test that new custom layered image in a non-production environment. When you are satisfied that the custom layered image is safe to use in production, you can roll it out on your own schedule to specific node pools. For any reason, you can easily roll back the custom layered image and return to using the default RHCOS.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example on-cluster Containerfile to apply a Hotfix
+  **Example on-cluster Containerfile to apply a Hotfix**
 
   </div>
 
@@ -60,13 +67,9 @@ Image mode for OpenShift allows you to use the following types of images to crea
         ostree container commit
   ```
 
-  </div>
+  <div class="formalpara-title">
 
-  <div class="formalpara">
-
-  <div class="title">
-
-  Example out-of-cluster Containerfile to apply a Hotfix
+  **Example out-of-cluster Containerfile to apply a Hotfix**
 
   </div>
 
@@ -83,15 +86,11 @@ Image mode for OpenShift allows you to use the following types of images to crea
       ostree container commit
   ```
 
-  </div>
-
 - **RHEL packages**. You can download Red Hat Enterprise Linux (RHEL) packages from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/479/ver=/rhel---9/9.1/x86_64/packages), such as chrony, firewalld, and iputils.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example out-of-cluster Containerfile to apply the rsyslog utility
+  **Example out-of-cluster Containerfile to apply the rsyslog utility**
 
   </div>
 
@@ -105,8 +104,6 @@ Image mode for OpenShift allows you to use the following types of images to crea
   ADD remote.conf /etc/rsyslog.d/remote.conf
   ```
 
-  </div>
-
 - **Third-party packages**. You can download and install RPMs from third-party organizations, such as the following types of packages:
 
   - Bleeding edge drivers and kernel enhancements to improve performance or add capabilities.
@@ -119,11 +116,9 @@ Image mode for OpenShift allows you to use the following types of images to crea
 
   - SSH Key management packages.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example on-cluster Containerfile to apply a third-party package from EPEL
+  **Example on-cluster Containerfile to apply a third-party package from EPEL**
 
   </div>
 
@@ -137,13 +132,9 @@ Image mode for OpenShift allows you to use the following types of images to crea
       ostree container commit
   ```
 
-  </div>
+  <div class="formalpara-title">
 
-  <div class="formalpara">
-
-  <div class="title">
-
-  Example out-of-cluster Containerfile to apply a third-party package from EPEL
+  **Example out-of-cluster Containerfile to apply a third-party package from EPEL**
 
   </div>
 
@@ -157,16 +148,12 @@ Image mode for OpenShift allows you to use the following types of images to crea
       dnf clean all && \
       ostree container commit
   ```
-
-  </div>
 
   This Containerfile installs the RHEL fish program. Because fish requires additional RHEL packages, the image must be built on an entitled RHEL host. For RHEL entitlements to work, you must copy the `etc-pki-entitlement` secret into the `openshift-machine-config-operator` namespace.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example on-cluster Containerfile to apply a third-party package that has RHEL dependencies
+  **Example on-cluster Containerfile to apply a third-party package that has RHEL dependencies**
 
   </div>
 
@@ -180,13 +167,9 @@ Image mode for OpenShift allows you to use the following types of images to crea
       ostree container commit
   ```
 
-  </div>
+  <div class="formalpara-title">
 
-  <div class="formalpara">
-
-  <div class="title">
-
-  Example out-of-cluster Containerfile to apply a third-party package that has RHEL dependencies
+  **Example out-of-cluster Containerfile to apply a third-party package that has RHEL dependencies**
 
   </div>
 
@@ -200,8 +183,6 @@ Image mode for OpenShift allows you to use the following types of images to crea
       dnf clean all && \
       ostree container commit
   ```
-
-  </div>
 
 After you create the machine config, the Machine Config Operator (MCO) performs the following steps:
 
@@ -215,8 +196,11 @@ After you create the machine config, the Machine Config Operator (MCO) performs 
 
 5.  Reboots the node using the new image.
 
-> [!IMPORTANT]
-> It is strongly recommended that you test your images outside of your production environment before rolling out to your cluster.
+<div class="important">
+
+It is strongly recommended that you test your images outside of your production environment before rolling out to your cluster.
+
+</div>
 
 # About on-cluster image mode
 
@@ -224,11 +208,9 @@ You can use the image mode for OpenShift on-cluster build process to apply a cus
 
 When you create the object, the Machine Config Operator (MCO) creates a `MachineOSBuild` object and a builder pod. The process also creates transient objects, such as config maps, which are cleaned up after the build is complete. The `MachineOSBuild` object and the associated `builder-*` pod use the same naming scheme, `<MachineOSConfig_CR_name>-<hash>`, for example:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `MachineOSBuild` object
+**Example `MachineOSBuild` object**
 
 </div>
 
@@ -237,13 +219,9 @@ NAME                                             PREPARED   BUILDING   SUCCEEDED
 layered-image-c8765e26ebc87e1e17a7d6e0a78e8bae   False      False      True        False         False
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example builder pod
+**Example builder pod**
 
 </div>
 
@@ -252,17 +230,13 @@ NAME                                                      READY   STATUS      RE
 build-layered-image-c8765e26ebc87e1e17a7d6e0a78e8bae      2/2     Running     0               11m
 ```
 
-</div>
-
 You should not need to interact with these new objects or the `machine-os-builder` pod. However, you can use all of these resources for troubleshooting, if necessary.
 
 When the build is complete, the MCO pushes the new custom layered image to your repository and rolls the image out to the nodes in the associated machine config pool. You can see the digested image pull spec for the new custom layered image in the `MachineOSConfig` object. This is now the active image pull spec for this `MachineOSConfig`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example digested image pull spec
+**Example digested image pull spec**
 
 </div>
 
@@ -280,25 +254,27 @@ status:
   currentImagePullSpec: image-registry.openshift-image-registry.svc:5000/openshift-machine-config-operator/os-image@sha256:3c8fc667adcb432ce0c83581f16086afec08a961dd28fed69bb6bad6db0a0754
 ```
 
-</div>
+<div class="tip">
 
-> [!TIP]
-> You can test a `MachineOSBuild` object to make sure it builds correctly without rolling out the custom layered image to active nodes by using a custom machine config pool that contains non-production nodes. Alternatively, you can use a custom machine config pool that has no nodes. The `MachineOSBuild` object builds even if there are no nodes for the MCO to deploy the custom layered image onto.
+You can test a `MachineOSBuild` object to make sure it builds correctly without rolling out the custom layered image to active nodes by using a custom machine config pool that contains non-production nodes. Alternatively, you can use a custom machine config pool that has no nodes. The `MachineOSBuild` object builds even if there are no nodes for the MCO to deploy the custom layered image onto.
+
+</div>
 
 You can apply a custom layered image to any machine config pool in your cluster, including the control plane, worker, or custom pools.
 
-> [!NOTE]
-> For single-node OpenShift clusters, you can apply a custom layered image to the control plane node only.
+<div class="note">
+
+For single-node OpenShift clusters, you can apply a custom layered image to the control plane node only.
+
+</div>
 
 Making certain changes to a `MachineOSConfig` object triggers an automatic rebuild of the associated custom layered image. You can mitigate the effects of the rebuild by pausing the machine config pool where the custom layered image is applied as described in "Pausing the machine config pools". While the pools are paused, the MCO does not roll out the newly built image to the nodes after the build is complete. However, the build runs regardless of whether the pool is paused or not. For example, if you want to remove and replace a `MachineOSCOnfig` object, pausing the machine config pools before making the change prevents the MCO from reverting the associated nodes to the base image, reducing the number of reboots needed.
 
 When a machine config pool is paused, the `oc get machineconfigpools` reports the following status:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -308,19 +284,15 @@ master    rendered-master-a0b404d061a6183cc36d302363422aba    True      False   
 worker    rendered-worker-221507009cbcdec0eec8ab3ccd789d18    False     False      False      2              2                   2                     0                      4h14m
 ```
 
-</div>
-
 - The `worker` machine config pool is paused, as indicated by the three `False` statuses and the `READYMACHINECOUNT` at `0`.
 
 After the changes have been rolled out, you can unpause the machine config pool.
 
 In the case of a build failure, for example due to network issues or an invalid secret, the MCO retries the build three additional times before the job fails. The MCO creates a different build pod for each build attempt. Note that the MCO automatically removes these build pods after a short period of time. Also, the affected machine config pool reports a build failure through the `ImageBuildDegraded` status condition. You can use the build pod logs to troubleshoot any build failures.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example failed `MachineOSBuild` object
+**Example failed `MachineOSBuild` object**
 
 </div>
 
@@ -328,8 +300,6 @@ Example failed `MachineOSBuild` object
 NAME                                             PREPARED   BUILDING   SUCCEEDED   INTERRUPTED   FAILED   AGE
 layered-image-c8765e26ebc87e1e17a7d6e0a78e8bae   False      False      False        False        True     12m
 ```
-
-</div>
 
 You can manually rebuild your custom layered image by either modifying your `MachineOSConfig` object or applying an annotation to the `MachineOSConfig` object. For more information, see "Rebuilding an on-cluster custom layered image".
 
@@ -369,13 +339,7 @@ Note the following limitations when working with the on-cluster layering feature
 
 - The images used in creating custom layered images take up space in your push registry. Always be aware of the free space in your registry and prune the images as needed. You can automatically remove an on-cluster custom layered image from the repository by deleting the `MachineOSBuild` object that created the image. Note that the credentials provided by the registry push secret must also grant permission to delete an image from the registry. For more information, see "Removing an on-cluster custom layered image".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Using the on-cluster image mode to apply a custom layered image](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring-on-proc_mco-coreos-layering)
 
@@ -388,8 +352,6 @@ Additional resources
 - [Reverting an on-cluster custom layered image](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring-on-revert_mco-coreos-layering)
 
 - [Modifying a custom layered image](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring-on-modifying_mco-coreos-layering)
-
-</div>
 
 ## Using the on-cluster image mode to apply a custom layered image
 
@@ -405,36 +367,21 @@ To apply a custom layered image to your cluster by using the on-cluster build pr
 
 You can create only one `MachineOSConfig` CR for each machine config pool.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have the pull secret in the `openshift-machine-config-operator` namespace that the Machine Config Operator (MCO) needs in order to pull the base operating system image from your repository. By default, the MCO uses the cluster global pull secret, which it synchronizes into the `openshift-machine-config-operator` namespace. You can add your pull secret to the OpenShift Container Platform global pull secret or you can use a different pull secret. For information on modifying the global pull secret, see "Updating the global cluster pull secret".
 
 - You have the push secret of the registry that the MCO needs to push the new custom layered image to. The credentials provided by the secret must also grant permission to delete an image from the registry.
 
-  > [!NOTE]
-  > In a disconnected environment, ensure that the disconnected cluster can access the registry where you want to push the image. Image mirroring applies only to pulling images.
+  <div class="note">
+
+  In a disconnected environment, ensure that the disconnected cluster can access the registry where you want to push the image. Image mirroring applies only to pulling images.
+
+  </div>
 
 - You have the pull secret that your nodes need to pull the new custom layered image from your registry. This should be a different secret than the one used to push the image to the repository.
 
 - You are familiar with how to configure a Containerfile. Instructions on how to create a Containerfile are beyond the scope of this documentation.
 
 - Optional: You have a separate machine config pool for the nodes where you want to apply the custom layered image. One benefit to having a custom machine config pool for the nodes it that you can easily revert to the base image, if needed. For more information, see "Reverting an on-cluster layered node".
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `MachineOSconfig` object:
 
@@ -498,11 +445,9 @@ Procedure
 
         When the `SUCCEEDED` value is `True`, the build is complete:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output showing that the `MachineOSBuild` object is ready
+        **Example output showing that the `MachineOSBuild` object is ready**
 
         </div>
 
@@ -510,8 +455,6 @@ Procedure
         NAME                                                     PREPARED   BUILDING   SUCCEEDED   INTERRUPTED   FAILED   AGE
         layered-image-ad5a3cad36303c363cf458ab0524e7c0-builder   False      False      True        False         False    43s
         ```
-
-        </div>
 
     2.  Edit the nodes where you want to deploy the custom layered image by adding a label for the machine config pool you specified in the `MachineOSConfig` object:
 
@@ -526,15 +469,7 @@ Procedure
 
         When you save the changes, the MCO drains, cordons, and reboots the nodes. After the reboot, the node uses the new custom layered image.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the new pods are ready by running the following command:
 
@@ -542,11 +477,9 @@ Verification
     $ oc get pods -n openshift-machine-config-operator
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -556,8 +489,6 @@ Verification
     # ...
     machine-os-builder-6fb66cfb99-zcpvq                                     1/1     Running   0          2m42s
     ```
-
-    </div>
 
     - This is the build pod where the custom layered image is building, named in the `build-<MachineOSConfig_CR_name>-<hash>` format.
 
@@ -569,11 +500,9 @@ Verification
     $ oc get machineconfigpool <mcp_name> -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -598,8 +527,6 @@ Verification
         type: ImageBuildDegraded
     ```
 
-    </div>
-
     - Indicates whether the custom layered image build failed. If `False`, the build succeeded. If `True`, the build failed. You can use the build pod logs to troubleshoot any build failures.
 
 3.  Verify the current stage of your layered build by running the following command:
@@ -608,11 +535,9 @@ Verification
     $ oc get machineosbuilds
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -620,8 +545,6 @@ Verification
     NAME                                             PREPARED   BUILDING   SUCCEEDED   INTERRUPTED   FAILED   AGE
     layered-image-ad5a3cad36303c363cf458ab0524e7c0   False      True       False       False         False    12m
     ```
-
-    </div>
 
     - The `MachineOSBuild` is named in the `<MachineOSConfig_CR_name>-<hash>` format.
 
@@ -631,11 +554,9 @@ Verification
     $ oc describe machineosconfig <object_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example digested image pull spec
+    **Example digested image pull spec**
 
     </div>
 
@@ -652,8 +573,6 @@ Verification
     status:
       currentImagePullSpec: image-registry.openshift-image-registry.svc:5000/openshift-machine-config-operator/os-image@sha256:3c8fc667adcb432ce0c83581f16086afec08a961dd28fed69bb6bad6db0a0754
     ```
-
-    </div>
 
     - Digested image pull spec for the new custom layered image.
 
@@ -677,11 +596,9 @@ Verification
         sh-5.1# rpm-ostree status
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -693,27 +610,13 @@ Verification
                           Version: 419.94.202502100215-0 (2025-02-12T19:20:44Z)
         ```
 
-        </div>
-
         - Digested image pull spec for the new custom layered image.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Updating the global cluster pull secret](../openshift_images/managing_images/using-image-pull-secrets.xml#images-update-global-pull-secret_using-image-pull-secrets)
 
 - [Reverting an on-cluster custom layered image](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring-on-revert_mco-coreos-layering)
 
 - [Enabling features using feature gates](../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
-
-</div>
 
 ## Modifying an on-cluster custom layered image
 
@@ -725,11 +628,9 @@ Making certain changes to a `MachineOSConfig` object triggers an automatic rebui
 
 When a machine config pool is paused, the `oc get machineconfigpools` reports the following status:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -739,31 +640,13 @@ master    rendered-master-a0b404d061a6183cc36d302363422aba    True      False   
 worker    rendered-worker-221507009cbcdec0eec8ab3ccd789d18    False     False      False      2              2                   2                     0                      4h14m
 ```
 
-</div>
-
 - The `worker` machine config pool is paused, as indicated by the three `False` statuses and the `READYMACHINECOUNT` at `0`.
 
 After the changes have been rolled out, you can unpause the machine config pool.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have opted in to on-cluster image mode by creating a `MachineOSConfig` object.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Modify an object to update the associated custom layered image:
 
@@ -808,27 +691,15 @@ Procedure
 
         When you save the changes, the MCO drains, cordons, and reboots the nodes. After the reboot, the node uses the cluster base Red Hat Enterprise Linux CoreOS (RHCOS) image. If your changes modify a secret only, no new build is triggered and no reboot is performed.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 1.  Verify that the new `MachineOSBuild` object was created by using the following command:
 
     ``` terminal
     $ oc get machineosbuild
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -838,8 +709,6 @@ Verification
     layered-image-f91f0f5593dd337d89bf4d38c877590b   False      True       False       False         False    2m41s
     ```
 
-    </div>
-
     - The value `True` in the `BUILDING` column indicates that the `MachineOSBuild` object is building. When the `SUCCEEDED` column reports `True`, the build is complete.
 
 2.  You can watch as the new machine config is rolled out to the nodes by using the following command:
@@ -848,11 +717,9 @@ Verification
     $ oc get machineconfigpools
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -861,8 +728,6 @@ Verification
     master    rendered-master-a0b404d061a6183cc36d302363422aba    True      False      False      3              3                   3                     0                      3h38m
     worker    rendered-worker-221507009cbcdec0eec8ab3ccd789d18    False     True       False      2              2                   2                     0                      3h38m
     ```
-
-    </div>
 
     - The value `FALSE` in the `UPDATED` column indicates that the `MachineOSBuild` object is building. When the `UPDATED` column reports `FALSE`, the new custom layered image has rolled out to the nodes.
 
@@ -886,11 +751,9 @@ Verification
         sh-5.1# rpm -qa |grep rng-tools
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -898,17 +761,13 @@ Verification
         rng-tools-6.17-3.fc41.x86_64
         ```
 
-        </div>
-
         ``` terminal
         sh-5.1# rngd -v
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -916,21 +775,7 @@ Verification
         rngd 6.16
         ```
 
-        </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Pausing the machine config pools](../updating/updating_a_cluster/update-using-custom-machine-config-pools.xml#update-using-custom-machine-config-pools-pause_update-using-custom-machine-config-pools)
-
-</div>
 
 ## Rebuilding an on-cluster custom layered image
 
@@ -938,25 +783,9 @@ In situations where you want to rebuild an on-cluster custom layered image, you 
 
 After you add the annotation, the Machine Config Operator (MCO) deletes the current `MachineOSBuild` object and creates a new one in its place. When the build process is complete, the MCO automatically removes the annotation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have opted-in to on-cluster image mode by creating a `MachineOSConfig` object.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Edit the `MachineOSConfig` object to add the `machineconfiguration.openshift.io/rebuild` annotation by using the following command:
 
@@ -964,11 +793,9 @@ Procedure
   $ oc edit MachineOSConfig <object_name>
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example `MachineOSConfig` object
+  **Example `MachineOSConfig` object**
 
   </div>
 
@@ -984,19 +811,9 @@ Procedure
   # ...
   ```
 
-  </div>
-
   - Add this annotation to trigger a rebuild of the custom layered image.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - Check that the `MachineOSBuild` object is building by using the following command:
 
@@ -1004,11 +821,9 @@ Verification
   $ oc get machineosbuild
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -1016,8 +831,6 @@ Verification
   NAME                                             PREPARED   BUILDING   SUCCEEDED   INTERRUPTED   FAILED   AGE
   layered-image-d6b929a29c6dbfa8e4007c8069a2fd08   False      True       False       False         False    2m41s
   ```
-
-  </div>
 
   - The value `True` in the `BUILDING` column indicates that the `MachineOSBuild` object is building.
 
@@ -1027,11 +840,9 @@ Verification
   $ oc edit MachineOSConfig <object_name>
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example `MachineOSConfig` object
+  **Example `MachineOSConfig` object**
 
   </div>
 
@@ -1046,24 +857,15 @@ Verification
   # ...
   ```
 
-  </div>
-
-</div>
-
 ## Reverting an on-cluster custom layered image
 
 If you applied an on-cluster layered image to a node in a custom machine config pool (MCP), you can remove the custom layered image from the node and revert to the base image.
 
 To revert the node, remove the node from the custom MCP by removing the custom machine config pool label from the node. After you remove the label, the Machine Config Operator (MCO) reboots the node with the cluster base Red Hat Enterprise Linux CoreOS (RHCOS) image, overriding the custom layered image.
 
-> [!IMPORTANT]
-> Before you remove the label, make sure the node is associated with another MCP.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Before you remove the label, make sure the node is associated with another MCP.
 
 </div>
 
@@ -1071,15 +873,7 @@ Prerequisites
 
 - You have applied a `MachineOSConfig` object to a node in a custom machine config pool.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Remove the label from the node by using the following command:
 
@@ -1089,15 +883,7 @@ Procedure
 
   When you save the changes, the MCO drains, cordons, and reboots the nodes. After the reboot, the node uses the cluster base Red Hat Enterprise Linux CoreOS (RHCOS) image.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - Verify that the custom layered image is removed by performing any of the following checks:
 
@@ -1107,11 +893,9 @@ Verification
     $ oc get mcp
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample output
+    **Sample output**
 
     </div>
 
@@ -1121,8 +905,6 @@ Verification
     master    rendered-master-50d7bc27ee8b9ca2250383f0647ade7f    True      False      False      3              3                   3                     0                      5h39m
     worker    rendered-worker-e8c8bc1de69777325003e80bc0c04b82    True      False      False      3              3                   3                     0                      5h39m
     ```
-
-    </div>
 
     - The custom machine config pool no longer has any nodes.
 
@@ -1134,11 +916,9 @@ Verification
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1151,8 +931,6 @@ Verification
     ip-10-0-211-49.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.33.4
     ip-10-0-218-151.us-west-1.compute.internal   Ready                      worker                 31m   v1.33.4
     ```
-
-    </div>
 
   - When the node is back in the `Ready` state, check that the node is using the base image:
 
@@ -1174,11 +952,9 @@ Verification
         sh-4.4# rpm-ostree status
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1187,10 +963,6 @@ Verification
             * ostree-unverified-registry:registry.build05.ci.openshift.org/ci-ln-qd0hmqk/stable@sha256:a8bd32573f787f6d1c23e1d669abbefd1e31339826d06e750c0ca632ad6c414f
                                Digest: sha256:a8bd32573f787f6d1c23e1d669abbefd1e31339826d06e750c0ca632ad6c414f
                               Version: 419.96.202501202201-0 (2025-01-20T22:06:13Z)
-
-        </div>
-
-</div>
 
 ## Removing an on-cluster custom layered image
 
@@ -1208,29 +980,25 @@ When you create the object, the Machine Config Operator (MCO) reboots those node
 
 To apply a custom layered image to your cluster, you must have the custom layered image in a repository that your cluster can access. Then, create a `MachineConfig` object that points to the custom layered image. You need a separate `MachineConfig` object for each machine config pool that you want to configure.
 
-> [!IMPORTANT]
-> As soon as you apply an out-of-cluster custom image to your cluster, you effectively *take ownership* of your custom layered images and those nodes. OpenShift Container Platform no longer automatically updates any node that uses the custom layered image. You become responsible for maintaining and updating your nodes as appropriate. If you roll back the custom layer, OpenShift Container Platform resumes automatically updating the node. See the "Updating with a RHCOS custom layered image" for important information about updating nodes that use a custom layered image.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+As soon as you apply an out-of-cluster custom image to your cluster, you effectively *take ownership* of your custom layered images and those nodes. OpenShift Container Platform no longer automatically updates any node that uses the custom layered image. You become responsible for maintaining and updating your nodes as appropriate. If you roll back the custom layer, OpenShift Container Platform resumes automatically updating the node. See the "Updating with a RHCOS custom layered image" for important information about updating nodes that use a custom layered image.
 
 </div>
 
 - You must create a custom layered image that is based on an OpenShift Container Platform image digest, not a tag.
 
-  > [!NOTE]
-  > You should use the same base RHCOS image that is installed on the rest of your cluster. Use the `oc adm release info --image-for rhel-coreos` command to obtain the base image being used in your cluster.
+  <div class="note">
+
+  You should use the same base RHCOS image that is installed on the rest of your cluster. Use the `oc adm release info --image-for rhel-coreos` command to obtain the base image being used in your cluster.
+
+  </div>
 
   For example, the following Containerfile creates a custom layered image from an OpenShift Container Platform 4.17 image and overrides the kernel package with one from CentOS 9 Stream:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example Containerfile for a custom layer image
+  **Example Containerfile for a custom layer image**
 
   </div>
 
@@ -1243,28 +1011,19 @@ Prerequisites
       ostree container commit
   ```
 
-  </div>
-
   - Specifies the RHCOS base image of your cluster.
 
   - Replaces the kernel packages.
 
-    > [!NOTE]
-    > Instructions on how to create a Containerfile are beyond the scope of this documentation.
+    <div class="note">
+
+    Instructions on how to create a Containerfile are beyond the scope of this documentation.
+
+    </div>
 
 - Because the process for building a custom layered image is performed outside of the cluster, you must use the `--authfile /path/to/pull-secret` option with Podman or Buildah. Alternatively, to have the pull secret read by these tools automatically, you can add it to one of the default file locations: `~/.docker/config.json`, `$XDG_RUNTIME_DIR/containers/auth.json`, `~/.docker/config.json`, or `~/.dockercfg`. Refer to the `containers-auth.json` man page for more information.
 
 - You must push the custom layered image to a repository that your cluster can access.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a machine config file.
 
@@ -1291,22 +1050,19 @@ Procedure
         $ oc create -f <file_name>.yaml
         ```
 
-        > [!IMPORTANT]
-        > It is strongly recommended that you test your images outside of your production environment before rolling out to your cluster.
+        <div class="important">
 
-</div>
+        It is strongly recommended that you test your images outside of your production environment before rolling out to your cluster.
 
-<div class="formalpara">
+        </div>
 
-<div class="title">
+<div class="formalpara-title">
 
-Verification
+**Verification**
 
 </div>
 
 You can verify that the custom layered image is applied by performing any of the following checks:
-
-</div>
 
 1.  Check that the worker machine config pool has rolled out with the new machine config:
 
@@ -1316,11 +1072,9 @@ You can verify that the custom layered image is applied by performing any of the
         $ oc get mc
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Sample output
+        **Sample output**
 
         </div>
 
@@ -1342,8 +1096,6 @@ You can verify that the custom layered image is applied by performing any of the
         rendered-worker-5de4837625b1cbc237de6b22bc0bc873   5bdb57489b720096ef912f738b46330a8f577803   3.5.0             4s
         ```
 
-        </div>
-
         - New machine config
 
         - New rendered machine config
@@ -1354,11 +1106,9 @@ You can verify that the custom layered image is applied by performing any of the
         $ oc describe mc rendered-worker-5de4837625b1cbc237de6b22bc0bc873
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1374,19 +1124,15 @@ You can verify that the custom layered image is applied by performing any of the
           Os Image URL: quay.io/my-registry/custom-image@sha256...
         ```
 
-        </div>
-
     3.  Check that the associated machine config pool is updated with the new machine config:
 
         ``` terminal
         $ oc get mcp
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Sample output
+        **Sample output**
 
         </div>
 
@@ -1396,8 +1142,6 @@ You can verify that the custom layered image is applied by performing any of the
         worker   rendered-worker-5de4837625b1cbc237de6b22bc0bc873   True      False      False      3              0                   0                     0                      39m
         ```
 
-        </div>
-
         - When the `UPDATING` field is `True`, the machine config pool is updating with the new machine config. In this case, you will not see the new machine config listed in the output. When the field becomes `False`, the worker machine config pool has rolled out to the new machine config.
 
     4.  Check the nodes to see that scheduling on the nodes is disabled. This indicates that the change is being applied:
@@ -1406,11 +1150,9 @@ You can verify that the custom layered image is applied by performing any of the
         $ oc get nodes
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1423,8 +1165,6 @@ You can verify that the custom layered image is applied by performing any of the
         ip-10-0-211-49.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.33.4
         ip-10-0-218-151.us-west-1.compute.internal   Ready                      worker                 31m   v1.33.4
         ```
-
-        </div>
 
 2.  When the node is back in the `Ready` state, check that the node is using the custom layered image:
 
@@ -1446,11 +1186,9 @@ You can verify that the custom layered image is applied by performing any of the
         sh-4.4# sudo rpm-ostree status
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1459,33 +1197,19 @@ You can verify that the custom layered image is applied by performing any of the
             * ostree-unverified-registry:quay.io/my-registry/...
                                Digest: sha256:...
 
-        </div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Additional resources
+**Additional resources**
 
 </div>
 
 [Updating with a RHCOS custom layered image](../machine_configuration/mco-coreos-layering.xml#coreos-layering-updating_mco-coreos-layering)
-
-</div>
 
 ## Reverting an out-of-cluster node
 
 You can revert an out-of-cluster custom layered image from the nodes in specific machine config pools. The Machine Config Operator (MCO) reboots those nodes with the cluster base Red Hat Enterprise Linux CoreOS (RHCOS) image, overriding the custom layered image.
 
 To remove a Red Hat Enterprise Linux CoreOS (RHCOS) custom layered image from your cluster, you need to delete the machine config that applied the image.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Delete the machine config that applied the custom layered image.
 
@@ -1495,19 +1219,13 @@ Procedure
 
   After deleting the machine config, the nodes reboot.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 You can verify that the custom layered image is removed by performing any of the following checks:
-
-</div>
 
 1.  Check that the worker machine config pool is updating with the previous machine config:
 
@@ -1515,11 +1233,9 @@ You can verify that the custom layered image is removed by performing any of the
     $ oc get mcp
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample output
+    **Sample output**
 
     </div>
 
@@ -1529,8 +1245,6 @@ You can verify that the custom layered image is removed by performing any of the
     worker   rendered-worker-6b000dbc31aaee63c6a2d56d04cd4c1b   False     True       False      3              0                   0                     0                      39m
     ```
 
-    </div>
-
     - When the `UPDATING` field is `True`, the machine config pool is updating with the previous machine config. When the field becomes `False`, the worker machine config pool has rolled out to the previous machine config.
 
 2.  Check the nodes to see that scheduling on the nodes is disabled. This indicates that the change is being applied:
@@ -1539,11 +1253,9 @@ You can verify that the custom layered image is removed by performing any of the
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1556,8 +1268,6 @@ You can verify that the custom layered image is removed by performing any of the
     ip-10-0-211-49.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.33.4
     ip-10-0-218-151.us-west-1.compute.internal   Ready                      worker                 31m   v1.33.4
     ```
-
-    </div>
 
 3.  When the node is back in the `Ready` state, check that the node is using the base image:
 
@@ -1579,11 +1289,9 @@ You can verify that the custom layered image is removed by performing any of the
         sh-5.1# sudo rpm-ostree status
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1591,8 +1299,6 @@ You can verify that the custom layered image is removed by performing any of the
             Deployments:
             * ostree-unverified-registry:podman pull quay.io/openshift-release-dev/ocp-release@sha256:e2044c3cfebe0ff3a99fc207ac5efe6e07878ad59fd4ad5e41f88cb016dacd73
                                Digest: sha256:e2044c3cfebe0ff3a99fc207ac5efe6e07878ad59fd4ad5e41f88cb016dacd73
-
-        </div>
 
 # Updating with a RHCOS custom layered image
 

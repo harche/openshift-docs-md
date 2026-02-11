@@ -20,14 +20,6 @@ You can enable preallocation for specific data volumes by including the `spec.pr
 
 Preallocation mode is supported for all CDI source types.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Specify the `spec.preallocation` field in the data volume manifest:
 
   ``` yaml
@@ -50,5 +42,3 @@ Procedure
   - All CDI source types support preallocation. However, preallocation is ignored for cloning operations.
 
   - Specify the URL of the data source in your registry.
-
-</div>

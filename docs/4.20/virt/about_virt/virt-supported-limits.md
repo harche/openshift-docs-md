@@ -17,30 +17,33 @@ The following maximums apply to virtual machines (VMs) running on OpenShift Virt
 | Single disk size    | 20 TB        | 100 TB            |
 | Hot-pluggable disks | 255 disks    | N/A               |
 
-> [!NOTE]
-> Each VM must have at least 512 MB of memory.
+<div class="note">
+
+Each VM must have at least 512 MB of memory.
+
+</div>
 
 ## Host maximums
 
 The following maximums apply to the OpenShift Container Platform hosts used for OpenShift Virtualization.
 
-| Objective (per host) | Tested limit | Theoretical limit |
-|----|----|----|
-| Logical CPU cores or threads | Same as Red Hat Enterprise Linux (RHEL) | N/A |
-| RAM | Same as RHEL | N/A |
+| Objective (per host)         | Tested limit                                                                        | Theoretical limit        |
+|------------------------------|-------------------------------------------------------------------------------------|--------------------------|
+| Logical CPU cores or threads | Same as Red Hat Enterprise Linux (RHEL)                                             | N/A                      |
+| RAM                          | Same as RHEL                                                                        | N/A                      |
 | Simultaneous live migrations | Defaults to 2 outbound migrations per node, and 5 concurrent migrations per cluster | Depends on NIC bandwidth |
-| Live migration bandwidth | No default limit | Depends on NIC bandwidth |
+| Live migration bandwidth     | No default limit                                                                    | Depends on NIC bandwidth |
 
 ## Cluster maximums
 
 The following maximums apply to objects defined in OpenShift Virtualization.
 
-| Objective (per cluster) | Tested limit | Theoretical limit |
-|----|----|----|
-| Number of attached PVs per node | N/A | CSI storage provider dependent |
-| Maximum PV size | N/A | CSI storage provider dependent |
-| Hosts | 500 hosts (100 or fewer recommended) <sup>\[1\]</sup> | Same as OpenShift Container Platform |
-| Defined VMs | 10,000 VMs <sup>\[2\]</sup> | Same as OpenShift Container Platform |
+| Objective (per cluster)         | Tested limit                                          | Theoretical limit                    |
+|---------------------------------|-------------------------------------------------------|--------------------------------------|
+| Number of attached PVs per node | N/A                                                   | CSI storage provider dependent       |
+| Maximum PV size                 | N/A                                                   | CSI storage provider dependent       |
+| Hosts                           | 500 hosts (100 or fewer recommended) <sup>\[1\]</sup> | Same as OpenShift Container Platform |
+| Defined VMs                     | 10,000 VMs <sup>\[2\]</sup>                           | Same as OpenShift Container Platform |
 
 1.  If you use more than 100 nodes, consider using Red Hat Advanced Cluster Management (RHACM) to manage multiple clusters instead of scaling out a single control plane. Larger clusters add complexity, require longer updates, and depending on node size and total object density, they can increase control plane stress.
 

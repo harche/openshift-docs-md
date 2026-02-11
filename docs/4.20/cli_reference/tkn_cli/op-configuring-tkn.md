@@ -4,31 +4,17 @@ Configure the Red Hat OpenShift Pipelines `tkn` CLI to enable tab completion.
 
 After you install the `tkn` CLI, you can enable tab completion to automatically complete `tkn` commands or suggest options when you press Tab.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have the `tkn` CLI tool installed.
 
 - You must have `bash-completion` installed on your local system.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 The following procedure enables tab completion for Bash.
-
-</div>
 
 1.  Save the Bash completion code to a file:
 

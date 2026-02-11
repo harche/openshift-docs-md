@@ -6,25 +6,7 @@ You can create restore hooks to run commands in a container in a pod by editing 
 
 OADP backs up application resources based on the type, namespace, or label. This means that you can view the resources after the backup is complete. Similarly, you can view the restored objects based on the namespace, persistent volume (PV), or label after a restore operation is complete. To preview the resources in advance, you can do a dry run of the backup and restore operations.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OADP Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To preview the resources included in the backup before running the actual backup, run the following command:
 
@@ -50,8 +32,11 @@ Procedure
 
     - Specify the name of the backup created to review the backup resources.
 
-      > [!IMPORTANT]
-      > The `velero restore create` command creates restore resources in the cluster. You must delete the resources created as part of the restore, after you review the resources.
+      <div class="important">
+
+      The `velero restore create` command creates restore resources in the cluster. You must delete the resources created as part of the restore, after you review the resources.
+
+      </div>
 
 4.  To know more details about the restore resources, run the following command:
 
@@ -61,21 +46,11 @@ Procedure
 
     - Specify the name of the restore.
 
-</div>
-
 # Creating a Restore CR
 
 You restore a `Backup` custom resource (CR) by creating a `Restore` CR.
 
 When you restore a stateful application that uses the `azurefile-csi` storage class, the restore operation remains in the `Finalizing` phase.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You must install the OpenShift API for Data Protection (OADP) Operator.
 
@@ -84,16 +59,6 @@ Prerequisites
 - You must have a Velero `Backup` CR.
 
 - The persistent volume (PV) capacity must match the requested size at backup time. Adjust the requested size if needed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `Restore` CR, as in the following example:
 
@@ -142,14 +107,15 @@ Procedure
     $ bash dc-restic-post-restore.sh -> dc-post-restore.sh
     ```
 
-    > [!NOTE]
-    > During the restore process, the OADP Velero plug-ins scale down the `DeploymentConfig` objects and restore the pods as standalone pods. This is done to prevent the cluster from deleting the restored `DeploymentConfig` pods immediately on restore and to allow the restore and post-restore hooks to complete their actions on the restored pods. The cleanup script shown below removes these disconnected pods and scales any `DeploymentConfig` objects back up to the appropriate number of replicas.
+    <div class="note">
 
-    <div class="formalpara">
+    During the restore process, the OADP Velero plug-ins scale down the `DeploymentConfig` objects and restore the pods as standalone pods. This is done to prevent the cluster from deleting the restored `DeploymentConfig` pods immediately on restore and to allow the restore and post-restore hooks to complete their actions on the restored pods. The cleanup script shown below removes these disconnected pods and scales any `DeploymentConfig` objects back up to the appropriate number of replicas.
 
-    <div class="title">
+    </div>
 
-    `dc-restic-post-restore.sh → dc-post-restore.sh` cleanup script
+    <div class="formalpara-title">
+
+    **`dc-restic-post-restore.sh → dc-post-restore.sh` cleanup script**
 
     </div>
 
@@ -200,10 +166,6 @@ Procedure
     done
     ```
 
-    </div>
-
-</div>
-
 # Creating restore hooks
 
 You create restore hooks to run commands in a container in a pod by editing the `Restore` custom resource (CR).
@@ -216,13 +178,7 @@ You can create two types of restore hooks:
 
 - An `exec` hook runs commands or scripts in a container of a restored pod.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Add a hook to the `spec.hooks` block of the `Restore` CR, as in the following example:
 
@@ -292,39 +248,30 @@ Procedure
 
     - `Fail`: No more restore hooks run in any container in any pod. The status of the `Restore` CR will be `PartiallyFailed`.
 
-</div>
+<div class="important">
 
-> [!IMPORTANT]
-> During a File System Backup (FSB) restore operation, a `Deployment` resource referencing an `ImageStream` is not restored properly. The restored pod that runs the FSB, and the `postHook` is terminated prematurely.
->
-> This happens because, during the restore operation, OpenShift controller updates the `spec.template.spec.containers[0].image` field in the `Deployment` resource with an updated `ImageStreamTag` hash. The update triggers the rollout of a new pod, terminating the pod on which `velero` runs the FSB and the post restore hook. For more information about image stream trigger, see "Triggering updates on image stream changes".
->
-> The workaround for this behavior is a two-step restore process:
->
-> 1.  First, perform a restore excluding the `Deployment` resources, for example:
->
->     ``` terminal
->     $ velero restore create <RESTORE_NAME> \
->       --from-backup <BACKUP_NAME> \
->       --exclude-resources=deployment.apps
->     ```
->
-> 2.  After the first restore is successful, perform a second restore by including these resources, for example:
->
->     ``` terminal
->     $ velero restore create <RESTORE_NAME> \
->       --from-backup <BACKUP_NAME> \
->       --include-resources=deployment.apps
->     ```
+During a File System Backup (FSB) restore operation, a `Deployment` resource referencing an `ImageStream` is not restored properly. The restored pod that runs the FSB, and the `postHook` is terminated prematurely.
 
-<div>
+This happens because, during the restore operation, OpenShift controller updates the `spec.template.spec.containers[0].image` field in the `Deployment` resource with an updated `ImageStreamTag` hash. The update triggers the rollout of a new pod, terminating the pod on which `velero` runs the FSB and the post restore hook. For more information about image stream trigger, see "Triggering updates on image stream changes".
 
-<div class="title">
+The workaround for this behavior is a two-step restore process:
 
-Additional resources
+1.  First, perform a restore excluding the `Deployment` resources, for example:
+
+    ``` terminal
+    $ velero restore create <RESTORE_NAME> \
+      --from-backup <BACKUP_NAME> \
+      --exclude-resources=deployment.apps
+    ```
+
+2.  After the first restore is successful, perform a second restore by including these resources, for example:
+
+    ``` terminal
+    $ velero restore create <RESTORE_NAME> \
+      --from-backup <BACKUP_NAME> \
+      --include-resources=deployment.apps
+    ```
 
 </div>
 
 - [Triggering updates on image stream changes](../../../openshift_images/triggering-updates-on-imagestream-changes.xml#triggering-updates-on-imagestream-changes)
-
-</div>

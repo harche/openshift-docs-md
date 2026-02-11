@@ -12,25 +12,7 @@ The QEMU guest agent takes a consistent snapshot by attempting to quiesce the VM
 
 The conditions under which a snapshot is taken are reflected in the snapshot indications that are displayed in the web console or CLI. If these conditions do not meet your requirements, try creating the snapshot again, or use an offline snapshot
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the VM by using a console or SSH.
 
@@ -46,23 +28,11 @@ Procedure
     $ systemctl enable --now qemu-guest-agent
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Run the following command to verify that `AgentConnected` is listed in the VM spec:
 
   ``` terminal
   $ oc get vm <vm_name>
   ```
-
-</div>
 
 ## Installing the QEMU guest agent on a Windows VM
 
@@ -76,27 +46,11 @@ Note that in a Windows guest operating system, quiescing also requires the Volum
 
 The conditions under which a snapshot is taken are reflected in the snapshot indications that are displayed in the web console or CLI. If these conditions do not meet your requirements, try creating the snapshot again or use an offline snapshot.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  In the Windows guest operating system, use the **File Explorer** to navigate to the `guest-agent` directory in the `virtio-win` CD drive.
 
 2.  Run the `qemu-ga-x86_64.msi` installer.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Obtain a list of network services by running the following command:
 
@@ -105,8 +59,6 @@ Verification
     ```
 
 2.  Verify that the output contains the `QEMU Guest Agent`.
-
-</div>
 
 # Installing VirtIO drivers on Windows VMs
 
@@ -124,26 +76,26 @@ After the drivers are installed, the `container-native-virtualization/virtio-win
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Driver name</th>
 <th style="text-align: left;">Hardware ID</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><strong>viostor</strong></p></td>
 <td style="text-align: left;"><p>VEN_1AF4&amp;DEV_1001<br />
 VEN_1AF4&amp;DEV_1042</p></td>
 <td style="text-align: left;"><p>The block driver. Sometimes labeled as an <strong>SCSI Controller</strong> in the <strong>Other devices</strong> group.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><strong>viorng</strong></p></td>
 <td style="text-align: left;"><p>VEN_1AF4&amp;DEV_1005<br />
 VEN_1AF4&amp;DEV_1044</p></td>
 <td style="text-align: left;"><p>The entropy source driver. Sometimes labeled as a <strong>PCI Device</strong> in the <strong>Other devices</strong> group.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><strong>NetKVM</strong></p></td>
 <td style="text-align: left;"><p>VEN_1AF4&amp;DEV_1000<br />
 VEN_1AF4&amp;DEV_1041</p></td>
@@ -152,17 +104,11 @@ VEN_1AF4&amp;DEV_1041</p></td>
 </tbody>
 </table>
 
+Supported drivers
+
 ## Attaching VirtIO container disk to Windows VMs during installation
 
 You must attach the VirtIO container disk to the Windows VM to install the necessary Windows drivers. This can be done during creation of the VM.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  When creating a Windows VM from a template, click **Customize VirtualMachine**.
 
@@ -172,31 +118,17 @@ Procedure
 
 4.  Click **Create VirtualMachine**.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Result
+**Result**
 
 </div>
 
 After the VM is created, the `virtio-win` SATA CD disk will be attached to the VM.
 
-</div>
-
 ## Attaching VirtIO container disk to an existing Windows VM
 
 You must attach the VirtIO container disk to the Windows VM to install the necessary Windows drivers. This can be done to an existing VM.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to the existing Windows VM, and click **Actions** → **Stop**.
 
@@ -208,34 +140,17 @@ Procedure
 
 5.  Start the VM, and connect to a graphical console.
 
-</div>
-
 ## Installing VirtIO drivers during Windows installation
 
 You can install the VirtIO drivers while installing Windows on a virtual machine (VM).
 
-> [!NOTE]
-> This procedure uses a generic approach to the Windows installation and the installation method might differ between versions of Windows. See the documentation for the version of Windows that you are installing.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+This procedure uses a generic approach to the Windows installation and the installation method might differ between versions of Windows. See the documentation for the version of Windows that you are installing.
 
 </div>
 
 - A storage device containing the `virtio` drivers must be attached to the VM.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the Windows operating system, use the `File Explorer` to navigate to the `virtio-win` CD drive.
 
@@ -249,21 +164,11 @@ Procedure
 
 5.  Reboot the VM.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Open the system disk on the PC. This is typically `C:`.
 
 2.  Navigate to **Program Files** → **Virtio-Win**.
-
-</div>
 
 If the **Virtio-Win** directory is present and contains a sub-directory for each driver, the installation was successful.
 
@@ -271,28 +176,13 @@ If the **Virtio-Win** directory is present and contains a sub-directory for each
 
 You can install the VirtIO drivers from a SATA CD drive on an existing Windows virtual machine (VM).
 
-> [!NOTE]
-> This procedure uses a generic approach to adding drivers to Windows. See the installation documentation for your version of Windows for specific installation steps.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+This procedure uses a generic approach to adding drivers to Windows. See the installation documentation for your version of Windows for specific installation steps.
 
 </div>
 
 - A storage device containing the virtio drivers must be attached to the VM as a SATA CD drive.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Start the VM and connect to a graphical console.
 
@@ -320,20 +210,13 @@ Procedure
 
 9.  Reboot the VM to complete the driver installation.
 
-</div>
-
 ## Installing VirtIO drivers from a container disk added as a SATA CD drive
 
 You can install VirtIO drivers from a container disk that you add to a Windows virtual machine (VM) as a SATA CD drive.
 
-> [!TIP]
-> Downloading the `container-native-virtualization/virtio-win` container disk from the [Red Hat Ecosystem Catalog](https://catalog.redhat.com/software/containers/search?q=virtio-win&p=1) is not mandatory, because the container disk is downloaded from the Red Hat registry if it not already present in the cluster. However, downloading reduces the installation time.
+<div class="tip">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Downloading the `container-native-virtualization/virtio-win` container disk from the [Red Hat Ecosystem Catalog](https://catalog.redhat.com/software/containers/search?q=virtio-win&p=1) is not mandatory, because the container disk is downloaded from the Red Hat registry if it not already present in the cluster. However, downloading reduces the installation time.
 
 </div>
 
@@ -342,16 +225,6 @@ Prerequisites
 - You have installed the `virtctl` CLI.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Add the `container-native-virtualization/virtio-win` container disk as a CD drive by editing the `VirtualMachine` manifest:
 
@@ -389,33 +262,13 @@ Procedure
 
 3.  After the VM has started, install the VirtIO drivers from the SATA CD drive.
 
-</div>
-
 # Updating VirtIO drivers
 
 ## Updating VirtIO drivers on a Windows VM
 
 You can update the `virtio` drivers on a Windows virtual machine (VM) by using the Windows Update service.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The cluster must be connected to the internet. Disconnected clusters cannot reach the Windows Update service.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the Windows Guest operating system, click the **Windows** key and select **Settings**.
 
@@ -425,15 +278,7 @@ Procedure
 
 4.  Reboot the VM.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  On the Windows VM, navigate to the **Device Manager**.
 
@@ -442,5 +287,3 @@ Verification
 3.  Select the **Driver** tab.
 
 4.  Click **Driver Details** and confirm that the `virtio` driver details displays the correct version.
-
-</div>

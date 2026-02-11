@@ -6,11 +6,9 @@ To assign a specific, static IP address to a service, configure the `spec.loadBa
 
 MetalLB attempts to assign the requested address from the configured address pools, ensuring that your service is reachable at a designated, static network endpoint. If the requested IP address is not within any range, MetalLB reports a warning.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example service YAML for a specific IP address
+**Example service YAML for a specific IP address**
 
 </div>
 
@@ -32,15 +30,11 @@ spec:
   loadBalancerIP: <ip_address>
 ```
 
-</div>
-
 If MetalLB cannot assign the requested IP address, the `EXTERNAL-IP` for the service reports `<pending>` and running `oc describe service <service_name>` includes an event like the following example:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example event when MetalLB cannot assign a requested IP address
+**Example event when MetalLB cannot assign a requested IP address**
 
 </div>
 
@@ -52,17 +46,13 @@ Events:
   Warning  AllocationFailed  3m16s  metallb-controller  Failed to allocate IP for "default/invalid-request": "4.3.2.1" is not allowed in config
 ```
 
-</div>
-
 # Request an IP address from a specific pool
 
 To ensure predictable network endpoints, control how MetalLB assigns IP addresses to services of type `LoadBalancer`. Requesting specific addresses or pools ensures that your applications receive valid IP assignments that align with your specific network addressing plan.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example service YAML for an IP address from a specific pool
+**Example service YAML for an IP address from a specific pool**
 
 </div>
 
@@ -83,19 +73,15 @@ spec:
   type: LoadBalancer
 ```
 
-</div>
-
 If the address pool that you specify for `<address_pool_name>` does not exist, MetalLB attempts to assign an IP address from any pool that permits automatic assignment.
 
 # Accept any IP address
 
 To automatically allocate IP addresses to services without manual specification, configure MetalLB address pools to permit automatic assignment. MetalLB dynamically assigns available addresses from these pools, ensuring seamless service deployment and network connectivity.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example service YAML for accepting any IP address
+**Example service YAML for accepting any IP address**
 
 </div>
 
@@ -113,8 +99,6 @@ spec:
       protocol: TCP
   type: LoadBalancer
 ```
-
-</div>
 
 # Share a specific IP address
 
@@ -188,14 +172,6 @@ By default, Kubernetes does not allow multiprotocol load balancer services. This
 
 To expose an application to external network traffic, configure a load-balancing service. MetalLB assigns an external IP address from a configured address pool, ensuring that your application is reachable from outside the cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Install the MetalLB Operator and start MetalLB.
@@ -203,16 +179,6 @@ Prerequisites
 - Configure at least one address pool.
 
 - Configure your network to route traffic from the clients to the host network for the cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `<service_name>.yaml` file. In the file, set the `spec.type` parameter to `LoadBalancer`.
 
@@ -224,11 +190,9 @@ Procedure
     $ oc apply -f <service_name>.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -236,29 +200,15 @@ Procedure
     service/<service_name> created
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Describe the service:
 
   ``` terminal
   $ oc describe service <service_name>
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -284,8 +234,6 @@ Verification
         ----    ------        ----               ----             -------
         Normal  nodeAssigned  32m (x2 over 32m)  metallb-speaker  announcing from node "<node_name>"
 
-  </div>
-
   where:
 
   `Annotations`
@@ -299,5 +247,3 @@ Verification
 
   `Events`
   Specifies the events parameter that indicates the node name that is assigned to announce the external IP address. If you experience an error, the events parameter indicates the reason for the error.
-
-</div>

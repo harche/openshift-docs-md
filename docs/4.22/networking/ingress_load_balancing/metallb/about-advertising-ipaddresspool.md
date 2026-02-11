@@ -18,34 +18,34 @@ The following table describes the parameters for the `BGPAdvertisements` CR:
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>metadata.name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the name for the BGP advertisement.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>metadata.namespace</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the namespace for the BGP advertisement. Specify the same namespace that the MetalLB Operator uses.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.aggregationLength</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Optional: Specifies the number of bits to include in a 32-bit CIDR mask. To aggregate the routes that the speaker advertises to BGP peers, the mask is applied to the routes for several service IP addresses and the speaker advertises the aggregated route. For example, with an aggregation length of <code>24</code>, the speaker can aggregate several <code>10.0.1.x/32</code> service IP addresses and advertise a single <code>10.0.1.0/24</code> route.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.aggregationLengthV6</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Optional: Specifies the number of bits to include in a 128-bit CIDR mask. For example, with an aggregation length of <code>124</code>, the speaker can aggregate several <code>fc00:f853:0ccd:e799::x/128</code> service IP addresses and advertise a single <code>fc00:f853:0ccd:e799::0/124</code> route.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.communities</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional: Specifies one or more BGP communities. Each community is specified as two 16-bit values separated by the colon character. Well-known communities must be specified as 16-bit values:</p>
@@ -54,39 +54,39 @@ The following table describes the parameters for the `BGPAdvertisements` CR:
 <li><p><code>NO_ADVERTISE</code>: <code>65535:65282</code></p></li>
 <li><p><code>NO_EXPORT_SUBCONFED</code>: <code>65535:65283</code></p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>You can also use community objects that are created along with the strings.</p>
 </div></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.localPref</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Optional: Specifies the local preference for this advertisement. This BGP attribute applies to BGP sessions within the Autonomous System.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.ipAddressPools</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional: The list of <code>IPAddressPools</code> to advertise with this advertisement, selected by name.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.ipAddressPoolSelectors</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional: A selector for the <code>IPAddressPools</code> that gets advertised with this advertisement. This is for associating the <code>IPAddressPool</code> to the advertisement based on the label assigned to the <code>IPAddressPool</code> instead of the name itself. If no <code>IPAddressPool</code> is selected by this or by the list, the advertisement is applied to all the <code>IPAddressPools</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.nodeSelectors</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional: By setting the <code>NodeSelectors</code> parameter, you can limit the nodes to announce as next hops for the load balancer IP. When empty, all the nodes are announced as next hops.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.peers</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional: Use a list to specify the <code>metadata.name</code> values for each <code>BGPPeer</code> resource that receives advertisements for the MetalLB service IP address. The MetalLB service IP address is assigned from the IP address pool. By default, the MetalLB service IP address is advertised to all configured <code>BGPPeer</code> resources. Set this parameter to limit the advertisement to specific <code>BGPpeer</code> resources.</p></td>
 </tr>
 </tbody>
 </table>
+
+BGPAdvertisements configuration
 
 # Configure MetalLB with a BGP advertisement and a basic use case
 
@@ -100,27 +100,9 @@ To ensure application services are reachable from external network peers, config
 
 The procedure demonstrates how to configure MetalLB to advertise the `IPAddressPool` by using BGP.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an IP address pool.
 
@@ -167,8 +149,6 @@ Procedure
         $ oc apply -f bgpadvertisement.yaml
         ```
 
-</div>
-
 # Configuring MetalLB with a BGP advertisement and an advanced use case
 
 To assign application services specific IP addresses from designated IPv4 and IPv6 ranges, configure MetalLB for advanced address allocation. Establishing these ranges and BGP advertisements ensures that your load-balancer services remain reachable through predictable network paths.
@@ -189,27 +169,9 @@ To ensure application services are reachable from external network peers through
 
 The procedure demonstrates how to configure MetalLB to advertise an advanced address pool by using the BGP.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an IP address pool.
 
@@ -287,33 +249,13 @@ Procedure
         $ oc apply -f bgpadvertisement2.yaml
         ```
 
-</div>
-
 # Advertising an IP address pool from a subset of nodes
 
 To restrict IP address advertisements to a specific set of nodes, such as a public-facing subnet, configure the `nodeSelector` parameter in the `BGPAdvertisement` custom resource (CR). When you configure these selectors, OpenShift Container Platform routes external traffic only through designated network interfaces for improved security and isolation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an IP address pool by using a CR:
 
@@ -348,8 +290,6 @@ Procedure
     # ...
     ```
 
-</div>
-
 # About the L2Advertisement custom resource
 
 To configure how application services are announced over a Layer 2 network, define the properties in the `L2Advertisement` custom resource (CR). Establishing these parameters ensures that MetalLB correctly manages routing for your load-balancer IP addresses within the local network infrastructure
@@ -364,45 +304,43 @@ The following table details parameters for the `l2Advertisements` CR:
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>metadata.name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the name for the L2 advertisement.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>metadata.namespace</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the namespace for the L2 advertisement. Specify the same namespace that the MetalLB Operator uses.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.ipAddressPools</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional: The list of <code>IPAddressPools</code> to advertise with this advertisement, selected by name.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.ipAddressPoolSelectors</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional: A selector for the <code>IPAddressPools</code> to advertise with this advertisement. This is for associating the <code>IPAddressPool</code> to the advertisement based on the label assigned to the <code>IPAddressPool</code> instead of the name itself. If no <code>IPAddressPool</code> is selected by this or by the list, the advertisement is applied to all the <code>IPAddressPools</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.nodeSelectors</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional: <code>NodeSelectors</code> limits the nodes to announce as next hops for the load balancer IP. If empty, MetalLB announces all nodes as next hops.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>Limiting the nodes to announce as next hops is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.</p>
 <p>For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.interfaces</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional: The list of <code>interfaces</code> to announce the load balancer IP address.</p></td>
@@ -410,31 +348,15 @@ The following table details parameters for the `l2Advertisements` CR:
 </tbody>
 </table>
 
+L2 advertisements configuration
+
 # Configuring MetalLB with an L2 advertisement
 
 To provide fault-tolerant external IP addresses for cluster services, configure MetalLB to advertise an `IPAddressPool` by using the Layer 2 protocol. Establishing this advertisement ensures that application workloads remain reachable within the local network through standard address discovery protocols.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an IP address pool.
 
@@ -481,35 +403,15 @@ Procedure
         $ oc apply -f l2advertisement.yaml
         ```
 
-</div>
-
 # Configuring MetalLB with an L2 advertisement and labels
 
 To dynamically associate IP address pools with advertisements by using labels instead of specific names, configure the `ipAddressPoolSelectors` parameter in the MetalLB custom resource (CR). By using selectors, you can manage network routing more efficiently by automatically grouping address pools as your cluster scales.
 
 The example in the procedure shows how to configure MetalLB so that the `IPAddressPool` is advertised with the L2 protocol by configuring the `ipAddressPoolSelectors` field.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an IP address pool.
 
@@ -561,35 +463,15 @@ Procedure
         $ oc apply -f l2advertisement.yaml
         ```
 
-</div>
-
 # Configuring MetalLB with an L2 advertisement for selected interfaces
 
 To restrict which network interfaces advertise assigned service IP addresses, configure the interfaces parameter in the MetalLB `L2Advertisement` custom resource (CR). Defining specific interfaces ensures that cluster services are reachable only through designated network paths for improved traffic management and isolation.
 
 The example in the procedure shows how to configure MetalLB so that the IP address pool is advertised only from the network interfaces listed in the `interfaces` parameter of all nodes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You are logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an IP address pool.
 
@@ -639,19 +521,23 @@ Procedure
         $ oc apply -f l2advertisement.yaml
         ```
 
-        > [!IMPORTANT]
-        > The interface selector does not affect how MetalLB chooses the node to announce a given IP by using L2. The chosen node does not announce the service if the node does not have the selected interface.
+        <div class="important">
 
-</div>
+        The interface selector does not affect how MetalLB chooses the node to announce a given IP by using L2. The chosen node does not announce the service if the node does not have the selected interface.
+
+        </div>
 
 # Configuring MetalLB with secondary networks
 
 To enable traffic forwarding for MetalLB on a secondary network interface, add a machine configuration that allows IP packet forwarding between interfaces. Implementing this configuration ensures that application services remain reachable when they use nondefault network paths.
 
-> [!NOTE]
-> From OpenShift Container Platform 4.14 the default network behavior does not allow forwarding of IP packets between network interfaces.
->
-> OpenShift Container Platform clusters upgraded from 4.13 are not affected because a global parameter is set during an upgrade to enable global IP forwarding.
+<div class="note">
+
+From OpenShift Container Platform 4.14 the default network behavior does not allow forwarding of IP packets between network interfaces.
+
+OpenShift Container Platform clusters upgraded from 4.13 are not affected because a global parameter is set during an upgrade to enable global IP forwarding.
+
+</div>
 
 To enable IP forwarding for the secondary interface, you have two options:
 
@@ -659,14 +545,9 @@ To enable IP forwarding for the secondary interface, you have two options:
 
 - Enable IP forwarding for all interfaces.
 
-> [!NOTE]
-> Enabling IP forwarding for a specific interface provides more granular control, while enabling it for all interfaces applies a global setting.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+Enabling IP forwarding for a specific interface provides more granular control, while enabling it for all interfaces applies a global setting.
 
 </div>
 
@@ -684,19 +565,15 @@ Procedure
         $ echo -e "net.ipv4.conf.bridge-net.forwarding = 1" | base64 -w0
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
         ``` terminal
         bmV0LmlwdjQuY29uZi5icmlkZ2UtbmV0LmZvcndhcmRpbmcgPSAxCg==
         ```
-
-        </div>
 
     2.  Create the `MachineConfig` CR to enable IP forwarding for the specified secondary interface named `bridge-net`.
 
@@ -745,15 +622,7 @@ Procedure
     $ oc patch network.operator cluster -p '{"spec":{"defaultNetwork":{"ovnKubernetesConfig":{"gatewayConfig":{"ipForwarding": "Global"}}}}}' --type=merge
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  After you apply the machine config, verify the changes by completing the following steps:
 
@@ -775,11 +644,9 @@ Verification
         $ cat /etc/sysctl.d/enable-global-forwarding.conf
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -787,11 +654,7 @@ Verification
         net.ipv4.conf.bridge-net.forwarding = 1
         ```
 
-        </div>
-
         The output indicates that IPv4 forwarding is enabled on the `bridge-net` interface.
-
-</div>
 
 # Additional resources
 

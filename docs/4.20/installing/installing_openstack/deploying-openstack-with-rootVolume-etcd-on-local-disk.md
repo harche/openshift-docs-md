@@ -4,29 +4,11 @@ As a day 2 operation, you can resolve and prevent performance issues of your Red
 
 If you have an existing RHOSP cloud, you can move etcd from that cloud to a dedicated ephemeral local disk.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have an OpenStack cloud with a working Cinder.
 
 - Your OpenStack cloud has at least 75 GB of available storage to accommodate 3 root volumes for the OpenShift control plane.
 
 - The OpenStack cloud is deployed with Nova ephemeral storage that uses a local storage backend and not `rbd`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a Nova flavor for the control plane with at least 10 GB of ephemeral disk by running the following command, replacing the values for `--ram`, `--disk`, and \<flavor_name\> based on your environment:
 
@@ -36,11 +18,9 @@ Procedure
 
 2.  Deploy a cluster with root volumes for the control plane; for example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example YAML file
+    **Example YAML file**
 
     </div>
 
@@ -58,8 +38,6 @@ Procedure
       replicas: 3
     # ...
     ```
-
-    </div>
 
 3.  Deploy the cluster you created by running the following command:
 
@@ -188,10 +166,13 @@ Procedure
 
     </div>
 
-    > [!WARNING]
-    > After you apply the `98-var-lib-etcd.yaml` file to the system, do not remove it. Removing this file will break etcd members and lead to system instability.
-    >
-    > If a rollback is necessary, modify the `ControlPlaneMachineSet` object to use a flavor that does not include ephemeral disks. This change regenerates the control plane nodes without using ephemeral disks for the etcd partition, which avoids issues related to the `98-var-lib-etcd.yaml` file. It is safe to remove the `98-var-lib-etcd.yaml` file only after the update to the `ControlPlaneMachineSet` object is complete and no control plane nodes are using ephemeral disks.
+    <div class="warning">
+
+    After you apply the `98-var-lib-etcd.yaml` file to the system, do not remove it. Removing this file will break etcd members and lead to system instability.
+
+    If a rollback is necessary, modify the `ControlPlaneMachineSet` object to use a flavor that does not include ephemeral disks. This change regenerates the control plane nodes without using ephemeral disks for the etcd partition, which avoids issues related to the `98-var-lib-etcd.yaml` file. It is safe to remove the `98-var-lib-etcd.yaml` file only after the update to the `ControlPlaneMachineSet` object is complete and no control plane nodes are using ephemeral disks.
+
+    </div>
 
 6.  Create the new `MachineConfig` object by running the following command:
 
@@ -199,8 +180,11 @@ Procedure
     $ oc create -f 98-var-lib-etcd.yaml
     ```
 
-    > [!NOTE]
-    > Moving the etcd database onto the local disk of each control plane machine takes time.
+    <div class="note">
+
+    Moving the etcd database onto the local disk of each control plane machine takes time.
+
+    </div>
 
 7.  Verify that the etcd databases has been transferred to the local disk of each control plane by running the following commands:
 
@@ -221,8 +205,6 @@ Procedure
         ``` terminal
         $ oc wait clusteroperators --timeout=30m --all --for=condition=Progressing=false
         ```
-
-</div>
 
 # Additional resources
 

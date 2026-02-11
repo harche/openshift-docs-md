@@ -20,28 +20,15 @@ Disabling automatic boot source imports and updates can lower resource usage. In
 
 To disable automatic updates for all system-defined boot sources, set the `enableCommonBootImageImport` field value to `false`. Setting this value to `true` turns automatic updates back on.
 
-> [!NOTE]
-> Custom boot sources are not affected by this setting.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Custom boot sources are not affected by this setting.
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Enable or disable automatic boot source updates by editing the `HyperConverged` custom resource (CR).
 
@@ -63,14 +50,15 @@ Procedure
       "value": true}]'
     ```
 
-</div>
-
 # Managing custom boot source updates
 
 *Custom* boot sources that are not provided by OpenShift Virtualization are not controlled by the feature gate. You must manage them individually by editing the `HyperConverged` custom resource (CR).
 
-> [!IMPORTANT]
-> You must configure a storage class. Otherwise, the cluster cannot receive automated updates for custom boot sources. See [Defining a storage class](../../storage/dynamic-provisioning.xml#defining-storage-classes_dynamic-provisioning) for details.
+<div class="important">
+
+You must configure a storage class. Otherwise, the cluster cannot receive automated updates for custom boot sources. See [Defining a storage class](../../storage/dynamic-provisioning.xml#defining-storage-classes_dynamic-provisioning) for details.
+
+</div>
 
 ## Configuring the default and virt-default storage classes
 
@@ -78,30 +66,15 @@ A storage class determines how persistent storage is provisioned for workloads. 
 
 Only one storage class should be set as virt-default or cluster default at a time. If multiple storage classes are marked as default, the virt-default storage class overrides the cluster default. To ensure consistent behavior, configure only one storage class as the default for virtualization workloads.
 
-> [!IMPORTANT]
-> Boot sources are created using the default storage class. When the default storage class changes, old boot sources are automatically updated using the new default storage class. If your cluster does not have a default storage class, you must define one.
->
-> If boot source images were stored as volume snapshots and both the cluster default and virt-default storage class have been unset, the volume snapshots are cleaned up and new data volumes will be created. However the newly created data volumes will not start importing until a default storage class is set.
+<div class="important">
 
-<div>
+Boot sources are created using the default storage class. When the default storage class changes, old boot sources are automatically updated using the new default storage class. If your cluster does not have a default storage class, you must define one.
 
-<div class="title">
-
-Prerequisites
+If boot source images were stored as volume snapshots and both the cluster default and virt-default storage class have been unset, the volume snapshots are cleaned up and new data volumes will be created. However the newly created data volumes will not start importing until a default storage class is set.
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Patch the current virt-default or a cluster default storage class to false:
 
@@ -143,34 +116,17 @@ Procedure
         $ oc patch storageclass <storage_class_name> -p '{"metadata": {"annotations": {"storageclass.kubernetes.io/is-default-class": "true"}}}'
         ```
 
-</div>
-
 ## Configuring a storage class for boot source images
 
 You can configure a specific storage class in the `HyperConverged` resource.
 
-> [!IMPORTANT]
-> To ensure stable behavior and avoid unnecessary re-importing, you can specify the `storageClassName` in the `dataImportCronTemplates` section of the `HyperConverged` resource.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+To ensure stable behavior and avoid unnecessary re-importing, you can specify the `storageClassName` in the `dataImportCronTemplates` section of the `HyperConverged` resource.
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -221,33 +177,13 @@ Procedure
     $ oc get storageprofile <storage_class_name> -o json | jq .status.dataImportCronSourceFormat
     ```
 
-</div>
-
 ## Enabling automatic updates for custom boot sources
 
 OpenShift Virtualization automatically updates system-defined boot sources by default, but does not automatically update custom boot sources. You must manually enable automatic updates by editing the `HyperConverged` custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The cluster has a default storage class.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -293,22 +229,15 @@ Procedure
 
 3.  Save the file.
 
-</div>
-
 ## Enabling volume snapshot boot sources
 
 You can enable volume snapshot boot sources by setting the parameter in the `StorageProfile` associated with the storage class that stores operating system base images.
 
 Although `DataImportCron` was originally designed to maintain only PVC sources, `VolumeSnapshot` sources scale better than PVC sources for certain storage types.
 
-> [!NOTE]
-> Use volume snapshots on a storage profile that is proven to scale better when cloning from a single snapshot.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Use volume snapshots on a storage profile that is proven to scale better when cloning from a single snapshot.
 
 </div>
 
@@ -317,16 +246,6 @@ Prerequisites
 - The storage must support snapshotting.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open the storage profile object that corresponds to the storage class used to provision boot sources by running the following command:
 
@@ -349,15 +268,7 @@ Procedure
       dataImportCronSourceFormat: snapshot
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Open the storage profile object that corresponds to the storage class used to provision boot sources.
 
@@ -367,33 +278,13 @@ Verification
 
 2.  Confirm that the `dataImportCronSourceFormat` specification of the `StorageProfile` is set to 'snapshot', and that any `DataSource` objects that the `DataImportCron` points to now reference volume snapshots.
 
-</div>
-
 You can now use these boot sources to create virtual machines.
 
 # Disabling automatic updates for a single boot source
 
 You can disable automatic updates for an individual boot source, whether it is custom or system-defined, by editing the `HyperConverged` custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -409,8 +300,11 @@ Procedure
     System-defined boot source
     1.  Add the boot source to `spec.dataImportCronTemplates`.
 
-        > [!NOTE]
-        > Automatic updates are enabled by default for system-defined boot sources, but these boot sources are not listed in the CR unless you add them.
+        <div class="note">
+
+        Automatic updates are enabled by default for system-defined boot sources, but these boot sources are not listed in the CR unless you add them.
+
+        </div>
 
     2.  Set the value of the `dataimportcrontemplate.kubevirt.io/enable` annotation to `'false'`.
 
@@ -432,31 +326,11 @@ Procedure
 
 3.  Save the file.
 
-</div>
-
 # Verifying the status of a boot source
 
 You can determine if a boot source is system-defined or custom by viewing the `HyperConverged` custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  View the contents of the `HyperConverged` CR by running the following command:
 
@@ -533,5 +407,3 @@ Procedure
     - If the field contains `commonTemplate: true`, it is a system-defined boot source.
 
     - If the `status.dataImportCronTemplates.status` field has the value `{}`, it is a custom boot source.
-
-</div>

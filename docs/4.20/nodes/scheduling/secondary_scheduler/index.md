@@ -6,7 +6,10 @@ The Secondary Scheduler Operator for Red Hat OpenShift provides a way to deploy 
 
 The custom scheduler must have the `/bin/kube-scheduler` binary and be based on the [Kubernetes scheduling framework](https://kubernetes.io/docs/concepts/scheduling-eviction/scheduling-framework/).
 
-> [!IMPORTANT]
-> You can use the Secondary Scheduler Operator to deploy a custom secondary scheduler in OpenShift Container Platform, but Red Hat does not directly support the functionality of the custom secondary scheduler.
+<div class="important">
+
+You can use the Secondary Scheduler Operator to deploy a custom secondary scheduler in OpenShift Container Platform, but Red Hat does not directly support the functionality of the custom secondary scheduler.
+
+</div>
 
 The Secondary Scheduler Operator creates the default roles and role bindings required by the secondary scheduler. You can specify which scheduling plugins to enable or disable by configuring the `KubeSchedulerConfiguration` resource for the secondary scheduler.

@@ -1,7 +1,10 @@
 In OpenShift Container Platform version 4.17, you can install a cluster on Microsoft Azure Stack Hub with an installer-provisioned infrastructure. However, you must manually configure the `install-config.yaml` file to specify values that are specific to Azure Stack Hub.
 
-> [!NOTE]
-> While you can select `azure` when using the installation program to deploy a cluster using installer-provisioned infrastructure, this option is only supported for the Azure Public Cloud.
+<div class="note">
+
+While you can select `azure` when using the installation program to deploy a cluster using installer-provisioned infrastructure, this option is only supported for the Azure Public Cloud.
+
+</div>
 
 # Prerequisites
 
@@ -21,25 +24,7 @@ In OpenShift Container Platform version 4.17, you can install a cluster on Micro
 
 You must download the RHCOS virtual hard disk (VHD) cluster image and upload it to your Azure Stack Hub environment so that it is accessible during deployment.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Generate the Ignition config files for your cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Obtain the RHCOS VHD cluster image:
 
@@ -57,38 +42,21 @@ Procedure
 
 2.  Decompress the VHD file.
 
-    > [!NOTE]
-    > The decompressed VHD file is approximately 16 GB, so be sure that your host system has 16 GB of free space available. The VHD file can be deleted once you have uploaded it.
+    <div class="note">
+
+    The decompressed VHD file is approximately 16 GB, so be sure that your host system has 16 GB of free space available. The VHD file can be deleted once you have uploaded it.
+
+    </div>
 
 3.  Upload the local VHD to the Azure Stack Hub environment, making sure that the blob is publicly available. For example, you can upload the VHD to a blob using the `az` cli or the web portal.
-
-</div>
 
 # Manually creating the installation configuration file
 
 To customise your OpenShift Container Platform deployment and meet specific network requirements, manually create the installation configuration file. This ensures that the installation program uses your tailored settings rather than default values during the setup process.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have an SSH public key on your local machine for use with the installation program. You can use the key for SSH authentication onto your cluster nodes for debugging and disaster recovery.
 
 - You have obtained the OpenShift Container Platform installation program and the pull secret for your cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an installation directory to store your required installation assets in:
 
@@ -96,13 +64,19 @@ Procedure
     $ mkdir <installation_directory>
     ```
 
-    > [!IMPORTANT]
-    > You must create a directory. Some installation assets, such as bootstrap X.509 certificates have short expiration intervals, so you must not reuse an installation directory. If you want to reuse individual files from another cluster installation, you can copy them into your directory. However, the file names for the installation assets might change between releases. Use caution when copying installation files from an earlier OpenShift Container Platform version.
+    <div class="important">
+
+    You must create a directory. Some installation assets, such as bootstrap X.509 certificates have short expiration intervals, so you must not reuse an installation directory. If you want to reuse individual files from another cluster installation, you can copy them into your directory. However, the file names for the installation assets might change between releases. Use caution when copying installation files from an earlier OpenShift Container Platform version.
+
+    </div>
 
 2.  Customize the provided sample `install-config.yaml` file template and save the file in the `<installation_directory>`.
 
-    > [!NOTE]
-    > You must name this configuration file `install-config.yaml`.
+    <div class="note">
+
+    You must name this configuration file `install-config.yaml`.
+
+    </div>
 
     Make the following modifications:
 
@@ -116,29 +90,23 @@ Procedure
 
 3.  Back up the `install-config.yaml` file so that you can use it to install many clusters.
 
-    > [!IMPORTANT]
-    > Back up the `install-config.yaml` file now, because the installation process consumes the file in the next step.
+    <div class="important">
 
-</div>
+    Back up the `install-config.yaml` file now, because the installation process consumes the file in the next step.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+    </div>
 
 - [Installation configuration parameters for Azure Stack Hub](../../../installing/installing_azure_stack_hub/installation-config-parameters-ash.xml#installation-config-parameters-ash)
-
-</div>
 
 ## Sample customized install-config.yaml file for Azure Stack Hub
 
 You can customize the `install-config.yaml` file to specify more details about your OpenShift Container Platform cluster’s platform or modify the values of the required parameters.
 
-> [!IMPORTANT]
-> This sample YAML file is provided for reference only. Use it as a resource to enter parameter values into the installation configuration file that you created manually.
+<div class="important">
+
+This sample YAML file is provided for reference only. Use it as a resource to enter parameter values into the installation configuration file that you created manually.
+
+</div>
 
 ``` yaml
 apiVersion: v1
@@ -215,27 +183,25 @@ additionalTrustBundle: |
 
 - Whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
 
-  > [!IMPORTANT]
-  > When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
+  <div class="important">
+
+  When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
+
+  </div>
 
 - You can optionally provide the `sshKey` value that you use to access the machines in your cluster.
 
-  > [!NOTE]
-  > For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+  <div class="note">
+
+  For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+
+  </div>
 
 - If the Azure Stack Hub environment is using an internal Certificate Authority (CA), adding the CA certificate is required.
 
 # Manually manage cloud credentials
 
 The Cloud Credential Operator (CCO) only supports your cloud provider in manual mode. As a result, you must specify the identity and access management (IAM) secrets for your cloud provider.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  If you have not previously created installation manifest files, do so by running the following command:
 
@@ -270,11 +236,9 @@ Procedure
 
       This command creates a YAML file for each `CredentialsRequest` object.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Sample `CredentialsRequest` object
+      **Sample `CredentialsRequest` object**
 
       </div>
 
@@ -294,15 +258,11 @@ Procedure
         ...
       ```
 
-      </div>
-
 4.  Create YAML files for secrets in the `openshift-install` manifests directory that you generated previously. The secrets must be stored using the namespace and secret name defined in the `spec.secretRef` for each `CredentialsRequest` object.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample `CredentialsRequest` object with secrets
+    **Sample `CredentialsRequest` object with secrets**
 
     </div>
 
@@ -326,13 +286,9 @@ Procedure
       ...
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Sample `Secret` object
+    **Sample `Secret` object**
 
     </div>
 
@@ -352,60 +308,29 @@ Procedure
       azure_region: <base64_encoded_azure_region>
     ```
 
-    </div>
+<div class="important">
 
-</div>
-
-> [!IMPORTANT]
-> Before upgrading a cluster that uses manually maintained credentials, you must ensure that the CCO is in an upgradeable state.
-
-<div id="additional-resources_installing-azure-stack-hub-default-cco">
-
-<div class="title">
-
-Additional resources
+Before upgrading a cluster that uses manually maintained credentials, you must ensure that the CCO is in an upgradeable state.
 
 </div>
 
 - [Updating cloud provider resources with manually maintained credentials](../../../updating/preparing_for_updates/preparing-manual-creds-update.xml#manually-maintained-credentials-upgrade_preparing-manual-creds-update)
 
-</div>
-
 # Configuring the cluster to use an internal CA
 
 If the Azure Stack Hub environment is using an internal Certificate Authority (CA), update the `cluster-proxy-01-config.yaml file` to configure the cluster to use the internal CA.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Create the `install-config.yaml` file and specify the certificate trust bundle in `.pem` format.
 
 - Create the cluster manifests.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  From the directory in which the installation program creates files, go to the `manifests` directory.
 
 2.  Add `user-ca-bundle` to the `spec.trustedCA.name` field.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `cluster-proxy-01-config.yaml` file
+    **Example `cluster-proxy-01-config.yaml` file**
 
     </div>
 
@@ -421,24 +346,15 @@ Procedure
     status: {}
     ```
 
-    </div>
-
 3.  Optional: Back up the `manifests/ cluster-proxy-01-config.yaml` file. The installation program consumes the `manifests/` directory when you deploy the cluster.
-
-</div>
 
 # Deploying the cluster
 
 You can install OpenShift Container Platform on a compatible cloud platform.
 
-> [!IMPORTANT]
-> You can run the `create cluster` command of the installation program only once, during initial installation.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You can run the `create cluster` command of the installation program only once, during initial installation.
 
 </div>
 
@@ -448,15 +364,7 @@ Prerequisites
 
 - You have verified that the cloud provider account on your host has the correct permissions to deploy the cluster. An account with incorrect permissions causes the installation process to fail with an error message that displays the missing permissions.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - In the directory that contains the installation program, initialize the cluster deployment by running the following command:
 
@@ -469,32 +377,27 @@ Procedure
 
   - To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 When the cluster deployment completes successfully:
 
-</div>
-
 - The terminal displays directions for accessing your cluster, including a link to the web console and credentials for the `kubeadmin` user.
 
 - Credential information also outputs to `<installation_directory>/.openshift_install.log`.
 
-> [!IMPORTANT]
-> Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
+<div class="important">
 
-<div class="formalpara">
+Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
 
-<div class="title">
+</div>
 
-Example output
+<div class="formalpara-title">
+
+**Example output**
 
 </div>
 
@@ -507,13 +410,7 @@ INFO Login to the console with user: "kubeadmin", and password: "password"
 INFO Time elapsed: 36m22s
 ```
 
-</div>
-
 <div class="important">
-
-<div class="title">
-
-</div>
 
 - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
@@ -527,27 +424,9 @@ To log in to your cluster as the default system user, export the `kubeconfig` fi
 
 The `kubeconfig` file is specific to a cluster and is created during OpenShift Container Platform installation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You deployed an OpenShift Container Platform cluster.
 
 - You installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Export the `kubeadmin` credentials by running the following command:
 
@@ -566,11 +445,9 @@ Procedure
     $ oc whoami
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -578,35 +455,13 @@ Procedure
     system:admin
     ```
 
-    </div>
-
-</div>
-
 # Logging in to the cluster by using the web console
 
 The `kubeadmin` user exists by default after an OpenShift Container Platform installation. You can log in to your cluster as the `kubeadmin` user by using the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the installation host.
 
 - You completed a cluster installation and all cluster Operators are available.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Obtain the password for the `kubeadmin` user from the `kubeadmin-password` file on the installation host:
 
@@ -614,8 +469,11 @@ Procedure
     $ cat <installation_directory>/auth/kubeadmin-password
     ```
 
-    > [!NOTE]
-    > Alternatively, you can obtain the `kubeadmin` password from the `<installation_directory>/.openshift_install.log` log file on the installation host.
+    <div class="note">
+
+    Alternatively, you can obtain the `kubeadmin` password from the `<installation_directory>/.openshift_install.log` log file on the installation host.
+
+    </div>
 
 2.  List the OpenShift Container Platform web console route:
 
@@ -623,14 +481,15 @@ Procedure
     $ oc get routes -n openshift-console | grep 'console-openshift'
     ```
 
-    > [!NOTE]
-    > Alternatively, you can obtain the OpenShift Container Platform route from the `<installation_directory>/.openshift_install.log` log file on the installation host.
+    <div class="note">
 
-    <div class="formalpara">
+    Alternatively, you can obtain the OpenShift Container Platform route from the `<installation_directory>/.openshift_install.log` log file on the installation host.
 
-    <div class="title">
+    </div>
 
-    Example output
+    <div class="formalpara-title">
+
+    **Example output**
 
     </div>
 
@@ -638,23 +497,9 @@ Procedure
     console     console-openshift-console.apps.<cluster_name>.<base_domain>            console     https   reencrypt/Redirect   None
     ```
 
-    </div>
-
 3.  Navigate to the route detailed in the output of the preceding command in a web browser and log in as the `kubeadmin` user.
 
-</div>
-
-<div id="additional-resources_installing-azure-stack-hub-default-console">
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Accessing the web console](../../../web_console/web-console.xml#web-console)
-
-</div>
 
 # Next steps
 

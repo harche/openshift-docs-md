@@ -4,22 +4,17 @@ Typically, workloads with admission webhooks require you to create a resource of
 
 For example, creating or restoring a top-level object such as `service.serving.knative.dev` typically creates child resources automatically. If you do this first, you will not need to use Velero to create and restore these resources. This avoids the problem of child resources being blocked by an admission webhook that Velero might use.
 
-> [!NOTE]
-> Velero plugins are started as separate processes. After a Velero operation has completed, either successfully or not, it exits. Receiving a `received EOF, stopping recv loop` message in the debug logs indicates that a plugin operation has completed. It does not mean that an error has occurred.
+<div class="note">
+
+Velero plugins are started as separate processes. After a Velero operation has completed, either successfully or not, it exits. Receiving a `received EOF, stopping recv loop` message in the debug logs indicates that a plugin operation has completed. It does not mean that an error has occurred.
+
+</div>
 
 # Restoring Knative resources
 
 You might encounter problems by using Velero to back up Knative resources that use admission webhooks.
 
 You can avoid such problems by restoring the top level `Service` resource whenever you back up and restore Knative resources that use admission webhooks.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Restore the top level `service.serving.knavtive.dev Service` resource by using the following command:
 
@@ -29,19 +24,9 @@ Procedure
     service.serving.knavtive.dev
   ```
 
-</div>
-
 # Restoring IBM AppConnect resources
 
 If you experience issues when you use Velero to a restore an IBM® AppConnect resource that has an admission webhook, you can run the checks in this procedure.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Check if you have any mutating admission plugins of `kind: MutatingWebhookConfiguration` in the cluster by entering/running the following command:
 
@@ -52,8 +37,6 @@ Procedure
 2.  Examine the YAML file of each `kind: MutatingWebhookConfiguration` to ensure that none of its rules block creation of the objects that are experiencing issues. For more information, see [the official Kubernetes documentation](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#rulewithoperations-v1-admissionregistration-k8s-io).
 
 3.  Check that any `spec.version` in `type: Configuration.appconnect.ibm.com/v1beta1` used at backup time is supported by the installed Operator.
-
-</div>
 
 # Avoiding the Velero plugin panic error
 
@@ -72,14 +55,6 @@ runtime error: index out of range with length 1, stack trace: goroutine 94…
 
 Use the following workaround to avoid the Velero plugin panic error.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Label the custom BSL with the relevant label by using the following command:
 
     ``` terminal
@@ -88,26 +63,17 @@ Procedure
 
 2.  After the BSL is labeled, wait until the DPA reconciles.
 
-    > [!NOTE]
-    > You can force the reconciliation by making any minor change to the DPA itself.
+    <div class="note">
 
-</div>
+    You can force the reconciliation by making any minor change to the DPA itself.
 
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+    </div>
 
 - After the DPA is reconciled, confirm that the parameter has been created and that the correct registry data has been populated into it by entering the following command:
 
   ``` terminal
   $ oc -n openshift-adp get secret/oadp-<bsl_name>-<bsl_provider>-registry-secret -o json | jq -r '.data'
   ```
-
-</div>
 
 # Workaround for OpenShift ADP Controller segmentation fault
 
@@ -121,18 +87,8 @@ Define either `velero` or `cloudstorage` when you configure a DPA. Otherwise, th
 
 For more information about this issue, see [OADP-1054](https://issues.redhat.com/browse/OADP-1054).
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Admission plugins](../../../architecture/admission-plug-ins.xml#admission-plug-ins)
 
 - [Webhook admission plugins](../../../architecture/admission-plug-ins.xml#admission-webhooks-about_admission-plug-ins)
 
 - [Types of webhook admission plugins](../../../architecture/admission-plug-ins.xml#admission-webhook-types_admission-plug-ins)
-
-</div>

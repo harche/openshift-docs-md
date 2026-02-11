@@ -4,43 +4,15 @@ You can use the Assisted Installer to install a cluster on Oracle Database Appli
 
 Before you can deploy an OpenShift Container Platform cluster on Oracle Database Appliance (ODA), you must prepare the ODA environment.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have reviewed the requirements and additional prerequisites described in section 1 of the [Red Hat OpenShift Container Platform on Oracle Database Appliance Deployment Guide](https://www.oracle.com/a/otn/docs/red-hat-openshift-container-platform-4-19.pdf) (Oracle documentation).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Complete the pre-deployment tasks as described in section 2 of the "Red Hat OpenShift Container Platform on Oracle Database Appliance Deployment Guide".
 
 2.  Complete the final environment preparations as described in sections 3.1 and 3.2 of the "Red Hat OpenShift Container Platform on Oracle Database Appliance Deployment Guide".
 
-</div>
-
 # Beginning the cluster installation and generating the Discovery ISO
 
 Begin installing the OpenShift Container Platform cluster in the Oracle Database Appliance (ODA) environment by using the Red Hat Hybrid Cloud Console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the [Red Hat Hybrid Cloud Console](https://console.redhat.com/openshift/cluster-list).
 
@@ -56,8 +28,11 @@ Procedure
 
     2.  Enter a base domain for the cluster in the **Base domain** field. All subdomains for the cluster will use this base domain.
 
-        > [!NOTE]
-        > The base domain must be a valid DNS name. You must not have a wildcard domain set up for the base domain.
+        <div class="note">
+
+        The base domain must be a valid DNS name. You must not have a wildcard domain set up for the base domain.
+
+        </div>
 
     3.  Select a version from the **OpenShift version** dropdown list. By default, the dropdown list displays the latest version.
 
@@ -65,8 +40,11 @@ Procedure
 
     5.  Optional: Select the **Include custom manifests** checkbox if you want to upload custom manifests to further configure your cluster. This option adds an additional page for custom manifests that you use later in the configuration process.
 
-        > [!IMPORTANT]
-        > If you have already added custom manifests, clearing the **Include custom manifests** checkbox automatically deletes them all. You must confirm the deletion.
+        <div class="important">
+
+        If you have already added custom manifests, clearing the **Include custom manifests** checkbox automatically deletes them all. You must confirm the deletion.
+
+        </div>
 
     6.  Click **Next** to continue. Once you proceed to the next page, you cannot go back to change any of these cluster details.
 
@@ -92,11 +70,9 @@ Procedure
 
 8.  Copy the command from the **Command to download the ISO** field and run the command as a root user in the ODA environment.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example command
+    **Example command**
 
     </div>
 
@@ -104,33 +80,11 @@ Procedure
     # wget -O discovery_image_example.iso 'https://api.openshift.com/api/assisted-images/bytoken/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Njg0Mjc3MDIsInN1YiI6ImNhMzZjZWU1LTQ3ZWEtNDc0Ny05OTg5LTVhZTYyMmMzMjZlNSJ9.jl-HvaxBR-WX73vpxO-Fy65bmY-RE5iL6AqL0wbWCmE/4.20/x86_64/minimal.iso'
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Generating a key pair for cluster node SSH access](../../installing/installing_platform_agnostic/installing-platform-agnostic.xml#ssh-agent-using_installing-platform-agnostic)
-
-</div>
 
 # Creating nodes in the Oracle Database Appliance environment
 
 After generating and downloading the Discovery ISO to your Oracle Database Appliance (ODA) environment, create control plane nodes and worker nodes in the environment.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the script to create control plane nodes as described in section 3.4 of the [Red Hat OpenShift Container Platform on Oracle Database Appliance Deployment Guide](https://www.oracle.com/a/otn/docs/red-hat-openshift-container-platform-4-19.pdf) (Oracle documentation).
 
@@ -138,21 +92,11 @@ Procedure
 
 3.  Update the MAC address for each node as described in section 3.6 of the "Red Hat OpenShift Container Platform on Oracle Database Appliance Deployment Guide".
 
-</div>
-
 # Completing host discovery and starting cluster installation
 
 After preparing control plane and worker nodes in the Oracle Database Appliance (ODA) environment, complete host discovery and initiate the cluster installation.
 
 As you create hosts using the provided scripts, the hosts begin to appear in the table of the **Host Discovery** page, where you can configure the hosts as needed.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to the **Host Discovery** page.
 
@@ -184,31 +128,11 @@ Procedure
 
 10. Monitor installation progress and wait for all nodes to reach a `Ready` state.
 
-</div>
-
 # Completing the installation
 
 After the cluster is installed and initialized, the Assisted Installer indicates that the installation is finished. The Assisted Installer provides the console URL, the `kubeadmin` username and password, and the `kubeconfig` file.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Make a copy of the `kubeadmin` username and password.
 
@@ -222,8 +146,11 @@ Procedure
     $ cp kubeconfig <working_directory>/auth
     ```
 
-    > [!NOTE]
-    > The `kubeconfig` file is available for download for 20 days after completing the installation.
+    <div class="note">
+
+    The `kubeconfig` file is available for download for 20 days after completing the installation.
+
+    </div>
 
 3.  Add the `kubeconfig` file to your environment by running the following command:
 
@@ -242,5 +169,3 @@ Procedure
 5.  Click the web console URL or click **Launch OpenShift Console** to open the console.
 
 6.  Enter the `kubeadmin` username and password. Follow the instructions in the OpenShift Container Platform console to configure an identity provider and configure alert receivers.
-
-</div>

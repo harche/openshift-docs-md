@@ -28,8 +28,11 @@ When you add a `MetalLB` custom resource to the cluster, the MetalLB Operator de
 `IPAddressPool`
 MetalLB requires one or more pools of IP addresses that it can assign to a service when you add a service of type `LoadBalancer`. An `IPAddressPool` includes a list of IP addresses. The list can be a single IP address that is set using a range, such as 1.1.1.1-1.1.1.1, a range specified in CIDR notation, a range specified as a starting and ending address separated by a hyphen, or a combination of the three. An `IPAddressPool` requires a name. The documentation uses names like `doc-example`, `doc-example-reserved`, and `doc-example-ipv6`. The MetalLB `controller` assigns IP addresses from a pool of addresses in an `IPAddressPool`. `L2Advertisement` and `BGPAdvertisement` custom resources enable the advertisement of a given IP from a given pool. You can assign IP addresses from an `IPAddressPool` to services and namespaces by using the `spec.serviceAllocation` specification in the `IPAddressPool` custom resource.
 
-> [!NOTE]
-> A single `IPAddressPool` can be referenced by a L2 advertisement and a BGP advertisement.
+<div class="note">
+
+A single `IPAddressPool` can be referenced by a L2 advertisement and a BGP advertisement.
+
+</div>
 
 `BGPPeer`
 The BGP peer custom resource identifies the BGP router for MetalLB to communicate with, the AS number of the router, the AS number for MetalLB, and customizations for route advertisement. MetalLB advertises the routes for service load-balancer IP addresses to one or more BGP peers.
@@ -55,25 +58,24 @@ When you install the MetalLB Operator, the `metallb-operator-controller-manager`
 
 When the Operator starts an instance of MetalLB, it starts a `controller` deployment and a `speaker` daemon set.
 
-> [!NOTE]
-> You can configure deployment specifications in the MetalLB custom resource to manage how `controller` and `speaker` pods deploy and run in your cluster. For more information about these deployment specifications, see the *Additional resources* section.
+<div class="note">
+
+You can configure deployment specifications in the MetalLB custom resource to manage how `controller` and `speaker` pods deploy and run in your cluster. For more information about these deployment specifications, see the *Additional resources* section.
+
+</div>
 
 `controller`
 The Operator starts the deployment and a single pod. When you add a service of type `LoadBalancer`, Kubernetes uses the `controller` to allocate an IP address from an address pool. In case of a service failure, verify you have the following entry in your `controller` pod logs:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
 ``` terminal
 "event":"ipAllocated","ip":"172.22.0.201","msg":"IP address assigned by controller
 ```
-
-</div>
 
 `speaker`
 The Operator starts a daemon set for `speaker` pods. By default, a pod is started on each node in your cluster. You can limit the pods to specific nodes by specifying a node selector in the `MetalLB` custom resource when you start MetalLB. If the `controller` allocated the IP address to the service and service is still unavailable, read the `speaker` pod logs. If the `speaker` pod is unavailable, run the `oc describe pod -n` command.
@@ -104,19 +106,25 @@ With the `local` traffic policy, after the node receives the traffic, the servic
 
 This policy does not affect the client IP address. Application pods can determine the client IP address from the incoming connections.
 
-> [!NOTE]
-> The following information is important when configuring the external traffic policy in BGP mode.
->
-> Although MetalLB advertises the load balancer IP address from all the eligible nodes, the number of nodes loadbalancing the service can be limited by the capacity of the router to establish equal-cost multipath (ECMP) routes. If the number of nodes advertising the IP is greater than the ECMP group limit of the router, the router will use less nodes than the ones advertising the IP.
->
-> For example, if the external traffic policy is set to `local` and the router has an ECMP group limit set to 16 and the pods implementing a LoadBalancer service are deployed on 30 nodes, this would result in pods deployed on 14 nodes not receiving any traffic. In this situation, it would be preferable to set the external traffic policy for the service to `cluster`.
+<div class="note">
+
+The following information is important when configuring the external traffic policy in BGP mode.
+
+Although MetalLB advertises the load balancer IP address from all the eligible nodes, the number of nodes loadbalancing the service can be limited by the capacity of the router to establish equal-cost multipath (ECMP) routes. If the number of nodes advertising the IP is greater than the ECMP group limit of the router, the router will use less nodes than the ones advertising the IP.
+
+For example, if the external traffic policy is set to `local` and the router has an ECMP group limit set to 16 and the pods implementing a LoadBalancer service are deployed on 30 nodes, this would result in pods deployed on 14 nodes not receiving any traffic. In this situation, it would be preferable to set the external traffic policy for the service to `cluster`.
+
+</div>
 
 # MetalLB concepts for layer 2 mode
 
 MetalLB in layer 2 mode announces the external IP for a LoadBalancer service from one node via ARP or NDP. All traffic for the service goes through that node, and failover to another node is automatic when the node becomes unavailable.
 
-> [!NOTE]
-> In layer 2 mode, MetalLB relies on ARP and NDP. These protocols implement local address resolution within a specific subnet. In this context, the client must be able to reach the VIP assigned by MetalLB that exists on the same subnet as the nodes announcing the service in order for MetalLB to work.
+<div class="note">
+
+In layer 2 mode, MetalLB relies on ARP and NDP. These protocols implement local address resolution within a specific subnet. In this context, the client must be able to reach the VIP assigned by MetalLB that exists on the same subnet as the nodes announcing the service in order for MetalLB to work.
+
+</div>
 
 The `speaker` pod responds to ARP requests for IPv4 services and NDP requests for IPv6.
 

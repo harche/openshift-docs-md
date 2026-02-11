@@ -16,11 +16,9 @@ During resolution, bundles that are not deprecated are preferred over deprecated
 
 When a catalog is added to a cluster, a label is created by using the value of the `metadata.name` field of the catalog custom resource (CR). In the CR of an extension, you can specify the catalog name by using the `spec.source.catalog.selector.matchLabels` field. The value of the `matchLabels` field uses the following format:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example label derived from the `metadata.name` field
+**Example label derived from the `metadata.name` field**
 
 </div>
 
@@ -34,17 +32,13 @@ metadata:
 ...
 ```
 
-</div>
-
 - A label derived from the `metadata.name` field and automatically added when the catalog is applied.
 
 The following example resolves the `<example_extension>-operator` package from a catalog with the `openshift-redhat-operators` label:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example extension CR
+**Example extension CR**
 
 </div>
 
@@ -66,19 +60,15 @@ spec:
           olm.operatorframework.io/metadata.name: openshift-redhat-operators
 ```
 
-</div>
-
 # Catalog selection by labels or expressions
 
 You can add metadata to a catalog by using labels in the custom resource (CR) of a cluster catalog. You can then filter catalog selection by specifying the assigned labels or using expressions in the CR of the cluster extension.
 
 The following cluster catalog CR adds the `example.com/support` label with the value of `true` to the `catalog-a` cluster catalog:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example cluster catalog CR with labels
+**Example cluster catalog CR with labels**
 
 </div>
 
@@ -96,15 +86,11 @@ spec:
       ref: quay.io/example/content-management-a:latest
 ```
 
-</div>
-
 The following cluster extension CR uses the `matchLabels` selector to select catalogs with the `example.com/support` label and the value of `true`:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example cluster extension CR with `matchLabels` selector
+**Example cluster extension CR with `matchLabels` selector**
 
 </div>
 
@@ -126,15 +112,11 @@ spec:
           example.com/support: "true"
 ```
 
-</div>
-
 You can use the `matchExpressions` field to perform more complex filtering for labels. The following cluster extension CR selects catalogs with the `example.com/support` label and a value of `production` or `supported`:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example cluster extension CR with `matchExpression` selector
+**Example cluster extension CR with `matchExpression` selector**
 
 </div>
 
@@ -160,10 +142,11 @@ spec:
               - "supported"
 ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> If you use both the `matchLabels` and `matchExpressions` fields, the selected catalog must satisfy all specified criteria.
+If you use both the `matchLabels` and `matchExpressions` fields, the selected catalog must satisfy all specified criteria.
+
+</div>
 
 # Catalog exclusion by labels or expressions
 
@@ -171,11 +154,9 @@ You can exclude catalogs by using match expressions on metadata with the `NotIn`
 
 The following CRs add an `example.com/testing` label to the `unwanted-catalog-1` and `unwanted-catalog-2` cluster catalogs:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example cluster catalog CR
+**Example cluster catalog CR**
 
 </div>
 
@@ -193,13 +174,9 @@ spec:
       ref: quay.io/example/content-management-a:latest
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example cluster catalog CR
+**Example cluster catalog CR**
 
 </div>
 
@@ -217,15 +194,11 @@ spec:
       ref: quay.io/example/content-management-b:latest
 ```
 
-</div>
-
 The following cluster extension CR excludes selection from the `unwanted-catalog-1` catalog:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example cluster extension CR that excludes a specific catalog
+**Example cluster extension CR that excludes a specific catalog**
 
 </div>
 
@@ -250,15 +223,11 @@ spec:
               - unwanted-catalog-1
 ```
 
-</div>
-
 The following cluster extension CR selects from catalogs that do not have the `example.com/testing` label. As a result, both `unwanted-catalog-1` and `unwanted-catalog-2` are excluded from catalog selection.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example cluster extension CR that excludes catalogs with a specific label
+**Example cluster extension CR that excludes catalogs with a specific label**
 
 </div>
 
@@ -281,17 +250,11 @@ spec:
             operator: DoesNotExist
 ```
 
-</div>
-
 # Catalog selection by priority
 
 When multiple catalogs provide the same package, you can resolve ambiguities by specifying the priority in the custom resource (CR) of each catalog. If unspecified, catalogs have a default priority value of `0`. The priority can be any positive or negative 32-bit integer.
 
 <div class="note">
-
-<div class="title">
-
-</div>
 
 - During bundle resolution, catalogs with higher priority values are selected over catalogs with lower priority values.
 
@@ -301,11 +264,9 @@ When multiple catalogs provide the same package, you can resolve ambiguities by 
 
 </div>
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example cluster catalog CR with a higher priority
+**Example cluster catalog CR with a higher priority**
 
 </div>
 
@@ -322,13 +283,9 @@ spec:
       ref: quay.io/example/higher-priority-catalog:latest
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example cluster catalog CR with a lower priority
+**Example cluster catalog CR with a lower priority**
 
 </div>
 
@@ -344,8 +301,6 @@ spec:
     image:
       ref: quay.io/example/lower-priority-catalog:latest
 ```
-
-</div>
 
 # Troubleshooting catalog selection errors
 

@@ -4,8 +4,11 @@ Configure the `keystone` identity provider to integrate your OpenShift Container
 
 By default, only a `kubeadmin` user exists on your cluster. To specify an identity provider, you must create a custom resource (CR) that describes that identity provider and add it to the cluster.
 
-> [!NOTE]
-> OpenShift Container Platform user names containing `/`, `:`, and `%` are not supported.
+<div class="note">
+
+OpenShift Container Platform user names containing `/`, `:`, and `%` are not supported.
+
+</div>
 
 # About Keystone authentication
 
@@ -17,48 +20,33 @@ You can configure the integration with Keystone so that the new OpenShift Contai
 
 Identity providers use OpenShift Container Platform `Secret` objects in the `openshift-config` namespace to contain the client secret, client certificates, and keys.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Create a `Secret` object that contains the key and certificate by using the following command:
 
   ``` terminal
   $ oc create secret tls <secret_name> --key=key.pem --cert=cert.pem -n openshift-config
   ```
 
-  > [!TIP]
-  > You can alternatively apply the following YAML to create the secret:
-  >
-  > ``` yaml
-  > apiVersion: v1
-  > kind: Secret
-  > metadata:
-  >   name: <secret_name>
-  >   namespace: openshift-config
-  > type: kubernetes.io/tls
-  > data:
-  >   tls.crt: <base64_encoded_cert>
-  >   tls.key: <base64_encoded_key>
-  > ```
+  <div class="tip">
 
-</div>
+  You can alternatively apply the following YAML to create the secret:
+
+  ``` yaml
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: <secret_name>
+    namespace: openshift-config
+  type: kubernetes.io/tls
+  data:
+    tls.crt: <base64_encoded_cert>
+    tls.key: <base64_encoded_key>
+  ```
+
+  </div>
 
 # Creating a config map
 
 Identity providers use OpenShift Container Platform `ConfigMap` objects in the `openshift-config` namespace to contain the certificate authority bundle. These are primarily used to contain certificate bundles needed by the identity provider.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Define an OpenShift Container Platform `ConfigMap` object containing the certificate authority by using the following command. The certificate authority must be stored in the `ca.crt` key of the `ConfigMap` object.
 
@@ -66,31 +54,30 @@ Procedure
   $ oc create configmap ca-config-map --from-file=ca.crt=/path/to/ca -n openshift-config
   ```
 
-  > [!TIP]
-  > You can alternatively apply the following YAML to create the config map:
-  >
-  > ``` yaml
-  > apiVersion: v1
-  > kind: ConfigMap
-  > metadata:
-  >   name: ca-config-map
-  >   namespace: openshift-config
-  > data:
-  >   ca.crt: |
-  >     <CA_certificate_PEM>
-  > ```
+  <div class="tip">
 
-</div>
+  You can alternatively apply the following YAML to create the config map:
+
+  ``` yaml
+  apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: ca-config-map
+    namespace: openshift-config
+  data:
+    ca.crt: |
+      <CA_certificate_PEM>
+  ```
+
+  </div>
 
 # Sample Keystone CR
 
 The following custom resource (CR) shows the parameters and acceptable values for a Keystone identity provider.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Keystone CR
+**Keystone CR**
 
 </div>
 
@@ -115,8 +102,6 @@ spec:
         name: client-key-secret
 ```
 
-</div>
-
 - This provider name is prefixed to provider user names to form an identity name.
 
 - Controls how mappings are established between this provider’s identities and `User` objects.
@@ -131,29 +116,13 @@ spec:
 
 - Reference to an OpenShift Container Platform `Secret` object containing the key for the client certificate. Required if `tlsClientCert` is specified.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - See [Identity provider parameters](../../authentication/understanding-identity-provider.xml#identity-provider-parameters_understanding-identity-provider) for information on parameters, such as `mappingMethod`, that are common to all identity providers.
-
-</div>
 
 # Adding an identity provider to your cluster
 
 After you install your cluster, add an identity provider to it so your users can authenticate.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Create an OpenShift Container Platform cluster.
 
@@ -161,24 +130,17 @@ Prerequisites
 
 - You must be logged in as an administrator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Apply the defined CR:
 
     ``` terminal
     $ oc apply -f </path/to/CR>
     ```
 
-    > [!NOTE]
-    > If a CR does not exist, `oc apply` creates a new CR and might trigger the following warning: `Warning: oc apply should be used on resources created by either oc create --save-config or oc apply`. In this case you can safely ignore this warning.
+    <div class="note">
+
+    If a CR does not exist, `oc apply` creates a new CR and might trigger the following warning: `Warning: oc apply should be used on resources created by either oc create --save-config or oc apply`. In this case you can safely ignore this warning.
+
+    </div>
 
 2.  Log in to the cluster as a user from your identity provider, entering the password when prompted.
 
@@ -191,5 +153,3 @@ Procedure
     ``` terminal
     $ oc whoami
     ```
-
-</div>

@@ -1,33 +1,18 @@
 You can use the Run Once Duration Override Operator to specify a maximum time limit that run-once pods can be active for. By enabling the run-once duration override on a namespace, all future run-once pods created or updated in that namespace have their `activeDeadlineSeconds` field set to the value specified by the Run Once Duration Override Operator.
 
-> [!NOTE]
-> If both the run-once pod and the Run Once Duration Override Operator have their `activeDeadlineSeconds` value set, the lower of the two values is used.
+<div class="note">
+
+If both the run-once pod and the Run Once Duration Override Operator have their `activeDeadlineSeconds` value set, the lower of the two values is used.
+
+</div>
 
 # Installing the Run Once Duration Override Operator
 
 You can use the web console to install the Run Once Duration Override Operator.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -73,15 +58,7 @@ Procedure
 
     4.  Click **Create**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Log in to the OpenShift CLI.
 
@@ -91,11 +68,9 @@ Verification
     $ oc get pods -n openshift-run-once-duration-override-operator
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -107,33 +82,11 @@ Verification
     runoncedurationoverride-tdsqk                          1/1     Running   0          41s
     ```
 
-    </div>
-
-</div>
-
 # Enabling the run-once duration override on a namespace
 
 To apply the run-once duration override from the Run Once Duration Override Operator to run-once pods, you must enable it on each applicable namespace.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The Run Once Duration Override Operator is installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift CLI.
 
@@ -146,17 +99,7 @@ Procedure
 
     - Specify the namespace to enable the run-once duration override on.
 
-</div>
-
 After you enable the run-once duration override on this namespace, future run-once pods that are created in this namespace will have their `activeDeadlineSeconds` field set to the override value from the Run Once Duration Override Operator. Existing pods in this namespace will also have their `activeDeadlineSeconds` value set when they are updated next.
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 1.  Create a test run-once pod in the namespace that you enabled the run-once duration override on:
 
@@ -196,11 +139,9 @@ Verification
     $ oc get pods -n <namespace> -o yaml | grep activeDeadlineSeconds
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -208,35 +149,13 @@ Verification
         activeDeadlineSeconds: 3600
     ```
 
-    </div>
-
-</div>
-
 # Updating the run-once active deadline override value
 
 You can customize the override value that the Run Once Duration Override Operator applies to run-once pods. The predefined value is `3600` seconds, or 1 hour.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have installed the Run Once Duration Override Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift CLI.
 
@@ -263,7 +182,5 @@ Procedure
     - Set the `activeDeadlineSeconds` field to the desired value, in seconds.
 
 4.  Save the file to apply the changes.
-
-</div>
 
 Any future run-once pods created in namespaces where the run-once duration override is enabled will have their `activeDeadlineSeconds` field set to this new value. Existing run-once pods in these namespaces will receive this new value when they are updated.

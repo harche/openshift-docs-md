@@ -14,33 +14,13 @@ You can use the following fields in the `nodeAgent.backupPVC` section of the DPA
 
 Configure backup persistent volume claim (PVC) settings in the `DataProtectionApplication` (DPA) to optimize Data Mover backup performance for different storage classes. The feature gives you read-only access modes for faster data movement.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OADP Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Configure the `nodeAgent.backupPVC` section in the DPA as shown in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example Data Protection Application
+    **Example Data Protection Application**
 
     </div>
 
@@ -81,8 +61,6 @@ Procedure
           - csi
     ```
 
-    </div>
-
     where:
 
     `backupPVC`
@@ -96,11 +74,9 @@ Procedure
 
 2.  Create a `Backup` custom resource by using the following configuration:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example Backup
+    **Example Backup**
 
     </div>
 
@@ -116,28 +92,14 @@ Procedure
       snapshotMoveData: true
     ```
 
-    </div>
-
     `snapshotMoveData`
     Set to `true` for a Data Mover backup.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the backup PVCs are created as read-only (`ROX`) by running the following command:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example command
+  **Example command**
 
   </div>
 
@@ -145,14 +107,10 @@ Verification
   $ oc get pvc -n openshift-adp -w
   ```
 
-  </div>
-
   ``` terminal
   test-backup1-l..d   Bound   pvc-1298.....22f8   2Gi        ROX            standard-csi   <unset>                 37s
   test-backup1-l..d   Bound   pvc-1298....022f8   2Gi        ROX            standard-csi   <unset>                 37s
   ```
-
-</div>
 
 # Configuring a restorePVC for a Data Mover restore
 
@@ -164,35 +122,17 @@ You can configure the `restorePVC` in the `DataProtectionApplication` (DPA) obje
 
 The `ignoreDelayBinding` setting is helpful in scenarios where multiple volume restores are happening in parallel. With the `ignoreDelayBinding` field set to `true`, the restore pods can be spread evenly to all nodes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OADP Operator.
 
 - You have a created a Data Mover backup of an application.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Configure the `restorePVC` section in the DPA as shown in the following example:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example Data Protection Application
+  **Example Data Protection Application**
 
   </div>
 
@@ -212,8 +152,6 @@ Procedure
         ignoreDelayBinding: true
   ```
 
-  </div>
-
   where:
 
   `restorePVC`
@@ -221,5 +159,3 @@ Procedure
 
   `ignoreDelayBinding`
   Set the `ignoreDelayBinding` field to `true`.
-
-</div>

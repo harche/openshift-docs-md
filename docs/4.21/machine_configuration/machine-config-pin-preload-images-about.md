@@ -22,14 +22,9 @@ You can pin images to your nodes by using a `PinnedImageSet` custom resource (CR
 
 The images are stored in the `/etc/crio/crio.conf.d/50-pinned-images` file on the nodes.
 
-> [!NOTE]
-> Only images that you can successfully inspect with the `podman manifest inspect <IMAGE_URL>` command can be used with a pinned image set. Image inspections could fail due to unsupported manifest formats, registry authorization issues, invalid schemas, network connectivity issues, or other issues.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+Only images that you can successfully inspect with the `podman manifest inspect <IMAGE_URL>` command can be used with a pinned image set. Image inspections could fail due to unsupported manifest formats, registry authorization issues, invalid schemas, network connectivity issues, or other issues.
 
 </div>
 
@@ -62,27 +57,15 @@ Procedure
     $ oc create -f <file_name>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Check that the pinned image set is reported in the machine config node object for the affected machine config pool by running the following command:
 
   ``` terminal
   $ oc describe machineconfignode <machine_config_node_name>
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example command
+  **Example command**
 
   </div>
 
@@ -90,13 +73,9 @@ Verification
   $ oc describe machineconfignode ci-ln-25hlkvt-72292-jrs48-worker-a-2bdj
   ```
 
-  </div>
+  <div class="formalpara-title">
 
-  <div class="formalpara">
-
-  <div class="title">
-
-  Example output for a successful image pull and pin
+  **Example output for a successful image pull and pin**
 
   </div>
 
@@ -115,17 +94,13 @@ Verification
       name: worker-pinned-images
   ```
 
-  </div>
-
   - The `PinnedImageset` object is associated with the machine config node.
 
     Any failures or error messages would appear in the `MachineConfigNode` object status fields, as shown in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output for a failed image pull and pin
+    **Example output for a failed image pull and pin**
 
     </div>
 
@@ -155,8 +130,6 @@ Verification
         name: worker-pinned-images
     ```
 
-    </div>
-
 - Check that the pinned image file is created and contains the correct images.
 
   1.  Start a debug session for a node by running the following command:
@@ -177,11 +150,9 @@ Verification
       $ cat /etc/crio/crio.conf.d/50-pinned-images
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -191,23 +162,11 @@ Verification
           pinned_images = ["quay.io/openshift-release-dev/ocp-release@sha256:4198606580b69c8335ad7ae531c3a74e51aee25db5faaf368234e8c8dae5cbea", "quay.io/openshift-release-dev/ocp-release@sha256:513cf1028aa1a021fa73d0601427a0fbcf6d212b88aaf9d76d4e4841a061e44e", "quay.io/openshift-release-dev/ocp-release@sha256:61eae2d261e54d1b8a0e05f6b5326228b00468364563745eed88460af04f909b"]
       ```
 
-      </div>
-
       where:
 
       `pinnedImages`
       Specifies the images that have been pulled and pinned for the affected machine config pool.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [About checking machine config node status](../machine_configuration/index.xml#checking-mco-node-status_machine-config-overview)
-
-</div>

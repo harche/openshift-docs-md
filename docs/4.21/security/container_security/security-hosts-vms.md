@@ -12,8 +12,11 @@ Because OpenShift Container Platform 4.17 runs on RHCOS hosts, with the option o
 
 - *SELinux* provides an additional layer of security to keep containers isolated from each other and from the host. SELinux allows administrators to enforce mandatory access controls (MAC) for every user, application, process, and file.
 
-> [!WARNING]
-> Disabling SELinux on RHCOS is not supported.
+<div class="warning">
+
+Disabling SELinux on RHCOS is not supported.
+
+</div>
 
 - *CGroups* (control groups) limit, account for, and isolate the resource usage (CPU, memory, disk I/O, network, etc.) of a collection of processes. CGroups are used to ensure that containers on the same host are not impacted by each other.
 
@@ -23,14 +26,9 @@ Because OpenShift Container Platform 4.17 runs on RHCOS hosts, with the option o
 
 RHCOS is a version of Red Hat Enterprise Linux (RHEL) that is specially configured to work as control plane (master) and worker nodes on OpenShift Container Platform clusters. So RHCOS is tuned to efficiently run container workloads, along with Kubernetes and OpenShift Container Platform services.
 
-> [!NOTE]
-> To further protect RHCOS systems in OpenShift Container Platform clusters, most containers, except those managing or monitoring the host system itself, should run as a non-root user. Dropping the privilege level or creating containers with the least amount of privileges possible is recommended best practice for protecting your own OpenShift Container Platform clusters.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+To further protect RHCOS systems in OpenShift Container Platform clusters, most containers, except those managing or monitoring the host system itself, should run as a non-root user. Dropping the privilege level or creating containers with the least amount of privileges possible is recommended best practice for protecting your own OpenShift Container Platform clusters.
 
 </div>
 
@@ -55,8 +53,6 @@ Additional resources
 - [About the OpenShift Update Service](../../updating/understanding_updates/intro-to-updates.xml#update-service-about_understanding-openshift-updates)
 
 - [FIPS cryptography](../../installing/overview/installing-fips.xml#installing-fips)
-
-</div>
 
 # Comparing virtualization and containers
 
@@ -94,14 +90,4 @@ In pursuit of those goals, most node changes should be done during installation 
 
 Besides the Machine Config Operator, there are several other Operators available to configure OpenShift Container Platform infrastructure that are managed by the Cluster Version Operator (CVO). The CVO is able to automate many aspects of OpenShift Container Platform cluster updates.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [FIPS cryptography](../../installing/overview/installing-fips.xml#installing-fips)
-
-</div>

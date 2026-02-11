@@ -8,27 +8,9 @@ When container runtime issues occur, verify the status of the `crio` systemd ser
 
 You can verify CRI-O container runtime engine status on each cluster node.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Review CRI-O status by querying the `crio` systemd service on a node, within a debug pod.
 
@@ -44,8 +26,11 @@ Procedure
         # chroot /host
         ```
 
-        > [!NOTE]
-        > OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>` instead.
+        <div class="note">
+
+        OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>` instead.
+
+        </div>
 
     3.  Check whether the `crio` systemd service is active on the node:
 
@@ -59,19 +44,9 @@ Procedure
         # systemctl status crio.service
         ```
 
-</div>
-
 # Gathering CRI-O journald unit logs
 
 If you experience CRI-O issues, you can obtain CRI-O journald unit logs from a node.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -80,16 +55,6 @@ Prerequisites
 - You have installed the OpenShift CLI (`oc`).
 
 - You have the fully qualified domain names of the control plane or control plane machines.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Gather CRI-O journald unit logs. The following example collects logs from all control plane nodes (within the cluster:
 
@@ -109,10 +74,11 @@ Procedure
     $ ssh core@<node>.<cluster_name>.<base_domain> journalctl -b -f -u crio.service
     ```
 
-    > [!NOTE]
-    > OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. Before attempting to collect diagnostic data over SSH, review whether the data collected by running `oc adm must gather` and other `oc` commands is sufficient instead. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>`.
+    <div class="note">
 
-</div>
+    OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. Before attempting to collect diagnostic data over SSH, review whether the data collected by running `oc adm must gather` and other `oc` commands is sufficient instead. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>`.
+
+    </div>
 
 # Cleaning CRI-O storage
 
@@ -138,27 +104,9 @@ You can manually clear the CRI-O ephemeral storage if you experience the followi
 
 Follow this process to completely wipe the CRI-O storage and resolve the errors.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Use `cordon` on the node. This is to avoid any workload getting scheduled if the node gets into the `Ready` status. You will know that scheduling is disabled when `SchedulingDisabled` is in your Status section:
 
@@ -172,8 +120,11 @@ Procedure
     $ oc adm drain <node_name> --ignore-daemonsets --delete-emptydir-data
     ```
 
-    > [!NOTE]
-    > The `terminationGracePeriodSeconds` attribute of a pod or pod template controls the graceful termination period. This attribute defaults at 30 seconds, but can be customized for each application as necessary. If set to more than 90 seconds, the pod might be marked as `SIGKILLed` and fail to terminate successfully.
+    <div class="note">
+
+    The `terminationGracePeriodSeconds` attribute of a pod or pod template controls the graceful termination period. This attribute defaults at 30 seconds, but can be customized for each application as necessary. If set to more than 90 seconds, the pod might be marked as `SIGKILLed` and fail to terminate successfully.
+
+    </div>
 
 3.  When the node returns, connect back to the node via SSH or Console. Then connect to the root user:
 
@@ -227,11 +178,9 @@ Procedure
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -240,19 +189,15 @@ Procedure
     ci-ln-tkbxyft-f76d1-nvwhr-master-1  Ready, SchedulingDisabled   master   133m   v1.33.4
     ```
 
-    </div>
-
 10. Mark the node schedulable. You will know that the scheduling is enabled when `SchedulingDisabled` is no longer in status:
 
     ``` terminal
     $ oc adm uncordon <node_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -260,7 +205,3 @@ Procedure
     NAME                  STATUS       ROLES    AGE    VERSION
     ci-ln-tkbxyft-f76d1-nvwhr-master-1   Ready            master   133m   v1.33.4
     ```
-
-    </div>
-
-</div>

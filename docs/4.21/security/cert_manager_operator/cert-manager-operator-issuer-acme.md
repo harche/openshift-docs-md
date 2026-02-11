@@ -1,37 +1,42 @@
 The cert-manager Operator for Red Hat OpenShift supports using Automated Certificate Management Environment (ACME) CA servers, such as *Let’s Encrypt*, to issue certificates. Explicit credentials are configured by specifying the secret details in the `Issuer` API object. Ambient credentials are extracted from the environment, metadata services, or local files which are not explicitly configured in the `Issuer` API object.
 
-> [!NOTE]
-> The `Issuer` object is namespace scoped. It can only issue certificates from the same namespace. You can also use the `ClusterIssuer` object to issue certificates across all namespaces in the cluster.
->
-> <div class="formalpara">
->
-> <div class="title">
->
-> Example YAML file that defines the `ClusterIssuer` object
->
-> </div>
->
-> ``` yaml
-> apiVersion: cert-manager.io/v1
-> kind: ClusterIssuer
-> metadata:
->   name: acme-cluster-issuer
-> spec:
->   acme:
->     ...
-> ```
->
-> </div>
+<div class="note">
 
-> [!NOTE]
-> By default, you can use the `ClusterIssuer` object with ambient credentials. To use the `Issuer` object with ambient credentials, you must enable the `--issuer-ambient-credentials` setting for the cert-manager controller.
+The `Issuer` object is namespace scoped. It can only issue certificates from the same namespace. You can also use the `ClusterIssuer` object to issue certificates across all namespaces in the cluster.
+
+<div class="formalpara-title">
+
+**Example YAML file that defines the `ClusterIssuer` object**
+
+</div>
+
+``` yaml
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: acme-cluster-issuer
+spec:
+  acme:
+    ...
+```
+
+</div>
+
+<div class="note">
+
+By default, you can use the `ClusterIssuer` object with ambient credentials. To use the `Issuer` object with ambient credentials, you must enable the `--issuer-ambient-credentials` setting for the cert-manager controller.
+
+</div>
 
 # About ACME issuers
 
 The ACME issuer type for the cert-manager Operator for Red Hat OpenShift represents an Automated Certificate Management Environment (ACME) certificate authority (CA) server. ACME CA servers rely on a *challenge* to verify that a client owns the domain names that the certificate is being requested for. If the challenge is successful, the cert-manager Operator for Red Hat OpenShift can issue the certificate. If the challenge fails, the cert-manager Operator for Red Hat OpenShift does not issue the certificate.
 
-> [!NOTE]
-> Private DNS zones are not supported with *Let’s Encrypt* and internet ACME servers.
+<div class="note">
+
+Private DNS zones are not supported with *Let’s Encrypt* and internet ACME servers.
+
+</div>
 
 ## Supported ACME challenges types
 
@@ -44,10 +49,13 @@ With the HTTP-01 challenge type, you provide a computed key at an HTTP URL endpo
 
 For more information, see [HTTP01](https://cert-manager.io/docs/configuration/acme/http01/) in the upstream cert-manager documentation.
 
-> [!NOTE]
-> HTTP-01 requires that the Let’s Encrypt servers can access the route of the cluster. If an internal or private cluster is behind a proxy, the HTTP-01 validations for certificate issuance fail.
->
-> The HTTP-01 challenge is restricted to port 80. For more information, see [HTTP-01 challenge](https://letsencrypt.org/docs/challenge-types/#http-01-challenge) (Let’s Encrypt).
+<div class="note">
+
+HTTP-01 requires that the Let’s Encrypt servers can access the route of the cluster. If an internal or private cluster is behind a proxy, the HTTP-01 validations for certificate issuance fail.
+
+The HTTP-01 challenge is restricted to port 80. For more information, see [HTTP-01 challenge](https://letsencrypt.org/docs/challenge-types/#http-01-challenge) (Let’s Encrypt).
+
+</div>
 
 DNS-01
 With the DNS-01 challenge type, you provide a computed key at a DNS TXT record. If the ACME CA server can get the key by DNS lookup, it can validate you as the owner of the domain.
@@ -64,8 +72,11 @@ The cert-manager Operator for Red Hat OpenShift supports the following DNS-01 pr
 
 - Azure DNS
 
-  > [!NOTE]
-  > The cert-manager Operator for Red Hat OpenShift does not support using Microsoft Entra ID pod identities to assign a managed identity to a pod.
+  <div class="note">
+
+  The cert-manager Operator for Red Hat OpenShift does not support using Microsoft Entra ID pod identities to assign a managed identity to a pod.
+
+  </div>
 
 - Google Cloud DNS
 
@@ -75,34 +86,19 @@ The cert-manager Operator for Red Hat OpenShift supports the following DNS-01 pr
 
   - [cert-manager-webhook-ibmcis](https://github.com/jb-dk/cert-manager-webhook-ibmcis)
 
-  > [!NOTE]
-  > Using a DNS provider that is not listed might work with OpenShift Container Platform, but the provider was not tested by Red Hat and therefore is not supported by Red Hat.
+  <div class="note">
+
+  Using a DNS provider that is not listed might work with OpenShift Container Platform, but the provider was not tested by Red Hat and therefore is not supported by Red Hat.
+
+  </div>
 
 # Configuring an ACME issuer to solve HTTP-01 challenges
 
 You can use cert-manager Operator for Red Hat OpenShift to set up an ACME issuer to solve HTTP-01 challenges. This procedure uses *Let’s Encrypt* as the ACME CA server.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have a service that you want to expose. In this procedure, the service is named `sample-workload`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an ACME cluster issuer.
 
@@ -231,34 +227,17 @@ Procedure
         $ oc create -f ingress.yaml
         ```
 
-</div>
-
 # Configuring an ACME issuer by using explicit credentials for AWS Route53
 
 You can use cert-manager Operator for Red Hat OpenShift to set up an Automated Certificate Management Environment (ACME) issuer to solve DNS-01 challenges by using explicit credentials on AWS. This procedure uses *Let’s Encrypt* as the ACME certificate authority (CA) server and shows how to solve DNS-01 challenges with Amazon Route 53.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must provide the explicit `accessKeyID` and `secretAccessKey` credentials. For more information, see [Route53](https://cert-manager.io/docs/configuration/acme/dns01/route53/) in the upstream cert-manager documentation.
 
-  > [!NOTE]
-  > You can use Amazon Route 53 with explicit credentials in an OpenShift Container Platform cluster that is not running on AWS.
+  <div class="note">
 
-</div>
+  You can use Amazon Route 53 with explicit credentials in an OpenShift Container Platform cluster that is not running on AWS.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  Optional: Override the name server settings for the DNS-01 self check.
 
@@ -315,11 +294,9 @@ Procedure
 
     1.  Create a YAML file that defines the `Issuer` object:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `issuer.yaml` file
+        **Example `issuer.yaml` file**
 
         </div>
 
@@ -345,8 +322,6 @@ Procedure
                     name: "<aws_secret>"
                     key: "<aws_secret_access_key>"
         ```
-
-        </div>
 
         where:
 
@@ -386,33 +361,13 @@ Procedure
         $ oc create -f issuer.yaml
         ```
 
-</div>
-
 # Configuring an ACME issuer by using ambient credentials on AWS
 
 You can use cert-manager Operator for Red Hat OpenShift to set up an ACME issuer to solve DNS-01 challenges by using ambient credentials on AWS. This procedure uses *Let’s Encrypt* as the ACME CA server and shows how to solve DNS-01 challenges with Amazon Route 53.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - If your cluster is configured to use the AWS Security Token Service (STS), you followed the instructions from the *Configuring cloud credentials for the cert-manager Operator for Red Hat OpenShift for the AWS Security Token Service cluster* section.
 
 - If your cluster does not use the AWS STS, you followed the instructions from the *Configuring cloud credentials for the cert-manager Operator for Red Hat OpenShift on AWS* section.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Optional: Override the name server settings for the DNS-01 self check.
 
@@ -468,11 +423,9 @@ Procedure
 
     1.  Create a YAML file that defines the `Issuer` object:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `issuer.yaml` file
+        **Example `issuer.yaml` file**
 
         </div>
 
@@ -494,8 +447,6 @@ Procedure
                   hostedZoneID: <hosted_zone_id>
                   region: us-east-1
         ```
-
-        </div>
 
         where:
 
@@ -523,34 +474,17 @@ Procedure
         $ oc create -f issuer.yaml
         ```
 
-</div>
-
 # Configuring an ACME issuer by using explicit credentials for Google Cloud DNS
 
 You can use the cert-manager Operator for Red Hat OpenShift to set up an ACME issuer to solve DNS-01 challenges by using explicit credentials on Google Cloud. This procedure uses *Let’s Encrypt* as the ACME CA server and shows how to solve DNS-01 challenges with Google Cloud DNS.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have set up a Google Cloud service account with a desired role for Google Cloud DNS. For more information, see [Google Cloud DNS](https://cert-manager.io/docs/configuration/acme/dns01/google/) in the upstream cert-manager documentation.
 
-  > [!NOTE]
-  > You can use Google Cloud DNS with explicit credentials in an OpenShift Container Platform cluster that is not running on Google Cloud.
+  <div class="note">
 
-</div>
+  You can use Google Cloud DNS with explicit credentials in an OpenShift Container Platform cluster that is not running on Google Cloud.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  Optional: Override the name server settings for the DNS-01 self check.
 
@@ -654,33 +588,13 @@ Procedure
         $ oc create -f issuer.yaml
         ```
 
-</div>
-
 # Configuring an ACME issuer by using ambient credentials on Google Cloud
 
 You can use the cert-manager Operator for Red Hat OpenShift to set up an ACME issuer to solve DNS-01 challenges by using ambient credentials on Google Cloud. This procedure uses *Let’s Encrypt* as the ACME CA server and shows how to solve DNS-01 challenges with Google Cloud DNS.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - If your cluster is configured to use Google Cloud Workload Identity, you followed the instructions from the *Configuring cloud credentials for the cert-manager Operator for Red Hat OpenShift with Google Cloud Workload Identity* section.
 
 - If your cluster does not use Google Cloud Workload Identity, you followed the instructions from the *Configuring cloud credentials for the cert-manager Operator for Red Hat OpenShift on Google Cloud* section.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Optional: Override the name server settings for the DNS-01 self check.
 
@@ -736,11 +650,9 @@ Procedure
 
     1.  Create a YAML file that defines the `Issuer` object:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `issuer.yaml` file
+        **Example `issuer.yaml` file**
 
         </div>
 
@@ -762,8 +674,6 @@ Procedure
                   project: <gcp_project_id>
         ```
 
-        </div>
-
         where:
 
         `<issuer_name>`
@@ -784,34 +694,17 @@ Procedure
         $ oc create -f issuer.yaml
         ```
 
-</div>
-
 # Configuring an ACME issuer by using explicit credentials for Microsoft Azure DNS
 
 You can use cert-manager Operator for Red Hat OpenShift to set up an ACME issuer to solve DNS-01 challenges by using explicit credentials on Microsoft Azure. This procedure uses *Let’s Encrypt* as the ACME CA server and shows how to solve DNS-01 challenges with Azure DNS.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have set up a service principal with desired role for Azure DNS. For more information, see [Azure DNS](https://cert-manager.io/docs/configuration/acme/dns01/azuredns/) in the upstream cert-manager documentation.
 
-  > [!NOTE]
-  > You can follow this procedure for an OpenShift Container Platform cluster that is not running on Microsoft Azure.
+  <div class="note">
 
-</div>
+  You can follow this procedure for an OpenShift Container Platform cluster that is not running on Microsoft Azure.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  Optional: Override the nameserver settings for the DNS-01 self check.
 
@@ -938,8 +831,6 @@ Procedure
         ``` terminal
         $ oc create -f issuer.yaml
         ```
-
-</div>
 
 # Additional resources
 

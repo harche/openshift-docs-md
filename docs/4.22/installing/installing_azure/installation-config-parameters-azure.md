@@ -4,8 +4,11 @@ Before you deploy an OpenShift Container Platform cluster on Microsoft Azure, yo
 
 The following tables specify the required, optional, and Azure-specific installation configuration parameters that you can set as part of the installation process.
 
-> [!IMPORTANT]
-> After installation, you cannot change these parameters in the `install-config.yaml` file.
+<div class="important">
+
+After installation, you cannot change these parameters in the `install-config.yaml` file.
+
+</div>
 
 ## Required configuration parameters
 
@@ -18,39 +21,39 @@ Required installation configuration parameters are described in the following ta
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>apiVersion:</code></pre></td>
 <td style="text-align: left;"><p>The API version for the <code>install-config.yaml</code> content. The current version is <code>v1</code>. The installation program might also support older API versions.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>baseDomain:</code></pre></td>
 <td style="text-align: left;"><p>The base domain of your cloud provider. The base domain is used to create routes to your OpenShift Container Platform cluster components. The full DNS name for your cluster is a combination of the <code>baseDomain</code> and <code>metadata.name</code> parameter values that uses the <code>&lt;metadata.name&gt;.&lt;baseDomain&gt;</code> format.</p>
 <p><strong>Value:</strong> A fully-qualified domain or subdomain name, such as <code>example.com</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>metadata:</code></pre></td>
 <td style="text-align: left;"><p>Kubernetes resource <code>ObjectMeta</code>, from which only the <code>name</code> parameter is consumed.</p>
 <p><strong>Value:</strong> Object</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>metadata:
   name:</code></pre></td>
 <td style="text-align: left;"><p>The name of the cluster. DNS records for the cluster are all subdomains of <code>{{.metadata.name}}.{}</code>.</p>
 <p><strong>Value:</strong> String of lowercase letters, hyphens (<code>-</code>), and periods (<code>.</code>), such as <code>dev</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:</code></pre></td>
 <td style="text-align: left;"><p>The configuration for the specific platform upon which to perform the installation: <code>aws</code>, <code>baremetal</code>, <code>azure</code>, <code>gcp</code>, <code>ibmcloud</code>, <code>nutanix</code>, <code>openstack</code>, <code>powervs</code>, <code>vsphere</code>, or <code>{}</code>. For additional information about <code>platform.&lt;platform&gt;</code> parameters, consult the table for your specific platform that follows.</p>
 <p><strong>Value:</strong> Object</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>pullSecret:</code></pre></td>
 <td style="text-align: left;"><p>Get a <a href="https://console.redhat.com/openshift/install/pull-secret">pull secret from Red Hat OpenShift Cluster Manager</a> to authenticate downloading container images for OpenShift Container Platform components from services such as Quay.io.</p>
 <p><strong>Value:</strong></p>
@@ -70,6 +73,8 @@ Required installation configuration parameters are described in the following ta
 </tbody>
 </table>
 
+Required parameters
+
 ## Additional IBM PowerVC configuration parameters
 
 Additional IBM PowerVC configuration parameters are described in the following table:
@@ -81,13 +86,13 @@ Additional IBM PowerVC configuration parameters are described in the following t
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   powervc:
     cloud:</code></pre></td>
@@ -97,6 +102,8 @@ Additional IBM PowerVC configuration parameters are described in the following t
 </tr>
 </tbody>
 </table>
+
+Additional IBM PowerVC parameters
 
 ## Optional IBM PowerVC configuration parameters
 
@@ -109,13 +116,13 @@ Optional IBM PowerVC configuration parameters are described in the following tab
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     powervc:
@@ -123,7 +130,7 @@ Optional IBM PowerVC configuration parameters are described in the following tab
 <td style="text-align: left;"><p>IBM PowerVC Compute availability zones to install machines on. If this parameter is not set, the installation program relies on the default settings that the IBM PowerVC administrator configured.</p>
 <p><strong>Value:</strong> A list of strings. For example, <code>["zone-1", "zone-2"]</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     powervc:
@@ -131,14 +138,14 @@ Optional IBM PowerVC configuration parameters are described in the following tab
 <td style="text-align: left;"><p>IBM PowerVC Compute availability zones to install machines on. If this parameter is not set, the installation program relies on the default settings that the IBM PowerVC administrator configured.</p>
 <p><strong>Value:</strong> A list of strings. For example, <code>["zone-1", "zone-2"]</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   powervc:
     clusterOSImage:</code></pre></td>
 <td style="text-align: left;"><p>The name of the existing IBM PowerVC image.</p>
 <p><strong>Value:</strong> the name of an existing IBM PowerVC image, for example <code>my-rhcos</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   powervc:
     controlPlanePort:
@@ -146,7 +153,7 @@ Optional IBM PowerVC configuration parameters are described in the following tab
 <td style="text-align: left;"><p>Subnets for the machines to use.</p>
 <p><strong>Value:</strong> A list of subnet names or UUIDs to use in cluster installation.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   powervc:
     controlPlanePort:
@@ -154,7 +161,7 @@ Optional IBM PowerVC configuration parameters are described in the following tab
 <td style="text-align: left;"><p>A network for the machines to use.</p>
 <p><strong>Value:</strong> The UUID or name of an IBM PowerVC network to use in cluster installation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   powervc:
     defaultMachinePlatform:</code></pre></td>
@@ -164,28 +171,28 @@ Optional IBM PowerVC configuration parameters are described in the following tab
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>   <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;my-compute-template&quot;</span><span class="fu">,</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   powervc:
     externalDNS:</code></pre></td>
 <td style="text-align: left;"><p>IP addresses for external DNS servers that cluster instances use for DNS resolution.</p>
 <p><strong>Value:</strong> A list of IP addresses as strings. For example, <code>["8.8.8.8", "192.168.1.12"]</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   powervc:
     loadbalancer:</code></pre></td>
 <td style="text-align: left;"><p>Whether or not to use the default, internal load balancer. If the value is set to <code>UserManaged</code>, this default load balancer is disabled so that you can deploy a cluster that uses an external, user-managed load balancer. If the parameter is not set, or if the value is <code>OpenShiftManagedDefault</code>, the cluster uses the default load balancer.</p>
 <p><strong>Value:</strong> <code>UserManaged</code> or <code>OpenShiftManagedDefault</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   powervc:
     apiVIPs:</code></pre></td>
 <td style="text-align: left;"><p>Virtual IP (VIP) addresses that you configured for control plane API access.</p>
 <p><strong>Value:</strong> A list of IP addresses as strings. For example, <code>["10.0.0.30", "10.0.0.31"]</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   powervc:
     ingressVIPs:</code></pre></td>
@@ -194,6 +201,8 @@ Optional IBM PowerVC configuration parameters are described in the following tab
 </tr>
 </tbody>
 </table>
+
+Optional IBM PowerVC parameters
 
 ## Network configuration parameters
 
@@ -208,29 +217,27 @@ Only IPv4 addresses are supported.
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>networking:</code></pre></td>
 <td style="text-align: left;"><p>The configuration for the cluster network.</p>
 <p><strong>Value:</strong> Object</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>You cannot change parameters specified by the <code>networking</code> object after installation.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>networking:
   networkType:</code></pre></td>
 <td style="text-align: left;"><p>The Red Hat OpenShift Networking network plugin to install.</p>
 <p><strong>Value:</strong> <code>OVNKubernetes</code>. <code>OVNKubernetes</code> is a Container Network Interface (CNI) plugin for Linux networks and hybrid networks that contain both Linux and Windows servers. The default value is <code>OVNKubernetes</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>networking:
   clusterNetwork:</code></pre></td>
 <td style="text-align: left;"><p>The IP address blocks for pods.</p>
@@ -242,7 +249,7 @@ Only IPv4 addresses are supported.
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">cidr</span><span class="kw">:</span><span class="at"> 10.128.0.0/14</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hostPrefix</span><span class="kw">:</span><span class="at"> </span><span class="dv">23</span></span></code></pre></div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>networking:
   clusterNetwork:
     cidr:</code></pre></td>
@@ -250,7 +257,7 @@ Only IPv4 addresses are supported.
 <p>An IPv4 network.</p>
 <p><strong>Value:</strong> An IP address block in Classless Inter-Domain Routing (CIDR) notation. The prefix length for an IPv4 block is between <code>0</code> and <code>32</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>networking:
   clusterNetwork:
     hostPrefix:</code></pre></td>
@@ -258,7 +265,7 @@ Only IPv4 addresses are supported.
 <p><strong>Value:</strong> A subnet prefix.</p>
 <p>The default value is <code>23</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>networking:
   serviceNetwork:</code></pre></td>
 <td style="text-align: left;"><p>The IP address block for services. The default value is <code>172.30.0.0/16</code>.</p>
@@ -268,7 +275,7 @@ Only IPv4 addresses are supported.
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">serviceNetwork</span><span class="kw">:</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">   </span><span class="kw">-</span><span class="at"> 172.30.0.0/16</span></span></code></pre></div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>networking:
   machineNetwork:</code></pre></td>
 <td style="text-align: left;"><p>The IP address blocks for machines.</p>
@@ -278,7 +285,7 @@ Only IPv4 addresses are supported.
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">machineNetwork</span><span class="kw">:</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">cidr</span><span class="kw">:</span><span class="at"> 10.0.0.0/16</span></span></code></pre></div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>networking:
   machineNetwork:
     cidr:</code></pre></td>
@@ -286,12 +293,10 @@ Only IPv4 addresses are supported.
 <p><strong>Value:</strong> An IP network block in CIDR notation.</p>
 <p>For example, <code>10.0.0.0/16</code>.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>Set the <code>networking.machineNetwork</code> to match the CIDR that the preferred NIC resides in.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>networking:
   ovnKubernetesConfig:
     ipv4:
@@ -301,6 +306,8 @@ Only IPv4 addresses are supported.
 </tr>
 </tbody>
 </table>
+
+Network parameters
 
 ## Optional configuration parameters
 
@@ -313,209 +320,195 @@ Optional installation configuration parameters are described in the following ta
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>additionalTrustBundle:</code></pre></td>
 <td style="text-align: left;"><p>A PEM-encoded X.509 certificate bundle that is added to the nodes' trusted certificate store. This trust bundle might also be used when a proxy has been configured.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>capabilities:</code></pre></td>
 <td style="text-align: left;"><p>Controls the installation of optional core cluster components. You can reduce the footprint of your OpenShift Container Platform cluster by disabling optional components. For more information, see the "Cluster capabilities" page in <em>Installing</em>.</p>
 <p><strong>Value:</strong> String array</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>capabilities:
   baselineCapabilitySet:</code></pre></td>
 <td style="text-align: left;"><p>Selects an initial set of optional capabilities to enable. Valid values are <code>None</code>, <code>v4.11</code>, <code>v4.12</code> and <code>vCurrent</code>. The default value is <code>vCurrent</code>.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>capabilities:
   additionalEnabledCapabilities:</code></pre></td>
 <td style="text-align: left;"><p>Extends the set of optional capabilities beyond what you specify in <code>baselineCapabilitySet</code>. You can specify multiple capabilities in this parameter.</p>
 <p><strong>Value:</strong> String array</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>cpuPartitioningMode:</code></pre></td>
 <td style="text-align: left;"><p>Enables workload partitioning, which isolates OpenShift Container Platform services, cluster management workloads, and infrastructure pods to run on a reserved set of CPUs. You can only enable workload partitioning during installation. You cannot disable it after installation. While this field enables workload partitioning, it does not configure workloads to use specific CPUs. For more information, see the <em>Workload partitioning</em> page in the <em>Scalability and Performance</em> section.</p>
 <p><strong>Value:</strong> <code>None</code> or <code>AllNodes</code>. <code>None</code> is the default value.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:</code></pre></td>
 <td style="text-align: left;"><p>The configuration for the machines that comprise the compute nodes.</p>
 <p><strong>Value:</strong> Array of <code>MachinePool</code> objects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   architecture:</code></pre></td>
 <td style="text-align: left;"><p>Determines the instruction set architecture of the machines in the pool. Currently, clusters with varied architectures are not supported. All pools must specify the same architecture. Valid values are <code>amd64</code> and <code>arm64</code>.</p>
 <p>Not all installation options support the 64-bit ARM architecture. To verify if your installation option is supported on your platform, see <em>Supported installation methods for different platforms</em> in <em>Selecting a cluster installation method and preparing it for users</em>.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:
   hyperthreading:</code></pre></td>
 <td style="text-align: left;"><p>Whether to enable or disable simultaneous multithreading, or <code>hyperthreading</code>, on compute machines. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>If you disable simultaneous multithreading, ensure that your capacity planning accounts for the dramatically decreased machine performance.</p>
 </div>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   name:</code></pre></td>
 <td style="text-align: left;"><p>Required if you use <code>compute</code>. The name of the machine pool.</p>
 <p><strong>Value:</strong> <code>worker</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:
   platform:</code></pre></td>
 <td style="text-align: left;"><p>Required if you use <code>compute</code>. Use this parameter to specify the cloud provider to host the worker machines. This parameter value must match the <code>controlPlane.platform</code> parameter value.</p>
 <p><strong>Value:</strong> <code>aws</code>, <code>azure</code>, <code>gcp</code>, <code>ibmcloud</code>, <code>nutanix</code>, <code>openstack</code>, <code>powervs</code>, <code>vsphere</code>, or <code>{}</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   replicas:</code></pre></td>
 <td style="text-align: left;"><p>The number of compute machines, which are also known as worker machines, to provision.</p>
 <p><strong>Value:</strong> A positive integer greater than or equal to <code>2</code>. The default value is <code>3</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>featureSet:</code></pre></td>
 <td style="text-align: left;"><p>Enables the cluster for a feature set. A feature set is a collection of OpenShift Container Platform features that are not enabled by default. For more information about enabling a feature set during installation, see "Enabling features using feature gates".</p>
 <p><strong>Value:</strong> String. The name of the feature set to enable, such as <code>TechPreviewNoUpgrade</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:</code></pre></td>
 <td style="text-align: left;"><p>The configuration for the machines that form the control plane.</p>
 <p><strong>Value:</strong> Array of <code>MachinePool</code> objects.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   architecture:</code></pre></td>
 <td style="text-align: left;"><p>Determines the instruction set architecture of the machines in the pool. Currently, clusters with varied architectures are not supported. All pools must specify the same architecture. Valid values are <code>amd64</code> and <code>arm64</code>.</p>
 <p>Not all installation options support the 64-bit ARM architecture. To verify if your installation option is supported on your platform, see <em>Supported installation methods for different platforms</em> in <em>Selecting a cluster installation method and preparing it for users</em>.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   architecture:</code></pre></td>
 <td style="text-align: left;"><p>Determines the instruction set architecture of the machines in the pool. Currently, heterogeneous clusters are not supported, so all pools must specify the same architecture. The valid value is the default: <code>ppc64le</code>.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   hyperthreading:</code></pre></td>
 <td style="text-align: left;"><p>Whether to enable or disable simultaneous multithreading, or <code>hyperthreading</code>, on control plane machines. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>If you disable simultaneous multithreading, ensure that your capacity planning accounts for the dramatically decreased machine performance.</p>
 </div>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   name:</code></pre></td>
 <td style="text-align: left;"><p>Required if you use <code>controlPlane</code>. The name of the machine pool.</p>
 <p><strong>Value:</strong> <code>master</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:</code></pre></td>
 <td style="text-align: left;"><p>Required if you use <code>controlPlane</code>. Use this parameter to specify the cloud provider that hosts the control plane machines. This parameter value must match the <code>compute.platform</code> parameter value.</p>
 <p><strong>Value:</strong> <code>aws</code>, <code>azure</code>, <code>gcp</code>, <code>ibmcloud</code>, <code>nutanix</code>, <code>openstack</code>, <code>powervs</code>, <code>vsphere</code>, or <code>{}</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   replicas:</code></pre></td>
 <td style="text-align: left;"><p>The number of control plane machines to provision.</p>
 <p><strong>Value:</strong> Supported values are <code>3</code>, or <code>1</code> when deploying single-node OpenShift.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>arbiter:
     name: arbiter</code></pre></td>
 <td style="text-align: left;"><p>The OpenShift Container Platform cluster requires a name for arbiter nodes. For example, <code>arbiter</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>arbiter:
     replicas: 1</code></pre></td>
 <td style="text-align: left;"><p>The <code>replicas</code> parameter sets the number of arbiter nodes for the OpenShift Container Platform cluster. You cannot set this field to a value that is greater than 1.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>credentialsMode:</code></pre></td>
 <td style="text-align: left;"><p>The Cloud Credential Operator (CCO) mode. If no mode is specified, the CCO dynamically tries to determine the capabilities of the provided credentials, with a preference for mint mode on the platforms where multiple modes are supported.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>Not all CCO modes are supported for all cloud providers. For more information about CCO modes, see the "Managing cloud provider credentials" entry in the <em>Authentication and authorization</em> content.</p>
 </div>
 <p><strong>Value:</strong> <code>Mint</code>, <code>Passthrough</code>, <code>Manual</code> or an empty string (<code>""</code>).</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>fips:</code></pre></td>
 <td style="text-align: left;"><p>Enable or disable FIPS mode. The default is <code>false</code> (disabled). If you enable FIPS mode, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that RHCOS provides instead.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see <a href="https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening">Switching RHEL to FIPS mode</a>.</p>
 <p>When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.</p>
 </div>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>If you are using Azure File storage, you cannot enable FIPS mode.</p>
 </div>
 <p><strong>Value:</strong> <code>false</code> or <code>true</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>endpoint:
   name: &lt;endpoint_name&gt;
   clusterUseOnly: `true` or `false`</code></pre></td>
 <td style="text-align: left;"><p>The <code>name</code> parameter contains the name of the Private Service Connect (PSC) endpoints.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>When <code>clusterUseOnly</code> is <code>false</code>, its default setting, you must run the installation program from a bastion host that is within the same VPC where you want to deploy the cluster.</p>
 </div>
 <p>When you want the installation program to use the public API endpoints and cluster operators to use the API endpoint overrides, set <code>clusterUseOnly</code> to <code>true</code>. When you want both the installation program and the cluster operators to use the API endpoint overrides, for example if you are running the installation program from a bastion host that is within the same VPC where you want to deploy the cluster, set <code>clusterUseOnly</code> to <code>false</code> . The parameter is optional and defaults to <code>false</code>.</p>
 <p><strong>Value:</strong> String or boolean</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>imageContentSources:</code></pre></td>
 <td style="text-align: left;"><p>Sources and repositories for the release-image content.</p>
 <p><strong>Value:</strong> Array of objects. Includes a <code>source</code> and, optionally, <code>mirrors</code>, as described in the following rows of this table.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>imageContentSources:
   source:</code></pre></td>
 <td style="text-align: left;"><p>Required if you use <code>imageContentSources</code>. Specify the repository that users refer to, for example, in image pull specifications.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>imageContentSources:
   mirrors:</code></pre></td>
 <td style="text-align: left;"><p>Specify one or more repositories that might also contain the same images.</p>
 <p><strong>Value:</strong> Array of strings</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>publish:</code></pre></td>
 <td style="text-align: left;"><p>How to publish or expose the user-facing endpoints of your cluster, such as the Kubernetes API, OpenShift routes.</p>
 <p><strong>Value:</strong> <code>Internal</code>, <code>External</code>, or <code>Mixed</code>. To deploy a private cluster that cannot be accessed from the internet, set the <code>publish</code> parameter to <code>Internal</code>. The default value is <code>External</code>. To deploy a cluster where the API and the ingress server have different publishing strategies, set <code>publish</code> to <code>Mixed</code> and use the <code>operatorPublishingStrategy</code> parameter.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>sshKey:</code></pre></td>
 <td style="text-align: left;"><p>The SSH key to authenticate access to your cluster machines.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your <code>ssh-agent</code> process uses.</p>
 </div>
 <p><strong>Value:</strong> For example, <code>sshKey: ssh-ed25519 AAAA..</code>.</p></td>
@@ -523,15 +516,23 @@ Optional installation configuration parameters are described in the following ta
 </tbody>
 </table>
 
-> [!IMPORTANT]
-> Setting this parameter to `Manual` enables alternatives to storing administrator-level secrets in the `kube-system` project, which require additional configuration steps. For more information, see "Alternatives to storing administrator-level secrets in the kube-system project".
+Optional parameters
+
+<div class="important">
+
+Setting this parameter to `Manual` enables alternatives to storing administrator-level secrets in the `kube-system` project, which require additional configuration steps. For more information, see "Alternatives to storing administrator-level secrets in the kube-system project".
+
+</div>
 
 ## Additional Azure configuration parameters
 
 Additional Azure configuration parameters are described in the following table.
 
-> [!NOTE]
-> By default, if you specify availability zones in the `install-config.yaml` file, the installation program distributes the control plane machines and the compute machines across [these availability zones](https://azure.microsoft.com/en-us/global-infrastructure/availability-zones/) within [a region](https://azure.microsoft.com/en-us/global-infrastructure/regions). To ensure high availability for your cluster, select a region with at least three availability zones. If your region contains fewer than three availability zones, the installation program places more than one control plane machine in the available zones.
+<div class="note">
+
+By default, if you specify availability zones in the `install-config.yaml` file, the installation program distributes the control plane machines and the compute machines across [these availability zones](https://azure.microsoft.com/en-us/global-infrastructure/availability-zones/) within [a region](https://azure.microsoft.com/en-us/global-infrastructure/regions). To ensure high availability for your cluster, select a region with at least three availability zones. If your region contains fewer than three availability zones, the installation program places more than one control plane machine in the available zones.
+
+</div>
 
 <table>
 <caption>Additional Azure parameters</caption>
@@ -540,13 +541,13 @@ Additional Azure configuration parameters are described in the following table.
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -570,7 +571,7 @@ Additional Azure configuration parameters are described in the following table.
 </dl>
 <p><strong>Value:</strong> String, for example <code>Enabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -579,7 +580,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Specifies the name of the Azure resource group that contains the diagnostic storage account for compute machines. Use <code>resourceGroup</code> only when you set <code>type</code> to <code>UserManaged</code>.</p>
 <p><strong>Value:</strong> String.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -588,7 +589,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Specifies the Azure storage account to store the diagnostic logs for compute machines. Use <code>storageAccountName</code> only when you set`type` to <code>UserManaged</code>.</p>
 <p><strong>Value:</strong> String.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -596,7 +597,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables host-level encryption for compute machines. You can enable this encryption alongside user-managed server-side encryption. This feature encrypts temporary, ephemeral, cached and un-managed disks on the VM host. This is not a prerequisite for user-managed server-side encryption.</p>
 <p><strong>Value:</strong> <code>true</code> or <code>false</code>. The default is <code>false</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -605,7 +606,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The Azure disk size for the VM.</p>
 <p><strong>Value:</strong> Integer that represents the size of the disk in GB. The default is <code>128</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -614,7 +615,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Defines the type of disk.</p>
 <p><strong>Value:</strong> <code>standard_LRS</code>, <code>premium_LRS</code>, or <code>standardSSD_LRS</code>. The default is <code>premium_LRS</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -622,7 +623,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables the use of Azure ultra disks for persistent storage on compute nodes. This requires that your Azure region and zone have ultra disks available.</p>
 <p><strong>Value:</strong> <code>Enabled</code>, <code>Disabled</code>. The default is <code>Disabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -632,7 +633,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The name of the Azure resource group that contains the disk encryption set from the installation prerequisites. This resource group should be different from the resource group where you install the cluster to avoid deleting your Azure encryption key when the cluster is destroyed. This value is only necessary if you intend to install the cluster with user-managed disk encryption.</p>
 <p><strong>Value:</strong> String, for example <code>production_encryption_resource_group</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -642,7 +643,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The name of the disk encryption set that contains the encryption key from the installation prerequisites.</p>
 <p><strong>Value:</strong> String, for example <code>production_disk_encryption_set</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -652,7 +653,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Defines the Azure subscription of the disk encryption set where the disk encryption set resides. This secondary disk encryption set is used to encrypt compute machines.</p>
 <p><strong>Value:</strong> String, in the format <code>00000000-0000-0000-0000-000000000000</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -661,7 +662,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Optional. By default, the installation program downloads and installs the Red Hat Enterprise Linux CoreOS (RHCOS) image that is used to boot compute machines. You can override the default behavior by using a custom RHCOS image that is available from the Azure Marketplace. The installation program uses this image for compute machines only.</p>
 <p><strong>Value:</strong> String. The name of the image publisher.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -670,7 +671,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The name of Azure Marketplace offer that is associated with the custom RHCOS image. If you use <code>compute.platform.azure.osImage.publisher</code>, this field is required.</p>
 <p><strong>Value:</strong> String. The name of the image offer.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -679,7 +680,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>An instance of the Azure Marketplace offer. If you use <code>compute.platform.azure.osImage.publisher</code>, this field is required.</p>
 <p><strong>Value:</strong> String. The SKU of the image offer.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -688,7 +689,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The version number of the image SKU. If you use <code>compute.platform.azure.osImage.publisher</code>, this field is required.</p>
 <p><strong>Value:</strong> String. The version of the image to use.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -697,7 +698,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The type of identity used for compute virtual machines. The <code>UserAssigned</code> identity is a standalone Azure resource provided by the user and assigned to compute virtual machines. If you specify <code>identity.type</code> as <code>UserAssigned</code>, but do not provide a user-assigned identity, the installation program creates the identity. If you provide a user-assigned identity, the Azure account that you use to create the identity must have either the "User Access Administrator" or "RBAC Access Admin" roles.</p>
 <p><strong>Value:</strong> <code>UserAssigned</code> or <code>None</code>. If you do not specify a value, the installation program generates a user-assigned identity.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -709,7 +710,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>A group of parameters that specify the name of the user-assigned identity, and the resource group and subscription that contain the identity. All three values must be provided to specify a user-assigned identity. Only one user-assigned identity can be supplied. Supplying more than one user-assigned identity is an experimental feature, which may be enabled with the <code>MachineAPIMigration</code> feature gate.</p>
 <p><strong>Value:</strong> Array of strings.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -717,7 +718,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables accelerated networking. Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, improving its networking performance. If instance type of compute machines support <code>Accelerated</code> networking, by default, the installation program enables <code>Accelerated</code> networking, otherwise the default networking type is <code>Basic</code>.</p>
 <p><strong>Value:</strong> <code>Accelerated</code> or <code>Basic</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -725,7 +726,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Defines the Azure instance type for compute machines.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -733,7 +734,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The availability zones where the installation program creates compute machines.</p>
 <p><strong>Value:</strong> String list</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -742,7 +743,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables confidential VMs or trusted launch for compute nodes. This option is not enabled by default.</p>
 <p><strong>Value:</strong> <code>ConfidentialVM</code> or <code>TrustedLaunch</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -753,7 +754,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables secure boot on compute nodes if you are using confidential VMs.</p>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code>. The default is <code>Disabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -764,7 +765,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables the virtualized Trusted Platform Module (vTPM) feature on compute nodes if you are using confidential VMs.</p>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code>. The default is <code>Disabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -775,7 +776,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables secure boot on compute nodes if you are using trusted launch.</p>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code>. The default is <code>Disabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -786,7 +787,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables the vTPM feature on compute nodes if you are using trusted launch.</p>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code>. The default is <code>Disabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     azure:
@@ -796,42 +797,36 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables the encryption of the virtual machine guest state for compute nodes. This parameter can only be used if you use Confidential VMs.</p>
 <p><strong>Value:</strong> <code>VMGuestStateOnly</code> is the only supported value.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   diskSetup:</code></pre></td>
 <td style="text-align: left;"><p>Specifies node component information for dedicated disk configuration.</p>
 <p><strong>Value:</strong> Array of objects. Each object includes the <code>type</code> and <code>etcd</code> parameters as described in the following rows of the table.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>Dedicated disk for <code>etcd</code> on Microsoft Azure is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process. For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   diskSetup:
   - type:</code></pre></td>
 <td style="text-align: left;"><p>Specifies which node component type to assign a dedicated disk.</p>
 <p><strong>Value:</strong> <code>etcd</code> is the only supported value.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>Dedicated disk for <code>etcd</code> on Microsoft Azure is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process. For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   diskSetup:
   - etcd:</code></pre></td>
 <td style="text-align: left;"><p>Specifies parameters for an <code>etcd</code> dedicated disk.</p>
 <p><strong>Value</strong>: The <code>platformDiskID</code> object is the only supported value.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>Dedicated disk for <code>etcd</code> on Microsoft Azure is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process. For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   diskSetup:
   - etcd:
@@ -839,12 +834,10 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Specifies a name to identify the dedicated disk.</p>
 <p><strong>Value:</strong> String. Must not exceed 12 characters.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>Dedicated disk for <code>etcd</code> on Microsoft Azure is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process. For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -853,7 +846,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The type of identity used for control plane virtual machines. The <code>UserAssigned</code> identity is a standalone Azure resource provided by the user and assigned to control plane virtual machines. If you specify <code>identity.type</code> as <code>UserAssigned</code>, but do not provide a user-assigned identity, the installation program creates the identity. If you provide a user-assigned identity, the Azure account that you use to create the identity must have either the "User Access Administrator" or "RBAC Access Admin" roles.</p>
 <p><strong>Value:</strong> <code>UserAssigned</code> or <code>None</code>. If you do not specify a value, the installation program generates a user-assigned identity.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -877,7 +870,7 @@ Additional Azure configuration parameters are described in the following table.
 </dl>
 <p><strong>Value:</strong> String. For control plane machines, the default value is <code>Managed</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -889,7 +882,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>A group of parameters that specify the name of the user-assigned identity, and the resource group and subscription that contain the identity. All three values must be provided to specify a user-assigned identity. Only one user-assigned identity can be supplied. Supplying more than one user-assigned identity is an experimental feature, which may be enabled with the <code>MachineAPIMigration</code> feature gate.</p>
 <p><strong>Value:</strong> Array of strings.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -898,7 +891,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Specifies the name of the Azure resource group that contains the diagnostic storage account for control plane machines. Use <code>resourceGroup</code> only when you set <code>type</code> to <code>UserManaged</code>.</p>
 <p><strong>Value:</strong> String.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -907,7 +900,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Specifies the Azure storage account to store the diagnostic logs for control plane machines. Use <code>storageAccountName</code> only when you set <code>type</code> to <code>UserManaged</code>.</p>
 <p><strong>Value:</strong> String.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -915,12 +908,10 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Specifies dedicated disk parameters.</p>
 <p><strong>Value:</strong> Array of objects. Each object includes <code>nameSuffix</code>, <code>cachingType</code>, <code>diskSizeGB</code>, and <code>lun</code> as described in the following rows of the table.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>Dedicated disk for <code>etcd</code> on Microsoft Azure is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process. For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -929,12 +920,10 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Specifies the same value you defined for <code>platformDiskID</code>.</p>
 <p><strong>Value:</strong> String.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>Dedicated disk for <code>etcd</code> on Microsoft Azure is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process. For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -943,12 +932,10 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Specifies the caching requirements for the disk.</p>
 <p><strong>Value:</strong> <code>None</code> is the only value currently supported.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>Dedicated disk for <code>etcd</code> on Microsoft Azure is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process. For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -957,12 +944,10 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Specifies a dedicated disk size in GB.</p>
 <p><strong>Value:</strong> Integer greater than <code>0</code>.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>Dedicated disk for <code>etcd</code> on Microsoft Azure is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process. For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -971,12 +956,10 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Specifies a logical unit number (LUN) for the dedicated disk.</p>
 <p><strong>Value:</strong> Integer from <code>0</code> through <code>63</code> that is not used by another disk.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>Dedicated disk for <code>etcd</code> on Microsoft Azure is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process. For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -985,7 +968,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables confidential VMs or trusted launch for control plane nodes. This option is not enabled by default.</p>
 <p><strong>Value:</strong> <code>ConfidentialVM</code> or <code>TrustedLaunch</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -996,7 +979,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables secure boot on control plane nodes if you are using confidential VMs.</p>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code>. The default is <code>Disabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -1007,7 +990,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables the vTPM feature on control plane nodes if you are using confidential VMs.</p>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code>. The default is <code>Disabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -1018,7 +1001,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables secure boot on control plane nodes if you are using trusted launch.</p>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code>. The default is <code>Disabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -1029,7 +1012,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables the vTPM feature on control plane nodes if you are using trusted launch.</p>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code>. The default is <code>Disabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -1039,7 +1022,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables the encryption of the virtual machine guest state for control plane nodes. This parameter can only be used if you use Confidential VMs.</p>
 <p><strong>Value:</strong> <code>VMGuestStateOnly</code> is the only supported value.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -1047,7 +1030,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Defines the Azure instance type for control plane machines.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -1055,7 +1038,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The availability zones where the installation program creates control plane machines.</p>
 <p><strong>Value:</strong> String list</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1079,7 +1062,7 @@ Additional Azure configuration parameters are described in the following table.
 </dl>
 <p><strong>Value:</strong> String, for example <code>Enabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1088,7 +1071,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Specifies the name of the Azure resource group that contains the diagnostic storage account for all machines. Use <code>resourceGroup</code> only when you set <code>type</code> to <code>UserManaged</code>.</p>
 <p><strong>Value:</strong> String.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1097,7 +1080,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Specifies the Azure storage account to store the diagnostic logs for all machines. Use <code>storageAccountName</code> only when you set <code>type</code> to <code>UserManaged</code>.</p>
 <p><strong>Value:</strong> String.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1106,7 +1089,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables confidential VMs or trusted launch for all nodes. This option is not enabled by default.</p>
 <p><strong>Value:</strong> <code>ConfidentialVM</code> or <code>TrustedLaunch</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1117,7 +1100,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables secure boot on all nodes if you are using confidential VMs.</p>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code>. The default is <code>Disabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1128,7 +1111,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables the virtualized Trusted Platform Module (vTPM) feature on all nodes if you are using confidential VMs.</p>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code>. The default is <code>Disabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1139,7 +1122,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables secure boot on all nodes if you are using trusted launch.</p>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code>. The default is <code>Disabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1150,7 +1133,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables the vTPM feature on all nodes if you are using trusted launch.</p>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code>. The default is <code>Disabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1159,7 +1142,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The type of identity used for all virtual machines. The <code>UserAssigned</code> identity is a standalone Azure resource provided by the user and assigned to all virtual machines. If you specify <code>identity.type</code> as <code>UserAssigned</code>, but do not provide a user-assigned identity, the installation program creates the identity. If you provide a user-assigned identity, the Azure account that you use to create the identity must have either the "User Access Administrator" or "RBAC Access Admin" roles.</p>
 <p><strong>Value:</strong> <code>UserAssigned</code> or <code>None</code>. If you do not specify a value, the installation program generates a user-assigned identity.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1171,7 +1154,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>A group of parameters that specify the name of the user-assigned identity, and the resource group and subscription that contain the identity. All three values must be provided to specify a user-assigned identity. Only one user-assigned identity can be supplied. Supplying more than one user-assigned identity is an experimental feature, which may be enabled with the <code>MachineAPIMigration</code> feature gate.</p>
 <p><strong>Value:</strong> Array of strings.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1181,7 +1164,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables the encryption of the virtual machine guest state for all nodes. This parameter can only be used if you use Confidential VMs.</p>
 <p><strong>Value:</strong> <code>VMGuestStateOnly</code> is the only supported value.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1189,7 +1172,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables host-level encryption for compute machines. You can enable this encryption alongside user-managed server-side encryption. This feature encrypts temporary, ephemeral, cached, and un-managed disks on the VM host. This parameter is not a prerequisite for user-managed server-side encryption.</p>
 <p><strong>Value:</strong> <code>true</code> or <code>false</code>. The default is <code>false</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1199,7 +1182,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The name of the disk encryption set that contains the encryption key from the installation prerequisites.</p>
 <p><strong>Value:</strong> String, for example, <code>production_disk_encryption_set</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1209,7 +1192,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The name of the Azure resource group that contains the disk encryption set from the installation prerequisites. To avoid deleting your Azure encryption key when the cluster is destroyed, this resource group must be different from the resource group where you install the cluster. This value is necessary only if you intend to install the cluster with user-managed disk encryption.</p>
 <p><strong>Value:</strong> String, for example, <code>production_encryption_resource_group</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1219,7 +1202,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Defines the Azure subscription of the disk encryption set where the disk encryption set resides. This secondary disk encryption set is used to encrypt compute machines.</p>
 <p><strong>Value:</strong> String, in the format <code>00000000-0000-0000-0000-000000000000</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1228,7 +1211,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The Azure disk size for the VM.</p>
 <p><strong>Value:</strong> Integer that represents the size of the disk in GB. The default is <code>128</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1237,7 +1220,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Defines the type of disk.</p>
 <p><strong>Value:</strong> <code>premium_LRS</code> or <code>standardSSD_LRS</code>. The default is <code>premium_LRS</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1246,7 +1229,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Optional. By default, the installation program downloads and installs the Red Hat Enterprise Linux CoreOS (RHCOS) image that is used to boot control plane and compute machines. You can override the default behavior by using a custom RHCOS image that is available from the Azure Marketplace. The installation program uses this image for both types of machines. Control plane machines do not contribute to licensing costs when using the default image. But, if you apply an Azure Marketplace image for a control plane machine, usage costs do apply.</p>
 <p><strong>Value:</strong> String. The name of the image publisher.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1255,7 +1238,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The name of Azure Marketplace offer that is associated with the custom RHCOS image. If you use <code>platform.azure.defaultMachinePlatform.osImage.publisher</code>, this field is required.</p>
 <p><strong>Value:</strong> String. The name of the image offer.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1264,7 +1247,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>An instance of the Azure Marketplace offer. If you use <code>platform.azure.defaultMachinePlatform.osImage.publisher</code>, this field is required.</p>
 <p><strong>Value:</strong> String. The SKU of the image offer.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1273,7 +1256,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The version number of the image SKU. If you use <code>platform.azure.defaultMachinePlatform.osImage.publisher</code>, this field is required.</p>
 <p><strong>Value:</strong> String. The version of the image to use.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1281,7 +1264,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The Azure instance type for control plane and compute machines.</p>
 <p><strong>Value:</strong> The Azure instance type.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1289,7 +1272,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The availability zones where the installation program creates compute and control plane machines.</p>
 <p><strong>Value:</strong> String list.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -1297,7 +1280,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables host-level encryption for control plane machines. You can enable this encryption alongside user-managed server-side encryption. This feature encrypts temporary, ephemeral, cached and un-managed disks on the VM host. This is not a prerequisite for user-managed server-side encryption.</p>
 <p><strong>Value:</strong> <code>true</code> or <code>false</code>. The default is <code>false</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -1307,7 +1290,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The name of the Azure resource group that contains the disk encryption set from the installation prerequisites. This resource group should be different from the resource group where you install the cluster to avoid deleting your Azure encryption key when the cluster is destroyed. This value is only necessary if you intend to install the cluster with user-managed disk encryption.</p>
 <p><strong>Value:</strong> String, for example <code>production_encryption_resource_group</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -1317,7 +1300,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The name of the disk encryption set that contains the encryption key from the installation prerequisites.</p>
 <p><strong>Value:</strong> String, for example <code>production_disk_encryption_set</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -1327,7 +1310,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Defines the Azure subscription of the disk encryption set where the disk encryption set resides. This secondary disk encryption set is used to encrypt control plane machines.</p>
 <p><strong>Value:</strong> String, in the format <code>00000000-0000-0000-0000-000000000000</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -1336,7 +1319,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The Azure disk size for the VM.</p>
 <p><strong>Value:</strong> Integer that represents the size of the disk in GB. The default is <code>1024</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -1345,7 +1328,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Defines the type of disk.</p>
 <p><strong>Value:</strong> <code>premium_LRS</code> or <code>standardSSD_LRS</code>. The default is <code>premium_LRS</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -1354,7 +1337,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Optional. By default, the installation program downloads and installs the Red Hat Enterprise Linux CoreOS (RHCOS) image that is used to boot control plane machines. You can override the default behavior by using a custom RHCOS image that is available from the Azure Marketplace. The installation program uses this image for control plane machines only. Control plane machines do not contribute to licensing costs when using the default image. But, if you apply an Azure Marketplace image for a control plane machine, usage costs do apply.</p>
 <p><strong>Value:</strong> String. The name of the image publisher.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -1363,7 +1346,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The name of Azure Marketplace offer that is associated with the custom RHCOS image. If you use <code>controlPlane.platform.azure.osImage.publisher</code>, this field is required.</p>
 <p><strong>Value:</strong> String. The name of the image offer.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -1372,7 +1355,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>An instance of the Azure Marketplace offer. If you use <code>controlPlane.platform.azure.osImage.publisher</code>, this field is required.</p>
 <p><strong>Value:</strong> String. The SKU of the image offer.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -1381,7 +1364,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>The version number of the image SKU. If you use <code>controlPlane.platform.azure.osImage.publisher</code>, this field is required.</p>
 <p><strong>Value:</strong> String. The version of the image to use.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -1389,7 +1372,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables the use of Azure ultra disks for persistent storage on control plane machines. This requires that your Azure region and zone have ultra disks available.</p>
 <p><strong>Value:</strong> <code>Enabled</code>, <code>Disabled</code>. The default is <code>Disabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     azure:
@@ -1397,21 +1380,21 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables accelerated networking. Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, improving its networking performance. If instance type of control plane machines support <code>Accelerated</code> networking, by default, the installation program enables <code>Accelerated</code> networking, otherwise the default networking type is <code>Basic</code>.</p>
 <p><strong>Value:</strong> <code>Accelerated</code> or <code>Basic</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     baseDomainResourceGroupName:</code></pre></td>
 <td style="text-align: left;"><p>The name of the resource group that contains the DNS zone for your base domain.</p>
 <p><strong>Value:</strong> String, for example <code>production_cluster</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     resourceGroupName:</code></pre></td>
 <td style="text-align: left;"><p>The name of an already existing resource group to install your cluster to. This resource group must be empty and only used for this specific cluster; the cluster components assume ownership of all resources in the resource group. If you limit the service principal scope of the installation program to this resource group, you must ensure all other resources used by the installation program in your environment have the necessary permissions, such as the public DNS zone and virtual network. Destroying the cluster by using the installation program deletes this resource group.</p>
 <p><strong>Value:</strong> String, for example <code>existing_resource_group</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     outboundType:</code></pre></td>
@@ -1437,14 +1420,14 @@ Additional Azure configuration parameters are described in the following table.
 <p>If you specify either the <code>NATGatewaySingleZone</code> or the <code>NATGatewayMultiZone</code> routing strategy, your account must have the <code>Microsoft.Network/natGateways/read</code> and <code>Microsoft.Network/natGateways/write</code> permissions. NAT Gateways can only be used for compute machines.</p>
 <p><strong>Value:</strong> <code>LoadBalancer</code>, <code>UserDefinedRouting</code>, <code>NATGatewaySingleZone</code>, or <code>NATGatewayMultiZone</code>. The default is <code>LoadBalancer</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     region:</code></pre></td>
 <td style="text-align: left;"><p>The name of the Azure region that hosts your cluster.</p>
 <p><strong>Value:</strong> Any valid region name, such as <code>centralus</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     subnets:
@@ -1453,21 +1436,21 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>A list of one or more pairs of parameters which specify the name and role of a pre-existing subnet. The installation program will use the provided subnets for the specified roles. You can only specify one subnet with the <code>control-plane</code> role. If you specify pre-existing subnets, you must also set the <code>platform.azure.networkResourceGroupName</code> and <code>platform.azure.virtualNetwork</code> parameters. Pre-existing subnets that you provide must use the same region as you specified in the <code>platform.azure.region</code> parameter. If you use the <code>NATGatewaySingleZone</code> outbound routing strategy, you can only specify one subnet with the <code>node</code> role.</p>
 <p><strong>Value:</strong> <code>name</code> specifies the name of the subnet. Valid <code>role</code> values are <code>node</code> or <code>control-plane</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     userProvisionedDNS:</code></pre></td>
 <td style="text-align: left;"><p>Enables user-provisioned DNS instead of the default cluster-provisioned DNS solution. If you use this feature, you must provide your own DNS solution that includes records for <code>api.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code> and <code>*.apps.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code>. The default value is <code>Disabled</code>. <code>userProvisionedDNS</code> is a Technology Preview feature.</p>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code>. The default value is <code>Disabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     zone:</code></pre></td>
 <td style="text-align: left;"><p>List of availability zones to place machines in. For high availability, specify at least two zones.</p>
 <p><strong>Value:</strong> List of zones, for example <code>["1", "2", "3"]</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     customerManagedKey:
@@ -1476,7 +1459,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Specifies the name of the key vault that contains the encryption key that is used to encrypt Azure storage.</p>
 <p><strong>Value:</strong> String.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     customerManagedKey:
@@ -1485,7 +1468,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Specifies the name of the user-managed encryption key that is used to encrypt Azure storage.</p>
 <p><strong>Value:</strong> String.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     customerManagedKey:
@@ -1494,7 +1477,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Specifies the name of the resource group that contains the key vault and managed identity.</p>
 <p><strong>Value:</strong> String.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     customerManagedKey:
@@ -1502,7 +1485,7 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Specifies the name of the user-assigned managed identity that resides in the resource group with the key vault and has access to the user-managed key.</p>
 <p><strong>Value:</strong> String.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1510,42 +1493,42 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables the use of Azure ultra disks for persistent storage on control plane and compute machines. This requires that your Azure region and zone have ultra disks available.</p>
 <p><strong>Value:</strong> <code>Enabled</code>, <code>Disabled</code>. The default is <code>Disabled</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     networkResourceGroupName:</code></pre></td>
 <td style="text-align: left;"><p>The name of the resource group that contains the existing VNet that you want to deploy your cluster to. This name cannot be the same as the <code>platform.azure.baseDomainResourceGroupName</code>.</p>
 <p><strong>Value:</strong> String.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     virtualNetwork:</code></pre></td>
 <td style="text-align: left;"><p>The name of the existing VNet that you want to deploy your cluster to.</p>
 <p><strong>Value:</strong> String.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     controlPlaneSubnet:</code></pre></td>
 <td style="text-align: left;"><p>The name of the existing subnet in your VNet that you want to deploy your control plane machines to.</p>
 <p><strong>Value:</strong> Valid CIDR, for example <code>10.0.0.0/16</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     computeSubnet:</code></pre></td>
 <td style="text-align: left;"><p>The name of the existing subnet in your VNet that you want to deploy your compute machines to.</p>
 <p><strong>Value:</strong> Valid CIDR, for example <code>10.0.0.0/16</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     cloudName:</code></pre></td>
 <td style="text-align: left;"><p>The name of the Azure cloud environment that is used to configure the Azure SDK with the appropriate Azure API endpoints. If empty, the default value <code>AzurePublicCloud</code> is used.</p>
 <p><strong>Value:</strong> Any valid cloud environment, such as <code>AzurePublicCloud</code> or <code>AzureUSGovernmentCloud</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   azure:
     defaultMachinePlatform:
@@ -1553,13 +1536,13 @@ Additional Azure configuration parameters are described in the following table.
 <td style="text-align: left;"><p>Enables accelerated networking. Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, improving its networking performance.</p>
 <p><strong>Value:</strong> <code>Accelerated</code> or <code>Basic</code>. If instance type of control plane and compute machines support <code>Accelerated</code> networking, by default, the installation program enables <code>Accelerated</code> networking, otherwise the default networking type is <code>Basic</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>operatorPublishingStrategy:
   apiserver:</code></pre></td>
 <td style="text-align: left;"><p>Determines whether the load balancers that service the API are public or private. Set this parameter to <code>Internal</code> to prevent the API server from being accessible outside of your VNet. Set this parameter to <code>External</code> to make the API server accessible outside of your VNet. If you set this parameter, you must set the <code>publish</code> parameter to <code>Mixed</code>.</p>
 <p><strong>Value:</strong> <code>External</code> or <code>Internal</code>. The default value is <code>External</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>operatorPublishingStrategy:
   ingress:</code></pre></td>
 <td style="text-align: left;"><p>Determines whether the DNS resources that the cluster creates for ingress traffic are publicly visible. Set this parameter to <code>Internal</code> to prevent the ingress VIP from being publicly accessible. Set this parameter to <code>External</code> to make the ingress VIP publicly accessible. If you set this parameter, you must set the <code>publish</code> parameter to <code>Mixed</code>.</p>
@@ -1568,5 +1551,10 @@ Additional Azure configuration parameters are described in the following table.
 </tbody>
 </table>
 
-> [!NOTE]
-> You cannot customize [Azure Availability Zones](https://azure.microsoft.com/en-us/global-infrastructure/availability-zones/) or [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags) with an Azure cluster.
+Additional Azure parameters
+
+<div class="note">
+
+You cannot customize [Azure Availability Zones](https://azure.microsoft.com/en-us/global-infrastructure/availability-zones/) or [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags) with an Azure cluster.
+
+</div>

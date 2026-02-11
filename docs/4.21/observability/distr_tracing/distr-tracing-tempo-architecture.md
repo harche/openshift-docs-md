@@ -24,19 +24,11 @@ You can combine Distributed Tracing Platform with other relevant components of t
 
 - Distributed tracing UI plugin of the Cluster Observability Operator (COO)
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Red Hat build of OpenTelemetry](../../observability/otel/otel-installing.xml#install-otel)
 
 - [Distributed tracing UI plugin](https://docs.redhat.com/en/documentation/red_hat_openshift_cluster_observability_operator/1-latest/html/ui_plugins_for_red_hat_openshift_cluster_observability_operator/distributed-tracing-ui-plugin)
-
-</div>
 
 # Red Hat OpenShift Distributed Tracing Platform features
 

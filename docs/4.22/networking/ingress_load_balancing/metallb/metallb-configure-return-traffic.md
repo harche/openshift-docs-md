@@ -2,10 +2,13 @@ As a cluster administrator, you can effectively manage traffic for pods behind a
 
 To achieve this functionality, learn how to implement virtual routing and forwarding (VRF) instances with MetalLB, and configure egress services.
 
-> [!IMPORTANT]
-> Configuring symmetric traffic by using a VRF instance with MetalLB and an egress service is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Configuring symmetric traffic by using a VRF instance with MetalLB and an egress service is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 # Challenges of managing symmetric routing with MetalLB
 
@@ -51,21 +54,9 @@ The example in the procedure associates a VRF routing table with MetalLB and an 
 
 <div class="important">
 
-<div class="title">
-
-</div>
-
 - If you use the `sourceIPBy: "LoadBalancerIP"` setting in the `EgressService` CR, you must specify the load-balancer node in the `BGPAdvertisement` custom resource (CR).
 
 - You can use the `sourceIPBy: "Network"` setting on clusters that use OVN-Kubernetes configured with the `gatewayConfig.routingViaHost` specification set to `true` only. Additionally, if you use the `sourceIPBy: "Network"` setting, you must schedule the application workload on nodes configured with the network VRF instance.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Prerequisites
 
 </div>
 
@@ -76,16 +67,6 @@ Prerequisites
 - Install the Kubernetes NMState Operator.
 
 - Install the MetalLB Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `NodeNetworkConfigurationPolicy` CR to define the VRF instance:
 
@@ -305,15 +286,7 @@ Procedure
         $ oc apply -f egress-service.yaml
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that you can access the application endpoint of the pods running behind the MetalLB service by running the following command:
 
@@ -325,16 +298,6 @@ Verification
 
 2.  Optional: If you assigned the `LoadBalancer` service ingress IP address as the source IP address for egress traffic, verify this configuration by using tools such as `tcpdump` to analyze packets received at the external client.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [About virtual routing and forwarding](../../../networking/multiple_networks/about-virtual-routing-and-forwarding.xml#cnf-about-virtual-routing-and-forwarding_about-virtual-routing-and-forwarding)
 
 - [Exposing a service through a network VRF](../../../networking/ingress_load_balancing/metallb/metallb-configure-bgp-peers.xml#nw-metallb-bgp-peer-vrf_configure-metallb-bgp-peers)
@@ -342,5 +305,3 @@ Additional resources
 - [Example: Network interface with a VRF instance node network configuration policy](../../../networking/k8s_nmstate/k8s-nmstate-updating-node-network-config.xml#virt-example-host-vrf_k8s-nmstate-updating-node-network-config)
 
 - [Configuring an egress service](../../../networking/ovn_kubernetes_network_provider/configuring-egress-traffic-for-vrf-loadbalancer-services.xml#configuring-egress-traffic-loadbalancer-services)
-
-</div>

@@ -34,31 +34,17 @@ Managing the default storage classes is supported by the following Container Sto
 
 # Managing the default storage class using the web console
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the OpenShift Container Platform web console.
 
 - Access to the cluster with cluster-admin privileges.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To manage the default storage class using the web console:
-
-</div>
 
 1.  Log in to the web console.
 
@@ -72,11 +58,9 @@ To manage the default storage class using the web console:
 
 6.  Add the `spec.storageClassState` field with a value of `Managed`, `Unmanaged`, or `Removed`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example
+    **Example**
 
     </div>
 
@@ -93,37 +77,21 @@ To manage the default storage class using the web console:
     ...
     ```
 
-    </div>
-
     - `spec.storageClassState` field set to "Unmanaged"
 
 7.  Click **Save**.
 
 # Managing the default storage class using the CLI
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the cluster with cluster-admin privileges.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To manage the storage class using the CLI, run the following command:
-
-</div>
 
 ``` terminal
 $ oc patch clustercsidriver $DRIVERNAME --type=merge -p "{\"spec\":{\"storageClassState\":\"${STATE}\"}}"
@@ -155,29 +123,15 @@ Use the following procedure to change the default storage class.
 
 For example, if you have two defined storage classes, `gp3` and `standard`, and you want to change the default storage class from `gp3` to `standard`.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the cluster with cluster-admin privileges.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To change the default storage class:
-
-</div>
 
 1.  List the storage classes:
 
@@ -185,11 +139,9 @@ To change the default storage class:
     $ oc get storageclass
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -198,8 +150,6 @@ To change the default storage class:
     gp3 (default)        ebs.csi.aws.com
     standard             ebs.csi.aws.com
     ```
-
-    </div>
 
     - `(default)` indicates the default storage class.
 
@@ -211,10 +161,13 @@ To change the default storage class:
     $ oc patch storageclass standard -p '{"metadata": {"annotations": {"storageclass.kubernetes.io/is-default-class": "true"}}}'
     ```
 
-    > [!NOTE]
-    > You can have multiple default storage classes for a short time. However, you should ensure that only one default storage class exists eventually.
-    >
-    > With multiple default storage classes present, any persistent volume claim (PVC) requesting the default storage class (`pvc.spec.storageClassName`=nil) gets the most recently created default storage class, regardless of the default status of that storage class, and the administrator receives an alert in the alerts dashboard that there are multiple default storage classes, `MultipleDefaultStorageClasses`.
+    <div class="note">
+
+    You can have multiple default storage classes for a short time. However, you should ensure that only one default storage class exists eventually.
+
+    With multiple default storage classes present, any persistent volume claim (PVC) requesting the default storage class (`pvc.spec.storageClassName`=nil) gets the most recently created default storage class, regardless of the default status of that storage class, and the administrator receives an alert in the alerts dashboard that there are multiple default storage classes, `MultipleDefaultStorageClasses`.
+
+    </div>
 
 3.  Remove the default storage class setting from the old default storage class.
 
@@ -230,11 +183,9 @@ To change the default storage class:
     $ oc get storageclass
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -243,5 +194,3 @@ To change the default storage class:
     gp3                  ebs.csi.aws.com
     standard (default)   ebs.csi.aws.com
     ```
-
-    </div>

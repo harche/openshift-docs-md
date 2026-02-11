@@ -17,22 +17,15 @@ The monitoring stack uses the following components:
 <figcaption aria-hidden="true">OpenShift Container Platform monitoring architecture</figcaption>
 </figure>
 
-> [!NOTE]
-> For single-node OpenShift clusters, disable Alertmanager and Thanos because the clusters sends all metrics to the hub cluster for analysis and retention.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+For single-node OpenShift clusters, disable Alertmanager and Thanos because the clusters sends all metrics to the hub cluster for analysis and retention.
 
 </div>
 
 - [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.20/html/about_monitoring/about-ocp-monitoring)
 
 - [Core platform monitoring first steps](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.20/html/getting_started/core-platform-monitoring-first-steps)
-
-</div>
 
 # Key performance metrics
 
@@ -54,62 +47,68 @@ Consider the following key metrics:
 
 If a metric is important, set up an alert for it.
 
-> [!NOTE]
-> You can check the available metrics by running the following command:
->
-> \+
->
-> ``` terminal
-> $ oc -n openshift-monitoring exec -c prometheus prometheus-k8s-0 -- curl -qsk http://localhost:9090/api/v1/metadata | jq '.data
-> ```
+<div class="note">
+
+You can check the available metrics by running the following command:
+
+\+
+
+``` terminal
+$ oc -n openshift-monitoring exec -c prometheus prometheus-k8s-0 -- curl -qsk http://localhost:9090/api/v1/metadata | jq '.data
+```
+
+</div>
 
 ## Example queries in PromQL
 
 Using the OpenShift Container Platform console, you can explore the following queries in the metrics query browser.
 
-> [!NOTE]
-> The URL for the console is [https://\<OpenShift](https://<OpenShift) Console FQDN\>/monitoring/query-browser. You can get the Openshift Console FQDN by running the following command:
->
-> \+
->
-> ``` terminal
-> $ oc get routes -n openshift-console console -o jsonpath='{.status.ingress[0].host}'
-> ```
+<div class="note">
 
-| Metric | Query |
-|----|----|
-| CPU % requests by node | `sum by (node) (sum_over_time(kube_pod_container_resource_requests{resource="cpu"}[60m]))/sum by (node) (sum_over_time(kube_node_status_allocatable{resource="cpu"}[60m])) *100` |
-| Overall cluster CPU % utilization | `sum by (managed_cluster) (sum_over_time(kube_pod_container_resource_requests{resource="memory"}[60m]))/sum by (managed_cluster) (sum_over_time(kube_node_status_allocatable{resource="cpu"}[60m])) *100` |
-| Memory % requests by node | `sum by (node) (sum_over_time(kube_pod_container_resource_requests{resource="memory"}[60m]))/sum by (node) (sum_over_time(kube_node_status_allocatable{resource="memory"}[60m])) *100` |
+The URL for the console is [https://\<OpenShift](https://<OpenShift) Console FQDN\>/monitoring/query-browser. You can get the Openshift Console FQDN by running the following command:
+
+\+
+
+``` terminal
+$ oc get routes -n openshift-console console -o jsonpath='{.status.ingress[0].host}'
+```
+
+</div>
+
+| Metric                               | Query                                                                                                                                                                                                                      |
+|--------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| CPU % requests by node               | `sum by (node) (sum_over_time(kube_pod_container_resource_requests{resource="cpu"}[60m]))/sum by (node) (sum_over_time(kube_node_status_allocatable{resource="cpu"}[60m])) *100`                                           |
+| Overall cluster CPU % utilization    | `sum by (managed_cluster) (sum_over_time(kube_pod_container_resource_requests{resource="memory"}[60m]))/sum by (managed_cluster) (sum_over_time(kube_node_status_allocatable{resource="cpu"}[60m])) *100`                  |
+| Memory % requests by node            | `sum by (node) (sum_over_time(kube_pod_container_resource_requests{resource="memory"}[60m]))/sum by (node) (sum_over_time(kube_node_status_allocatable{resource="memory"}[60m])) *100`                                     |
 | Overall cluster memory % utilization | `(1-(sum by (managed_cluster)(avg_over_time node_memory_MemAvailable_bytes[60m] node_memory_MemAvailable_bytes[60m] ))/sum by (managed_cluster)(avg_over_time(kube_node_status_allocatable{resource="memory"}[60m])))*100` |
 
 Node memory & CPU usage
 
-| Metric | Query |
-|----|----|
-| `GET` | `histogram_quantile (0.99, sum by (le,managed_cluster) (sum_over_time(apiserver_request_duration_seconds_bucket{apiserver=~"kube-apiserver|openshift-apiserver", verb="GET"}[60m])))` |
-| `PATCH` | `histogram_quantile (0.99, sum by (le,managed_cluster) (sum_over_time(apiserver_request_duration_seconds_bucket{apiserver="kube-apiserver|openshift-apiserver", verb="PATCH"}[60m])))` |
-| `POST` | `histogram_quantile (0.99, sum by (le,managed_cluster) (sum_over_time(apiserver_request_duration_seconds_bucket{apiserver="kube-apiserver|openshift-apiserver", verb="POST"}[60m])))` |
-| `LIST` | `histogram_quantile (0.99, sum by (le,managed_cluster) (sum_over_time(apiserver_request_duration_seconds_bucket{apiserver="kube-apiserver|openshift-apiserver", verb="LIST"}[60m])))` |
-| `PUT` | `histogram_quantile (0.99, sum by (le,managed_cluster) (sum_over_time(apiserver_request_duration_seconds_bucket{apiserver="kube-apiserver|openshift-apiserver", verb="PUT"}[60m])))` |
-| `DELETE` | `histogram_quantile (0.99, sum by (le,managed_cluster) (sum_over_time(apiserver_request_duration_seconds_bucket{apiserver="kube-apiserver|openshift-apiserver", verb="DELETE"}[60m])))` |
+| Metric   | Query                                                                                                                                                                                     |
+|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `GET`    | `histogram_quantile (0.99, sum by (le,managed_cluster) (sum_over_time(apiserver_request_duration_seconds_bucket{apiserver=~"kube-apiserver|openshift-apiserver", verb="GET"}[60m])))`     |
+| `PATCH`  | `histogram_quantile (0.99, sum by (le,managed_cluster) (sum_over_time(apiserver_request_duration_seconds_bucket{apiserver="kube-apiserver|openshift-apiserver", verb="PATCH"}[60m])))`    |
+| `POST`   | `histogram_quantile (0.99, sum by (le,managed_cluster) (sum_over_time(apiserver_request_duration_seconds_bucket{apiserver="kube-apiserver|openshift-apiserver", verb="POST"}[60m])))`     |
+| `LIST`   | `histogram_quantile (0.99, sum by (le,managed_cluster) (sum_over_time(apiserver_request_duration_seconds_bucket{apiserver="kube-apiserver|openshift-apiserver", verb="LIST"}[60m])))`     |
+| `PUT`    | `histogram_quantile (0.99, sum by (le,managed_cluster) (sum_over_time(apiserver_request_duration_seconds_bucket{apiserver="kube-apiserver|openshift-apiserver", verb="PUT"}[60m])))`      |
+| `DELETE` | `histogram_quantile (0.99, sum by (le,managed_cluster) (sum_over_time(apiserver_request_duration_seconds_bucket{apiserver="kube-apiserver|openshift-apiserver", verb="DELETE"}[60m])))`   |
 | Combined | `histogram_quantile(0.99, sum by (le,managed_cluster) (sum_over_time(apiserver_request_duration_seconds_bucket{apiserver=~"(openshift-apiserver|kube-apiserver)", verb!="WATCH"}[60m])))` |
 
 API latency by verb
 
-| Metric | Query |
-|----|----|
-| `fsync` 99th percentile latency (per instance) | `histogram_quantile(0.99, rate(etcd_disk_wal_fsync_duration_seconds_bucket[2m]))` |
-| `fsync` 99th percentile latency (per cluster) | `sum by (managed_cluster) ( histogram_quantile(0.99, rate(etcd_disk_wal_fsync_duration_seconds_bucket[60m])))` |
-| Leader elections | `sum(rate(etcd_server_leader_changes_seen_total[1440m]))` |
-| Network latency | `histogram_quantile(0.99, rate(etcd_network_peer_round_trip_time_seconds_bucket[5m]))` |
+| Metric                                         | Query                                                                                                          |
+|------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| `fsync` 99th percentile latency (per instance) | `histogram_quantile(0.99, rate(etcd_disk_wal_fsync_duration_seconds_bucket[2m]))`                              |
+| `fsync` 99th percentile latency (per cluster)  | `sum by (managed_cluster) ( histogram_quantile(0.99, rate(etcd_disk_wal_fsync_duration_seconds_bucket[60m])))` |
+| Leader elections                               | `sum(rate(etcd_server_leader_changes_seen_total[1440m]))`                                                      |
+| Network latency                                | `histogram_quantile(0.99, rate(etcd_network_peer_round_trip_time_seconds_bucket[5m]))`                         |
 
 `etcd`
 
-| Metric | Query |
-|----|----|
-| Degraded operators | `sum by (managed_cluster, name) (avg_over_time(cluster_operator_conditions{condition="Degraded", name!="version"}[60m]))` |
-| Total degraded operators per cluster | `sum by (managed_cluster) (avg_over_time(cluster_operator_conditions{condition="Degraded", name!="version"}[60m] ))` |
+| Metric                               | Query                                                                                                                     |
+|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| Degraded operators                   | `sum by (managed_cluster, name) (avg_over_time(cluster_operator_conditions{condition="Degraded", name!="version"}[60m]))` |
+| Total degraded operators per cluster | `sum by (managed_cluster) (avg_over_time(cluster_operator_conditions{condition="Degraded", name!="version"}[60m] ))`      |
 
 Operator health
 
@@ -121,45 +120,17 @@ For smaller clusters, you can use the Local Storage Operator for persistent stor
 
 To keep system resource requirements low on a single-node OpenShift cluster, do not provision back-end storage for the monitoring stack. Such clusters forward all metrics to the hub cluster where you can provision a third party monitoring platform.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Accessing metrics as an administrator](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.20/html/accessing_metrics/accessing-metrics-as-an-administrator)
 
 - [Persistent storage using local volumes](../../../storage/persistent_storage_local/persistent-storage-local.xml#local-storage-install_persistent-storage-local)
-
-</div>
 
 # Monitoring at the far edge network
 
 OpenShift Container Platform clusters at the edge must keep the footprint of the platform components to a minimum. The following procedure is an example of how to configure a single-node OpenShift or a node at the far edge network with a small monitoring footprint.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - For environments that use Red Hat Advanced Cluster Management (RHACM), you have enabled the Observability service.
 
 - The hub cluster is running Red Hat OpenShift Data Foundation (ODF).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `ConfigMap` CR, and save it as `monitoringConfigMap.yaml`, as in the following example:
 
@@ -312,15 +283,7 @@ Procedure
     $ oc apply -f monitoringMultiClusterObservability.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Check the routes and pods in the namespace to validate that the services have deployed on the hub cluster by running the following command:
 
@@ -328,11 +291,9 @@ Verification
     $ oc get routes,pods -n open-cluster-management-observability
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -354,11 +315,7 @@ Verification
     pod/observability-thanos-store-shard-2-0                       1/1     Running   0          1d
     ```
 
-    </div>
-
     - A dashboard is accessible at the grafana route listed. You can use this to view metrics across all managed clusters.
-
-</div>
 
 For more information on observability in Red Hat Advanced Cluster Management, see [Observability](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html/observability/index).
 
@@ -369,14 +326,6 @@ OpenShift Container Platform includes a large number of alert rules, which can c
 ## Viewing default alerts
 
 Review all of the alert rules in a cluster.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To review all the alert rules in a cluster, run the following command:
 
@@ -401,8 +350,6 @@ Procedure
             severity: critical
   ```
 
-</div>
-
 ## Alert notifications
 
 You can view alerts in the OpenShift Container Platform console. However, an administrator must configure an external receiver to forward the alerts to. OpenShift Container Platform supports the following receiver types:
@@ -419,41 +366,13 @@ Sends an email to a designated address.
 Slack
 Sends a notification to either a Slack channel or an individual user.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Managing alerts](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.20/html/managing_alerts/index)
-
-</div>
 
 # Workload monitoring
 
 By default, OpenShift Container Platform does not collect metrics for application workloads. You can configure a cluster to collect workload metrics.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have defined endpoints to gather workload metrics on the cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `ConfigMap` CR and save it as `monitoringConfigMap.yaml`, as in the following example:
 
@@ -507,21 +426,11 @@ Procedure
     $ oc apply -f monitoringServiceMonitor.yaml
     ```
 
-</div>
-
 Prometheus scrapes the `/metrics` path by default. However, you can define a custom path. The vendor of the application must decide whether to expose the endpoint for scraping, with metrics that they deem relevant.
 
 ## Creating a workload alert
 
 You can enable alerts for user workloads on a cluster.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `ConfigMap` CR, and save it as `monitoringConfigMap.yaml`, as in the following example:
 
@@ -568,20 +477,8 @@ Procedure
     $ oc apply -f monitoringAlertRule.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [ServiceMonitor\[monitoring.coreos.com/v1](../../../rest_api/monitoring_apis/servicemonitor-monitoring-coreos-com-v1.xml#servicemonitor-monitoring-coreos-com-v1)\]
 
 - [Enabling monitoring for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.20/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm#enabling-monitoring-for-user-defined-projects-uwm_preparing-to-configure-the-monitoring-stack-uwm)
 
 - [Managing alerting rules for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.20/html/managing_alerts/managing-alerts-as-a-developer#managing-alerting-rules-for-user-defined-projects-uwm_managing-alerts-as-a-developer)
-
-</div>

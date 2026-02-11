@@ -24,29 +24,15 @@ CSI Operators give OpenShift Container Platform users storage options, such as v
 
 If you are planning to use GCP Workload Identity with Google Compute Platform Filestore, you must obtain certain parameters that you will use during the installation of the Google Cloud Filestore Container Storage Interface (CSI) Driver Operator.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the cluster as a user with the cluster-admin role.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To prepare to install the Google Cloud Filestore CSI Driver Operator with Workload Identity:
-
-</div>
 
 1.  Obtain the project number:
 
@@ -70,11 +56,9 @@ To prepare to install the Google Cloud Filestore CSI Driver Operator with Worklo
 
     1.  Create a `CredentialsRequest` file using the following example file:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example Credentials Request YAML file
+        **Example Credentials Request YAML file**
 
         </div>
 
@@ -103,8 +87,6 @@ To prepare to install the Google Cloud Filestore CSI Driver Operator with Worklo
             skipServiceCheck: true
         ```
 
-        </div>
-
     2.  Use the `CredentialsRequest` file to create a Google Cloud service account by running the following command:
 
         ``` terminal
@@ -125,11 +107,9 @@ To prepare to install the Google Cloud Filestore CSI Driver Operator with Worklo
 
         - The name of directory where the `CredentialsRequest` file resides.
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example output
+          **Example output**
 
           </div>
 
@@ -142,8 +122,6 @@ To prepare to install the Google Cloud Filestore CSI Driver Operator with Worklo
           openshift-cluster-csi-drivers-gcp-filestore-cloud-credentials-credentials.yaml
           ```
 
-          </div>
-
         - The current directory.
 
     3.  Find the service account email of the newly created service account by running the following command:
@@ -152,11 +130,9 @@ To prepare to install the Google Cloud Filestore CSI Driver Operator with Worklo
         $ cat /tmp/install-dir/manifests/openshift-cluster-csi-drivers-gcp-filestore-cloud-credentials-credentials.yaml | yq '.data["service_account.json"]' | base64 -d | jq '.service_account_impersonation_url'
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -164,21 +140,15 @@ To prepare to install the Google Cloud Filestore CSI Driver Operator with Worklo
         https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/filestore-se-openshift-g-ch8cm@openshift-gce-devel.iam.gserviceaccount.com:generateAccessToken
         ```
 
-        </div>
-
         In this example output, the service account email is `filestore-se-openshift-g-ch8cm@openshift-gce-devel.iam.gserviceaccount.com`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Results
+**Results**
 
 </div>
 
 You now have the following parameters that you need to install the Google Cloud Filestore CSI Driver Operator:
-
-</div>
 
 - Project number - from Step 1.b
 
@@ -188,47 +158,25 @@ You now have the following parameters that you need to install the Google Cloud 
 
 - Service account email - from Step 3.c
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Creating Google Cloud resources with the Cloud Credential Operator utility](../../installing/installing_gcp/installing-gcp-customizations.xml#cco-ccoctl-creating-at-once_installing-gcp-customizations)
-
-</div>
 
 ## Installing the Google Cloud Filestore CSI Driver Operator
 
 The Google Compute Platform (Google Cloud) Filestore Container Storage Interface (CSI) Driver Operator is not installed in OpenShift Container Platform by default. Use the following procedure to install the Google Cloud Filestore CSI Driver Operator in your cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the OpenShift Container Platform web console.
 
 - If using GCP Workload Identity, certain GCP Workload Identity parameters are needed. See the preceding Section *Preparing to install the Google Cloud Filestore CSI Driver Operator with Workload Identity*.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To install the Google Cloud Filestore CSI Driver Operator from the web console:
-
-</div>
 
 1.  Log in to the web console.
 
@@ -299,55 +247,29 @@ To install the Google Cloud Filestore CSI Driver Operator from the web console:
 
         - GCPFilestoreDriverControllerServiceControllerAvailable
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Enabling an API in your Google Cloud](https://cloud.google.com/endpoints/docs/openapi/enable-api).
 
 - [Enabling an API using the Google Cloud web console](https://support.google.com/googleapi/answer/6158841?hl=en).
-
-</div>
 
 # Creating a storage class for GCP Filestore Storage
 
 After installing the Operator, you should create a storage class for dynamic provisioning of Google Compute Platform (GCP) Filestore volumes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to the running OpenShift Container Platform cluster.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To create a storage class:
 
-</div>
-
 1.  Create a storage class using the following example YAML file:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example YAML file
+    **Example YAML file**
 
     </div>
 
@@ -363,8 +285,6 @@ To create a storage class:
     allowVolumeExpansion: true
     volumeBindingMode: WaitForFirstConsumer
     ```
-
-    </div>
 
     - For a shared VPC, use the `connect-mode` parameter set to `PRIVATE_SERVICE_ACCESS`. For a non-shared VPC, the value is `DIRECT_PEERING`, which is the default setting.
 
@@ -392,38 +312,21 @@ To create a storage class:
 
 By default, a Filestore instance grants root level read/write access to all clients that share the same Google Cloud project and virtual private cloud (VPC) network. Network File System (NFS) export options can limit this access to certain IP ranges and specific user/group IDs for the Filestore instance. When creating a storage class, you can set these options using the `nfs-export-options-on-create` parameter.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the cluster as a user with the cluster-admin role.
 
 - The Google Cloud Filestore CSI Driver Operator and Google Cloud Filestore CSI driver installed.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a storage class using a file similar to the following sample YAML file:
 
-    > [!NOTE]
-    > For more information about creating a storage class, see Section *Creating a storage class for GCP Filestore Operator*.
+    <div class="note">
 
-    <div class="formalpara">
+    For more information about creating a storage class, see Section *Creating a storage class for GCP Filestore Operator*.
 
-    <div class="title">
+    </div>
 
-    Example storage class YAML file with NFS export options
+    <div class="formalpara-title">
+
+    **Example storage class YAML file with NFS export options**
 
     </div>
 
@@ -449,8 +352,6 @@ Procedure
     allowVolumeExpansion: true
     ```
 
-    </div>
-
     - **NFS export options parameter**
 
     - **Access mode**: Either `READ_ONLY,` which allows only read requests on the exported directory; or `READ_WRITE`, which allows both read and write requests. The default is `READ_WRITE`.
@@ -463,25 +364,19 @@ Procedure
 
     - **IP ranges**: List of either an IPv4 addresses in the format {octet1}.{octet2}.{octet3}.{octet4}, or CIDR ranges in the format {octet1}.{octet2}.{octet3}.{octet4}/{mask size}, which can mount the file share. Overlapping IP ranges are not allowed, both within and across NfsExportOptions, otherwise, an error is returned. The limit is 64 IP ranges or addresses for each `FileShareConfig` among all NFS export options.
 
-</div>
-
 # Destroying clusters and GCP Filestore
 
 Typically, if you destroy a cluster, the OpenShift Container Platform installer deletes all of the cloud resources that belong to that cluster. However, due to the special nature of the Google Compute Platform (GCP) Filestore resources, the automated cleanup process might not remove all of them in some rare cases.
 
 Therefore, Red Hat recommends that you verify that all cluster-owned Filestore resources are deleted by the uninstall process.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To ensure that all GCP Filestore PVCs have been deleted:
-
-</div>
 
 1.  Access your Google Cloud account using the GUI or CLI.
 

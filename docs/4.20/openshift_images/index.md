@@ -10,21 +10,11 @@ You can use the [podman](https://access.redhat.com/documentation/en-us/red_hat_e
 
 Because applications develop over time, a single image name can actually refer to many different versions of the same image. Each different image is referred to uniquely by its hash, a long hexadecimal number such as `fd44297e2ddb050ec4f…​`, which is usually shortened to 12 characters, such as `fd44297e2ddb`.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Creating images](../openshift_images/create-images.xml#creating-images)
 
 - [Managing images](../openshift_images/managing_images/managing-images-overview.xml#managing-images-overview)
 
 - [Using images](../openshift_images/using_images/using-images-overview.xml#using-images-overview)
-
-</div>
 
 # Image registry
 
@@ -58,10 +48,10 @@ While image tags are primarily used for referencing images in configurations, Op
 
 Image tags are appended to the image name or image stream name by using a colon (`:`) as a separator.
 
-| Context | Syntax Format | Example |
-|----|----|----|
-| **External Registry** | `<registry_path>:<tag>` | `registry.access.redhat.com/openshift3/jenkins-2-rhel7:v3.11.59-2` |
-| **Local Image Stream** | `<image_stream_name>:<tag>` | `jenkins:latest` |
+| Context                | Syntax Format               | Example                                                            |
+|------------------------|-----------------------------|--------------------------------------------------------------------|
+| **External Registry**  | `<registry_path>:<tag>`     | `registry.access.redhat.com/openshift3/jenkins-2-rhel7:v3.11.59-2` |
+| **Local Image Stream** | `<image_stream_name>:<tag>` | `jenkins:latest`                                                   |
 
 # Image IDs
 
@@ -125,21 +115,13 @@ Using image streams has several significant benefits:
 
 - Users that lack permission to read or list images on the cluster level can still retrieve the images tagged in a project using image streams.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Managing image streams](../openshift_images/image-streams-manage.xml#managing-image-streams)
 
 - [Using image streams with Kubernetes resources](../openshift_images/using-imagestreams-with-kube-resources.xml#using-imagestreams-with-kube-resources)
 
 - [Triggering updates on image stream updates](../openshift_images/triggering-updates-on-imagestream-changes.xml#triggering-updates-on-imagestream-changes)
-
-</div>
 
 # Image stream tags
 

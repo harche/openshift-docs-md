@@ -18,44 +18,42 @@ The following table details the parameters for the `IPAddressPool` CR:
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>metadata.name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the name for the address pool. When you add a service, you can specify this pool name in the <code>metallb.io/address-pool</code> annotation to select an IP address from a specific pool. The names <code>doc-example</code>, <code>silver</code>, and <code>gold</code> are used throughout the documentation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>metadata.namespace</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the namespace for the address pool. Specify the same namespace that the MetalLB Operator uses.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>metadata.label</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional: Specifies the key-value pair assigned to the <code>IPAddressPool</code>. This can be referenced by the <code>ipAddressPoolSelectors</code> in the <code>BGPAdvertisement</code> and <code>L2Advertisement</code> CRD to associate the <code>IPAddressPool</code> with the advertisement</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.addresses</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies a list of IP addresses for the MetalLB Operator to assign to services. You can specify multiple ranges in a single pool, where these ranges all share the same settings. Specify each range in Classless Inter-Domain Routing (CIDR) notation or as starting and ending IP addresses separated with a hyphen.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.autoAssign</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Optional: Specifies whether the MetalLB Operator automatically assigns IP addresses from this pool. Specify <code>false</code> if you want to explicitly request an IP address from this pool with the <code>metallb.io/address-pool</code> annotation. The default value is <code>true</code>.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>For IP address pool configurations, ensure the addresses parameter specifies only IP addresses that are available and not in use by other network devices, especially gateway addresses, to prevent conflicts when <code>autoAssign</code> is enabled.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.avoidBuggyIPs</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Optional: When you set the parameter to enabled, the IP addresses ending <code>.0</code> and <code>.255</code> are not allocated from the pool. The default value is <code>false</code>. Some older consumer network equipment mistakenly block IP addresses ending in <code>.0</code> and <code>.255</code>.</p></td>
@@ -63,14 +61,16 @@ The following table details the parameters for the `IPAddressPool` CR:
 </tbody>
 </table>
 
+MetalLB IPAddressPool pool custom resource
+
 You can assign IP addresses from an `IPAddressPool` to services and namespaces by configuring the `spec.serviceAllocation` specification.
 
-| Parameter | Type | Description |
-|----|----|----|
-| `priority` | `int` | Optional: Defines the priority between IP address pools when more than one IP address pool matches a service or namespace. A lower number indicates a higher priority. |
-| `namespaces` | `array (string)` | Optional: Specifies a list of namespaces that you can assign to IP addresses in an IP address pool. |
-| `namespaceSelectors` | `array (LabelSelector)` | Optional: Specifies namespace labels that you can assign to IP addresses from an IP address pool by using label selectors in a list format. |
-| `serviceSelectors` | `array (LabelSelector)` | Optional: Specifies service labels that you can assign to IP addresses from an address pool by using label selectors in a list format. |
+| Parameter            | Type                    | Description                                                                                                                                                            |
+|----------------------|-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `priority`           | `int`                   | Optional: Defines the priority between IP address pools when more than one IP address pool matches a service or namespace. A lower number indicates a higher priority. |
+| `namespaces`         | `array (string)`        | Optional: Specifies a list of namespaces that you can assign to IP addresses in an IP address pool.                                                                    |
+| `namespaceSelectors` | `array (LabelSelector)` | Optional: Specifies namespace labels that you can assign to IP addresses from an IP address pool by using label selectors in a list format.                            |
+| `serviceSelectors`   | `array (LabelSelector)` | Optional: Specifies service labels that you can assign to IP addresses from an address pool by using label selectors in a list format.                                 |
 
 MetalLB IPAddressPool custom resource spec.serviceAllocation subfields
 
@@ -78,27 +78,9 @@ MetalLB IPAddressPool custom resource spec.serviceAllocation subfields
 
 To precisely manage external access to application workloads, configure MetalLB address pools for your cluster. By defining these pools, you can control the specific IP address ranges assigned to load balancer services for consistent network routing.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a file, such as `ipaddresspool.yaml`, with content like the following example:
 
@@ -128,15 +110,7 @@ Procedure
     $ oc apply -f ipaddresspool.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  View the address pool by entering the following command:
 
@@ -144,11 +118,9 @@ Verification
     $ oc describe -n metallb-system IPAddressPool doc-example
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -169,39 +141,17 @@ Verification
     Events:         <none>
     ```
 
-    </div>
-
 2.  Confirm that the address pool name, such as `doc-example`, and the IP address ranges exist in the output.
-
-</div>
 
 # Configure MetalLB address pool for VLAN
 
 To precisely manage external access across a specific VLAN, configure MetalLB address pools for your cluster. Defining these pools ensures that load balancer services receive authorized IP addresses from designated network ranges for secure and consistent routing.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Install the OpenShift CLI (`oc`).
 
 - Configure a separate VLAN.
 
 - Log in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a file, such as `ipaddresspool-vlan.yaml`, that is similar to the following example:
 
@@ -260,8 +210,6 @@ Procedure
         # ...
         ```
 
-</div>
-
 # Example address pool configurations
 
 To precisely allocate IP address ranges for cluster services, configure MetalLB address pools by using Classless Inter-Domain Routing (CIDR) notation or hyphenated bounds. Defining these specific ranges ensures that application workloads receive valid IP assignments that align with your existing network infrastructure requirements.
@@ -286,11 +234,9 @@ spec:
 Example of assigning IP addresses
 You can set the `autoAssign` parameter to `false` to prevent MetalLB from automatically assigning IP addresses from the address pool. You can then assign a single IP address or multiple IP addresses from an IP address pool. To assign an IP address, append the `/32` CIDR notation to the target IP address in the `spec.addresses` parameter. This setting ensures that only the specific IP address is available for assignment, leaving non-reserved IP addresses for application use.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `IPAddressPool` CR that assigns multiple IP addresses
+**Example `IPAddressPool` CR that assigns multiple IP addresses**
 
 </div>
 
@@ -308,10 +254,11 @@ spec:
 # ...
 ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> When you add a service, you can request a specific IP address from the address pool or you can specify the pool name in an annotation to request any IP address from the pool.
+When you add a service, you can request a specific IP address from the address pool or you can specify the pool name in an annotation to request any IP address from the pool.
+
+</div>
 
 Example of IPv4 and IPv6 addresses
 You can add address pools that use IPv4 and IPv6. You can specify multiple ranges in the `addresses` list, just like several IPv4 examples.
@@ -338,8 +285,11 @@ You can assign IP addresses from an `IPAddressPool` to services and namespaces t
 
 If you assign a service or namespace to more than one IP address pool, MetalLB uses an available IP address from the higher-priority IP address pool. If no IP addresses are available from the assigned IP address pools with a high priority, MetalLB uses available IP addresses from an IP address pool with lower priority or no priority.
 
-> [!NOTE]
-> You can use the `matchLabels` label selector, the `matchExpressions` label selector, or both, for the `namespaceSelectors` and `serviceSelectors` specifications. This example demonstrates one label selector for each specification.
+<div class="note">
+
+You can use the `matchLabels` label selector, the `matchExpressions` label selector, or both, for the `namespaceSelectors` and `serviceSelectors` specifications. This example demonstrates one label selector for each specification.
+
+</div>
 
 ``` yaml
 apiVersion: metallb.io/v1beta1

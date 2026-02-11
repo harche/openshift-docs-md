@@ -4,14 +4,6 @@ Use OADP Self-Service as a namespace administrator to create backup storage loca
 
 Create a `NonAdminBackupStorageLocation` (NABSL) custom resource (CR) to define backup storage locations in your authorized namespace. With this feature, you can store backups in a cloud storage that meets your application requirements.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to the cluster as a namespace admin user.
 
 - The cluster administrator has installed the OADP Operator.
@@ -19,16 +11,6 @@ Prerequisites
 - The cluster administrator has configured the `DataProtectionApplication` (DPA) CR to enable OADP Self-Service.
 
 - The cluster administrator has created a namespace for you and has authorized you to operate from that namespace.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `Secret` CR by using the cloud credentials file content for your cloud provider. Run the following command:
 
@@ -46,11 +28,9 @@ Procedure
 
 2.  To create a `NonAdminBackupStorageLocation` CR, create a YAML manifest file with the following configuration:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `NonAdminBackupStorageLocation` CR
+    **Example `NonAdminBackupStorageLocation` CR**
 
     </div>
 
@@ -74,8 +54,6 @@ Procedure
         provider: aws
     ```
 
-    </div>
-
     where:
 
     `namespace`
@@ -95,15 +73,7 @@ Procedure
 
     Replace `<nabsl_cr_filename>` with the file name containing the NABSL CR configuration.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  To verify that the NABSL CR is in the `New` phase and is pending administrator approval, run the following command:
 
@@ -111,11 +81,9 @@ Verification
     $ oc get nabsl test-nabsl -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -142,8 +110,6 @@ Verification
         namespace: openshift-adp
     ```
 
-    </div>
-
     where:
 
     `message`
@@ -158,11 +124,9 @@ Verification
     $ oc get nabsl test-nabsl -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -215,8 +179,6 @@ Verification
           phase: Available
     ```
 
-    </div>
-
     where:
 
     `message: NonAdminBackupStorageLocation spec validation successful`
@@ -237,8 +199,6 @@ Verification
     `phase: Available`
     Specifies that the NABSL is ready for use.
 
-</div>
-
 # Creating a NonAdminBackup CR
 
 Create a `NonAdminBackup` (NAB) custom resource (CR) to back up application resources in your authorized namespace. This helps you to protect your application data and configuration without requiring cluster administrator privileges.
@@ -257,13 +217,7 @@ Review the following important points when creating a NAB CR:
 
 - As a namespace admin user, you can only specify your authorized namespace in the NAB CR. You get an error when you specify a namespace you are not authorized to use.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - You are logged in to the cluster as a namespace admin user.
 
@@ -275,23 +229,11 @@ Prerequisites
 
 - Optional: You can create and use a `NonAdminBackupStorageLocation` (NABSL) CR to store the backup data. If you do not use a NABSL CR, then the backup is stored in the default backup storage location configured in the DPA.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To create a `NonAdminBackup` CR, create a YAML manifest file with the following configuration:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `NonAdminBackup` CR
+    **Example `NonAdminBackup` CR**
 
     </div>
 
@@ -306,8 +248,6 @@ Procedure
         snapshotMoveData: false
         storageLocation: test-bsl
     ```
-
-    </div>
 
     where:
 
@@ -331,27 +271,15 @@ Procedure
 
     Replace `<nab_cr_filename>` with the file name containing the NAB CR configuration.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - To verify that the NAB CR is successfully created, run the following command:
 
   ``` terminal
   $ oc get nab test-nab -o yaml
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -435,8 +363,6 @@ Verification
         warnings: 1
   ```
 
-  </div>
-
   where:
 
   `namespace`
@@ -466,19 +392,9 @@ Verification
   `phase: Completed`
   Specifies that the `Velero` backup object is in the `Completed` phase and the backup is successful.
 
-</div>
-
 # Deleting a NonAdminBackup CR
 
 As a namespace admin user, you can delete a `NonAdminBackup` (NAB) custom resource (CR).
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You are logged in to the cluster as a namespace admin user.
 
@@ -489,16 +405,6 @@ Prerequisites
 - The cluster administrator has created a namespace for you and has authorized you to operate from that namespace.
 
 - You have created a NAB CR in your authorized namespace.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `NonAdminBackup` CR YAML manifest file by running the following command:
 
@@ -539,16 +445,6 @@ Procedure
     `deleteBackup: true`
     Add the `deleteBackup` flag and set it to `true`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the NAB CR is deleted by running the following command:
 
   ``` terminal
@@ -563,19 +459,9 @@ Verification
   Error from server (NotFound): nonadminbackups.oadp.openshift.io "test-nab" not found
   ```
 
-</div>
-
 # Creating a NonAdminRestore CR
 
 Create a `NonAdminRestore` (NAR) custom resource (CR) to restore application resources from a backup to your authorized namespace. This provides an ability to recover your application data and configuration without requiring cluster administrator privileges.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You are logged in to the cluster as a namespace admin user.
 
@@ -587,23 +473,11 @@ Prerequisites
 
 - You have a backup of your application by creating a `NonAdminBackup` (NAB) CR.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To create a `NonAdminRestore` CR, create a YAML manifest file with the following configuration:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `NonAdminRestore` CR
+    **Example `NonAdminRestore` CR**
 
     </div>
 
@@ -616,8 +490,6 @@ Procedure
       restoreSpec:
         backupName: test-nab
     ```
-
-    </div>
 
     where:
 
@@ -635,15 +507,7 @@ Procedure
 
     Replace `<nar_cr_filename>` with the file name containing the NAR CR configuration.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  To verify that the NAR CR is successfully created, run the following command:
 
@@ -651,11 +515,9 @@ Verification
     $ oc get nar test-nar -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -710,8 +572,6 @@ Verification
           warnings: 7
     ```
 
-    </div>
-
     where:
 
     `message: restore accepted`
@@ -735,8 +595,6 @@ Verification
     `phase: Completed`
     Specifies that the `Velero` restore object is in the `Completed` phase and the restore is successful.
 
-</div>
-
 # About NonAdminDownloadRequest CR
 
 Review backup and restore logs by using the `NonAdminDownloadRequest` (NADR) custom resource (CR). This helps you troubleshoot backup and restore issues without cluster administrator assistance.
@@ -747,16 +605,16 @@ After the NADR CR request is validated, a secure download URL is generated to ac
 
 You can download the following NADR resources:
 
-|  |  |  |
-|----|----|----|
-| **Resource type** | **Description** | **Equivalent to** |
-| `BackupResourceList` | List of resources included in the backup | `velero backup describe --details` (resource listing) |
-| `BackupContents` | Contents of files backed up | Part of backup details |
-| `BackupLog` | Logs from the backup operation | `velero backup logs` |
-| `BackupVolumeSnapshots` | Information about volume snapshots | `velero backup describe --details` (snapshots section) |
-| `BackupItemOperations` | Information about item operations performed during backup | `velero backup describe --details` (operations section) |
-| `RestoreLog` | Logs from the restore operation | `velero restore logs` |
-| `RestoreResults` | Detailed results of the restore | `velero restore describe --details` |
+|                         |                                                           |                                                         |
+|-------------------------|-----------------------------------------------------------|---------------------------------------------------------|
+| **Resource type**       | **Description**                                           | **Equivalent to**                                       |
+| `BackupResourceList`    | List of resources included in the backup                  | `velero backup describe --details` (resource listing)   |
+| `BackupContents`        | Contents of files backed up                               | Part of backup details                                  |
+| `BackupLog`             | Logs from the backup operation                            | `velero backup logs`                                    |
+| `BackupVolumeSnapshots` | Information about volume snapshots                        | `velero backup describe --details` (snapshots section)  |
+| `BackupItemOperations`  | Information about item operations performed during backup | `velero backup describe --details` (operations section) |
+| `RestoreLog`            | Logs from the restore operation                           | `velero restore logs`                                   |
+| `RestoreResults`        | Detailed results of the restore                           | `velero restore describe --details`                     |
 
 NADR resources
 
@@ -764,14 +622,9 @@ NADR resources
 
 Create a `NonAdminDownloadRequest` (NADR) custom resource (CR) to access and review detailed logs for `NonAdminBackup` (NAB) and `NonAdminRestore` (NAR) operations. This helps you troubleshoot backup and restore issues independently.
 
-> [!NOTE]
-> You can review the NAB logs only if you are using a `NonAdminBackupStorageLocation` (NABSL) CR as a backup storage location for the backup.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You can review the NAB logs only if you are using a `NonAdminBackupStorageLocation` (NABSL) CR as a backup storage location for the backup.
 
 </div>
 
@@ -787,23 +640,11 @@ Prerequisites
 
 - You have restored the application by creating a NAR CR.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To review NAB CR logs, create a `NonAdminDownloadRequest` CR and specify the NAB CR name as shown in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `NonAdminDownloadRequest` CR
+    **Example `NonAdminDownloadRequest` CR**
 
     </div>
 
@@ -817,8 +658,6 @@ Procedure
         kind: BackupLog
         name: test-nab
     ```
-
-    </div>
 
     where:
 
@@ -834,11 +673,9 @@ Procedure
     $ oc get nadr test-nadr-backup -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -871,8 +708,6 @@ Procedure
           phase: Processed
     ```
 
-    </div>
-
     where:
 
     `downloadURL`
@@ -885,11 +720,9 @@ Procedure
 
 4.  To review NAR CR logs, create a `NonAdminDownloadRequest` CR and specify the NAR CR name as shown in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `NonAdminDownloadRequest` CR
+    **Example `NonAdminDownloadRequest` CR**
 
     </div>
 
@@ -903,8 +736,6 @@ Procedure
         kind: RestoreLog
         name: test-nar
     ```
-
-    </div>
 
     where:
 
@@ -920,11 +751,9 @@ Procedure
     $ oc get nadr test-nadr-restore -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -957,8 +786,6 @@ Procedure
           phase: Processed
     ```
 
-    </div>
-
     where:
 
     `downloadURL`
@@ -968,5 +795,3 @@ Procedure
     The `status.phase` is `Processed`.
 
 6.  Download and analyze the restore information by using the `status.downloadURL` URL.
-
-</div>

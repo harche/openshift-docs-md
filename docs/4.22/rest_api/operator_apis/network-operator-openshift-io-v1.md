@@ -8,13 +8,13 @@ Type
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | NetworkSpec is the top-level network configuration object. |
-| `status` | `object` | NetworkStatus is detailed operator status, which is distilled up to the Network clusteroperator object. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | NetworkSpec is the top-level network configuration object.                                                                                                                                                                                                                                           |
+| `status`     | `object`                                                                             | NetworkStatus is detailed operator status, which is distilled up to the Network clusteroperator object.                                                                                                                                                                                              |
 
 ## .spec
 
@@ -31,106 +31,106 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>additionalNetworks</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>additionalNetworks is a list of extra networks to make available to pods when multiple networks are enabled.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>additionalNetworks[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>AdditionalNetworkDefinition configures an extra network that is available but not created by default. Instead, pods must request them by name. type must be specified, along with exactly one "Config" that matches the type.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>additionalRoutingCapabilities</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>additionalRoutingCapabilities describes components and relevant configuration providing additional routing capabilities. When set, it enables such components and the usage of the routing capabilities they provide for the machine network. Upstream operators, like MetalLB operator, requiring these capabilities may rely on, or automatically set this attribute. Network plugins may leverage advanced routing capabilities acquired through the enablement of these components but may require specific configuration on their side to do so; refer to their respective documentation and configuration options.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>clusterNetwork</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>clusterNetwork is the IP address pool to use for pod IPs. Some network providers support multiple ClusterNetworks. Others only support one. This is equivalent to the cluster-cidr.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>clusterNetwork[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ClusterNetworkEntry is a subnet from which to allocate PodIPs. A network of size HostPrefix (in CIDR notation) will be allocated when nodes join the cluster. If the HostPrefix field is not used by the plugin, it can be left unset. Not all network providers support multiple ClusterNetworks</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>defaultNetwork</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>defaultNetwork is the "default" network that all pods will receive</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>deployKubeProxy</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>deployKubeProxy specifies whether or not a standalone kube-proxy should be deployed by the operator. Some network providers include kube-proxy or similar functionality. If unset, the plugin will attempt to select the correct value, which is false when ovn-kubernetes is used and true otherwise.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>disableMultiNetwork</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>disableMultiNetwork defaults to 'false' and this setting enables the pod multi-networking capability. disableMultiNetwork when set to 'true' at cluster install time does not install the components, typically the Multus CNI and the network-attachment-definition CRD, that enable the pod multi-networking capability. Setting the parameter to 'true' might be useful when you need install third-party CNI plugins, but these plugins are not supported by Red Hat. Changing the parameter value as a postinstallation cluster task has no effect.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>disableNetworkDiagnostics</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>disableNetworkDiagnostics specifies whether or not PodNetworkConnectivityCheck CRs from a test pod to every node, apiserver and LB should be disabled or not. If unset, this property defaults to 'false' and network diagnostics is enabled. Setting this to 'true' would reduce the additional load of the pods performing the checks.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>exportNetworkFlows</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>exportNetworkFlows enables and configures the export of network flow metadata from the pod network by using protocols NetFlow, SFlow or IPFIX. Currently only supported on OVN-Kubernetes plugin. If unset, flows will not be exported to any collector.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>kubeProxyConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>kubeProxyConfig lets us configure desired proxy configuration, if deployKubeProxy is true. If not specified, sensible defaults will be chosen by OpenShift directly.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>logLevel</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>logLevel is an intent based logging for an overall component. It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands.</p>
 <p>Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>managementState</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>managementState indicates whether and how the operator should manage the component</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>migration</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>migration enables and configures cluster network migration, for network changes that cannot be made instantly.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>observedConfig</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>observedConfig holds a sparse config that controller has observed from the cluster state. It exists in spec because it is an input to the level for the operator</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>operatorLogLevel</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>operatorLogLevel is an intent based logging for the operator itself. It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves.</p>
 <p>Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serviceNetwork</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>serviceNetwork is the ip address pool to use for Service IPs Currently, all existing network providers only support a single value here, but this is an array to allow for growth.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>unsupportedConfigOverrides</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>unsupportedConfigOverrides overrides the final configuration that was computed by the operator. Red Hat does not support the use of this field. Misuse of this field could lead to unexpected behavior or conflict with other configuration options. Seek guidance from the Red Hat support before using this field. Use of this property blocks cluster upgrades, it must be removed before upgrading your cluster.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>useMultiNetworkPolicy</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>useMultiNetworkPolicy enables a controller which allows for MultiNetworkPolicy objects to be used on additional networks as created by Multus CNI. MultiNetworkPolicy are similar to NetworkPolicy objects, but NetworkPolicy objects only apply to the primary interface. With MultiNetworkPolicy, you can control the traffic that a pod can receive over the secondary interfaces. If unset, this property defaults to 'false' and MultiNetworkPolicy objects are ignored. If 'disableMultiNetwork' is 'true' then the value of this field is ignored.</p></td>
@@ -157,13 +157,13 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name is the name of the network. This will be populated in the resulting CRD This must be unique. |
-| `namespace` | `string` | namespace is the namespace of the network. This will be populated in the resulting CRD If not given the network will be created in the default namespace. |
-| `rawCNIConfig` | `string` | rawCNIConfig is the raw CNI configuration json to create in the NetworkAttachmentDefinition CRD |
-| `simpleMacvlanConfig` | `object` | simpleMacvlanConfig configures the macvlan interface in case of type:NetworkTypeSimpleMacvlan |
-| `type` | `string` | type is the type of network The supported values are NetworkTypeRaw, NetworkTypeSimpleMacvlan |
+| Property              | Type     | Description                                                                                                                                               |
+|-----------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`                | `string` | name is the name of the network. This will be populated in the resulting CRD This must be unique.                                                         |
+| `namespace`           | `string` | namespace is the namespace of the network. This will be populated in the resulting CRD If not given the network will be created in the default namespace. |
+| `rawCNIConfig`        | `string` | rawCNIConfig is the raw CNI configuration json to create in the NetworkAttachmentDefinition CRD                                                           |
+| `simpleMacvlanConfig` | `object` | simpleMacvlanConfig configures the macvlan interface in case of type:NetworkTypeSimpleMacvlan                                                             |
+| `type`                | `string` | type is the type of network The supported values are NetworkTypeRaw, NetworkTypeSimpleMacvlan                                                             |
 
 ## .spec.additionalNetworks\[\].simpleMacvlanConfig
 
@@ -173,12 +173,12 @@ simpleMacvlanConfig configures the macvlan interface in case of type:NetworkType
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `ipamConfig` | `object` | ipamConfig configures IPAM module will be used for IP Address Management (IPAM). |
-| `master` | `string` | master is the host interface to create the macvlan interface from. If not specified, it will be default route interface |
-| `mode` | `string` | mode is the macvlan mode: bridge, private, vepa, passthru. The default is bridge |
-| `mtu` | `integer` | mtu is the mtu to use for the macvlan interface. if unset, host’s kernel will select the value. |
+| Property     | Type      | Description                                                                                                             |
+|--------------|-----------|-------------------------------------------------------------------------------------------------------------------------|
+| `ipamConfig` | `object`  | ipamConfig configures IPAM module will be used for IP Address Management (IPAM).                                        |
+| `master`     | `string`  | master is the host interface to create the macvlan interface from. If not specified, it will be default route interface |
+| `mode`       | `string`  | mode is the macvlan mode: bridge, private, vepa, passthru. The default is bridge                                        |
+| `mtu`        | `integer` | mtu is the mtu to use for the macvlan interface. if unset, host’s kernel will select the value.                         |
 
 ## .spec.additionalNetworks\[\].simpleMacvlanConfig.ipamConfig
 
@@ -188,10 +188,10 @@ ipamConfig configures IPAM module will be used for IP Address Management (IPAM).
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `staticIPAMConfig` | `object` | staticIPAMConfig configures the static IP address in case of type:IPAMTypeStatic |
-| `type` | `string` | type is the type of IPAM module will be used for IP Address Management(IPAM). The supported values are IPAMTypeDHCP, IPAMTypeStatic |
+| Property           | Type     | Description                                                                                                                         |
+|--------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------|
+| `staticIPAMConfig` | `object` | staticIPAMConfig configures the static IP address in case of type:IPAMTypeStatic                                                    |
+| `type`             | `string` | type is the type of IPAM module will be used for IP Address Management(IPAM). The supported values are IPAMTypeDHCP, IPAMTypeStatic |
 
 ## .spec.additionalNetworks\[\].simpleMacvlanConfig.ipamConfig.staticIPAMConfig
 
@@ -201,13 +201,13 @@ staticIPAMConfig configures the static IP address in case of type:IPAMTypeStatic
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `addresses` | `array` | addresses configures IP address for the interface |
+| Property      | Type     | Description                                                                   |
+|---------------|----------|-------------------------------------------------------------------------------|
+| `addresses`   | `array`  | addresses configures IP address for the interface                             |
 | `addresses[]` | `object` | StaticIPAMAddresses provides IP address and Gateway for static IPAM addresses |
-| `dns` | `object` | dns configures DNS for the interface |
-| `routes` | `array` | routes configures IP routes for the interface |
-| `routes[]` | `object` | StaticIPAMRoutes provides Destination/Gateway pairs for static IPAM routes |
+| `dns`         | `object` | dns configures DNS for the interface                                          |
+| `routes`      | `array`  | routes configures IP routes for the interface                                 |
+| `routes[]`    | `object` | StaticIPAMRoutes provides Destination/Gateway pairs for static IPAM routes    |
 
 ## .spec.additionalNetworks\[\].simpleMacvlanConfig.ipamConfig.staticIPAMConfig.addresses
 
@@ -225,9 +225,9 @@ StaticIPAMAddresses provides IP address and Gateway for static IPAM addresses
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `address` | `string` | address is the IP address in CIDR format |
+| Property  | Type     | Description                                                |
+|-----------|----------|------------------------------------------------------------|
+| `address` | `string` | address is the IP address in CIDR format                   |
 | `gateway` | `string` | gateway is IP inside of subnet to designate as the gateway |
 
 ## .spec.additionalNetworks\[\].simpleMacvlanConfig.ipamConfig.staticIPAMConfig.dns
@@ -238,11 +238,11 @@ dns configures DNS for the interface
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `domain` | `string` | domain configures the domainname the local domain used for short hostname lookups |
-| `nameservers` | `array (string)` | nameservers points DNS servers for IP lookup |
-| `search` | `array (string)` | search configures priority ordered search domains for short hostname lookups |
+| Property      | Type             | Description                                                                       |
+|---------------|------------------|-----------------------------------------------------------------------------------|
+| `domain`      | `string`         | domain configures the domainname the local domain used for short hostname lookups |
+| `nameservers` | `array (string)` | nameservers points DNS servers for IP lookup                                      |
+| `search`      | `array (string)` | search configures priority ordered search domains for short hostname lookups      |
 
 ## .spec.additionalNetworks\[\].simpleMacvlanConfig.ipamConfig.staticIPAMConfig.routes
 
@@ -260,10 +260,10 @@ StaticIPAMRoutes provides Destination/Gateway pairs for static IPAM routes
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `destination` | `string` | destination points the IP route destination |
-| `gateway` | `string` | gateway is the route’s next-hop IP address If unset, a default gateway is assumed (as determined by the CNI plugin). |
+| Property      | Type     | Description                                                                                                          |
+|---------------|----------|----------------------------------------------------------------------------------------------------------------------|
+| `destination` | `string` | destination points the IP route destination                                                                          |
+| `gateway`     | `string` | gateway is the route’s next-hop IP address If unset, a default gateway is assumed (as determined by the CNI plugin). |
 
 ## .spec.additionalRoutingCapabilities
 
@@ -276,8 +276,8 @@ Type
 Required
 - `providers`
 
-| Property | Type | Description |
-|----|----|----|
+| Property    | Type             | Description                                                                                                                                                                                                                                 |
+|-------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `providers` | `array (string)` | providers is a set of enabled components that provide additional routing capabilities. Entries on this list must be unique. The only valid value is currrently "FRR" which provides FRR routing capabilities through the deployment of FRR. |
 
 ## .spec.clusterNetwork
@@ -309,11 +309,11 @@ defaultNetwork is the "default" network that all pods will receive
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `openshiftSDNConfig` | `object` | openshiftSDNConfig was previously used to configure the openshift-sdn plugin. DEPRECATED: OpenShift SDN is no longer supported. |
-| `ovnKubernetesConfig` | `object` | ovnKubernetesConfig configures the ovn-kubernetes plugin. |
-| `type` | `string` | type is the type of network All NetworkTypes are supported except for NetworkTypeRaw |
+| Property              | Type     | Description                                                                                                                     |
+|-----------------------|----------|---------------------------------------------------------------------------------------------------------------------------------|
+| `openshiftSDNConfig`  | `object` | openshiftSDNConfig was previously used to configure the openshift-sdn plugin. DEPRECATED: OpenShift SDN is no longer supported. |
+| `ovnKubernetesConfig` | `object` | ovnKubernetesConfig configures the ovn-kubernetes plugin.                                                                       |
+| `type`                | `string` | type is the type of network All NetworkTypes are supported except for NetworkTypeRaw                                            |
 
 ## .spec.defaultNetwork.openshiftSDNConfig
 
@@ -323,13 +323,13 @@ openshiftSDNConfig was previously used to configure the openshift-sdn plugin. DE
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `enableUnidling` | `boolean` | enableUnidling controls whether or not the service proxy will support idling and unidling of services. By default, unidling is enabled. |
-| `mode` | `string` | mode is one of "Multitenant", "Subnet", or "NetworkPolicy" |
-| `mtu` | `integer` | mtu is the mtu to use for the tunnel interface. Defaults to 1450 if unset. This must be 50 bytes smaller than the machine’s uplink. |
+| Property                 | Type      | Description                                                                                                                                                                                                       |
+|--------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `enableUnidling`         | `boolean` | enableUnidling controls whether or not the service proxy will support idling and unidling of services. By default, unidling is enabled.                                                                           |
+| `mode`                   | `string`  | mode is one of "Multitenant", "Subnet", or "NetworkPolicy"                                                                                                                                                        |
+| `mtu`                    | `integer` | mtu is the mtu to use for the tunnel interface. Defaults to 1450 if unset. This must be 50 bytes smaller than the machine’s uplink.                                                                               |
 | `useExternalOpenvswitch` | `boolean` | useExternalOpenvswitch used to control whether the operator would deploy an OVS DaemonSet itself or expect someone else to start OVS. As of 4.6, OVS is always run as a system service, and this flag is ignored. |
-| `vxlanPort` | `integer` | vxlanPort is the port to use for all vxlan packets. The default is 4789. |
+| `vxlanPort`              | `integer` | vxlanPort is the port to use for all vxlan packets. The default is 4789.                                                                                                                                          |
 
 ## .spec.defaultNetwork.ovnKubernetesConfig
 
@@ -339,20 +339,20 @@ ovnKubernetesConfig configures the ovn-kubernetes plugin.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `egressIPConfig` | `object` | egressIPConfig holds the configuration for EgressIP options. |
-| `gatewayConfig` | `object` | gatewayConfig holds the configuration for node gateway options. |
-| `genevePort` | `integer` | geneve port is the UDP port to be used by geneve encapulation. Default is 6081 |
-| `hybridOverlayConfig` | `object` | hybridOverlayConfig configures an additional overlay network for peers that are not using OVN. |
-| `ipsecConfig` | `object` | ipsecConfig enables and configures IPsec for pods on the pod network within the cluster. |
-| `ipv4` | `object` | ipv4 allows users to configure IP settings for IPv4 connections. When ommitted, this means no opinions and the default configuration is used. Check individual fields within ipv4 for details of default values. |
-| `ipv6` | `object` | ipv6 allows users to configure IP settings for IPv6 connections. When ommitted, this means no opinions and the default configuration is used. Check individual fields within ipv4 for details of default values. |
-| `mtu` | `integer` | mtu is the MTU to use for the tunnel interface. This must be 100 bytes smaller than the uplink mtu. Default is 1400 |
-| `policyAuditConfig` | `object` | policyAuditConfig is the configuration for network policy audit events. If unset, reported defaults are used. |
-| `routeAdvertisements` | `string` | routeAdvertisements determines if the functionality to advertise cluster network routes through a dynamic routing protocol, such as BGP, is enabled or not. This functionality is configured through the ovn-kubernetes RouteAdvertisements CRD. Requires the 'FRR' routing capability provider to be enabled as an additional routing capability. Allowed values are "Enabled", "Disabled" and ommited. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is "Disabled". |
-| `v4InternalSubnet` | `string` | v4InternalSubnet is a v4 subnet used internally by ovn-kubernetes in case the default one is being already used by something else. It must not overlap with any other subnet being used by OpenShift or by the node network. The size of the subnet must be larger than the number of nodes. Default is 100.64.0.0/16 |
-| `v6InternalSubnet` | `string` | v6InternalSubnet is a v6 subnet used internally by ovn-kubernetes in case the default one is being already used by something else. It must not overlap with any other subnet being used by OpenShift or by the node network. The size of the subnet must be larger than the number of nodes. Default is fd98::/64 |
+| Property              | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|-----------------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `egressIPConfig`      | `object`  | egressIPConfig holds the configuration for EgressIP options.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `gatewayConfig`       | `object`  | gatewayConfig holds the configuration for node gateway options.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `genevePort`          | `integer` | geneve port is the UDP port to be used by geneve encapulation. Default is 6081                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `hybridOverlayConfig` | `object`  | hybridOverlayConfig configures an additional overlay network for peers that are not using OVN.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `ipsecConfig`         | `object`  | ipsecConfig enables and configures IPsec for pods on the pod network within the cluster.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `ipv4`                | `object`  | ipv4 allows users to configure IP settings for IPv4 connections. When ommitted, this means no opinions and the default configuration is used. Check individual fields within ipv4 for details of default values.                                                                                                                                                                                                                                                                                                                                                                                     |
+| `ipv6`                | `object`  | ipv6 allows users to configure IP settings for IPv6 connections. When ommitted, this means no opinions and the default configuration is used. Check individual fields within ipv4 for details of default values.                                                                                                                                                                                                                                                                                                                                                                                     |
+| `mtu`                 | `integer` | mtu is the MTU to use for the tunnel interface. This must be 100 bytes smaller than the uplink mtu. Default is 1400                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `policyAuditConfig`   | `object`  | policyAuditConfig is the configuration for network policy audit events. If unset, reported defaults are used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `routeAdvertisements` | `string`  | routeAdvertisements determines if the functionality to advertise cluster network routes through a dynamic routing protocol, such as BGP, is enabled or not. This functionality is configured through the ovn-kubernetes RouteAdvertisements CRD. Requires the 'FRR' routing capability provider to be enabled as an additional routing capability. Allowed values are "Enabled", "Disabled" and ommited. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is "Disabled". |
+| `v4InternalSubnet`    | `string`  | v4InternalSubnet is a v4 subnet used internally by ovn-kubernetes in case the default one is being already used by something else. It must not overlap with any other subnet being used by OpenShift or by the node network. The size of the subnet must be larger than the number of nodes. Default is 100.64.0.0/16                                                                                                                                                                                                                                                                                |
+| `v6InternalSubnet`    | `string`  | v6InternalSubnet is a v6 subnet used internally by ovn-kubernetes in case the default one is being already used by something else. It must not overlap with any other subnet being used by OpenShift or by the node network. The size of the subnet must be larger than the number of nodes. Default is fd98::/64                                                                                                                                                                                                                                                                                    |
 
 ## .spec.defaultNetwork.ovnKubernetesConfig.egressIPConfig
 
@@ -362,8 +362,8 @@ egressIPConfig holds the configuration for EgressIP options.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property                          | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|-----------------------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `reachabilityTotalTimeoutSeconds` | `integer` | reachabilityTotalTimeout configures the EgressIP node reachability check total timeout in seconds. If the EgressIP node cannot be reached within this timeout, the node is declared down. Setting a large value may cause the EgressIP feature to react slowly to node changes. In particular, it may react slowly for EgressIP nodes that really have a genuine problem and are unreachable. When omitted, this means the user has no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default is 1 second. A value of 0 disables the EgressIP node’s reachability check. |
 
 ## .spec.defaultNetwork.ovnKubernetesConfig.gatewayConfig
@@ -374,12 +374,12 @@ gatewayConfig holds the configuration for node gateway options.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `ipForwarding` | `string` | ipForwarding controls IP forwarding for all traffic on OVN-Kubernetes managed interfaces (such as br-ex). By default this is set to Restricted, and Kubernetes related traffic is still forwarded appropriately, but other IP traffic will not be routed by the OCP node. If there is a desire to allow the host to forward traffic across OVN-Kubernetes managed interfaces, then set this field to "Global". The supported values are "Restricted" and "Global". |
-| `ipv4` | `object` | ipv4 allows users to configure IP settings for IPv4 connections. When omitted, this means no opinion and the default configuration is used. Check individual members fields within ipv4 for details of default values. |
-| `ipv6` | `object` | ipv6 allows users to configure IP settings for IPv6 connections. When omitted, this means no opinion and the default configuration is used. Check individual members fields within ipv6 for details of default values. |
-| `routingViaHost` | `boolean` | routingViaHost allows pod egress traffic to exit via the ovn-k8s-mp0 management port into the host before sending it out. If this is not set, traffic will always egress directly from OVN to outside without touching the host stack. Setting this to true means hardware offload will not be supported. Default is false if GatewayConfig is specified. |
+| Property         | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+|------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `ipForwarding`   | `string`  | ipForwarding controls IP forwarding for all traffic on OVN-Kubernetes managed interfaces (such as br-ex). By default this is set to Restricted, and Kubernetes related traffic is still forwarded appropriately, but other IP traffic will not be routed by the OCP node. If there is a desire to allow the host to forward traffic across OVN-Kubernetes managed interfaces, then set this field to "Global". The supported values are "Restricted" and "Global". |
+| `ipv4`           | `object`  | ipv4 allows users to configure IP settings for IPv4 connections. When omitted, this means no opinion and the default configuration is used. Check individual members fields within ipv4 for details of default values.                                                                                                                                                                                                                                             |
+| `ipv6`           | `object`  | ipv6 allows users to configure IP settings for IPv6 connections. When omitted, this means no opinion and the default configuration is used. Check individual members fields within ipv6 for details of default values.                                                                                                                                                                                                                                             |
+| `routingViaHost` | `boolean` | routingViaHost allows pod egress traffic to exit via the ovn-k8s-mp0 management port into the host before sending it out. If this is not set, traffic will always egress directly from OVN to outside without touching the host stack. Setting this to true means hardware offload will not be supported. Default is false if GatewayConfig is specified.                                                                                                          |
 
 ## .spec.defaultNetwork.ovnKubernetesConfig.gatewayConfig.ipv4
 
@@ -389,8 +389,8 @@ ipv4 allows users to configure IP settings for IPv4 connections. When omitted, t
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property                   | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|----------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `internalMasqueradeSubnet` | `string` | internalMasqueradeSubnet contains the masquerade addresses in IPV4 CIDR format used internally by ovn-kubernetes to enable host to service traffic. Each host in the cluster is configured with these addresses, as well as the shared gateway bridge interface. The values can be changed after installation. The subnet chosen should not overlap with other networks specified for OVN-Kubernetes as well as other networks used on the host. Additionally the subnet must be large enough to accommodate 6 IPs (maximum prefix length /29). When omitted, this means no opinion and the platform is left to choose a reasonable default which is subject to change over time. The current default subnet is 169.254.0.0/17 The value must be in proper IPV4 CIDR format |
 
 ## .spec.defaultNetwork.ovnKubernetesConfig.gatewayConfig.ipv6
@@ -401,8 +401,8 @@ ipv6 allows users to configure IP settings for IPv6 connections. When omitted, t
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property                   | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|----------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `internalMasqueradeSubnet` | `string` | internalMasqueradeSubnet contains the masquerade addresses in IPV6 CIDR format used internally by ovn-kubernetes to enable host to service traffic. Each host in the cluster is configured with these addresses, as well as the shared gateway bridge interface. The values can be changed after installation. The subnet chosen should not overlap with other networks specified for OVN-Kubernetes as well as other networks used on the host. Additionally the subnet must be large enough to accommodate 6 IPs (maximum prefix length /125). When omitted, this means no opinion and the platform is left to choose a reasonable default which is subject to change over time. The current default subnet is fd69::/112 Note that IPV6 dual addresses are not permitted |
 
 ## .spec.defaultNetwork.ovnKubernetesConfig.hybridOverlayConfig
@@ -413,11 +413,11 @@ hybridOverlayConfig configures an additional overlay network for peers that are 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `hybridClusterNetwork` | `array` | hybridClusterNetwork defines a network space given to nodes on an additional overlay network. |
-| `hybridClusterNetwork[]` | `object` | ClusterNetworkEntry is a subnet from which to allocate PodIPs. A network of size HostPrefix (in CIDR notation) will be allocated when nodes join the cluster. If the HostPrefix field is not used by the plugin, it can be left unset. Not all network providers support multiple ClusterNetworks |
-| `hybridOverlayVXLANPort` | `integer` | hybridOverlayVXLANPort defines the VXLAN port number to be used by the additional overlay network. Default is 4789 |
+| Property                 | Type      | Description                                                                                                                                                                                                                                                                                       |
+|--------------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `hybridClusterNetwork`   | `array`   | hybridClusterNetwork defines a network space given to nodes on an additional overlay network.                                                                                                                                                                                                     |
+| `hybridClusterNetwork[]` | `object`  | ClusterNetworkEntry is a subnet from which to allocate PodIPs. A network of size HostPrefix (in CIDR notation) will be allocated when nodes join the cluster. If the HostPrefix field is not used by the plugin, it can be left unset. Not all network providers support multiple ClusterNetworks |
+| `hybridOverlayVXLANPort` | `integer` | hybridOverlayVXLANPort defines the VXLAN port number to be used by the additional overlay network. Default is 4789                                                                                                                                                                                |
 
 ## .spec.defaultNetwork.ovnKubernetesConfig.hybridOverlayConfig.hybridClusterNetwork
 
@@ -448,10 +448,10 @@ ipsecConfig enables and configures IPsec for pods on the pod network within the 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `full` | `object` | full defines configuration parameters for the IPsec `Full` mode. This is permitted only when mode is configured with `Full`, and forbidden otherwise. |
-| `mode` | `string` | mode defines the behaviour of the ipsec configuration within the platform. Valid values are `Disabled`, `External` and `Full`. When 'Disabled', ipsec will not be enabled at the node level. When 'External', ipsec is enabled on the node level but requires the user to configure the secure communication parameters. This mode is for external secure communications and the configuration can be done using the k8s-nmstate operator. When 'Full', ipsec is configured on the node level and inter-pod secure communication within the cluster is configured. Note with `Full`, if ipsec is desired for communication with external (to the cluster) entities (such as storage arrays), this is left to the user to configure. |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|----------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `full`   | `object` | full defines configuration parameters for the IPsec `Full` mode. This is permitted only when mode is configured with `Full`, and forbidden otherwise.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `mode`   | `string` | mode defines the behaviour of the ipsec configuration within the platform. Valid values are `Disabled`, `External` and `Full`. When 'Disabled', ipsec will not be enabled at the node level. When 'External', ipsec is enabled on the node level but requires the user to configure the secure communication parameters. This mode is for external secure communications and the configuration can be done using the k8s-nmstate operator. When 'Full', ipsec is configured on the node level and inter-pod secure communication within the cluster is configured. Note with `Full`, if ipsec is desired for communication with external (to the cluster) entities (such as storage arrays), this is left to the user to configure. |
 
 ## .spec.defaultNetwork.ovnKubernetesConfig.ipsecConfig.full
 
@@ -461,8 +461,8 @@ full defines configuration parameters for the IPsec `Full` mode. This is permitt
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property        | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|-----------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `encapsulation` | `string` | encapsulation option to configure libreswan on how inter-pod traffic across nodes are encapsulated to handle NAT traversal. When configured it uses UDP port 4500 for the encapsulation. Valid values are Always, Auto and omitted. Always means enable UDP encapsulation regardless of whether NAT is detected. Auto means enable UDP encapsulation based on the detection of NAT. When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default is Auto. |
 
 ## .spec.defaultNetwork.ovnKubernetesConfig.ipv4
@@ -473,9 +473,9 @@ ipv4 allows users to configure IP settings for IPv4 connections. When ommitted, 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `internalJoinSubnet` | `string` | internalJoinSubnet is a v4 subnet used internally by ovn-kubernetes in case the default one is being already used by something else. It must not overlap with any other subnet being used by OpenShift or by the node network. The size of the subnet must be larger than the number of nodes. The current default value is 100.64.0.0/16 The subnet must be large enough to accommodate one IP per node in your cluster The value must be in proper IPV4 CIDR format |
+| Property                      | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+|-------------------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `internalJoinSubnet`          | `string` | internalJoinSubnet is a v4 subnet used internally by ovn-kubernetes in case the default one is being already used by something else. It must not overlap with any other subnet being used by OpenShift or by the node network. The size of the subnet must be larger than the number of nodes. The current default value is 100.64.0.0/16 The subnet must be large enough to accommodate one IP per node in your cluster The value must be in proper IPV4 CIDR format                                                                                                                                                                                                                                      |
 | `internalTransitSwitchSubnet` | `string` | internalTransitSwitchSubnet is a v4 subnet in IPV4 CIDR format used internally by OVN-Kubernetes for the distributed transit switch in the OVN Interconnect architecture that connects the cluster routers on each node together to enable east west traffic. The subnet chosen should not overlap with other networks specified for OVN-Kubernetes as well as other networks used on the host. When ommitted, this means no opinion and the platform is left to choose a reasonable default which is subject to change over time. The current default subnet is 100.88.0.0/16 The subnet must be large enough to accommodate one IP per node in your cluster The value must be in proper IPV4 CIDR format |
 
 ## .spec.defaultNetwork.ovnKubernetesConfig.ipv6
@@ -486,9 +486,9 @@ ipv6 allows users to configure IP settings for IPv6 connections. When ommitted, 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `internalJoinSubnet` | `string` | internalJoinSubnet is a v6 subnet used internally by ovn-kubernetes in case the default one is being already used by something else. It must not overlap with any other subnet being used by OpenShift or by the node network. The size of the subnet must be larger than the number of nodes. The subnet must be large enough to accommodate one IP per node in your cluster The current default value is fd98::/64 The value must be in proper IPV6 CIDR format Note that IPV6 dual addresses are not permitted |
+| Property                      | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|-------------------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `internalJoinSubnet`          | `string` | internalJoinSubnet is a v6 subnet used internally by ovn-kubernetes in case the default one is being already used by something else. It must not overlap with any other subnet being used by OpenShift or by the node network. The size of the subnet must be larger than the number of nodes. The subnet must be large enough to accommodate one IP per node in your cluster The current default value is fd98::/64 The value must be in proper IPV6 CIDR format Note that IPV6 dual addresses are not permitted                                                                                                                                                                                                                                      |
 | `internalTransitSwitchSubnet` | `string` | internalTransitSwitchSubnet is a v4 subnet in IPV4 CIDR format used internally by OVN-Kubernetes for the distributed transit switch in the OVN Interconnect architecture that connects the cluster routers on each node together to enable east west traffic. The subnet chosen should not overlap with other networks specified for OVN-Kubernetes as well as other networks used on the host. When ommitted, this means no opinion and the platform is left to choose a reasonable default which is subject to change over time. The subnet must be large enough to accommodate one IP per node in your cluster The current default subnet is fd97::/64 The value must be in proper IPV6 CIDR format Note that IPV6 dual addresses are not permitted |
 
 ## .spec.defaultNetwork.ovnKubernetesConfig.policyAuditConfig
@@ -499,13 +499,13 @@ policyAuditConfig is the configuration for network policy audit events. If unset
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `destination` | `string` | destination is the location for policy log messages. Regardless of this config, persistent logs will always be dumped to the host at /var/log/ovn/ however Additionally syslog output may be configured as follows. Valid values are: - "libc" → to use the libc syslog() function of the host node’s journdald process - "udp:host:port" → for sending syslog over UDP - "unix:file" → for using the UNIX domain socket directly - "null" → to discard all messages logged to syslog The default is "null" |
-| `maxFileSize` | `integer` | maxFilesSize is the max size an ACL_audit log file is allowed to reach before rotation occurs Units are in MB and the Default is 50MB |
-| `maxLogFiles` | `integer` | maxLogFiles specifies the maximum number of ACL_audit log files that can be present. |
-| `rateLimit` | `integer` | rateLimit is the approximate maximum number of messages to generate per-second per-node. If unset the default of 20 msg/sec is used. |
-| `syslogFacility` | `string` | syslogFacility the RFC5424 facility for generated messages, e.g. "kern". Default is "local0" |
+| Property         | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `destination`    | `string`  | destination is the location for policy log messages. Regardless of this config, persistent logs will always be dumped to the host at /var/log/ovn/ however Additionally syslog output may be configured as follows. Valid values are: - "libc" → to use the libc syslog() function of the host node’s journdald process - "udp:host:port" → for sending syslog over UDP - "unix:file" → for using the UNIX domain socket directly - "null" → to discard all messages logged to syslog The default is "null" |
+| `maxFileSize`    | `integer` | maxFilesSize is the max size an ACL_audit log file is allowed to reach before rotation occurs Units are in MB and the Default is 50MB                                                                                                                                                                                                                                                                                                                                                                       |
+| `maxLogFiles`    | `integer` | maxLogFiles specifies the maximum number of ACL_audit log files that can be present.                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `rateLimit`      | `integer` | rateLimit is the approximate maximum number of messages to generate per-second per-node. If unset the default of 20 msg/sec is used.                                                                                                                                                                                                                                                                                                                                                                        |
+| `syslogFacility` | `string`  | syslogFacility the RFC5424 facility for generated messages, e.g. "kern". Default is "local0"                                                                                                                                                                                                                                                                                                                                                                                                                |
 
 ## .spec.exportNetworkFlows
 
@@ -529,8 +529,8 @@ ipfix defines IPFIX configuration.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property     | Type             | Description                                                                         |
+|--------------|------------------|-------------------------------------------------------------------------------------|
 | `collectors` | `array (string)` | ipfixCollectors is list of strings formatted as ip:port with a maximum of ten items |
 
 ## .spec.exportNetworkFlows.netFlow
@@ -541,8 +541,8 @@ netFlow defines the NetFlow configuration.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property     | Type             | Description                                                                                                                                                        |
+|--------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `collectors` | `array (string)` | netFlow defines the NetFlow collectors that will consume the flow data exported from OVS. It is a list of strings formatted as ip:port with a maximum of ten items |
 
 ## .spec.exportNetworkFlows.sFlow
@@ -553,8 +553,8 @@ sFlow defines the SFlow configuration.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property     | Type             | Description                                                                         |
+|--------------|------------------|-------------------------------------------------------------------------------------|
 | `collectors` | `array (string)` | sFlowCollectors is list of strings formatted as ip:port with a maximum of ten items |
 
 ## .spec.kubeProxyConfig
@@ -565,12 +565,12 @@ kubeProxyConfig lets us configure desired proxy configuration, if deployKubeProx
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `bindAddress` | `string` | The address to "bind" on Defaults to 0.0.0.0 |
-| `iptablesSyncPeriod` | `string` | An internal kube-proxy parameter. In older releases of OCP, this sometimes needed to be adjusted in large clusters for performance reasons, but this is no longer necessary, and there is no reason to change this from the default value. Default: 30s |
-| `proxyArguments` | `object` | Any additional arguments to pass to the kubeproxy process |
-| `proxyArguments{}` | `array (string)` | ProxyArgumentList is a list of arguments to pass to the kubeproxy process |
+| Property             | Type             | Description                                                                                                                                                                                                                                             |
+|----------------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `bindAddress`        | `string`         | The address to "bind" on Defaults to 0.0.0.0                                                                                                                                                                                                            |
+| `iptablesSyncPeriod` | `string`         | An internal kube-proxy parameter. In older releases of OCP, this sometimes needed to be adjusted in large clusters for performance reasons, but this is no longer necessary, and there is no reason to change this from the default value. Default: 30s |
+| `proxyArguments`     | `object`         | Any additional arguments to pass to the kubeproxy process                                                                                                                                                                                               |
+| `proxyArguments{}`   | `array (string)` | ProxyArgumentList is a list of arguments to pass to the kubeproxy process                                                                                                                                                                               |
 
 ## .spec.kubeProxyConfig.proxyArguments
 
@@ -588,12 +588,12 @@ migration enables and configures cluster network migration, for network changes 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `features` | `object` | features was previously used to configure which network plugin features would be migrated in a network type migration. DEPRECATED: network type migration is no longer supported, and setting this to a non-empty value will result in the network operator rejecting the configuration. |
-| `mode` | `string` | mode indicates the mode of network type migration. DEPRECATED: network type migration is no longer supported, and setting this to a non-empty value will result in the network operator rejecting the configuration. |
-| `mtu` | `object` | mtu contains the MTU migration configuration. Set this to allow changing the MTU values for the default network. If unset, the operation of changing the MTU for the default network will be rejected. |
-| `networkType` | `string` | networkType was previously used when changing the default network type. DEPRECATED: network type migration is no longer supported, and setting this to a non-empty value will result in the network operator rejecting the configuration. |
+| Property      | Type     | Description                                                                                                                                                                                                                                                                              |
+|---------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `features`    | `object` | features was previously used to configure which network plugin features would be migrated in a network type migration. DEPRECATED: network type migration is no longer supported, and setting this to a non-empty value will result in the network operator rejecting the configuration. |
+| `mode`        | `string` | mode indicates the mode of network type migration. DEPRECATED: network type migration is no longer supported, and setting this to a non-empty value will result in the network operator rejecting the configuration.                                                                     |
+| `mtu`         | `object` | mtu contains the MTU migration configuration. Set this to allow changing the MTU values for the default network. If unset, the operation of changing the MTU for the default network will be rejected.                                                                                   |
+| `networkType` | `string` | networkType was previously used when changing the default network type. DEPRECATED: network type migration is no longer supported, and setting this to a non-empty value will result in the network operator rejecting the configuration.                                                |
 
 ## .spec.migration.features
 
@@ -603,11 +603,11 @@ features was previously used to configure which network plugin features would be
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property         | Type      | Description                                                                                                                                        |
+|------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------|
 | `egressFirewall` | `boolean` | egressFirewall specified whether or not the Egress Firewall configuration was migrated. DEPRECATED: network type migration is no longer supported. |
-| `egressIP` | `boolean` | egressIP specified whether or not the Egress IP configuration was migrated. DEPRECATED: network type migration is no longer supported. |
-| `multicast` | `boolean` | multicast specified whether or not the multicast configuration was migrated. DEPRECATED: network type migration is no longer supported. |
+| `egressIP`       | `boolean` | egressIP specified whether or not the Egress IP configuration was migrated. DEPRECATED: network type migration is no longer supported.             |
+| `multicast`      | `boolean` | multicast specified whether or not the multicast configuration was migrated. DEPRECATED: network type migration is no longer supported.            |
 
 ## .spec.migration.mtu
 
@@ -617,10 +617,10 @@ mtu contains the MTU migration configuration. Set this to allow changing the MTU
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property  | Type     | Description                                                                                                                                                                                                |
+|-----------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `machine` | `object` | machine contains MTU migration configuration for the machine’s uplink. Needs to be migrated along with the default network MTU unless the current uplink MTU already accommodates the default network MTU. |
-| `network` | `object` | network contains information about MTU migration for the default network. Migrations are only allowed to MTU values lower than the machine’s uplink MTU by the minimum appropriate offset. |
+| `network` | `object` | network contains information about MTU migration for the default network. Migrations are only allowed to MTU values lower than the machine’s uplink MTU by the minimum appropriate offset.                 |
 
 ## .spec.migration.mtu.machine
 
@@ -656,16 +656,16 @@ NetworkStatus is detailed operator status, which is distilled up to the Network 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `conditions` | `array` | conditions is a list of conditions and their status |
-| `conditions[]` | `object` | OperatorCondition is just the standard condition fields. |
-| `generations` | `array` | generations are used to determine when an item needs to be reconciled or has changed in a way that needs a reaction. |
-| `generations[]` | `object` | GenerationStatus keeps track of the generation for a given resource so that decisions about forced updates can be made. |
-| `latestAvailableRevision` | `integer` | latestAvailableRevision is the deploymentID of the most recent deployment |
-| `observedGeneration` | `integer` | observedGeneration is the last generation change you’ve dealt with |
-| `readyReplicas` | `integer` | readyReplicas indicates how many replicas are ready and at the desired state |
-| `version` | `string` | version is the level this availability applies to |
+| Property                  | Type      | Description                                                                                                             |
+|---------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------|
+| `conditions`              | `array`   | conditions is a list of conditions and their status                                                                     |
+| `conditions[]`            | `object`  | OperatorCondition is just the standard condition fields.                                                                |
+| `generations`             | `array`   | generations are used to determine when an item needs to be reconciled or has changed in a way that needs a reaction.    |
+| `generations[]`           | `object`  | GenerationStatus keeps track of the generation for a given resource so that decisions about forced updates can be made. |
+| `latestAvailableRevision` | `integer` | latestAvailableRevision is the deploymentID of the most recent deployment                                               |
+| `observedGeneration`      | `integer` | observedGeneration is the last generation change you’ve dealt with                                                      |
+| `readyReplicas`           | `integer` | readyReplicas indicates how many replicas are ready and at the desired state                                            |
+| `version`                 | `string`  | version is the level this availability applies to                                                                       |
 
 ## .status.conditions
 
@@ -690,13 +690,13 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
+| Property             | Type     | Description                                                                                                                                                                                                                          |
+|----------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `lastTransitionTime` | `string` | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable. |
-| `message` | `string` |  |
-| `reason` | `string` |  |
-| `status` | `string` | status of the condition, one of True, False, Unknown. |
-| `type` | `string` | type of condition in CamelCase or in foo.example.com/CamelCase. |
+| `message`            | `string` |                                                                                                                                                                                                                                      |
+| `reason`             | `string` |                                                                                                                                                                                                                                      |
+| `status`             | `string` | status of the condition, one of True, False, Unknown.                                                                                                                                                                                |
+| `type`               | `string` | type of condition in CamelCase or in foo.example.com/CamelCase.                                                                                                                                                                      |
 
 ## .status.generations
 
@@ -723,14 +723,14 @@ Required
 
 - `resource`
 
-| Property | Type | Description |
-|----|----|----|
-| `group` | `string` | group is the group of the thing you’re tracking |
-| `hash` | `string` | hash is an optional field set for resources without generation that are content sensitive like secrets and configmaps |
-| `lastGeneration` | `integer` | lastGeneration is the last generation of the workload controller involved |
-| `name` | `string` | name is the name of the thing you’re tracking |
-| `namespace` | `string` | namespace is where the thing you’re tracking is |
-| `resource` | `string` | resource is the resource type of the thing you’re tracking |
+| Property         | Type      | Description                                                                                                           |
+|------------------|-----------|-----------------------------------------------------------------------------------------------------------------------|
+| `group`          | `string`  | group is the group of the thing you’re tracking                                                                       |
+| `hash`           | `string`  | hash is an optional field set for resources without generation that are content sensitive like secrets and configmaps |
+| `lastGeneration` | `integer` | lastGeneration is the last generation of the workload controller involved                                             |
+| `name`           | `string`  | name is the name of the thing you’re tracking                                                                         |
+| `namespace`      | `string`  | namespace is where the thing you’re tracking is                                                                       |
+| `resource`       | `string`  | resource is the resource type of the thing you’re tracking                                                            |
 
 # API endpoints
 
@@ -770,10 +770,10 @@ HTTP method
 Description
 delete collection of Network
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -783,10 +783,10 @@ HTTP method
 Description
 list objects of kind Network
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`NetworkList`](../objects/index.xml#io-openshift-operator-v1-NetworkList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                      |
+|--------------------|-----------------------------------------------------------------------------------|
+| 200 - OK           | [`NetworkList`](../objects/index.xml#io-openshift-operator-v1-NetworkList) schema |
+| 401 - Unauthorized | Empty                                                                             |
 
 HTTP responses
 
@@ -796,25 +796,25 @@ HTTP method
 Description
 create a Network
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                       | Description |
+|-----------|------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
-| 201 - Created | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
-| 202 - Accepted | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                               |
+|--------------------|------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
+| 201 - Created      | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
+| 202 - Accepted     | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                      |
 
 HTTP responses
 
@@ -832,17 +832,17 @@ HTTP method
 Description
 delete a Network
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -852,10 +852,10 @@ HTTP method
 Description
 read the specified Network
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                               |
+|--------------------|------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                      |
 
 HTTP responses
 
@@ -865,17 +865,17 @@ HTTP method
 Description
 partially update the specified Network
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                               |
+|--------------------|------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                      |
 
 HTTP responses
 
@@ -885,24 +885,24 @@ HTTP method
 Description
 replace the specified Network
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                       | Description |
+|-----------|------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
-| 201 - Created | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                               |
+|--------------------|------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
+| 201 - Created      | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                      |
 
 HTTP responses
 
@@ -920,10 +920,10 @@ HTTP method
 Description
 read status of the specified Network
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                               |
+|--------------------|------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                      |
 
 HTTP responses
 
@@ -933,17 +933,17 @@ HTTP method
 Description
 partially update status of the specified Network
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                               |
+|--------------------|------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                      |
 
 HTTP responses
 
@@ -953,23 +953,23 @@ HTTP method
 Description
 replace status of the specified Network
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                       | Description |
+|-----------|------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
-| 201 - Created | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                               |
+|--------------------|------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
+| 201 - Created      | [`Network`](../operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                      |
 
 HTTP responses

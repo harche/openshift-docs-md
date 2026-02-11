@@ -10,10 +10,6 @@ A network policy applies to only the Transmission Control Protocol (TCP), User D
 
 <div class="warning">
 
-<div class="title">
-
-</div>
-
 - A network policy does not apply to the host network namespace. Pods with host networking enabled are unaffected by network policy rules. However, pods connecting to the host-networked pods might be affected by the network policy rules.
 
 - Using the `namespaceSelector` field without the `podSelector` field set to `{}` will not include `hostNetwork` pods. You must use the `podSelector` set to `{}` with the `namespaceSelector` field in order to target `hostNetwork` pods when creating network policies.
@@ -64,8 +60,11 @@ The following example `NetworkPolicy` objects demonstrate supporting different s
 
 - Only accept connections from pods within a project:
 
-  > [!IMPORTANT]
-  > To allow ingress connections from `hostNetwork` pods in the same namespace, you need to apply the `allow-from-hostnetwork` policy together with the `allow-same-namespace` policy.
+  <div class="important">
+
+  To allow ingress connections from `hostNetwork` pods in the same namespace, you need to apply the `allow-from-hostnetwork` policy together with the `allow-same-namespace` policy.
+
+  </div>
 
   To make pods accept connections from other pods in the same project, but reject all other connections from pods in other projects, add the following `NetworkPolicy` object:
 
@@ -275,11 +274,9 @@ In OVN-Kubernetes, the `NetworkPolicy` custom resource (CR) enforces strict isol
 
 To allow access to external IPs across namespaces, create a `NetworkPolicy` CR that explicitly permits ingress from the required namespaces and ensures traffic is allowed to the designated service ports. Without allowing traffic to the required ports, access might still be restricted.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -306,8 +303,6 @@ Example output
     policyTypes:
     - Ingress
 ```
-
-</div>
 
 where:
 

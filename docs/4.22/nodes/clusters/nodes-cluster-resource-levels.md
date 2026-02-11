@@ -4,10 +4,13 @@ As a cluster administrator, you can use the OpenShift Cluster Capacity Tool to v
 
 Review the following information to learn how to use the OpenShift Cluster Capacity Tool to simulate a sequence of scheduling decisions that determine how many instances of an input pod can be scheduled on the cluster before the cluster is exhausted of resources.
 
-> [!NOTE]
-> The remaining allocatable capacity is a rough estimation, because it does not count all of the resources being distributed among nodes. It analyzes only the remaining resources and estimates the available capacity that is still consumable in terms of the number of instances of a pod with given requirements that can be scheduled in a cluster.
->
-> Also, pods might only have scheduling support on particular sets of nodes based on its selection and affinity criteria. As a result, the estimation of which remaining pods a cluster can schedule can be difficult.
+<div class="note">
+
+The remaining allocatable capacity is a rough estimation, because it does not count all of the resources being distributed among nodes. It analyzes only the remaining resources and estimates the available capacity that is still consumable in terms of the number of instances of a pod with given requirements that can be scheduled in a cluster.
+
+Also, pods might only have scheduling support on particular sets of nodes based on its selection and affinity criteria. As a result, the estimation of which remaining pods a cluster can schedule can be difficult.
+
+</div>
 
 You can run the OpenShift Cluster Capacity Tool as a stand-alone utility from the command line, or as a job in a pod inside an OpenShift Container Platform cluster. Running the tool as job inside of a pod enables you to run it multiple times without intervention.
 
@@ -16,14 +19,6 @@ You can run the OpenShift Cluster Capacity Tool as a stand-alone utility from th
 You can run the OpenShift Cluster Capacity Tool from the command line to estimate the number of pods that can be scheduled onto your cluster.
 
 You create a sample pod spec file, which the tool uses for estimating resource usage. The pod spec specifies its resource requirements as `limits` or `requests`. The cluster capacity tool takes the pod’s resource requirements into account for its estimation analysis.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 1.  Run the OpenShift Cluster Capacity Tool, which is available as a container image from the Red Hat Ecosystem Catalog. See the link in the "Additional resources" section.
 
@@ -73,15 +68,7 @@ Prerequisites
         $ oc create -f pod-spec.yaml
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 1.  From the terminal, log in to the Red Hat Registry:
 
@@ -111,11 +98,9 @@ Procedure
     verbose
     Outputs a detailed description of how many pods can be scheduled on each node in the cluster.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -136,35 +121,13 @@ Procedure
         - 192.168.124.120: 43 instance(s)
     ```
 
-    </div>
-
     In the above example, the number of estimated pods that can be scheduled onto the cluster is 88.
-
-</div>
 
 # Running the OpenShift Cluster Capacity Tool as a job inside a pod
 
 You can run the OpenShift Cluster Capacity Tool as a job inside of a pod by using a `ConfigMap` object. This allows you to run the tool multiple times without needing user intervention.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Download and install the OpenShift Cluster Capacity Tool from the `cluster-capacity` repository. See the link in the "Additional resources" section.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the cluster role:
 
@@ -326,15 +289,7 @@ Procedure
         $ oc create -f cluster-capacity-job.yaml
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Check the job logs to find the number of pods that can be scheduled in the cluster:
 
@@ -342,11 +297,9 @@ Verification
     $ oc logs jobs/cluster-capacity-job
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -365,10 +318,6 @@ Verification
             - 192.168.124.214: 26 instance(s)
             - 192.168.124.120: 26 instance(s)
     ```
-
-    </div>
-
-</div>
 
 # Additional resources
 

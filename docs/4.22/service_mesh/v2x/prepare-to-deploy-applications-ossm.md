@@ -4,10 +4,13 @@ If you have installed the Bookinfo sample application, the application was deplo
 
 For more information, see the OpenShift Container Platform documentation, [Understanding deployments](../../applications/deployments/what-deployments-are.xml).
 
-> [!NOTE]
-> Traffic started by Init Containers, specialized containers that run before the application containers in a pod, cannot travel outside of the service mesh by default. Any action Init Containers perform that requires establishing a network traffic connection outside of the mesh fails.
->
-> For more information about connecting Init Containers to a service, see the Red Hat Knowledgebase solution [initContainer in CrashLoopBackOff on pod with Service Mesh sidecar injected](https://access.redhat.com/solutions/6653601)
+<div class="note">
+
+Traffic started by Init Containers, specialized containers that run before the application containers in a pod, cannot travel outside of the service mesh by default. Any action Init Containers perform that requires establishing a network traffic connection outside of the mesh fails.
+
+For more information about connecting Init Containers to a service, see the Red Hat Knowledgebase solution [initContainer in CrashLoopBackOff on pod with Service Mesh sidecar injected](https://access.redhat.com/solutions/6653601)
+
+</div>
 
 # Prerequisites
 
@@ -19,25 +22,7 @@ For more information, see the OpenShift Container Platform documentation, [Under
 
 When deploying an application, you must opt-in to injection by configuring the label `sidecar.istio.io/inject` in `spec.template.metadata.labels` to `true` in the `deployment` object. Opting in ensures that the sidecar injection does not interfere with other OpenShift Container Platform features such as builder pods used by numerous frameworks within the OpenShift Container Platform ecosystem.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Identify the namespaces that are part of your service mesh and the deployments that need automatic sidecar injection.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To find your deployments use the `oc get` command.
 
@@ -55,11 +40,9 @@ Procedure
 
 3.  Add `spec.template.metadata.labels.sidecar.istio/inject` to your Deployment YAML file and set `sidecar.istio.io/inject` to `true` as shown in the following example.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example snippet from bookinfo deployment-ratings-v1.yaml
+    **Example snippet from bookinfo deployment-ratings-v1.yaml**
 
     </div>
 
@@ -79,10 +62,11 @@ Procedure
             sidecar.istio.io/inject: 'true'
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > Using the `annotations` parameter when enabling automatic sidecar injection is deprecated and is replaced by using the `labels` parameter.
+    Using the `annotations` parameter when enabling automatic sidecar injection is deprecated and is replaced by using the `labels` parameter.
+
+    </div>
 
 4.  Save the `Deployment` YAML file.
 
@@ -109,8 +93,6 @@ Procedure
     ``` terminal
     $ oc get deployment -n bookinfo ratings-v1 -o yaml
     ```
-
-</div>
 
 # Validating sidecar injection
 
@@ -154,11 +136,9 @@ Configuration for the Envoy sidecar proxies is managed by the `ServiceMeshContro
 
 You can set environment variables for the sidecar proxy for applications by adding pod annotations to the deployment in the `injection-template.yaml` file. The environment variables are injected to the sidecar.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example injection-template.yaml
+**Example injection-template.yaml**
 
 </div>
 
@@ -178,10 +158,11 @@ spec:
         sidecar.maistra.io/proxyEnv: "{ \"maistra_test_env\": \"env_value\", \"maistra_test_env_2\": \"env_value_2\" }"
 ```
 
-</div>
+<div class="warning">
 
-> [!WARNING]
-> You should never include `maistra.io/` labels and annotations when creating your own custom resources. These labels and annotations indicate that the resources are generated and managed by the Operator. If you are copying content from an Operator-generated resource when creating your own resources, do not include labels or annotations that start with `maistra.io/`. Resources that include these labels or annotations will be overwritten or deleted by the Operator during the next reconciliation.
+You should never include `maistra.io/` labels and annotations when creating your own custom resources. These labels and annotations indicate that the resources are generated and managed by the Operator. If you are copying content from an Operator-generated resource when creating your own resources, do not include labels or annotations that start with `maistra.io/`. Resources that include these labels or annotations will be overwritten or deleted by the Operator during the next reconciliation.
+
+</div>
 
 # Updating sidecar proxies
 

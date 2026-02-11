@@ -41,17 +41,15 @@ A list of one or more destination ports on which to accept traffic.
 
 You can examine the network policies in a namespace.
 
-> [!NOTE]
-> If you log in with `cluster-admin` privileges, you can edit network policies in any namespace in the cluster.
+<div class="note">
 
-> [!NOTE]
-> If you log in with `cluster-admin` privileges, you can edit network policies in any namespace in the cluster. In the web console, you can edit policies directly in YAML or by using the **Actions** menu.
+If you log in with `cluster-admin` privileges, you can edit network policies in any namespace in the cluster.
 
-<div>
+</div>
 
-<div class="title">
+<div class="note">
 
-Prerequisites
+If you log in with `cluster-admin` privileges, you can edit network policies in any namespace in the cluster. In the web console, you can edit policies directly in YAML or by using the **Actions** menu.
 
 </div>
 
@@ -60,16 +58,6 @@ Prerequisites
 - You are logged in to the cluster with a user with `admin` privileges.
 
 - You are working in the namespace where the network policy exists.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List network policies in a namespace.
 
@@ -112,5 +100,3 @@ Procedure
           Not affecting egress traffic
           Policy Types: Ingress
         ```
-
-</div>

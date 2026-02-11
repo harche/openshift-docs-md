@@ -20,17 +20,9 @@ As an Operator author, you can perform the following development tasks for OLM-b
 
 - [Create an application from an installed Operator through the web console](../operators/user/olm-creating-apps-from-installed-operators.xml#olm-creating-apps-from-installed-operators).
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Machine deletion lifecycle hook examples for Operator developers](../machine_management/deleting-machine.xml#machine-lifecycle-hook-deletion-uses_deleting-machine)
-
-</div>
 
 # For administrators
 

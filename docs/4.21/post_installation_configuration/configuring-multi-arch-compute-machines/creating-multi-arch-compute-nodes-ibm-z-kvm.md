@@ -6,32 +6,17 @@ The following procedures explain how to create a RHCOS compute machine using a R
 
 To create an IBM Z® or IBM® LinuxONE (`s390x`) cluster with multi-architecture compute machines on `x86_64`, follow the instructions for [Installing a cluster on IBM Z® and IBM® LinuxONE](../../installing/installing_ibm_z/preparing-to-install-on-ibm-z.xml#preparing-to-install-on-ibm-z). You can then add `x86_64` compute machines as described in [Creating a cluster with multi-architecture compute machines on bare metal, IBM Power, or IBM Z](./creating-multi-arch-compute-nodes-bare-metal.xml#creating-multi-arch-compute-nodes-bare-metal).
 
-> [!NOTE]
-> Before adding a secondary architecture node to your cluster, it is recommended to install the Multiarch Tuning Operator, and deploy a `ClusterPodPlacementConfig` object. For more information, see [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator).
+<div class="note">
+
+Before adding a secondary architecture node to your cluster, it is recommended to install the Multiarch Tuning Operator, and deploy a `ClusterPodPlacementConfig` object. For more information, see [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator).
+
+</div>
 
 # Verifying cluster compatibility
 
 Before you can start adding compute nodes of different architectures to your cluster, you must verify that your cluster is multi-architecture compatible.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift CLI (`oc`).
 
@@ -40,16 +25,6 @@ Procedure
     ``` terminal
     $ oc adm release info -o jsonpath="{ .metadata.metadata}"
     ```
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - If you see the following output, your cluster is using the multi-architecture payload:
 
@@ -70,22 +45,15 @@ Verification
   }
   ```
 
-  > [!IMPORTANT]
-  > To migrate your cluster so the cluster supports multi-architecture compute machines, follow the procedure in [Migrating to a cluster with multi-architecture compute machines](../../updating/updating_a_cluster/migrating-to-multi-payload.xml#migrating-to-multi-payload).
+  <div class="important">
 
-</div>
+  To migrate your cluster so the cluster supports multi-architecture compute machines, follow the procedure in [Migrating to a cluster with multi-architecture compute machines](../../updating/updating_a_cluster/migrating-to-multi-payload.xml#migrating-to-multi-payload).
+
+  </div>
 
 # Creating RHCOS machines using `virt-install`
 
 You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines for your cluster by using `virt-install`.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have at least one LPAR running on RHEL 8.7 or later with KVM, referred to as RHEL KVM host in this procedure.
 
@@ -94,16 +62,6 @@ Prerequisites
 - You have a domain name server (DNS) that can perform hostname and reverse lookup for the nodes.
 
 - An HTTP or HTTPS server is set up.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Extract the Ignition config file from the cluster by running the following command:
 
@@ -169,8 +127,11 @@ Procedure
       $ osinfo-query os -f short-id
       ```
 
-      > [!NOTE]
-      > The `os-variant` is case sensitive.
+      <div class="note">
+
+      The `os-variant` is case sensitive.
+
+      </div>
 
     - For `--location`, specify the location of the kernel/initrd on the HTTP or HTTPS server.
 
@@ -180,36 +141,19 @@ Procedure
 
     - Optional: For `hostname`, specify the fully qualified hostname of the client machine.
 
-    > [!NOTE]
-    > If you are using HAProxy as a load balancer, update your HAProxy rules for `ingress-router-443` and `ingress-router-80` in the `/etc/haproxy/haproxy.cfg` configuration file.
+    <div class="note">
+
+    If you are using HAProxy as a load balancer, update your HAProxy rules for `ingress-router-443` and `ingress-router-80` in the `/etc/haproxy/haproxy.cfg` configuration file.
+
+    </div>
 
 7.  Continue to create more compute machines for your cluster.
-
-</div>
 
 # Approving the certificate signing requests for your machines
 
 To add machines to a cluster, verify the status of the certificate signing requests (CSRs) generated for each machine. If manual approval is required, approve the client requests first, followed by the server requests.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You added machines to your cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Confirm that the cluster recognizes the machines:
 
@@ -217,11 +161,9 @@ Procedure
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -232,12 +174,13 @@ Procedure
     master-2  Ready     master  64m  v1.34.2
     ```
 
-    </div>
-
     The output lists all of the machines that you created.
 
-    > [!NOTE]
-    > The preceding output might not include the compute nodes, also known as worker nodes, until some CSRs are approved.
+    <div class="note">
+
+    The preceding output might not include the compute nodes, also known as worker nodes, until some CSRs are approved.
+
+    </div>
 
 2.  Review the pending CSRs and ensure that you see the client requests with the `Pending` or `Approved` status for each machine that you added to the cluster:
 
@@ -245,11 +188,9 @@ Procedure
     $ oc get csr
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -260,17 +201,21 @@ Procedure
     ...
     ```
 
-    </div>
-
     In this example, two machines are joining the cluster. You might see more approved CSRs in the list.
 
 3.  If the CSRs were not approved, after all of the pending CSRs for the machines you added are in `Pending` status, approve the CSRs for your cluster machines:
 
-    > [!NOTE]
-    > Because the CSRs rotate automatically, approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    <div class="note">
 
-    > [!NOTE]
-    > For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If a request is not approved, then the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because a serving certificate is required when the API server connects to the kubelet. Any operation that contacts the Kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the CSR was submitted by the `node-bootstrapper` service account in the `system:node` or `system:admin` groups, and confirm the identity of the node.
+    Because the CSRs rotate automatically, approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+
+    </div>
+
+    <div class="note">
+
+    For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If a request is not approved, then the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because a serving certificate is required when the API server connects to the kubelet. Any operation that contacts the Kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the CSR was submitted by the `node-bootstrapper` service account in the `system:node` or `system:admin` groups, and confirm the identity of the node.
+
+    </div>
 
     - To approve them individually, run the following command for each valid CSR:
 
@@ -289,8 +234,11 @@ Procedure
       $ oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs --no-run-if-empty oc adm certificate approve
       ```
 
-      > [!NOTE]
-      > Some Operators might not become available until some CSRs are approved.
+      <div class="note">
+
+      Some Operators might not become available until some CSRs are approved.
+
+      </div>
 
 4.  Now that your client requests are approved, you must review the server requests for each machine that you added to the cluster:
 
@@ -298,11 +246,9 @@ Procedure
     $ oc get csr
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -312,8 +258,6 @@ Procedure
     csr-c57lv   5m26s   system:node:ip-10-0-95-157.us-east-2.compute.internal                       Pending
     ...
     ```
-
-    </div>
 
 5.  If the remaining CSRs are not approved, and are in the `Pending` status, approve the CSRs for your cluster machines:
 
@@ -340,11 +284,9 @@ Procedure
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -357,9 +299,8 @@ Procedure
     worker-1  Ready     worker  11m  v1.34.2
     ```
 
+    <div class="note">
+
+    It can take a few minutes after approval of the server CSRs for the machines to transition to the `Ready` status.
+
     </div>
-
-    > [!NOTE]
-    > It can take a few minutes after approval of the server CSRs for the machines to transition to the `Ready` status.
-
-</div>

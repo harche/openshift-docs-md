@@ -6,27 +6,9 @@ To manage log verbosity for the FRRouting (FRR) container, configure the `logLev
 
 Gain a deeper insight into MetalLB by setting the `logLevel` to `debug`.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a file, such as `setdebugloglevel.yaml`, with content like the following example:
 
@@ -48,8 +30,11 @@ Procedure
     $ oc replace -f setdebugloglevel.yaml
     ```
 
-    > [!NOTE]
-    > Use the `oc replace` command because the `metallb` CR was already created and you need to change only the log level.
+    <div class="note">
+
+    Use the `oc replace` command because the `metallb` CR was already created and you need to change only the log level.
+
+    </div>
 
 3.  Display the names of the `speaker` pods:
 
@@ -57,11 +42,9 @@ Procedure
     $ oc get -n metallb-system pods -l component=speaker
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -72,10 +55,11 @@ Procedure
     speaker-szlmx           4/4     Running   0          9m19s
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > Speaker and controller pods are recreated to ensure the updated logging level is applied. The logging level is modified for all the components of MetalLB.
+    Speaker and controller pods are recreated to ensure the updated logging level is applied. The logging level is modified for all the components of MetalLB.
+
+    </div>
 
 4.  View the `speaker` logs:
 
@@ -83,11 +67,9 @@ Procedure
     $ oc logs -n metallb-system speaker-7m4qw -c speaker
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -101,19 +83,15 @@ Procedure
         {"caller":"speakerlist.go:310","level":"info","msg":"node event - forcing sync","node addr":"10.0.128.4","node event":"NodeJoin","node name":"ci-ln-qb8t3mb-72292-7s7rh-worker-a-vvznj","ts":"2022-05-17T09:55:08Z"}
         {"caller":"service_controller.go:113","controller":"ServiceReconciler","enqueueing":"openshift-kube-controller-manager-operator/metrics","epslice":"{\"metadata\":{\"name\":\"metrics-xtsxr\",\"generateName\":\"metrics-\",\"namespace\":\"openshift-kube-controller-manager-operator\",\"uid\":\"ac6766d7-8504-492c-9d1e-4ae8897990ad\",\"resourceVersion\":\"9041\",\"generation\":4,\"creationTimestamp\":\"2022-05-17T07:16:53Z\",\"labels\":{\"app\":\"kube-controller-manager-operator\",\"endpointslice.kubernetes.io/managed-by\":\"endpointslice-controller.k8s.io\",\"kubernetes.io/service-name\":\"metrics\"},\"annotations\":{\"endpoints.kubernetes.io/last-change-trigger-time\":\"2022-05-17T07:21:34Z\"},\"ownerReferences\":[{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"name\":\"metrics\",\"uid\":\"0518eed3-6152-42be-b566-0bd00a60faf8\",\"controller\":true,\"blockOwnerDeletion\":true}],\"managedFields\":[{\"manager\":\"kube-controller-manager\",\"operation\":\"Update\",\"apiVersion\":\"discovery.k8s.io/v1\",\"time\":\"2022-05-17T07:20:02Z\",\"fieldsType\":\"FieldsV1\",\"fieldsV1\":{\"f:addressType\":{},\"f:endpoints\":{},\"f:metadata\":{\"f:annotations\":{\".\":{},\"f:endpoints.kubernetes.io/last-change-trigger-time\":{}},\"f:generateName\":{},\"f:labels\":{\".\":{},\"f:app\":{},\"f:endpointslice.kubernetes.io/managed-by\":{},\"f:kubernetes.io/service-name\":{}},\"f:ownerReferences\":{\".\":{},\"k:{\\\"uid\\\":\\\"0518eed3-6152-42be-b566-0bd00a60faf8\\\"}\":{}}},\"f:ports\":{}}}]},\"addressType\":\"IPv4\",\"endpoints\":[{\"addresses\":[\"10.129.0.7\"],\"conditions\":{\"ready\":true,\"serving\":true,\"terminating\":false},\"targetRef\":{\"kind\":\"Pod\",\"namespace\":\"openshift-kube-controller-manager-operator\",\"name\":\"kube-controller-manager-operator-6b98b89ddd-8d4nf\",\"uid\":\"dd5139b8-e41c-4946-a31b-1a629314e844\",\"resourceVersion\":\"9038\"},\"nodeName\":\"ci-ln-qb8t3mb-72292-7s7rh-master-0\",\"zone\":\"us-central1-a\"}],\"ports\":[{\"name\":\"https\",\"protocol\":\"TCP\",\"port\":8443}]}","level":"debug","ts":"2022-05-17T09:55:08Z"}
 
-    </div>
-
 5.  View the FRR logs:
 
     ``` terminal
     $ oc logs -n metallb-system speaker-7m4qw -c frr
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -183,24 +161,20 @@ Procedure
         2022/05/17 09:57:31.105 ZEBRA: netlink_parse_info: netlink-listen (NS 0) type RTM_NEWNEIGH(28), len=76, seq=0, pid=0
         2022/05/17 09:57:31.105 ZEBRA:  Neighbor Entry received is not on a VLAN or a BRIDGE, ignoring
 
-    </div>
-
-</div>
-
 ## FRRouting (FRR) log levels
 
 To control the verbosity of network logs for troubleshooting or monitoring, refer to the FRRouting (FRR) logging levels.
 
 The following values define the severity of recorded events, so that you can use them to filter output based on operational requirements:
 
-| Log level | Description |
-|----|----|
-| `all` | Supplies all logging information for all logging levels. |
-| `debug` | Information that is diagnostically helpful to people. Set to `debug` to give detailed troubleshooting information. |
-| `info` | Provides information that always should be logged but under normal circumstances does not require user intervention. This is the default logging level. |
-| `warn` | Anything that can potentially cause inconsistent `MetalLB` behaviour. Usually `MetalLB` automatically recovers from this type of error. |
-| `error` | Any error that is fatal to the functioning of `MetalLB`. These errors usually require administrator intervention to fix. |
-| `none` | Turn off all logging. |
+| Log level | Description                                                                                                                                             |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `all`     | Supplies all logging information for all logging levels.                                                                                                |
+| `debug`   | Information that is diagnostically helpful to people. Set to `debug` to give detailed troubleshooting information.                                      |
+| `info`    | Provides information that always should be logged but under normal circumstances does not require user intervention. This is the default logging level. |
+| `warn`    | Anything that can potentially cause inconsistent `MetalLB` behaviour. Usually `MetalLB` automatically recovers from this type of error.                 |
+| `error`   | Any error that is fatal to the functioning of `MetalLB`. These errors usually require administrator intervention to fix.                                |
+| `none`    | Turn off all logging.                                                                                                                                   |
 
 Log levels
 
@@ -208,27 +182,9 @@ Log levels
 
 To diagnose and resolve BGP configuration issues, execute commands directly within the FRR container. By accessing the container, you can verify routing states and identify connectivity errors.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Display the names of the `frr-k8s` pods by running the following command:
 
@@ -236,11 +192,9 @@ Procedure
     $ oc -n metallb-system get pods -l component=frr-k8s
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -249,19 +203,15 @@ Procedure
     frr-k8s-thsmw   6/6     Running   0          109m
     ```
 
-    </div>
-
 2.  Display the running configuration for FRR by running the following command:
 
     ``` terminal
     $ oc exec -n metallb-system frr-k8s-thsmw -c frr -- vtysh -c "show running-config"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -328,8 +278,6 @@ Procedure
         !
         end
 
-    </div>
-
     where:
 
     `router bgp 64500`
@@ -350,11 +298,9 @@ Procedure
     $ oc exec -n metallb-system frr-k8s-thsmw -c frr -- vtysh -c "show bgp summary"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -382,8 +328,6 @@ Procedure
 
         Total number of neighbors 2
 
-    </div>
-
     where:
 
     `10.0.2.3`
@@ -400,11 +344,9 @@ Procedure
 
     Replace `ipv4` with `ipv6` to display the BGP peers that received an IPv6 address pool. Replace `203.0.113.200/30` with an IPv4 or IPv6 IP address range from an address pool.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -417,14 +359,10 @@ Procedure
               Origin IGP, metric 0, weight 32768, valid, sourced, local, best (First path received)
               Last update: Mon Jan 10 19:49:07 2022
 
-    </div>
-
     where:
 
     `10.0.2.3`
     Specifies that the output includes an IP address for a BGP peer.
-
-</div>
 
 # Troubleshooting BFD issues
 
@@ -432,27 +370,9 @@ To diagnose and resolve Bidirectional Forwarding Detection (BFD) issues, execute
 
 The BFD implementation that Red Hat supports uses FRRouting (FRR) in a container that exists in a `speaker` pod.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Display the names of the `speaker` pods:
 
@@ -460,11 +380,9 @@ Procedure
     $ oc get -n metallb-system pods -l component=speaker
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -475,19 +393,15 @@ Procedure
     ...
     ```
 
-    </div>
-
 2.  Display the BFD peers:
 
     ``` terminal
     $ oc exec -n metallb-system speaker-66bth -c frr -- vtysh -c "show bfd peers brief"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -496,60 +410,46 @@ Procedure
         =========  ============              ===========              ======
         3909139637 10.0.1.2                  10.0.2.3                 up
 
-    </div>
-
     where:
 
     `up`
     Specifies that the `PeerAddress` column includes each BFD peer. If the output does not list a BFD peer IP address that you expected the output to include, troubleshoot BGP connectivity with the peer. If the status field indicates `down`, check for connectivity on the links and equipment between the node and the peer. You can determine the node name for the speaker pod with a command like `oc get pods -n metallb-system speaker-66bth -o jsonpath='{.spec.nodeName}'`.
 
-</div>
-
 # MetalLB metrics for BGP and BFD
 
 To monitor network connectivity and diagnose routing states, refer to the Prometheus metrics for MetalLB. These metrics provide visibility into the status of BGP peers and BFD profiles so that you can ensure stable external communication.
 
-| Name | Description |
-|----|----|
-| `frrk8s_bfd_control_packet_input` | Counts the number of BFD control packets received from each BFD peer. |
-| `frrk8s_bfd_control_packet_output` | Counts the number of BFD control packets sent to each BFD peer. |
-| `frrk8s_bfd_echo_packet_input` | Counts the number of BFD echo packets received from each BFD peer. |
-| `frrk8s_bfd_echo_packet_output` | Counts the number of BFD echo packets sent to each BFD. |
-| `frrk8s_bfd_session_down_events` | Counts the number of times the BFD session with a peer entered the `down` state. |
-| `frrk8s_bfd_session_up` | Indicates the connection state with a BFD peer. `1` indicates the session is `up` and `0` indicates the session is `down`. |
-| `frrk8s_bfd_session_up_events` | Counts the number of times the BFD session with a peer entered the `up` state. |
-| `frrk8s_bfd_zebra_notifications` | Counts the number of BFD Zebra notifications for each BFD peer. |
+| Name                               | Description                                                                                                                |
+|------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| `frrk8s_bfd_control_packet_input`  | Counts the number of BFD control packets received from each BFD peer.                                                      |
+| `frrk8s_bfd_control_packet_output` | Counts the number of BFD control packets sent to each BFD peer.                                                            |
+| `frrk8s_bfd_echo_packet_input`     | Counts the number of BFD echo packets received from each BFD peer.                                                         |
+| `frrk8s_bfd_echo_packet_output`    | Counts the number of BFD echo packets sent to each BFD.                                                                    |
+| `frrk8s_bfd_session_down_events`   | Counts the number of times the BFD session with a peer entered the `down` state.                                           |
+| `frrk8s_bfd_session_up`            | Indicates the connection state with a BFD peer. `1` indicates the session is `up` and `0` indicates the session is `down`. |
+| `frrk8s_bfd_session_up_events`     | Counts the number of times the BFD session with a peer entered the `up` state.                                             |
+| `frrk8s_bfd_zebra_notifications`   | Counts the number of BFD Zebra notifications for each BFD peer.                                                            |
 
 MetalLB BFD metrics
 
-| Name | Description |
-|----|----|
+| Name                                  | Description                                                                                                                                               |
+|---------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `frrk8s_bgp_announced_prefixes_total` | Counts the number of load balancer IP address prefixes that are advertised to BGP peers. The terms *prefix* and *aggregated route* have the same meaning. |
-| `frrk8s_bgp_session_up` | Indicates the connection state with a BGP peer. `1` indicates the session is `up` and `0` indicates the session is `down`. |
-| `frrk8s_bgp_updates_total` | Counts the number of BGP update messages sent to each BGP peer. |
-| `frrk8s_bgp_opens_sent` | Counts the number of BGP open messages sent to each BGP peer. |
-| `frrk8s_bgp_opens_received` | Counts the number of BGP open messages received from each BGP peer. |
-| `frrk8s_bgp_notifications_sent` | Counts the number of BGP notification messages sent to each BGP peer. |
-| `frrk8s_bgp_updates_total_received` | Counts the number of BGP update messages received from each BGP peer. |
-| `frrk8s_bgp_keepalives_sent` | Counts the number of BGP keepalive messages sent to each BGP peer. |
-| `frrk8s_bgp_keepalives_received` | Counts the number of BGP keepalive messages received from each BGP peer. |
-| `frrk8s_bgp_route_refresh_sent` | Counts the number of BGP route refresh messages sent to each BGP peer. |
-| `frrk8s_bgp_total_sent` | Counts the number of total BGP messages sent to each BGP peer. |
-| `frrk8s_bgp_total_received` | Counts the number of total BGP messages received from each BGP peer. |
+| `frrk8s_bgp_session_up`               | Indicates the connection state with a BGP peer. `1` indicates the session is `up` and `0` indicates the session is `down`.                                |
+| `frrk8s_bgp_updates_total`            | Counts the number of BGP update messages sent to each BGP peer.                                                                                           |
+| `frrk8s_bgp_opens_sent`               | Counts the number of BGP open messages sent to each BGP peer.                                                                                             |
+| `frrk8s_bgp_opens_received`           | Counts the number of BGP open messages received from each BGP peer.                                                                                       |
+| `frrk8s_bgp_notifications_sent`       | Counts the number of BGP notification messages sent to each BGP peer.                                                                                     |
+| `frrk8s_bgp_updates_total_received`   | Counts the number of BGP update messages received from each BGP peer.                                                                                     |
+| `frrk8s_bgp_keepalives_sent`          | Counts the number of BGP keepalive messages sent to each BGP peer.                                                                                        |
+| `frrk8s_bgp_keepalives_received`      | Counts the number of BGP keepalive messages received from each BGP peer.                                                                                  |
+| `frrk8s_bgp_route_refresh_sent`       | Counts the number of BGP route refresh messages sent to each BGP peer.                                                                                    |
+| `frrk8s_bgp_total_sent`               | Counts the number of total BGP messages sent to each BGP peer.                                                                                            |
+| `frrk8s_bgp_total_received`           | Counts the number of total BGP messages received from each BGP peer.                                                                                      |
 
 MetalLB BGP metrics
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Querying metrics for all projects with the monitoring dashboard](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/accessing_metrics/accessing-metrics-as-an-administrator#querying-metrics-for-all-projects-with-mon-dashboard_accessing-metrics-as-an-administrator)
-
-</div>
 
 # About collecting MetalLB data
 
@@ -585,14 +485,4 @@ The command collects log and configuration files from the `frr` container that e
 
 No additional configuration is required when you run the command.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Gathering data about your cluster](../../../support/gathering-cluster-data.xml#gathering-cluster-data)
-
-</div>

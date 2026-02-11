@@ -1,27 +1,12 @@
-> [!IMPORTANT]
-> All cluster nodes must have the same release version in order for this Operator to function properly. As an example, for nodes running RHCOS, all nodes must have the same RHCOS version.
+<div class="important">
+
+All cluster nodes must have the same release version in order for this Operator to function properly. As an example, for nodes running RHCOS, all nodes must have the same RHCOS version.
+
+</div>
 
 # Installing the File Integrity Operator using the web console
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have `admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Ecosystem** → **Software Catalog**.
 
@@ -31,19 +16,13 @@ Procedure
 
 4.  Click **Install**.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 To confirm that the installation is successful:
-
-</div>
 
 1.  Navigate to the **Ecosystem** → **Installed Operators** page.
 
@@ -57,25 +36,7 @@ If the Operator is not installed successfully:
 
 # Installing the File Integrity Operator using the CLI
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have `admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `Namespace` object YAML file by running:
 
@@ -83,11 +44,9 @@ Procedure
     $ oc create -f <file-name>.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -101,8 +60,6 @@ Procedure
       name: openshift-file-integrity
     ```
 
-    </div>
-
     - In OpenShift Container Platform 4.17, the pod security label must be set to `privileged` at the namespace level.
 
 2.  Create the `OperatorGroup` object YAML file:
@@ -111,11 +68,9 @@ Procedure
     $ oc create -f <file-name>.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -130,19 +85,15 @@ Procedure
       - openshift-file-integrity
     ```
 
-    </div>
-
 3.  Create the `Subscription` object YAML file:
 
     ``` terminal
     $ oc create -f <file-name>.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -160,17 +111,7 @@ Procedure
       sourceNamespace: openshift-marketplace
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify the installation succeeded by inspecting the CSV file:
 
@@ -183,8 +124,6 @@ Verification
     ``` terminal
     $ oc get deploy -n openshift-file-integrity
     ```
-
-</div>
 
 # Additional resources
 

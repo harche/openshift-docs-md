@@ -8,18 +8,13 @@ The internal infrastructure CA certificates are self-signed. While this process 
 
 You can replace the default ingress certificate for all applications under the `.apps` subdomain. After you replace the certificate, all applications, including the web console and CLI, have encryption provided by the specified certificate.
 
-> [!NOTE]
-> Before using the procedure, ensure you understand the following Ingress Controller behaviors:
->
-> - When certificates are renewed or rotated by using external certificate management tools, only the contents of the secret, such as the certificate and key, are updated. The secret name remains unchanged. Kubelet automatically propagates these updates to the mounted volume, allowing the router to detect the file changes and hot-reload the new certificate and key. As a result, no rolling update of the router deployment is triggered or required.
->
-> - For secret renewal or rotation, the cert-manager Operator changes the secret content, such as a cert/key pair, but does not change the secret name. This happens because kubelet automatically propagates changes to the secret in the volume mount. The router pod detects the file change and then hot reloads the new cert/key pair. Updating the secret content does not trigger rolling update.
+<div class="note">
 
-<div>
+Before using the procedure, ensure you understand the following Ingress Controller behaviors:
 
-<div class="title">
+- When certificates are renewed or rotated by using external certificate management tools, only the contents of the secret, such as the certificate and key, are updated. The secret name remains unchanged. Kubelet automatically propagates these updates to the mounted volume, allowing the router to detect the file changes and hot-reload the new certificate and key. As a result, no rolling update of the router deployment is triggered or required.
 
-Prerequisites
+- For secret renewal or rotation, the cert-manager Operator changes the secret content, such as a cert/key pair, but does not change the secret name. This happens because kubelet automatically propagates changes to the secret in the volume mount. The router pod detects the file change and then hot reloads the new cert/key pair. Updating the secret content does not trigger rolling update.
 
 </div>
 
@@ -34,16 +29,6 @@ Prerequisites
 - Copy the root CA certificate into an additional PEM format file.
 
 - Verify that all certificates which include `-----END CERTIFICATE-----` also end with one carriage return after that line.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a config map that includes only the root CA certificate that is used to sign the wildcard certificate:
 
@@ -66,10 +51,13 @@ Procedure
          --patch='{"spec":{"trustedCA":{"name":"custom-ca"}}}'
     ```
 
-    > [!NOTE]
-    > If you update only the trusted CA for your cluster, the MCO updates the `/etc/pki/ca-trust/source/anchors/openshift-config-user-ca-bundle.crt` file and the Machine Config Controller (MCC) applies the trusted CA update to each node so that a node reboot is not required. However, with these changes, the Machine Config Daemon (MCD) restarts critical services on each node, such as kubelet and CRI-O. These service restarts cause each node to briefly enter the `NotReady` state until the service is fully restarted.
-    >
-    > If you change any other parameter in the `openshift-config-user-ca-bundle.crt` file, such as `noproxy`, the MCO reboots each node in your cluster.
+    <div class="note">
+
+    If you update only the trusted CA for your cluster, the MCO updates the `/etc/pki/ca-trust/source/anchors/openshift-config-user-ca-bundle.crt` file and the Machine Config Controller (MCC) applies the trusted CA update to each node so that a node reboot is not required. However, with these changes, the Machine Config Daemon (MCD) restarts critical services on each node, such as kubelet and CRI-O. These service restarts cause each node to briefly enter the `NotReady` state until the service is fully restarted.
+
+    If you change any other parameter in the `openshift-config-user-ca-bundle.crt` file, such as `noproxy`, the MCO reboots each node in your cluster.
+
+    </div>
 
 3.  Create a secret that contains the wildcard certificate chain and key:
 
@@ -101,8 +89,6 @@ Procedure
     ```
 
     - `<secret>`:: Specifies the name used for the secret. Replace `<secret>` with the name used for the secret.
-
-</div>
 
 # Additional resources
 

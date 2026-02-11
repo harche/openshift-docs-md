@@ -24,27 +24,11 @@ Modify the following vSphere configuration settings as required:
 
 - Virtual machine folder
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - The Assisted Installer has finished installing the cluster successfully.
 
 - The cluster is connected to `https://console.redhat.com`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the Administrator perspective, navigate to **Home → Overview**.
 
@@ -54,22 +38,31 @@ Procedure
 
 4.  In the **vCenter cluster** field, enter the name of the vSphere vCenter cluster where OpenShift Container Platform is installed.
 
-    > [!IMPORTANT]
-    > This step is mandatory if you installed OpenShift Container Platform 4.13 or later.
+    <div class="important">
+
+    This step is mandatory if you installed OpenShift Container Platform 4.13 or later.
+
+    </div>
 
 5.  In the **Username** field, enter your vSphere vCenter username.
 
 6.  In the **Password** field, enter your vSphere vCenter password.
 
-    > [!WARNING]
-    > The system stores the username and password in the `vsphere-creds` secret in the `kube-system` namespace of the cluster. An incorrect vCenter username or password makes the cluster nodes unschedulable.
+    <div class="warning">
+
+    The system stores the username and password in the `vsphere-creds` secret in the `kube-system` namespace of the cluster. An incorrect vCenter username or password makes the cluster nodes unschedulable.
+
+    </div>
 
 7.  In the **Datacenter** field, enter the name of the vSphere data center that contains the virtual machines used to host the cluster; for example, `SDDC-Datacenter`.
 
 8.  In the **Default data store** field, enter the path and name of the vSphere data store that stores the persistent data volumes; for example, `/SDDC-Datacenter/datastore/datastorename`.
 
-    > [!WARNING]
-    > Updating the vSphere data center or default data store after the configuration has been saved detaches any active vSphere `PersistentVolumes`.
+    <div class="warning">
+
+    Updating the vSphere data center or default data store after the configuration has been saved detaches any active vSphere `PersistentVolumes`.
+
+    </div>
 
 9.  In the **Virtual Machine Folder** field, enter the data center folder that contains the virtual machine of the cluster; for example, `/SDDC-Datacenter/vm/ci-ln-hjg4vg2-c61657-t2gzr`. For the OpenShift Container Platform installation to succeed, all virtual machines comprising the cluster must be located in a single data center folder.
 
@@ -77,31 +70,11 @@ Procedure
 
 11. Reopen the **vSphere connection configuration** wizard and expand the **Monitored operators** panel. Check that the status of the operators is either **Progressing** or **Healthy**.
 
-</div>
-
 # Verifying the configuration
 
 The connection configuration process updates operator statuses and control plane nodes. It takes approximately an hour to complete. During the configuration process, the nodes will reboot. Previously bound `PersistentVolumeClaims` objects might become disconnected.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have saved the configuration settings in the **vSphere connection configuration** wizard.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Check that the configuration process completed successfully:
 
@@ -153,7 +126,5 @@ Procedure
         ```
 
         If you are unable to create a `PersistentVolumeClaims` object, you can troubleshoot by navigating to **Storage** → **PersistentVolumeClaims** in the **Administrator** perspective of the OpenShift Container Platform web console.
-
-</div>
 
 For instructions on creating storage objects, see [Dynamic provisioning](../../storage/dynamic-provisioning.xml#dynamic-provisioning).

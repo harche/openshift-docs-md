@@ -61,8 +61,11 @@ For more details on the process of building container images, pushing them to re
 
 Building and managing containers with buildah, podman, and skopeo results in industry standard container images that include features specifically tuned for deploying containers in OpenShift Container Platform or other Kubernetes environments. These tools are daemonless and can run without root privileges, requiring less overhead to run them.
 
-> [!IMPORTANT]
-> Support for Docker Container Engine as a container runtime is deprecated in Kubernetes 1.20 and will be removed in a future release. However, Docker-produced images will continue to work in your cluster with all runtimes, including CRI-O. For more information, see the [Kubernetes blog announcement](https://kubernetes.io/blog/2020/12/02/dont-panic-kubernetes-and-docker/).
+<div class="important">
+
+Support for Docker Container Engine as a container runtime is deprecated in Kubernetes 1.20 and will be removed in a future release. However, Docker-produced images will continue to work in your cluster with all runtimes, including CRI-O. For more information, see the [Kubernetes blog announcement](https://kubernetes.io/blog/2020/12/02/dont-panic-kubernetes-and-docker/).
+
+</div>
 
 When you ultimately run your containers in OpenShift Container Platform, you use the [CRI-O](https://cri-o.io/) container engine. CRI-O runs on every worker and control plane machine in an OpenShift Container Platform cluster, but CRI-O is not yet supported as a standalone runtime outside of OpenShift Container Platform.
 

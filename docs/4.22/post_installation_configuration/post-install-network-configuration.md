@@ -32,25 +32,7 @@ As a cluster administrator, you can modify the default project template so that 
 
 To create your own custom project template:
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in as a user with `cluster-admin` privileges.
 
@@ -88,11 +70,9 @@ Procedure
 
 6.  Update the `spec` section to include the `projectRequestTemplate` and `name` parameters, and set the name of your uploaded project template. The default name is `project-request`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Project configuration resource with custom project template
+    **Project configuration resource with custom project template**
 
     </div>
 
@@ -107,23 +87,11 @@ Procedure
     # ...
     ```
 
-    </div>
-
 7.  After you save your changes, create a new project to verify that your changes were successfully applied.
-
-</div>
 
 ### Adding network policies to the new project template
 
 As a cluster administrator, you can add network policies to the default template for new projects. OpenShift Container Platform will automatically create all the `NetworkPolicy` objects specified in the template in the project.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Your cluster uses a default container network interface (CNI) network plugin that supports `NetworkPolicy` objects, such as the OVN-Kubernetes.
 
@@ -132,16 +100,6 @@ Prerequisites
 - You must log in to the cluster with a user with `cluster-admin` privileges.
 
 - You must have created a custom default project template for new projects.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the default template for a new project by running the following command:
 
@@ -220,5 +178,3 @@ Procedure
         allow-from-openshift-ingress   <none>         7s
         allow-from-same-namespace      <none>         7s
         ```
-
-</div>

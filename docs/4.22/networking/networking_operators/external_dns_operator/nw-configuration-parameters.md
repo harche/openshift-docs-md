@@ -10,13 +10,13 @@ To customize the behavior of the External DNS Operator, configure the available 
 <col style="width: 72%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec</code></p></td>
 <td style="text-align: left;"><p>Enables the type of a cloud provider.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
@@ -30,7 +30,7 @@ To customize the behavior of the External DNS Operator, configure the available 
 <li><p><code>provider.aws.credentials.name</code>: Specifies a secret name for your cloud provider.</p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>zones</code></p></td>
 <td style="text-align: left;"><p>Enables you to specify DNS zones by their domains. If you do not specify zones, the <code>ExternalDNS</code> resource discovers all of the zones present in your cloud provider account.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zones</span><span class="kw">:</span></span>
@@ -39,7 +39,7 @@ To customize the behavior of the External DNS Operator, configure the available 
 <li><p><code>&lt;zone_id&gt;</code>: Specifies the name of DNS zones.</p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>domains</code></p></td>
 <td style="text-align: left;"><p>Enables you to specify AWS zones by their domains. If you do not specify domains, the <code>ExternalDNS</code> resource discovers all of the zones present in your cloud provider account.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">domains</span><span class="kw">:</span></span>
@@ -57,7 +57,7 @@ To customize the behavior of the External DNS Operator, configure the available 
 <li><p><code>filterType.pattern</code>: Specifies the regex pattern to be used by the <code>ExternalDNS</code> resource to filter the domains of the target zones.</p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>source</code></p></td>
 <td style="text-align: left;"><p>Enables you to specify the source for the DNS records, <code>Service</code> or <code>Route</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span><span class="kw">:</span></span>

@@ -10,8 +10,11 @@ You can update your control plane machines to reflect changes in your underlying
 
 The following example YAML illustrates a valid configuration for an Google Cloud cluster.
 
-> [!NOTE]
-> When you create a control plane machine set for an existing cluster, the provider specification must match the `providerSpec` configuration in the control plane machine custom resource (CR) that the installation program creates.
+<div class="note">
+
+When you create a control plane machine set for an existing cluster, the provider specification must match the `providerSpec` configuration in the control plane machine custom resource (CR) that the installation program creates.
+
+</div>
 
 You can omit any field that has a value set in the failure domain section of the CR.
 
@@ -33,11 +36,9 @@ $ oc -n openshift-machine-api \
   get ControlPlaneMachineSet/cluster
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample Google Cloud `providerSpec` values
+**Sample Google Cloud `providerSpec` values**
 
 </div>
 
@@ -90,8 +91,6 @@ spec:
             zone: ""
 ```
 
-</div>
-
 where:
 
 `spec.template.spec.providerSpec.value.credentialsSecret.name`
@@ -136,11 +135,9 @@ The control plane machine set concept of a failure domain is analogous to the ex
 
 When configuring Google Cloud failure domains in the control plane machine set, you must specify the zone name to use.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample Google Cloud failure domain values
+**Sample Google Cloud failure domain values**
 
 </div>
 
@@ -164,8 +161,6 @@ spec:
         platform: GCP
 # ...
 ```
-
-</div>
 
 where:
 

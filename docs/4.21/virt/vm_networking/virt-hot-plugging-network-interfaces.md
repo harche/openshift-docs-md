@@ -1,14 +1,20 @@
 You can add or remove secondary network interfaces without stopping your virtual machine (VM). OpenShift Virtualization supports hot plugging and hot unplugging for secondary interfaces that use bridge binding and the VirtIO device driver. OpenShift Virtualization also supports hot plugging secondary interfaces that use SR-IOV binding. To hot plug or hot unplug a secondary interface, you must have permission to create and list `VirtualMachineInstanceMigration` objects.
 
-> [!NOTE]
-> Hot unplugging is not supported for Single Root I/O Virtualization (SR-IOV) interfaces.
+<div class="note">
+
+Hot unplugging is not supported for Single Root I/O Virtualization (SR-IOV) interfaces.
+
+</div>
 
 # VirtIO limitations
 
 Each VirtIO interface uses one of the limited Peripheral Connect Interface (PCI) slots in the VM. There are a total of 32 slots available. The PCI slots are also used by other devices and must be reserved in advance, therefore slots might not be available on demand. OpenShift Virtualization reserves up to four slots for hot plugging interfaces. This includes any existing plugged network interfaces. For example, if your VM has two existing plugged interfaces, you can hot plug two more network interfaces.
 
-> [!NOTE]
-> The actual number of slots available for hot plugging also depends on the machine type. For example, the default PCI topology for the q35 machine type supports hot plugging one additional PCIe device. For more information on PCI topology and hot plug support, see the [libvirt documentation](https://libvirt.org/pci-hotplug.html).
+<div class="note">
+
+The actual number of slots available for hot plugging also depends on the machine type. For example, the default PCI topology for the q35 machine type supports hot plugging one additional PCIe device. For more information on PCI topology and hot plug support, see the [libvirt documentation](https://libvirt.org/pci-hotplug.html).
+
+</div>
 
 If you restart the VM after hot plugging an interface, that interface becomes part of the standard network interfaces.
 
@@ -16,29 +22,11 @@ If you restart the VM after hot plugging an interface, that interface becomes pa
 
 You can hot plug a secondary network interface to a virtual machine (VM) while the VM is running.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - A network attachment definition is configured in the same namespace as your VM.
 
 - The VM to which you want to hot plug the network interface is running.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Use your preferred text editor to edit the `VirtualMachine` manifest, as shown in the following example:
 
@@ -86,15 +74,7 @@ Procedure
     \<filename\>
     Specifies the name of your `VirtualMachine` manifest YAML file.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the VM live migration is successful by using the following command:
 
@@ -148,20 +128,13 @@ Verification
 
     - The hot plugged interface appears in the VMI status.
 
-</div>
-
 # Hot unplugging a secondary network interface by using the CLI
 
 You can remove a secondary network interface from a running virtual machine (VM).
 
-> [!NOTE]
-> Hot unplugging is not supported for Single Root I/O Virtualization (SR-IOV) interfaces.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Hot unplugging is not supported for Single Root I/O Virtualization (SR-IOV) interfaces.
 
 </div>
 
@@ -172,16 +145,6 @@ Prerequisites
 - The VM must have a bridge network interface attached.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Using your preferred text editor, edit the `VirtualMachine` manifest file and set the interface state to `absent`. Setting the interface state to `absent` detaches the network interface from the guest, but the interface still exists in the pod.
 
@@ -226,8 +189,6 @@ Procedure
 
     \<filename\>
     Specifies the name of your `VirtualMachine` manifest YAML file.
-
-</div>
 
 # Additional resources
 

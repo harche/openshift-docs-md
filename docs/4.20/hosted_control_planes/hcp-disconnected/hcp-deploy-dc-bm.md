@@ -100,14 +100,6 @@ To configure hosted control planes in a disconnected environment, you must meet 
 
 You can extract the OpenShift Container Platform release image digest by using the tagged image.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Obtain the image digest by running the following command:
 
   ``` terminal
@@ -116,19 +108,13 @@ Procedure
 
   Replace `<tagged_openshift_release_image>` with the tagged image for the supported OpenShift Container Platform version, for example, `quay.io/openshift-release-dev/ocp-release:4.14.0-x8_64`.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
       Pull From: quay.io/openshift-release-dev/ocp-release@sha256:69d1292f64a2b67227c5592c1a7d499c7d00376e498634ff8e1946bc9ccdddfe
-
-  </div>
-
-</div>
 
 # DNS configurations on bare metal
 
@@ -136,11 +122,9 @@ The API Server for the hosted cluster is exposed as a `NodePort` service. A DNS 
 
 The DNS entry can be as simple as a record that points to one of the nodes in the management cluster that is running the hosted control plane. The entry can also point to a load balancer that is deployed to redirect incoming traffic to the ingress pods.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example DNS configuration
+**Example DNS configuration**
 
 </div>
 
@@ -154,18 +138,17 @@ api-int.example.krnl.es.    IN A 192.168.122.22
 `*`.apps.example.krnl.es. IN A 192.168.122.23
 ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> In the previous example, `*.apps.example.krnl.es. IN A 192.168.122.23` is either a node in the hosted cluster or a load balancer, if one has been configured.
+In the previous example, `*.apps.example.krnl.es. IN A 192.168.122.23` is either a node in the hosted cluster or a load balancer, if one has been configured.
+
+</div>
 
 If you are configuring DNS for a disconnected environment on an IPv6 network, the configuration looks like the following example.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example DNS configuration for an IPv6 network
+**Example DNS configuration for an IPv6 network**
 
 </div>
 
@@ -179,15 +162,11 @@ api-int.example.krnl.es.    IN A 2620:52:0:1306::7
 `*`.apps.example.krnl.es. IN A 2620:52:0:1306::10
 ```
 
-</div>
-
 If you are configuring DNS for a disconnected environment on a dual stack network, be sure to include DNS entries for both IPv4 and IPv6.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example DNS configuration for a dual stack network
+**Example DNS configuration for a dual stack network**
 
 </div>
 
@@ -211,23 +190,17 @@ dhcp-host=aa:aa:aa:aa:10:06,ocp-installer,[2620:52:0:1306::8]
 dhcp-host=aa:aa:aa:aa:10:07,ocp-bootstrap,[2620:52:0:1306::9]
 ```
 
-</div>
-
 # Deploying a registry for hosted control planes in a disconnected environment
 
 For development environments, deploy a small, self-hosted registry by using a Podman container. For production environments, deploy an enterprise-hosted registry, such as Red Hat Quay, Nexus, or Artifactory.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To deploy a small registry by using Podman, complete the following steps:
-
-</div>
 
 1.  As a privileged user, access the `${HOME}` directory and create the following script:
 
@@ -339,14 +312,6 @@ The root folder for the registry is in the `/opt/registry` directory and contain
 
 To set up an OpenShift Container Platform management cluster, you need to ensure that the multicluster engine for Kubernetes Operator is installed. The multicluster engine Operator plays a crucial role in deploying clusters across providers.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - There must be bidirectional connectivity between the management cluster and the Baseboard Management Controller (BMC) of the target Bare Metal Host (BMH). As an alternative, you follow a Boot It Yourself approach through the Agent provider.
 
 - The hosted cluster must be able to resolve and reach the API hostname of the management cluster hostname and `*.apps` hostname. Here is an example of the API hostname of the management cluster and `*.apps` hostname:
@@ -361,41 +326,17 @@ Prerequisites
 
   - `console-openshift-console.apps.sno-hosted-cluster-1.internal.domain.com`
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Install multicluster engine Operator 2.4 or later on an OpenShift Container Platform cluster. You can install multicluster engine Operator as an Operator from the OpenShift Container Platform software catalog. The HyperShift Operator is included with multicluster engine Operator. For more information about installing multicluster engine Operator, see "Installing and upgrading multicluster engine operator" in the Red Hat Advanced Cluster Management documentation.
 
 2.  Ensure that the HyperShift Operator is installed. The HyperShift Operator is automatically included with multicluster engine Operator, but if you need to manually install it, follow the steps in "Manually enabling the hypershift-addon managed cluster add-on for local-cluster".
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Next steps
+**Next steps**
 
 </div>
 
 Next, configure the web server.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Installing and upgrading multicluster engine operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#mce-install-intro)
 
@@ -403,23 +344,17 @@ Additional resources
 
 - [About cluster lifecycle with multicluster engine operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#mce-intro)
 
-</div>
-
 # Configuring the web server for hosted control planes in a disconnected environment
 
 You need to configure an additional web server to host the Red Hat Enterprise Linux CoreOS (RHCOS) images that are associated with the OpenShift Container Platform release that you are deploying as a hosted cluster.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To configure the web server, complete the following steps:
-
-</div>
 
 1.  Extract the `openshift-install` binary from the OpenShift Container Platform release that you want to use by entering the following command:
 
@@ -468,29 +403,17 @@ In the following procedures, the `oc-mirror` tool is used, which is a binary tha
 
 - The extra images that you want to add to the repository.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - Ensure that the registry server is running before you start the mirroring process.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To configure image mirroring, complete the following steps:
-
-</div>
 
 1.  Ensure that your `${HOME}/.docker/config.json` file is updated with the registries that you are going to mirror from and with the private registry that you plan to push the images to.
 
@@ -581,19 +504,9 @@ To configure image mirroring, complete the following steps:
 
 7.  Mirror the latest multicluster engine Operator images by following the steps in [Install on disconnected networks](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#install-on-disconnected-networks).
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Mirroring an image set in a partially disconnected environment](../../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-workflows-partially-disconnected-v2_about-installing-oc-mirror-v2)
 
 - [Mirroring an image set in a fully disconnected environment](../../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-workflows-fully-disconnected-v2_about-installing-oc-mirror-v2)
-
-</div>
 
 # Applying objects in the management cluster
 
@@ -608,14 +521,6 @@ When you use the `oc-mirror` tool, the output artifacts are in a folder named `o
 The ICSP or IDMS initiates a `MachineConfig` change that does not restart your nodes but restarts the kubelet on each of them. After the nodes are marked as `READY`, you need to apply the newly generated catalog sources.
 
 The catalog sources initiate actions in the `openshift-marketplace` Operator, such as downloading the catalog image and processing it to retrieve all the `PackageManifests` that are included in that image.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To check the new sources, run the following command by using the new `CatalogSource` as a source:
 
@@ -653,47 +558,23 @@ Procedure
 
         - `hypershift.openshift.io/redhat-operators-catalog-image`
 
-</div>
-
 In this case, the image stream is not created, and you must update the value of the annotations when the internal mirror is refreshed to pull in Operator updates.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Next steps
+**Next steps**
 
 </div>
 
 Deploy the multicluster engine Operator by completing the steps in *Deploying multicluster engine Operator for a disconnected installation of hosted control planes*.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
-
-</div>
 
 # Deploying AgentServiceConfig resources
 
 The `AgentServiceConfig` custom resource is an essential component of the Assisted Service add-on that is part of multicluster engine Operator. It is responsible for bare metal cluster deployment. When the add-on is enabled, you deploy the `AgentServiceConfig` resource to configure the add-on.
 
 In addition to configuring the `AgentServiceConfig` resource, you need to include additional config maps to ensure that multicluster engine Operator functions properly in a disconnected environment.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Configure the custom registries by adding the following config map, which contains the disconnected details to customize the deployment:
 
@@ -794,11 +675,9 @@ Procedure
 
     The command triggers two pods.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -807,25 +686,17 @@ Procedure
     assisted-service-668b49548-9m7xw                       2/2     Running   5             11d
     ```
 
-    </div>
-
     - The `assisted-image-service` pod is responsible for creating the Red Hat Enterprise Linux CoreOS (RHCOS) boot image template, which is customized for each cluster that you deploy.
 
     - The `assisted-service` refers to the Operator.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Next steps
+**Next steps**
 
 </div>
 
 Configure TLS certificates.
-
-</div>
 
 # Configuring TLS certificates for a disconnected installation of hosted control planes
 
@@ -834,14 +705,6 @@ To ensure proper function in a disconnected deployment, you need to configure th
 ## Adding the registry CA to the management cluster
 
 To add the registry CA to the management cluster, complete the following steps.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a config map that resembles the following example:
 
@@ -883,19 +746,9 @@ Procedure
 
     The process to patch the object might take several minutes to be completed.
 
-</div>
-
 ## Adding the registry CA to the worker nodes for the hosted cluster
 
 In order for the data plane workers in the hosted cluster to be able to retrieve images from the private registry, you need to add the registry CA to the worker nodes.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the `hc.spec.additionalTrustBundle` file, add the following specification:
 
@@ -933,8 +786,6 @@ Procedure
 
     - Specify the namespace where the `HostedCluster` object is created.
 
-</div>
-
 # Creating a hosted cluster on bare metal
 
 A hosted cluster is an OpenShift Container Platform cluster with its control plane and API endpoint hosted on a management cluster. The hosted cluster includes the control plane and its corresponding data plane.
@@ -942,14 +793,6 @@ A hosted cluster is an OpenShift Container Platform cluster with its control pla
 ## Deploying hosted cluster objects
 
 Typically, the HyperShift Operator creates the `HostedControlPlane` namespace. However, in this case, you want to include all the objects before the HyperShift Operator begins to reconcile the `HostedCluster` object. Then, when the Operator starts the reconciliation process, it can find all of the objects in place.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file with the following information about the namespaces:
 
@@ -1148,11 +991,9 @@ Procedure
     $ oc apply -f 01-4.14-hosted_cluster-nodeport.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1192,15 +1033,11 @@ Procedure
     packageserver-67c87d4d4f-kl7qh                        2/2     Running   0          93s
     ```
 
-    </div>
-
     When the hosted cluster is available, the output looks like the following example.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1209,21 +1046,9 @@ Procedure
     clusters    hosted-dual            hosted-admin-kubeconfig   Partial    True          False         The hosted control plane is available
     ```
 
-    </div>
-
-</div>
-
 ## Creating a NodePool object for the hosted cluster
 
 A `NodePool` is a scalable set of worker nodes that is associated with a hosted cluster. `NodePool` machine architectures remain consistent within a specific pool and are independent of the machine architecture of the control plane.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file with the following information about the `NodePool` object, replacing values as necessary:
 
@@ -1268,11 +1093,9 @@ Procedure
     $ oc apply -f 02-nodepool.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1281,23 +1104,11 @@ Procedure
     clusters    hosted-dual   hosted    0                               False         False        4.x.y-x86_64
     ```
 
-    </div>
-
-</div>
-
 ## Creating an InfraEnv resource for the hosted cluster
 
 The `InfraEnv` resource is an Assisted Service object that includes essential details, such as the `pullSecretRef` and the `sshAuthorizedKey`. Those details are used to create the Red Hat Enterprise Linux CoreOS (RHCOS) boot image that is customized for the hosted cluster.
 
 You can host more than one `InfraEnv` resource, and each one can adopt certain types of hosts. For example, you might want to divide your server farm between a host that has greater RAM capacity.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file with the following information about the `InfraEnv` resource, replacing values as necessary:
 
@@ -1330,50 +1141,30 @@ Procedure
     $ oc apply -f 03-infraenv.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
         NAMESPACE              NAME     ISO CREATED AT
         clusters-hosted-dual   hosted   2023-09-11T15:14:10Z
 
-    </div>
-
-</div>
-
 ## Creating bare metal hosts for the hosted cluster
 
 A *bare metal host* is an `openshift-machine-api` object that encompasses physical and logical details so that it can be identified by a Metal3 Operator. Those details are associated with other Assisted Service objects, known as *agents*.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Before you create the bare metal host and destination nodes, you must have the destination machines ready.
 
 - You have installed a Red Hat Enterprise Linux CoreOS (RHCOS) compute machine on bare-metal infrastructure for use in the cluster.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To create a bare metal host, complete the following steps:
-
-</div>
 
 1.  Create a YAML file with the following information. For more information about what details to enter for the bare metal host, see "Provisioning new hosts in a user-provisioned cluster by using the BMO".
 
@@ -1458,11 +1249,9 @@ To create a bare metal host, complete the following steps:
 
     - This output indicates that the process is trying to reach the nodes:
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -1473,15 +1262,11 @@ To create a bare metal host, complete the following steps:
       clusters-hosted   hosted-worker2   registering              true             2s
       ```
 
-      </div>
-
     - This output indicates that the nodes are starting:
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -1492,15 +1277,11 @@ To create a bare metal host, complete the following steps:
       clusters-hosted   hosted-worker2   provisioning              true             16s
       ```
 
-      </div>
-
     - This output indicates that the nodes started successfully:
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -1511,15 +1292,11 @@ To create a bare metal host, complete the following steps:
       clusters-hosted   hosted-worker2   provisioned              true             67s
       ```
 
-      </div>
-
 3.  After the nodes start, notice the agents in the namespace, as shown in this example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1530,35 +1307,15 @@ To create a bare metal host, complete the following steps:
     clusters-hosted   aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0413             true       auto-assign
     ```
 
-    </div>
-
     The agents represent nodes that are available for installation. To assign the nodes to a hosted cluster, scale up the node pool.
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Provisioning new hosts in a user-provisioned cluster by using the BMO](../../installing/installing_bare_metal/upi/scaling-a-user-provisioned-cluster-with-the-bare-metal-operator.xml#upi-provisioning-new-hosts-in-a-upi-cluster_scaling-a-user-provisioned-cluster-with-the-bare-metal-operator)
 
 - [Understanding secrets](../../nodes/pods/nodes-pods-secrets.xml#nodes-pods-secrets-about_nodes-pods-secrets)
 
-</div>
-
 ## Scaling up the node pool
 
 After you create the bare metal hosts, their statuses change from `Registering` to `Provisioning` to `Provisioned`. The nodes start with the `LiveISO` of the agent and a default pod that is named `agent`. That agent is responsible for receiving instructions from the Assisted Service Operator to install the OpenShift Container Platform payload.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To scale up the node pool, enter the following command:
 
@@ -1575,11 +1332,9 @@ Procedure
 
 2.  After the scaling process is complete, notice that the agents are assigned to a hosted cluster:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1590,15 +1345,11 @@ Procedure
     clusters-hosted   aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0413   hosted    true       auto-assign
     ```
 
-    </div>
-
 3.  Also notice that the node pool replicas are set:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1607,10 +1358,6 @@ Procedure
     clusters    hosted   hosted    3                               False         False        <4.x.y>-x86_64                                     Minimum availability requires 3 replicas, current 0 available
     ```
 
-    </div>
-
     Replace `<4.x.y>` with the supported OpenShift Container Platform version that you want to use.
 
 4.  Wait until the nodes join the cluster. During the process, the agents provide updates on their stage and status.
-
-</div>

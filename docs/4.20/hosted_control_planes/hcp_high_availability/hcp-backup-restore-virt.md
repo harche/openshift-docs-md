@@ -6,14 +6,6 @@ When you back up a hosted cluster on OpenShift Virtualization, the hosted cluste
 
 When the hosted cluster is not running compute nodes on external infrastructure, hosted cluster workload data that is stored in persistent volume claims (PVCs) that are provisioned by KubeVirt CSI are also backed up. The backup does not contain any KubeVirt virtual machines (VMs) that are used as compute nodes. Those VMs are automatically re-created after the restore process is completed.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a Velero backup resource by creating a YAML file that is similar to the following example:
 
     ``` yaml
@@ -94,32 +86,15 @@ Procedure
       $ oc logs -n openshift-adp -ldeploy=velero -f
       ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - When the `status.phase` field is `Completed`, the backup process is considered complete.
-
-</div>
 
 # Restoring a hosted cluster on OpenShift Virtualization
 
 After you back up a hosted cluster on OpenShift Virtualization, you can restore the backup.
 
-> [!NOTE]
-> The restore process can be completed only on the same management cluster where you created the backup.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+The restore process can be completed only on the same management cluster where you created the backup.
 
 </div>
 
@@ -180,28 +155,8 @@ Procedure
       $ oc logs -n openshift-adp -ldeploy=velero -f
       ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - When the `status.phase` field is `Completed`, the restore process is considered complete.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
+<!-- -->
 
 - After some time, the KubeVirt VMs are created and join the hosted cluster as compute nodes. Make sure that the hosted cluster workloads are running again as expected.
-
-</div>

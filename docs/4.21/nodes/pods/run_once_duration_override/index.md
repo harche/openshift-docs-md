@@ -1,7 +1,10 @@
 You can use the Run Once Duration Override Operator to specify a maximum time limit that run-once pods can be active for.
 
-> [!IMPORTANT]
-> The Run Once Duration Override Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
+<div class="important">
+
+The Run Once Duration Override Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
+
+</div>
 
 # About the Run Once Duration Override Operator
 
@@ -13,5 +16,8 @@ To apply the run-once duration override from the Run Once Duration Override Oper
 
 If both the run-once pod and the Run Once Duration Override Operator have their `activeDeadlineSeconds` value set, the lower of the two values is used.
 
-> [!NOTE]
-> You cannot install the Run Once Duration Override Operator on clusters managed by the HyperShift Operator.
+<div class="note">
+
+You cannot install the Run Once Duration Override Operator on clusters managed by the HyperShift Operator.
+
+</div>

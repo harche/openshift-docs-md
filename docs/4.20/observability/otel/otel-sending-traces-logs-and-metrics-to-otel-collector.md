@@ -8,14 +8,6 @@ You can set up sending telemetry data to an OpenTelemetry Collector instance wit
 
 The Red Hat build of OpenTelemetry Operator allows sidecar injection into deployment workloads and automatic configuration of your instrumentation to send telemetry data to the OpenTelemetry Collector.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The Red Hat OpenShift Distributed Tracing Platform is installed, and a TempoStack instance is deployed.
 
 - You have access to the cluster through the web console or the OpenShift CLI (`oc`):
@@ -25,16 +17,6 @@ Prerequisites
   - An active OpenShift CLI (`oc`) session by a cluster administrator with the `cluster-admin` role.
 
   - For Red Hat OpenShift Dedicated, you must have an account with the `dedicated-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a project for an OpenTelemetry Collector instance.
 
@@ -127,19 +109,9 @@ Procedure
 
 6.  Add the `sidecar.opentelemetry.io/inject: "true"` annotation to your `Deployment` object. This will inject all the needed environment variables to send data from your workloads to the OpenTelemetry Collector instance.
 
-</div>
-
 # Sending traces and metrics to the OpenTelemetry Collector without sidecar injection
 
 You can set up sending telemetry data to an OpenTelemetry Collector instance without sidecar injection, which involves manually setting several environment variables.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - The Red Hat OpenShift Distributed Tracing Platform is installed, and a TempoStack instance is deployed.
 
@@ -150,16 +122,6 @@ Prerequisites
   - An active OpenShift CLI (`oc`) session by a cluster administrator with the `cluster-admin` role.
 
   - For Red Hat OpenShift Dedicated, you must have an account with the `dedicated-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a project for an OpenTelemetry Collector instance.
 
@@ -257,14 +219,12 @@ Procedure
 
 5.  Set the environment variables in the container with your instrumented application.
 
-    | Name | Description | Default value |
-    |----|----|----|
-    | `OTEL_SERVICE_NAME` | Sets the value of the `service.name` resource attribute. | `""` |
-    | `OTEL_EXPORTER_OTLP_ENDPOINT` | Base endpoint URL for any signal type with an optionally specified port number. | `https://localhost:4317` |
-    | `OTEL_EXPORTER_OTLP_CERTIFICATE` | Path to the certificate file for the TLS credentials of the gRPC client. | `https://localhost:4317` |
-    | `OTEL_TRACES_SAMPLER` | Sampler to be used for traces. | `parentbased_always_on` |
-    | `OTEL_EXPORTER_OTLP_PROTOCOL` | Transport protocol for the OTLP exporter. | `grpc` |
-    | `OTEL_EXPORTER_OTLP_TIMEOUT` | Maximum time interval for the OTLP exporter to wait for each batch export. | `10s` |
-    | `OTEL_EXPORTER_OTLP_INSECURE` | Disables client transport security for gRPC requests. An HTTPS schema overrides it. | `False` |
-
-</div>
+    | Name                             | Description                                                                         | Default value            |
+    |----------------------------------|-------------------------------------------------------------------------------------|--------------------------|
+    | `OTEL_SERVICE_NAME`              | Sets the value of the `service.name` resource attribute.                            | `""`                     |
+    | `OTEL_EXPORTER_OTLP_ENDPOINT`    | Base endpoint URL for any signal type with an optionally specified port number.     | `https://localhost:4317` |
+    | `OTEL_EXPORTER_OTLP_CERTIFICATE` | Path to the certificate file for the TLS credentials of the gRPC client.            | `https://localhost:4317` |
+    | `OTEL_TRACES_SAMPLER`            | Sampler to be used for traces.                                                      | `parentbased_always_on`  |
+    | `OTEL_EXPORTER_OTLP_PROTOCOL`    | Transport protocol for the OTLP exporter.                                           | `grpc`                   |
+    | `OTEL_EXPORTER_OTLP_TIMEOUT`     | Maximum time interval for the OTLP exporter to wait for each batch export.          | `10s`                    |
+    | `OTEL_EXPORTER_OTLP_INSECURE`    | Disables client transport security for gRPC requests. An HTTPS schema overrides it. | `False`                  |

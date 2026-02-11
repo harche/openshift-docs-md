@@ -20,8 +20,11 @@ Hosted control planes is available by using a [supported version of multicluster
 
 The hosted control planes feature is enabled by default.
 
-> [!NOTE]
-> The multicluster engine Operator is an integral part of Red Hat Advanced Cluster Management (RHACM) and is enabled by default with RHACM. However, you do not need RHACM in order to use hosted control planes.
+<div class="note">
+
+The multicluster engine Operator is an integral part of Red Hat Advanced Cluster Management (RHACM) and is enabled by default with RHACM. However, you do not need RHACM in order to use hosted control planes.
+
+</div>
 
 ## Architecture of hosted control planes
 
@@ -55,88 +58,81 @@ Hosted control planes is a form factor of OpenShift Container Platform. Hosted c
 
 ## Cluster creation and lifecycle
 
-| OpenShift Container Platform | Hosted control planes |
-|----|----|
+| OpenShift Container Platform                                                                                                     | Hosted control planes                                                                                                                                                          |
+|----------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | You install a standalone OpenShift Container Platform cluster by using the `openshift-install` binary or the Assisted Installer. | You install a hosted cluster by using the `hypershift.openshift.io` API resources such as `HostedCluster` and `NodePool`, on an existing OpenShift Container Platform cluster. |
 
 ## Cluster configuration
 
-| OpenShift Container Platform | Hosted control planes |
-|----|----|
+| OpenShift Container Platform                                                                                                       | Hosted control planes                                                                  |
+|------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
 | You configure cluster-scoped resources such as authentication, API server, and proxy by using the `config.openshift.io` API group. | You configure resources that impact the control plane in the `HostedCluster` resource. |
 
 ## etcd encryption
 
-| OpenShift Container Platform | Hosted control planes |
-|----|----|
+| OpenShift Container Platform                                                                                                                   | Hosted control planes                                                                                                                            |
+|------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
 | You configure etcd encryption by using the `APIServer` resource with AES-GCM or AES-CBC. For more information, see "Enabling etcd encryption". | You configure etcd encryption by using the `HostedCluster` resource in the `SecretEncryption` field with AES-CBC or KMS for Amazon Web Services. |
 
 ## Operators and control plane
 
-| OpenShift Container Platform | Hosted control planes |
-|----|----|
-| A standalone OpenShift Container Platform cluster contains separate Operators for each control plane component. | A hosted cluster contains a single Operator named Control Plane Operator that runs in the hosted control plane namespace on the management cluster. |
-| etcd uses storage that is mounted on the control plane nodes. The etcd cluster Operator manages etcd. | etcd uses a persistent volume claim for storage and is managed by the Control Plane Operator. |
-| The Ingress Operator, network related Operators, and Operator Lifecycle Manager (OLM) run on the cluster. | The Ingress Operator, network related Operators, and Operator Lifecycle Manager (OLM) run in the hosted control plane namespace on the management cluster. |
-| The OAuth server runs inside the cluster and is exposed through a route in the cluster. | The OAuth server runs inside the control plane and is exposed through a route, node port, or load balancer on the management cluster. |
+| OpenShift Container Platform                                                                                    | Hosted control planes                                                                                                                                      |
+|-----------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| A standalone OpenShift Container Platform cluster contains separate Operators for each control plane component. | A hosted cluster contains a single Operator named Control Plane Operator that runs in the hosted control plane namespace on the management cluster.        |
+| etcd uses storage that is mounted on the control plane nodes. The etcd cluster Operator manages etcd.           | etcd uses a persistent volume claim for storage and is managed by the Control Plane Operator.                                                              |
+| The Ingress Operator, network related Operators, and Operator Lifecycle Manager (OLM) run on the cluster.       | The Ingress Operator, network related Operators, and Operator Lifecycle Manager (OLM) run in the hosted control plane namespace on the management cluster. |
+| The OAuth server runs inside the cluster and is exposed through a route in the cluster.                         | The OAuth server runs inside the control plane and is exposed through a route, node port, or load balancer on the management cluster.                      |
 
 ## Updates
 
-| OpenShift Container Platform | Hosted control planes |
-|----|----|
+| OpenShift Container Platform                                                                                                                                                                                                                                                                                                                                | Hosted control planes                                                                                                                                                                              |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | The Cluster Version Operator (CVO) orchestrates the update process and monitors the `ClusterVersion` resource. Administrators and OpenShift components can interact with the CVO through the `ClusterVersion` resource. The `oc adm upgrade` command results in a change to the `ClusterVersion.Spec.DesiredUpdate` field in the `ClusterVersion` resource. | The hosted control planes update results in a change to the `.spec.release.image` field in the `HostedCluster` and `NodePool` resources. Any changes to the `ClusterVersion` resource are ignored. |
-| After you update an OpenShift Container Platform cluster, both the control plane and compute machines are updated. | After you update the hosted cluster, only the control plane is updated. You perform node pool updates separately. |
+| After you update an OpenShift Container Platform cluster, both the control plane and compute machines are updated.                                                                                                                                                                                                                                          | After you update the hosted cluster, only the control plane is updated. You perform node pool updates separately.                                                                                  |
 
 ## Machine configuration and management
 
-| OpenShift Container Platform | Hosted control planes |
-|----|----|
-| The `MachineSets` resource manages machines in the `openshift-machine-api` namespace. | The `NodePool` resource manages machines on the management cluster. |
-| A set of control plane machines are available. | A set of control plane machines do not exist. |
-| You enable a machine health check by using the `MachineHealthCheck` resource. | You enable a machine health check through the `.spec.management.autoRepair` field in the `NodePool` resource. |
-| You enable autoscaling by using the `ClusterAutoscaler` and `MachineAutoscaler` resources. | You enable autoscaling through the `spec.autoScaling` field in the `NodePool` resource. |
-| Machines and machine sets are exposed in the cluster. | Machines, machine sets, and machine deployments from upstream Cluster CAPI Operator are used to manage machines but are not exposed to the user. |
-| All machine sets are upgraded automatically when you update the cluster. | You update your node pools independently from the hosted cluster updates. |
-| Only an in-place upgrade is supported in the cluster. | Both replace and in-place upgrades are supported in the hosted cluster. |
-| The Machine Config Operator manages configurations for machines. | The Machine Config Operator does not exist in hosted control planes. |
+| OpenShift Container Platform                                                                                                                                                | Hosted control planes                                                                                                                                                               |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| The `MachineSets` resource manages machines in the `openshift-machine-api` namespace.                                                                                       | The `NodePool` resource manages machines on the management cluster.                                                                                                                 |
+| A set of control plane machines are available.                                                                                                                              | A set of control plane machines do not exist.                                                                                                                                       |
+| You enable a machine health check by using the `MachineHealthCheck` resource.                                                                                               | You enable a machine health check through the `.spec.management.autoRepair` field in the `NodePool` resource.                                                                       |
+| You enable autoscaling by using the `ClusterAutoscaler` and `MachineAutoscaler` resources.                                                                                  | You enable autoscaling through the `spec.autoScaling` field in the `NodePool` resource.                                                                                             |
+| Machines and machine sets are exposed in the cluster.                                                                                                                       | Machines, machine sets, and machine deployments from upstream Cluster CAPI Operator are used to manage machines but are not exposed to the user.                                    |
+| All machine sets are upgraded automatically when you update the cluster.                                                                                                    | You update your node pools independently from the hosted cluster updates.                                                                                                           |
+| Only an in-place upgrade is supported in the cluster.                                                                                                                       | Both replace and in-place upgrades are supported in the hosted cluster.                                                                                                             |
+| The Machine Config Operator manages configurations for machines.                                                                                                            | The Machine Config Operator does not exist in hosted control planes.                                                                                                                |
 | You configure machine Ignition by using the `MachineConfig`, `KubeletConfig`, and `ContainerRuntimeConfig` resources that are selected from a `MachineConfigPool` selector. | You configure the `MachineConfig`, `KubeletConfig`, and `ContainerRuntimeConfig` resources through the config map referenced in the `spec.config` field of the `NodePool` resource. |
-| The Machine Config Daemon (MCD) manages configuration changes and updates on each of the nodes. | For an in-place upgrade, the node pool controller creates a run-once pod that updates a machine based on your configuration. |
-| You can modify the machine configuration resources such as the SR-IOV Operator. | You cannot modify the machine configuration resources. |
+| The Machine Config Daemon (MCD) manages configuration changes and updates on each of the nodes.                                                                             | For an in-place upgrade, the node pool controller creates a run-once pod that updates a machine based on your configuration.                                                        |
+| You can modify the machine configuration resources such as the SR-IOV Operator.                                                                                             | You cannot modify the machine configuration resources.                                                                                                                              |
 
 ## Networking
 
-| OpenShift Container Platform | Hosted control planes |
-|----|----|
+| OpenShift Container Platform                                                                                                               | Hosted control planes                                                                                                                             |
+|--------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
 | The Kube API server communicates with nodes directly, because the Kube API server and nodes exist in the same Virtual Private Cloud (VPC). | The Kube API server communicates with nodes through Konnectivity. The Kube API server and nodes exist in a different Virtual Private Cloud (VPC). |
-| Nodes communicate with the Kube API server through the internal load balancer. | Nodes communicate with the Kube API server through an external load balancer or a node port. |
+| Nodes communicate with the Kube API server through the internal load balancer.                                                             | Nodes communicate with the Kube API server through an external load balancer or a node port.                                                      |
 
 ## Web console
 
-| OpenShift Container Platform | Hosted control planes |
-|----|----|
-| The web console shows the status of a control plane. | The web console does not show the status of a control plane. |
-| You can update your cluster by using the web console. | You cannot update the hosted cluster by using the web console. |
-| The web console displays the infrastructure resources such as machines. | The web console does not display the infrastructure resources. |
-| You can configure machines through the `MachineConfig` resource by using the web console. | You cannot configure machines by using the web console. |
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+| OpenShift Container Platform                                                              | Hosted control planes                                          |
+|-------------------------------------------------------------------------------------------|----------------------------------------------------------------|
+| The web console shows the status of a control plane.                                      | The web console does not show the status of a control plane.   |
+| You can update your cluster by using the web console.                                     | You cannot update the hosted cluster by using the web console. |
+| The web console displays the infrastructure resources such as machines.                   | The web console does not display the infrastructure resources. |
+| You can configure machines through the `MachineConfig` resource by using the web console. | You cannot configure machines by using the web console.        |
 
 - [Enabling etcd encryption](../etcd/etcd-encrypt.xml#etcd-encrypt)
-
-</div>
 
 # Relationship between hosted control planes, multicluster engine Operator, and RHACM
 
 You can configure hosted control planes by using the multicluster engine for Kubernetes Operator. The multicluster engine Operator cluster lifecycle defines the process of creating, importing, managing, and destroying Kubernetes clusters across various infrastructure cloud providers, private clouds, and on-premises data centers.
 
-> [!NOTE]
-> The multicluster engine Operator is an integral part of Red Hat Advanced Cluster Management (RHACM) and is enabled by default with RHACM. However, you do not need RHACM in order to use hosted control planes.
+<div class="note">
+
+The multicluster engine Operator is an integral part of Red Hat Advanced Cluster Management (RHACM) and is enabled by default with RHACM. However, you do not need RHACM in order to use hosted control planes.
+
+</div>
 
 The multicluster engine Operator is the cluster lifecycle Operator that provides cluster management capabilities for OpenShift Container Platform and RHACM hub clusters. The multicluster engine Operator enhances cluster fleet management and supports OpenShift Container Platform cluster lifecycle management across clouds and data centers.
 
@@ -147,8 +143,11 @@ The multicluster engine Operator is the cluster lifecycle Operator that provides
 
 You can use the multicluster engine Operator with OpenShift Container Platform as a standalone cluster manager or as part of a RHACM hub cluster.
 
-> [!TIP]
-> A management cluster is also known as the hosting cluster.
+<div class="tip">
+
+A management cluster is also known as the hosting cluster.
+
+</div>
 
 You can deploy OpenShift Container Platform clusters by using two different control plane configurations: standalone or hosted control planes. The standalone configuration uses dedicated virtual machines or physical machines to host the control plane. With hosted control planes for OpenShift Container Platform, you create control planes as pods on a management cluster without the need for dedicated virtual or physical machines for each control plane.
 
@@ -197,11 +196,9 @@ The HyperShift Operator manages the lifecycle of hosted clusters that are repres
 
 You can host different versions of control planes on the same management cluster.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `supported-versions` config map object
+**Example `supported-versions` config map object**
 
 </div>
 
@@ -216,8 +213,6 @@ Example `supported-versions` config map object
       name: supported-versions
       namespace: hypershift
 ```
-
-</div>
 
 ## hosted control planes CLI
 
@@ -241,21 +236,13 @@ The Control Plane Operator is released as part of each OpenShift Container Platf
 
 - multi-arch
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [AMD64 release images](https://amd64.ocp.releases.ci.openshift.org/)
 
 - [ARM64 release images](https://arm64.ocp.releases.ci.openshift.org/)
 
 - [Multi-arch release images](https://multi.ocp.releases.ci.openshift.org/)
-
-</div>
 
 # Glossary of common concepts and personas for hosted control planes
 

@@ -2,17 +2,13 @@ When proving compliance for your OpenShift Container Platform cluster, you might
 
 # Obtaining Compliance Operator raw results from a persistent volume
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 The Compliance Operator generates and stores the raw results in a persistent volume. These results are in Asset Reporting Format (ARF).
-
-</div>
 
 1.  Explore the `ComplianceSuite` object:
 
@@ -21,11 +17,9 @@ The Compliance Operator generates and stores the raw results in a persistent vol
     -o json -n openshift-compliance | jq '.status.scanStatuses[].resultsStorage'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -44,8 +38,6 @@ The Compliance Operator generates and stores the raw results in a persistent vol
     }
     ```
 
-    </div>
-
     This shows the persistent volume claims where the raw results are accessible.
 
 2.  Verify the raw data location by using the name and namespace of one of the results:
@@ -54,11 +46,9 @@ The Compliance Operator generates and stores the raw results in a persistent vol
     $ oc get pvc -n openshift-compliance rhcos4-moderate-worker
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -67,19 +57,15 @@ The Compliance Operator generates and stores the raw results in a persistent vol
     rhcos4-moderate-worker   Bound  pvc-548f6cfe-164b-42fe-ba13-a07cfbc77f3a   1Gi      RWO         gp2         92m
     ```
 
-    </div>
-
 3.  Fetch the raw results by spawning a pod that mounts the volume and copying the results:
 
     ``` terminal
     $ oc create -n openshift-compliance -f pod.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example pod.yaml
+    **Example pod.yaml**
 
     </div>
 
@@ -110,16 +96,17 @@ The Compliance Operator generates and stores the raw results in a persistent vol
             claimName: rhcos4-moderate-worker
     ```
 
-    </div>
-
 4.  After the pod is running, download the results:
 
     ``` terminal
     $ oc cp pv-extract:/workers-scan-results -n openshift-compliance .
     ```
 
-    > [!IMPORTANT]
-    > Spawning a pod that mounts the persistent volume will keep the claim as `Bound`. If the volume’s storage class in use has permissions set to `ReadWriteOnce`, the volume is only mountable by one pod at a time. You must delete the pod upon completion, or it will not be possible for the Operator to schedule a pod and continue storing results in this location.
+    <div class="important">
+
+    Spawning a pod that mounts the persistent volume will keep the claim as `Bound`. If the volume’s storage class in use has permissions set to `ReadWriteOnce`, the volume is only mountable by one pod at a time. You must delete the pod upon completion, or it will not be possible for the Operator to schedule a pod and continue storing results in this location.
+
+    </div>
 
 5.  After the extraction is complete, the pod can be deleted:
 

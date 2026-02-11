@@ -24,8 +24,11 @@ The Secrets Store CSI Driver Operator has been tested with the following secrets
 
 - HashiCorp Vault
 
-> [!NOTE]
-> Red Hat does not test all factors associated with third-party secrets store provider functionality. For more information about third-party support, see the [Red Hat third-party support policy](https://access.redhat.com/third-party-software-support).
+<div class="note">
+
+Red Hat does not test all factors associated with third-party secrets store provider functionality. For more information about third-party support, see the [Red Hat third-party support policy](https://access.redhat.com/third-party-software-support).
+
+</div>
 
 # About CSI
 
@@ -47,8 +50,11 @@ The following secrets store providers support using the Secrets Store CSI driver
 
 To enable communication between Secrets Store CSI driver and the secrets store provider, configure Virtual Private Cloud (VPC) endpoints or equivalent connectivity to the corresponding secrets store provider, the OpenID Connect (OIDC) issuer, and the Secure Token Service (STS). The exact configuration depends on the secrets store provider, the authentication method, and the type of disconnected cluster.
 
-> [!NOTE]
-> For more information about disconnected environments, see [About disconnected environments](../../disconnected/about.xml#about).
+<div class="note">
+
+For more information about disconnected environments, see [About disconnected environments](../../disconnected/about.xml#about).
+
+</div>
 
 # Support for network policies
 
@@ -56,38 +62,24 @@ The Secrets Store CSI Driver Operator includes pre-defined `NetworkPolicies` res
 
 The following table summarizes the default ingress and egress rules:
 
-| Component | Ingress ports | Egress ports | Description |
-|----|----|----|----|
-| Secrets Store CSI Driver Operator | `8443` | `6443` | Accesses metrics and communicates with the API server |
-| Secrets Store CSI driver | `8095` | `6443` | Accesses metrics and communicates with the API server |
+| Component                         | Ingress ports | Egress ports | Description                                           |
+|-----------------------------------|---------------|--------------|-------------------------------------------------------|
+| Secrets Store CSI Driver Operator | `8443`        | `6443`       | Accesses metrics and communicates with the API server |
+| Secrets Store CSI driver          | `8095`        | `6443`       | Accesses metrics and communicates with the API server |
 
 # Installing the Secrets Store CSI driver
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Access to the OpenShift Container Platform web console.
 
 - Administrator access to the cluster.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To install the Secrets Store CSI driver:
-
-</div>
 
 1.  Install the Secrets Store CSI Driver Operator:
 
@@ -130,45 +122,21 @@ To install the Secrets Store CSI driver:
 
     3.  Click **Create**.
 
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - [Mounting secrets from an external secrets store to a CSI volume](../../nodes/pods/nodes-pods-secrets-store.xml#mounting-secrets-external-secrets-store)
 
-</div>
-
 # Uninstalling the Secrets Store CSI Driver Operator
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Access to the OpenShift Container Platform web console.
 
 - Administrator access to the cluster.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To uninstall the Secrets Store CSI Driver Operator:
-
-</div>
 
 1.  Stop all application pods that use the `secrets-store.csi.k8s.io` provider.
 
@@ -186,8 +154,11 @@ To uninstall the Secrets Store CSI Driver Operator:
 
 5.  Uninstall the Secrets Store CSI Driver Operator:
 
-    > [!NOTE]
-    > Before you can uninstall the Operator, you must remove the CSI driver first.
+    <div class="note">
+
+    Before you can uninstall the Operator, you must remove the CSI driver first.
+
+    </div>
 
     1.  Click **Ecosystem** → **Installed Operators**.
 

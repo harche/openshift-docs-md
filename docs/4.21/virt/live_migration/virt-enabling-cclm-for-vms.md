@@ -1,13 +1,5 @@
 Cross-cluster live migration enables users to move a virtual machine (VM) workload from one OpenShift Container Platform cluster to another cluster without disruption. You enable cross-cluster live migration by setting cluster feature gates in OpenShift Virtualization and Migration Toolkit for Virtualization (MTV).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - OpenShift Virtualization 4.20 or later must be installed.
 
 - The OpenShift Container Platform and OpenShift Virtualization minor release versions must match. For example, if the OpenShift Container Platform version is 4.20.0, the OpenShift Virtualization must also be 4.20.0.
@@ -16,24 +8,17 @@ Prerequisites
 
 - You must have cluster administration privileges and appropriate RBAC privileges to manage VMs on both clusters.
 
-</div>
+<div class="important">
 
-> [!IMPORTANT]
-> Cross-cluster live migration is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+Cross-cluster live migration is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 # Setting a live migration feature gate for each cluster in OpenShift Virtualization
 
 To enable cross-cluster live migration, you must set a feature gate for each of the two clusters in OpenShift Virtualization.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -41,15 +26,7 @@ Prerequisites
 
 - The `virt-synchronization-controller` pods must be running.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Set the feature gate by running the following command for each cluster:
 
@@ -57,15 +34,7 @@ Procedure
   $ oc patch hyperconverged kubevirt-hyperconverged -n openshift-cnv --type json -p '[{"op":"replace", "path": "/spec/featureGates/decentralizedLiveMigration", "value": true}]'
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - To verify that the feature gate enablement is successful for each cluster, run the following command in the OpenShift Virtualization namespace to locate the synchronization pods:
 
@@ -80,19 +49,9 @@ Verification
   virt-synchronization-controller-898789f8fc-vmmfj      1/1     Running   0               5d1h
   ```
 
-</div>
-
 # Setting a live migration feature gate in the Migration Toolkit for Virtualization (MTV)
 
 You enable the OpenShift Container Platform live migration feature gate in the Migration Toolkit for Virtualization (MTV) to allow virtual machines to migrate between clusters during cross-cluster live migration. This feature gate must be enabled in both clusters that participate in the migration.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -100,15 +59,7 @@ Prerequisites
 
 - The `virt-synchronization-controller` pods must be running.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To enable the feature gate by modifying the CR, run the following command:
 
@@ -116,15 +67,7 @@ Procedure
   $ oc patch ForkliftController forklift-controller -n openshift-mtv --type json -p '[{"op": "add", "path": "/spec/feature_ocp_live_migration", "value": "true"}]'
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - Verify that the feature gate is enabled by checking the `ForkliftController` custom resource (CR). Run the following command:
 
@@ -146,5 +89,3 @@ Verification
     feature_validation: "true"
     feature_volume_populator: "true"
   ```
-
-</div>

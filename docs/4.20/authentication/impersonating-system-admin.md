@@ -6,51 +6,36 @@ You can configure a request to the OpenShift Container Platform API to act as th
 
 You can grant a user permission to impersonate `system:admin`, which grants them cluster administrator permissions.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - To grant a user permission to impersonate `system:admin`, run the following command:
 
   ``` terminal
   $ oc create clusterrolebinding <any_valid_name> --clusterrole=sudoer --user=<username>
   ```
 
-  > [!TIP]
-  > You can alternatively apply the following YAML to grant permission to impersonate `system:admin`:
-  >
-  > ``` yaml
-  > apiVersion: rbac.authorization.k8s.io/v1
-  > kind: ClusterRoleBinding
-  > metadata:
-  >   name: <any_valid_name>
-  > roleRef:
-  >   apiGroup: rbac.authorization.k8s.io
-  >   kind: ClusterRole
-  >   name: sudoer
-  > subjects:
-  > - apiGroup: rbac.authorization.k8s.io
-  >   kind: User
-  >   name: <username>
-  > ```
+  <div class="tip">
 
-</div>
+  You can alternatively apply the following YAML to grant permission to impersonate `system:admin`:
+
+  ``` yaml
+  apiVersion: rbac.authorization.k8s.io/v1
+  kind: ClusterRoleBinding
+  metadata:
+    name: <any_valid_name>
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: sudoer
+  subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: <username>
+  ```
+
+  </div>
 
 # Impersonating the system:admin group
 
 When a `system:admin` user is granted cluster administration permissions through a group, you must include the `--as=<user> --as-group=<group1> --as-group=<group2>` parameters in the command to impersonate the associated groups.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To grant a user permission to impersonate a `system:admin` by impersonating the associated cluster administration groups, run the following command:
 
@@ -58,8 +43,6 @@ Procedure
   $ oc create clusterrolebinding <any_valid_name> --clusterrole=sudoer --as=<user> \
   --as-group=<group1> --as-group=<group2>
   ```
-
-</div>
 
 # Adding unauthenticated groups to cluster roles
 
@@ -75,30 +58,15 @@ You can add unauthenticated users to the following cluster roles:
 
 - `self-access-reviewer`
 
-> [!IMPORTANT]
-> Always verify compliance with your organization’s security standards when modifying unauthenticated access.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Always verify compliance with your organization’s security standards when modifying unauthenticated access.
 
 </div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file named `add-<cluster_role>-unauth.yaml` and add the following content:
 
@@ -124,5 +92,3 @@ Procedure
     ``` terminal
     $ oc apply -f add-<cluster_role>.yaml
     ```
-
-</div>

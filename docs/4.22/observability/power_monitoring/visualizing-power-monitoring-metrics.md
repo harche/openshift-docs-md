@@ -1,7 +1,10 @@
-> [!IMPORTANT]
-> Power monitoring is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Power monitoring is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 You can visualize power monitoring metrics in the OpenShift Container Platform web console by accessing power monitoring dashboards or by exploring **Metrics** under the **Observe** tab.
 
@@ -42,14 +45,6 @@ A detailed graph showing the power consumption of individual pods, so you can an
 
 You can access power monitoring dashboards of the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the OpenShift Container Platform web console.
 
 - You are logged in as a user with the `cluster-admin` role.
@@ -60,16 +55,6 @@ Prerequisites
 
 - You have enabled monitoring for user-defined projects.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  In the web console, go to **Observe** → **Dashboards**.
 
 2.  From the **Dashboard** drop-down list, select the power monitoring dashboard you want to see:
@@ -78,19 +63,9 @@ Procedure
 
     - **Power Monitor / Namespace (Pods)**
 
-</div>
-
 # Accessing power monitoring dashboards as a developer
 
 You can access power monitoring dashboards from OpenShift Container Platform web console.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the OpenShift Container Platform web console.
 
@@ -104,23 +79,11 @@ Prerequisites
 
 - You have `view` permissions for the namespace `openshift-power-monitoring`, the namespace where Kepler is deployed to.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  In the web console, go to **Observe** → **Dashboard**.
 
 2.  From the **Dashboard** drop-down list, select the power monitoring dashboard you want to see:
 
     - **Power Monitor / Overview**
-
-</div>
 
 # Additional resources
 

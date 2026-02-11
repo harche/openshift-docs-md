@@ -94,10 +94,13 @@ This release includes [Logging for Red Hat OpenShift Bug Fix Release 6.1.0](htt
 
 ## Technology Preview
 
-> [!IMPORTANT]
-> The OpenTelemetry Protocol (OTLP) output log forwarder is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+The OpenTelemetry Protocol (OTLP) output log forwarder is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 - With this update, OpenTelemetry logs can now be forwarded using the `OTel` (OpenTelemetry) data model to a Red Hat Managed LokiStack instance. To enable this feature, add the `observability.openshift.io/tech-preview-otlp-output: "enabled"` annotation to your `ClusterLogForwarder` configuration. For additional configuration information, see [OTLP Forwarding](https://github.com/openshift/cluster-logging-operator/blob/master/docs/features/logforwarding/outputs/opentelemetry-lokistack-forwarding.adoc).
 

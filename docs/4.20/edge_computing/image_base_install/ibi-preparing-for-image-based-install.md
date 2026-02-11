@@ -4,17 +4,9 @@ To prepare for an image-based installation for single-node OpenShift clusters, y
 
 - Verify that all software components meet the required versions. For further information, see "Software prerequisites for an image-based installation and deployment".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Software prerequisites for an image-based installation and deployment](../../edge_computing/image_base_install/ibi-understanding-image-based-install.xml#ztp-image-based-upgrade-prereqs_ibi-understanding-image-based-install)
-
-</div>
 
 # Installing the Lifecycle Agent
 
@@ -24,27 +16,9 @@ Use the Lifecycle Agent to generate a seed image from a seed cluster. You can in
 
 You can use the OpenShift CLI (`oc`) to install the Lifecycle Agent.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `Namespace` object YAML file for the Lifecycle Agent:
 
@@ -103,15 +77,7 @@ Procedure
         $ oc create -f <subscription_filename>.yaml
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  To verify that the installation succeeded, inspect the CSV resource by running the following command:
 
@@ -119,11 +85,9 @@ Verification
     $ oc get csv -n openshift-lifecycle-agent
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -132,19 +96,15 @@ Verification
     lifecycle-agent.v4.17.0           Openshift Lifecycle Agent   4.17.0                Succeeded
     ```
 
-    </div>
-
 2.  Verify that the Lifecycle Agent is up and running by running the following command:
 
     ``` terminal
     $ oc get deploy -n openshift-lifecycle-agent
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -153,33 +113,11 @@ Verification
     lifecycle-agent-controller-manager   1/1     1            1           14s
     ```
 
-    </div>
-
-</div>
-
 ## Installing the Lifecycle Agent by using the web console
 
 You can use the OpenShift Container Platform web console to install the Lifecycle Agent.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Ecosystem** → **Software Catalog**.
 
@@ -189,15 +127,7 @@ Procedure
 
 4.  Click **Install**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  To confirm that the installation is successful:
 
@@ -205,10 +135,11 @@ Verification
 
     2.  Ensure that the Lifecycle Agent is listed in the **openshift-lifecycle-agent** project with a **Status** of **InstallSucceeded**.
 
-        > [!NOTE]
-        > During installation an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
+        <div class="note">
 
-</div>
+        During installation an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
+
+        </div>
 
 If the Operator is not installed successfully:
 
@@ -218,18 +149,13 @@ If the Operator is not installed successfully:
 
 # Configuring a shared container partition between ostree stateroots
 
-> [!IMPORTANT]
-> You must complete this procedure at installation time.
+<div class="important">
 
-Apply a `MachineConfig` to the seed cluster to create a separate partition and share the `/var/lib/containers` partition between the two `ostree` stateroots that will be used during the preinstall process.
-
-<div>
-
-<div class="title">
-
-Procedure
+You must complete this procedure at installation time.
 
 </div>
+
+Apply a `MachineConfig` to the seed cluster to create a separate partition and share the `/var/lib/containers` partition between the two `ostree` stateroots that will be used during the preinstall process.
 
 - Apply a `MachineConfig` to create a separate partition:
 
@@ -286,8 +212,6 @@ Procedure
 
   - Specify a minimum size for the partition of 500 GB to ensure adequate disk space for precached images. If the value is too small, the deployments after installation will fail.
 
-</div>
-
 # Seed image configuration
 
 You can create a seed image from a single-node OpenShift cluster with the same hardware as your bare-metal host, and with a similar target cluster configuration. However, the seed image generated from the seed cluster cannot contain any cluster-specific configuration.
@@ -301,45 +225,45 @@ The following table lists the components, resources, and configurations that you
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Cluster configuration</th>
 <th style="text-align: left;">Include in seed image</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Performance profile</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>MachineConfig</code> resources for the target cluster</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>IP version configuration, either IPv4, IPv6, or dual-stack networking</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Set of Day 2 Operators, including the Lifecycle Agent and the OADP Operator</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Disconnected registry configuration <sup>[2]</sup></p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Valid proxy configuration <sup>[3]</sup></p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>FIPS configuration</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Dedicated partition on the primary disk for container storage that matches the size of the target clusters</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Local volumes</p>
 <ul>
 <li><p><code>StorageClass</code> used in <code>LocalVolume</code> for LSO</p></li>
@@ -351,6 +275,8 @@ The following table lists the components, resources, and configurations that you
 </tbody>
 </table>
 
+Seed image configuration
+
 1.  If the seed cluster is installed in a disconnected environment, the target clusters must also be installed in a disconnected environment.
 
 2.  The proxy configuration must be either enabled or disabled in both the seed and target clusters. However, the proxy servers configured on the clusters does not have to match.
@@ -359,18 +285,18 @@ The following table lists the components, resources, and configurations that you
 
 The following table lists the components, resources, and configurations that you must and must not include in the seed image when using the RAN DU profile:
 
-| Resource | Include in seed image |
-|----|----|
-| All extra manifests that are applied as part of Day 0 installation | Yes |
-| All Day 2 Operator subscriptions | Yes |
-| `DisableOLMPprof.yaml` | Yes |
-| `TunedPerformancePatch.yaml` | Yes |
-| `PerformanceProfile.yaml` | Yes |
-| `SriovOperatorConfig.yaml` | Yes |
-| `DisableSnoNetworkDiag.yaml` | Yes |
-| `StorageClass.yaml` | No, if it is used in `StorageLV.yaml` |
-| `StorageLV.yaml` | No |
-| `StorageLVMCluster.yaml` | No |
+| Resource                                                           | Include in seed image                 |
+|--------------------------------------------------------------------|---------------------------------------|
+| All extra manifests that are applied as part of Day 0 installation | Yes                                   |
+| All Day 2 Operator subscriptions                                   | Yes                                   |
+| `DisableOLMPprof.yaml`                                             | Yes                                   |
+| `TunedPerformancePatch.yaml`                                       | Yes                                   |
+| `PerformanceProfile.yaml`                                          | Yes                                   |
+| `SriovOperatorConfig.yaml`                                         | Yes                                   |
+| `DisableSnoNetworkDiag.yaml`                                       | Yes                                   |
+| `StorageClass.yaml`                                                | No, if it is used in `StorageLV.yaml` |
+| `StorageLV.yaml`                                                   | No                                    |
+| `StorageLVMCluster.yaml`                                           | No                                    |
 
 Seed image configuration with RAN DU profile
 
@@ -390,8 +316,11 @@ The following list of resources and configurations can be applied as extra manif
 
 - `SriovNetwork.yaml`
 
-> [!IMPORTANT]
-> If you are using GitOps ZTP, enable these resources by using RHACM policies to ensure configuration changes can be applied throughout the cluster lifecycle.
+<div class="important">
+
+If you are using GitOps ZTP, enable these resources by using RHACM policies to ensure configuration changes can be applied throughout the cluster lifecycle.
+
+</div>
 
 # Generating a seed image with the Lifecycle Agent
 
@@ -411,13 +340,7 @@ Use the Lifecycle Agent to generate a seed image from a managed cluster. The Ope
 
 - Restoring and updating the `SeedGenerator` CR on the seed cluster
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - RHACM and multicluster engine for Kubernetes Operator are not installed on the seed cluster.
 
@@ -432,16 +355,6 @@ Prerequisites
 - Ensure that the `LVMCluster` CR does not exist on the seed cluster if LVM Storage is used.
 
 - Ensure that the `DataProtectionApplication` CR does not exist on the seed cluster if OADP is used.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Detach the managed cluster from the hub to delete any RHACM-specific resources from the seed cluster that must not be in the seed image:
 
@@ -544,20 +457,13 @@ Procedure
     $ oc apply -f seedgenerator.yaml
     ```
 
-    > [!IMPORTANT]
-    > The cluster reboots and loses API capabilities while the Lifecycle Agent generates the seed image. Applying the `SeedGenerator` CR stops the `kubelet` and the CRI-O operations, then it starts the image generation.
+    <div class="important">
 
-</div>
+    The cluster reboots and loses API capabilities while the Lifecycle Agent generates the seed image. Applying the `SeedGenerator` CR stops the `kubelet` and the CRI-O operations, then it starts the image generation.
+
+    </div>
 
 If you want to generate more seed images, you must provision a new seed cluster with the version that you want to generate a seed image from.
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - After the cluster recovers and it is available, you can check the status of the `SeedGenerator` CR by running the following command:
 
@@ -565,13 +471,9 @@ Verification
   $ oc get seedgenerator -o yaml
   ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -592,7 +494,5 @@ status:
     type: SeedGenCompleted
   observedGeneration: 1
 ```
-
-</div>
 
 - The seed image generation is complete.

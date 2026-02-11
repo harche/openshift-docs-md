@@ -4,29 +4,11 @@ To update network settings or change network parameters for a secondary network 
 
 To update network settings or change network parameters for a secondary network in OpenShift Container Platform, you can modify the `NetworkAttachmentDefinition` custom resource. Edit the Cluster Network Operator CR to apply your changes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have configured a secondary network for your cluster.
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the Cluster Network Operator (CNO) CR in your default text editor by running the following command:
 
@@ -53,5 +35,3 @@ Procedure
     "mode": "bridge",
     "ipam":       {"type":"static","routes":[{"dst":"0.0.0.0/0","gw":"10.128.2.1"}],"addresses":[{"address":"10.128.2.100/23","gateway":"10.128.2.1"}],"dns":{"nameservers":["172.30.0.10"],"domain":"us-west-2.compute.internal","search":["us-west-2.compute.internal"]}} }
     ```
-
-</div>

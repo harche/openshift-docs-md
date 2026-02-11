@@ -4,29 +4,13 @@ As a cluster administrator, you can change the IP address ranges that the OVN-Ku
 
 You can change the join subnet used by OVN-Kubernetes to avoid conflicting with any existing subnets already in use in your environment.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in to the cluster with a user with `cluster-admin` privileges.
 
 - Ensure that the cluster uses the OVN-Kubernetes network plugin.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To change the OVN-Kubernetes join subnet, enter the following command:
 
@@ -42,11 +26,9 @@ Procedure
   `<join_subnet>`
   Specifies an IP address subnet for internal use by OVN-Kubernetes. The subnet must be larger than the number of nodes in the cluster and it must be large enough to accommodate one IP address per node in the cluster. This subnet cannot overlap with any other subnets used by OpenShift Container Platform or on the host itself. The default value for IPv4 is `100.64.0.0/16` and the default value for IPv6 is `fd98::/64`.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -54,17 +36,7 @@ Procedure
   network.operator.openshift.io/cluster patched
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - To confirm that the configuration is active, enter the following command:
 
@@ -75,11 +47,9 @@ Verification
 
   The command operation can take up to 30 minutes for this change to take effect.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -92,35 +62,15 @@ Verification
         "type": "OVNKubernetes"
       }
 
-  </div>
-
-</div>
-
 # Configuring the OVN-Kubernetes masquerade subnet as a post-installation operation
 
 You can change the masquerade subnet used by OVN-Kubernetes as a post-installation operation to avoid conflicts with any existing subnets that are already in use in your environment.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in to the cluster as a user with `cluster-admin` privileges.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Change your cluster’s masquerade subnet:
 
@@ -148,19 +98,9 @@ Procedure
 
     `ipv4_masquerade_subnet`::Specifies an IP address to be used as the IPv4 masquerade subnet. This range cannot overlap with any other subnets used by OpenShift Container Platform or on the host itself. In versions of OpenShift Container Platform earlier than 4.17, the default value for IPv4 was `169.254.169.0/29`, and clusters that were upgraded to version 4.17 maintain this value. For new clusters starting from version 4.17, the default value is `169.254.0.0/17`.
 
-</div>
-
 # Configuring the OVN-Kubernetes transit subnet
 
 You can change the transit subnet used by OVN-Kubernetes to avoid conflicting with any existing subnets already in use in your environment.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Install the OpenShift CLI (`oc`).
 
@@ -168,15 +108,7 @@ Prerequisites
 
 - Ensure that the cluster uses the OVN-Kubernetes network plugin.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To change the OVN-Kubernetes transit subnet, enter the following command:
 
@@ -192,11 +124,9 @@ Procedure
   `<transit_subnet>`
   Specifies an IP address subnet for the distributed transit switch that enables east-west traffic. This subnet cannot overlap with any other subnets used by OVN-Kubernetes or on the host itself. The default value for IPv4 is `100.88.0.0/16` and the default value for IPv6 is `fd97::/64`.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -204,17 +134,7 @@ Procedure
   network.operator.openshift.io/cluster patched
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - To confirm that the configuration is active, enter the following command:
 
@@ -225,11 +145,9 @@ Verification
 
   It can take up to 30 minutes for this change to take effect.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -241,7 +159,3 @@ Verification
         },
         "type": "OVNKubernetes"
       }
-
-  </div>
-
-</div>

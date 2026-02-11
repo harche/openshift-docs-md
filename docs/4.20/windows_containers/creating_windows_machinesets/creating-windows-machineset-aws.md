@@ -8,11 +8,9 @@ You can create a Windows `MachineSet` object to serve a specific purpose in your
 
   Use one of the following `aws` commands, as appropriate for your Windows Server release, to query valid AMI images:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example Windows Server 2022 command
+  **Example Windows Server 2022 command**
 
   </div>
 
@@ -20,21 +18,15 @@ You can create a Windows `MachineSet` object to serve a specific purpose in your
   $ aws ec2 describe-images --region <aws_region_name> --filters "Name=name,Values=Windows_Server-2022*English*Core*Base*" "Name=is-public,Values=true" --query "reverse(sort_by(Images, &CreationDate))[*].{name: Name, id: ImageId}" --output table
   ```
 
-  </div>
+  <div class="formalpara-title">
 
-  <div class="formalpara">
-
-  <div class="title">
-
-  Example Windows Server 2019 command
+  **Example Windows Server 2019 command**
 
   </div>
 
   ``` terminal
   $ aws ec2 describe-images --region <aws_region_name> --filters "Name=name,Values=Windows_Server-2019*English*Core*Base*" "Name=is-public,Values=true" --query "reverse(sort_by(Images, &CreationDate))[*].{name: Name, id: ImageId}" --output table
   ```
-
-  </div>
 
   where:
 
@@ -57,12 +49,15 @@ A fundamental unit that describes the host for a node. A machine has a `provider
 Machine sets
 `MachineSet` resources are groups of compute machines. Compute machine sets are to compute machines as replica sets are to pods. If you need more compute machines or must scale them down, you change the `replicas` field on the `MachineSet` resource to meet your compute need.
 
-> [!WARNING]
-> Control plane machines cannot be managed by compute machine sets.
->
-> Control plane machine sets provide management capabilities for supported control plane machines that are similar to what compute machine sets provide for compute machines.
->
-> For more information, see “Managing control plane machines".
+<div class="warning">
+
+Control plane machines cannot be managed by compute machine sets.
+
+Control plane machine sets provide management capabilities for supported control plane machines that are similar to what compute machine sets provide for compute machines.
+
+For more information, see “Managing control plane machines".
+
+</div>
 
 The following custom resources add more capabilities to your cluster:
 
@@ -171,8 +166,11 @@ spec:
 
 - Specify the AMI ID of a supported Windows image with a container runtime installed.
 
-  > [!NOTE]
-  > For disconnected clusters, the Windows AMI must have the EC2LaunchV2 agent version 2.0.2107 or later installed. For more information, see the [Install the latest version of EC2Launch v2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2launch-v2-install.html) in the AWS documentation.
+  <div class="note">
+
+  For disconnected clusters, the Windows AMI must have the EC2LaunchV2 agent version 2.0.2107 or later installed. For more information, see the [Install the latest version of EC2Launch v2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2launch-v2-install.html) in the AWS documentation.
+
+  </div>
 
 - Specify the AWS zone, like `us-east-1a`.
 
@@ -184,14 +182,6 @@ spec:
 
 In addition to the compute machine sets created by the installation program, you can create your own to dynamically manage the machine compute resources for specific workloads of your choice.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Deploy an OpenShift Container Platform cluster.
 
 - Install the OpenShift CLI (`oc`).
@@ -199,16 +189,6 @@ Prerequisites
 - Log in to `oc` as a user with `cluster-admin` permission.
 
 - In disconnected environments, the image specified in the `MachineSet` custom resource (CR) must have the [OpenSSH server v0.0.1.0 installed](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse?tabs=powershell#install-openssh-for-windows).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a new YAML file that contains the compute machine set custom resource (CR) sample and is named `<file_name>.yaml`.
 
@@ -222,11 +202,9 @@ Procedure
         $ oc get machinesets -n openshift-machine-api
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -240,8 +218,6 @@ Procedure
         agl030519-vplxk-worker-us-east-1f   0         0                             55m
         ```
 
-        </div>
-
     2.  To view values of a specific compute machine set custom resource (CR), run the following command:
 
         ``` terminal
@@ -249,11 +225,9 @@ Procedure
           -n openshift-machine-api -o yaml
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -283,14 +257,15 @@ Procedure
                 ...
         ```
 
-        </div>
-
         - The cluster infrastructure ID.
 
         - A default node label.
 
-          > [!NOTE]
-          > For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
+          <div class="note">
+
+          For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
+
+          </div>
 
         - The values in the `<providerSpec>` section of the compute machine set CR are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
 
@@ -300,27 +275,15 @@ Procedure
     $ oc create -f <file_name>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - View the list of compute machine sets by running the following command:
 
   ``` terminal
   $ oc get machineset -n openshift-machine-api
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -335,11 +298,7 @@ Verification
   agl030519-vplxk-worker-us-east-1f          0         0                             55m
   ```
 
-  </div>
-
   When the new compute machine set is available, the `DESIRED` and `CURRENT` values match. If the compute machine set is not available, wait a few minutes and run the command again.
-
-</div>
 
 # Additional resources
 

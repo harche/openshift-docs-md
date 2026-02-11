@@ -18,34 +18,37 @@ If you need access to log files inside a container, inject the Collector as a si
 
 If you need to configure an application to send telemetry data via `localhost`, inject the Collector as a sidecar, and set up the Collector to forward the telemetry data to an external service via an encrypted and authenticated connection. The Collector runs in the same pod as the application when injected as a sidecar.
 
-> [!NOTE]
-> If you choose the sidecar deployment mode, then in addition to setting the `spec.mode: sidecar` field in the `OpenTelemetryCollector` custom resource CR, you must also set the `sidecar.opentelemetry.io/inject` annotation as a pod annotation or namespace annotation. If you set this annotation on both the pod and namespace, the pod annotation takes precedence if it is set to either `false` or the `OpenTelemetryCollector` CR name.
->
-> As a pod annotation, the `sidecar.opentelemetry.io/inject` annotation supports several values:
->
-> ``` yaml
-> apiVersion: v1
-> kind: Pod
-> metadata:
->   ...
->   annotations:
->     sidecar.opentelemetry.io/inject: "<supported_value>"
-> ...
-> ```
->
-> - Supported values:
->
->   `false`
->   Does not inject the Collector. This is the default if the annotation is missing.
->
->   `true`
->   Injects the Collector with the configuration of the `OpenTelemetryCollector` CR in the same namespace.
->
->   `<collector_name>`
->   Injects the Collector with the configuration of the `<collector_name>` `OpenTelemetryCollector` CR in the same namespace.
->
->   `<namespace>/<collector_name>`
->   Injects the Collector with the configuration of the `<collector_name>` `OpenTelemetryCollector` CR in the `<namespace>` namespace.
+<div class="note">
+
+If you choose the sidecar deployment mode, then in addition to setting the `spec.mode: sidecar` field in the `OpenTelemetryCollector` custom resource CR, you must also set the `sidecar.opentelemetry.io/inject` annotation as a pod annotation or namespace annotation. If you set this annotation on both the pod and namespace, the pod annotation takes precedence if it is set to either `false` or the `OpenTelemetryCollector` CR name.
+
+As a pod annotation, the `sidecar.opentelemetry.io/inject` annotation supports several values:
+
+``` yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  ...
+  annotations:
+    sidecar.opentelemetry.io/inject: "<supported_value>"
+...
+```
+
+- Supported values:
+
+  `false`
+  Does not inject the Collector. This is the default if the annotation is missing.
+
+  `true`
+  Injects the Collector with the configuration of the `OpenTelemetryCollector` CR in the same namespace.
+
+  `<collector_name>`
+  Injects the Collector with the configuration of the `<collector_name>` `OpenTelemetryCollector` CR in the same namespace.
+
+  `<namespace>/<collector_name>`
+  Injects the Collector with the configuration of the `<collector_name>` `OpenTelemetryCollector` CR in the `<namespace>` namespace.
+
+</div>
 
 # OpenTelemetry Collector configuration options
 
@@ -63,11 +66,9 @@ The OpenTelemetry Collector consists of five types of components that access tel
 
 You can define multiple instances of components in a custom resource YAML file. When configured, these components must be enabled through pipelines defined in the `spec.config.service` section of the YAML file. As a best practice, only enable the components that you need.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example of the OpenTelemetry Collector custom resource file
+**Example of the OpenTelemetry Collector custom resource file**
 
 </div>
 
@@ -110,8 +111,6 @@ spec:
           exporters: [prometheus]
 ```
 
-</div>
-
 - If a component is configured but not defined in the `service` section, the component is not enabled.
 
 <table>
@@ -123,7 +122,7 @@ spec:
 <col style="width: 25%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Values</th>
@@ -131,44 +130,44 @@ spec:
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>receivers:</code></pre></td>
 <td style="text-align: left;"><p>A receiver is how data gets into the Collector. By default, no receivers are configured. There must be at least one enabled receiver for a configuration to be considered valid. Receivers are enabled by being added to a pipeline.</p></td>
 <td style="text-align: left;"><p><code>otlp</code>, <code>jaeger</code>, <code>prometheus</code>, <code>zipkin</code>, <code>kafka</code>, <code>opencensus</code></p></td>
 <td style="text-align: left;"><p>None</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>processors:</code></pre></td>
 <td style="text-align: left;"><p>Processors run through the received data before it is exported. By default, no processors are enabled.</p></td>
 <td style="text-align: left;"><p><code>batch</code>, <code>memory_limiter</code>, <code>resourcedetection</code>, <code>attributes</code>, <code>span</code>, <code>k8sattributes</code>, <code>filter</code>, <code>routing</code></p></td>
 <td style="text-align: left;"><p>None</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>exporters:</code></pre></td>
 <td style="text-align: left;"><p>An exporter sends data to one or more back ends or destinations. By default, no exporters are configured. There must be at least one enabled exporter for a configuration to be considered valid. Exporters are enabled by being added to a pipeline. Exporters might be used with their default settings, but many require configuration to specify at least the destination and security settings.</p></td>
 <td style="text-align: left;"><p><code>otlp</code>, <code>otlphttp</code>, <code>debug</code>, <code>prometheus</code>, <code>kafka</code></p></td>
 <td style="text-align: left;"><p>None</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>connectors:</code></pre></td>
 <td style="text-align: left;"><p>Connectors join pairs of pipelines by consuming data as end-of-pipeline exporters and emitting data as start-of-pipeline receivers. Connectors can be used to summarize, replicate, or route consumed data.</p></td>
 <td style="text-align: left;"><p><code>spanmetrics</code></p></td>
 <td style="text-align: left;"><p>None</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>extensions:</code></pre></td>
 <td style="text-align: left;"><p>Optional components for tasks that do not involve processing telemetry data.</p></td>
 <td style="text-align: left;"><p><code>bearertokenauth</code>, <code>oauth2client</code>, <code>pprof</code>, <code>health_check</code>, <code>memory_ballast</code>, <code>zpages</code></p></td>
 <td style="text-align: left;"><p>None</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>service:
   pipelines:</code></pre></td>
 <td style="text-align: left;"><p>Components are enabled by adding them to a pipeline under <code>services.pipeline</code>.</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>service:
   pipelines:
     traces:
@@ -177,7 +176,7 @@ spec:
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>None</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>service:
   pipelines:
     traces:
@@ -186,7 +185,7 @@ spec:
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>None</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>service:
   pipelines:
     traces:
@@ -195,7 +194,7 @@ spec:
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>None</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>service:
   pipelines:
     metrics:
@@ -204,7 +203,7 @@ spec:
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>None</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>service:
   pipelines:
     metrics:
@@ -213,7 +212,7 @@ spec:
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>None</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>service:
   pipelines:
     metrics:
@@ -225,14 +224,19 @@ spec:
 </tbody>
 </table>
 
+Parameters used by the Operator to define the OpenTelemetry Collector
+
 # Profile signal
 
 The Profile signal is an emerging telemetry data format for observing code execution and resource consumption.
 
-> [!IMPORTANT]
-> The Profile signal is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+The Profile signal is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 The Profile signal allows you to pinpoint inefficient code down to specific functions. Such profiling allows you to precisely identify performance bottlenecks and resource inefficiencies down to the specific line of code. By correlating such high-fidelity profile data with traces, metrics, and logs, it enables comprehensive performance analysis and targeted code optimization in production environments.
 
@@ -242,11 +246,9 @@ Profiling can target an application or operating system:
 
 - Using profiling to observe operating systems can provide insights into the infrastructure, system calls, kernel operations, and I/O wait times, and thus help in optimizing infrastructure for efficiency and cost savings.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector custom resource with the enabled Profile signal
+**OpenTelemetry Collector custom resource with the enabled Profile signal**
 
 </div>
 
@@ -278,8 +280,6 @@ spec:
 # ...
 ```
 
-</div>
-
 - Enables profiles by setting the `feature-gates` field as shown here.
 
 - Configures the OTLP Receiver to set up the OpenTelemetry Collector to receive profile data via the OTLP.
@@ -288,31 +288,15 @@ spec:
 
 - Defines a profiling pipeline, including a configuration for forwarding the received profile data to an OTLP-compatible profiling back end such as Grafana Pyroscope.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [OpenTelemetry Profiles](https://opentelemetry.io/docs/specs/otel/profiles/)
 
 - [Profiles attributes](https://opentelemetry.io/docs/specs/semconv/general/profiles/)
 
-</div>
-
 # Creating the required RBAC resources automatically
 
 Some Collector components require configuring the RBAC resources.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Add the following permissions to the `opentelemetry-operator-controller-manage` service account so that the Red Hat build of OpenTelemetry Operator can create them automatically:
 
@@ -350,22 +334,21 @@ Procedure
     namespace: openshift-opentelemetry-operator
   ```
 
-</div>
-
 # Target Allocator
 
 The Target Allocator is an optional component of the OpenTelemetry Operator that shards scrape targets across the deployed fleet of OpenTelemetry Collector instances. The Target Allocator integrates with the Prometheus `PodMonitor` and `ServiceMonitor` custom resources (CR). When the Target Allocator is enabled, the OpenTelemetry Operator adds the `http_sd_config` field to the enabled `prometheus` receiver that connects to the Target Allocator service.
 
-> [!IMPORTANT]
-> The Target Allocator is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Target Allocator is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-Example OpenTelemetryCollector CR with the enabled Target Allocator
+</div>
+
+<div class="formalpara-title">
+
+**Example OpenTelemetryCollector CR with the enabled Target Allocator**
 
 </div>
 
@@ -404,8 +387,6 @@ spec:
 # ...
 ```
 
-</div>
-
 - When the Target Allocator is enabled, the deployment mode must be set to `statefulset`.
 
 - Enables the Target Allocator. Defaults to `false`.
@@ -422,11 +403,9 @@ spec:
 
 The Target Allocator deployment uses the Kubernetes API to get relevant objects from the cluster, so it requires a custom RBAC configuration.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-RBAC configuration for the Target Allocator service account
+**RBAC configuration for the Target Allocator service account**
 
 </div>
 
@@ -468,8 +447,6 @@ subjects:
     namespace: observability
 # ...
 ```
-
-</div>
 
 - The name of the Target Allocator service account.
 

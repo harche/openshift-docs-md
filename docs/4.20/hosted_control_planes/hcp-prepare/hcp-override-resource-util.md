@@ -4,14 +4,6 @@ The set of baseline measurements for resource utilization can vary in each hoste
 
 You can override resource utilization measurements based on the type and pace of your cluster workload.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the `ConfigMap` resource by running the following command:
 
     ``` terminal
@@ -41,16 +33,6 @@ Procedure
       -n open-cluster-management-agent-addon
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Observe the `hypershift-addon-agent` pod logs. Verify that the overridden measurements are updated in the config map by running the following command:
 
   ``` terminal
@@ -59,11 +41,9 @@ Verification
 
   Your logs might resemble the following output:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -74,15 +54,11 @@ Verification
   2024-01-05T19:53:54.070Z    INFO    agent.agent-reconciler  agent/hcp_capacity_calculation.go:142   The worker nodes have 49.173369 GB memory
   ```
 
-  </div>
-
   If the overridden measurements are not updated properly in the `hcp-sizing-baseline` config map, you might see the following error message in the `hypershift-addon-agent` pod logs:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example error
+  **Example error**
 
   </div>
 
@@ -90,25 +66,17 @@ Verification
   2024-01-05T19:53:54.052Z ERROR   agent.agent-reconciler  agent/agent.go:788  failed to get configmap from the hub. Setting the HCP sizing baseline with default values.  {"error": "configmaps \"hcp-sizing-baseline\" not found"}
   ```
 
-  </div>
-
-</div>
-
 # Disabling the metric service monitoring
 
 After you enable the `hypershift-addon` managed cluster add-on, metric service monitoring is configured by default so that OpenShift Container Platform monitoring can gather metrics from `hypershift-addon`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 You can disable metric service monitoring by completing the following steps:
-
-</div>
 
 1.  Log in to your hub cluster by running the following command:
 

@@ -122,14 +122,6 @@ OpenShift Container Platform has multiple components within its framework that u
 
 You can configure custom serving certificates for the public hostnames of the API server and web console during initial installation or when redeploying certificates. You can also use a custom CA.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Introduction to OpenShift Container Platform](../../architecture/architecture.xml#architecture-platform-introduction_architecture)
 
 - [Using RBAC to define and apply permissions](../../authentication/using-rbac.xml#using-rbac)
@@ -149,5 +141,3 @@ Additional resources
 - [Certificate types and descriptions](../../security/certificate_types_descriptions/user-provided-certificates-for-api-server.xml#cert-types-user-provided-certificates-for-the-api-server)
 
 - [Proxy certificates](../../security/certificate_types_descriptions/proxy-certificates.xml#cert-types-proxy-certificates)
-
-</div>

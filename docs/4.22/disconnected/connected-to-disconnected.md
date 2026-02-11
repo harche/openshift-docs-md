@@ -12,8 +12,11 @@ You can mirror the images that are required for OpenShift Container Platform ins
 
 You can use any container registry that supports [Docker v2-2](https://docs.docker.com/registry/spec/manifest-v2-2), such as Red Hat Quay, the *mirror registry for Red Hat OpenShift*, Artifactory, Sonatype Nexus Repository, or Harbor. Regardless of your chosen registry, the procedure to mirror content from Red Hat hosted sites on the internet to an isolated image registry is the same. After you mirror the content, you configure each cluster to retrieve this content from your mirror registry.
 
-> [!IMPORTANT]
-> The OpenShift image registry cannot be used as the target registry because it does not support pushing without a tag, which is required during the mirroring process.
+<div class="important">
+
+The OpenShift image registry cannot be used as the target registry because it does not support pushing without a tag, which is required during the mirroring process.
+
+</div>
 
 If choosing a container registry that is not the *mirror registry for Red Hat OpenShift*, it must be reachable by every machine in the clusters that you provision. If the registry is unreachable, installation, updating, or normal operations such as workload relocation might fail. For that reason, you must run mirror registries in a highly available way, and the mirror registries must at least match the production availability of your OpenShift Container Platform clusters.
 
@@ -21,8 +24,11 @@ When you populate your mirror registry with OpenShift Container Platform images,
 
 For mirrored registries, to view the source of pulled images, you must review the `Trying to access` log entry in the CRI-O logs. Other methods to view the image pull source, such as using the `crictl images` command on a node, show the non-mirrored image name, even though the image is pulled from the mirrored location.
 
-> [!NOTE]
-> Red Hat does not test third party registries with OpenShift Container Platform.
+<div class="note">
+
+Red Hat does not test third party registries with OpenShift Container Platform.
+
+</div>
 
 # Prerequisites
 
@@ -54,14 +60,6 @@ Before disconnecting your cluster, you must mirror, or copy, the images to a mir
 
 - Creating a `.dockerconfigjson` file that contains your image pull secret, which is from the `cloud.openshift.com` token.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Configuring credentials that allow image mirroring:
 
     1.  Add the CA certificate for the mirror registry, in the simple PEM or DER file formats, to the list of trusted CAs. For example:
@@ -85,19 +83,15 @@ Procedure
         $ oc extract secret/pull-secret -n openshift-config --confirm --to=.
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
         ``` terminal
         .dockerconfigjson
         ```
-
-        </div>
 
     4.  Edit the `.dockerconfigjson` file to add your mirror registry and authentication credentials and save it as a new file:
 
@@ -129,19 +123,9 @@ Procedure
         "registry.svc.ci.openshift.org":{"auth":"dXNlcjpyWjAwWVFjSEJiT2RKVW1pSmg4dW92dGp1SXRxQ3RGN1pwajJhN1ZXeTRV"},"my-registry:5000/my-namespace/":{"auth":"dXNlcm5hbWU6cGFzc3dvcmQ="}}}
         ```
 
-</div>
-
 # Mirroring the images
 
 After the cluster is properly configured, you can mirror the images from your external repositories to the mirror repository.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Mirror the Operator Lifecycle Manager (OLM) images:
 
@@ -215,11 +199,9 @@ Procedure
     $ oc adm release mirror -a .dockerconfigjson --from=quay.io/openshift-release-dev/ocp-release:4.8.15-x86_64 --to=mirror.registry.com:443/ocp/release --to-release-image=mirror.registry.com:443/ocp/release:4.8.15-x86_64
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -244,29 +226,15 @@ Procedure
     Mirror prefix: mirror.registry.com:443/ocp/release
     ```
 
-    </div>
-
 4.  Mirror any other registries, as needed:
 
     ``` terminal
     $ oc image mirror <online_registry>/my/image:latest <mirror_registry>
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - For more information about mirroring Operator catalogs, see [Mirroring an Operator catalog](../disconnected/using-olm.xml#olm-mirror-catalog_olm-restricted-networks).
 
 - For more information about the `oc adm catalog mirror` command, see the [OpenShift CLI administrator command reference](../cli_reference/openshift_cli/administrator-cli-commands.xml#oc-adm-catalog-mirror).
-
-</div>
 
 # Configuring the cluster for the mirror registry
 
@@ -349,19 +317,15 @@ You must:
           $ oc create -f registryrepomirror.yaml
           ```
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example output
+          **Example output**
 
           </div>
 
           ``` terminal
           imagecontentsourcepolicy.operator.openshift.io/mirror-ocp created
           ```
-
-          </div>
 
           OpenShift Container Platform applies the changes to this CR to all nodes in the cluster.
 
@@ -385,19 +349,15 @@ You must:
           sh-4.4# cat /var/lib/kubelet/config.json
           ```
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example output
+          **Example output**
 
           </div>
 
           ``` terminal
           {"auths":{"brew.registry.redhat.io":{"xx=="},"brewregistry.stage.redhat.io":{"auth":"xxx=="},"mirror.registry.com:443":{"auth":"xx="}}}
           ```
-
-          </div>
 
           - Ensure that the mirror registry and credentials are present.
 
@@ -413,19 +373,15 @@ You must:
           sh-4.4# ls
           ```
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example output
+          **Example output**
 
           </div>
 
               image-registry.openshift-image-registry.svc.cluster.local:5000
               image-registry.openshift-image-registry.svc:5000
               mirror.registry.com:443
-
-          </div>
 
           - Ensure that the mirror registry is in the list.
 
@@ -435,11 +391,9 @@ You must:
           sh-4.4# cat /etc/containers/registries.conf
           ```
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example output
+          **Example output**
 
           </div>
 
@@ -463,8 +417,6 @@ You must:
               location = "mirror.registry.com:443/ocp/release"
           ```
 
-          </div>
-
           The `registry.mirror` parameters indicate that the mirror registry is searched before the original registry.
 
       7.  Exit the node.
@@ -477,17 +429,13 @@ You must:
 
 Before disconnecting the cluster from the network, ensure that your cluster is working as expected and all of your applications are working as expected.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 Use the following commands to check the status of your cluster:
-
-</div>
 
 - Ensure your pods are running:
 
@@ -495,11 +443,9 @@ Use the following commands to check the status of your cluster:
   $ oc get pods --all-namespaces
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -515,19 +461,15 @@ Use the following commands to check the status of your cluster:
    ...
   ```
 
-  </div>
-
 - Ensure your nodes are in the READY status:
 
   ``` terminal
   $ oc get nodes
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -541,28 +483,21 @@ Use the following commands to check the status of your cluster:
   ci-ln-47ltxtb-f76d1-mrffg-worker-c-rjkpq   Ready    worker   34m   v1.34.2
   ```
 
-  </div>
-
 # Disconnect the cluster from the network
 
 After mirroring all the required repositories and configuring your cluster to work as a disconnected cluster, you can disconnect the cluster from the network.
 
-> [!NOTE]
-> The Insights Operator is degraded when the cluster loses its Internet connection. You can avoid this problem by temporarily [disabling the Insights Operator](../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-new-pull-secret-disabled_remote-health-reporting) until you can restore it.
+<div class="note">
+
+The Insights Operator is degraded when the cluster loses its Internet connection. You can avoid this problem by temporarily [disabling the Insights Operator](../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-new-pull-secret-disabled_remote-health-reporting) until you can restore it.
+
+</div>
 
 # Restoring a degraded Insights Operator
 
 Disconnecting the cluster from the network necessarily causes the cluster to lose the Internet connection. The Insights Operator becomes degraded because it requires access to [Red Hat Lightspeed](https://console.redhat.com).
 
 This topic describes how to recover from a degraded Insights Operator.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit your `.dockerconfigjson` file to remove the `cloud.openshift.com` entry, for example:
 
@@ -584,11 +519,9 @@ Procedure
     $ oc get co insights
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -597,21 +530,9 @@ Procedure
     insights   4.5.41    True        False         False      3d
     ```
 
-    </div>
-
-</div>
-
 # Restoring the network
 
 If you want to reconnect a disconnected cluster and pull images from online registries, delete the cluster’s ImageContentSourcePolicy (ICSP) objects. Without the ICSP, pull requests to external registries are no longer redirected to the mirror registry.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  View the ICSP objects in your cluster:
 
@@ -619,11 +540,9 @@ Procedure
     $ oc get imagecontentsourcepolicy
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -633,8 +552,6 @@ Procedure
     ocp4-index-0         6d18h
     qe45-index-0         6d15h
     ```
-
-    </div>
 
 2.  Delete all the ICSP objects you created when disconnecting your cluster:
 
@@ -648,11 +565,9 @@ Procedure
     $ oc delete imagecontentsourcepolicy mirror-ocp ocp4-index-0 qe45-index-0
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -661,8 +576,6 @@ Procedure
     imagecontentsourcepolicy.operator.openshift.io "ocp4-index-0" deleted
     imagecontentsourcepolicy.operator.openshift.io "qe45-index-0" deleted
     ```
-
-    </div>
 
 3.  Wait for all the nodes to restart and return to the READY status and verify that the `registries.conf` file is pointing to the original registries and not the mirror registries:
 
@@ -684,11 +597,9 @@ Procedure
         sh-4.4# cat /etc/containers/registries.conf
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -696,8 +607,4 @@ Procedure
         unqualified-search-registries = ["registry.access.redhat.com", "docker.io"]
         ```
 
-        </div>
-
         - The `registry` and `registry.mirror` entries created by the ICSPs you deleted are removed.
-
-</div>

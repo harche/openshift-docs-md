@@ -52,19 +52,15 @@ This is addressed by introducing the new `pod_network_name_info` described in th
 
 The Network Metrics daemonset publishes a `pod_network_name_info` gauge metric, with a fixed value of `0`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example of `pod_network_name_info`
+**Example of `pod_network_name_info`**
 
 </div>
 
 ``` bash
 pod_network_name_info{interface="net0",namespace="namespacename",network_name="nadnamespace/firstNAD",pod="podname"} 0
 ```
-
-</div>
 
 The network name label is produced using the annotation added by Multus. It is the concatenation of the namespace the network attachment definition belongs to, plus the name of the network attachment definition.
 

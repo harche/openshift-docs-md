@@ -11,13 +11,13 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | Specification of the desired behavior of BaselineAdminNetworkPolicy. |
-| `status` | `object` | Status is the status to be reported by the implementation. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | Specification of the desired behavior of BaselineAdminNetworkPolicy.                                                                                                                                                                                                                                 |
+| `status`     | `object`                                                                             | Status is the status to be reported by the implementation.                                                                                                                                                                                                                                           |
 
 ## .spec
 
@@ -37,36 +37,36 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>egress</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Egress is the list of Egress rules to be applied to the selected pods if they are not matched by any AdminNetworkPolicy or NetworkPolicy rules. A total of 100 Egress rules will be allowed in each BANP instance. The relative precedence of egress rules within a single BANP object will be determined by the order in which the rule is written. Thus, a rule that appears at the top of the egress rules would take the highest precedence. BANPs with no egress rules do not affect egress traffic.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>egress[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BaselineAdminNetworkPolicyEgressRule describes an action to take on a particular set of traffic originating from pods selected by a BaselineAdminNetworkPolicy’s Subject field. &lt;network-policy-api:experimental:validation&gt;</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ingress</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Ingress is the list of Ingress rules to be applied to the selected pods if they are not matched by any AdminNetworkPolicy or NetworkPolicy rules. A total of 100 Ingress rules will be allowed in each BANP instance. The relative precedence of ingress rules within a single BANP object will be determined by the order in which the rule is written. Thus, a rule that appears at the top of the ingress rules would take the highest precedence. BANPs with no ingress rules do not affect ingress traffic.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>ingress[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BaselineAdminNetworkPolicyIngressRule describes an action to take on a particular set of traffic destined for pods selected by a BaselineAdminNetworkPolicy’s Subject field.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>subject</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Subject defines the pods to which this BaselineAdminNetworkPolicy applies. Note that host-networked pods are not included in subject selection.</p>
@@ -105,42 +105,42 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>action</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Action specifies the effect this rule will have on matching traffic. Currently the following actions are supported: Allow: allows the selected traffic Deny: denies the selected traffic</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name is an identifier for this rule, that may be no more than 100 characters in length. This field should be used by the implementation to help improve observability, readability and error-reporting for any applied BaselineAdminNetworkPolicies.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ports</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Ports allows for matching traffic based on port and protocols. This field is a list of destination ports for the outgoing egress traffic. If Ports is not set then the rule does not filter traffic via port.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>ports[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>AdminNetworkPolicyPort describes how to select network ports on pod(s). Exactly one field must be set.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>to</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>To is the list of destinations whose traffic this rule applies to. If any AdminNetworkPolicyEgressPeer matches the destination of outgoing traffic then the specified action is applied. This field must be defined and contain at least one item.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>to[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>AdminNetworkPolicyEgressPeer defines a peer to allow traffic to. Exactly one of the selector pointers must be set for a given peer. If a consumer observes none of its fields are set, they must assume an unknown option has been specified and fail closed.</p></td>
@@ -171,27 +171,27 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>namedPort</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>NamedPort selects a port on a pod(s) based on name.</p>
 <p>Support: Extended</p>
 <p>&lt;network-policy-api:experimental&gt;</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>portNumber</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Port selects a port on a pod(s) based on number.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>portRange</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>PortRange selects a port range on a pod(s) based on provided start and end values.</p>
@@ -222,20 +222,20 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>port</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Number defines a network port value.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>protocol</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Protocol is the network protocol (TCP, UDP, or SCTP) which traffic must match. If not specified, this field defaults to TCP.</p>
@@ -266,26 +266,26 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>end</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>End defines a network port that is the end of a port range, the End value must be greater than Start.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>protocol</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Protocol is the network protocol (TCP, UDP, or SCTP) which traffic must match. If not specified, this field defaults to TCP.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>start</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Start defines a network port that is the start of a port range, the Start value must be less than End.</p>
@@ -319,20 +319,20 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>namespaces</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Namespaces defines a way to select all pods within a set of Namespaces. Note that host-networked pods are not included in this type of peer.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>networks</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>Networks defines a way to select peers via CIDR blocks. This is intended for representing entities that live outside the cluster, which can’t be selected by pods, namespaces and nodes peers, but note that cluster-internal traffic will be checked against the rule as well. So if you Allow or Deny traffic to <code>"0.0.0.0/0"</code>, that will allow or deny all IPv4 pod-to-pod traffic as well. If you don’t want that, add a rule that Passes all pod traffic before the Networks rule.</p>
@@ -341,14 +341,14 @@ Type
 <p>Support: Extended</p>
 <p>&lt;network-policy-api:experimental&gt;</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>nodes</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Nodes defines a way to select a set of nodes in the cluster. This field follows standard label selector semantics; if present but empty, it selects all Nodes.</p>
 <p>Support: Extended</p>
 <p>&lt;network-policy-api:experimental&gt;</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>pods</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Pods defines a way to select a set of pods in a set of namespaces. Note that host-networked pods are not included in this type of peer.</p>
@@ -367,11 +367,11 @@ Support: Core
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.egress\[\].to\[\].namespaces.matchExpressions
 
@@ -394,11 +394,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.egress\[\].to\[\].nodes
 
@@ -412,11 +412,11 @@ Support: Extended
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.egress\[\].to\[\].nodes.matchExpressions
 
@@ -439,11 +439,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.egress\[\].to\[\].pods
 
@@ -460,10 +460,10 @@ Required
 
 - `podSelector`
 
-| Property | Type | Description |
-|----|----|----|
+| Property            | Type     | Description                                                                                       |
+|---------------------|----------|---------------------------------------------------------------------------------------------------|
 | `namespaceSelector` | `object` | NamespaceSelector follows standard label selector semantics; if empty, it selects all Namespaces. |
-| `podSelector` | `object` | PodSelector is used to explicitly select pods within a namespace; if empty, it selects all Pods. |
+| `podSelector`       | `object` | PodSelector is used to explicitly select pods within a namespace; if empty, it selects all Pods.  |
 
 ## .spec.egress\[\].to\[\].pods.namespaceSelector
 
@@ -473,11 +473,11 @@ NamespaceSelector follows standard label selector semantics; if empty, it select
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.egress\[\].to\[\].pods.namespaceSelector.matchExpressions
 
@@ -500,11 +500,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.egress\[\].to\[\].pods.podSelector
 
@@ -514,11 +514,11 @@ PodSelector is used to explicitly select pods within a namespace; if empty, it s
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.egress\[\].to\[\].pods.podSelector.matchExpressions
 
@@ -541,11 +541,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.ingress
 
@@ -577,43 +577,43 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>action</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Action specifies the effect this rule will have on matching traffic. Currently the following actions are supported: Allow: allows the selected traffic Deny: denies the selected traffic</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>from</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>From is the list of sources whose traffic this rule applies to. If any AdminNetworkPolicyIngressPeer matches the source of incoming traffic then the specified action is applied. This field must be defined and contain at least one item.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>from[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>AdminNetworkPolicyIngressPeer defines an in-cluster peer to allow traffic from. Exactly one of the selector pointers must be set for a given peer. If a consumer observes none of its fields are set, they must assume an unknown option has been specified and fail closed.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name is an identifier for this rule, that may be no more than 100 characters in length. This field should be used by the implementation to help improve observability, readability and error-reporting for any applied BaselineAdminNetworkPolicies.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ports</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Ports allows for matching traffic based on port and protocols. This field is a list of ports which should be matched on the pods selected for this policy i.e the subject of the policy. So it matches on the destination port for the ingress traffic. If Ports is not set then the rule does not filter traffic via port.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>ports[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>AdminNetworkPolicyPort describes how to select network ports on pod(s). Exactly one field must be set.</p></td>
@@ -646,20 +646,20 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>namespaces</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Namespaces defines a way to select all pods within a set of Namespaces. Note that host-networked pods are not included in this type of peer.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>pods</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Pods defines a way to select a set of pods in a set of namespaces. Note that host-networked pods are not included in this type of peer.</p>
@@ -678,11 +678,11 @@ Support: Core
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.ingress\[\].from\[\].namespaces.matchExpressions
 
@@ -705,11 +705,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.ingress\[\].from\[\].pods
 
@@ -726,10 +726,10 @@ Required
 
 - `podSelector`
 
-| Property | Type | Description |
-|----|----|----|
+| Property            | Type     | Description                                                                                       |
+|---------------------|----------|---------------------------------------------------------------------------------------------------|
 | `namespaceSelector` | `object` | NamespaceSelector follows standard label selector semantics; if empty, it selects all Namespaces. |
-| `podSelector` | `object` | PodSelector is used to explicitly select pods within a namespace; if empty, it selects all Pods. |
+| `podSelector`       | `object` | PodSelector is used to explicitly select pods within a namespace; if empty, it selects all Pods.  |
 
 ## .spec.ingress\[\].from\[\].pods.namespaceSelector
 
@@ -739,11 +739,11 @@ NamespaceSelector follows standard label selector semantics; if empty, it select
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.ingress\[\].from\[\].pods.namespaceSelector.matchExpressions
 
@@ -766,11 +766,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.ingress\[\].from\[\].pods.podSelector
 
@@ -780,11 +780,11 @@ PodSelector is used to explicitly select pods within a namespace; if empty, it s
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.ingress\[\].from\[\].pods.podSelector.matchExpressions
 
@@ -807,11 +807,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.ingress\[\].ports
 
@@ -838,27 +838,27 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>namedPort</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>NamedPort selects a port on a pod(s) based on name.</p>
 <p>Support: Extended</p>
 <p>&lt;network-policy-api:experimental&gt;</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>portNumber</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Port selects a port on a pod(s) based on number.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>portRange</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>PortRange selects a port range on a pod(s) based on provided start and end values.</p>
@@ -889,20 +889,20 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>port</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Number defines a network port value.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>protocol</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Protocol is the network protocol (TCP, UDP, or SCTP) which traffic must match. If not specified, this field defaults to TCP.</p>
@@ -933,26 +933,26 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>end</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>End defines a network port that is the end of a port range, the End value must be greater than Start.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>protocol</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Protocol is the network protocol (TCP, UDP, or SCTP) which traffic must match. If not specified, this field defaults to TCP.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>start</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Start defines a network port that is the start of a port range, the Start value must be less than End.</p>
@@ -971,10 +971,10 @@ Support: Core
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `namespaces` | `object` | Namespaces is used to select pods via namespace selectors. |
-| `pods` | `object` | Pods is used to select pods via namespace AND pod selectors. |
+| Property     | Type     | Description                                                  |
+|--------------|----------|--------------------------------------------------------------|
+| `namespaces` | `object` | Namespaces is used to select pods via namespace selectors.   |
+| `pods`       | `object` | Pods is used to select pods via namespace AND pod selectors. |
 
 ## .spec.subject.namespaces
 
@@ -984,11 +984,11 @@ Namespaces is used to select pods via namespace selectors.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.subject.namespaces.matchExpressions
 
@@ -1011,11 +1011,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.subject.pods
 
@@ -1030,10 +1030,10 @@ Required
 
 - `podSelector`
 
-| Property | Type | Description |
-|----|----|----|
+| Property            | Type     | Description                                                                                       |
+|---------------------|----------|---------------------------------------------------------------------------------------------------|
 | `namespaceSelector` | `object` | NamespaceSelector follows standard label selector semantics; if empty, it selects all Namespaces. |
-| `podSelector` | `object` | PodSelector is used to explicitly select pods within a namespace; if empty, it selects all Pods. |
+| `podSelector`       | `object` | PodSelector is used to explicitly select pods within a namespace; if empty, it selects all Pods.  |
 
 ## .spec.subject.pods.namespaceSelector
 
@@ -1043,11 +1043,11 @@ NamespaceSelector follows standard label selector semantics; if empty, it select
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.subject.pods.namespaceSelector.matchExpressions
 
@@ -1070,11 +1070,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.subject.pods.podSelector
 
@@ -1084,11 +1084,11 @@ PodSelector is used to explicitly select pods within a namespace; if empty, it s
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.subject.pods.podSelector.matchExpressions
 
@@ -1111,11 +1111,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .status
 
@@ -1135,19 +1135,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>conditions</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>conditions[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Condition contains details for one aspect of the current state of this API Resource. --- This struct is intended for direct use as an array at the field path .status.conditions. For example,</p>
@@ -1195,14 +1195,14 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastTransitionTime` | `string` | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable. |
-| `message` | `string` | message is a human readable message indicating details about the transition. This may be an empty string. |
-| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance. |
-| `reason` | `string` | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
-| `status` | `string` | status of the condition, one of True, False, Unknown. |
-| `type` | `string` | type of condition in CamelCase or in foo.example.com/CamelCase. --- Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt) |
+| Property             | Type      | Description                                                                                                                                                                                                                                                                                                                             |
+|----------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string`  | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable.                                                                                                    |
+| `message`            | `string`  | message is a human readable message indicating details about the transition. This may be an empty string.                                                                                                                                                                                                                               |
+| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.                                           |
+| `reason`             | `string`  | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty.         |
+| `status`             | `string`  | status of the condition, one of True, False, Unknown.                                                                                                                                                                                                                                                                                   |
+| `type`               | `string`  | type of condition in CamelCase or in foo.example.com/CamelCase. --- Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt) |
 
 # API endpoints
 
@@ -1242,10 +1242,10 @@ HTTP method
 Description
 delete collection of BaselineAdminNetworkPolicy
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -1255,10 +1255,10 @@ HTTP method
 Description
 list objects of kind BaselineAdminNetworkPolicy
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`BaselineAdminNetworkPolicyList`](../objects/index.xml#io-k8s-networking-policy-v1alpha1-BaselineAdminNetworkPolicyList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                     |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`BaselineAdminNetworkPolicyList`](../objects/index.xml#io-k8s-networking-policy-v1alpha1-BaselineAdminNetworkPolicyList) schema |
+| 401 - Unauthorized | Empty                                                                                                                            |
 
 HTTP responses
 
@@ -1268,25 +1268,25 @@ HTTP method
 Description
 create a BaselineAdminNetworkPolicy
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |  |
+| Parameter | Type                                                                                                                                                                                 | Description |
+|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
-| 201 - Created | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
-| 202 - Accepted | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                         |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
+| 201 - Created      | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
+| 202 - Accepted     | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                |
 
 HTTP responses
 
@@ -1304,17 +1304,17 @@ HTTP method
 Description
 delete a BaselineAdminNetworkPolicy
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -1324,10 +1324,10 @@ HTTP method
 Description
 read the specified BaselineAdminNetworkPolicy
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                         |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                |
 
 HTTP responses
 
@@ -1337,17 +1337,17 @@ HTTP method
 Description
 partially update the specified BaselineAdminNetworkPolicy
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                         |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                |
 
 HTTP responses
 
@@ -1357,24 +1357,24 @@ HTTP method
 Description
 replace the specified BaselineAdminNetworkPolicy
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |  |
+| Parameter | Type                                                                                                                                                                                 | Description |
+|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
-| 201 - Created | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                         |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
+| 201 - Created      | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                |
 
 HTTP responses
 
@@ -1392,10 +1392,10 @@ HTTP method
 Description
 read status of the specified BaselineAdminNetworkPolicy
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                         |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                |
 
 HTTP responses
 
@@ -1405,17 +1405,17 @@ HTTP method
 Description
 partially update status of the specified BaselineAdminNetworkPolicy
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                         |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                |
 
 HTTP responses
 
@@ -1425,23 +1425,23 @@ HTTP method
 Description
 replace status of the specified BaselineAdminNetworkPolicy
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |  |
+| Parameter | Type                                                                                                                                                                                 | Description |
+|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
-| 201 - Created | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                                         |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
+| 201 - Created      | [`BaselineAdminNetworkPolicy`](../network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.xml#baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                                |
 
 HTTP responses

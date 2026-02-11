@@ -88,14 +88,4 @@ To explore more use cases, see [Use cases](https://www.redhat.com/en/technologie
 
 For additional recommended solutions tailored to various use cases, see [Solution Patterns from Red Hat](https://www.solutionpatterns.io/patterns/).
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Preparing to install on a single node](../installing/installing_sno/install-sno-preparing-to-install-sno.xml#preparing-to-install-sno)
-
-</div>

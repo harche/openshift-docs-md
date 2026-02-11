@@ -27,19 +27,9 @@ status:
   phase: BackingOff
 ```
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Use the NABSL that belongs to the same namespace that you are trying to back up.
 
   In this scenario, you must use `nabsl-1` in the NAB CR to back up `namespace-1`.
-
-</div>
 
 # Resolving error NonAdminBackupStorageLocation cannot be set as default
 
@@ -52,14 +42,6 @@ If you set the NABSL CR as the default backup storage location, the NABSL CR fai
 ``` text
 NonAdminBackupStorageLocation cannot be used as a default BSL
 ```
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To successfully validate and reconcile the NABSL CR, set the `default` field to `false` in the NABSL CR:
 
@@ -83,5 +65,3 @@ Procedure
 
   `default`
   Specifies that the `default` backup storage location is set to `false`.
-
-</div>

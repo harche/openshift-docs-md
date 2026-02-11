@@ -20,18 +20,19 @@ Auto-instrumentation enables you to start collecting telemetry data quickly with
 
 The Red Hat build of OpenTelemetry injects and configures the OpenTelemetry auto-instrumentation libraries into your workloads. Currently, the Red Hat build of OpenTelemetry supports injecting instrumentation libraries for Go, Java, Node.js, Python, .NET, and the Apache HTTP Server (`httpd`).
 
-> [!IMPORTANT]
-> The Red Hat build of OpenTelemetry Operator only supports the injection mechanism of the instrumentation libraries but does not support instrumentation libraries or upstream images. Customers can build their own instrumentation images or use community images.
+<div class="important">
+
+The Red Hat build of OpenTelemetry Operator only supports the injection mechanism of the instrumentation libraries but does not support instrumentation libraries or upstream images. Customers can build their own instrumentation images or use community images.
+
+</div>
 
 ## Instrumentation options
 
 Instrumentation options are specified in an `Instrumentation` custom resource (CR).
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample `Instrumentation` CR
+**Sample `Instrumentation` CR**
 
 </div>
 
@@ -66,8 +67,6 @@ spec:
         value: http://production-collector.observability.svc.cluster.local:4318
 ```
 
-</div>
-
 - Python auto-instrumentation uses protocol buffers over HTTP (HTTP/proto or HTTP/protobuf) by default.
 
 - Required if endpoint is set to `:4317`.
@@ -82,19 +81,19 @@ spec:
 
   For more information about procol buffers, see [Overview](https://protobuf.dev/overview/) (Protocol Buffers Documentation).
 
-| Parameter | Description | Values |
-|----|----|----|
-| `env` | Definition of common environment variables for all instrumentation types. |  |
-| `exporter` | Exporter configuration. |  |
-| `propagators` | Propagators defines inter-process context propagation configuration. | `tracecontext`, `baggage`, `b3`, `b3multi`, `jaeger`, `ottrace`, `none` |
-| `resource` | Resource attributes configuration. |  |
-| `sampler` | Sampling configuration. |  |
-| `apacheHttpd` | Configuration for the Apache HTTP Server instrumentation. |  |
-| `dotnet` | Configuration for the .NET instrumentation. |  |
-| `go` | Configuration for the Go instrumentation. |  |
-| `java` | Configuration for the Java instrumentation. |  |
-| `nodejs` | Configuration for the Node.js instrumentation. |  |
-| `python` | Configuration for the Python instrumentation. | Depending on the programming language, environment variables might not work for configuring telemetry. For the SDKs that do not support environment variable configuration, you must add a similar configuration directly in the code. For more information, see [Environment Variable Specification](https://opentelemetry.io/docs/specs/otel/configuration/sdk-environment-variables/) (OpenTelemetry Documentation). |
+| Parameter     | Description                                                               | Values                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|---------------|---------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `env`         | Definition of common environment variables for all instrumentation types. |                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `exporter`    | Exporter configuration.                                                   |                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `propagators` | Propagators defines inter-process context propagation configuration.      | `tracecontext`, `baggage`, `b3`, `b3multi`, `jaeger`, `ottrace`, `none`                                                                                                                                                                                                                                                                                                                                                 |
+| `resource`    | Resource attributes configuration.                                        |                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `sampler`     | Sampling configuration.                                                   |                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `apacheHttpd` | Configuration for the Apache HTTP Server instrumentation.                 |                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `dotnet`      | Configuration for the .NET instrumentation.                               |                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `go`          | Configuration for the Go instrumentation.                                 |                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `java`        | Configuration for the Java instrumentation.                               |                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `nodejs`      | Configuration for the Node.js instrumentation.                            |                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `python`      | Configuration for the Python instrumentation.                             | Depending on the programming language, environment variables might not work for configuring telemetry. For the SDKs that do not support environment variable configuration, you must add a similar configuration directly in the code. For more information, see [Environment Variable Specification](https://opentelemetry.io/docs/specs/otel/configuration/sdk-environment-variables/) (OpenTelemetry Documentation). |
 
 Parameters used by the Operator to define the instrumentation
 
@@ -131,12 +130,12 @@ You can use the `instrumentation.opentelemetry.io/inject-sdk` annotation in the 
 
 - `OTEL_EXPORTER_OTLP_CLIENT_KEY`
 
-| Value | Description |
-|----|----|
-| `"true"` | Injects the `Instrumentation` resource with the default name from the current namespace. |
-| `"false"` | Injects no `Instrumentation` resource. |
-| `"<instrumentation_name>"` | Specifies the name of the `Instrumentation` resource to inject from the current namespace. |
-| `"<namespace>/<instrumentation_name>"` | Specifies the name of the `Instrumentation` resource to inject from another namespace. |
+| Value                                  | Description                                                                                |
+|----------------------------------------|--------------------------------------------------------------------------------------------|
+| `"true"`                               | Injects the `Instrumentation` resource with the default name from the current namespace.   |
+| `"false"`                              | Injects no `Instrumentation` resource.                                                     |
+| `"<instrumentation_name>"`             | Specifies the name of the `Instrumentation` resource to inject from the current namespace. |
+| `"<namespace>/<instrumentation_name>"` | Specifies the name of the `Instrumentation` resource to inject from another namespace.     |
 
 Values for the `instrumentation.opentelemetry.io/inject-sdk` annotation
 
@@ -144,11 +143,9 @@ Values for the `instrumentation.opentelemetry.io/inject-sdk` annotation
 
 Although the `Instrumentation` custom resource supports setting up one or more exporters per signal, auto-instrumentation configures only the OTLP Exporter. So you must configure the endpoint to point to the OTLP Receiver on the Collector.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample exporter TLS CA configuration using a config map
+**Sample exporter TLS CA configuration using a config map**
 
 </div>
 
@@ -166,19 +163,15 @@ spec
 # ...
 ```
 
-</div>
-
 - Specifies the OTLP endpoint using the HTTPS scheme and TLS.
 
 - Specifies the name of the config map. The config map must already exist in the namespace of the pod injecting the auto-instrumentation.
 
 - Points to the CA certificate in the config map or the absolute path to the certificate if the certificate is already present in the workload file system.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample exporter mTLS configuration using a Secret
+**Sample exporter mTLS configuration using a Secret**
 
 </div>
 
@@ -198,8 +191,6 @@ spec
 # ...
 ```
 
-</div>
-
 - Specifies the OTLP endpoint using the HTTPS scheme and TLS.
 
 - Specifies the name of the Secret for the `ca_file`, `cert_file`, and `key_file` values. The Secret must already exist in the namespace of the pod injecting the auto-instrumentation.
@@ -210,14 +201,15 @@ spec
 
 - Points to the client key in the Secret or the absolute path to a key if the key is already present in the workload file system.
 
-> [!NOTE]
-> You can provide the CA certificate in a config map or Secret. If you provide it in both, the config map takes higher precedence than the Secret.
+<div class="note">
 
-<div class="formalpara">
+You can provide the CA certificate in a config map or Secret. If you provide it in both, the config map takes higher precedence than the Secret.
 
-<div class="title">
+</div>
 
-Example configuration for CA bundle injection by using a config map and `Instrumentation` CR
+<div class="formalpara-title">
+
+**Example configuration for CA bundle injection by using a config map and `Instrumentation` CR**
 
 </div>
 
@@ -244,31 +236,30 @@ spec:
 # ...
 ```
 
-</div>
-
 ## Configuration of the Apache HTTP Server auto-instrumentation
 
-> [!IMPORTANT]
-> The Apache HTTP Server auto-instrumentation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-| Name | Description | Default |
-|----|----|----|
-| `attrs` | Attributes specific to the Apache HTTP Server. |  |
-| `configPath` | Location of the Apache HTTP Server configuration. | `/usr/local/apache2/conf` |
-| `env` | Environment variables specific to the Apache HTTP Server. |  |
-| `image` | Container image with the Apache SDK and auto-instrumentation. |  |
-| `resourceRequirements` | The compute resource requirements. |  |
-| `version` | Apache HTTP Server version. | `2.4` |
+The Apache HTTP Server auto-instrumentation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
+
+| Name                   | Description                                                   | Default                   |
+|------------------------|---------------------------------------------------------------|---------------------------|
+| `attrs`                | Attributes specific to the Apache HTTP Server.                |                           |
+| `configPath`           | Location of the Apache HTTP Server configuration.             | `/usr/local/apache2/conf` |
+| `env`                  | Environment variables specific to the Apache HTTP Server.     |                           |
+| `image`                | Container image with the Apache SDK and auto-instrumentation. |                           |
+| `resourceRequirements` | The compute resource requirements.                            |                           |
+| `version`              | Apache HTTP Server version.                                   | `2.4`                     |
 
 Parameters for the `.spec.apacheHttpd` field
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-The `PodSpec` annotation to enable injection
+**The `PodSpec` annotation to enable injection**
 
 </div>
 
@@ -276,31 +267,33 @@ The `PodSpec` annotation to enable injection
 instrumentation.opentelemetry.io/inject-apache-httpd: "true"
 ```
 
-</div>
-
 ## Configuration of the .NET auto-instrumentation
 
-> [!IMPORTANT]
-> The .NET auto-instrumentation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-> [!IMPORTANT]
-> By default, this feature injects unsupported, upstream instrumentation libraries.
+The .NET auto-instrumentation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-| Name | Description |
-|----|----|
-| `env` | Environment variables specific to .NET. |
-| `image` | Container image with the .NET SDK and auto-instrumentation. |
-| `resourceRequirements` | The compute resource requirements. |
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
+
+<div class="important">
+
+By default, this feature injects unsupported, upstream instrumentation libraries.
+
+</div>
+
+| Name                   | Description                                                 |
+|------------------------|-------------------------------------------------------------|
+| `env`                  | Environment variables specific to .NET.                     |
+| `image`                | Container image with the .NET SDK and auto-instrumentation. |
+| `resourceRequirements` | The compute resource requirements.                          |
 
 For the .NET auto-instrumentation, the required `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable must be set if the endpoint of the exporters is set to `4317`. The .NET autoinstrumentation uses `http/proto` by default, and the telemetry data must be set to the `4318` port.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-The `PodSpec` annotation to enable injection
+**The `PodSpec` annotation to enable injection**
 
 </div>
 
@@ -308,29 +301,31 @@ The `PodSpec` annotation to enable injection
 instrumentation.opentelemetry.io/inject-dotnet: "true"
 ```
 
-</div>
-
 ## Configuration of the Go auto-instrumentation
 
-> [!IMPORTANT]
-> The Go auto-instrumentation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-> [!IMPORTANT]
-> By default, this feature injects unsupported, upstream instrumentation libraries.
+The Go auto-instrumentation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-| Name | Description |
-|----|----|
-| `env` | Environment variables specific to Go. |
-| `image` | Container image with the Go SDK and auto-instrumentation. |
-| `resourceRequirements` | The compute resource requirements. |
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-<div class="formalpara">
+</div>
 
-<div class="title">
+<div class="important">
 
-The `PodSpec` annotation to enable injection
+By default, this feature injects unsupported, upstream instrumentation libraries.
+
+</div>
+
+| Name                   | Description                                               |
+|------------------------|-----------------------------------------------------------|
+| `env`                  | Environment variables specific to Go.                     |
+| `image`                | Container image with the Go SDK and auto-instrumentation. |
+| `resourceRequirements` | The compute resource requirements.                        |
+
+<div class="formalpara-title">
+
+**The `PodSpec` annotation to enable injection**
 
 </div>
 
@@ -339,15 +334,11 @@ instrumentation.opentelemetry.io/inject-go: "true"
 instrumentation.opentelemetry.io/otel-go-auto-target-exe: "/<path>/<to>/<container>/<executable>"
 ```
 
-</div>
-
 - Sets the value for the required `OTEL_GO_AUTO_TARGET_EXE` environment variable.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Permissions required for the Go auto-instrumentation in the OpenShift cluster
+**Permissions required for the Go auto-instrumentation in the OpenShift cluster**
 
 </div>
 
@@ -373,36 +364,41 @@ supplementalGroups:
   type: RunAsAny
 ```
 
-</div>
+<div class="tip">
 
-> [!TIP]
-> The CLI command for applying the permissions for the Go auto-instrumentation in the OpenShift cluster is as follows:
->
-> ``` terminal
-> $ oc adm policy add-scc-to-user otel-go-instrumentation-scc -z <service_account>
-> ```
+The CLI command for applying the permissions for the Go auto-instrumentation in the OpenShift cluster is as follows:
+
+``` terminal
+$ oc adm policy add-scc-to-user otel-go-instrumentation-scc -z <service_account>
+```
+
+</div>
 
 ## Configuration of the Java auto-instrumentation
 
-> [!IMPORTANT]
-> The Java auto-instrumentation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-> [!IMPORTANT]
-> By default, this feature injects unsupported, upstream instrumentation libraries.
+The Java auto-instrumentation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-| Name | Description |
-|----|----|
-| `env` | Environment variables specific to Java. |
-| `image` | Container image with the Java SDK and auto-instrumentation. |
-| `resourceRequirements` | The compute resource requirements. |
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-<div class="formalpara">
+</div>
 
-<div class="title">
+<div class="important">
 
-The `PodSpec` annotation to enable injection
+By default, this feature injects unsupported, upstream instrumentation libraries.
+
+</div>
+
+| Name                   | Description                                                 |
+|------------------------|-------------------------------------------------------------|
+| `env`                  | Environment variables specific to Java.                     |
+| `image`                | Container image with the Java SDK and auto-instrumentation. |
+| `resourceRequirements` | The compute resource requirements.                          |
+
+<div class="formalpara-title">
+
+**The `PodSpec` annotation to enable injection**
 
 </div>
 
@@ -410,29 +406,31 @@ The `PodSpec` annotation to enable injection
 instrumentation.opentelemetry.io/inject-java: "true"
 ```
 
-</div>
-
 ## Configuration of the Node.js auto-instrumentation
 
-> [!IMPORTANT]
-> The Node.js auto-instrumentation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-> [!IMPORTANT]
-> By default, this feature injects unsupported, upstream instrumentation libraries.
+The Node.js auto-instrumentation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-| Name | Description |
-|----|----|
-| `env` | Environment variables specific to Node.js. |
-| `image` | Container image with the Node.js SDK and auto-instrumentation. |
-| `resourceRequirements` | The compute resource requirements. |
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-<div class="formalpara">
+</div>
 
-<div class="title">
+<div class="important">
 
-The `PodSpec` annotations to enable injection
+By default, this feature injects unsupported, upstream instrumentation libraries.
+
+</div>
+
+| Name                   | Description                                                    |
+|------------------------|----------------------------------------------------------------|
+| `env`                  | Environment variables specific to Node.js.                     |
+| `image`                | Container image with the Node.js SDK and auto-instrumentation. |
+| `resourceRequirements` | The compute resource requirements.                             |
+
+<div class="formalpara-title">
+
+**The `PodSpec` annotations to enable injection**
 
 </div>
 
@@ -440,31 +438,33 @@ The `PodSpec` annotations to enable injection
 instrumentation.opentelemetry.io/inject-nodejs: "true"
 ```
 
-</div>
-
 ## Configuration of the Python auto-instrumentation
 
-> [!IMPORTANT]
-> The Python auto-instrumentation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-> [!IMPORTANT]
-> By default, this feature injects unsupported, upstream instrumentation libraries.
+The Python auto-instrumentation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-| Name | Description |
-|----|----|
-| `env` | Environment variables specific to Python. |
-| `image` | Container image with the Python SDK and auto-instrumentation. |
-| `resourceRequirements` | The compute resource requirements. |
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
+
+<div class="important">
+
+By default, this feature injects unsupported, upstream instrumentation libraries.
+
+</div>
+
+| Name                   | Description                                                   |
+|------------------------|---------------------------------------------------------------|
+| `env`                  | Environment variables specific to Python.                     |
+| `image`                | Container image with the Python SDK and auto-instrumentation. |
+| `resourceRequirements` | The compute resource requirements.                            |
 
 For Python auto-instrumentation, the `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable must be set if the endpoint of the exporters is set to `4317`. Python auto-instrumentation uses `http/proto` by default, and the telemetry data must be set to the `4318` port.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-The `PodSpec` annotation to enable injection
+**The `PodSpec` annotation to enable injection**
 
 </div>
 
@@ -472,17 +472,13 @@ The `PodSpec` annotation to enable injection
 instrumentation.opentelemetry.io/inject-python: "true"
 ```
 
-</div>
-
 ## Multi-container pods
 
 The instrumentation is injected to the first container that is available by default according to the pod specification. You can also specify the target container names for injection.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Pod annotation
+**Pod annotation**
 
 </div>
 
@@ -490,12 +486,13 @@ Pod annotation
 instrumentation.opentelemetry.io/container-names: "<container_1>,<container_2>"
 ```
 
-</div>
-
 - Use this annotation when you want to inject a single instrumentation in multiple containers.
 
-> [!NOTE]
-> The Go auto-instrumentation does not support multi-container auto-instrumentation injection.
+<div class="note">
+
+The Go auto-instrumentation does not support multi-container auto-instrumentation injection.
+
+</div>
 
 ## Multi-container pods with multiple instrumentations
 

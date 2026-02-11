@@ -34,25 +34,7 @@ If the project and service that you want to expose does not exist, create the pr
 
 If the project and service already exists, skip to the procedure on exposing the service to create a route.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`) and log in as a cluster administrator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a new project for your service by running the `oc new-project` command:
 
@@ -72,11 +54,9 @@ Procedure
     $ oc get svc -n <project_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -85,36 +65,17 @@ Procedure
     nodejs-ex   ClusterIP   172.30.197.157   <none>        8080/TCP   70s
     ```
 
+    <div class="note">
+
+    By default, the new service does not have an external IP address.
+
     </div>
-
-    > [!NOTE]
-    > By default, the new service does not have an external IP address.
-
-</div>
 
 # Exposing the service by creating a route
 
 To enable external access to your application that runs on OpenShift Container Platform, you can expose the service as a route by using the `oc expose` command.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You logged into OpenShift Container Platform.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the project where the service you want to expose is located:
 
@@ -128,19 +89,15 @@ Procedure
     $ oc expose service nodejs-ex
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     route.route.openshift.io/nodejs-ex exposed
     ```
-
-    </div>
 
 3.  To verify that the service is exposed, you can use a tool, such as `curl` to check that the service is accessible from outside the cluster.
 
@@ -150,11 +107,9 @@ Procedure
         $ oc get route
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -163,15 +118,11 @@ Procedure
         nodejs-ex   nodejs-ex-myproject.example.com         nodejs-ex   8080-tcp                 None
         ```
 
-        </div>
-
     2.  To check that the host responds to a GET request, enter the following command:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `curl` command
+        **Example `curl` command**
 
         </div>
 
@@ -179,13 +130,9 @@ Procedure
         $ curl --head nodejs-ex-myproject.example.com
         ```
 
-        </div>
+        <div class="formalpara-title">
 
-        <div class="formalpara">
-
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -193,10 +140,6 @@ Procedure
         HTTP/1.1 200 OK
         ...
         ```
-
-        </div>
-
-</div>
 
 # Ingress sharding in OpenShift Container Platform
 
@@ -234,21 +177,19 @@ With sharding, you can distribute subsets of routes over multiple Ingress Contro
 
 The following table outlines three sharding methods:
 
-| Sharding method | Description |
-|----|----|
-| Namespace selector | After you add a namespace selector to the Ingress Controller, all routes in a namespace that have matching labels for the namespace selector are included in the Ingress shard. Consider this method when an Ingress Controller serves all routes created in a namespace. |
-| Route selector | After you add a route selector to the Ingress Controller, all routes with labels that match the route selector are included in the Ingress shard. Consider this method when you want an Ingress Controller to serve only a subset of routes or a specific route in a namespace. |
-| Namespace and route selectors | Provides your Ingress Controller scope for both namespace selector and route selector methods. Consider this method when you want the flexibility of both the namespace selector and the route selector methods. |
+| Sharding method               | Description                                                                                                                                                                                                                                                                     |
+|-------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Namespace selector            | After you add a namespace selector to the Ingress Controller, all routes in a namespace that have matching labels for the namespace selector are included in the Ingress shard. Consider this method when an Ingress Controller serves all routes created in a namespace.       |
+| Route selector                | After you add a route selector to the Ingress Controller, all routes with labels that match the route selector are included in the Ingress shard. Consider this method when you want an Ingress Controller to serve only a subset of routes or a specific route in a namespace. |
+| Namespace and route selectors | Provides your Ingress Controller scope for both namespace selector and route selector methods. Consider this method when you want the flexibility of both the namespace selector and the route selector methods.                                                                |
 
 ## Traditional sharding example
 
 To understand traditional sharding, you can review the example of a configured Ingress Controller `finops-router` that has the label selector `spec.namespaceSelector.matchExpressions` with key values set to `finance` and `ops`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example YAML definition for `finops-router`
+**Example YAML definition for `finops-router`**
 
 </div>
 
@@ -268,15 +209,11 @@ spec:
       - ops
 ```
 
-</div>
-
 An example of a configured Ingress Controller `dev-router` that has the label selector `spec.namespaceSelector.matchLabels.name` with the key value set to `dev`:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example YAML definition for `dev-router`
+**Example YAML definition for `dev-router`**
 
 </div>
 
@@ -292,24 +229,23 @@ spec:
       name: dev
 ```
 
-</div>
-
 If all application routes are in separate namespaces, such as each labeled with `name:finance`, `name:ops`, and `name:dev`, the configuration effectively distributes your routes between the two Ingress Controllers. OpenShift Container Platform routes for console, authentication, and other purposes should not be handled.
 
 In the previous scenario, sharding becomes a special case of partitioning, with no overlapping subsets. Routes are divided between router shards.
 
-> [!WARNING]
-> The `default` Ingress Controller continues to serve all routes unless the `namespaceSelector` or `routeSelector` fields contain routes that are meant for exclusion. See this [Red Hat Knowledgebase solution](https://access.redhat.com/solutions/5097511) and the section "Sharding the default Ingress Controller" for more information on how to exclude routes from the default Ingress Controller.
+<div class="warning">
+
+The `default` Ingress Controller continues to serve all routes unless the `namespaceSelector` or `routeSelector` fields contain routes that are meant for exclusion. See this [Red Hat Knowledgebase solution](https://access.redhat.com/solutions/5097511) and the section "Sharding the default Ingress Controller" for more information on how to exclude routes from the default Ingress Controller.
+
+</div>
 
 ## Overlapped sharding example
 
 An example of a configured Ingress Controller `devops-router` that has the label selector `spec.namespaceSelector.matchExpressions` with key values set to `dev` and `ops`:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example YAML definition for `devops-router`
+**Example YAML definition for `devops-router`**
 
 </div>
 
@@ -329,8 +265,6 @@ spec:
       - ops
 ```
 
-</div>
-
 The routes in the namespaces labeled `name:dev` and `name:ops` are now serviced by two different Ingress Controllers. With this configuration, you have overlapping subsets of routes.
 
 With overlapping subsets of routes you can create more complex routing rules. For example, you can divert higher priority traffic to the dedicated `finops-router` while sending lower priority traffic to `devops-router`.
@@ -343,30 +277,15 @@ After creating a new Ingress shard, there might be routes that are admitted to y
 
 The following procedure restricts the default Ingress Controller from servicing your newly sharded `finance`, `ops`, and `dev`, routes by using a namespace selector. This adds further isolation to Ingress shards.
 
-> [!IMPORTANT]
-> You must keep all of OpenShift Container Platform’s administration routes on the same Ingress Controller. Therefore, avoid adding additional selectors to the default Ingress Controller that exclude these essential routes.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You must keep all of OpenShift Container Platform’s administration routes on the same Ingress Controller. Therefore, avoid adding additional selectors to the default Ingress Controller that exclude these essential routes.
 
 </div>
 
 - You installed the OpenShift CLI (`oc`).
 
 - You are logged in as a project administrator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Modify the default Ingress Controller by running the following command:
 
@@ -395,8 +314,6 @@ Procedure
 
     The default Ingress Controller no longer serves the namespaces labeled with `name:finance`, `name:ops`, and `name:dev`.
 
-</div>
-
 ## Ingress sharding and DNS
 
 To ensure ingress traffic reaches the correct router in OpenShift Container Platform, create separate DNS entries for each router in your project. Because a router does not forward unknown traffic to other routers, distinct entries are required to resolve specific domains to their hosting nodes."
@@ -423,14 +340,6 @@ You can use route labels to configure Ingress Controller sharding so that the In
 </figure>
 
 Ingress Controller sharding is useful when balancing incoming traffic load among a set of Ingress Controllers and when isolating traffic to a specific Ingress Controller. For example, company A goes to one Ingress Controller and company B to another.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `router-internal.yaml` file:
 
@@ -467,8 +376,6 @@ Procedure
     $ oc expose svc <service-name> --hostname <route-name>.apps-sharded.basedomain.example.net
     ```
 
-</div>
-
 ## Configuring Ingress Controller sharding by using namespace labels
 
 You can use namespace labels to configure Ingress Controller sharding so that the Ingress Controller serves any route in any namespace that is selected by the namespace selector.
@@ -480,25 +387,15 @@ You can use namespace labels to configure Ingress Controller sharding so that th
 
 Ingress Controller sharding is useful when balancing incoming traffic load among a set of Ingress Controllers and when isolating traffic to a specific Ingress Controller. For example, company A goes to one Ingress Controller and company B to another.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Edit the `router-internal.yaml` file:
 
     ``` terminal
     $ cat router-internal.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -519,8 +416,6 @@ Procedure
           type: sharded
     ```
 
-    </div>
-
     - `<apps-sharded.basedomain.example.net>`: Specify a domain to be used by the Ingress Controller. This domain must be different from the default Ingress Controller domain.
 
 2.  Apply the Ingress Controller `router-internal.yaml` file:
@@ -537,21 +432,11 @@ Procedure
     $ oc expose svc <service-name> --hostname <route-name>.apps-sharded.basedomain.example.net
     ```
 
-</div>
-
 ## Creating a route for Ingress Controller sharding
 
 To host applications at specific URLs and balance traffic load in OpenShift Container Platform, configure Ingress Controller sharding. By sharding, you can isolate traffic for specific workloads or tenants, ensuring efficient resource management across your cluster.
 
 The following procedure describes how to create a route for Ingress Controller sharding, using the `hello-openshift` application as an example.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You installed the OpenShift CLI (`oc`).
 
@@ -560,16 +445,6 @@ Prerequisites
 - You have a web application that exposes a port and an HTTP or TLS endpoint listening for traffic on the port.
 
 - You have configured the Ingress Controller for sharding.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a project called `hello-openshift` by running the following command:
 
@@ -591,11 +466,9 @@ Procedure
 
 4.  Create a route definition called `hello-openshift-route.yaml`:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    YAML definition of the created route for sharding
+    **YAML definition of the created route for sharding**
 
     </div>
 
@@ -616,8 +489,6 @@ Procedure
         name: hello-openshift
     ```
 
-    </div>
-
     where:
 
     `type`
@@ -632,16 +503,6 @@ Procedure
     $ oc -n hello-openshift create -f hello-openshift-route.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Get the status of the route with the following command:
 
   ``` terminal
@@ -650,11 +511,9 @@ Verification
 
   The resulting `Route` resource should look similar to the following:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -680,8 +539,6 @@ Verification
       routerName: sharded
   ```
 
-  </div>
-
   where:
 
   `host`
@@ -692,8 +549,6 @@ Verification
 
   `routerName`
   Specifies the name of the Ingress Controller. In this example, the Ingress Controller has the name `sharded`.
-
-</div>
 
 ## Additional resources
 

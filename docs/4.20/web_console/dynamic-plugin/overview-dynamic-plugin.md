@@ -71,27 +71,9 @@ When creating your plugin, follow these guidelines for using PatternFly:
 
 The [plugin template](https://github.com/openshift/console-plugin-template) demonstrates how you can translate messages with [react-i18next](https://www.i18next.com/).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have the plugin template cloned locally.
 
 - Optional: To test your plugin locally, run the OpenShift Container Platform web console in a container. You can use either Docker or Podman 3.2.0 or later.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Prefix the name with `plugin__` to avoid any naming conflicts. The plugin template uses the `plugin__console-plugin-template` namespace by default, and you must update when you rename your plugin for example, `plugin__my-plugin`. You can use the `useTranslation` hook, for example:
 
@@ -102,8 +84,11 @@ Procedure
     };
     ```
 
-    > [!IMPORTANT]
-    > You must match the `i18n` namespace with the name of the `ConsolePlugin` resource.
+    <div class="important">
+
+    You must match the `i18n` namespace with the name of the `ConsolePlugin` resource.
+
+    </div>
 
 2.  Set the `spec.i18n.loadType` field based on needed behavior.
 
@@ -150,5 +135,3 @@ Procedure
     ``` terminal
     $ yarn i18n
     ```
-
-</div>

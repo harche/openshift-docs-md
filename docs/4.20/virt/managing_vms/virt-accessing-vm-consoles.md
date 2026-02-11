@@ -10,8 +10,11 @@ You can connect to the following consoles to access running virtual machines (VM
 
 In the OpenShift Virtualization environment, you can access guest VMs without the need for a guest network by using the OpenShift Container Platform web console or by using `virtctl` commands from the command-line interface (CLI).
 
-> [!NOTE]
-> Connecting to a guest VM through the VNC or serial console does not provide a full set of access features and cannot replace the Virtual Desktop Infrastructure (VDI) access. However, these consoles are useful for troubleshooting, as they allow access even if the guest VM has no network.
+<div class="note">
+
+Connecting to a guest VM through the VNC or serial console does not provide a full set of access features and cannot replace the Virtual Desktop Infrastructure (VDI) access. However, these consoles are useful for troubleshooting, as they allow access even if the guest VM has no network.
+
+</div>
 
 - **Connecting to VMs using the VNC console**
 
@@ -61,14 +64,9 @@ You can connect to the VNC console of a virtual machine by using the OpenShift C
 
 You can connect to the VNC console of a virtual machine (VM) by using the OpenShift Container Platform web console.
 
-> [!NOTE]
-> If you connect to a Windows VM with a vGPU assigned as a mediated device, you can switch between the default display and the vGPU display.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+If you connect to a Windows VM with a vGPU assigned as a mediated device, you can switch between the default display and the vGPU display.
 
 </div>
 
@@ -82,40 +80,23 @@ Procedure
 
 4.  To end the console session, click outside the console pane and then click **Disconnect**.
 
-</div>
-
 ## Connecting to the VNC console by using virtctl
 
 You can use the `virtctl` command-line tool to connect to the VNC console of a running virtual machine.
 
-> [!NOTE]
-> If you run the `virtctl vnc` command on a remote machine over an SSH connection, you must forward the X session to your local machine by running the `ssh` command with the `-X` or `-Y` flags.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you run the `virtctl vnc` command on a remote machine over an SSH connection, you must forward the X session to your local machine by running the `ssh` command with the `-X` or `-Y` flags.
 
 </div>
 
 - You must install the `virt-viewer` package.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Run the following command to start the console session:
 
     \+
 
-</div>
+<!-- -->
 
     $ virtctl vnc <vm_name>
 
@@ -129,30 +110,15 @@ Procedure
 
 To access the VNC of a virtual machine (VM), generate a temporary authentication bearer token for the Kubernetes API.
 
-> [!NOTE]
-> Kubernetes also supports authentication using client certificates, instead of a bearer token, by modifying the curl command.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Kubernetes also supports authentication using client certificates, instead of a bearer token, by modifying the curl command.
 
 </div>
 
 - A running VM with OpenShift Virtualization 4.14 or later and `ssp-operator` 4.14 or later.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Set the `deployVmConsoleProxy` field value in the HyperConverged (`HCO`) custom resource (CR) to `true`:
 
@@ -183,15 +149,7 @@ Procedure
 
     You can now use the token to access the VNC console of a VM.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Log in to the cluster by entering the following command:
 
@@ -205,40 +163,23 @@ Verification
     $ virtctl vnc <vm_name> -n <namespace>
     ```
 
-</div>
+<div class="warning">
 
-> [!WARNING]
-> It is currently not possible to revoke a specific token.
->
-> To revoke a token, you must delete the service account that was used to create it. However, this also revokes all other tokens that were created by using the service account. Use the following command with caution:
->
-> ``` terminal
-> $ virtctl delete serviceaccount --namespace "<namespace>" "<vm_name>-vnc-access"
-> ```
+It is currently not possible to revoke a specific token.
 
-<div>
+To revoke a token, you must delete the service account that was used to create it. However, this also revokes all other tokens that were created by using the service account. Use the following command with caution:
 
-<div class="title">
-
-Additional resources
+``` terminal
+$ virtctl delete serviceaccount --namespace "<namespace>" "<vm_name>-vnc-access"
+```
 
 </div>
 
 - [About the Scheduling, Scale, and Performance (SSP) Operator](../../virt/about_virt/virt-architecture.xml#virt-about-ssp-operator_virt-architecture)
 
-</div>
-
 ### Granting token generation permission for the VNC console by using the cluster role
 
 As a cluster administrator, you can install a cluster role and bind it to a user or service account to allow access to the endpoint that generates tokens for the VNC console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Choose to bind the cluster role to either a user or service account.
 
@@ -254,27 +195,23 @@ Procedure
     $ kubectl create rolebinding "${ROLE_BINDING_NAME}" --clusterrole="token.kubevirt.io:generate" --serviceaccount="${SERVICE_ACCOUNT_NAME}"
     ```
 
-</div>
-
 # Connecting to the serial console
 
 You can connect to the serial console of a virtual machine by using the OpenShift Container Platform web console or the `virtctl` command-line tool.
 
-> [!NOTE]
-> Running concurrent VNC connections to a single virtual machine is not currently supported.
+<div class="note">
+
+Running concurrent VNC connections to a single virtual machine is not currently supported.
+
+</div>
 
 ## Connecting to the serial console by using the web console
 
 You can connect to the serial console of a virtual machine (VM) by using the OpenShift Container Platform web console.
 
-> [!NOTE]
-> If you connect to a Windows VM with a vGPU assigned as a mediated device, you can switch between the default display and the vGPU display.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+If you connect to a Windows VM with a vGPU assigned as a mediated device, you can switch between the default display and the vGPU display.
 
 </div>
 
@@ -292,34 +229,17 @@ Procedure
 
 6.  To end the console session, click outside the console pane and then click **Disconnect**.
 
-</div>
-
 ## Connecting to the serial console by using virtctl
 
 You can use the `virtctl` command-line tool to connect to the serial console of a running virtual machine.
 
-> [!NOTE]
-> If you run the `virtctl vnc` command on a remote machine over an SSH connection, you must forward the X session to your local machine by running the `ssh` command with the `-X` or `-Y` flags.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you run the `virtctl vnc` command on a remote machine over an SSH connection, you must forward the X session to your local machine by running the `ssh` command with the `-X` or `-Y` flags.
 
 </div>
 
 - You must install the `virt-viewer` package.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the following command to start the console session:
 
@@ -339,8 +259,6 @@ Procedure
     $ virtctl vnc <vm_name> -v 4
     ```
 
-</div>
-
 # Connecting to the desktop viewer
 
 You can connect to a Windows virtual machine (VM) by using the desktop viewer and the Remote Desktop Protocol (RDP).
@@ -351,30 +269,15 @@ You can connect to the desktop viewer of a virtual machine (VM) by using the Ope
 
 You can connect to the desktop viewer of a Windows virtual machine (VM) by using the OpenShift Container Platform web console.
 
-> [!NOTE]
-> If you connect to a Windows VM with a vGPU assigned as a mediated device, you can switch between the default display and the vGPU display.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you connect to a Windows VM with a vGPU assigned as a mediated device, you can switch between the default display and the vGPU display.
 
 </div>
 
 - You installed the QEMU guest agent on the Windows VM.
 
 - You have an RDP client installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  On the **Virtualization** → **VirtualMachines** page, click a VM to open the **VirtualMachine details** page.
 
@@ -395,5 +298,3 @@ Procedure
     - Select **Ctl + Alt + 1** from the **Send key** list to restore the default display.
 
 9.  To end the console session, click outside the console pane and then click **Disconnect**.
-
-</div>

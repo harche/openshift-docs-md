@@ -16,8 +16,11 @@ Using the External Secrets Operator ensures the following:
 
 - Centralizes and audits access control.
 
-> [!IMPORTANT]
-> Do not attempt to use more than one External Secrets Operator in your cluster. If you have a community External Secrets Operator installed in your cluster, you must uninstall it before installing the External Secrets Operator for Red Hat OpenShift.
+<div class="important">
+
+Do not attempt to use more than one External Secrets Operator in your cluster. If you have a community External Secrets Operator installed in your cluster, you must uninstall it before installing the External Secrets Operator for Red Hat OpenShift.
+
+</div>
 
 For more information about `external-secrets` application, see [external-secrets](https://external-secrets.io/latest/).
 
@@ -37,8 +40,11 @@ The External Secrets Operator for Red Hat OpenShift is tested with the following
 
 - [IBM Cloud Secrets Manager](https://www.ibm.com/products/secrets-manager)
 
-> [!NOTE]
-> Red Hat does not test all factors associated with third-party secrets store provider functionality. For more information about third-party support, see the [Red Hat third-party support policy](https://access.redhat.com/third-party-software-support).
+<div class="note">
+
+Red Hat does not test all factors associated with third-party secrets store provider functionality. For more information about third-party support, see the [Red Hat third-party support policy](https://access.redhat.com/third-party-software-support).
+
+</div>
 
 # About FIPS compliance for External Secrets Operator for Red Hat OpenShift
 

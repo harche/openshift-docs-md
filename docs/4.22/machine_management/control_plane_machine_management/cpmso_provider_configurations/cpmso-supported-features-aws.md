@@ -6,27 +6,9 @@ When you save an update to the control plane machine set, the Control Plane Mach
 
 After you deploy a cluster to Amazon Web Services (AWS), you can reconfigure the API server to use only the private zone.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Have access to the web console as a user with `admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the web portal or console for your cloud provider, take the following actions:
 
@@ -55,43 +37,13 @@ Procedure
 
     - Delete the `type` value for the external load balancer.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring the Ingress Controller endpoint publishing scope to Internal](../../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/nw-configuring-ingress-controller-endpoint-publishing-strategy.xml#nw-ingresscontroller-change-internal_nw-configuring-ingress-controller-endpoint-publishing-strategy)
-
-</div>
 
 # Changing the Amazon Web Services instance type by using a control plane machine set
 
 You can change the Amazon Web Services (AWS) instance type that your control plane machines use by updating the specification in the control plane machine set custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Your AWS cluster uses a control plane machine set.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the following line under the `providerSpec` field:
 
@@ -106,36 +58,19 @@ Procedure
 
 2.  Save your changes.
 
-</div>
-
 # Assigning machines to placement groups for Elastic Fabric Adapter instances by using machine sets
 
 You can configure a machine set to deploy machines on [Elastic Fabric Adapter](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html) (EFA) instances within an existing AWS placement group.
 
 EFA instances do not require placement groups, and you can use placement groups for purposes other than configuring an EFA. This example uses both to demonstrate a configuration that can improve network performance for machines within the specified placement group.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You created a placement group in the AWS console.
 
-  > [!NOTE]
-  > Ensure that the [rules and limitations](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html#limitations-placement-groups) for the type of placement group that you create are compatible with your intended use case. The control plane machine set spreads the control plane machines across multiple failure domains when possible. To use placement groups for the control plane, you must use a placement group type that can span multiple Availability Zones.
+  <div class="note">
 
-</div>
+  Ensure that the [rules and limitations](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html#limitations-placement-groups) for the type of placement group that you create are compatible with your intended use case. The control plane machine set spreads the control plane machines across multiple failure domains when possible. To use placement groups for the control plane, you must use a placement group type that can span multiple Availability Zones.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  In a text editor, open the YAML file for an existing machine set or create a new one.
 
@@ -172,16 +107,6 @@ Procedure
 
     - Optional: Specify the partition number of the existing AWS placement group to deploy machines in.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - In the AWS console, find a machine that the machine set created and verify the following in the machine properties:
 
   - The placement group field has the value that you specified for the `placementGroupName` parameter in the machine set.
@@ -190,53 +115,31 @@ Verification
 
   - The interface type field indicates that it uses an EFA.
 
-</div>
-
 # Machine set options for the Amazon EC2 Instance Metadata Service
 
 You can use machine sets to create machines that use a specific version of the Amazon EC2 Instance Metadata Service (IMDS). Machine sets can create machines that allow the use of both IMDSv1 and [IMDSv2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html) or machines that require the use of IMDSv2.
 
-> [!NOTE]
-> To use IMDSv2 on AWS clusters that were created with OpenShift Container Platform version 4.6 or earlier, you must update your boot image. For more information, see "Boot image management".
+<div class="note">
 
-> [!IMPORTANT]
-> Before configuring a machine set to create machines that require IMDSv2, ensure that any workloads that interact with the AWS metadata service support IMDSv2.
+To use IMDSv2 on AWS clusters that were created with OpenShift Container Platform version 4.6 or earlier, you must update your boot image. For more information, see "Boot image management".
 
-<div>
+</div>
 
-<div class="title">
+<div class="important">
 
-Additional resources
+Before configuring a machine set to create machines that require IMDSv2, ensure that any workloads that interact with the AWS metadata service support IMDSv2.
 
 </div>
 
 - [Boot image management](../../../machine_configuration/mco-update-boot-images.xml#mco-update-boot-images)
 
-</div>
-
 ## Configuring IMDS by using machine sets
 
 You can specify whether to require the use of IMDSv2 by adding or editing the value of `metadataServiceOptions.authentication` in the machine set YAML file for your machines.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - To use IMDSv2, your AWS cluster must have been created with OpenShift Container Platform version 4.7 or later.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Add or edit the following lines under the `providerSpec` field:
 
@@ -249,31 +152,13 @@ Procedure
 
   - To require IMDSv2, set the parameter value to `Required`. To allow the use of both IMDSv1 and IMDSv2, set the parameter value to `Optional`. If no value is specified, both IMDSv1 and IMDSv2 are allowed.
 
-</div>
-
 # Configuring storage throughput for gp3 drives
 
 You can improve performance for high traffic services by increasing the throughput of gp3 storage volumes in an AWS cluster. You can configure the storage throughput by editing your compute or control plane machine set.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You use gp3 storage volume(s).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Add or edit the following lines under the `providerSpec` field in your compute or control plane machine set:
 
@@ -290,8 +175,6 @@ Procedure
   `<throughput_value>`
   Specifies a value in MiB per second between 125 and 2,000. You can only edit this value on gp3 volumes. The default value is `125`.
 
-</div>
-
 # Machine sets that deploy machines as Dedicated Instances
 
 You can create a machine set running on AWS that deploys machines as Dedicated Instances. Dedicated Instances run in a virtual private cloud (VPC) on hardware that is dedicated to a single customer. These Amazon EC2 instances are physically isolated at the host hardware level. The isolation of Dedicated Instances occurs even if the instances belong to different AWS accounts that are linked to a single payer account. However, other instances that are not dedicated can share hardware with Dedicated Instances if they belong to the same AWS account.
@@ -302,14 +185,6 @@ Instances with either public or dedicated tenancy are supported by the Machine A
 
 You can run a machine that is backed by a Dedicated Instance by using Machine API integration. Set the `tenancy` field in your machine set YAML file to launch a Dedicated Instance on AWS.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Specify a dedicated tenancy under the `providerSpec` field:
 
   ``` yaml
@@ -317,8 +192,6 @@ Procedure
     placement:
       tenancy: dedicated
   ```
-
-</div>
 
 # Configuring Capacity Reservations by using machine sets
 
@@ -328,39 +201,19 @@ You can configure a machine set to deploy machines on any available resources th
 
 For more information, including limitations and suggested use cases for this AWS offering, see [On-Demand Capacity Reservations and Capacity Blocks for ML](https://docs.aws.amazon.com/en_us/AWSEC2/latest/UserGuide/capacity-reservation-overview.html) in the AWS documentation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You installed the OpenShift CLI (`oc`).
 
 - You purchased an On-Demand Capacity Reservation or Capacity Block for ML. For more information, see [On-Demand Capacity Reservations and Capacity Blocks for ML](https://docs.aws.amazon.com/en_us/AWSEC2/latest/UserGuide/capacity-reservation-overview.html) in the AWS documentation.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  In a text editor, open the YAML file for an existing machine set or create a new one.
 
 2.  Edit the following section under the `providerSpec` field:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample configuration
+    **Sample configuration**
 
     </div>
 
@@ -379,8 +232,6 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - Specify the ID of the Capacity Block for ML or On-Demand Capacity Reservation that you want the machine set to deploy machines on.
 
     - Specify the market type to use. The following values are valid:
@@ -391,16 +242,6 @@ Procedure
       `OnDemand`
       Use this market type with On-Demand Capacity Reservations.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - To verify machine deployment, list the machines that the machine set created by running the following command:
 
   ``` terminal
@@ -410,8 +251,6 @@ Verification
   ```
 
   In the output, verify that the characteristics of the listed machines match the parameters of your Capacity Reservation.
-
-</div>
 
 # Additional resources
 

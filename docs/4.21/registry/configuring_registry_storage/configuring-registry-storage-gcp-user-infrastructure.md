@@ -10,13 +10,7 @@ For GCS on Google Cloud storage, the secret is expected to contain one key whose
 
 - `REGISTRY_STORAGE_GCS_KEYFILE`
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Create an OpenShift Container Platform secret that contains the required keys.
 
@@ -24,19 +18,9 @@ Procedure
   $ oc create secret generic image-registry-private-configuration-user --from-file=REGISTRY_STORAGE_GCS_KEYFILE=<path_to_keyfile> --namespace openshift-image-registry
   ```
 
-</div>
-
 # Configuring the registry storage for Google Cloud with user-provisioned infrastructure
 
 If the Registry Operator cannot create a Google Cloud bucket, you must set up the storage medium manually and configure the settings in the registry custom resource (CR).
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - A cluster on Google Cloud with user-provisioned infrastructure.
 
@@ -46,16 +30,9 @@ Prerequisites
 
   - `REGISTRY_STORAGE_GCS_KEYFILE`
 
-</div>
+<div class="warning">
 
-> [!WARNING]
-> You can secure your registry images that use a Google Cloud Storage bucket by setting [public access prevention](https://cloud.google.com/storage/docs/using-public-access-prevention).
-
-<div>
-
-<div class="title">
-
-Procedure
+You can secure your registry images that use a Google Cloud Storage bucket by setting [public access prevention](https://cloud.google.com/storage/docs/using-public-access-prevention).
 
 </div>
 
@@ -67,11 +44,9 @@ Procedure
     $ oc edit configs.imageregistry.operator.openshift.io/cluster
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example configuration
+    **Example configuration**
 
     </div>
 
@@ -88,17 +63,13 @@ Procedure
           region: <region_name>
     ```
 
-    </div>
-
-</div>
-
 # Image Registry Operator configuration parameters for Google Cloud GCS
 
 The following parameters configure are available to configure your Google Cloud GCS registry storage.
 
-| Parameter | Description |
-|----|----|
-| `bucket` | Bucket is the bucket name in which you want to store the registry’s data. It is optional and is generated if not provided. |
-| `region` | Region is the GCS location in which your bucket exists. It is optional and is set based on the installed GCS Region. |
-| `projectID` | ProjectID is the Project ID of the Google Cloud project that this bucket should be associated with. It is optional. |
-| `keyID` | KeyID is the KMS key ID to use for encryption. It is optional because buckets are encrypted by default on Google Cloud. This allows for the use of a custom encryption key. |
+| Parameter   | Description                                                                                                                                                                 |
+|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `bucket`    | Bucket is the bucket name in which you want to store the registry’s data. It is optional and is generated if not provided.                                                  |
+| `region`    | Region is the GCS location in which your bucket exists. It is optional and is set based on the installed GCS Region.                                                        |
+| `projectID` | ProjectID is the Project ID of the Google Cloud project that this bucket should be associated with. It is optional.                                                         |
+| `keyID`     | KeyID is the KMS key ID to use for encryption. It is optional because buckets are encrypted by default on Google Cloud. This allows for the use of a custom encryption key. |

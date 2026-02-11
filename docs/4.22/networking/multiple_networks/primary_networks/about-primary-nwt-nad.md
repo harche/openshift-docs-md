@@ -12,41 +12,29 @@ With this method, you can manage the primary network directly by creating an `Ne
 
 Each approach is mutually exclusive and you can only use one approach for managing a primary network at a time. For either approach, the primary network is managed by a Container Network Interface (CNI) plugin that you configure.
 
-> [!NOTE]
-> When deploying OpenShift Container Platform nodes with multiple network interfaces on Red Hat OpenStack Platform (RHOSP) with OVN SDN, DNS configuration of the secondary interface might take precedence over the DNS configuration of the primary interface. In this case, remove the DNS nameservers for the subnet ID that is attached to the secondary interface by running the following command:
->
-> ``` terminal
-> $ openstack subnet set --dns-nameserver 0.0.0.0 <subnet_id>
-> ```
+<div class="note">
+
+When deploying OpenShift Container Platform nodes with multiple network interfaces on Red Hat OpenStack Platform (RHOSP) with OVN SDN, DNS configuration of the secondary interface might take precedence over the DNS configuration of the primary interface. In this case, remove the DNS nameservers for the subnet ID that is attached to the secondary interface by running the following command:
+
+``` terminal
+$ openstack subnet set --dns-nameserver 0.0.0.0 <subnet_id>
+```
+
+</div>
 
 # Creating a primary network attachment with the Cluster Network Operator
 
 When you specify a primary network to create by using the Cluster Network Operator (CNO), the (CNO) creates the `NetworkAttachmentDefinition` custom resource definition (CRD) automatically and manages it.
 
-> [!IMPORTANT]
-> Do not edit the `NetworkAttachmentDefinition` CRDs that the Cluster Network Operator manages. Doing so might disrupt network traffic on your primary network.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Do not edit the `NetworkAttachmentDefinition` CRDs that the Cluster Network Operator manages. Doing so might disrupt network traffic on your primary network.
 
 </div>
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Optional: Create the namespace for the primary networks:
 
@@ -93,16 +81,6 @@ Procedure
 
 4.  Save your changes and quit the text editor to commit your changes.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Confirm that the CNO created the `NetworkAttachmentDefinition` CRD by running the following command. A delay might exist before the CNO creates the CRD. The expected output shows the name of the NAD CRD and the creation age in minutes.
 
   ``` terminal
@@ -114,19 +92,17 @@ Verification
   `<namespace>`
   Specifies the namespace for the network attachment that you added to the CNO configuration.
 
-</div>
-
 # Configuration for a primary network attachment
 
 You configure a primary network by using the `NetworkAttachmentDefinition` API in the `k8s.cni.cncf.io` API group.
 
 The configuration for the API is described in the following table:
 
-| Field | Type | Description |
-|----|----|----|
-| `metadata.name` | `string` | The name for the primary network. |
+| Field                | Type     | Description                                       |
+|----------------------|----------|---------------------------------------------------|
+| `metadata.name`      | `string` | The name for the primary network.                 |
 | `metadata.namespace` | `string` | The namespace that the object is associated with. |
-| `spec.config` | `string` | The CNI plugin configuration in JSON format. |
+| `spec.config`        | `string` | The CNI plugin configuration in JSON format.      |
 
 `NetworkAttachmentDefinition` API fields
 
@@ -134,29 +110,11 @@ The configuration for the API is described in the following table:
 
 Create a primary network attachment by directly applying a `NetworkAttachmentDefinition` YAML manifest. This gives you full control over the network configuration without relying on the Cluster Network Operator to manage the resource automatically.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in as a user with `cluster-admin` privileges.
 
 - You are working in the namespace where the NAD is to be deployed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file with your primary network configuration, such as in the following example:
 
@@ -191,5 +149,3 @@ Procedure
 
     `<file>`
     Specifies the name of the file contained the YAML manifest.
-
-</div>

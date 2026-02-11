@@ -4,14 +4,6 @@ You can destroy hosted clusters on bare metal by using the command-line interfac
 
 If you created a hosted cluster by using the command-line interface (CLI), you can destroy that hosted cluster and its back-end resources by running a command.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Delete the hosted cluster and its back-end resources by running the following command:
 
   ``` terminal
@@ -20,27 +12,18 @@ Procedure
 
   - Specify the name of the configuration YAML file that was rendered when you created the hosted cluster.
 
-    > [!NOTE]
-    > If you created the hosted cluster without specifying the `--render` and `--render-sensitive` flags in its configuration file, you must remove its back-end resources manually.
+    <div class="note">
 
-</div>
+    If you created the hosted cluster without specifying the `--render` and `--render-sensitive` flags in its configuration file, you must remove its back-end resources manually.
+
+    </div>
 
 # Destroying a hosted cluster on bare metal by using the web console
 
 You can use the multicluster engine Operator web console to destroy a hosted cluster on bare metal.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the console, click **Infrastructure** → **Clusters**.
 
 2.  On the **Clusters** page, select the cluster that you want to destroy.
 
 3.  In the **Actions** menu, select **Destroy clusters** to remove the cluster.
-
-</div>

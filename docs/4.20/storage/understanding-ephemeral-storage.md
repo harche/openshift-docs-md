@@ -46,8 +46,11 @@ Limits and requests for ephemeral storage are measured in byte quantities. You c
 
 For example, the following quantities all represent approximately the same value: 128974848, 129e6, 129M, and 123Mi.
 
-> [!IMPORTANT]
-> The suffixes for each byte quantity are case-sensitive. Be sure to use the correct case. Use the case-sensitive "M", such as used in "400M", to set the request at 400 megabytes. Use the case-sensitive "400Mi" to request 400 mebibytes. If you specify "400m" of ephemeral storage, the storage request is only 0.4 bytes.
+<div class="important">
+
+The suffixes for each byte quantity are case-sensitive. Be sure to use the correct case. Use the case-sensitive "M", such as used in "400M", to set the request at 400 megabytes. Use the case-sensitive "400Mi" to request 400 mebibytes. If you specify "400m" of ephemeral storage, the storage request is only 0.4 bytes.
+
+</div>
 
 ## Ephemeral storage requests and limits example
 
@@ -63,11 +66,9 @@ The following example configuration file shows a pod with two containers:
 
   - Therefore, the pod has a request of 4GiB of local ephemeral storage, and a limit of 8GiB of local ephemeral storage.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example ephemeral storage configuration with quotas and limits
+**Example ephemeral storage configuration with quotas and limits**
 
 </div>
 
@@ -103,8 +104,6 @@ spec:
       emptyDir: {}
 ```
 
-</div>
-
 - Container request for local ephemeral storage.
 
 - Container limit for local ephemeral storage.
@@ -123,14 +122,6 @@ For information about defining quotas for projects, see [Quota setting per proje
 
 You can use `/bin/df` as a tool to monitor ephemeral storage usage on the volume where ephemeral container data is located, which is `/var/lib/kubelet` and `/var/lib/containers`. The available space for only `/var/lib/kubelet` is shown when you use the `df` command if `/var/lib/containers` is placed on a separate disk by the cluster administrator.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - To show the human-readable values of used and available space in `/var/lib`, enter the following command:
 
   ``` terminal
@@ -139,11 +130,9 @@ Procedure
 
   The output shows the ephemeral storage usage in `/var/lib`:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -151,7 +140,3 @@ Procedure
   Filesystem  Size  Used Avail Use% Mounted on
   /dev/disk/by-partuuid/4cd1448a-01    69G   32G   34G  49% /
   ```
-
-  </div>
-
-</div>

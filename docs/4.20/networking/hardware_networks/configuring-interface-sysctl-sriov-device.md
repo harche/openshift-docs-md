@@ -14,8 +14,11 @@ If you want to enable SR-IOV on only SR-IOV capable nodes there are a couple of 
     $ oc label node <node_name> feature.node.kubernetes.io/network-sriov.capable="true"
     ```
 
-    > [!NOTE]
-    > You can label the nodes with whatever name you want.
+    <div class="note">
+
+    You can label the nodes with whatever name you want.
+
+    </div>
 
 # Setting one sysctl flag
 
@@ -33,20 +36,15 @@ The `sysctl-tuning-test` is a namespace used in this example.
 
 The SR-IOV Network Operator adds the `SriovNetworkNodePolicy.sriovnetwork.openshift.io` custom resource definition (CRD) to OpenShift Container Platform. You can configure an SR-IOV network device by creating a `SriovNetworkNodePolicy` custom resource (CR).
 
-> [!NOTE]
-> When applying the configuration specified in a `SriovNetworkNodePolicy` object, the SR-IOV Operator might drain and reboot the nodes.
->
-> It can take several minutes for a configuration change to apply.
+<div class="note">
 
-Follow this procedure to create a `SriovNetworkNodePolicy` custom resource (CR).
+When applying the configuration specified in a `SriovNetworkNodePolicy` object, the SR-IOV Operator might drain and reboot the nodes.
 
-<div>
-
-<div class="title">
-
-Procedure
+It can take several minutes for a configuration change to apply.
 
 </div>
+
+Follow this procedure to create a `SriovNetworkNodePolicy` custom resource (CR).
 
 1.  Create an `SriovNetworkNodePolicy` custom resource (CR). For example, save the following YAML as the file `policyoneflag-sriov-node-network.yaml`:
 
@@ -88,8 +86,11 @@ Procedure
 
     - Optional: Configures whether to enable remote direct memory access (RDMA) mode. The default value is `false`. If the `isRdma` parameter is set to `true`, you can continue to use the RDMA-enabled VF as a normal network device. A device can be used in either mode. Set `isRdma` to `true` and additionally set `needVhostNet` to `true` to configure a Mellanox NIC for use with Fast Datapath DPDK applications.
 
-      > [!NOTE]
-      > The `vfio-pci` driver type is not supported.
+      <div class="note">
+
+      The `vfio-pci` driver type is not supported.
+
+      </div>
 
 2.  Create the `SriovNetworkNodePolicy` object:
 
@@ -105,40 +106,23 @@ Procedure
     $ oc get sriovnetworknodestates -n openshift-sriov-network-operator <node_name> -o jsonpath='{.status.syncStatus}'
     ```
 
-</div>
-
 ## Configuring sysctl on a SR-IOV network
 
 You can set interface specific `sysctl` settings on virtual interfaces created by SR-IOV by adding the tuning configuration to the optional `metaPlugins` parameter of the `SriovNetwork` resource.
 
 The SR-IOV Network Operator manages additional network definitions. When you specify an additional SR-IOV network to create, the SR-IOV Network Operator creates the `NetworkAttachmentDefinition` custom resource (CR) automatically.
 
-> [!NOTE]
-> Do not edit `NetworkAttachmentDefinition` custom resources that the SR-IOV Network Operator manages. Doing so might disrupt network traffic on your additional network.
+<div class="note">
 
-To change the interface-level network `net.ipv4.conf.IFNAME.accept_redirects` `sysctl` settings, create an additional SR-IOV network with the Container Network Interface (CNI) tuning plugin.
-
-<div>
-
-<div class="title">
-
-Prerequisites
+Do not edit `NetworkAttachmentDefinition` custom resources that the SR-IOV Network Operator manages. Doing so might disrupt network traffic on your additional network.
 
 </div>
+
+To change the interface-level network `net.ipv4.conf.IFNAME.accept_redirects` `sysctl` settings, create an additional SR-IOV network with the Container Network Interface (CNI) tuning plugin.
 
 - Install the OpenShift Container Platform CLI (oc).
 
 - Log in to the OpenShift Container Platform cluster as a user with cluster-admin privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `SriovNetwork` custom resource (CR) for the additional SR-IOV network attachment and insert the `metaPlugins` configuration, as in the following example CR. Save the YAML as the file `sriov-network-interface-sysctl.yaml`.
 
@@ -185,16 +169,6 @@ Procedure
     $ oc create -f sriov-network-interface-sysctl.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verifying that the `NetworkAttachmentDefinition` CR is successfully created
-
-</div>
-
 - Confirm that the SR-IOV Network Operator created the `NetworkAttachmentDefinition` CR by running the following command:
 
   ``` terminal
@@ -203,22 +177,19 @@ Verifying that the `NetworkAttachmentDefinition` CR is successfully created
 
   - Replace `<namespace>` with the value for `networkNamespace` that you specified in the `SriovNetwork` object. For example, `sysctl-tuning-test`. The expected output shows the name of the NAD CRD and the creation age in minutes.
 
-    > [!NOTE]
-    > There might be a delay before the SR-IOV Network Operator creates the CR.
+    <div class="note">
 
-</div>
+    There might be a delay before the SR-IOV Network Operator creates the CR.
 
-<div class="formalpara">
+    </div>
 
-<div class="title">
+<div class="formalpara-title">
 
-Verifying that the additional SR-IOV network attachment is successful
+**Verifying that the additional SR-IOV network attachment is successful**
 
 </div>
 
 To verify that the tuning CNI is correctly configured and the additional SR-IOV network attachment is attached, do the following:
-
-</div>
 
 1.  Create a `Pod` CR. Save the following YAML as the file `examplepod.yaml`:
 
@@ -272,11 +243,9 @@ To verify that the tuning CNI is correctly configured and the additional SR-IOV 
     $ oc get pod -n sysctl-tuning-test
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -284,8 +253,6 @@ To verify that the tuning CNI is correctly configured and the additional SR-IOV 
     NAME      READY   STATUS    RESTARTS   AGE
     tunepod   1/1     Running   0          47s
     ```
-
-    </div>
 
 4.  Log in to the pod by running the following command:
 
@@ -315,20 +282,15 @@ The `sysctl-tuning-test` is a namespace used in this example.
 
 The SR-IOV Network Operator adds the `SriovNetworkNodePolicy.sriovnetwork.openshift.io` custom resource definition (CRD) to OpenShift Container Platform. You can configure an SR-IOV network device by creating a `SriovNetworkNodePolicy` custom resource (CR).
 
-> [!NOTE]
-> When applying the configuration specified in a SriovNetworkNodePolicy object, the SR-IOV Operator might drain the nodes, and in some cases, reboot nodes.
->
-> It might take several minutes for a configuration change to apply.
+<div class="note">
 
-Follow this procedure to create a `SriovNetworkNodePolicy` custom resource (CR).
+When applying the configuration specified in a SriovNetworkNodePolicy object, the SR-IOV Operator might drain the nodes, and in some cases, reboot nodes.
 
-<div>
-
-<div class="title">
-
-Procedure
+It might take several minutes for a configuration change to apply.
 
 </div>
+
+Follow this procedure to create a `SriovNetworkNodePolicy` custom resource (CR).
 
 1.  Create an `SriovNetworkNodePolicy` custom resource (CR). Save the following YAML as the file `policyallflags-sriov-node-network.yaml`. Replace `policyallflags` with the name for the configuration.
 
@@ -370,8 +332,11 @@ Procedure
 
     - Optional: Configures whether to enable remote direct memory access (RDMA) mode. The default value is `false`. If the `isRdma` parameter is set to `true`, you can continue to use the RDMA-enabled VF as a normal network device. A device can be used in either mode. Set `isRdma` to `true` and additionally set `needVhostNet` to `true` to configure a Mellanox NIC for use with Fast Datapath DPDK applications.
 
-      > [!NOTE]
-      > The `vfio-pci` driver type is not supported.
+      <div class="note">
+
+      The `vfio-pci` driver type is not supported.
+
+      </div>
 
 2.  Create the SriovNetworkNodePolicy object:
 
@@ -387,38 +352,21 @@ Procedure
     $ oc get sriovnetworknodestates -n openshift-sriov-network-operator <node_name> -o jsonpath='{.status.syncStatus}'
     ```
 
-</div>
-
 ## Configuring sysctl on a bonded SR-IOV network
 
 You can set interface specific `sysctl` settings on a bonded interface created from two SR-IOV interfaces. Do this by adding the tuning configuration to the optional `Plugins` parameter of the bond network attachment definition.
 
-> [!NOTE]
-> Do not edit `NetworkAttachmentDefinition` custom resources that the SR-IOV Network Operator manages. Doing so might disrupt network traffic on your additional network.
+<div class="note">
 
-To change specific interface-level network `sysctl` settings create the `SriovNetwork` custom resource (CR) with the Container Network Interface (CNI) tuning plugin by using the following procedure.
-
-<div>
-
-<div class="title">
-
-Prerequisites
+Do not edit `NetworkAttachmentDefinition` custom resources that the SR-IOV Network Operator manages. Doing so might disrupt network traffic on your additional network.
 
 </div>
+
+To change specific interface-level network `sysctl` settings create the `SriovNetwork` custom resource (CR) with the Container Network Interface (CNI) tuning plugin by using the following procedure.
 
 - Install the OpenShift Container Platform CLI (oc).
 
 - Log in to the OpenShift Container Platform cluster as a user with cluster-admin privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `SriovNetwork` custom resource (CR) for the bonded interface as in the following example CR. Save the YAML as the file `sriov-network-attachment.yaml`.
 
@@ -526,16 +474,6 @@ Procedure
     $ oc create -f sriov-bond-network-interface.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verifying that the `NetworkAttachmentDefinition` CR is successfully created
-
-</div>
-
 - Confirm that the SR-IOV Network Operator created the `NetworkAttachmentDefinition` CR by running the following command:
 
   ``` terminal
@@ -544,22 +482,19 @@ Verifying that the `NetworkAttachmentDefinition` CR is successfully created
 
   - Replace `<namespace>` with the networkNamespace that you specified when configuring the network attachment, for example, `sysctl-tuning-test`. Expected output shows the names of the NAD CRDs and the creation age in minutes.
 
-    > [!NOTE]
-    > There might be a delay before the SR-IOV Network Operator creates the CR.
+    <div class="note">
 
-</div>
+    There might be a delay before the SR-IOV Network Operator creates the CR.
 
-<div class="formalpara">
+    </div>
 
-<div class="title">
+<div class="formalpara-title">
 
-Verifying that the additional SR-IOV network resource is successful
+**Verifying that the additional SR-IOV network resource is successful**
 
 </div>
 
 To verify that the tuning CNI is correctly configured and the additional SR-IOV network attachment is attached, do the following:
-
-</div>
 
 1.  Create a `Pod` CR. For example, save the following YAML as the file `examplepod.yaml`:
 
@@ -616,11 +551,9 @@ To verify that the tuning CNI is correctly configured and the additional SR-IOV 
     $ oc get pod -n sysctl-tuning-test
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -628,8 +561,6 @@ To verify that the tuning CNI is correctly configured and the additional SR-IOV 
     NAME      READY   STATUS    RESTARTS   AGE
     tunepod   1/1     Running   0          47s
     ```
-
-    </div>
 
 4.  Log in to the pod by running the following command:
 
@@ -657,23 +588,21 @@ You can enable the all-multicast mode on an SR-IOV interface by:
 
 - Setting the `allmulti` field to `true` in the tuning configuration
 
-  > [!NOTE]
-  > Ensure that you create the virtual function (VF) with trust enabled.
+  <div class="note">
+
+  Ensure that you create the virtual function (VF) with trust enabled.
+
+  </div>
 
 The SR-IOV Network Operator manages additional network definitions. When you specify an additional SR-IOV network to create, the SR-IOV Network Operator creates the `NetworkAttachmentDefinition` custom resource (CR) automatically.
 
-> [!NOTE]
-> Do not edit `NetworkAttachmentDefinition` custom resources that the SR-IOV Network Operator manages. Doing so might disrupt network traffic on your additional network.
+<div class="note">
 
-Enable the all-multicast mode on a SR-IOV network by following this guidance.
-
-<div>
-
-<div class="title">
-
-Prerequisites
+Do not edit `NetworkAttachmentDefinition` custom resources that the SR-IOV Network Operator manages. Doing so might disrupt network traffic on your additional network.
 
 </div>
+
+Enable the all-multicast mode on a SR-IOV network by following this guidance.
 
 - You have installed the OpenShift Container Platform CLI (oc).
 
@@ -682,16 +611,6 @@ Prerequisites
 - You have installed the SR-IOV Network Operator.
 
 - You have configured an appropriate `SriovNetworkNodePolicy` object.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file with the following settings that defines a `SriovNetworkNodePolicy` object for a Mellanox ConnectX-5 device. Save the YAML file as `sriovnetpolicy-mlx.yaml`.
 
@@ -780,16 +699,6 @@ Procedure
     $ oc create -f sriov-enable-all-multicast.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification of the `NetworkAttachmentDefinition` CR
-
-</div>
-
 - Confirm that the SR-IOV Network Operator created the `NetworkAttachmentDefinition` CR by running the following command:
 
   ``` terminal
@@ -798,8 +707,11 @@ Verification of the `NetworkAttachmentDefinition` CR
 
   - Replace `<namespace>` with the value for `networkNamespace` that you specified in the `SriovNetwork` object. For this example, that is `enable-allmulti-test`. The expected output shows the name of the NAD CR and the creation age in minutes.
 
-    > [!NOTE]
-    > There might be a delay before the SR-IOV Network Operator creates the CR.
+    <div class="note">
+
+    There might be a delay before the SR-IOV Network Operator creates the CR.
+
+    </div>
 
 - Display information about the SR-IOV network resources by running the following command:
 
@@ -807,19 +719,13 @@ Verification of the `NetworkAttachmentDefinition` CR
   $ oc get sriovnetwork -n openshift-sriov-network-operator
   ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification of the additional SR-IOV network attachment
+**Verification of the additional SR-IOV network attachment**
 
 </div>
 
 To verify that the tuning CNI is correctly configured and that the additional SR-IOV network attachment is attached, follow these steps:
-
-</div>
 
 1.  Create a `Pod` CR. Save the following sample YAML in a file named `examplepod.yaml`:
 
@@ -873,11 +779,9 @@ To verify that the tuning CNI is correctly configured and that the additional SR
     $ oc get pod -n enable-allmulti-test
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -885,8 +789,6 @@ To verify that the tuning CNI is correctly configured and that the additional SR
     NAME       READY   STATUS    RESTARTS   AGE
     samplepod  1/1     Running   0          47s
     ```
-
-    </div>
 
 4.  Log in to the pod by running the following command:
 
@@ -900,11 +802,9 @@ To verify that the tuning CNI is correctly configured and that the additional SR
     sh-4.4# ip link
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -916,8 +816,6 @@ To verify that the tuning CNI is correctly configured and that the additional SR
     3: net1@if24: <BROADCAST,MULTICAST,ALLMULTI,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT group default
         link/ether ee:9b:66:a4:ec:1d brd ff:ff:ff:ff:ff:ff link-netnsid 0
     ```
-
-    </div>
 
     - `eth0@if22` is the primary interface
 

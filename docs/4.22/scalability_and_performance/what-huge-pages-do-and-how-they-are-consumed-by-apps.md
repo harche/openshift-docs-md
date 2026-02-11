@@ -62,14 +62,6 @@ You can use the Downward API to inject information about the huge pages resource
 
 You can inject the resource allocation as environment variables, a volume plugin, or both. Applications that you develop and run in the container can determine the resources that are available by reading the environment variables or files in the specified volumes.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a `hugepages-volume-pod.yaml` file that is similar to the following example:
 
     ``` yaml
@@ -131,15 +123,7 @@ Procedure
     $ oc create -f hugepages-volume-pod.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Check the value of the `REQUESTS_HUGEPAGES_1GI` environment variable:
 
@@ -148,19 +132,15 @@ Verification
          -- env | grep REQUESTS_HUGEPAGES_1GI
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     REQUESTS_HUGEPAGES_1GI=2147483648
     ```
-
-    </div>
 
 2.  Check the value of the `/etc/podinfo/hugepages_1G_request` file:
 
@@ -169,11 +149,9 @@ Verification
          -- cat /etc/podinfo/hugepages_1G_request
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -181,37 +159,19 @@ Verification
     2
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Allowing containers to consume Downward API objects](../nodes/containers/nodes-containers-downward-api.xml#nodes-containers-downward-api)
-
-</div>
 
 # Configuring huge pages at boot time
 
 Nodes must pre-allocate huge pages used in an OpenShift Container Platform cluster. There are two ways of reserving huge pages: at boot time and at run time. Reserving at boot time increases the possibility of success because the memory has not yet been significantly fragmented. The Node Tuning Operator currently supports boot time allocation of huge pages on specific nodes.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To minimize node reboots, the order of the steps below needs to be followed:
-
-</div>
 
 1.  Label all nodes that need the same huge pages setting by a label.
 
@@ -289,20 +249,15 @@ $ oc get node <node_using_hugepages> -o jsonpath="{.status.allocatable.hugepages
 100Mi
 ```
 
-> [!NOTE]
-> The TuneD bootloader plugin only supports Red Hat Enterprise Linux CoreOS (RHCOS) worker nodes.
+<div class="note">
+
+The TuneD bootloader plugin only supports Red Hat Enterprise Linux CoreOS (RHCOS) worker nodes.
+
+</div>
 
 # Disabling Transparent Huge Pages
 
 Transparent Huge Pages (THP) attempt to automate most aspects of creating, managing, and using huge pages. Since THP automatically manages the huge pages, this is not always handled optimally for all types of workloads. THP can lead to performance regressions, since many applications handle huge pages on their own. Therefore, consider disabling THP. The following steps describe how to disable THP using the Node Tuning Operator (NTO).
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a file with the following content and name it `thp-disable-tuned.yaml`:
 
@@ -342,34 +297,18 @@ Procedure
     $ oc get profile -n openshift-cluster-node-tuning-operator
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Log in to one of the nodes and do a regular THP check to verify if the nodes applied the profile successfully:
 
   ``` terminal
   $ cat /sys/kernel/mm/transparent_hugepage/enabled
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
   ``` terminal
   always madvise [never]
   ```
-
-  </div>
-
-</div>

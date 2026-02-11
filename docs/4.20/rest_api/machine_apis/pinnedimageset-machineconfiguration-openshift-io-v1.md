@@ -11,12 +11,12 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | spec describes the configuration of this pinned image set. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | spec describes the configuration of this pinned image set.                                                                                                                                                                                                                                           |
 
 ## .spec
 
@@ -36,21 +36,21 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>pinnedImages</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>pinnedImages is a list of OCI Image referenced by digest that should be pinned and pre-loaded by the nodes of a MachineConfigPool. Translates into a new file inside the /etc/crio/crio.conf.d directory with content similar to this:</p>
 <p>pinned_images = [ "quay.io/openshift-release-dev/ocp-release@sha256:…​", "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:…​", "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:…​", …​ ]</p>
 <p>Image references must be by digest. A maximum of 500 images may be specified.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>pinnedImages[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>PinnedImageRef represents a reference to an OCI image</p></td>
@@ -86,9 +86,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name is an OCI Image referenced by digest. The format of the image pull spec is: host\[:port\]\[/namespace\]/name@sha256:\<digest\>, where the digest must be 64 characters long, and consist only of lowercase hexadecimal characters, a-f and 0-9. The length of the whole spec must be between 1 to 447 characters. |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                                            |
+|----------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | name is an OCI Image referenced by digest. The format of the image pull spec is: host\[:port\]\[/namespace\]/name@sha256:\<digest\>, where the digest must be 64 characters long, and consist only of lowercase hexadecimal characters, a-f and 0-9. The length of the whole spec must be between 1 to 447 characters. |
 
 # API endpoints
 
@@ -120,10 +120,10 @@ HTTP method
 Description
 delete collection of PinnedImageSet
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -133,10 +133,10 @@ HTTP method
 Description
 list objects of kind PinnedImageSet
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PinnedImageSetList`](../objects/index.xml#io-openshift-machineconfiguration-v1-PinnedImageSetList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                |
+|--------------------|-------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PinnedImageSetList`](../objects/index.xml#io-openshift-machineconfiguration-v1-PinnedImageSetList) schema |
+| 401 - Unauthorized | Empty                                                                                                       |
 
 HTTP responses
 
@@ -146,25 +146,25 @@ HTTP method
 Description
 create a PinnedImageSet
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`PinnedImageSet`](../machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.xml#pinnedimageset-machineconfiguration-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                                   | Description |
+|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`PinnedImageSet`](../machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.xml#pinnedimageset-machineconfiguration-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PinnedImageSet`](../machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.xml#pinnedimageset-machineconfiguration-openshift-io-v1) schema |
-| 201 - Created | [`PinnedImageSet`](../machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.xml#pinnedimageset-machineconfiguration-openshift-io-v1) schema |
-| 202 - Accepted | [`PinnedImageSet`](../machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.xml#pinnedimageset-machineconfiguration-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                           |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PinnedImageSet`](../machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.xml#pinnedimageset-machineconfiguration-openshift-io-v1) schema |
+| 201 - Created      | [`PinnedImageSet`](../machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.xml#pinnedimageset-machineconfiguration-openshift-io-v1) schema |
+| 202 - Accepted     | [`PinnedImageSet`](../machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.xml#pinnedimageset-machineconfiguration-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                  |
 
 HTTP responses
 
@@ -182,17 +182,17 @@ HTTP method
 Description
 delete a PinnedImageSet
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -202,10 +202,10 @@ HTTP method
 Description
 read the specified PinnedImageSet
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PinnedImageSet`](../machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.xml#pinnedimageset-machineconfiguration-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                           |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PinnedImageSet`](../machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.xml#pinnedimageset-machineconfiguration-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                  |
 
 HTTP responses
 
@@ -215,17 +215,17 @@ HTTP method
 Description
 partially update the specified PinnedImageSet
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PinnedImageSet`](../machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.xml#pinnedimageset-machineconfiguration-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                           |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PinnedImageSet`](../machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.xml#pinnedimageset-machineconfiguration-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                  |
 
 HTTP responses
 
@@ -235,23 +235,23 @@ HTTP method
 Description
 replace the specified PinnedImageSet
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`PinnedImageSet`](../machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.xml#pinnedimageset-machineconfiguration-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                                   | Description |
+|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`PinnedImageSet`](../machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.xml#pinnedimageset-machineconfiguration-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`PinnedImageSet`](../machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.xml#pinnedimageset-machineconfiguration-openshift-io-v1) schema |
-| 201 - Created | [`PinnedImageSet`](../machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.xml#pinnedimageset-machineconfiguration-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                           |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`PinnedImageSet`](../machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.xml#pinnedimageset-machineconfiguration-openshift-io-v1) schema |
+| 201 - Created      | [`PinnedImageSet`](../machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.xml#pinnedimageset-machineconfiguration-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                  |
 
 HTTP responses

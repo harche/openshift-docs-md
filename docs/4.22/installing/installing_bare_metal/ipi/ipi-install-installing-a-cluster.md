@@ -2,14 +2,6 @@
 
 In case of an earlier failed deployment, remove the artifacts from the failed attempt before trying to deploy OpenShift Container Platform again.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Power off all bare-metal nodes before installing the OpenShift Container Platform cluster by using the following command:
 
     ``` terminal
@@ -43,8 +35,6 @@ Procedure
     $ ./openshift-baremetal-install --dir ~/clusterconfigs create manifests
     ```
 
-</div>
-
 # Deploying the cluster via the OpenShift Container Platform installer
 
 Run the OpenShift Container Platform installer:
@@ -65,24 +55,17 @@ $ tail -f /path/to/install-dir/.openshift_install.log
 
 If the DHCP reservation for a cluster node specifies an infinite lease, after the installer successfully provisions the node, the dispatcher script checks the node’s network configuration. If the script determines that the network configuration contains an infinite DHCP lease, it creates a new connection using the IP address of the DHCP lease as a static IP address.
 
-> [!NOTE]
-> The dispatcher script might run on successfully provisioned nodes while the provisioning of other nodes in the cluster is ongoing.
+<div class="note">
 
-Verify the network configuration is working properly.
-
-<div>
-
-<div class="title">
-
-Procedure
+The dispatcher script might run on successfully provisioned nodes while the provisioning of other nodes in the cluster is ongoing.
 
 </div>
+
+Verify the network configuration is working properly.
 
 1.  Check the network interface configuration on the node.
 
 2.  Turn off the DHCP server and reboot the OpenShift Container Platform node and ensure that the network configuration works properly.
-
-</div>
 
 # Additional resources
 

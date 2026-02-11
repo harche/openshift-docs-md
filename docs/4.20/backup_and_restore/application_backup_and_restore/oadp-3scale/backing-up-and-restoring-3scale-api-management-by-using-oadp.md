@@ -2,8 +2,11 @@ With Red Hat 3scale API Management, you can manage your APIs for internal or ex
 
 With OpenShift API for Data Protection (OADP), you can safeguard 3scale API Management deployments by backing up application resources, persistent volumes, and configurations.
 
-> [!NOTE]
-> You can use the OpenShift API for Data Protection (OADP) Operator to back up and restore your 3scale API Management on-cluster storage databases without affecting your running services
+<div class="note">
+
+You can use the OpenShift API for Data Protection (OADP) Operator to back up and restore your 3scale API Management on-cluster storage databases without affecting your running services
+
+</div>
 
 You can configure OADP to perform the following operations with 3scale API Management:
 

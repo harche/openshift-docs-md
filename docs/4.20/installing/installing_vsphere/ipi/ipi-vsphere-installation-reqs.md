@@ -12,46 +12,55 @@ Both of these releases support Container Storage Interface (CSI) migration, whic
 
 You can host the VMware vSphere infrastructure on-premise or on a [VMware Cloud Verified provider](https://cloud.vmware.com/providers) that meets the requirements outlined in the following tables:
 
-| Virtual environment product | Required version |
-|----|----|
-| VMware virtual hardware | 15 or later |
-| vSphere ESXi hosts | 8.0 Update 1 or later, or VMware vSphere Foundation 9 or later; VMware Cloud Foundation 5.0 or later, or VMware Cloud Foundation 9 or later |
-| vCenter host | 8.0 Update 1 or later, or VMware vSphere Foundation 9 or later; VMware Cloud Foundation 5.0 or later, or VMware Cloud Foundation 9 or later |
+| Virtual environment product | Required version                                                                                                                            |
+|-----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| VMware virtual hardware     | 15 or later                                                                                                                                 |
+| vSphere ESXi hosts          | 8.0 Update 1 or later, or VMware vSphere Foundation 9 or later; VMware Cloud Foundation 5.0 or later, or VMware Cloud Foundation 9 or later |
+| vCenter host                | 8.0 Update 1 or later, or VMware vSphere Foundation 9 or later; VMware Cloud Foundation 5.0 or later, or VMware Cloud Foundation 9 or later |
 
 Version requirements for vSphere virtual environments
 
-> [!IMPORTANT]
-> You must ensure that the time on your ESXi hosts is synchronized before you install OpenShift Container Platform. See [Edit Time Configuration for a Host](https://docs.vmware.com/en/VMware-vSphere/6.7/com.vmware.vsphere.vcenterhost.doc/GUID-8756D419-A878-4AE0-9183-C6D5A91A8FB1.html) in the VMware documentation.
+<div class="important">
 
-| Component | Minimum supported versions | Description |
-|----|----|----|
-| Hypervisor | vSphere 8.0 Update 1 or later, or VMware Cloud Foundation 5.0 or later with virtual hardware version 15; VMware vSphere Foundation 9 or later, or VMware Cloud Foundation 9 or later | This hypervisor version is the minimum version that Red Hat Enterprise Linux CoreOS (RHCOS) supports. For more information about supported hardware on the latest version of Red Hat Enterprise Linux (RHEL) that is compatible with RHCOS, see [Hardware](https://catalog.redhat.com/hardware/search) on the Red Hat Customer Portal. |
-| Networking (NSX) | vSphere 8.0 Update 1 or later, or VMware Cloud Foundation 5.0 or later; VMware vSphere Foundation 9 or later, or VMware Cloud Foundation 9 or later | Red Hat uses the Partner Certification process to verify NSX compatibility. |
-| CPU micro-architecture | x86-64-v2 or higher | OpenShift Container Platform version 4.13 and later are based on the RHEL 9.2 host operating system, which raised the microarchitecture requirements to x86-64-v2. See [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures) in the RHEL documentation. |
+You must ensure that the time on your ESXi hosts is synchronized before you install OpenShift Container Platform. See [Edit Time Configuration for a Host](https://docs.vmware.com/en/VMware-vSphere/6.7/com.vmware.vsphere.vcenterhost.doc/GUID-8756D419-A878-4AE0-9183-C6D5A91A8FB1.html) in the VMware documentation.
+
+</div>
+
+| Component              | Minimum supported versions                                                                                                                                                           | Description                                                                                                                                                                                                                                                                                                                                   |
+|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Hypervisor             | vSphere 8.0 Update 1 or later, or VMware Cloud Foundation 5.0 or later with virtual hardware version 15; VMware vSphere Foundation 9 or later, or VMware Cloud Foundation 9 or later | This hypervisor version is the minimum version that Red Hat Enterprise Linux CoreOS (RHCOS) supports. For more information about supported hardware on the latest version of Red Hat Enterprise Linux (RHEL) that is compatible with RHCOS, see [Hardware](https://catalog.redhat.com/hardware/search) on the Red Hat Customer Portal.        |
+| Networking (NSX)       | vSphere 8.0 Update 1 or later, or VMware Cloud Foundation 5.0 or later; VMware vSphere Foundation 9 or later, or VMware Cloud Foundation 9 or later                                  | Red Hat uses the Partner Certification process to verify NSX compatibility.                                                                                                                                                                                                                                                                   |
+| CPU micro-architecture | x86-64-v2 or higher                                                                                                                                                                  | OpenShift Container Platform version 4.13 and later are based on the RHEL 9.2 host operating system, which raised the microarchitecture requirements to x86-64-v2. See [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures) in the RHEL documentation. |
 
 Minimum supported vSphere version for VMware components
 
-> [!IMPORTANT]
-> To ensure the best performance conditions for your cluster workloads that operate on Oracle® Cloud Infrastructure (OCI) and on the Oracle® Cloud VMware Solution (OCVS) service, ensure volume performance units (VPUs) for your block volume are sized for your workloads.
->
-> The following list provides some guidance in selecting the VPUs needed for specific performance needs:
->
-> - Test or proof of concept environment: 100 GB, and 20 to 30 VPUs.
->
-> - Base-production environment: 500 GB, and 60 VPUs.
->
-> - Heavy-use production environment: More than 500 GB, and 100 or more VPUs.
->
-> Consider allocating additional VPUs to give enough capacity for updates and scaling activities. See [Block Volume Performance Levels (Oracle documentation)](https://docs.oracle.com/en-us/iaas/Content/Block/Concepts/blockvolumeperformance.htm).
+<div class="important">
 
-> [!NOTE]
-> The following additional VMware vSphere Foundation and VMware Cloud Foundation components are outside the scope of Red Hat support:
->
-> - Management: VCF Operations, VCF Automation, VCF Fleet Management, and VCF Identity Broker.
->
-> - Networking: VMware NSX Container Plugin (NCP).
->
-> - Migration: VMware HCX.
+To ensure the best performance conditions for your cluster workloads that operate on Oracle® Cloud Infrastructure (OCI) and on the Oracle® Cloud VMware Solution (OCVS) service, ensure volume performance units (VPUs) for your block volume are sized for your workloads.
+
+The following list provides some guidance in selecting the VPUs needed for specific performance needs:
+
+- Test or proof of concept environment: 100 GB, and 20 to 30 VPUs.
+
+- Base-production environment: 500 GB, and 60 VPUs.
+
+- Heavy-use production environment: More than 500 GB, and 100 or more VPUs.
+
+Consider allocating additional VPUs to give enough capacity for updates and scaling activities. See [Block Volume Performance Levels (Oracle documentation)](https://docs.oracle.com/en-us/iaas/Content/Block/Concepts/blockvolumeperformance.htm).
+
+</div>
+
+<div class="note">
+
+The following additional VMware vSphere Foundation and VMware Cloud Foundation components are outside the scope of Red Hat support:
+
+- Management: VCF Operations, VCF Automation, VCF Fleet Management, and VCF Identity Broker.
+
+- Networking: VMware NSX Container Plugin (NCP).
+
+- Migration: VMware HCX.
+
+</div>
 
 # Network connectivity requirements
 
@@ -59,72 +68,21 @@ You must configure the network connectivity between machines to allow OpenShift 
 
 Review the following details about the required network ports.
 
-<table>
-<caption>Ports used for all-machine to all-machine communications</caption>
-<colgroup>
-<col style="width: 22%" />
-<col style="width: 22%" />
-<col style="width: 55%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Protocol</th>
-<th style="text-align: left;">Port</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><p>VRRP</p></td>
-<td style="text-align: left;"><p>N/A</p></td>
-<td style="text-align: left;"><p>Required for keepalived</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>ICMP</p></td>
-<td style="text-align: left;"><p>N/A</p></td>
-<td style="text-align: left;"><p>Network reachability tests</p></td>
-</tr>
-<tr>
-<td rowspan="3" style="text-align: left;"><p>TCP</p></td>
-<td style="text-align: left;"><p><code>1936</code></p></td>
-<td style="text-align: left;"><p>Metrics</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>9000</code>-<code>9999</code></p></td>
-<td style="text-align: left;"><p>Host level services, including the node exporter on ports <code>9100</code>-<code>9101</code> and the Cluster Version Operator on port <code>9099</code>.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>10250</code>-<code>10259</code></p></td>
-<td style="text-align: left;"><p>The default ports that Kubernetes reserves</p></td>
-</tr>
-<tr>
-<td rowspan="5" style="text-align: left;"><p>UDP</p></td>
-<td style="text-align: left;"><p><code>6081</code></p></td>
-<td style="text-align: left;"><p>Geneve</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>9000</code>-<code>9999</code></p></td>
-<td style="text-align: left;"><p>Host level services, including the node exporter on ports <code>9100</code>-<code>9101</code>.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>500</code></p></td>
-<td style="text-align: left;"><p>IPsec IKE packets</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>4500</code></p></td>
-<td style="text-align: left;"><p>IPsec NAT-T packets</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>TCP/UDP</p></td>
-<td style="text-align: left;"><p><code>30000</code>-<code>32767</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Kubernetes node port</p></td>
-<td style="text-align: left;"><p>ESP</p></td>
-<td style="text-align: left;"><p>N/A</p></td>
-</tr>
-</tbody>
-</table>
+| Protocol             | Port                                                                                                                     | Description                |
+|----------------------|--------------------------------------------------------------------------------------------------------------------------|----------------------------|
+| VRRP                 | N/A                                                                                                                      | Required for keepalived    |
+| ICMP                 | N/A                                                                                                                      | Network reachability tests |
+| TCP                  | `1936`                                                                                                                   | Metrics                    |
+| `9000`-`9999`        | Host level services, including the node exporter on ports `9100`-`9101` and the Cluster Version Operator on port `9099`. |                            |
+| `10250`-`10259`      | The default ports that Kubernetes reserves                                                                               |                            |
+| UDP                  | `6081`                                                                                                                   | Geneve                     |
+| `9000`-`9999`        | Host level services, including the node exporter on ports `9100`-`9101`.                                                 |                            |
+| `500`                | IPsec IKE packets                                                                                                        |                            |
+| `4500`               | IPsec NAT-T packets                                                                                                      |                            |
+| TCP/UDP              | `30000`-`32767`                                                                                                          |                            |
+| Kubernetes node port | ESP                                                                                                                      | N/A                        |
+
+Ports used for all-machine to all-machine communications
 
 | Protocol | Port   | Description    |
 |----------|--------|----------------|
@@ -152,19 +110,17 @@ To install the vSphere Container Storage Interface (CSI) Driver Operator, the fo
 
 If a third-party vSphere CSI driver is present in the cluster, OpenShift Container Platform does not overwrite it. The presence of a third-party vSphere CSI driver prevents OpenShift Container Platform from updating to OpenShift Container Platform 4.13 or later.
 
-> [!NOTE]
-> The VMware vSphere CSI Driver Operator is supported only on clusters deployed with `platform: vsphere` in the installation manifest.
+<div class="note">
+
+The VMware vSphere CSI Driver Operator is supported only on clusters deployed with `platform: vsphere` in the installation manifest.
+
+</div>
 
 You can create a custom role for the Container Storage Interface (CSI) driver, the vSphere CSI Driver Operator, and the vSphere Problem Detector Operator. The custom role can include privilege sets that assign a minimum set of permissions to each vSphere object. This means that the CSI driver, the vSphere CSI Driver Operator, and the vSphere Problem Detector Operator can establish a basic interaction with these objects.
 
-> [!IMPORTANT]
-> Installing an OpenShift Container Platform cluster in a vCenter is tested against a full list of privileges as described in the "Required vCenter account privileges" section. By adhering to the full list of privileges, you can reduce the possibility of unexpected and unsupported behaviors that might occur when creating a custom role with a set of restricted privileges.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Additional resources
+Installing an OpenShift Container Platform cluster in a vCenter is tested against a full list of privileges as described in the "Required vCenter account privileges" section. By adhering to the full list of privileges, you can reduce the possibility of unexpected and unsupported behaviors that might occur when creating a custom role with a set of restricted privileges.
 
 </div>
 
@@ -173,8 +129,6 @@ Additional resources
 - To update the hardware version for your vSphere nodes, see [Updating hardware on nodes running in vSphere](../../../updating/updating_a_cluster/updating-hardware-on-nodes-running-on-vsphere.xml#updating-hardware-on-nodes-running-on-vsphere).
 
 - [Minimum permissions for the storage components](../../../installing/installing_vsphere/ipi/ipi-vsphere-installation-reqs.xml#installation-vsphere-minimum-permissions-storage_ipi-vsphere-installation-reqs)
-
-</div>
 
 # vCenter requirements
 
@@ -188,14 +142,6 @@ If you cannot use an account with global administrative privileges, you must cre
 
 The installation program requires an additional role to create a vSphere virtual machine folder.
 
-<div class="example">
-
-<div class="title">
-
-Roles and privileges required for installation in vSphere API
-
-</div>
-
 <table>
 <colgroup>
 <col style="width: 33%" />
@@ -203,14 +149,14 @@ Roles and privileges required for installation in vSphere API
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">vSphere object for role</th>
 <th style="text-align: left;">When required</th>
 <th style="text-align: left;">Required privileges in vSphere API</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Cns.Searchable</code><br />
@@ -225,7 +171,7 @@ Roles and privileges required for installation in vSphere API
 <code>StorageProfile.Update</code><br />
 <code>StorageProfile.View</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>vSphere vCenter Cluster</p></td>
 <td style="text-align: left;"><p>If VMs need creation in the cluster root</p></td>
 <td style="text-align: left;"><p><code>Host.Config.Storage</code><br />
@@ -234,7 +180,7 @@ Roles and privileges required for installation in vSphere API
 <code>VApp.Import</code><br />
 <code>VirtualMachine.Config.AddNewDisk</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter Resource Pool</p></td>
 <td style="text-align: left;"><p>For a provided existing resource pool</p></td>
 <td style="text-align: left;"><p><code>Resource.AssignVMToPool</code><br />
@@ -242,7 +188,7 @@ Roles and privileges required for installation in vSphere API
 <code>VApp.Import</code><br />
 <code>VirtualMachine.Config.AddNewDisk</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>vSphere Datastore</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Datastore.AllocateSpace</code><br />
@@ -250,12 +196,12 @@ Roles and privileges required for installation in vSphere API
 <code>Datastore.FileManagement</code><br />
 <code>InventoryService.Tagging.ObjectAttachable</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere Port Group</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Network.Assign</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Virtual Machine Folder</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>InventoryService.Tagging.ObjectAttachable</code><br />
@@ -289,7 +235,7 @@ Roles and privileges required for installation in vSphere API
 <code>VirtualMachine.Provisioning.MarkAsTemplate</code><br />
 <code>VirtualMachine.Provisioning.DeployTemplate</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter data center</p></td>
 <td style="text-align: left;"><p>The installation program creates the virtual machine folder.</p></td>
 <td style="text-align: left;"><p><code>InventoryService.Tagging.ObjectAttachable</code><br />
@@ -326,16 +272,6 @@ Roles and privileges required for installation in vSphere API
 </tbody>
 </table>
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Roles and privileges required for installation in vCenter graphical user interface (GUI)
-
-</div>
-
 <table>
 <colgroup>
 <col style="width: 25%" />
@@ -343,14 +279,14 @@ Roles and privileges required for installation in vCenter graphical user interfa
 <col style="width: 37%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">vSphere object for role</th>
 <th style="text-align: left;">When required</th>
 <th style="text-align: left;">Required privileges in vCenter GUI</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Cns.Searchable</code><br />
@@ -365,7 +301,7 @@ Roles and privileges required for installation in vCenter graphical user interfa
 <code>"VM storage policies"."Update VM storage policies"</code><br />
 <code>"VM storage policies"."View VM storage policies"</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>vSphere vCenter Cluster</p></td>
 <td style="text-align: left;"><p>For VMs creation in the cluster root</p></td>
 <td style="text-align: left;"><p><code>Host.Configuration."Storage partition configuration"</code><br />
@@ -374,7 +310,7 @@ Roles and privileges required for installation in vCenter graphical user interfa
 <code>VApp.Import</code><br />
 <code>"Virtual machine"."Change Configuration"."Add new disk"</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter Resource Pool</p></td>
 <td style="text-align: left;"><p>If providing an existing resource pool</p></td>
 <td style="text-align: left;"><p><code>Host.Configuration."Storage partition configuration"</code><br />
@@ -383,7 +319,7 @@ Roles and privileges required for installation in vCenter graphical user interfa
 <code>VApp.Import</code><br />
 <code>"Virtual machine"."Change Configuration"."Add new disk"</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>vSphere Datastore</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Datastore."Allocate space"</code><br />
@@ -391,12 +327,12 @@ Roles and privileges required for installation in vCenter graphical user interfa
 <code>Datastore."Low level file operations"</code><br />
 <code>"vSphere Tagging"."Assign or Unassign vSphere Tag on Object"</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere Port Group</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Network."Assign network"</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Virtual Machine Folder</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>"vSphere Tagging"."Assign or Unassign vSphere Tag on Object"</code><br />
@@ -429,7 +365,7 @@ Roles and privileges required for installation in vCenter graphical user interfa
 <code>"Virtual machine".Provisioning."Mark as template"</code><br />
 <code>"Virtual machine".Provisioning."Deploy template"</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter data center</p></td>
 <td style="text-align: left;"><p>The installation program creates the virtual machine folder.</p></td>
 <td style="text-align: left;"><p><code>"vSphere Tagging"."Assign or Unassign vSphere Tag on Object"</code><br />
@@ -467,96 +403,20 @@ Roles and privileges required for installation in vCenter graphical user interfa
 </tbody>
 </table>
 
-</div>
-
 Additionally, the user requires some `ReadOnly` permissions, and some of the roles require permission to propagate the permissions to child objects. These settings vary depending on whether or not you install the cluster into an existing folder.
 
-<div class="example">
-
-<div class="title">
-
-Required permissions and propagation settings
-
-</div>
-
-<table>
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">vSphere object</th>
-<th style="text-align: left;">When required</th>
-<th style="text-align: left;">Propagate to children</th>
-<th style="text-align: left;">Permissions required</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><p>vSphere vCenter</p></td>
-<td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p>False</p></td>
-<td style="text-align: left;"><p>Listed required privileges</p></td>
-</tr>
-<tr>
-<td rowspan="2" style="text-align: left;"><p>vSphere vCenter data center</p></td>
-<td style="text-align: left;"><p>Existing folder</p></td>
-<td style="text-align: left;"><p>False</p></td>
-<td style="text-align: left;"><p><code>ReadOnly</code> permission</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Installation program creates the folder</p></td>
-<td style="text-align: left;"><p>True</p></td>
-<td style="text-align: left;"><p>Listed required privileges</p></td>
-</tr>
-<tr>
-<td rowspan="2" style="text-align: left;"><p>vSphere vCenter Cluster</p></td>
-<td style="text-align: left;"><p>Existing resource pool</p></td>
-<td style="text-align: left;"><p>False</p></td>
-<td style="text-align: left;"><p><code>ReadOnly</code> permission</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>VMs in cluster root</p></td>
-<td style="text-align: left;"><p>True</p></td>
-<td style="text-align: left;"><p>Listed required privileges</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>vSphere vCenter Datastore</p></td>
-<td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p>False</p></td>
-<td style="text-align: left;"><p>Listed required privileges</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>vSphere Switch</p></td>
-<td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p>False</p></td>
-<td style="text-align: left;"><p><code>ReadOnly</code> permission</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>vSphere Port Group</p></td>
-<td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p>False</p></td>
-<td style="text-align: left;"><p>Listed required privileges</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>vSphere vCenter Virtual Machine Folder</p></td>
-<td style="text-align: left;"><p>Existing folder</p></td>
-<td style="text-align: left;"><p>True</p></td>
-<td style="text-align: left;"><p>Listed required privileges</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>vSphere vCenter Resource Pool</p></td>
-<td style="text-align: left;"><p>Existing resource pool</p></td>
-<td style="text-align: left;"><p>True</p></td>
-<td style="text-align: left;"><p>Listed required privileges</p></td>
-</tr>
-</tbody>
-</table>
-
-</div>
+| vSphere object                          | When required          | Propagate to children      | Permissions required       |
+|-----------------------------------------|------------------------|----------------------------|----------------------------|
+| vSphere vCenter                         | Always                 | False                      | Listed required privileges |
+| vSphere vCenter data center             | Existing folder        | False                      | `ReadOnly` permission      |
+| Installation program creates the folder | True                   | Listed required privileges |                            |
+| vSphere vCenter Cluster                 | Existing resource pool | False                      | `ReadOnly` permission      |
+| VMs in cluster root                     | True                   | Listed required privileges |                            |
+| vSphere vCenter Datastore               | Always                 | False                      | Listed required privileges |
+| vSphere Switch                          | Always                 | False                      | `ReadOnly` permission      |
+| vSphere Port Group                      | Always                 | False                      | Listed required privileges |
+| vSphere vCenter Virtual Machine Folder  | Existing folder        | True                       | Listed required privileges |
+| vSphere vCenter Resource Pool           | Existing resource pool | True                       | Listed required privileges |
 
 For more information about creating an account with only the required privileges, see [vSphere Permissions and User Management Tasks](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-5372F580-5C23-4E9C-8A4E-EF1B4DD9033E.html) in the vSphere documentation.
 
@@ -566,23 +426,21 @@ After you create a custom role and assign privileges to the role, you can create
 
 Before you create permissions or request for the creation of permissions for a vSphere object, decide what minimum permissions apply to the vSphere object. By doing this task, you can ensure a basic interaction exists between a vSphere object and OpenShift Container Platform architecture.
 
-> [!IMPORTANT]
-> If you create a custom role and you do not assign privileges to it, the vSphere Server by default assigns a `Read Only` role to the custom role. Note that for the cloud provider API, the custom role only needs to inherit the privileges of the `Read Only` role.
+<div class="important">
+
+If you create a custom role and you do not assign privileges to it, the vSphere Server by default assigns a `Read Only` role to the custom role. Note that for the cloud provider API, the custom role only needs to inherit the privileges of the `Read Only` role.
+
+</div>
 
 Consider creating a custom role when an account with global administrative privileges does not meet your needs.
 
-> [!IMPORTANT]
-> Red Hat does not support configuring an account without including the required privileges. Installing an OpenShift Container Platform cluster in a vCenter is tested against a full list of privileges as described in the "Required vCenter account privileges" section. By adhering to the full list of privileges, you can reduce the possibility of unexpected behaviors that might occur when creating a custom role with a restricted set of privileges.
+<div class="important">
 
-The following tables specify how the required vCenter account privileges provided earlier in this document are relevant to different aspects of OpenShift Container Platform architecture.
-
-<div id="installation-vsphere-minimum-permissions-ipi_ipi-vsphere-installation-reqs" class="example">
-
-<div class="title">
-
-Minimum permissions on installer-provisioned infrastructure
+Red Hat does not support configuring an account without including the required privileges. Installing an OpenShift Container Platform cluster in a vCenter is tested against a full list of privileges as described in the "Required vCenter account privileges" section. By adhering to the full list of privileges, you can reduce the possibility of unexpected behaviors that might occur when creating a custom role with a restricted set of privileges.
 
 </div>
+
+The following tables specify how the required vCenter account privileges provided earlier in this document are relevant to different aspects of OpenShift Container Platform architecture.
 
 <table>
 <colgroup>
@@ -591,14 +449,14 @@ Minimum permissions on installer-provisioned infrastructure
 <col style="width: 27%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">vSphere object for role</th>
 <th style="text-align: left;">When required</th>
 <th style="text-align: left;">Required privileges</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Cns.Searchable</code><br />
@@ -613,7 +471,7 @@ Minimum permissions on installer-provisioned infrastructure
 <code>StorageProfile.Update</code><br />
 <code>StorageProfile.View</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>vSphere vCenter Cluster</p></td>
 <td style="text-align: left;"><p>If you intend to create VMs in the cluster root</p></td>
 <td style="text-align: left;"><p><code>Host.Config.Storage</code><br />
@@ -622,7 +480,7 @@ Minimum permissions on installer-provisioned infrastructure
 <code>VApp.Import</code><br />
 <code>VirtualMachine.Config.AddNewDisk</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter Resource Pool</p></td>
 <td style="text-align: left;"><p>If you included an existing resource pool in the <code>install-config.yaml</code> file</p></td>
 <td style="text-align: left;"><p><code>Host.Config.Storage</code><br />
@@ -630,19 +488,19 @@ Minimum permissions on installer-provisioned infrastructure
 <code>VApp.AssignResourcePool</code><br />
 <code>VApp.Import`minimum</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>vSphere Datastore</p></td>
 <td style="text-align: left;"><p>If you referenced a datastore in the <code>install-config.yaml</code> file</p></td>
 <td style="text-align: left;"><p><code>Datastore.Browse</code><br />
 <code>Datastore.FileManagement</code><br />
 <code>InventoryService.Tagging.ObjectAttachable</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere Port Group</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Network.Assign</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Virtual Machine Folder</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>InventoryService.Tagging.ObjectAttachable</code><br />
@@ -675,7 +533,7 @@ Minimum permissions on installer-provisioned infrastructure
 <code>VirtualMachine.Provisioning.MarkAsTemplate</code><br />
 <code>VirtualMachine.Provisioning.DeployTemplate</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter data center</p></td>
 <td style="text-align: left;"><p>If the virtual machine folder does not already exist, the installation program creates the virtual machine folder. If your cluster does use the Machine API and you want to set the minimum set of permissions for the API, see the "Minimum permissions for the Machine API" table.</p></td>
 <td style="text-align: left;"><p><code>Folder.Create</code><br />
@@ -713,16 +571,6 @@ Minimum permissions on installer-provisioned infrastructure
 </tbody>
 </table>
 
-</div>
-
-<div id="post-installation-vsphere-minimum-permissions_ipi-vsphere-installation-reqs" class="example">
-
-<div class="title">
-
-Minimum permissions for postinstallation management of components
-
-</div>
-
 <table>
 <colgroup>
 <col style="width: 36%" />
@@ -730,14 +578,14 @@ Minimum permissions for postinstallation management of components
 <col style="width: 27%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">vSphere object for role</th>
 <th style="text-align: left;">When required</th>
 <th style="text-align: left;">Required privileges</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Cns.Searchable</code><br />
@@ -752,18 +600,18 @@ Minimum permissions for postinstallation management of components
 <code>StorageProfile.Update</code><br />
 <code>StorageProfile.View</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>vSphere vCenter Cluster</p></td>
 <td style="text-align: left;"><p>If you intend to create VMs in the cluster root</p></td>
 <td style="text-align: left;"><p><code>Host.Config.Storage</code><br />
 <code>Resource.AssignVMToPool</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter Resource Pool</p></td>
 <td style="text-align: left;"><p>If you included an existing resource pool in the <code>install-config.yaml</code> file</p></td>
 <td style="text-align: left;"><p><code>Host.Config.Storage</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>vSphere Datastore</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Datastore.AllocateSpace</code><br />
@@ -771,12 +619,12 @@ Minimum permissions for postinstallation management of components
 <code>Datastore.FileManagement</code><br />
 <code>InventoryService.Tagging.ObjectAttachable</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere Port Group</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Network.Assign</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Virtual Machine Folder</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>VirtualMachine.Config.AddExistingDisk</code><br />
@@ -794,7 +642,7 @@ Minimum permissions for postinstallation management of components
 <code>VirtualMachine.Provisioning.Clone</code><br />
 <code>VirtualMachine.Provisioning.DeployTemplate</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter data center</p></td>
 <td style="text-align: left;"><p>If the virtual machine folder does not already exist, the installation program creates the virtual machine folder.</p></td>
 <td style="text-align: left;"><p><code>Resource.AssignVMToPool</code><br />
@@ -807,16 +655,6 @@ Minimum permissions for postinstallation management of components
 </tbody>
 </table>
 
-</div>
-
-<div id="installation-vsphere-minimum-permissions-storage_ipi-vsphere-installation-reqs" class="example">
-
-<div class="title">
-
-Minimum permissions for the storage components
-
-</div>
-
 <table>
 <colgroup>
 <col style="width: 36%" />
@@ -824,14 +662,14 @@ Minimum permissions for the storage components
 <col style="width: 27%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">vSphere object for role</th>
 <th style="text-align: left;">When required</th>
 <th style="text-align: left;">Required privileges</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Cns.Searchable</code><br />
@@ -842,35 +680,35 @@ Minimum permissions for the storage components
 <code>StorageProfile.Update</code><br />
 <code>StorageProfile.View</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>vSphere vCenter Cluster</p></td>
 <td style="text-align: left;"><p>If you intend to create VMs in the cluster root</p></td>
 <td style="text-align: left;"><p><code>Host.Config.Storage</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter Resource Pool</p></td>
 <td style="text-align: left;"><p>If you included an existing resource pool in the <code>install-config.yaml</code> file</p></td>
 <td style="text-align: left;"><p><code>Host.Config.Storage</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>vSphere Datastore</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Datastore.Browse</code><br />
 <code>Datastore.FileManagement</code><br />
 <code>InventoryService.Tagging.ObjectAttachable</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere Port Group</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Read Only</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Virtual Machine Folder</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>VirtualMachine.Config.AddExistingDisk</code><br />
 <code>VirtualMachine.Config.AddRemoveDevice</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter data center</p></td>
 <td style="text-align: left;"><p>If the virtual machine folder does not already exist, the installation program creates the virtual machine folder.</p></td>
 <td style="text-align: left;"><p><code>VirtualMachine.Config.AddExistingDisk</code><br />
@@ -879,16 +717,6 @@ Minimum permissions for the storage components
 </tbody>
 </table>
 
-</div>
-
-<div id="post-installation-vsphere-minimum-machine-api_ipi-vsphere-installation-reqs" class="example">
-
-<div class="title">
-
-Minimum permissions for the Machine API
-
-</div>
-
 <table>
 <colgroup>
 <col style="width: 36%" />
@@ -896,14 +724,14 @@ Minimum permissions for the Machine API
 <col style="width: 27%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">vSphere object for role</th>
 <th style="text-align: left;">When required</th>
 <th style="text-align: left;">Required privileges</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>InventoryService.Tagging.AttachTag</code><br />
@@ -917,28 +745,28 @@ Minimum permissions for the Machine API
 <code>StorageProfile.Update</code><br />
 <code>StorageProfile.View</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>vSphere vCenter Cluster</p></td>
 <td style="text-align: left;"><p>If you intend to create VMs in the cluster root</p></td>
 <td style="text-align: left;"><p><code>Resource.AssignVMToPool</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter Resource Pool</p></td>
 <td style="text-align: left;"><p>If you included an existing resource pool in the <code>install-config.yaml</code> file</p></td>
 <td style="text-align: left;"><p><code>Read Only</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>vSphere Datastore</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Datastore.AllocateSpace</code><br />
 <code>Datastore.Browse</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere Port Group</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Network.Assign</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Virtual Machine Folder</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>VirtualMachine.Config.AddRemoveDevice</code><br />
@@ -955,7 +783,7 @@ Minimum permissions for the Machine API
 <code>VirtualMachine.Provisioning.Clone</code><br />
 <code>VirtualMachine.Provisioning.DeployTemplate</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter data center</p></td>
 <td style="text-align: left;"><p>If the virtual machine folder does not already exist, the installation program creates the virtual machine folder.</p></td>
 <td style="text-align: left;"><p><code>Resource.AssignVMToPool</code><br />
@@ -965,8 +793,6 @@ Minimum permissions for the Machine API
 </tr>
 </tbody>
 </table>
-
-</div>
 
 ## Using OpenShift Container Platform with vMotion
 
@@ -984,8 +810,11 @@ If you intend on using vMotion in your vSphere environment, consider the followi
 
 - OpenShift Container Platform does not support selective migration of virtual machine disks (VMDKs) across datastores, using datastore clusters for VM provisioning or for dynamic or static provisioning of PVs, or using a datastore that is part of a datastore cluster for dynamic or static provisioning of PVs.
 
-  > [!IMPORTANT]
-  > You can specify the path of any datastore that exists in a datastore cluster. By default, Storage Distributed Resource Scheduler (SDRS), which uses Storage vMotion, is automatically enabled for a datastore cluster. Red Hat does not support Storage vMotion, so you must disable SDRS to avoid data loss issues for your OpenShift Container Platform cluster. If you must specify VMs across many datastores, use a `datastore` object to specify a failure domain in your cluster’s `install-config.yaml` configuration file. For more information, see "VMware vSphere region and zone enablement".
+  <div class="important">
+
+  You can specify the path of any datastore that exists in a datastore cluster. By default, Storage Distributed Resource Scheduler (SDRS), which uses Storage vMotion, is automatically enabled for a datastore cluster. Red Hat does not support Storage vMotion, so you must disable SDRS to avoid data loss issues for your OpenShift Container Platform cluster. If you must specify VMs across many datastores, use a `datastore` object to specify a failure domain in your cluster’s `install-config.yaml` configuration file. For more information, see "VMware vSphere region and zone enablement".
+
+  </div>
 
 ## Cluster resources
 
@@ -1021,13 +850,19 @@ Available resources vary between clusters. A limit exists for the number of poss
 
 You can use Dynamic Host Configuration Protocol (DHCP) for the network and configure the DHCP server to set persistent IP addresses to machines in your cluster. In the DHCP lease, you must configure the DHCP to use the default gateway.
 
-> [!NOTE]
-> You do not need to use the DHCP for the network if you want to provision nodes with static IP addresses.
+<div class="note">
+
+You do not need to use the DHCP for the network if you want to provision nodes with static IP addresses.
+
+</div>
 
 If you are installing to a restricted environment, the VM in your restricted network must have access to vCenter so that it can provision and manage nodes, persistent volume claims (PVCs), and other resources.
 
-> [!NOTE]
-> Ensure that each OpenShift Container Platform node in the cluster has access to a Network Time Protocol (NTP) server that is discoverable by DHCP. Installation is possible without an NTP server. However, asynchronous server clocks can cause errors, which the NTP server prevents.
+<div class="note">
+
+Ensure that each OpenShift Container Platform node in the cluster has access to a Network Time Protocol (NTP) server that is discoverable by DHCP. Installation is possible without an NTP server. However, asynchronous server clocks can cause errors, which the NTP server prevents.
+
+</div>
 
 Additionally, you must create the following networking resources before you install the OpenShift Container Platform cluster:
 
@@ -1045,9 +880,9 @@ You must give these IP addresses to the installation program when you install th
 
 You must create DNS records for two static IP addresses in the appropriate DNS server for the vCenter instance that hosts your OpenShift Container Platform cluster. In each record, `<cluster_name>` is the cluster name and `<base_domain>` is the cluster base domain that you specify when you install the cluster. A complete DNS record takes the form: `<component>.<cluster_name>.<base_domain>.`.
 
-| Component | Record | Description |
-|----|----|----|
-| API VIP | `api.<cluster_name>.<base_domain>.` | This DNS A/AAAA or CNAME (Canonical Name) record must point to the load balancer for the control plane machines. This record must be resolvable by both clients external to the cluster and from all the nodes within the cluster. |
+| Component   | Record                                 | Description                                                                                                                                                                                                                                                                                 |
+|-------------|----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| API VIP     | `api.<cluster_name>.<base_domain>.`    | This DNS A/AAAA or CNAME (Canonical Name) record must point to the load balancer for the control plane machines. This record must be resolvable by both clients external to the cluster and from all the nodes within the cluster.                                                          |
 | Ingress VIP | `*.apps.<cluster_name>.<base_domain>.` | A wildcard DNS A/AAAA or CNAME record that points to the load balancer that targets the machines that run the Ingress router pods, which are the worker nodes by default. This record must be resolvable by both clients external to the cluster and from all the nodes within the cluster. |
 
 Required DNS records
@@ -1060,11 +895,9 @@ By default, the installation program is configured to use the DHCP for the netwo
 
 After you define one or more machine pools in your `install-config.yaml` file, you can define network definitions for nodes on your network. Ensure that the number of network definitions matches the number of machine pools that you configured for your cluster.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example network configuration that specifies different roles
+**Example network configuration that specifies different roles**
 
 </div>
 
@@ -1111,8 +944,6 @@ platform:
 # ...
 ```
 
-</div>
-
 - Valid network definition values include `bootstrap`, `control-plane`, and `compute`. You must list at least one `bootstrap` network definition in your `install-config.yaml` configuration file.
 
 - Lists IPv4, IPv6, or both IP addresses that the installation program passes to the network interface. The machine API controller assigns all configured IP addresses to the default network interface.
@@ -1123,16 +954,6 @@ platform:
 
 After you deployed your cluster to run nodes with static IP addresses, you can scale a machine to use one of these static IP addresses. Additionally, you can use a machine set to configure a machine to use one of the configured static IP addresses.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Scaling machines to use static IP addresses](../../../post_installation_configuration/node-tasks.html#nodes-vsphere-scaling-machines-static-ip_post-install-node-tasks)
 
 - [Using a machine set to scale machines with configured static IP addresses](../../../post_installation_configuration/node-tasks.html#nodes-vsphere-machine-set-scaling-static-ip_post-install-node-tasks)
-
-</div>

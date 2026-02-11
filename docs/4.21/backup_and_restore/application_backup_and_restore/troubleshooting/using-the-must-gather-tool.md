@@ -23,27 +23,9 @@ For more information about the supported flags, use the help flag with the `must
 $ oc adm must-gather --image=registry.redhat.io/oadp/oadp-mustgather-rhel9:v1.5 -- /usr/bin/gather -h
 ```
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have logged in to the OpenShift Container Platform cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to the directory where you want to store the `must-gather` data.
 
@@ -77,15 +59,7 @@ Procedure
 
       - In this example, the timeout is 15 seconds. By default, the `--skip-tls` flag value is `false`. Set the value to `true` to allow insecure TLS connections.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the Markdown output file is generated at the following location: `must-gather.local.89…​054550/registry.redhat.io/oadp/oadp-mustgather-rhel9:v1.5-sha256-0…​84/clusters/a4…​86/oadp-must-gather-summary.md`
 
@@ -96,16 +70,4 @@ Verification
     <figcaption>Example markdown output of must-gather tool</figcaption>
     </figure>
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Gathering cluster data](../../../support/gathering-cluster-data.xml#gathering-cluster-data)
-
-</div>

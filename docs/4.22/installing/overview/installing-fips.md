@@ -4,10 +4,13 @@ OpenShift Container Platform is designed for FIPS. When running Red Hat Enterpr
 
 For more information about the NIST validation program, see [Cryptographic Module Validation Program](https://csrc.nist.gov/Projects/cryptographic-module-validation-program/validated-modules). For the latest NIST status for the individual versions of RHEL cryptographic libraries that have been submitted for validation, see [Compliance Activities and Government Standards](https://access.redhat.com/articles/2918071#fips-140-2-and-fips-140-3-2).
 
-> [!IMPORTANT]
-> To enable FIPS mode for your cluster, you must run the installation program from a RHEL 9 computer that is configured to operate in FIPS mode, and you must use a FIPS-capable version of the installation program. See the section titled *Obtaining a FIPS-capable installation program using \`oc adm extract\`*.
->
-> For more information about configuring FIPS mode on RHEL, see [Installing the system in FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/assembly_installing-the-system-in-fips-mode_security-hardening).
+<div class="important">
+
+To enable FIPS mode for your cluster, you must run the installation program from a RHEL 9 computer that is configured to operate in FIPS mode, and you must use a FIPS-capable version of the installation program. See the section titled *Obtaining a FIPS-capable installation program using \`oc adm extract\`*.
+
+For more information about configuring FIPS mode on RHEL, see [Installing the system in FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/assembly_installing-the-system-in-fips-mode_security-hardening).
+
+</div>
 
 For the Red Hat Enterprise Linux CoreOS (RHCOS) machines in your cluster, this change is applied when the machines are deployed based on the status of an option in the `install-config.yaml` file, which governs the cluster options that a user can change during cluster deployment. With Red Hat Enterprise Linux (RHEL) machines, you must enable FIPS mode when you install the operating system on the machines that you plan to use as worker machines.
 
@@ -17,25 +20,7 @@ Because FIPS must be enabled before the operating system that your cluster uses 
 
 OpenShift Container Platform requires the use of a FIPS-capable installation binary to install a cluster in FIPS mode. You can obtain this binary by extracting it from the release image by using the OpenShift CLI (`oc`). After you have obtained the binary, you proceed with the cluster installation, replacing all instances of the `openshift-install` command with `openshift-install-fips`.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`) with version 4.16 or newer.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Extract the FIPS-capable binary from the installation program by running the following command:
 
@@ -56,43 +41,13 @@ Procedure
 
 2.  Proceed with cluster installation, replacing all instances of the `openshift-install` command with `openshift-install-fips`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Extracting the OpenShift Container Platform installation program](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#retrieving-the-openshift-installer_ipi-install-installation-workflow)
-
-</div>
 
 # Obtaining a FIPS-capable installation program using the public OpenShift mirror
 
 OpenShift Container Platform requires the use of a FIPS-capable installation binary to install a cluster in FIPS mode. You can obtain this binary by downloading it from the public OpenShift mirror. After you have obtained the binary, proceed with the cluster installation, replacing all instances of the `openshift-install` binary with `openshift-install-fips`.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the internet.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Download the installation program from <https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-4.18/openshift-install-rhel9-amd64.tar.gz>.
 
@@ -104,50 +59,22 @@ Procedure
 
 3.  Proceed with cluster installation, replacing all instances of the `openshift-install` command with `openshift-install-fips`.
 
-</div>
-
 # FIPS validation in OpenShift Container Platform
 
 OpenShift Container Platform uses certain FIPS validated or Modules In Process modules within RHEL and RHCOS for the operating system components that it uses. See [RHEL core crypto components](https://access.redhat.com/articles/3655361). For example, when users use SSH to connect to OpenShift Container Platform clusters and containers, those connections are properly encrypted.
 
 OpenShift Container Platform components are written in Go and built with Red Hat’s golang compiler. When you enable FIPS mode for your cluster, all OpenShift Container Platform components that require cryptographic signing call RHEL and RHCOS cryptographic libraries.
 
-<table>
-<caption>FIPS mode attributes and limitations in OpenShift Container Platform 4.17</caption>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Attributes</th>
-<th style="text-align: left;">Limitations</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><p>FIPS support in RHEL 9 and RHCOS operating systems.</p></td>
-<td rowspan="4" style="text-align: left;"><p>The FIPS implementation does not use a function that performs hash computation and signature generation or validation in a single step. This limitation will continue to be evaluated and improved in future OpenShift Container Platform releases.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>FIPS support in CRI-O runtimes.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>FIPS support in OpenShift Container Platform services.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>FIPS validated or Modules In Process cryptographic module and algorithms that are obtained from RHEL 9 and RHCOS binaries and images.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Use of FIPS compatible golang compiler.</p></td>
-<td style="text-align: left;"><p>TLS FIPS support is not complete but is planned for future OpenShift Container Platform releases.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>FIPS support across multiple architectures.</p></td>
-<td style="text-align: left;"><p>FIPS is currently only supported on OpenShift Container Platform deployments using <code>x86_64</code>, <code>ppc64le</code>, and <code>s390x</code> architectures.</p></td>
-</tr>
-</tbody>
-</table>
+| Attributes                                                                                                                            | Limitations                                                                                                                                                                                                                                         |
+|---------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| FIPS support in RHEL 9 and RHCOS operating systems.                                                                                   | The FIPS implementation does not use a function that performs hash computation and signature generation or validation in a single step. This limitation will continue to be evaluated and improved in future OpenShift Container Platform releases. |
+| FIPS support in CRI-O runtimes.                                                                                                       |                                                                                                                                                                                                                                                     |
+| FIPS support in OpenShift Container Platform services.                                                                                |                                                                                                                                                                                                                                                     |
+| FIPS validated or Modules In Process cryptographic module and algorithms that are obtained from RHEL 9 and RHCOS binaries and images. |                                                                                                                                                                                                                                                     |
+| Use of FIPS compatible golang compiler.                                                                                               | TLS FIPS support is not complete but is planned for future OpenShift Container Platform releases.                                                                                                                                                   |
+| FIPS support across multiple architectures.                                                                                           | FIPS is currently only supported on OpenShift Container Platform deployments using `x86_64`, `ppc64le`, and `s390x` architectures.                                                                                                                  |
+
+FIPS mode attributes and limitations in OpenShift Container Platform 4.17
 
 # FIPS support in components that the cluster uses
 
@@ -169,8 +96,11 @@ To ensure that containers know that they are running on a host that is using FIP
 
 To install a cluster in FIPS mode, follow the instructions to install a customized cluster on your preferred infrastructure. Ensure that you set `fips: true` in the `install-config.yaml` file before you deploy your cluster.
 
-> [!IMPORTANT]
-> To enable FIPS mode for your cluster, you must run the installation program from a RHEL computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Installing the system in FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/assembly_installing-the-system-in-fips-mode_security-hardening).
+<div class="important">
+
+To enable FIPS mode for your cluster, you must run the installation program from a RHEL computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Installing the system in FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/assembly_installing-the-system-in-fips-mode_security-hardening).
+
+</div>
 
 - [Amazon Web Services](../../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-customizations)
 
@@ -194,7 +124,10 @@ To install a cluster in FIPS mode, follow the instructions to install a customiz
 
 - [VMware vSphere](../../installing/installing_vsphere/upi/installing-vsphere.xml#installing-vsphere)
 
-> [!NOTE]
-> If you are using Azure File storage, you cannot enable FIPS mode.
+<div class="note">
+
+If you are using Azure File storage, you cannot enable FIPS mode.
+
+</div>
 
 To apply `AES CBC` encryption to your etcd data store, follow the [Encrypting etcd data](../../etcd/etcd-encrypt.xml#etcd-encrypt) process after you install your cluster.

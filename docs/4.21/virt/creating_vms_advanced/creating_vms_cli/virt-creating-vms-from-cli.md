@@ -1,33 +1,18 @@
 You can create virtual machines (VMs) from the command line by editing or creating a `VirtualMachine` manifest. You can simplify VM configuration by using an [instance type](../../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types) in your VM manifest.
 
-> [!NOTE]
-> You can also [create VMs from instance types by using the web console](../../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types).
+<div class="note">
+
+You can also [create VMs from instance types by using the web console](../../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types).
+
+</div>
 
 # Creating a VM from a VirtualMachine manifest
 
 You can create a virtual machine (VM) from a `VirtualMachine` manifest. To simplify the creation of these manifests, you can use the `virtctl` command-line tool.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the `virtctl` CLI.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `VirtualMachine` manifest for your VM and save it as a YAML file. For example, to create a minimal Red Hat Enterprise Linux (RHEL) VM, run the following command:
 
@@ -37,14 +22,15 @@ Procedure
 
 2.  Review the `VirtualMachine` manifest for your VM:
 
-    > [!NOTE]
-    > This example manifest does not configure VM authentication.
+    <div class="note">
 
-    <div class="formalpara">
+    This example manifest does not configure VM authentication.
 
-    <div class="title">
+    </div>
 
-    Example manifest for a RHEL VM
+    <div class="formalpara-title">
+
+    **Example manifest for a RHEL VM**
 
     </div>
 
@@ -87,8 +73,6 @@ Procedure
             name: imported-volume-mk4lj
     ```
 
-    </div>
-
     - `name: rhel-9-minimal` specifies the name of the VM.
 
     - `name: rhel9` specifies the boot source for the guest operating system in the `sourceRef` section.
@@ -113,18 +97,19 @@ Procedure
     $ virtctl start <vm_name>
     ```
 
-</div>
-
 ## Supported custom video device types
 
 When creating a virtual machine (VM), you can configure a custom video device type to override the default video configuration.
 
 Configuring a custom video device allows you to specify different video devices, based on your guest operating system requirements and performance needs.
 
-> [!IMPORTANT]
-> Custom video device support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Custom video device support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 Using a custom video device provides several advantages:
 
@@ -149,23 +134,13 @@ You can configure the following video device types:
 
 - ramfb: a simple, unaccelerated virtual display device primarily used in the QEMU emulator, and useful for ARM architecture.
 
-| Architecture | Boot mode | Default type | Supported types |
-|----|----|----|----|
-| AMD/x86_64 | BIOS | `vga` | `virtio`, `vga`, `bochs`, `cirrus`, `` ramfb` `` |
-| AMD/x86_64 | EFI | `bochs` | `virtio`, `vga`, `bochs`, `cirrus`, `` ramfb` `` |
-| ARM64 | BIOS/EFI | `virtio` | `virtio`, `ramfb` |
-| s390x | BIOS/EFI | `virtio` | `virtio` |
+| Architecture | Boot mode | Default type | Supported types                                  |
+|--------------|-----------|--------------|--------------------------------------------------|
+| AMD/x86_64   | BIOS      | `vga`        | `virtio`, `vga`, `bochs`, `cirrus`, `` ramfb` `` |
+| AMD/x86_64   | EFI       | `bochs`      | `virtio`, `vga`, `bochs`, `cirrus`, `` ramfb` `` |
+| ARM64        | BIOS/EFI  | `virtio`     | `virtio`, `ramfb`                                |
+| s390x        | BIOS/EFI  | `virtio`     | `virtio`                                         |
 
 Video device support by architecture
 
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - [Configuring SSH access to virtual machines](../../../virt/managing_vms/virt-accessing-vm-ssh.xml#virt-accessing-vm-ssh)
-
-</div>

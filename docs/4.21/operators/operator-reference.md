@@ -2,15 +2,21 @@ This reference guide indexes the *cluster Operators* shipped by Red Hat that ser
 
 Cluster administrators can view cluster Operators in the OpenShift Container Platform web console from the **Administration** → **Cluster Settings** page.
 
-> [!NOTE]
-> Cluster Operators are not managed by Operator Lifecycle Manager (OLM) and the software catalog. OLM and the software catalog are part of the [Operator Framework](https://operatorframework.io/) used in OpenShift Container Platform for installing and running optional [add-on Operators](../architecture/control-plane.xml#olm-operators_control-plane).
+<div class="note">
+
+Cluster Operators are not managed by Operator Lifecycle Manager (OLM) and the software catalog. OLM and the software catalog are part of the [Operator Framework](https://operatorframework.io/) used in OpenShift Container Platform for installing and running optional [add-on Operators](../architecture/control-plane.xml#olm-operators_control-plane).
+
+</div>
 
 Some of the following cluster Operators can be disabled prior to installation. For more information see [cluster capabilities](../installing/overview/cluster-capabilities.xml#cluster-capabilities).
 
 # Cluster Baremetal Operator
 
-> [!NOTE]
-> The Cluster Baremetal Operator is an optional cluster capability that can be disabled by cluster administrators during installation. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
+<div class="note">
+
+The Cluster Baremetal Operator is an optional cluster capability that can be disabled by cluster administrators during installation. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
+
+</div>
 
 The Cluster Baremetal Operator (CBO) deploys all the components necessary to take a bare-metal server to a fully functioning worker node ready to run OpenShift Container Platform compute nodes. The CBO ensures that the metal3 deployment, which consists of the Bare Metal Operator (BMO) and Ironic containers, runs on one of the control plane nodes within the OpenShift Container Platform cluster. The CBO also listens for OpenShift Container Platform updates to resources that it watches and takes appropriate action.
 
@@ -18,17 +24,7 @@ The Cluster Baremetal Operator (CBO) deploys all the components necessary to tak
 
 [cluster-baremetal-operator](https://github.com/openshift/cluster-baremetal-operator)
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Bare-metal capability](../installing/overview/cluster-capabilities.xml#cluster-bare-metal-operator_cluster-capabilities)
-
-</div>
 
 # Cloud Credential Operator
 
@@ -88,10 +84,13 @@ The Cluster Autoscaler Operator manages deployments of the OpenShift Cluster Aut
 
 # Cloud Controller Manager Operator
 
-> [!NOTE]
-> The status of this Operator is General Availability for Amazon Web Services (AWS), Google Cloud, IBM Cloud®, global Microsoft Azure, Microsoft Azure Stack Hub, Nutanix, Red Hat OpenStack Platform (RHOSP), and VMware vSphere.
->
-> The Operator is available as a [Technology Preview](https://access.redhat.com/support/offerings/techpreview) for IBM Power® Virtual Server.
+<div class="note">
+
+The status of this Operator is General Availability for Amazon Web Services (AWS), Google Cloud, IBM Cloud®, global Microsoft Azure, Microsoft Azure Stack Hub, Nutanix, Red Hat OpenStack Platform (RHOSP), and VMware vSphere.
+
+The Operator is available as a [Technology Preview](https://access.redhat.com/support/offerings/techpreview) for IBM Power® Virtual Server.
+
+</div>
 
 The Cloud Controller Manager Operator manages and updates the cloud controller managers deployed on top of OpenShift Container Platform. The Operator is based on the Kubebuilder framework and `controller-runtime` libraries. You can install the Cloud Controller Manager Operator by using the Cluster Version Operator (CVO).
 
@@ -111,8 +110,11 @@ By default, the Operator exposes Prometheus metrics through the `metrics` servic
 
 The Cluster CAPI Operator maintains the lifecycle of Cluster API resources. This Operator is responsible for all administrative tasks related to deploying the Cluster API project within an OpenShift Container Platform cluster.
 
-> [!NOTE]
-> This Operator is available as a [Technology Preview](https://access.redhat.com/support/offerings/techpreview) for Amazon Web Services (AWS), Google Cloud, Microsoft Azure, Red Hat OpenStack Platform (RHOSP), and VMware vSphere clusters.
+<div class="note">
+
+This Operator is available as a [Technology Preview](https://access.redhat.com/support/offerings/techpreview) for Amazon Web Services (AWS), Google Cloud, Microsoft Azure, Red Hat OpenStack Platform (RHOSP), and VMware vSphere clusters.
+
+</div>
 
 ## Project
 
@@ -208,8 +210,11 @@ The Cluster Config Operator performs the following tasks related to `config.open
 
 # Cluster CSI Snapshot Controller Operator
 
-> [!NOTE]
-> The Cluster CSI Snapshot Controller Operator is an optional cluster capability that can be disabled by cluster administrators during installation. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
+<div class="note">
+
+The Cluster CSI Snapshot Controller Operator is an optional cluster capability that can be disabled by cluster administrators during installation. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
+
+</div>
 
 The Cluster CSI Snapshot Controller Operator installs and maintains the CSI Snapshot Controller. The CSI Snapshot Controller is responsible for watching the `VolumeSnapshot` CRD objects and manages the creation and deletion lifecycle of volume snapshots.
 
@@ -217,17 +222,7 @@ The Cluster CSI Snapshot Controller Operator installs and maintains the CSI Snap
 
 [cluster-csi-snapshot-controller-operator](https://github.com/openshift/cluster-csi-snapshot-controller-operator)
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [CSI snapshot controller capability](../installing/overview/cluster-capabilities.xml#cluster-csi-snapshot-controller-operator_cluster-capabilities)
-
-</div>
 
 # Cluster Image Registry Operator
 
@@ -247,8 +242,11 @@ The Cluster Image Registry Operator runs in the `openshift-image-registry` names
 
 The Cluster Machine Approver Operator automatically approves the CSRs requested for a new worker node after cluster installation.
 
-> [!NOTE]
-> For the control plane node, the `approve-csr` service on the bootstrap node automatically approves all CSRs during the cluster bootstrapping phase.
+<div class="note">
+
+For the control plane node, the `approve-csr` service on the bootstrap node automatically approves all CSRs during the cluster bootstrapping phase.
+
+</div>
 
 ## Project
 
@@ -308,8 +306,11 @@ The Cluster Network Operator installs and upgrades the networking components on 
 
 # Cluster Samples Operator
 
-> [!NOTE]
-> The Cluster Samples Operator is an optional cluster capability that can be disabled by cluster administrators during installation. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
+<div class="note">
+
+The Cluster Samples Operator is an optional cluster capability that can be disabled by cluster administrators during installation. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
+
+</div>
 
 The Cluster Samples Operator manages the sample image streams and templates stored in the `openshift` namespace.
 
@@ -339,22 +340,15 @@ Upon deletion of the samples resource, the Cluster Samples Operator recreates th
 
 [cluster-samples-operator](https://github.com/openshift/cluster-samples-operator)
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [OpenShift samples capability](../installing/overview/cluster-capabilities.xml#cluster-samples-operator_cluster-capabilities)
-
-</div>
 
 # Cluster Storage Operator
 
-> [!NOTE]
-> The Cluster Storage Operator is an optional cluster capability that can be disabled by cluster administrators during installation. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
+<div class="note">
+
+The Cluster Storage Operator is an optional cluster capability that can be disabled by cluster administrators during installation. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
+
+</div>
 
 The Cluster Storage Operator sets OpenShift Container Platform cluster-wide storage defaults. It ensures a default `storageclass` exists for OpenShift Container Platform clusters. It also installs Container Storage Interface (CSI) drivers which enable your cluster to use various storage backends.
 
@@ -370,17 +364,9 @@ No configuration is required.
 
 - The storage class that the Operator creates can be made non-default by editing its annotation, but this storage class cannot be deleted as long as the Operator runs.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Storage capability](../installing/overview/cluster-capabilities.xml#cluster-storage-operator_cluster-capabilities)
-
-</div>
 
 # Cluster Version Operator
 
@@ -394,22 +380,15 @@ For more information regarding cluster version condition types, see "Understandi
 
 [cluster-version-operator](https://github.com/openshift/cluster-version-operator)
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Understanding cluster version condition types](../updating/understanding_updates/intro-to-updates.xml#understanding-clusterversion-conditiontypes_understanding-openshift-updates)
-
-</div>
 
 # Console Operator
 
-> [!NOTE]
-> The Console Operator is an optional cluster capability that can be disabled by cluster administrators during installation. If you disable the Console Operator at installation, your cluster is still supported and upgradable. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
+<div class="note">
+
+The Console Operator is an optional cluster capability that can be disabled by cluster administrators during installation. If you disable the Console Operator at installation, your cluster is still supported and upgradable. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
+
+</div>
 
 The Console Operator installs and maintains the OpenShift Container Platform web console on a cluster. The Console Operator is installed by default and automatically maintains a console.
 
@@ -417,24 +396,17 @@ The Console Operator installs and maintains the OpenShift Container Platform web
 
 [console-operator](https://github.com/openshift/console-operator)
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Web console capability](../installing/overview/cluster-capabilities.xml#console-operator_cluster-capabilities)
-
-</div>
 
 # Control Plane Machine Set Operator
 
 The Control Plane Machine Set Operator automates the management of control plane machine resources within an OpenShift Container Platform cluster.
 
-> [!NOTE]
-> This Operator is available for Amazon Web Services (AWS), Google Cloud, Microsoft Azure, Nutanix, and VMware vSphere.
+<div class="note">
+
+This Operator is available for Amazon Web Services (AWS), Google Cloud, Microsoft Azure, Nutanix, and VMware vSphere.
+
+</div>
 
 ## Project
 
@@ -544,11 +516,9 @@ In the following example, Ingress Controllers managed by the Ingress Operator wi
 $ oc get network/cluster -o jsonpath='{.status.clusterNetwork[*]}'
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -556,12 +526,13 @@ Example output
 map[cidr:10.128.0.0/14 hostPrefix:23]
 ```
 
-</div>
-
 # Insights Operator
 
-> [!NOTE]
-> The Insights Operator is an optional cluster capability that can be disabled by cluster administrators during installation. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
+<div class="note">
+
+The Insights Operator is an optional cluster capability that can be disabled by cluster administrators during installation. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
+
+</div>
 
 The Insights Operator gathers OpenShift Container Platform configuration data and sends it to Red Hat. The data is used to produce proactive insights recommendations about potential issues that a cluster might be exposed to. These insights are communicated to cluster administrators through the Red Hat Lightspeed advisor service on [console.redhat.com](https://console.redhat.com/).
 
@@ -577,19 +548,9 @@ No configuration is required.
 
 Insights Operator complements OpenShift Container Platform Telemetry.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Insights capability](../installing/overview/cluster-capabilities.xml#insights-operator_cluster-capabilities)
 
 - [About remote health monitoring](../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
-
-</div>
 
 # Kubernetes API Server Operator
 
@@ -703,10 +664,13 @@ There are four components:
 
 - `machine-config`: Provides a complete source of machine configuration at installation, first start up, and updates for a machine.
 
-> [!IMPORTANT]
-> Currently, there is no supported way to block or restrict the machine config server endpoint. The machine config server must be exposed to the network so that newly-provisioned machines, which have no existing configuration or state, are able to fetch their configuration. In this model, the root of trust is the certificate signing requests (CSR) endpoint, which is where the kubelet sends its certificate signing request for approval to join the cluster. Because of this, machine configs should not be used to distribute sensitive information, such as secrets and certificates.
->
-> To ensure that the machine config server endpoints, ports 22623 and 22624, are secured in bare metal scenarios, customers must configure proper network policies.
+<div class="important">
+
+Currently, there is no supported way to block or restrict the machine config server endpoint. The machine config server must be exposed to the network so that newly-provisioned machines, which have no existing configuration or state, are able to fetch their configuration. In this model, the root of trust is the certificate signing requests (CSR) endpoint, which is where the kubelet sends its certificate signing request for approval to join the cluster. Because of this, machine configs should not be used to distribute sensitive information, such as secrets and certificates.
+
+To ensure that the machine config server endpoints, ports 22623 and 22624, are secured in bare metal scenarios, customers must configure proper network policies.
+
+</div>
 
 ## Project
 
@@ -714,8 +678,11 @@ There are four components:
 
 # Marketplace Operator
 
-> [!NOTE]
-> The Marketplace Operator is an optional cluster capability that can be disabled by cluster administrators if it is not needed. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
+<div class="note">
+
+The Marketplace Operator is an optional cluster capability that can be disabled by cluster administrators if it is not needed. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
+
+</div>
 
 The Marketplace Operator simplifies the process for bringing off-cluster Operators to your cluster by using a set of default Operator Lifecycle Manager (OLM) catalogs on the cluster. When the Marketplace Operator is installed, it creates the `openshift-marketplace` namespace. OLM ensures catalog sources installed in the `openshift-marketplace` namespace are available for all namespaces on the cluster.
 
@@ -723,17 +690,7 @@ The Marketplace Operator simplifies the process for bringing off-cluster Operato
 
 [operator-marketplace](https://github.com/operator-framework/operator-marketplace)
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Marketplace capability](../installing/overview/cluster-capabilities.xml#marketplace-operator_cluster-capabilities)
-
-</div>
 
 # Node Tuning Operator
 
@@ -755,8 +712,11 @@ The cluster administrator configures a performance profile to define node-level 
 
 The Node Tuning Operator is part of a standard OpenShift Container Platform installation in version 4.1 and later.
 
-> [!NOTE]
-> In earlier versions of OpenShift Container Platform, the Performance Addon Operator was used to implement automatic tuning to achieve low latency performance for OpenShift applications. In OpenShift Container Platform 4.11 and later, this functionality is part of the Node Tuning Operator.
+<div class="note">
+
+In earlier versions of OpenShift Container Platform, the Performance Addon Operator was used to implement automatic tuning to achieve low latency performance for OpenShift applications. In OpenShift Container Platform 4.11 and later, this functionality is part of the Node Tuning Operator.
+
+</div>
 
 ## Project
 
@@ -804,8 +764,11 @@ $ oc get crd openshiftcontrollermanagers.operator.openshift.io -o yaml
 
 # Operator Lifecycle Manager (OLM) Classic Operators
 
-> [!NOTE]
-> The following sections pertain to Operator Lifecycle Manager (OLM) Classic that has been included with OpenShift Container Platform 4 since its initial release. For OLM v1, see [Operator Lifecycle Manager (OLM) v1 Operators](../operators/operator-reference.xml#cluster-operators-ref-olmv1_operator-reference).
+<div class="note">
+
+The following sections pertain to Operator Lifecycle Manager (OLM) Classic that has been included with OpenShift Container Platform 4 since its initial release. For OLM v1, see [Operator Lifecycle Manager (OLM) v1 Operators](../operators/operator-reference.xml#cluster-operators-ref-olmv1_operator-reference).
+
+</div>
 
 Operator Lifecycle Manager (OLM) Classic helps users install, update, and manage the lifecycle of Kubernetes native applications (Operators) and their associated services running across their OpenShift Container Platform clusters. It is part of the [Operator Framework](https://operatorframework.io/), an open source toolkit designed to manage Operators in an effective, automated, and scalable way.
 
@@ -830,8 +793,11 @@ The OLM Operator uses the following workflow:
 
 2.  If requirements are met, run the install strategy for the CSV.
 
-    > [!NOTE]
-    > A CSV must be an active member of an Operator group for the install strategy to run.
+    <div class="note">
+
+    A CSV must be an active member of an Operator group for the install strategy to run.
+
+    </div>
 
 ## Catalog Operator
 
@@ -865,53 +831,28 @@ A *package manifest* is an entry in the Catalog Registry that associates a packa
 
 The OLM and Catalog Operators are responsible for managing the custom resource definitions (CRDs) that are the basis for the OLM framework:
 
-| Resource | Short name | Owner | Description |
-|----|----|----|----|
-| `ClusterServiceVersion` (CSV) | `csv` | OLM | Application metadata: name, version, icon, required resources, installation, and so on. |
-| `InstallPlan` | `ip` | Catalog | Calculated list of resources to be created to automatically install or upgrade a CSV. |
-| `CatalogSource` | `catsrc` | Catalog | A repository of CSVs, CRDs, and packages that define an application. |
-| `Subscription` | `sub` | Catalog | Used to keep CSVs up to date by tracking a channel in a package. |
-| `OperatorGroup` | `og` | OLM | Configures all Operators deployed in the same namespace as the `OperatorGroup` object to watch for their custom resource (CR) in a list of namespaces or cluster-wide. |
+| Resource                      | Short name | Owner   | Description                                                                                                                                                            |
+|-------------------------------|------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `ClusterServiceVersion` (CSV) | `csv`      | OLM     | Application metadata: name, version, icon, required resources, installation, and so on.                                                                                |
+| `InstallPlan`                 | `ip`       | Catalog | Calculated list of resources to be created to automatically install or upgrade a CSV.                                                                                  |
+| `CatalogSource`               | `catsrc`   | Catalog | A repository of CSVs, CRDs, and packages that define an application.                                                                                                   |
+| `Subscription`                | `sub`      | Catalog | Used to keep CSVs up to date by tracking a channel in a package.                                                                                                       |
+| `OperatorGroup`               | `og`       | OLM     | Configures all Operators deployed in the same namespace as the `OperatorGroup` object to watch for their custom resource (CR) in a list of namespaces or cluster-wide. |
 
 CRDs managed by OLM and Catalog Operators
 
 Each of these Operators is also responsible for creating the following resources:
 
-<table>
-<caption>Resources created by OLM and Catalog Operators</caption>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Resource</th>
-<th style="text-align: left;">Owner</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><p><code>Deployments</code></p></td>
-<td rowspan="4" style="text-align: left;"><p>OLM</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>ServiceAccounts</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>(Cluster)Roles</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>(Cluster)RoleBindings</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>CustomResourceDefinitions</code> (CRDs)</p></td>
-<td rowspan="2" style="text-align: left;"><p>Catalog</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>ClusterServiceVersions</code></p></td>
-</tr>
-</tbody>
-</table>
+| Resource                           | Owner   |
+|------------------------------------|---------|
+| `Deployments`                      | OLM     |
+| `ServiceAccounts`                  |         |
+| `(Cluster)Roles`                   |         |
+| `(Cluster)RoleBindings`            |         |
+| `CustomResourceDefinitions` (CRDs) | Catalog |
+| `ClusterServiceVersions`           |         |
+
+Resources created by OLM and Catalog Operators
 
 ## Cluster Operators
 
@@ -938,8 +879,11 @@ OLM v1 manages the lifecycle of the new `ClusterExtension` object, which include
 
 In OpenShift Container Platform, OLM v1 is provided by the `olm` cluster Operator.
 
-> [!NOTE]
-> The `olm` cluster Operator informs cluster administrators if there are any installed extensions blocking cluster upgrade, based on their `olm.maxOpenShiftVersion` properties. For more information, see "Compatibility with OpenShift Container Platform versions".
+<div class="note">
+
+The `olm` cluster Operator informs cluster administrators if there are any installed extensions blocking cluster upgrade, based on their `olm.maxOpenShiftVersion` properties. For more information, see "Compatibility with OpenShift Container Platform versions".
+
+</div>
 
 ## Components
 
@@ -989,8 +933,11 @@ The OpenShift Service CA Operator mints and manages serving certificates for Kub
 
 The vSphere Problem Detector Operator checks clusters that are deployed on vSphere for common installation and misconfiguration issues that are related to storage.
 
-> [!NOTE]
-> The vSphere Problem Detector Operator is only started by the Cluster Storage Operator when the Cluster Storage Operator detects that the cluster is deployed on vSphere.
+<div class="note">
+
+The vSphere Problem Detector Operator is only started by the Cluster Storage Operator when the Cluster Storage Operator detects that the cluster is deployed on vSphere.
+
+</div>
 
 ## Configuration
 
@@ -1004,14 +951,6 @@ No configuration is required.
 
 - The Operator performs checks that are related to storage.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Using the vSphere Problem Detector Operator](../installing/installing_vsphere/using-vsphere-problem-detector-operator.xml#using-vsphere-problem-detector-operator)
-
-</div>

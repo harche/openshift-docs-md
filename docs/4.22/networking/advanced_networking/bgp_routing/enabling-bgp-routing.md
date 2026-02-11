@@ -10,29 +10,13 @@ If you are using BGP routing in conjunction with the MetalLB Operator, the neces
 
 As a cluster administrator, you can enable BGP routing support for your cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster as a user with the `cluster-admin` role.
 
 - The cluster is installed on compatible infrastructure.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To enable a dynamic routing provider, enter the following command:
 
@@ -45,5 +29,3 @@ Procedure
     }
   }'
   ```
-
-</div>

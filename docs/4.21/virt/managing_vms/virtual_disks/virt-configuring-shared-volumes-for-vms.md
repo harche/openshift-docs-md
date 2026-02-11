@@ -24,29 +24,13 @@ You can accept the default behavior, or you can set the error policy to one of t
 
 - `enospace`, which produces an error indicating that there is not enough disk space.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - The volume access mode must be `ReadWriteMany` (RWX) if the VMs that are sharing disks are running on different nodes.
 
   If the VMs that are sharing disks are running on the same node, `ReadWriteOnce` (RWO) volume access mode is sufficient.
 
 - The storage provider must support the required Container Storage Interface (CSI) driver.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `VirtualMachine` manifest for your VM to set the required values, as shown in the following example:
 
@@ -81,8 +65,6 @@ Procedure
 
 2.  Save the `VirtualMachine` manifest file to apply your changes.
 
-</div>
-
 # Configuring disk sharing by using LUN
 
 To secure data on your VM from outside access, you can enable SCSI persistent reservation and configure a LUN-backed virtual machine disk to be shared among multiple virtual machines.
@@ -101,14 +83,9 @@ You can set an error policy for each LUN disk. The error policy controls how the
 
 For a LUN disk with an SCSi connection and a persistent reservation, as required for Windows Failover Clustering for shared volumes, you set the error policy to `report`.
 
-> [!IMPORTANT]
-> OpenShift Virtualization does not currently support SCSI-3 Persistent Reservations (SCSI-3 PR) over multipath storage. As a workaround, disable multipath or ensure the Windows Server Failover Clustering (WSFC) shared disk is setup from a single device and not part of multipath.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+OpenShift Virtualization does not currently support SCSI-3 Persistent Reservations (SCSI-3 PR) over multipath storage. As a workaround, disable multipath or ensure the Windows Server Failover Clustering (WSFC) shared disk is setup from a single device and not part of multipath.
 
 </div>
 
@@ -123,16 +100,6 @@ Prerequisites
 - If you are a cluster administrator and intend to configure disk sharing by using LUN, you must enable the cluster’s feature gate on the `HyperConverged` custom resource (CR).
 
 - Disks that you want to share must be in block mode.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit or create the `VirtualMachine` manifest for your VM to set the required values, as shown in the following example:
 
@@ -173,31 +140,11 @@ Procedure
 
 2.  Save the `VirtualMachine` manifest file to apply your changes.
 
-</div>
-
 ## Configuring disk sharing by using LUN and the web console
 
 You can use the OpenShift Container Platform web console to configure disk sharing by using LUN.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The cluster administrator must enable the `persistentreservation` feature gate setting.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Click **Virtualization** → **VirtualMachines** in the web console.
 
@@ -219,19 +166,9 @@ Procedure
 
 10. Click **Save**.
 
-</div>
-
 ## Configuring disk sharing by using LUN and the CLI
 
 You can use the command line to configure disk sharing by using LUN.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit or create the `VirtualMachine` manifest for your VM to set the required values, as shown in the following example:
 
@@ -270,21 +207,11 @@ Procedure
 
 2.  Save the `VirtualMachine` manifest file to apply your changes.
 
-</div>
-
 # Enabling the PersistentReservation feature gate
 
 You can enable the SCSI `persistentReservation` feature gate and allow a LUN-backed block mode virtual machine (VM) disk to be shared among multiple virtual machines.
 
 The `persistentReservation` feature gate is disabled by default. You can enable the `persistentReservation` feature gate by using the web console or the command line.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Cluster administrator privileges are required.
 
@@ -292,19 +219,9 @@ Prerequisites
 
 - The storage provider must support a Container Storage Interface (CSI) driver that uses Fibre Channel (FC), Fibre Channel over Ethernet (FCoE), or iSCSI storage protocols.
 
-</div>
-
 ## Enabling the PersistentReservation feature gate by using the web console
 
 You must enable the PersistentReservation feature gate to allow a LUN-backed block mode virtual machine (VM) disk to be shared among multiple virtual machines. Enabling the feature gate requires cluster administrator privileges.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Click **Virtualization** → **Overview** in the web console.
 
@@ -314,31 +231,11 @@ Procedure
 
 4.  Expand **SCSI persistent reservation** and set **Enable persistent reservation** to on.
 
-</div>
-
 ## Enabling the PersistentReservation feature gate by using the CLI
 
 You can enable the `persistentReservation` feature gate by using the command line. Enabling the feature gate requires cluster administrator privileges.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Enable the `persistentReservation` feature gate by running the following command:
 
@@ -347,18 +244,6 @@ Procedure
     '[{"op":"replace","path":"/spec/featureGates/persistentReservation", "value": true}]'
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Persistent reservation helper protocol](https://www.qemu.org/docs/master/interop/pr-helper.html)
 
 - [Failover Clustering in Windows Server and Azure Stack HCI](https://learn.microsoft.com/en-us/windows-server/failover-clustering/failover-clustering-overview)
-
-</div>

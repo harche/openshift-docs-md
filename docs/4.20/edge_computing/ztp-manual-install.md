@@ -1,41 +1,32 @@
 You can deploy a managed single-node OpenShift cluster by using Red Hat Advanced Cluster Management (RHACM) and the assisted service.
 
-> [!NOTE]
-> If you are creating multiple managed clusters, use the `SiteConfig` method described in [Deploying far edge sites with ZTP](../edge_computing/ztp-deploying-far-edge-sites.xml#ztp-deploying-far-edge-sites).
+<div class="note">
 
-> [!IMPORTANT]
-> The target bare-metal host must meet the networking, firmware, and hardware requirements listed in [Recommended cluster configuration for vDU application workloads](../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#sno-configure-for-vdu).
+If you are creating multiple managed clusters, use the `SiteConfig` method described in [Deploying far edge sites with ZTP](../edge_computing/ztp-deploying-far-edge-sites.xml#ztp-deploying-far-edge-sites).
+
+</div>
+
+<div class="important">
+
+The target bare-metal host must meet the networking, firmware, and hardware requirements listed in [Recommended cluster configuration for vDU application workloads](../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#sno-configure-for-vdu).
+
+</div>
 
 # Generating GitOps ZTP installation and configuration CRs manually
 
 Use the `generator` entrypoint for the `ztp-site-generate` container to generate the site installation and configuration custom resource (CRs) for a cluster based on `SiteConfig` and `PolicyGenerator` CRs.
 
-> [!IMPORTANT]
-> SiteConfig v1 is deprecated starting with OpenShift Container Platform version 4.18. Equivalent and improved functionality is now available through the SiteConfig Operator using the `ClusterInstance` custom resource. For more information, see [Procedure to transition from SiteConfig CRs to the ClusterInstance API](https://access.redhat.com/articles/7105238).
->
-> For more information about the SiteConfig Operator, see [SiteConfig](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/multicluster_engine_operator_with_red_hat_advanced_cluster_management/index#siteconfig-intro).
+<div class="important">
 
-<div>
+SiteConfig v1 is deprecated starting with OpenShift Container Platform version 4.18. Equivalent and improved functionality is now available through the SiteConfig Operator using the `ClusterInstance` custom resource. For more information, see [Procedure to transition from SiteConfig CRs to the ClusterInstance API](https://access.redhat.com/articles/7105238).
 
-<div class="title">
-
-Prerequisites
+For more information about the SiteConfig Operator, see [SiteConfig](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/multicluster_engine_operator_with_red_hat_advanced_cluster_management/index#siteconfig-intro).
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in to the hub cluster as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an output folder by running the following command:
 
@@ -51,11 +42,9 @@ Procedure
 
     The `./out` directory has the reference `PolicyGenerator` and `SiteConfig` CRs in the `out/argocd/example/` folder.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -76,8 +65,6 @@ Procedure
                       ├── KlusterletAddonConfigOverride.yaml
                       └── kustomization.yaml
     ```
-
-    </div>
 
 3.  Create an output folder for the site installation CRs:
 
@@ -244,8 +231,11 @@ Procedure
                         table-id: 254
     ```
 
-    > [!NOTE]
-    > Once you have extracted reference CR configuration files from the `out/extra-manifest` directory of the `ztp-site-generate` container, you can use `extraManifests.searchPaths` to include the path to the git directory containing those files. This allows the GitOps ZTP pipeline to apply those CR files during cluster installation. If you configure a `searchPaths` directory, the GitOps ZTP pipeline does not fetch manifests from the `ztp-site-generate` container during site installation.
+    <div class="note">
+
+    Once you have extracted reference CR configuration files from the `out/extra-manifest` directory of the `ztp-site-generate` container, you can use `extraManifests.searchPaths` to include the path to the git directory containing those files. This allows the GitOps ZTP pipeline to apply those CR files during cluster installation. If you configure a `searchPaths` directory, the GitOps ZTP pipeline does not fetch manifests from the `ztp-site-generate` container during site installation.
+
+    </div>
 
 5.  Generate the Day 0 installation CRs by processing the modified `SiteConfig` CR `site-1-sno.yaml` by running the following command:
 
@@ -253,11 +243,9 @@ Procedure
     $ podman run -it --rm -v `pwd`/out/argocd/example/siteconfig:/resources:Z -v `pwd`/site-install:/output:Z,U registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.17 generator install site-1-sno.yaml /output
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -278,8 +266,6 @@ Procedure
         └── site-1-sno_nmstateconfig_example-node1.example.com.yaml
     ```
 
-    </div>
-
 6.  Optional: Generate just the Day 0 `MachineConfig` installation CRs for a particular cluster type by processing the reference `SiteConfig` CR with the `-E` option. For example, run the following commands:
 
     1.  Create an output folder for the `MachineConfig` CRs:
@@ -294,11 +280,9 @@ Procedure
         $ podman run -it --rm -v `pwd`/out/argocd/example/siteconfig:/resources:Z -v `pwd`/site-machineconfig:/output:Z,U registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.17 generator install -E site-1-sno.yaml /output
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -309,8 +293,6 @@ Procedure
             ├── site-1-sno_machineconfig_predefined-extra-manifests-master.yaml
             └── site-1-sno_machineconfig_predefined-extra-manifests-worker.yaml
         ```
-
-        </div>
 
 7.  Generate and export the Day 2 configuration CRs using the reference `PolicyGenerator` CRs from the previous step. Run the following commands:
 
@@ -328,11 +310,9 @@ Procedure
 
         The command generates example group and site-specific `PolicyGenerator` CRs for single-node OpenShift, three-node clusters, and standard clusters in the `./ref` folder.
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -352,19 +332,7 @@ Procedure
                    └── Multiple-validatorCRs
         ```
 
-        </div>
-
 8.  Use the generated CRs as the basis for the CRs that you use to install the cluster. You apply the installation CRs to the hub cluster as described in "Installing a single managed cluster". The configuration CRs can be applied to the cluster after cluster installation is complete.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Verify that the custom roles and labels are applied after the node is deployed:
 
@@ -372,13 +340,9 @@ Verification
   $ oc describe node example-node.example.com
   ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -398,17 +362,9 @@ Labels: beta.kubernetes.io/arch=amd64
         node.openshift.io/os_id=rhcos
 ```
 
-</div>
-
 - The custom label is applied to the node.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Workload partitioning](../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#ztp-sno-du-enabling-workload-partitioning_sno-configure-for-vdu)
 
@@ -418,20 +374,13 @@ Additional resources
 
 - [Single-node OpenShift SiteConfig CR installation reference](../edge_computing/ztp-deploying-far-edge-sites.xml#ztp-sno-siteconfig-config-reference_ztp-deploying-far-edge-sites)
 
-</div>
-
 # Creating the managed bare-metal host secrets
 
 Add the required `Secret` custom resources (CRs) for the managed bare-metal host to the hub cluster. You need a secret for the GitOps Zero Touch Provisioning (ZTP) pipeline to access the Baseboard Management Controller (BMC) and a secret for the assisted installer service to pull cluster installation images from the registry.
 
-> [!NOTE]
-> The secrets are referenced from the `SiteConfig` CR by name. The namespace must match the `SiteConfig` namespace.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+The secrets are referenced from the `SiteConfig` CR by name. The namespace must match the `SiteConfig` namespace.
 
 </div>
 
@@ -470,20 +419,13 @@ Procedure
 
 2.  Add the relative path to `example-sno-secret.yaml` to the `kustomization.yaml` file that you use to install the cluster.
 
-</div>
-
 # Configuring Discovery ISO kernel arguments for manual installations using GitOps ZTP
 
 The GitOps Zero Touch Provisioning (ZTP) workflow uses the Discovery ISO as part of the OpenShift Container Platform installation process on managed bare-metal hosts. You can edit the `InfraEnv` resource to specify kernel arguments for the Discovery ISO. This is useful for cluster installations with specific environmental requirements. For example, configure the `rd.net.timeout.carrier` kernel argument for the Discovery ISO to facilitate static networking for the cluster or to receive a DHCP address before downloading the root file system during installation.
 
-> [!NOTE]
-> In OpenShift Container Platform 4.17, you can only add kernel arguments. You can not replace or delete kernel arguments.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+In OpenShift Container Platform 4.17, you can only add kernel arguments. You can not replace or delete kernel arguments.
 
 </div>
 
@@ -493,19 +435,7 @@ Prerequisites
 
 - You have manually generated the installation and configuration custom resources (CRs).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Edit the `spec.kernelArguments` specification in the `InfraEnv` CR to configure kernel arguments:
-
-</div>
 
 ``` yaml
 apiVersion: agent-install.openshift.io/v1beta1
@@ -530,20 +460,19 @@ spec:
 
 - Specify the kernel argument you want to configure. This example configures the audit kernel argument and the trace kernel argument.
 
-> [!NOTE]
-> The `SiteConfig` CR generates the `InfraEnv` resource as part of the day-0 installation CRs.
+<div class="note">
 
-<div class="formalpara">
+The `SiteConfig` CR generates the `InfraEnv` resource as part of the day-0 installation CRs.
 
-<div class="title">
+</div>
 
-Verification
+<div class="formalpara-title">
+
+**Verification**
 
 </div>
 
 To verify that the kernel arguments are applied, after the Discovery image verifies that OpenShift Container Platform is ready for installation, you can SSH to the target host before the installation process begins. At that point, you can view the kernel arguments for the Discovery ISO in the `/proc/cmdline` file.
-
-</div>
 
 1.  Begin an SSH session with the target host:
 
@@ -561,14 +490,6 @@ To verify that the kernel arguments are applied, after the Discovery image verif
 
 You can manually deploy a single managed cluster using the assisted service and Red Hat Advanced Cluster Management (RHACM).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in to the hub cluster as a user with `cluster-admin` privileges.
@@ -576,16 +497,6 @@ Prerequisites
 - You have created the baseboard management controller (BMC) `Secret` and the image pull-secret `Secret` custom resources (CRs). See "Creating the managed bare-metal host secrets" for details.
 
 - Your target bare-metal host meets the networking and hardware requirements for managed clusters.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `ClusterImageSet` for each specific cluster version to be deployed, for example `clusterImageSet-4.17.yaml`. A `ClusterImageSet` has the following format:
 
@@ -633,47 +544,17 @@ Procedure
     $ oc apply -R ./site-install/site-sno-1
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Connectivity prerequisites for managed cluster networks](../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#ztp-managed-cluster-network-prereqs_sno-configure-for-vdu)
 
 - [Deploying LVM Storage on single-node OpenShift clusters](../storage/persistent_storage_local/persistent-storage-using-lvms.xml#lvms-preface-sno-ran_logical-volume-manager-storage)
 
 - [Configuring LVM Storage using PolicyGenerator CRs](../edge_computing/policygenerator_for_ztp/ztp-advanced-policygenerator-config.xml#ztp-provisioning-lvm-storage_ztp-advanced-policy-config)
 
-</div>
-
 # Monitoring the managed cluster installation status
 
 Ensure that cluster provisioning was successful by checking the cluster status.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - All of the custom resources have been configured and provisioned, and the `Agent` custom resource is created on the hub for the managed cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Check the status of the managed cluster:
 
@@ -719,19 +600,9 @@ Procedure
     $ oc get secret -n <cluster_name> <cluster_name>-admin-kubeconfig -o jsonpath={.data.kubeconfig} | base64 -d > <directory>/<cluster_name>-kubeconfig
     ```
 
-</div>
-
 # Troubleshooting the managed cluster
 
 Use this procedure to diagnose any installation issues that might occur with the managed cluster.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Check the status of the managed cluster:
 
@@ -739,11 +610,9 @@ Procedure
     $ oc get managedcluster
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -751,8 +620,6 @@ Procedure
     NAME            HUB ACCEPTED   MANAGED CLUSTER URLS   JOINED   AVAILABLE   AGE
     SNO-cluster     true                                   True     True      2d19h
     ```
-
-    </div>
 
     If the status in the `AVAILABLE` column is `True`, the managed cluster is being managed by the hub.
 
@@ -764,11 +631,9 @@ Procedure
     $ oc get clusterdeployment -n <cluster_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -777,8 +642,6 @@ Procedure
     Sno0026    agent-baremetal                               false                          Initialized
     2d14h
     ```
-
-    </div>
 
     If the status in the `INSTALLED` column is `false`, the installation was unsuccessful.
 
@@ -806,14 +669,15 @@ Procedure
 
     3.  Recreate the custom resources for the managed cluster.
 
-</div>
-
 # RHACM generated cluster installation CRs reference
 
 Red Hat Advanced Cluster Management (RHACM) supports deploying OpenShift Container Platform on single-node clusters, three-node clusters, and standard clusters with a specific set of installation custom resources (CRs) that you generate using `SiteConfig` CRs for each site.
 
-> [!NOTE]
-> Every managed cluster has its own namespace, and all of the installation CRs except for `ManagedCluster` and `ClusterImageSet` are under that namespace. `ManagedCluster` and `ClusterImageSet` are cluster-scoped, not namespace-scoped. The namespace and the CR names match the cluster name.
+<div class="note">
+
+Every managed cluster has its own namespace, and all of the installation CRs except for `ManagedCluster` and `ClusterImageSet` are under that namespace. `ManagedCluster` and `ClusterImageSet` are cluster-scoped, not namespace-scoped. The namespace and the CR names match the cluster name.
+
+</div>
 
 The following table lists the installation CRs that are automatically applied by the RHACM assisted service when it installs clusters using the `SiteConfig` CRs that you configure.
 
@@ -825,59 +689,59 @@ The following table lists the installation CRs that are automatically applied by
 <col style="width: 42%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">CR</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Usage</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>BareMetalHost</code></p></td>
 <td style="text-align: left;"><p>Contains the connection information for the Baseboard Management Controller (BMC) of the target bare-metal host.</p></td>
 <td style="text-align: left;"><p>Provides access to the BMC to load and start the discovery image on the target server by using the Redfish protocol.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>InfraEnv</code></p></td>
 <td style="text-align: left;"><p>Contains information for installing OpenShift Container Platform on the target bare-metal host.</p></td>
 <td style="text-align: left;"><p>Used with <code>ClusterDeployment</code> to generate the discovery ISO for the managed cluster.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>AgentClusterInstall</code></p></td>
 <td style="text-align: left;"><p>Specifies details of the managed cluster configuration such as networking and the number of control plane nodes. Displays the cluster <code>kubeconfig</code> and credentials when the installation is complete.</p></td>
 <td style="text-align: left;"><p>Specifies the managed cluster configuration information and provides status during the installation of the cluster.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>ClusterDeployment</code></p></td>
 <td style="text-align: left;"><p>References the <code>AgentClusterInstall</code> CR to use.</p></td>
 <td style="text-align: left;"><p>Used with <code>InfraEnv</code> to generate the discovery ISO for the managed cluster.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>NMStateConfig</code></p></td>
 <td style="text-align: left;"><p>Provides network configuration information such as <code>MAC</code> address to <code>IP</code> mapping, DNS server, default route, and other network settings.</p></td>
 <td style="text-align: left;"><p>Sets up a static IP address for the managed cluster’s Kube API server.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>Agent</code></p></td>
 <td style="text-align: left;"><p>Contains hardware information about the target bare-metal host.</p></td>
 <td style="text-align: left;"><p>Created automatically on the hub when the target machine’s discovery image boots.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ManagedCluster</code></p></td>
 <td style="text-align: left;"><p>When a cluster is managed by the hub, it must be imported and known. This Kubernetes object provides that interface.</p></td>
 <td style="text-align: left;"><p>The hub uses this resource to manage and show the status of managed clusters.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>KlusterletAddonConfig</code></p></td>
 <td style="text-align: left;"><p>Contains the list of services provided by the hub to be deployed to the <code>ManagedCluster</code> resource.</p></td>
 <td style="text-align: left;"><p>Tells the hub which addon services to deploy to the <code>ManagedCluster</code> resource.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>Namespace</code></p></td>
 <td style="text-align: left;"><p>Logical space for <code>ManagedCluster</code> resources existing on the hub. Unique per site.</p></td>
 <td style="text-align: left;"><p>Propagates resources to the <code>ManagedCluster</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>Secret</code></p></td>
 <td style="text-align: left;"><p>Two CRs are created: <code>BMC Secret</code> and <code>Image Pull Secret</code>.</p></td>
 <td style="text-align: left;"><ul>
@@ -885,10 +749,12 @@ The following table lists the installation CRs that are automatically applied by
 <li><p><code>Image Pull Secret</code> contains authentication information for the OpenShift Container Platform image installed on the target bare-metal host.</p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ClusterImageSet</code></p></td>
 <td style="text-align: left;"><p>Contains OpenShift Container Platform image information such as the repository and image name.</p></td>
 <td style="text-align: left;"><p>Passed into resources to provide OpenShift Container Platform images.</p></td>
 </tr>
 </tbody>
 </table>
+
+Cluster installation CRs generated by RHACM

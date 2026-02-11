@@ -4,36 +4,21 @@ When installed, the PTP Operator searches your cluster for Precision Time Protoc
 
 Network interface controller (NIC) hardware with built-in PTP capabilities sometimes require a device-specific configuration. You can use hardware-specific NIC features for supported hardware with the PTP Operator by configuring a plugin in the `PtpConfig` custom resource (CR). The `linuxptp-daemon` service uses the named parameters in the `plugin` stanza to start `linuxptp` processes, `ptp4l` and `phc2sys`, based on the specific hardware configuration.
 
-> [!IMPORTANT]
-> In OpenShift Container Platform 4.17, the Intel E810 NIC is supported with a `PtpConfig` plugin.
+<div class="important">
+
+In OpenShift Container Platform 4.17, the Intel E810 NIC is supported with a `PtpConfig` plugin.
+
+</div>
 
 # Installing the PTP Operator using the CLI
 
 As a cluster administrator, you can install the Operator by using the CLI.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - A cluster installed on bare-metal hardware with nodes that have hardware that supports PTP.
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a namespace for the PTP Operator.
 
@@ -107,11 +92,9 @@ Procedure
     $ oc get csv -n openshift-ptp -o custom-columns=Name:.metadata.name,Phase:.status.phase
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -120,22 +103,13 @@ Procedure
     4.17.0-202301261535          Succeeded
     ```
 
-    </div>
-
-</div>
-
 # Installing the PTP Operator by using the web console
 
 As a cluster administrator, you can install the PTP Operator by using the web console.
 
-> [!NOTE]
-> You have to create the namespace and Operator group as mentioned in the previous section.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+You have to create the namespace and Operator group as mentioned in the previous section.
 
 </div>
 
@@ -153,8 +127,11 @@ Procedure
 
     2.  Ensure that **PTP Operator** is listed in the **openshift-ptp** project with a **Status** of **InstallSucceeded**.
 
-        > [!NOTE]
-        > During installation an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
+        <div class="note">
+
+        During installation an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
+
+        </div>
 
         If the Operator does not appear as installed, to troubleshoot further:
 
@@ -162,31 +139,13 @@ Procedure
 
         - Go to the **Workloads** → **Pods** page and check the logs for pods in the `openshift-ptp` project.
 
-</div>
-
 # Discovering PTP-capable network devices in your cluster
 
 Identify PTP-capable network devices that exist in your cluster so that you can configure them
 
-<div>
-
-<div class="title">
-
-Prerequisties
-
-</div>
-
 - You installed the PTP Operator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To return a complete list of PTP capable network devices in your cluster, run the following command:
 
@@ -194,11 +153,9 @@ Procedure
   $ oc get NodePtpDevice -n openshift-ptp -o yaml
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -226,13 +183,9 @@ Procedure
   ...
   ```
 
-  </div>
-
   - The value for the `name` parameter is the same as the name of the parent node.
 
   - The `devices` collection includes a list of the PTP capable devices that the PTP Operator discovers for the node.
-
-</div>
 
 # Configuring linuxptp services as a grandmaster clock
 
@@ -240,16 +193,11 @@ You can configure the `linuxptp` services (`ptp4l`, `phc2sys`, `ts2phc`) as gran
 
 The `ts2phc` utility allows you to synchronize the system clock with the PTP grandmaster clock so that the node can stream precision clock signal to downstream PTP ordinary clocks and boundary clocks.
 
-> [!NOTE]
-> Use the following example `PtpConfig` CR as the basis to configure `linuxptp` services as T-GM for an Intel Westport Channel E810-XXVDA4T network interface.
->
-> To configure PTP fast events, set appropriate values for `ptp4lOpts`, `ptp4lConf`, and `ptpClockThreshold`. `ptpClockThreshold` is used only when events are enabled. See "Configuring the PTP fast event notifications publisher" for more information.
+<div class="note">
 
-<div>
+Use the following example `PtpConfig` CR as the basis to configure `linuxptp` services as T-GM for an Intel Westport Channel E810-XXVDA4T network interface.
 
-<div class="title">
-
-Prerequisites
+To configure PTP fast events, set appropriate values for `ptp4lOpts`, `ptp4lConf`, and `ptpClockThreshold`. `ptpClockThreshold` is used only when events are enabled. See "Configuring the PTP fast event notifications publisher" for more information.
 
 </div>
 
@@ -261,27 +209,9 @@ Prerequisites
 
 - Install the PTP Operator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the `PtpConfig` CR. For example:
 
     1.  Depending on your requirements, use one of the following T-GM configurations for your deployment. Save the YAML in the `grandmaster-clock-ptp-config.yaml` file:
-
-        <div class="example">
-
-        <div class="title">
-
-        PTP grandmaster clock configuration for E810 NIC
-
-        </div>
 
         ``` yaml
         apiVersion: ptp.openshift.io/v1
@@ -502,10 +432,11 @@ Procedure
                 - nodeLabel: "node-role.kubernetes.io/$mcp"
         ```
 
-        </div>
+        <div class="note">
 
-        > [!NOTE]
-        > For E810 Westport Channel NICs, set the value for `ts2phc.nmea_serialport` to `/dev/gnss0`.
+        For E810 Westport Channel NICs, set the value for `ts2phc.nmea_serialport` to `/dev/gnss0`.
+
+        </div>
 
     2.  Create the CR by running the following command:
 
@@ -513,15 +444,7 @@ Procedure
         $ oc create -f grandmaster-clock-ptp-config.yaml
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Check that the `PtpConfig` profile is applied to the node.
 
@@ -531,11 +454,9 @@ Verification
         $ oc get pods -n openshift-ptp -o wide
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -545,19 +466,15 @@ Verification
         ptp-operator-5f4f48d7c-x7zkf  1/1     Running   1          4d15h   10.128.1.145   compute-1.example.com
         ```
 
-        </div>
-
     2.  Check that the profile is correct. Examine the logs of the `linuxptp` daemon that corresponds to the node you specified in the `PtpConfig` profile. Run the following command:
 
         ``` terminal
         $ oc logs linuxptp-daemon-74m2g -n openshift-ptp -c linuxptp-daemon-container
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -569,10 +486,6 @@ Verification
         phc2sys[94980.450]: [ptp4l.0.config] CLOCK_REALTIME phc offset       943 s2 freq  -89604 delay    504
         phc2sys[94980.512]: [ptp4l.0.config] CLOCK_REALTIME phc offset      1000 s2 freq  -89264 delay    474
         ```
-
-        </div>
-
-</div>
 
 ## Configuring linuxptp services as a grandmaster clock for 2 E810 NICs
 
@@ -592,16 +505,11 @@ For distributed RAN (D-RAN) use cases, you can configure PTP for 2 NICs as follo
 
 The 2-card PTP T-GM configuration uses one instance of `ptp4l` and one instance of `ts2phc`. The `ptp4l` and `ts2phc` programs are each configured to operate on two PTP hardware clocks (PHCs), one for each NIC. The host system clock is synchronized from the NIC that is connected to the GNSS time source.
 
-> [!NOTE]
-> Use the following example `PtpConfig` CR as the basis to configure `linuxptp` services as T-GM for dual Intel E810 network interfaces.
->
-> To configure PTP fast events, set appropriate values for `ptp4lOpts`, `ptp4lConf`, and `ptpClockThreshold`. `ptpClockThreshold` is used only when events are enabled. See "Configuring the PTP fast event notifications publisher" for more information.
+<div class="note">
 
-<div>
+Use the following example `PtpConfig` CR as the basis to configure `linuxptp` services as T-GM for dual Intel E810 network interfaces.
 
-<div class="title">
-
-Prerequisites
+To configure PTP fast events, set appropriate values for `ptp4lOpts`, `ptp4lConf`, and `ptpClockThreshold`. `ptpClockThreshold` is used only when events are enabled. See "Configuring the PTP fast event notifications publisher" for more information.
 
 </div>
 
@@ -613,27 +521,9 @@ Prerequisites
 
 - Install the PTP Operator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the `PtpConfig` CR. For example:
 
     1.  Save the following YAML in the `grandmaster-clock-ptp-config-dual-nics.yaml` file:
-
-        <div class="example">
-
-        <div class="title">
-
-        PTP grandmaster clock configuration for dual E810 NICs
-
-        </div>
 
         ``` yaml
         # In this example two cards $iface_nic1 and $iface_nic2 are connected via
@@ -874,10 +764,11 @@ Procedure
                 - nodeLabel: "node-role.kubernetes.io/$mcp"
         ```
 
-        </div>
+        <div class="note">
 
-        > [!NOTE]
-        > Set the value for `ts2phc.nmea_serialport` to `/dev/gnss0`.
+        Set the value for `ts2phc.nmea_serialport` to `/dev/gnss0`.
+
+        </div>
 
     2.  Create the CR by running the following command:
 
@@ -885,15 +776,7 @@ Procedure
         $ oc create -f grandmaster-clock-ptp-config-dual-nics.yaml
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Check that the `PtpConfig` profile is applied to the node.
 
@@ -903,11 +786,9 @@ Verification
         $ oc get pods -n openshift-ptp -o wide
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -917,19 +798,15 @@ Verification
         ptp-operator-5f4f48d7c-x7zkf  1/1     Running   1          4d15h   10.128.1.145   compute-1.example.com
         ```
 
-        </div>
-
     2.  Check that the profile is correct. Examine the logs of the `linuxptp` daemon that corresponds to the node you specified in the `PtpConfig` profile. Run the following command:
 
         ``` terminal
         $ oc logs linuxptp-daemon-74m2g -n openshift-ptp -c linuxptp-daemon-container
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -947,10 +824,6 @@ Verification
         phc2sys[509863.719]: [ptp4l.0.config] CLOCK_REALTIME phc offset        -6 s2 freq  +15441 delay    510
         phc2sys[509863.782]: [ptp4l.0.config] CLOCK_REALTIME phc offset        -7 s2 freq  +15438 delay    502
         ```
-
-        </div>
-
-</div>
 
 ## Configuring linuxptp services as a grandmaster clock for 3 E810 NICs
 
@@ -970,14 +843,6 @@ For distributed RAN (D-RAN) use cases, you can configure PTP for 3 NICs as follo
 
 Use the following example `PtpConfig` CRs as the basis to configure `linuxptp` services as a 3-card Intel E810 T-GM.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - For T-GM clocks in production environments, install 3 Intel E810 NICs in the bare-metal cluster host.
 
 - Install the OpenShift CLI (`oc`).
@@ -986,27 +851,9 @@ Prerequisites
 
 - Install the PTP Operator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the `PtpConfig` CR. For example:
 
     1.  Save the following YAML in the `three-nic-grandmaster-clock-ptp-config.yaml` file:
-
-        <div class="example">
-
-        <div class="title">
-
-        PTP grandmaster clock configuration for 3 E810 NICs
-
-        </div>
 
         ``` yaml
         # In this example, the three cards are connected via SMA cables:
@@ -1278,10 +1125,11 @@ Procedure
             - nodeLabel: node-role.kubernetes.io/$mcp
         ```
 
-        </div>
+        <div class="note">
 
-        > [!NOTE]
-        > Set the value for `ts2phc.nmea_serialport` to `/dev/gnss0`.
+        Set the value for `ts2phc.nmea_serialport` to `/dev/gnss0`.
+
+        </div>
 
     2.  Create the CR by running the following command:
 
@@ -1289,15 +1137,7 @@ Procedure
         $ oc create -f three-nic-grandmaster-clock-ptp-config.yaml
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Check that the `PtpConfig` profile is applied to the node.
 
@@ -1307,11 +1147,9 @@ Verification
         $ oc get pods -n openshift-ptp -o wide
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1321,19 +1159,15 @@ Verification
         ptp-operator-5f4f48d7c-x6zkn  1/1     Running   1          4d15h   10.128.1.145   compute-1.example.com
         ```
 
-        </div>
-
     2.  Check that the profile is correct. Run the following command, and examine the logs of the `linuxptp` daemon that corresponds to the node you specified in the `PtpConfig` profile:
 
         ``` terminal
         $ oc logs linuxptp-daemon-74m3q -n openshift-ptp -c linuxptp-daemon-container
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1353,27 +1187,13 @@ Verification
         GM[1742826305]:[ts2phc.0.config] ens4f0 T-GM-STATUS s2
         ```
 
-        </div>
-
         - `ts2phc` is updating the PTP hardware clock.
 
         - Estimated PTP device offset between PTP device and the reference clock is 0 nanoseconds. The PTP device is in sync with the leader clock.
 
         - T-GM is in a locked state (s2).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring the PTP fast event notifications publisher](../../../networking/advanced_networking/ptp/ptp-cloud-events-consumer-dev-reference-v2.xml#cnf-configuring-the-ptp-fast-event-publisher-v2_ptp-consumer)
-
-</div>
 
 # Grandmaster clock PtpConfig configuration reference
 
@@ -1386,55 +1206,53 @@ The following reference information describes the configuration options for the 
 <col style="width: 75%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">PtpConfig CR field</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>plugins</code></p></td>
 <td style="text-align: left;"><p>Specify an array of <code>.exec.cmdline</code> options that configure the NIC for grandmaster clock operation. Grandmaster clock configuration requires certain PTP pins to be disabled.</p>
 <p>The plugin mechanism allows the PTP Operator to do automated hardware configuration. For the Intel Westport Channel NIC or the Intel Logan Beach NIC, when the <code>enableDefaultConfig</code> field is set to <code>true</code>, the PTP Operator runs a hard-coded script to do the required configuration for the NIC.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>ptp4lOpts</code></p></td>
 <td style="text-align: left;"><p>Specify system configuration options for the <code>ptp4l</code> service. The options should not include the network interface name <code>-i &lt;interface&gt;</code> and service config file <code>-f /etc/ptp4l.conf</code> because the network interface name and the service config file are automatically appended.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ptp4lConf</code></p></td>
 <td style="text-align: left;"><p>Specify the required configuration to start <code>ptp4l</code> as a grandmaster clock. For example, the <code>ens2f1</code> interface synchronizes downstream connected devices. For grandmaster clocks, set <code>clockClass</code> to <code>6</code> and set <code>clockAccuracy</code> to <code>0x27</code>. Set <code>timeSource</code> to <code>0x20</code> for when receiving the timing signal from a Global navigation satellite system (GNSS).</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tx_timestamp_timeout</code></p></td>
 <td style="text-align: left;"><p>Specify the maximum amount of time to wait for the transmit (TX) timestamp from the sender before discarding the data.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>boundary_clock_jbod</code></p></td>
 <td style="text-align: left;"><p>Specify the JBOD boundary clock time delay value. This value is used to correct the time values that are passed between the network time devices.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>phc2sysOpts</code></p></td>
 <td style="text-align: left;"><p>Specify system config options for the <code>phc2sys</code> service. If this field is empty the PTP Operator does not start the <code>phc2sys</code> service.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>Ensure that the network interface listed here is configured as grandmaster and is referenced as required in the <code>ts2phcConf</code> and <code>ptp4lConf</code> fields.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ptpSchedulingPolicy</code></p></td>
 <td style="text-align: left;"><p>Configure the scheduling policy for <code>ptp4l</code> and <code>phc2sys</code> processes. Default value is <code>SCHED_OTHER</code>. Use <code>SCHED_FIFO</code> on systems that support FIFO scheduling.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>ptpSchedulingPriority</code></p></td>
 <td style="text-align: left;"><p>Set an integer value from 1-65 to configure FIFO priority for <code>ptp4l</code> and <code>phc2sys</code> processes when <code>ptpSchedulingPolicy</code> is set to <code>SCHED_FIFO</code>. The <code>ptpSchedulingPriority</code> field is not used when <code>ptpSchedulingPolicy</code> is set to <code>SCHED_OTHER</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ptpClockThreshold</code></p></td>
 <td style="text-align: left;"><p>Optional. If <code>ptpClockThreshold</code> stanza is not present, default values are used for <code>ptpClockThreshold</code> fields. Stanza shows default <code>ptpClockThreshold</code> values. <code>ptpClockThreshold</code> values configure how long after the PTP master clock is disconnected before PTP events are triggered. <code>holdOverTimeout</code> is the time value in seconds before the PTP clock event state changes to <code>FREERUN</code> when the PTP master clock is disconnected. The <code>maxOffsetThreshold</code> and <code>minOffsetThreshold</code> settings configure offset values in nanoseconds that compare against the values for <code>CLOCK_REALTIME</code> (<code>phc2sys</code>) or master offset (<code>ptp4l</code>). When the <code>ptp4l</code> or <code>phc2sys</code> offset value is outside this range, the PTP clock state is set to <code>FREERUN</code>. When the offset value is within this range, the PTP clock state is set to <code>LOCKED</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>ts2phcConf</code></p></td>
 <td style="text-align: left;"><p>Sets the configuration for the <code>ts2phc</code> command.</p>
 <p><code>leapfile</code> is the default path to the current leap seconds definition file in the PTP Operator container image.</p>
@@ -1444,36 +1262,38 @@ The following reference information describes the configuration options for the 
 <li><p><code>/sys/class/gnss/gnss&lt;id&gt;/device/</code></p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ts2phcOpts</code></p></td>
 <td style="text-align: left;"><p>Set options for the <code>ts2phc</code> command.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>recommend</code></p></td>
 <td style="text-align: left;"><p>Specify an array of one or more <code>recommend</code> objects that define rules on how the <code>profile</code> should be applied to nodes.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>.recommend.profile</code></p></td>
 <td style="text-align: left;"><p>Specify the <code>.recommend.profile</code> object name that is defined in the <code>profile</code> section.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>.recommend.priority</code></p></td>
 <td style="text-align: left;"><p>Specify the <code>priority</code> with an integer value between <code>0</code> and <code>99</code>. A larger number gets lower priority, so a priority of <code>99</code> is lower than a priority of <code>10</code>. If a node can be matched with multiple profiles according to rules defined in the <code>match</code> field, the profile with the higher priority is applied to that node.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>.recommend.match</code></p></td>
 <td style="text-align: left;"><p>Specify <code>.recommend.match</code> rules with <code>nodeLabel</code> or <code>nodeName</code> values.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>.recommend.match.nodeLabel</code></p></td>
 <td style="text-align: left;"><p>Set <code>nodeLabel</code> with the <code>key</code> of the <code>node.Labels</code> field from the node object by using the <code>oc get nodes --show-labels</code> command. For example, <code>node-role.kubernetes.io/worker</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>.recommend.match.nodeName</code></p></td>
 <td style="text-align: left;"><p>Set <code>nodeName</code> with the value of the <code>node.Name</code> field from the node object by using the <code>oc get nodes</code> command. For example, <code>compute-1.example.com</code>.</p></td>
 </tr>
 </tbody>
 </table>
+
+PtpConfig configuration options for PTP Grandmaster clock
 
 ## Grandmaster clock class sync state reference
 
@@ -1481,11 +1301,11 @@ The following table describes the PTP grandmaster clock (T-GM) `gm.ClockClass` s
 
 Holdover specification is the amount of time a PTP clock can maintain synchronization without receiving updates from the primary time source.
 
-| Clock class state | Description |
-|----|----|
-| `gm.ClockClass 6` | T-GM clock is connected to a PRTC in `LOCKED` mode. For example, the PRTC is traceable to a GNSS time source. |
-| `gm.ClockClass 7` | T-GM clock is in `HOLDOVER` mode, and within holdover specification. The clock source might not be traceable to a category 1 frequency source. |
-| `gm.ClockClass 248` | T-GM clock is in `FREERUN` mode. |
+| Clock class state   | Description                                                                                                                                    |
+|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| `gm.ClockClass 6`   | T-GM clock is connected to a PRTC in `LOCKED` mode. For example, the PRTC is traceable to a GNSS time source.                                  |
+| `gm.ClockClass 7`   | T-GM clock is in `HOLDOVER` mode, and within holdover specification. The clock source might not be traceable to a category 1 frequency source. |
+| `gm.ClockClass 248` | T-GM clock is in `FREERUN` mode.                                                                                                               |
 
 T-GM clock class states
 
@@ -1495,12 +1315,12 @@ For more information, see ["Phase/time traceability information", ITU-T G.8275.1
 
 Use this information to understand how to use the [Intel E810 hardware plugin](https://github.com/openshift/linuxptp-daemon/blob/release-4.16/addons/intel/e810.go) to configure the E810 network interface as PTP grandmaster clock. Hardware pin configuration determines how the network interface interacts with other components and devices in the system. The Intel E810 NIC has four connectors for external 1PPS signals: `SMA1`, `SMA2`, `U.FL1`, and `U.FL2`.
 
-| Hardware pin | Recommended setting | Description |
-|----|----|----|
-| `U.FL1` | `0 1` | Disables the `U.FL1` connector input. The `U.FL1` connector is output-only. |
-| `U.FL2` | `0 2` | Disables the `U.FL2` connector output. The `U.FL2` connector is input-only. |
-| `SMA1` | `0 1` | Disables the `SMA1` connector input. The `SMA1` connector is bidirectional. |
-| `SMA2` | `0 2` | Disables the `SMA2` connector output. The `SMA2` connector is bidirectional. |
+| Hardware pin | Recommended setting | Description                                                                  |
+|--------------|---------------------|------------------------------------------------------------------------------|
+| `U.FL1`      | `0 1`               | Disables the `U.FL1` connector input. The `U.FL1` connector is output-only.  |
+| `U.FL2`      | `0 2`               | Disables the `U.FL2` connector output. The `U.FL2` connector is input-only.  |
+| `SMA1`       | `0 1`               | Disables the `SMA1` connector input. The `SMA1` connector is bidirectional.  |
+| `SMA2`       | `0 2`               | Disables the `SMA2` connector output. The `SMA2` connector is bidirectional. |
 
 Intel E810 NIC hardware connectors configuration
 
@@ -1534,13 +1354,19 @@ Examples:
 
 - `1 2`: Assigns the Rx function to `SMA2` or `U.FL2`.
 
-> [!NOTE]
-> `SMA1` and `U.FL1` connectors share channel one. `SMA2` and `U.FL2` connectors share channel two.
+<div class="note">
+
+`SMA1` and `U.FL1` connectors share channel one. `SMA2` and `U.FL2` connectors share channel two.
+
+</div>
 
 Set `spec.profile.plugins.e810.ublxCmds` parameters to configure the GNSS clock in the `PtpConfig` custom resource (CR).
 
-> [!IMPORTANT]
-> You must configure an offset value to compensate for T-GM GPS antenna cable signal delay. To configure the optimal T-GM antenna offset value, make precise measurements of the GNSS antenna cable signal delay. Red Hat cannot assist in this measurement or provide any values for the required delay offsets.
+<div class="important">
+
+You must configure an offset value to compensate for T-GM GPS antenna cable signal delay. To configure the optimal T-GM antenna offset value, make precise measurements of the GNSS antenna cable signal delay. Red Hat cannot assist in this measurement or provide any values for the required delay offsets.
+
+</div>
 
 Each of these `ublxCmds` stanzas correspond to a configuration that is applied to the host NIC by using `ubxtool` commands. For example:
 
@@ -1560,16 +1386,16 @@ ublxCmds:
 
 The following table describes the equivalent `ubxtool` commands:
 
-| ubxtool command | Description |
-|----|----|
+| ubxtool command                                                                                 | Description                                                                                                                                                                                                                            |
+|-------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `ubxtool -P 29.20 -z CFG-HW-ANT_CFG_VOLTCTRL,1 -z CFG-TP-ANT_CABLEDELAY,<antenna_delay_offset>` | Enables antenna voltage control, allows antenna status to be reported in the `UBX-MON-RF` and `UBX-INF-NOTICE` log messages, and sets a `<antenna_delay_offset>` value in nanoseconds that offsets the GPS antenna cable signal delay. |
-| `ubxtool -P 29.20 -e GPS` | Enables the antenna to receive GPS signals. |
-| `ubxtool -P 29.20 -d Galileo` | Configures the antenna to receive signal from the Galileo GPS satellite. |
-| `ubxtool -P 29.20 -d GLONASS` | Disables the antenna from receiving signal from the GLONASS GPS satellite. |
-| `ubxtool -P 29.20 -d BeiDou` | Disables the antenna from receiving signal from the BeiDou GPS satellite. |
-| `ubxtool -P 29.20 -d SBAS` | Disables the antenna from receiving signal from the SBAS GPS satellite. |
-| `ubxtool -P 29.20 -t -w 5 -v 1 -e SURVEYIN,600,50000` | Configures the GNSS receiver survey-in process to improve its initial position estimate. This can take up to 24 hours to achieve an optimal result. |
-| `ubxtool -P 29.20 -p MON-HW` | Runs a single automated scan of the hardware and reports on the NIC state and configuration settings. |
+| `ubxtool -P 29.20 -e GPS`                                                                       | Enables the antenna to receive GPS signals.                                                                                                                                                                                            |
+| `ubxtool -P 29.20 -d Galileo`                                                                   | Configures the antenna to receive signal from the Galileo GPS satellite.                                                                                                                                                               |
+| `ubxtool -P 29.20 -d GLONASS`                                                                   | Disables the antenna from receiving signal from the GLONASS GPS satellite.                                                                                                                                                             |
+| `ubxtool -P 29.20 -d BeiDou`                                                                    | Disables the antenna from receiving signal from the BeiDou GPS satellite.                                                                                                                                                              |
+| `ubxtool -P 29.20 -d SBAS`                                                                      | Disables the antenna from receiving signal from the SBAS GPS satellite.                                                                                                                                                                |
+| `ubxtool -P 29.20 -t -w 5 -v 1 -e SURVEYIN,600,50000`                                           | Configures the GNSS receiver survey-in process to improve its initial position estimate. This can take up to 24 hours to achieve an optimal result.                                                                                    |
+| `ubxtool -P 29.20 -p MON-HW`                                                                    | Runs a single automated scan of the hardware and reports on the NIC state and configuration settings.                                                                                                                                  |
 
 Intel E810 ublxCmds configuration
 
@@ -1588,13 +1414,13 @@ When you configure a dual-NIC T-GM, you need to compensate for the 1PPS signal d
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">PtpConfig field</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.profile.plugins.e810.pins</code></p></td>
 <td style="text-align: left;"><p>Configure the E810 hardware pins using the PTP Operator E810 hardware plugin.</p>
 <ul>
@@ -1602,16 +1428,18 @@ When you configure a dual-NIC T-GM, you need to compensate for the 1PPS signal d
 <li><p>Pin <code>1 1</code> enables the <code>1PPS IN</code> connection for <code>SMA1</code> on NIC two.</p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.profile.ts2phcConf</code></p></td>
 <td style="text-align: left;"><p>Use the <code>ts2phcConf</code> field to configure parameters for NIC one and NIC two. Set <code>ts2phc.master 0</code> for NIC two. This configures the timing source for NIC two from the 1PPS input, not GNSS. Configure the <code>ts2phc.extts_correction</code> value for NIC two to compensate for the delay that is incurred for the specific SMA cable and cable length that you use. The value that you configure depends on your specific measurements and SMA1 cable length.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.profile.ptp4lConf</code></p></td>
 <td style="text-align: left;"><p>Set the value of <code>boundary_clock_jbod</code> to 1 to enable support for multiple NICs.</p></td>
 </tr>
 </tbody>
 </table>
+
+E810 dual-NIC T-GM PtpConfig CR reference
 
 Each value in the `spec.profile.plugins.e810.pins` list follows the `<function>` `<channel_number>` format.
 
@@ -1654,13 +1482,13 @@ When you configure a 3-card T-GM, you need to compensate for the 1PPS signal del
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">PtpConfig field</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.profile.plugins.e810.pins</code></p></td>
 <td style="text-align: left;"><p>Configure the E810 hardware pins with the PTP Operator E810 hardware plugin.</p>
 <ul>
@@ -1670,16 +1498,18 @@ When you configure a 3-card T-GM, you need to compensate for the 1PPS signal del
 <li><p><code>$iface_timeTx2.SMA2</code> and <code>$iface_timeTx3.SMA2</code> disables the <code>SMA2</code> connection on NIC 2 and NIC 3.</p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.profile.ts2phcConf</code></p></td>
 <td style="text-align: left;"><p>Use the <code>ts2phcConf</code> field to configure parameters for the NICs. Set <code>ts2phc.master 0</code> for NIC 2 and NIC 3. This configures the timing source for NIC 2 and NIC 3 from the 1PPS input, not GNSS. Configure the <code>ts2phc.extts_correction</code> value for NIC 2 and NIC 3 to compensate for the delay that is incurred for the specific SMA cable and cable length that you use. The value that you configure depends on your specific measurements and SMA1 cable length.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.profile.ptp4lConf</code></p></td>
 <td style="text-align: left;"><p>Set the value of <code>boundary_clock_jbod</code> to 1 to enable support for multiple NICs.</p></td>
 </tr>
 </tbody>
 </table>
+
+3-card E810 T-GM PtpConfig CR reference
 
 # Holdover in a grandmaster clock with GNSS as the source
 
@@ -1698,8 +1528,11 @@ Specifies the maximum offset that the T-GM clock can reach during the holdover s
 
 If the `MaxInSpecOffset` value is less than the `LocalMaxHoldoverOffset` value, and the T-GM clock exceeds the maximum offset value, the T-GM clock transitions from the holdover state to the `FREERUN` state.
 
-> [!IMPORTANT]
-> If the `LocalMaxHoldoverOffSet` value is less than the `MaxInSpecOffset` value, the holdover timeout occurs before the clock reaches the maximum offset. To resolve this issue, set the `MaxInSpecOffset` field and the `LocalMaxHoldoverOffset` field to the same value.
+<div class="important">
+
+If the `LocalMaxHoldoverOffSet` value is less than the `MaxInSpecOffset` value, the holdover timeout occurs before the clock reaches the maximum offset. To resolve this issue, set the `MaxInSpecOffset` field and the `LocalMaxHoldoverOffset` field to the same value.
+
+</div>
 
 For information about clock class states, see "Grandmaster clock class sync state reference" document.
 
@@ -1715,8 +1548,11 @@ The T-GM clock uses the slope value to predict and compensate for time drift, so
 
   The T-GM clock reaches the maximum offset in 60 seconds.
 
-> [!NOTE]
-> The phase offset is converted from picoseconds to nanoseconds. As a result, the calculated phase offset during holdover is expressed in nanoseconds, and the resulting slope is expressed in nanoseconds per second.
+<div class="note">
+
+The phase offset is converted from picoseconds to nanoseconds. As a result, the calculated phase offset during holdover is expressed in nanoseconds, and the resulting slope is expressed in nanoseconds per second.
+
+</div>
 
 The following figure illustrates the holdover behavior in a T-GM clock with GNSS as the source:
 
@@ -1743,16 +1579,11 @@ The unassisted holdover feature enables an Intel E810-XXVDA4T Network Interface 
 
 The `ts2phc` service monitors the `ptp4l` instance bound to the timing receiver (TR) port. If, for example, the TR port stops operating as the time receiver, the upstream grandmaster clock (T-GM) deteriorates in quality or the link disconnects, the system enters holdover mode and reconfigures itself dynamically.
 
-> [!IMPORTANT]
-> Applying unassisted holdover for T-BC and T-TSC is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div>
+Applying unassisted holdover for T-BC and T-TSC is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
@@ -1763,16 +1594,6 @@ Prerequisites
 - Install the PTP Operator.
 
 - An Intel E810-XXVDA4T NIC.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Configure the triple port T-BC NIC. See the example below where the `PtpConfig` resource contains two profiles, one for time transmitter ports (00-tbc-tt) and one to configure all the hardware, the TR port, and `ts2phc` and `phc2sys` processes:
 
@@ -2099,35 +1920,33 @@ Procedure
 
     - `ts2phcOpts` sets the source as generic with `-s generic` and automatic with `-a`. The last option, `--ts2phc.rh_external_pps 1`, configures it to operate with external phase source, the digital phase-locked loop (DPLL).
 
-      > [!NOTE]
-      > In the single-NIC case, disable all pins or enable outputs if using for 1PPS measurements.
+      <div class="note">
+
+      In the single-NIC case, disable all pins or enable outputs if using for 1PPS measurements.
+
+      </div>
+
+<div class="note">
+
+To render this configuration for T-TSC operation, remove the `00-tbc-tt` profile and adjust the `ts2phcConf` section to list only the TR NIC.
 
 </div>
 
-> [!NOTE]
-> To render this configuration for T-TSC operation, remove the `00-tbc-tt` profile and adjust the `ts2phcConf` section to list only the TR NIC.
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 To get the T-BC status, run the following command:
 
-</div>
-
 ``` terminal
 $ oc -linuxptp-daemon-container logs ds/linuxptp-daemon --since=1s -f |grep T-BC
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -2137,21 +1956,9 @@ T-BC[1760525447]:[ts2phc.1.config] ens4f0 offset 1 T-BC-STATUS s2
 T-BC[1760525448]:[ts2phc.1.config] ens4f0 offset -1 T-BC-STATUS s2
 ```
 
-</div>
-
 This is reported every second, where `s2` indicates it is locked, `s1` indicates holdover is activated, and `s0`, unlocked.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Grandmaster clock class sync state reference](../../../networking/advanced_networking/ptp/configuring-ptp.xml#nw-ptp-grandmaster-clock-class-reference_configuring-ptp)
-
-</div>
 
 # Configuring dynamic leap seconds handling for PTP grandmaster clocks
 
@@ -2161,14 +1968,9 @@ Leap second information is stored in an automatically generated `ConfigMap` reso
 
 If the GPS satellite broadcasts new leap second data, the PTP Operator updates the `leap-configmap` resource with the new data. The `ts2phc` process picks up the changes automatically.
 
-> [!NOTE]
-> The following procedure is provided as reference. The 4.17 version of the PTP Operator enables automatic leap second management by default.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The following procedure is provided as reference. The 4.17 version of the PTP Operator enables automatic leap second management by default.
 
 </div>
 
@@ -2178,24 +1980,17 @@ Prerequisites
 
 - You have installed the PTP Operator and configured a PTP grandmaster clock (T-GM) in the cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Configure automatic leap second handling in the `phc2sysOpts` section of the `PtpConfig` CR. Set the following options:
 
     ``` yaml
     phc2sysOpts: -r -u 0 -m -N 8 -R 16 -S 2 -s ens2f0 -n 24
     ```
 
-    > [!NOTE]
-    > Previously, the T-GM required an offset adjustment in the `phc2sys` configuration (`-O -37`) to account for historical leap seconds. This is no longer needed.
+    <div class="note">
+
+    Previously, the T-GM required an offset adjustment in the `phc2sys` configuration (`-O -37`) to account for historical leap seconds. This is no longer needed.
+
+    </div>
 
 2.  Configure the Intel e810 NIC to enable periodical reporting of `NAV-TIMELS` messages by the GPS receiver in the `spec.profile.plugins.e810.ublxCmds` section of the `PtpConfig` CR. For example:
 
@@ -2207,15 +2002,7 @@ Procedure
         - "CFG-MSG,1,38,248"
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Validate that the configured T-GM is receiving `NAV-TIMELS` messages from the connected GPS. Run the following command:
 
@@ -2223,11 +2010,9 @@ Verification
     $ oc -n openshift-ptp -c linuxptp-daemon-container exec -it $(oc -n openshift-ptp get pods -o name | grep daemon) -- ubxtool -t -p NAV-TIMELS -P 29.20
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2258,8 +2043,6 @@ Verification
       iTOW 384753000 clkB 784716 clkD 435 tAcc 3 fAcc 218
     ```
 
-    </div>
-
 2.  Validate that the `leap-configmap` resource has been successfully generated by the PTP Operator and is up to date with the latest version of the [leap-seconds.list](https://hpiers.obspm.fr/iers/bul/bulc/ntp/leap-seconds.list). Run the following command:
 
     ``` terminal
@@ -2268,11 +2051,9 @@ Verification
 
     - Replace `<node_name>` with the node where you have installed and configured the PTP T-GM clock with automatic leap second management. Escape special characters in the node name. For example, `node-1\.example\.com`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2313,22 +2094,13 @@ Verification
     #h  e65754d4 8f39962b aa854a61 661ef546 d2af0bfa
     ```
 
-    </div>
-
-</div>
-
 # Configuring linuxptp services as a boundary clock
 
 You can configure the `linuxptp` services (`ptp4l`, `phc2sys`) as boundary clock by creating a `PtpConfig` custom resource (CR) object.
 
-> [!NOTE]
-> Use the following example `PtpConfig` CR as the basis to configure `linuxptp` services as the boundary clock for your particular hardware and environment. This example CR does not configure PTP fast events. To configure PTP fast events, set appropriate values for `ptp4lOpts`, `ptp4lConf`, and `ptpClockThreshold`. `ptpClockThreshold` is used only when events are enabled. See "Configuring the PTP fast event notifications publisher" for more information.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Use the following example `PtpConfig` CR as the basis to configure `linuxptp` services as the boundary clock for your particular hardware and environment. This example CR does not configure PTP fast events. To configure PTP fast events, set appropriate values for `ptp4lOpts`, `ptp4lConf`, and `ptpClockThreshold`. `ptpClockThreshold` is used only when events are enabled. See "Configuring the PTP fast event notifications publisher" for more information.
 
 </div>
 
@@ -2338,23 +2110,11 @@ Prerequisites
 
 - Install the PTP Operator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the following `PtpConfig` CR, and then save the YAML in the `boundary-clock-ptp-config.yaml` file.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example PTP boundary clock configuration
+    **Example PTP boundary clock configuration**
 
     </div>
 
@@ -2492,29 +2252,27 @@ Procedure
             - nodeLabel: "node-role.kubernetes.io/$mcp"
     ```
 
-    </div>
-
-    | CR field | Description |
-    |----|----|
-    | `name` | The name of the `PtpConfig` CR. |
-    | `profile` | Specify an array of one or more `profile` objects. |
-    | `name` | Specify the name of a profile object which uniquely identifies a profile object. |
-    | `ptp4lOpts` | Specify system config options for the `ptp4l` service. The options should not include the network interface name `-i <interface>` and service config file `-f /etc/ptp4l.conf` because the network interface name and the service config file are automatically appended. |
-    | `ptp4lConf` | Specify the required configuration to start `ptp4l` as boundary clock. For example, `ens1f0` synchronizes from a grandmaster clock and `ens1f3` synchronizes connected devices. |
-    | `<interface_1>` | The interface that receives the synchronization clock. |
-    | `<interface_2>` | The interface that sends the synchronization clock. |
-    | `tx_timestamp_timeout` | For Intel Columbiaville 800 Series NICs, set `tx_timestamp_timeout` to `50`. |
-    | `boundary_clock_jbod` | For Intel Columbiaville 800 Series NICs, ensure `boundary_clock_jbod` is set to `0`. For Intel Fortville X710 Series NICs, ensure `boundary_clock_jbod` is set to `1`. |
-    | `phc2sysOpts` | Specify system config options for the `phc2sys` service. If this field is empty, the PTP Operator does not start the `phc2sys` service. |
-    | `ptpSchedulingPolicy` | Scheduling policy for ptp4l and phc2sys processes. Default value is `SCHED_OTHER`. Use `SCHED_FIFO` on systems that support FIFO scheduling. |
-    | `ptpSchedulingPriority` | Integer value from 1-65 used to set FIFO priority for `ptp4l` and `phc2sys` processes when `ptpSchedulingPolicy` is set to `SCHED_FIFO`. The `ptpSchedulingPriority` field is not used when `ptpSchedulingPolicy` is set to `SCHED_OTHER`. |
-    | `ptpClockThreshold` | Optional. If `ptpClockThreshold` is not present, default values are used for the `ptpClockThreshold` fields. `ptpClockThreshold` configures how long after the PTP master clock is disconnected before PTP events are triggered. `holdOverTimeout` is the time value in seconds before the PTP clock event state changes to `FREERUN` when the PTP master clock is disconnected. The `maxOffsetThreshold` and `minOffsetThreshold` settings configure offset values in nanoseconds that compare against the values for `CLOCK_REALTIME` (`phc2sys`) or master offset (`ptp4l`). When the `ptp4l` or `phc2sys` offset value is outside this range, the PTP clock state is set to `FREERUN`. When the offset value is within this range, the PTP clock state is set to `LOCKED`. |
-    | `recommend` | Specify an array of one or more `recommend` objects that define rules on how the `profile` should be applied to nodes. |
-    | `.recommend.profile` | Specify the `.recommend.profile` object name defined in the `profile` section. |
-    | `.recommend.priority` | Specify the `priority` with an integer value between `0` and `99`. A larger number gets lower priority, so a priority of `99` is lower than a priority of `10`. If a node can be matched with multiple profiles according to rules defined in the `match` field, the profile with the higher priority is applied to that node. |
-    | `.recommend.match` | Specify `.recommend.match` rules with `nodeLabel` or `nodeName` values. |
-    | `.recommend.match.nodeLabel` | Set `nodeLabel` with the `key` of the `node.Labels` field from the node object by using the `oc get nodes --show-labels` command. For example, `node-role.kubernetes.io/worker`. |
-    | `.recommend.match.nodeName` | Set `nodeName` with the value of the `node.Name` field from the node object by using the `oc get nodes` command. For example, `compute-1.example.com`. |
+    | CR field                     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+    |------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | `name`                       | The name of the `PtpConfig` CR.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+    | `profile`                    | Specify an array of one or more `profile` objects.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+    | `name`                       | Specify the name of a profile object which uniquely identifies a profile object.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+    | `ptp4lOpts`                  | Specify system config options for the `ptp4l` service. The options should not include the network interface name `-i <interface>` and service config file `-f /etc/ptp4l.conf` because the network interface name and the service config file are automatically appended.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+    | `ptp4lConf`                  | Specify the required configuration to start `ptp4l` as boundary clock. For example, `ens1f0` synchronizes from a grandmaster clock and `ens1f3` synchronizes connected devices.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+    | `<interface_1>`              | The interface that receives the synchronization clock.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+    | `<interface_2>`              | The interface that sends the synchronization clock.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+    | `tx_timestamp_timeout`       | For Intel Columbiaville 800 Series NICs, set `tx_timestamp_timeout` to `50`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+    | `boundary_clock_jbod`        | For Intel Columbiaville 800 Series NICs, ensure `boundary_clock_jbod` is set to `0`. For Intel Fortville X710 Series NICs, ensure `boundary_clock_jbod` is set to `1`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+    | `phc2sysOpts`                | Specify system config options for the `phc2sys` service. If this field is empty, the PTP Operator does not start the `phc2sys` service.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+    | `ptpSchedulingPolicy`        | Scheduling policy for ptp4l and phc2sys processes. Default value is `SCHED_OTHER`. Use `SCHED_FIFO` on systems that support FIFO scheduling.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+    | `ptpSchedulingPriority`      | Integer value from 1-65 used to set FIFO priority for `ptp4l` and `phc2sys` processes when `ptpSchedulingPolicy` is set to `SCHED_FIFO`. The `ptpSchedulingPriority` field is not used when `ptpSchedulingPolicy` is set to `SCHED_OTHER`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+    | `ptpClockThreshold`          | Optional. If `ptpClockThreshold` is not present, default values are used for the `ptpClockThreshold` fields. `ptpClockThreshold` configures how long after the PTP master clock is disconnected before PTP events are triggered. `holdOverTimeout` is the time value in seconds before the PTP clock event state changes to `FREERUN` when the PTP master clock is disconnected. The `maxOffsetThreshold` and `minOffsetThreshold` settings configure offset values in nanoseconds that compare against the values for `CLOCK_REALTIME` (`phc2sys`) or master offset (`ptp4l`). When the `ptp4l` or `phc2sys` offset value is outside this range, the PTP clock state is set to `FREERUN`. When the offset value is within this range, the PTP clock state is set to `LOCKED`. |
+    | `recommend`                  | Specify an array of one or more `recommend` objects that define rules on how the `profile` should be applied to nodes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+    | `.recommend.profile`         | Specify the `.recommend.profile` object name defined in the `profile` section.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+    | `.recommend.priority`        | Specify the `priority` with an integer value between `0` and `99`. A larger number gets lower priority, so a priority of `99` is lower than a priority of `10`. If a node can be matched with multiple profiles according to rules defined in the `match` field, the profile with the higher priority is applied to that node.                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+    | `.recommend.match`           | Specify `.recommend.match` rules with `nodeLabel` or `nodeName` values.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+    | `.recommend.match.nodeLabel` | Set `nodeLabel` with the `key` of the `node.Labels` field from the node object by using the `oc get nodes --show-labels` command. For example, `node-role.kubernetes.io/worker`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+    | `.recommend.match.nodeName`  | Set `nodeName` with the value of the `node.Name` field from the node object by using the `oc get nodes` command. For example, `compute-1.example.com`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 
     PTP boundary clock CR configuration options
 
@@ -2524,15 +2282,7 @@ Procedure
     $ oc create -f boundary-clock-ptp-config.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Check that the `PtpConfig` profile is applied to the node.
 
@@ -2542,11 +2292,9 @@ Verification
         $ oc get pods -n openshift-ptp -o wide
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -2557,19 +2305,15 @@ Verification
         ptp-operator-657bbb64c8-2f8sj   1/1     Running   0          43m   10.129.0.61      control-plane-1.example.com
         ```
 
-        </div>
-
     2.  Check that the profile is correct. Examine the logs of the `linuxptp` daemon that corresponds to the node you specified in the `PtpConfig` profile. Run the following command:
 
         ``` terminal
         $ oc logs linuxptp-daemon-4xkbb -n openshift-ptp -c linuxptp-daemon-container
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -2584,23 +2328,9 @@ Verification
         I1115 09:41:17.117626 4143292 daemon.go:116] ------------------------------------
         ```
 
-        </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring FIFO priority scheduling for PTP hardware](../../../networking/advanced_networking/ptp/configuring-ptp.xml#cnf-configuring-fifo-priority-scheduling-for-ptp_configuring-ptp)
 
 - [Configuring the PTP fast event notifications publisher](../../../networking/advanced_networking/ptp/ptp-cloud-events-consumer-dev-reference-v2.xml#cnf-configuring-the-ptp-fast-event-publisher-v2_ptp-consumer)
-
-</div>
 
 ## Configuring linuxptp services as boundary clocks for dual-NIC hardware
 
@@ -2608,29 +2338,11 @@ You can configure the `linuxptp` services (`ptp4l`, `phc2sys`) as boundary clock
 
 Dual NIC hardware allows you to connect each NIC to the same upstream leader clock with separate `ptp4l` instances for each NIC feeding the downstream clocks.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
 
 - Install the PTP Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create two separate `PtpConfig` CRs, one for each NIC, using the reference CR in "Configuring linuxptp services as a boundary clock" as the basis for each CR. For example:
 
@@ -2681,8 +2393,11 @@ Procedure
 
         - Specify the required interfaces to start `ptp4l` as a boundary clock on the second NIC.
 
-          > [!NOTE]
-          > You must completely remove the `phc2sysOpts` field from the second `PtpConfig` CR to disable the `phc2sys` service on the second NIC.
+          <div class="note">
+
+          You must completely remove the `phc2sysOpts` field from the second `PtpConfig` CR to disable the `phc2sys` service on the second NIC.
+
+          </div>
 
 2.  Create the dual-NIC `PtpConfig` CRs by running the following commands:
 
@@ -2698,27 +2413,15 @@ Procedure
         $ oc create -f boundary-clock-ptp-config-nic2.yaml
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Check that the PTP Operator has applied the `PtpConfig` CRs for both NICs. Examine the logs for the `linuxptp` daemon corresponding to the node that has the dual-NIC hardware installed. For example, run the following command:
 
   ``` terminal
   $ oc logs linuxptp-daemon-cvgr6 -n openshift-ptp -c linuxptp-daemon-container
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -2728,10 +2431,6 @@ Verification
   phc2sys[80828.390]: [ptp4l.0.config] CLOCK_REALTIME phc offset         1 s2 freq  -87239 delay    539
   ```
 
-  </div>
-
-</div>
-
 ## Configuring linuxptp as a highly available system clock for dual-NIC Intel E810 PTP boundary clocks
 
 You can configure the `linuxptp` services `ptp4l` and `phc2sys` as a highly available (HA) system clock for dual PTP boundary clocks (T-BC).
@@ -2740,19 +2439,17 @@ The highly available system clock uses multiple time sources from dual-NIC Intel
 
 Create two `PtpConfig` custom resource (CR) objects that configure the NICs as T-BC and a third `PtpConfig` CR that configures high availability between the two NICs.
 
-> [!IMPORTANT]
-> You set `phc2SysOpts` options once in the `PtpConfig` CR that configures HA. Set the `phc2sysOpts` field to an empty string in the `PtpConfig` CRs that configure the two NICs. This prevents individual `phc2sys` processes from being set up for the two profiles.
+<div class="important">
+
+You set `phc2SysOpts` options once in the `PtpConfig` CR that configures HA. Set the `phc2sysOpts` field to an empty string in the `PtpConfig` CRs that configure the two NICs. This prevents individual `phc2sys` processes from being set up for the two profiles.
+
+</div>
 
 The third `PtpConfig` CR configures a highly available system clock service. The CR sets the `ptp4lOpts` field to an empty string to prevent the `ptp4l` process from running. The CR adds profiles for the `ptp4l` configurations under the `spec.profile.ptpSettings.haProfiles` key and passes the kernel socket path of those profiles to the `phc2sys` service. When a `ptp4l` failure occurs, the `phc2sys` service switches to the backup `ptp4l` configuration. When the primary profile becomes active again, the `phc2sys` service reverts to the original state.
 
-> [!IMPORTANT]
-> Ensure that you set `spec.recommend.priority` to the same value for all three `PtpConfig` CRs that you use to configure HA.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Ensure that you set `spec.recommend.priority` to the same value for all three `PtpConfig` CRs that you use to configure HA.
 
 </div>
 
@@ -2763,16 +2460,6 @@ Prerequisites
 - Install the PTP Operator.
 
 - Configure a cluster node with Intel E810 Salem channel dual-NIC.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create two separate `PtpConfig` CRs, one for each NIC, using the CRs in "Configuring linuxptp services as boundary clocks for dual-NIC hardware" as a reference for each CR.
 
@@ -2864,24 +2551,17 @@ Procedure
 
         - Set the `ptp4lOpts` field to an empty string. If it is not empty, the `p4ptl` process starts with a critical error.
 
-    > [!IMPORTANT]
-    > Do not apply the high availability `PtpConfig` CR before the `PtpConfig` CRs that configure the individual NICs.
+    <div class="important">
+
+    Do not apply the high availability `PtpConfig` CR before the `PtpConfig` CRs that configure the individual NICs.
+
+    </div>
 
     1.  Apply the HA `PtpConfig` CR by running the following command:
 
         ``` terminal
         $ oc create -f ptp-config-for-ha.yaml
         ```
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Verify that the PTP Operator has applied the `PtpConfig` CRs correctly. Perform the following steps:
 
@@ -2891,11 +2571,9 @@ Verification
       $ oc get pods -n openshift-ptp -o wide
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -2905,10 +2583,11 @@ Verification
       ptp-operator-657bbq64c8-2f8sj   1/1     Running   0          43m   10.129.0.61      control-plane-1.example.com
       ```
 
-      </div>
+      <div class="note">
 
-      > [!NOTE]
-      > There should be only one `linuxptp-daemon` pod.
+      There should be only one `linuxptp-daemon` pod.
+
+      </div>
 
   2.  Check that the profile is correct by running the following command. Examine the logs of the `linuxptp` daemon that corresponds to the node you specified in the `PtpConfig` profile.
 
@@ -2916,11 +2595,9 @@ Verification
       $ oc logs linuxptp-daemon-4xkrb -n openshift-ptp -c linuxptp-daemon-container
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -2935,22 +2612,13 @@ Verification
       I1115 09:41:17.117626 4143292 daemon.go:116] ------------------------------------
       ```
 
-      </div>
-
-</div>
-
 # Configuring linuxptp services as an ordinary clock
 
 You can configure `linuxptp` services (`ptp4l`, `phc2sys`) as ordinary clock by creating a `PtpConfig` custom resource (CR) object.
 
-> [!NOTE]
-> Use the following example `PtpConfig` CR as the basis to configure `linuxptp` services as an ordinary clock for your particular hardware and environment. This example CR does not configure PTP fast events. To configure PTP fast events, set appropriate values for `ptp4lOpts`, `ptp4lConf`, and `ptpClockThreshold`. `ptpClockThreshold` is required only when events are enabled. See "Configuring the PTP fast event notifications publisher" for more information.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Use the following example `PtpConfig` CR as the basis to configure `linuxptp` services as an ordinary clock for your particular hardware and environment. This example CR does not configure PTP fast events. To configure PTP fast events, set appropriate values for `ptp4lOpts`, `ptp4lConf`, and `ptpClockThreshold`. `ptpClockThreshold` is required only when events are enabled. See "Configuring the PTP fast event notifications publisher" for more information.
 
 </div>
 
@@ -2960,23 +2628,11 @@ Prerequisites
 
 - Install the PTP Operator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the following `PtpConfig` CR, and then save the YAML in the `ordinary-clock-ptp-config.yaml` file.
 
-    <div id="ptp-ordinary-clock" class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example PTP ordinary clock configuration
+    **Example PTP ordinary clock configuration**
 
     </div>
 
@@ -3107,27 +2763,25 @@ Procedure
             - nodeLabel: "node-role.kubernetes.io/$mcp"
     ```
 
-    </div>
-
-    | CR field | Description |
-    |----|----|
-    | `name` | The name of the `PtpConfig` CR. |
-    | `profile` | Specify an array of one or more `profile` objects. Each profile must be uniquely named. |
-    | `interface` | Specify the network interface to be used by the `ptp4l` service, for example `ens787f1`. |
-    | `ptp4lOpts` | Specify system config options for the `ptp4l` service, for example `-2` to select the IEEE 802.3 network transport. The options should not include the network interface name `-i <interface>` and service config file `-f /etc/ptp4l.conf` because the network interface name and the service config file are automatically appended. Append `--summary_interval -4` to use PTP fast events with this interface. |
-    | `phc2sysOpts` | Specify system config options for the `phc2sys` service. If this field is empty, the PTP Operator does not start the `phc2sys` service. For Intel Columbiaville 800 Series NICs, set `phc2sysOpts` options to `-a -r -m -n 24 -N 8 -R 16`. `-m` prints messages to `stdout`. The `linuxptp-daemon` `DaemonSet` parses the logs and generates Prometheus metrics. |
-    | `ptp4lConf` | Specify a string that contains the configuration to replace the default `/etc/ptp4l.conf` file. To use the default configuration, leave the field empty. |
-    | `tx_timestamp_timeout` | For Intel Columbiaville 800 Series NICs, set `tx_timestamp_timeout` to `50`. |
-    | `boundary_clock_jbod` | For Intel Columbiaville 800 Series NICs, set `boundary_clock_jbod` to `0`. |
-    | `ptpSchedulingPolicy` | Scheduling policy for `ptp4l` and `phc2sys` processes. Default value is `SCHED_OTHER`. Use `SCHED_FIFO` on systems that support FIFO scheduling. |
-    | `ptpSchedulingPriority` | Integer value from 1-65 used to set FIFO priority for `ptp4l` and `phc2sys` processes when `ptpSchedulingPolicy` is set to `SCHED_FIFO`. The `ptpSchedulingPriority` field is not used when `ptpSchedulingPolicy` is set to `SCHED_OTHER`. |
-    | `ptpClockThreshold` | Optional. If `ptpClockThreshold` is not present, default values are used for the `ptpClockThreshold` fields. `ptpClockThreshold` configures how long after the PTP master clock is disconnected before PTP events are triggered. `holdOverTimeout` is the time value in seconds before the PTP clock event state changes to `FREERUN` when the PTP master clock is disconnected. The `maxOffsetThreshold` and `minOffsetThreshold` settings configure offset values in nanoseconds that compare against the values for `CLOCK_REALTIME` (`phc2sys`) or master offset (`ptp4l`). When the `ptp4l` or `phc2sys` offset value is outside this range, the PTP clock state is set to `FREERUN`. When the offset value is within this range, the PTP clock state is set to `LOCKED`. |
-    | `recommend` | Specify an array of one or more `recommend` objects that define rules on how the `profile` should be applied to nodes. |
-    | `.recommend.profile` | Specify the `.recommend.profile` object name defined in the `profile` section. |
-    | `.recommend.priority` | Set `.recommend.priority` to `0` for ordinary clock. |
-    | `.recommend.match` | Specify `.recommend.match` rules with `nodeLabel` or `nodeName` values. |
-    | `.recommend.match.nodeLabel` | Set `nodeLabel` with the `key` of the `node.Labels` field from the node object by using the `oc get nodes --show-labels` command. For example, `node-role.kubernetes.io/worker`. |
-    | `.recommend.match.nodeName` | Set `nodeName` with the value of the `node.Name` field from the node object by using the `oc get nodes` command. For example, `compute-1.example.com`. |
+    | CR field                     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+    |------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | `name`                       | The name of the `PtpConfig` CR.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+    | `profile`                    | Specify an array of one or more `profile` objects. Each profile must be uniquely named.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+    | `interface`                  | Specify the network interface to be used by the `ptp4l` service, for example `ens787f1`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+    | `ptp4lOpts`                  | Specify system config options for the `ptp4l` service, for example `-2` to select the IEEE 802.3 network transport. The options should not include the network interface name `-i <interface>` and service config file `-f /etc/ptp4l.conf` because the network interface name and the service config file are automatically appended. Append `--summary_interval -4` to use PTP fast events with this interface.                                                                                                                                                                                                                                                                                                                                                              |
+    | `phc2sysOpts`                | Specify system config options for the `phc2sys` service. If this field is empty, the PTP Operator does not start the `phc2sys` service. For Intel Columbiaville 800 Series NICs, set `phc2sysOpts` options to `-a -r -m -n 24 -N 8 -R 16`. `-m` prints messages to `stdout`. The `linuxptp-daemon` `DaemonSet` parses the logs and generates Prometheus metrics.                                                                                                                                                                                                                                                                                                                                                                                                               |
+    | `ptp4lConf`                  | Specify a string that contains the configuration to replace the default `/etc/ptp4l.conf` file. To use the default configuration, leave the field empty.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+    | `tx_timestamp_timeout`       | For Intel Columbiaville 800 Series NICs, set `tx_timestamp_timeout` to `50`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+    | `boundary_clock_jbod`        | For Intel Columbiaville 800 Series NICs, set `boundary_clock_jbod` to `0`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+    | `ptpSchedulingPolicy`        | Scheduling policy for `ptp4l` and `phc2sys` processes. Default value is `SCHED_OTHER`. Use `SCHED_FIFO` on systems that support FIFO scheduling.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+    | `ptpSchedulingPriority`      | Integer value from 1-65 used to set FIFO priority for `ptp4l` and `phc2sys` processes when `ptpSchedulingPolicy` is set to `SCHED_FIFO`. The `ptpSchedulingPriority` field is not used when `ptpSchedulingPolicy` is set to `SCHED_OTHER`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+    | `ptpClockThreshold`          | Optional. If `ptpClockThreshold` is not present, default values are used for the `ptpClockThreshold` fields. `ptpClockThreshold` configures how long after the PTP master clock is disconnected before PTP events are triggered. `holdOverTimeout` is the time value in seconds before the PTP clock event state changes to `FREERUN` when the PTP master clock is disconnected. The `maxOffsetThreshold` and `minOffsetThreshold` settings configure offset values in nanoseconds that compare against the values for `CLOCK_REALTIME` (`phc2sys`) or master offset (`ptp4l`). When the `ptp4l` or `phc2sys` offset value is outside this range, the PTP clock state is set to `FREERUN`. When the offset value is within this range, the PTP clock state is set to `LOCKED`. |
+    | `recommend`                  | Specify an array of one or more `recommend` objects that define rules on how the `profile` should be applied to nodes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+    | `.recommend.profile`         | Specify the `.recommend.profile` object name defined in the `profile` section.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+    | `.recommend.priority`        | Set `.recommend.priority` to `0` for ordinary clock.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+    | `.recommend.match`           | Specify `.recommend.match` rules with `nodeLabel` or `nodeName` values.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+    | `.recommend.match.nodeLabel` | Set `nodeLabel` with the `key` of the `node.Labels` field from the node object by using the `oc get nodes --show-labels` command. For example, `node-role.kubernetes.io/worker`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+    | `.recommend.match.nodeName`  | Set `nodeName` with the value of the `node.Name` field from the node object by using the `oc get nodes` command. For example, `compute-1.example.com`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 
     PTP ordinary clock CR configuration options
 
@@ -3137,15 +2791,7 @@ Procedure
     $ oc create -f ordinary-clock-ptp-config.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Check that the `PtpConfig` profile is applied to the node.
 
@@ -3155,11 +2801,9 @@ Verification
         $ oc get pods -n openshift-ptp -o wide
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -3170,19 +2814,15 @@ Verification
         ptp-operator-657bbb64c8-2f8sj   1/1     Running   0          43m   10.129.0.61      control-plane-1.example.com
         ```
 
-        </div>
-
     2.  Check that the profile is correct. Examine the logs of the `linuxptp` daemon that corresponds to the node you specified in the `PtpConfig` profile. Run the following command:
 
         ``` terminal
         $ oc logs linuxptp-daemon-4xkbb -n openshift-ptp -c linuxptp-daemon-container
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -3197,23 +2837,9 @@ Verification
         I1115 09:41:17.117626 4143292 daemon.go:116] ------------------------------------
         ```
 
-        </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring FIFO priority scheduling for PTP hardware](../../../networking/advanced_networking/ptp/configuring-ptp.xml#cnf-configuring-fifo-priority-scheduling-for-ptp_configuring-ptp)
 
 - [Configuring the PTP fast event notifications publisher](../../../networking/advanced_networking/ptp/ptp-cloud-events-consumer-dev-reference-v2.xml#cnf-configuring-the-ptp-fast-event-publisher-v2_ptp-consumer)
-
-</div>
 
 ## Intel Columbiaville E800 series NIC as PTP ordinary clock reference
 
@@ -3227,23 +2853,21 @@ The following table describes the changes that you must make to the reference PT
 
 Recommended PTP settings for Intel Columbiaville NIC
 
-> [!NOTE]
-> For `phc2sysOpts`, `-m` prints messages to `stdout`. The `linuxptp-daemon` `DaemonSet` parses the logs and generates Prometheus metrics.
+<div class="note">
+
+For `phc2sysOpts`, `-m` prints messages to `stdout`. The `linuxptp-daemon` `DaemonSet` parses the logs and generates Prometheus metrics.
+
+</div>
 
 ## Configuring linuxptp services as an ordinary clock with dual-port NIC redundancy
 
 You can configure `linuxptp` services (`ptp4l`, `phc2sys`) as an ordinary clock with dual-port NIC redundancy by creating a `PtpConfig` custom resource (CR) object. In a dual-port NIC configuration for an ordinary clock, if one port fails, the standby port takes over, maintaining PTP timing synchronization.
 
-> [!IMPORTANT]
-> Configuring linuxptp services as an ordinary clock with dual-port NIC redundancy is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div>
+Configuring linuxptp services as an ordinary clock with dual-port NIC redundancy is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
@@ -3255,23 +2879,11 @@ Prerequisites
 
 - Check the hardware requirements for using your dual-port NIC as an ordinary clock with added redundancy. For further information, see "Using dual-port NICs to improve redundancy for PTP ordinary clocks".
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the following `PtpConfig` CR, and then save the YAML in the `oc-dual-port-ptp-config.yaml` file.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example PTP ordinary clock dual-port configuration
+    **Example PTP ordinary clock dual-port configuration**
 
     </div>
 
@@ -3299,8 +2911,6 @@ Procedure
     #...
     ```
 
-    </div>
-
     - Specify the system config options for the `ptp4l` service.
 
     - Specify the interface configuration for the `ptp4l` service. In this example, setting `masterOnly 0` for the `ens3f2` and `ens3f3` interfaces enables both ports on the `ens3` interface to run as leader or follower clocks. In combination with the `slaveOnly 1` specification, this configuration ensures one port operates as the active ordinary clock, and the other port operates as a standby ordinary clock in the `Listening` port state.
@@ -3313,15 +2923,7 @@ Procedure
     $ oc create -f oc-dual-port-ptp-config.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Check that the `PtpConfig` profile is applied to the node.
 
@@ -3331,11 +2933,9 @@ Verification
         $ oc get pods -n openshift-ptp -o wide
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -3346,19 +2946,15 @@ Verification
         ptp-operator-657bbb64c8-2f8sj   1/1     Running   0          43m   10.129.0.61      control-plane-1.example.com
         ```
 
-        </div>
-
     2.  Check that the profile is correct. Examine the logs of the `linuxptp` daemon that corresponds to the node you specified in the `PtpConfig` profile. Run the following command:
 
         ``` terminal
         $ oc logs linuxptp-daemon-4xkbb -n openshift-ptp -c linuxptp-daemon-container
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -3373,23 +2969,9 @@ Verification
         I1115 09:41:17.117626 4143292 daemon.go:116] ------------------------------------
         ```
 
-        </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - For a complete example CR that configures `linuxptp` services as an ordinary clock with PTP fast events, see [Configuring linuxptp services as ordinary clock](../../../networking/advanced_networking/ptp/configuring-ptp.xml#configuring-linuxptp-services-as-ordinary-clock_configuring-ptp).
 
 - [Using dual-port NICs to improve redundancy for PTP ordinary clocks](../../../networking/advanced_networking/ptp/about-ptp.xml#ptp-dual-ports-oc_about-ptp)
-
-</div>
 
 # Configuring FIFO priority scheduling for PTP hardware
 
@@ -3397,14 +2979,9 @@ In telco or other deployment types that require low latency performance, PTP dae
 
 To mitigate against potential scheduling latency errors, you can configure the PTP Operator `linuxptp` services to allow threads to run with a `SCHED_FIFO` policy. If `SCHED_FIFO` is set for a `PtpConfig` CR, then `ptp4l` and `phc2sys` will run in the parent container under `chrt` with a priority set by the `ptpSchedulingPriority` field of the `PtpConfig` CR.
 
-> [!NOTE]
-> Setting `ptpSchedulingPolicy` is optional, and is only required if you are experiencing latency errors.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+Setting `ptpSchedulingPolicy` is optional, and is only required if you are experiencing latency errors.
 
 </div>
 
@@ -3437,15 +3014,7 @@ Procedure
 
 3.  Save and exit to apply the changes to the `PtpConfig` CR.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Get the name of the `linuxptp-daemon` pod and corresponding node where the `PtpConfig` CR has been applied:
 
@@ -3453,11 +3022,9 @@ Verification
     $ oc get pods -n openshift-ptp -o wide
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -3468,29 +3035,21 @@ Verification
     ptp-operator-3r4dcvf7f4-zndk7   1/1     Running   0          1d7h    10.129.0.61   control-plane-1.example.com
     ```
 
-    </div>
-
 2.  Check that the `ptp4l` process is running with the updated `chrt` FIFO priority:
 
     ``` terminal
     $ oc -n openshift-ptp logs linuxptp-daemon-lgm55 -c linuxptp-daemon-container|grep chrt
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     I1216 19:24:57.091872 1600715 daemon.go:285] /bin/chrt -f 65 /usr/sbin/ptp4l -f /var/run/ptp4l.0.config -2  --summary_interval -4 -m
     ```
-
-    </div>
-
-</div>
 
 # Configuring PTP log reduction
 
@@ -3502,29 +3061,11 @@ You can achieve basic log reduction by configuring the `PtpConfig` custom resour
 
 Modify the `PtpConfig` custom resource (CR) to configure basic log filtering and exclude log messages that report the master offset value.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
 
 - Install the PTP Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `PtpConfig` CR:
 
@@ -3549,20 +3090,15 @@ Procedure
           logReduce: "true"
     ```
 
-    > [!NOTE]
-    > For debugging purposes, you can revert this specification to `False` to include the master offset messages.
+    <div class="note">
+
+    For debugging purposes, you can revert this specification to `False` to include the master offset messages.
+
+    </div>
 
 3.  Save and exit to apply the changes to the `PtpConfig` CR.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Get the name of the `linuxptp-daemon` pod and corresponding node where the `PtpConfig` CR has been applied:
 
@@ -3570,11 +3106,9 @@ Verification
     $ oc get pods -n openshift-ptp -o wide
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -3584,8 +3118,6 @@ Verification
     linuxptp-daemon-lgm55           3/3     Running   0          1d17h   10.1.196.25   compute-1.example.com
     ptp-operator-3r4dcvf7f4-zndk7   1/1     Running   0          1d7h    10.129.0.61   control-plane-1.example.com
     ```
-
-    </div>
 
 2.  Verify that master offset messages are excluded from the logs by running the following command:
 
@@ -3597,35 +3129,15 @@ Verification
 
       When you configure the `logReduce` specification, this command does not report any instances of `master offset` in the logs of the `linuxptp` daemon.
 
-</div>
-
 ## Configuring enhanced PTP log reduction
 
 Basic log reduction effectively filters out frequent logs. However, if you want a periodic summary of the filtered logs, use the enhanced log reduction feature.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
 
 - Install the PTP Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `PtpConfig` custom resource (CR):
 
@@ -3684,15 +3196,7 @@ Procedure
 
 5.  Save and exit to apply the changes to the `PtpConfig` CR.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Get the name of the `linuxptp-daemon` pod and the corresponding node where the `PtpConfig` CR is applied by running the following command
 
@@ -3700,11 +3204,9 @@ Verification
     $ oc get pods -n openshift-ptp -o wide
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -3715,8 +3217,6 @@ Verification
     ptp-operator-3r4dcvf7f4-zndk7   1/1     Running   0          1d7h    10.129.0.61   control-plane-1.example.com
     ```
 
-    </div>
-
 2.  Verify that master offset messages are excluded from the logs by running the following command:
 
     ``` terminal
@@ -3724,8 +3224,6 @@ Verification
     ```
 
     - \<linux_daemon_container\> is the name of the `linuxptp-daemon` pod, for example, `linuxptp-daemon-gmv2n`.
-
-</div>
 
 # Configuring GNSS failover to NTP for time synchronization continuity
 
@@ -3743,14 +3241,6 @@ Configure a Precision Time Protocol (PTP) Telecom Grandmaster clock with automat
 
 This procedure configures a T-GM (Telecom Grandmaster) clock that uses an Intel E810 Westport Channel NIC as the PTP grandmaster clock with GNSS to NTP failover capabilities.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - For T-GM clocks in production environments, install an Intel E810 Westport Channel NIC in the bare-metal cluster host.
 
 - Install the OpenShift CLI (`oc`).
@@ -3758,16 +3248,6 @@ Prerequisites
 - Log in as a user with `cluster-admin` privileges.
 
 - Install the PTP Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Verify the PTP Operator installation by running the following command:
 
@@ -3791,8 +3271,11 @@ Procedure
 
     - `linuxptp-daemon-*`: The linuxptp daemon pods. A daemon pod runs on each node that matches the PtpConfig profile. Each daemon pod should show `2/2` in the READY column, indicating both containers (`linuxptp-daemon-container` and `kube-rbac-proxy`) are running.
 
-      > [!NOTE]
-      > The number of `linuxptp-daemon` pods is determined by the node labels defined in the `PtpOperatorConfig` which controls the DaemonSet deployment. The PtpConfig profile matching, as shown in Step 4, only determines which specific PTP settings are applied on the running daemons. In this example, the operator configuration targets all 5 worker nodes. For single-node OpenShift clusters, you will see only one `linuxptp-daemon` pod, as the configuration targets only the control plane node which acts as the worker.
+      <div class="note">
+
+      The number of `linuxptp-daemon` pods is determined by the node labels defined in the `PtpOperatorConfig` which controls the DaemonSet deployment. The PtpConfig profile matching, as shown in Step 4, only determines which specific PTP settings are applied on the running daemons. In this example, the operator configuration targets all 5 worker nodes. For single-node OpenShift clusters, you will see only one `linuxptp-daemon` pod, as the configuration targets only the control plane node which acts as the worker.
+
+      </div>
 
 2.  Check which network interfaces support hardware timestamping by running the following command:
 
@@ -3844,8 +3327,11 @@ Procedure
 
     - `phcIndex` indicates the PTP Hardware Clock number (maps to `/dev/ptp0`, `/dev/ptp1`, and so on).
 
-      > [!NOTE]
-      > The output shows one NodePtpDevice resource for each node with PTP-capable interfaces. In this example, five worker nodes have Intel E810 NICs. For single-node OpenShift clusters, you would see only one NodePtpDevice resource.
+      <div class="note">
+
+      The output shows one NodePtpDevice resource for each node with PTP-capable interfaces. In this example, five worker nodes have Intel E810 NICs. For single-node OpenShift clusters, you would see only one NodePtpDevice resource.
+
+      </div>
 
 3.  The PTP profile uses node labels for matching. Check your machine config pool (MCP) to find the node labels by running the following command:
 
@@ -3861,8 +3347,11 @@ Procedure
     worker   rendered-worker-f6e5**   True      False      False      5              5                   5                   0                    45d
     ```
 
-    > [!NOTE]
-    > The CONFIG column shows a truncated hash of the rendered MachineConfig. In actual output, this will be a full 64-character hash such as `rendered-master-a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6`.
+    <div class="note">
+
+    The CONFIG column shows a truncated hash of the rendered MachineConfig. In actual output, this will be a full 64-character hash such as `rendered-master-a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6`.
+
+    </div>
 
     - In this example, the `<MCP-name>` is `worker` for worker nodes and `master` for control plane nodes. Most T-GM deployments use worker nodes, so you would use `worker` as the `<MCP-name>`.
 
@@ -4117,8 +3606,11 @@ Procedure
         - nodeLabel: node-role.kubernetes.io/<MCP-name>
     ```
 
-    > [!IMPORTANT]
-    > Replace the example interface names (`ens7f0`, `ens7f1`) with your actual E810 NIC interface names found in step 2. Common E810 interface naming patterns include `ens7f0`, `ens8f0`, `eth0`, `enp2s0f0`, and so on. The exact name depends on your system firmware settings and Linux network device naming conventions. Also replace `/dev/ttyGNSS_1700_0` with your actual GNSS serial port device path. For single-node OpenShift clusters, replace `<MCP-name>` with `master` in the nodeLabel match. For multi-node clusters using worker nodes as T-GM, use `worker`.
+    <div class="important">
+
+    Replace the example interface names (`ens7f0`, `ens7f1`) with your actual E810 NIC interface names found in step 2. Common E810 interface naming patterns include `ens7f0`, `ens8f0`, `eth0`, `enp2s0f0`, and so on. The exact name depends on your system firmware settings and Linux network device naming conventions. Also replace `/dev/ttyGNSS_1700_0` with your actual GNSS serial port device path. For single-node OpenShift clusters, replace `<MCP-name>` with `master` in the nodeLabel match. For multi-node clusters using worker nodes as T-GM, use `worker`.
+
+    </div>
 
     The configuration includes the following components:
 
@@ -4192,15 +3684,7 @@ Procedure
     ptpconfig.ptp.openshift.io/grandmaster created
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  The PTP daemon checks for profile updates every 30 seconds. Wait approximately 30 seconds, then verify by running the following command:
 
@@ -4292,19 +3776,9 @@ Verification
     phc2sys[xxx]: CLOCK_REALTIME phc offset -17 s2 freq -13865 delay 2305
     ```
 
-</div>
-
 ## Creating a PTP Grandmaster configuration with GNSS failover on Single Node OpenShift
 
 This procedure configures a T-GM (Telecom Grandmaster) clock on single-node OpenShift that uses an Intel E810 Westport Channel NIC as the PTP grandmaster clock with GNSS to NTP failover capabilities.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - For T-GM clocks in production environments, install an Intel E810 Westport Channel NIC in the bare metal single-node OpenShift host.
 
@@ -4313,16 +3787,6 @@ Prerequisites
 - Log in as a user with `cluster-admin` privileges.
 
 - Install the PTP Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Verify the PTP Operator installation by running the following command:
 
@@ -4378,8 +3842,11 @@ Procedure
 
     - `phcIndex` indicates the PTP Hardware Clock number (maps to `/dev/ptp0`, `/dev/ptp1`, etc.)
 
-      > [!NOTE]
-      > On single-node OpenShift clusters, you will see only one NodePtpDevice resource for the single master node.
+      <div class="note">
+
+      On single-node OpenShift clusters, you will see only one NodePtpDevice resource for the single master node.
+
+      </div>
 
 3.  The PTP profile uses node labels for matching. Check your machine config pool (MCP) to verify the master MCP by running the following command:
 
@@ -4395,8 +3862,11 @@ Procedure
     worker   rendered-worker-f6e5*   True      False      False      0              0                   0                   0                    45d
     ```
 
-    > [!NOTE]
-    > The CONFIG column shows a truncated hash of the rendered MachineConfig. In actual output, this will be a full 64-character hash like `rendered-master-a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6`.
+    <div class="note">
+
+    The CONFIG column shows a truncated hash of the rendered MachineConfig. In actual output, this will be a full 64-character hash like `rendered-master-a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6`.
+
+    </div>
 
     On single-node OpenShift clusters, the master MCP shows `MACHINECOUNT` of 1 (the single node), and the worker MCP shows `MACHINECOUNT` of 0. The PTP profile must target the `master` node label.
 
@@ -4649,8 +4119,11 @@ Procedure
         - nodeLabel: node-role.kubernetes.io/master
     ```
 
-    > [!IMPORTANT]
-    > Replace the example interface names (`ens7f0`, `ens7f1`) with your actual E810 NIC interface names found in step 2. Common E810 interface naming patterns include `ens7f0`, `ens8f0`, `eth0`, `enp2s0f0`, and so on. The exact name depends on your system BIOS settings and Linux network device naming conventions. Also, replace `/dev/ttyGNSS_1700_0` with your actual GNSS serial port device path. The `nodeLabel` is set to `node-role.kubernetes.io/master` to target the single-node OpenShift master node which serves all roles.
+    <div class="important">
+
+    Replace the example interface names (`ens7f0`, `ens7f1`) with your actual E810 NIC interface names found in step 2. Common E810 interface naming patterns include `ens7f0`, `ens8f0`, `eth0`, `enp2s0f0`, and so on. The exact name depends on your system BIOS settings and Linux network device naming conventions. Also, replace `/dev/ttyGNSS_1700_0` with your actual GNSS serial port device path. The `nodeLabel` is set to `node-role.kubernetes.io/master` to target the single-node OpenShift master node which serves all roles.
+
+    </div>
 
     The configuration includes the following components:
 
@@ -4724,15 +4197,7 @@ Procedure
     ptpconfig.ptp.openshift.io/grandmaster created
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  The PTP daemon checks for profile updates every 30 seconds. Wait approximately 30 seconds, then verify by running the following command:
 
@@ -4835,19 +4300,9 @@ Verification
     phc2sys[xxx]: CLOCK_REALTIME phc offset -17 s2 freq -13865 delay 2305
     ```
 
-</div>
-
 # Troubleshooting common PTP Operator issues
 
 Troubleshoot common problems with the PTP Operator by performing the following steps.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Install the OpenShift Container Platform CLI (`oc`).
 
@@ -4855,27 +4310,15 @@ Prerequisites
 
 - Install the PTP Operator on a bare-metal cluster with hosts that support PTP.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Check the Operator and operands are successfully deployed in the cluster for the configured nodes.
 
     ``` terminal
     $ oc get pods -n openshift-ptp -o wide
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -4886,10 +4329,11 @@ Procedure
     ptp-operator-6b8dcbf7f4-zndk7   1/1     Running   0          5d7h    10.129.0.61   control-plane-1.example.com
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > When the PTP fast event bus is enabled, the number of ready `linuxptp-daemon` pods is `3/3`. If the PTP fast event bus is not enabled, `2/2` is displayed.
+    When the PTP fast event bus is enabled, the number of ready `linuxptp-daemon` pods is `3/3`. If the PTP fast event bus is not enabled, `2/2` is displayed.
+
+    </div>
 
 2.  Check that supported hardware is found in the cluster.
 
@@ -4897,11 +4341,9 @@ Procedure
     $ oc -n openshift-ptp get nodeptpdevices.ptp.openshift.io
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -4914,8 +4356,6 @@ Procedure
     compute-2.example.com                 10d
     ```
 
-    </div>
-
 3.  Check the available PTP network interfaces for a node:
 
     ``` terminal
@@ -4927,11 +4367,9 @@ Procedure
     \<node_name\>
     Specifies the node you want to query, for example, `compute-0.example.com`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -4956,8 +4394,6 @@ Procedure
       - name: enp5s0f1
     ```
 
-    </div>
-
 4.  Check that the PTP interface is successfully synchronized to the primary clock by accessing the `linuxptp-daemon` pod for the corresponding node.
 
     1.  Get the name of the `linuxptp-daemon` pod and corresponding node you want to troubleshoot by running the following command:
@@ -4966,11 +4402,9 @@ Procedure
         $ oc get pods -n openshift-ptp -o wide
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -4980,8 +4414,6 @@ Procedure
         linuxptp-daemon-qhfg7           3/3     Running   0          4d17h   10.1.196.25   compute-1.example.com
         ptp-operator-6b8dcbf7f4-zndk7   1/1     Running   0          5d7h    10.129.0.61   control-plane-1.example.com
         ```
-
-        </div>
 
     2.  Remote shell into the required `linuxptp-daemon` container:
 
@@ -5000,11 +4432,9 @@ Procedure
         # pmc -u -f /var/run/ptp4l.0.config -b 0 'GET PORT_DATA_SET'
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output when the node is successfully synced to the primary clock
+        **Example output when the node is successfully synced to the primary clock**
 
         </div>
 
@@ -5023,19 +4453,15 @@ Procedure
                 versionNumber           2
         ```
 
-        </div>
-
 5.  For GNSS-sourced grandmaster clocks, verify that the in-tree NIC ice driver is correct by running the following command, for example:
 
     ``` terminal
     $ oc rsh -n openshift-ptp -c linuxptp-daemon-container linuxptp-daemon-74m2g ethtool -i ens7f0
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -5045,19 +4471,15 @@ Procedure
     firmware-version: 4.20 0x8001778b 1.3346.0
     ```
 
-    </div>
-
 6.  For GNSS-sourced grandmaster clocks, verify that the `linuxptp-daemon` container is receiving signal from the GNSS antenna. If the container is not receiving the GNSS signal, the `/dev/gnss0` file is not populated. To verify, run the following command:
 
     ``` terminal
     $ oc rsh -n openshift-ptp -c linuxptp-daemon-container linuxptp-daemon-jnz6r cat /dev/gnss0
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -5069,21 +4491,9 @@ Procedure
     $GPGSV,3,1,10,04,12,039,41,05,31,222,46,06,50,064,48,09,28,064,42,1*62
     ```
 
-    </div>
-
-</div>
-
 # Getting the DPLL firmware version for the CGU in an Intel 800 series NIC
 
 You can get the digital phase-locked loop (DPLL) firmware version for the Clock Generation Unit (CGU) in an Intel 800 series NIC by opening a debug shell to the cluster node and querying the NIC hardware.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -5092,16 +4502,6 @@ Prerequisites
 - You have installed an Intel 800 series NIC in the cluster host.
 
 - You have installed the PTP Operator on a bare-metal cluster with hosts that support PTP.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Start a debug pod by running the following command:
 
@@ -5128,11 +4528,9 @@ Procedure
     \<device_name\>
     Is the NIC device name. For example, `0000:51:00.0`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -5141,37 +4539,28 @@ Procedure
     fw.cgu 8032.16973825.6021
     ```
 
-    </div>
-
     - CGU hardware revision number
 
     - The DPLL firmware version running in the CGU, where the DPLL firmware version is `6201`, and the DPLL model is `8032`. The string `16973825` is a shorthand representation of the binary version of the DPLL firmware version (`1.3.0.1`).
 
-    > [!NOTE]
-    > The firmware version has a leading nibble and 3 octets for each part of the version number. The number `16973825` in binary is `0001 0000 0011 0000 0000 0000 0001`. Use the binary value to decode the firmware version. For example:
-    >
-    > | Binary part | Decimal value |
-    > |-------------|---------------|
-    > | `0001`      | 1             |
-    > | `0000 0011` | 3             |
-    > | `0000 0000` | 0             |
-    > | `0000 0001` | 1             |
-    >
-    > DPLL firmware version
+    <div class="note">
 
-</div>
+    The firmware version has a leading nibble and 3 octets for each part of the version number. The number `16973825` in binary is `0001 0000 0011 0000 0000 0000 0001`. Use the binary value to decode the firmware version. For example:
+
+    | Binary part | Decimal value |
+    |-------------|---------------|
+    | `0001`      | 1             |
+    | `0000 0011` | 3             |
+    | `0000 0000` | 0             |
+    | `0000 0001` | 1             |
+
+    DPLL firmware version
+
+    </div>
 
 # Collecting PTP Operator data
 
 You can use the `oc adm must-gather` command to collect information about your cluster, including features and objects associated with PTP Operator.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -5179,20 +4568,10 @@ Prerequisites
 
 - You have installed the PTP Operator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To collect PTP Operator data with `must-gather`, you must specify the PTP Operator `must-gather` image.
 
   ``` terminal
   $ oc adm must-gather --image=registry.redhat.io/openshift4/ptp-must-gather-rhel9:v4.17
   ```
-
-</div>

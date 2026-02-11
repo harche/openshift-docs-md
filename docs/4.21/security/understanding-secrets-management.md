@@ -12,18 +12,10 @@ OpenShift Container Platform offers a suite of supported Operators designed to s
 
 - **cert-manager Operator for Red Hat OpenShift**: Manages the lifecycle of digital certificates that are used by applications running on OpenShift Container Platform by automating the process of issuance and renewal.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Secrets Store Container Storage Interface Driver Operator](../storage/container_storage_interface/persistent-storage-csi-secrets-store.xml#persistent-storage-csi-secrets-store)
 
 - [External Secrets Operator for Red Hat OpenShift](../security/external_secrets_operator/index.xml#external-secrets-operator-about)
 
 - [cert-manager Operator for Red Hat OpenShift](../security/cert_manager_operator/index.xml#cert-manager-operator-about)
-
-</div>

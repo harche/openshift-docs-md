@@ -25,17 +25,9 @@ Before you start any Security Token Service (STS) procedures, ensure that you me
 
 - You logged into the AWS management console, navigated to **IAM** → **Access management** → **Identity providers**, and located the OIDC Amazon Resource Name (ARN) information. An OIDC ARN example is `arn:aws:iam::777777777777:oidc-provider/<oidc_dns_url>`.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [the Cloud Credential Operator utility (`ccoctl`)](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#cco-ccoctl-configuring_installing-aws-customizations)
-
-</div>
 
 # The IAM role for the AWS Load Balancer Operator
 
@@ -53,25 +45,7 @@ Use the AWS CLI if your environment does not support the `ccoctl` command.
 
 To enable the AWS Load Balancer Operator to interact with subnets and VPCs, create an AWS IAM role by using the Cloud Credential Operator utility (`ccoctl`). By doing this task, you can generate the necessary credentials for the operator to function correctly within the cluster environment.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must extract and prepare the `ccoctl` binary.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Download the `CredentialsRequest` custom resource (CR) and store it in a directory by running the following command:
 
@@ -89,11 +63,9 @@ Procedure
         --identity-provider-arn <oidc_arn>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -103,41 +75,22 @@ Procedure
     2023/09/12 11:38:58 Updated Role policy for Role <name>-aws-load-balancer-operator-aws-load-balancer-operator created
     ```
 
-    </div>
-
     where:
 
     `<name>`
     Specifies the Amazon Resource Name (ARN) for an AWS IAM role that was created for the AWS Load Balancer Operator, such as `arn:aws:iam::777777777777:role/<name>-aws-load-balancer-operator-aws-load-balancer-operator`.
 
-    > [!NOTE]
-    > The length of an AWS IAM role name must be less than or equal to 12 characters.
+    <div class="note">
 
-</div>
+    The length of an AWS IAM role name must be less than or equal to 12 characters.
+
+    </div>
 
 ## Creating an AWS IAM role by using the AWS CLI
 
 To enable the AWS Load Balancer Operator to interact with subnets and VPCs, create an AWS IAM role by using the AWS CLI. This enables the Operator to access and manage the necessary network resources within the cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have access to the AWS Command Line Interface (`aws`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Generate a trust policy file by using your identity provider by running the following command:
 
@@ -177,11 +130,9 @@ Procedure
     $ aws iam create-role --role-name albo-operator --assume-role-policy-document file://albo-operator-trust-policy.json
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -192,8 +143,6 @@ Procedure
     STRINGEQUALS    system:serviceaccount:aws-load-balancer-operator:aws-load-balancer-controller-manager
     PRINCIPAL   arn:aws:iam:<aws_account_number>:oidc-provider/<cluster_oidc_endpoint>
     ```
-
-    </div>
 
     where:
 
@@ -212,31 +161,11 @@ Procedure
     $ aws iam put-role-policy --role-name albo-operator --policy-name perms-policy-albo-operator --policy-document file://albo-operator-permission-policy.json
     ```
 
-</div>
-
 # Configuring the ARN role for the AWS Load Balancer Operator
 
 To authorize the AWS Load Balancer Operator, configure the Amazon Resource Name (ARN) role as an environment variable by using the CLI. This ensures the Operator has the necessary permissions to manage resources within the cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `aws-load-balancer-operator` project by running the following command:
 
@@ -284,10 +213,11 @@ Procedure
     `<albo_role_arn>`
     Specifies the ARN role to be used in the `CredentialsRequest` to provision the AWS credentials for the AWS Load Balancer Operator. An example for `<albo_role_arn>` is `arn:aws:iam::<aws_account_number>:role/albo-operator`.
 
-    > [!NOTE]
-    > The AWS Load Balancer Operator waits until the secret is created before moving to the `Available` status.
+    <div class="note">
 
-</div>
+    The AWS Load Balancer Operator waits until the secret is created before moving to the `Available` status.
+
+    </div>
 
 # The IAM role for the AWS Load Balancer Controller
 
@@ -301,41 +231,13 @@ You can create the IAM role by using the following options:
 
 If your environment does not support the `ccoctl` `command.ws-short` CLI, use the AWS CLI.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [the Cloud Credential Operator utility (`ccoctl`)](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#cco-ccoctl-configuring_installing-aws-customizations)
-
-</div>
 
 ## Creating an AWS IAM role for the controller by using the Cloud Credential Operator utility
 
 To enable the AWS Load Balancer Controller to interact with subnets and VPCs, create an IAM role by using the Cloud Credential Operator utility (`ccoctl`). This utility ensures the controller has the specific permissions required to manage network resources within the cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must extract and prepare the `ccoctl` binary.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Download the `CredentialsRequest` custom resource (CR) and store it in a directory by running the following command:
 
@@ -353,11 +255,9 @@ Procedure
         --identity-provider-arn <oidc_arn>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -367,41 +267,22 @@ Procedure
     2023/09/12 11:38:58 Updated Role policy for Role <name>-aws-load-balancer-operator-aws-load-balancer-controller created
     ```
 
-    </div>
-
     where:
 
     `<name>`
     Specifies the Amazon Resource Name (ARN) for an AWS IAM role that was created for the AWS Load Balancer Controller, such as `arn:aws:iam::777777777777:role/<name>-aws-load-balancer-operator-aws-load-balancer-controller`.
 
-    > [!NOTE]
-    > The length of an AWS IAM role name must be less than or equal to 12 characters.
+    <div class="note">
 
-</div>
+    The length of an AWS IAM role name must be less than or equal to 12 characters.
+
+    </div>
 
 ## Creating an AWS IAM role for the controller by using the AWS CLI
 
 To enable the AWS Load Balancer Controller to interact with subnets and Virtual Private Clouds (VPCs), create an IAM role by using the AWS CLI. This ensures the controller has the specific permissions required to manage network resources within the cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have access to the AWS command-line interface (`aws`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Generate a trust policy file using your identity provider by running the following command:
 
@@ -441,11 +322,9 @@ Procedure
     $ aws iam create-role --role-name albo-controller --assume-role-policy-document file://albo-controller-trust-policy.json
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -456,8 +335,6 @@ Procedure
     STRINGEQUALS    system:serviceaccount:aws-load-balancer-operator:aws-load-balancer-operator-controller-manager
     PRINCIPAL   arn:aws:iam:<aws_account_number>:oidc-provider/<cluster_oidc_endpoint>
     ```
-
-    </div>
 
     where:
 
@@ -478,11 +355,9 @@ Procedure
 
 5.  Create a YAML file that defines the `AWSLoadBalancerController` object:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `sample-aws-lb-manual-creds.yaml` file
+    **Example `sample-aws-lb-manual-creds.yaml` file**
 
     </div>
 
@@ -496,8 +371,6 @@ Procedure
         stsIAMRoleARN: <albc_role_arn>
     ```
 
-    </div>
-
     where:
 
     `kind`
@@ -508,8 +381,6 @@ Procedure
 
     `stsIAMRoleARN`
     Specifies the ARN role for the AWS Load Balancer Controller. The `CredentialsRequest` object uses this ARN role to provision the AWS credentials. An example of `<albc_role_arn>` is `arn:aws:iam::777777777777:role/albo-controller`.
-
-</div>
 
 # Additional resources
 

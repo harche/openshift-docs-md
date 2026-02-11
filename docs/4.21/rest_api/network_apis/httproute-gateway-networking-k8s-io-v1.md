@@ -9,13 +9,13 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | Spec defines the desired state of HTTPRoute. |
-| `status` | `object` | Status defines the current state of HTTPRoute. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | Spec defines the desired state of HTTPRoute.                                                                                                                                                                                                                                                         |
+| `status`     | `object`                                                                             | Status defines the current state of HTTPRoute.                                                                                                                                                                                                                                                       |
 
 ## .spec
 
@@ -32,14 +32,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>hostnames</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>Hostnames defines a set of hostnames that should match against the HTTP Host header to select a HTTPRoute used to process the request. Implementations MUST ignore any port value specified in the HTTP Host header while performing a match and (absent of any applicable header modification configuration) MUST forward this header unmodified to the backend.</p>
@@ -55,7 +55,7 @@ Type
 <p>If ties exist across multiple Routes, the matching precedence rules for HTTPRouteMatches takes over.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>parentRefs</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>ParentRefs references the resources (usually Gateways) that a Route wants to be attached to. Note that the referenced parent resource needs to allow this for the attachment to be complete. For Gateways, that means the Gateway needs to allow attachment from Routes of this kind and namespace. For Services, that means the Service must either be in the same namespace for a "producer" route, or the mesh implementation must support and allow "consumer" routes for the referenced Service. ReferenceGrant is not applicable for governing ParentRefs to Services - it is not possible to create a "producer" route for a Service in a different namespace from the Route.</p>
@@ -69,7 +69,7 @@ Type
 <p>It is possible to separately reference multiple distinct objects that may be collapsed by an implementation. For example, some implementations may choose to merge compatible Gateway Listeners together. If that is the case, the list of routes attached to those resources should also be merged.</p>
 <p>Note that for ParentRefs that cross namespace boundaries, there are specific rules. Cross-namespace references are only valid if they are explicitly allowed by something in the namespace they are referring to. For example, Gateway has the AllowedRoutes field, and ReferenceGrant provides a generic way to enable other kinds of cross-namespace reference.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>parentRefs[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ParentReference identifies an API object (usually a Gateway) that can be considered a parent of this resource (usually a route). There are two kinds of parent resources with "Core" support:</p>
@@ -77,12 +77,12 @@ Type
 <p>This API may be extended in the future to support additional kinds of parent resources.</p>
 <p>The API object must be valid in the cluster; the Group and Kind must be registered in the cluster for this reference to be valid.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>rules</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Rules are a list of HTTP matchers, filters and actions.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>rules[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HTTPRouteRule defines semantics for matching an HTTP request based on conditions (matches), processing it (filters), and forwarding the request to an API object (backendRefs).</p></td>
@@ -150,20 +150,20 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>group</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Group is the group of the referent. When unspecified, "gateway.networking.k8s.io" is inferred. To set the core API group (such as for a "Service" kind referent), Group must be explicitly set to "" (empty string).</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>kind</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Kind is kind of the referent.</p>
@@ -171,20 +171,20 @@ Required
 <p>* Gateway (Gateway conformance profile) * Service (Mesh conformance profile, ClusterIP Services only)</p>
 <p>Support for other resources is Implementation-Specific.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name is the name of the referent.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>namespace</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Namespace is the namespace of the referent. When unspecified, this refers to the local namespace of the Route.</p>
 <p>Note that there are specific rules for ParentRefs which cross namespace boundaries. Cross-namespace references are only valid if they are explicitly allowed by something in the namespace they are referring to. For example: Gateway has the AllowedRoutes field, and ReferenceGrant provides a generic way to enable any other kind of cross-namespace reference.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>port</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Port is the network port this Route targets. It can be interpreted differently based on the type of parent resource.</p>
@@ -193,7 +193,7 @@ Required
 <p>For the purpose of status, an attachment is considered successful as long as the parent resource accepts it partially. For example, Gateway listeners can restrict which Routes can attach to them by Route kind, namespace, or hostname. If 1 of 2 Gateway listeners accept attachment from the referencing Route, the Route MUST be considered successfully attached. If no Gateway listeners accept attachment from this Route, the Route MUST be considered detached from the Gateway.</p>
 <p>Support: Extended</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>sectionName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>SectionName is the name of a section within the target resource. In the following resources, SectionName is interpreted as the following:</p>
@@ -228,14 +228,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>backendRefs</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>BackendRefs defines the backend(s) where matching requests should be sent.</p>
@@ -250,13 +250,13 @@ Type
 <p>Support: Implementation-specific for any other resource</p>
 <p>Support for weight: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>backendRefs[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HTTPBackendRef defines how a HTTPRoute forwards a HTTP request.</p>
 <p>Note that when a namespace different than the local namespace is specified, a ReferenceGrant object is required in the referent namespace to allow that namespace’s owner to accept the reference. See the ReferenceGrant documentation for details.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>filters</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Filters define the filters that are applied to requests that match this rule.</p>
@@ -269,12 +269,12 @@ Type
 <p>All filters are expected to be compatible with each other except for the URLRewrite and RequestRedirect filters, which may not be combined. If an implementation cannot support other combinations of filters, they must clearly document that limitation. In cases where incompatible or unsupported filters are specified and cause the <code>Accepted</code> condition to be set to status <code>False</code>, implementations may use the <code>IncompatibleFilters</code> reason to specify this configuration error.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>filters[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>matches</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Matches define conditions used for matching the rule against incoming HTTP requests. Each match is independent, i.e. this rule will be matched if <strong>any</strong> one of the matches is satisfied.</p>
@@ -292,7 +292,7 @@ Type
 <p>If ties still exist within an HTTPRoute, matching precedence MUST be granted to the FIRST matching rule (in list order) with a match meeting the above criteria.</p>
 <p>When no rules matching a request have been successfully attached to the parent a request is coming from, a HTTP 404 status code MUST be returned.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>matches[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HTTPRouteMatch defines the predicate used to match requests to a given action. Multiple match types are ANDed together, i.e. the match will evaluate to true only if all conditions are satisfied.</p>
@@ -300,7 +300,7 @@ Type
 <p>match:</p>
 <p>path: value: "/foo" headers: - name: "version" value "v1"</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>timeouts</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Timeouts defines the timeouts that can be configured for an HTTP request.</p>
@@ -357,30 +357,30 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>filters</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Filters defined at this level should be executed if and only if the request is being forwarded to the backend defined here.</p>
 <p>Support: Implementation-specific (For broader support of filters, use the Filters field in HTTPRouteRule.)</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>filters[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>group</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Group is the group of the referent. For example, "gateway.networking.k8s.io". When unspecified or empty string, core API group is inferred.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>kind</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Kind is the Kubernetes resource kind of the referent. For example "Service".</p>
@@ -389,24 +389,24 @@ Required
 <p>Support: Core (Services with a type other than ExternalName)</p>
 <p>Support: Implementation-specific (Services with type ExternalName)</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name is the name of the referent.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>namespace</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Namespace is the namespace of the backend. When unspecified, the local namespace is inferred.</p>
 <p>Note that when a namespace different than the local namespace is specified, a ReferenceGrant object is required in the referent namespace to allow that namespace’s owner to accept the reference. See the ReferenceGrant documentation for details.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>port</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Port specifies the destination port number to use for this resource. Port is required when the referent is a Kubernetes Service. In this case, the port number is the service port number, not the target port. For other resources, destination port might be derived from the referent resource or this field.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>weight</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Weight specifies the proportion of requests forwarded to the referenced backend. This is computed as weight/(sum of all weights in this BackendRefs list). For non-zero values, there may be some epsilon from the exact proportion defined here depending on the precision an implementation supports. Weight is not a percentage and the sum of weights does not need to equal 100.</p>
@@ -444,46 +444,46 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>extensionRef</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ExtensionRef is an optional, implementation-specific extension to the "filter" behavior. For example, resource "myroutefilter" in group "networking.example.net"). ExtensionRef MUST NOT be used for core and extended filters.</p>
 <p>This filter can be used multiple times within the same rule.</p>
 <p>Support: Implementation-specific</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>requestHeaderModifier</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>RequestHeaderModifier defines a schema for a filter that modifies request headers.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>requestMirror</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>RequestMirror defines a schema for a filter that mirrors requests. Requests are sent to the specified destination, but responses from that destination are ignored.</p>
 <p>This filter can be used multiple times within the same rule. Note that not all implementations will be able to support mirroring to multiple backends.</p>
 <p>Support: Extended</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>requestRedirect</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>RequestRedirect defines a schema for a filter that responds to the request with an HTTP redirection.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>responseHeaderModifier</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ResponseHeaderModifier defines a schema for a filter that modifies response headers.</p>
 <p>Support: Extended</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Type identifies the type of filter to apply. As with other API fields, types are classified into three conformance levels:</p>
@@ -495,7 +495,7 @@ Required
 <p>Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.</p>
 <p>Unknown values here must result in the implementation setting the Accepted Condition for the Route to <code>status: False</code>, with a Reason of <code>UnsupportedValue</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>urlRewrite</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>URLRewrite defines a schema for a filter that modifies a request during forwarding.</p>
@@ -523,11 +523,11 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `group` | `string` | Group is the group of the referent. For example, "gateway.networking.k8s.io". When unspecified or empty string, core API group is inferred. |
-| `kind` | `string` | Kind is kind of the referent. For example "HTTPRoute" or "Service". |
-| `name` | `string` | Name is the name of the referent. |
+| Property | Type     | Description                                                                                                                                 |
+|----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| `group`  | `string` | Group is the group of the referent. For example, "gateway.networking.k8s.io". When unspecified or empty string, core API group is inferred. |
+| `kind`   | `string` | Kind is kind of the referent. For example "HTTPRoute" or "Service".                                                                         |
+| `name`   | `string` | Name is the name of the referent.                                                                                                           |
 
 ## .spec.rules\[\].backendRefs\[\].filters\[\].requestHeaderModifier
 
@@ -546,14 +546,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>add</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Add adds the given header(s) (name, value) to the request before the action. It appends to any existing values associated with the header name.</p>
@@ -561,12 +561,12 @@ Type
 <p>Config: add: - name: "my-header" value: "bar,baz"</p>
 <p>Output: GET /foo HTTP/1.1 my-header: foo,bar,baz</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>add[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>remove</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>Remove the given header(s) from the HTTP request before the action. The value of Remove is a list of HTTP header names. Note that the header names are case-insensitive (see <a href="https://datatracker.ietf.org/doc/html/rfc2616#section-4.2">https://datatracker.ietf.org/doc/html/rfc2616#section-4.2</a>).</p>
@@ -574,7 +574,7 @@ Type
 <p>Config: remove: ["my-header1", "my-header3"]</p>
 <p>Output: GET /foo HTTP/1.1 my-header2: bar</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>set</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Set overwrites the request with the given header (name, value) before the action.</p>
@@ -582,7 +582,7 @@ Type
 <p>Config: set: - name: "my-header" value: "bar"</p>
 <p>Output: GET /foo HTTP/1.1 my-header: bar</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>set[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.</p></td>
@@ -624,20 +624,20 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name is the name of the HTTP Header to be matched. Name matching MUST be case-insensitive. (See <a href="https://tools.ietf.org/html/rfc7230#section-3.2">https://tools.ietf.org/html/rfc7230#section-3.2</a>).</p>
 <p>If multiple entries specify equivalent header names, the first entry with an equivalent name MUST be considered for a match. Subsequent entries with an equivalent header name MUST be ignored. Due to the case-insensitivity of header names, "foo" and "Foo" are considered equivalent.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>value</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Value is the value of HTTP Header to be matched.</p></td>
@@ -679,20 +679,20 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name is the name of the HTTP Header to be matched. Name matching MUST be case-insensitive. (See <a href="https://tools.ietf.org/html/rfc7230#section-3.2">https://tools.ietf.org/html/rfc7230#section-3.2</a>).</p>
 <p>If multiple entries specify equivalent header names, the first entry with an equivalent name MUST be considered for a match. Subsequent entries with an equivalent header name MUST be ignored. Due to the case-insensitivity of header names, "foo" and "Foo" are considered equivalent.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>value</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Value is the value of HTTP Header to be matched.</p></td>
@@ -722,14 +722,14 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>backendRef</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BackendRef references a resource where mirrored requests are sent.</p>
@@ -740,13 +740,13 @@ Required
 <p>Support: Extended for Kubernetes Service</p>
 <p>Support: Implementation-specific for any other resource</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>fraction</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Fraction represents the fraction of requests that should be mirrored to BackendRef.</p>
 <p>Only one of Fraction or Percent may be specified. If neither field is specified, 100% of requests will be mirrored.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>percent</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Percent represents the percentage of requests that should be mirrored to BackendRef. Its minimum value is 0 (indicating 0% of requests) and its maximum value is 100 (indicating 100% of requests).</p>
@@ -785,19 +785,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>group</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Group is the group of the referent. For example, "gateway.networking.k8s.io". When unspecified or empty string, core API group is inferred.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>kind</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Kind is the Kubernetes resource kind of the referent. For example "Service".</p>
@@ -806,19 +806,19 @@ Required
 <p>Support: Core (Services with a type other than ExternalName)</p>
 <p>Support: Implementation-specific (Services with type ExternalName)</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name is the name of the referent.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>namespace</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Namespace is the namespace of the backend. When unspecified, the local namespace is inferred.</p>
 <p>Note that when a namespace different than the local namespace is specified, a ReferenceGrant object is required in the referent namespace to allow that namespace’s owner to accept the reference. See the ReferenceGrant documentation for details.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>port</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Port specifies the destination port number to use for this resource. Port is required when the referent is a Kubernetes Service. In this case, the port number is the service port number, not the target port. For other resources, destination port might be derived from the referent resource or this field.</p></td>
@@ -861,26 +861,26 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>hostname</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Hostname is the hostname to be used in the value of the <code>Location</code> header in the response. When empty, the hostname in the <code>Host</code> header of the request is used.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>path</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Path defines parameters used to modify the path of the incoming request. The modified path is then used to construct the <code>Location</code> header. When empty, the request path is used as-is.</p>
 <p>Support: Extended</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>port</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Port is the port to be used in the value of the <code>Location</code> header in the response.</p>
@@ -890,7 +890,7 @@ Type
 <p>* A Location header that will use HTTP (whether that is determined via the Listener protocol or the Scheme field) <em>and</em> use port 80. * A Location header that will use HTTPS (whether that is determined via the Listener protocol or the Scheme field) <em>and</em> use port 443.</p>
 <p>Support: Extended</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scheme</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Scheme is the scheme to be used in the value of the <code>Location</code> header in the response. When empty, the scheme of the request is used.</p>
@@ -899,7 +899,7 @@ Type
 <p>Unknown values here must result in the implementation setting the Accepted Condition for the Route to <code>status: False</code>, with a Reason of <code>UnsupportedValue</code>.</p>
 <p>Support: Extended</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>statusCode</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>StatusCode is the HTTP status code to be used in response.</p>
@@ -930,19 +930,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>replaceFullPath</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ReplaceFullPath specifies the value with which to replace the full path of a request during a rewrite or redirect.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>replacePrefixMatch</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ReplacePrefixMatch specifies the value with which to replace the prefix match of a request during a rewrite or redirect. For example, a request to "/foo/bar" with a prefix match of "/foo" and a ReplacePrefixMatch of "/xyz" would be modified to "/xyz/bar".</p>
@@ -950,7 +950,7 @@ Required
 <p>ReplacePrefixMatch is only compatible with a <code>PathPrefix</code> HTTPRouteMatch. Using any other HTTPRouteMatch type on the same HTTPRouteRule will result in the implementation setting the Accepted Condition for the Route to <code>status: False</code>.</p>
 <p>Request Path | Prefix Match | Replace Prefix | Modified Path</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Type defines the type of path modifier. Additional types may be added in a future release of the API.</p>
@@ -977,14 +977,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>add</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Add adds the given header(s) (name, value) to the request before the action. It appends to any existing values associated with the header name.</p>
@@ -992,12 +992,12 @@ Type
 <p>Config: add: - name: "my-header" value: "bar,baz"</p>
 <p>Output: GET /foo HTTP/1.1 my-header: foo,bar,baz</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>add[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>remove</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>Remove the given header(s) from the HTTP request before the action. The value of Remove is a list of HTTP header names. Note that the header names are case-insensitive (see <a href="https://datatracker.ietf.org/doc/html/rfc2616#section-4.2">https://datatracker.ietf.org/doc/html/rfc2616#section-4.2</a>).</p>
@@ -1005,7 +1005,7 @@ Type
 <p>Config: remove: ["my-header1", "my-header3"]</p>
 <p>Output: GET /foo HTTP/1.1 my-header2: bar</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>set</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Set overwrites the request with the given header (name, value) before the action.</p>
@@ -1013,7 +1013,7 @@ Type
 <p>Config: set: - name: "my-header" value: "bar"</p>
 <p>Output: GET /foo HTTP/1.1 my-header: bar</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>set[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.</p></td>
@@ -1055,20 +1055,20 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name is the name of the HTTP Header to be matched. Name matching MUST be case-insensitive. (See <a href="https://tools.ietf.org/html/rfc7230#section-3.2">https://tools.ietf.org/html/rfc7230#section-3.2</a>).</p>
 <p>If multiple entries specify equivalent header names, the first entry with an equivalent name MUST be considered for a match. Subsequent entries with an equivalent header name MUST be ignored. Due to the case-insensitivity of header names, "foo" and "Foo" are considered equivalent.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>value</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Value is the value of HTTP Header to be matched.</p></td>
@@ -1110,20 +1110,20 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name is the name of the HTTP Header to be matched. Name matching MUST be case-insensitive. (See <a href="https://tools.ietf.org/html/rfc7230#section-3.2">https://tools.ietf.org/html/rfc7230#section-3.2</a>).</p>
 <p>If multiple entries specify equivalent header names, the first entry with an equivalent name MUST be considered for a match. Subsequent entries with an equivalent header name MUST be ignored. Due to the case-insensitivity of header names, "foo" and "Foo" are considered equivalent.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>value</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Value is the value of HTTP Header to be matched.</p></td>
@@ -1148,20 +1148,20 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>hostname</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Hostname is the value to be used to replace the Host header value during forwarding.</p>
 <p>Support: Extended</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>path</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Path defines a path rewrite.</p>
@@ -1190,19 +1190,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>replaceFullPath</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ReplaceFullPath specifies the value with which to replace the full path of a request during a rewrite or redirect.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>replacePrefixMatch</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ReplacePrefixMatch specifies the value with which to replace the prefix match of a request during a rewrite or redirect. For example, a request to "/foo/bar" with a prefix match of "/foo" and a ReplacePrefixMatch of "/xyz" would be modified to "/xyz/bar".</p>
@@ -1210,7 +1210,7 @@ Required
 <p>ReplacePrefixMatch is only compatible with a <code>PathPrefix</code> HTTPRouteMatch. Using any other HTTPRouteMatch type on the same HTTPRouteRule will result in the implementation setting the Accepted Condition for the Route to <code>status: False</code>.</p>
 <p>Request Path | Prefix Match | Replace Prefix | Modified Path</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Type defines the type of path modifier. Additional types may be added in a future release of the API.</p>
@@ -1266,46 +1266,46 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>extensionRef</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ExtensionRef is an optional, implementation-specific extension to the "filter" behavior. For example, resource "myroutefilter" in group "networking.example.net"). ExtensionRef MUST NOT be used for core and extended filters.</p>
 <p>This filter can be used multiple times within the same rule.</p>
 <p>Support: Implementation-specific</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>requestHeaderModifier</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>RequestHeaderModifier defines a schema for a filter that modifies request headers.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>requestMirror</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>RequestMirror defines a schema for a filter that mirrors requests. Requests are sent to the specified destination, but responses from that destination are ignored.</p>
 <p>This filter can be used multiple times within the same rule. Note that not all implementations will be able to support mirroring to multiple backends.</p>
 <p>Support: Extended</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>requestRedirect</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>RequestRedirect defines a schema for a filter that responds to the request with an HTTP redirection.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>responseHeaderModifier</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ResponseHeaderModifier defines a schema for a filter that modifies response headers.</p>
 <p>Support: Extended</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Type identifies the type of filter to apply. As with other API fields, types are classified into three conformance levels:</p>
@@ -1317,7 +1317,7 @@ Required
 <p>Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.</p>
 <p>Unknown values here must result in the implementation setting the Accepted Condition for the Route to <code>status: False</code>, with a Reason of <code>UnsupportedValue</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>urlRewrite</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>URLRewrite defines a schema for a filter that modifies a request during forwarding.</p>
@@ -1345,11 +1345,11 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `group` | `string` | Group is the group of the referent. For example, "gateway.networking.k8s.io". When unspecified or empty string, core API group is inferred. |
-| `kind` | `string` | Kind is kind of the referent. For example "HTTPRoute" or "Service". |
-| `name` | `string` | Name is the name of the referent. |
+| Property | Type     | Description                                                                                                                                 |
+|----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| `group`  | `string` | Group is the group of the referent. For example, "gateway.networking.k8s.io". When unspecified or empty string, core API group is inferred. |
+| `kind`   | `string` | Kind is kind of the referent. For example "HTTPRoute" or "Service".                                                                         |
+| `name`   | `string` | Name is the name of the referent.                                                                                                           |
 
 ## .spec.rules\[\].filters\[\].requestHeaderModifier
 
@@ -1368,14 +1368,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>add</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Add adds the given header(s) (name, value) to the request before the action. It appends to any existing values associated with the header name.</p>
@@ -1383,12 +1383,12 @@ Type
 <p>Config: add: - name: "my-header" value: "bar,baz"</p>
 <p>Output: GET /foo HTTP/1.1 my-header: foo,bar,baz</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>add[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>remove</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>Remove the given header(s) from the HTTP request before the action. The value of Remove is a list of HTTP header names. Note that the header names are case-insensitive (see <a href="https://datatracker.ietf.org/doc/html/rfc2616#section-4.2">https://datatracker.ietf.org/doc/html/rfc2616#section-4.2</a>).</p>
@@ -1396,7 +1396,7 @@ Type
 <p>Config: remove: ["my-header1", "my-header3"]</p>
 <p>Output: GET /foo HTTP/1.1 my-header2: bar</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>set</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Set overwrites the request with the given header (name, value) before the action.</p>
@@ -1404,7 +1404,7 @@ Type
 <p>Config: set: - name: "my-header" value: "bar"</p>
 <p>Output: GET /foo HTTP/1.1 my-header: bar</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>set[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.</p></td>
@@ -1446,20 +1446,20 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name is the name of the HTTP Header to be matched. Name matching MUST be case-insensitive. (See <a href="https://tools.ietf.org/html/rfc7230#section-3.2">https://tools.ietf.org/html/rfc7230#section-3.2</a>).</p>
 <p>If multiple entries specify equivalent header names, the first entry with an equivalent name MUST be considered for a match. Subsequent entries with an equivalent header name MUST be ignored. Due to the case-insensitivity of header names, "foo" and "Foo" are considered equivalent.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>value</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Value is the value of HTTP Header to be matched.</p></td>
@@ -1501,20 +1501,20 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name is the name of the HTTP Header to be matched. Name matching MUST be case-insensitive. (See <a href="https://tools.ietf.org/html/rfc7230#section-3.2">https://tools.ietf.org/html/rfc7230#section-3.2</a>).</p>
 <p>If multiple entries specify equivalent header names, the first entry with an equivalent name MUST be considered for a match. Subsequent entries with an equivalent header name MUST be ignored. Due to the case-insensitivity of header names, "foo" and "Foo" are considered equivalent.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>value</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Value is the value of HTTP Header to be matched.</p></td>
@@ -1544,14 +1544,14 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>backendRef</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>BackendRef references a resource where mirrored requests are sent.</p>
@@ -1562,13 +1562,13 @@ Required
 <p>Support: Extended for Kubernetes Service</p>
 <p>Support: Implementation-specific for any other resource</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>fraction</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Fraction represents the fraction of requests that should be mirrored to BackendRef.</p>
 <p>Only one of Fraction or Percent may be specified. If neither field is specified, 100% of requests will be mirrored.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>percent</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Percent represents the percentage of requests that should be mirrored to BackendRef. Its minimum value is 0 (indicating 0% of requests) and its maximum value is 100 (indicating 100% of requests).</p>
@@ -1607,19 +1607,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>group</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Group is the group of the referent. For example, "gateway.networking.k8s.io". When unspecified or empty string, core API group is inferred.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>kind</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Kind is the Kubernetes resource kind of the referent. For example "Service".</p>
@@ -1628,19 +1628,19 @@ Required
 <p>Support: Core (Services with a type other than ExternalName)</p>
 <p>Support: Implementation-specific (Services with type ExternalName)</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name is the name of the referent.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>namespace</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Namespace is the namespace of the backend. When unspecified, the local namespace is inferred.</p>
 <p>Note that when a namespace different than the local namespace is specified, a ReferenceGrant object is required in the referent namespace to allow that namespace’s owner to accept the reference. See the ReferenceGrant documentation for details.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>port</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Port specifies the destination port number to use for this resource. Port is required when the referent is a Kubernetes Service. In this case, the port number is the service port number, not the target port. For other resources, destination port might be derived from the referent resource or this field.</p></td>
@@ -1683,26 +1683,26 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>hostname</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Hostname is the hostname to be used in the value of the <code>Location</code> header in the response. When empty, the hostname in the <code>Host</code> header of the request is used.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>path</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Path defines parameters used to modify the path of the incoming request. The modified path is then used to construct the <code>Location</code> header. When empty, the request path is used as-is.</p>
 <p>Support: Extended</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>port</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Port is the port to be used in the value of the <code>Location</code> header in the response.</p>
@@ -1712,7 +1712,7 @@ Type
 <p>* A Location header that will use HTTP (whether that is determined via the Listener protocol or the Scheme field) <em>and</em> use port 80. * A Location header that will use HTTPS (whether that is determined via the Listener protocol or the Scheme field) <em>and</em> use port 443.</p>
 <p>Support: Extended</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scheme</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Scheme is the scheme to be used in the value of the <code>Location</code> header in the response. When empty, the scheme of the request is used.</p>
@@ -1721,7 +1721,7 @@ Type
 <p>Unknown values here must result in the implementation setting the Accepted Condition for the Route to <code>status: False</code>, with a Reason of <code>UnsupportedValue</code>.</p>
 <p>Support: Extended</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>statusCode</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>StatusCode is the HTTP status code to be used in response.</p>
@@ -1752,19 +1752,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>replaceFullPath</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ReplaceFullPath specifies the value with which to replace the full path of a request during a rewrite or redirect.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>replacePrefixMatch</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ReplacePrefixMatch specifies the value with which to replace the prefix match of a request during a rewrite or redirect. For example, a request to "/foo/bar" with a prefix match of "/foo" and a ReplacePrefixMatch of "/xyz" would be modified to "/xyz/bar".</p>
@@ -1772,7 +1772,7 @@ Required
 <p>ReplacePrefixMatch is only compatible with a <code>PathPrefix</code> HTTPRouteMatch. Using any other HTTPRouteMatch type on the same HTTPRouteRule will result in the implementation setting the Accepted Condition for the Route to <code>status: False</code>.</p>
 <p>Request Path | Prefix Match | Replace Prefix | Modified Path</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Type defines the type of path modifier. Additional types may be added in a future release of the API.</p>
@@ -1799,14 +1799,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>add</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Add adds the given header(s) (name, value) to the request before the action. It appends to any existing values associated with the header name.</p>
@@ -1814,12 +1814,12 @@ Type
 <p>Config: add: - name: "my-header" value: "bar,baz"</p>
 <p>Output: GET /foo HTTP/1.1 my-header: foo,bar,baz</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>add[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>remove</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>Remove the given header(s) from the HTTP request before the action. The value of Remove is a list of HTTP header names. Note that the header names are case-insensitive (see <a href="https://datatracker.ietf.org/doc/html/rfc2616#section-4.2">https://datatracker.ietf.org/doc/html/rfc2616#section-4.2</a>).</p>
@@ -1827,7 +1827,7 @@ Type
 <p>Config: remove: ["my-header1", "my-header3"]</p>
 <p>Output: GET /foo HTTP/1.1 my-header2: bar</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>set</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Set overwrites the request with the given header (name, value) before the action.</p>
@@ -1835,7 +1835,7 @@ Type
 <p>Config: set: - name: "my-header" value: "bar"</p>
 <p>Output: GET /foo HTTP/1.1 my-header: bar</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>set[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.</p></td>
@@ -1877,20 +1877,20 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name is the name of the HTTP Header to be matched. Name matching MUST be case-insensitive. (See <a href="https://tools.ietf.org/html/rfc7230#section-3.2">https://tools.ietf.org/html/rfc7230#section-3.2</a>).</p>
 <p>If multiple entries specify equivalent header names, the first entry with an equivalent name MUST be considered for a match. Subsequent entries with an equivalent header name MUST be ignored. Due to the case-insensitivity of header names, "foo" and "Foo" are considered equivalent.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>value</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Value is the value of HTTP Header to be matched.</p></td>
@@ -1932,20 +1932,20 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name is the name of the HTTP Header to be matched. Name matching MUST be case-insensitive. (See <a href="https://tools.ietf.org/html/rfc7230#section-3.2">https://tools.ietf.org/html/rfc7230#section-3.2</a>).</p>
 <p>If multiple entries specify equivalent header names, the first entry with an equivalent name MUST be considered for a match. Subsequent entries with an equivalent header name MUST be ignored. Due to the case-insensitivity of header names, "foo" and "Foo" are considered equivalent.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>value</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Value is the value of HTTP Header to be matched.</p></td>
@@ -1970,20 +1970,20 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>hostname</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Hostname is the value to be used to replace the Host header value during forwarding.</p>
 <p>Support: Extended</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>path</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Path defines a path rewrite.</p>
@@ -2012,19 +2012,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>replaceFullPath</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ReplaceFullPath specifies the value with which to replace the full path of a request during a rewrite or redirect.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>replacePrefixMatch</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ReplacePrefixMatch specifies the value with which to replace the prefix match of a request during a rewrite or redirect. For example, a request to "/foo/bar" with a prefix match of "/foo" and a ReplacePrefixMatch of "/xyz" would be modified to "/xyz/bar".</p>
@@ -2032,7 +2032,7 @@ Required
 <p>ReplacePrefixMatch is only compatible with a <code>PathPrefix</code> HTTPRouteMatch. Using any other HTTPRouteMatch type on the same HTTPRouteRule will result in the implementation setting the Accepted Condition for the Route to <code>status: False</code>.</p>
 <p>Request Path | Prefix Match | Replace Prefix | Modified Path</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Type defines the type of path modifier. Additional types may be added in a future release of the API.</p>
@@ -2113,41 +2113,41 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>headers</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Headers specifies HTTP request header matchers. Multiple match values are ANDed together, meaning, a request must match all the specified headers to select the route.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>headers[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HTTPHeaderMatch describes how to select a HTTP route by matching HTTP request headers.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>method</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Method specifies HTTP method matcher. When specified, this route will be matched only if the request has the specified method.</p>
 <p>Support: Extended</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>path</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Path specifies a HTTP request path matcher. If this field is not specified, a default prefix match on the "/" path is provided.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>queryParams</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>QueryParams specifies HTTP query parameter matchers. Multiple match values are ANDed together, meaning, a request must match all the specified query parameters to select the route.</p>
 <p>Support: Extended</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>queryParams[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HTTPQueryParamMatch describes how to select a HTTP route by matching HTTP query parameters.</p></td>
@@ -2183,21 +2183,21 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name is the name of the HTTP Header to be matched. Name matching MUST be case-insensitive. (See <a href="https://tools.ietf.org/html/rfc7230#section-3.2">https://tools.ietf.org/html/rfc7230#section-3.2</a>).</p>
 <p>If multiple entries specify equivalent header names, only the first entry with an equivalent name MUST be considered for a match. Subsequent entries with an equivalent header name MUST be ignored. Due to the case-insensitivity of header names, "foo" and "Foo" are considered equivalent.</p>
 <p>When a header is repeated in an HTTP request, it is implementation-specific behavior as to how this is represented. Generally, proxies should follow the guidance from the RFC: <a href="https://www.rfc-editor.org/rfc/rfc7230.html#section-3.2.2">https://www.rfc-editor.org/rfc/rfc7230.html#section-3.2.2</a> regarding processing a repeated header, with special handling for "Set-Cookie".</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Type specifies how to match against the value of the header.</p>
@@ -2205,7 +2205,7 @@ Required
 <p>Support: Implementation-specific (RegularExpression)</p>
 <p>Since RegularExpression HeaderMatchType has implementation-specific conformance, implementations can support POSIX, PCRE or any other dialects of regular expressions. Please read the implementation’s documentation to determine the supported dialect.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>value</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Value is the value of HTTP Header to be matched.</p></td>
@@ -2228,21 +2228,21 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Type specifies how to match against the path Value.</p>
 <p>Support: Core (Exact, PathPrefix)</p>
 <p>Support: Implementation-specific (RegularExpression)</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>value</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Value of the HTTP path to match against.</p></td>
@@ -2280,14 +2280,14 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name is the name of the HTTP query param to be matched. This must be an exact string match. (See <a href="https://tools.ietf.org/html/rfc7230#section-2.7.3">https://tools.ietf.org/html/rfc7230#section-2.7.3</a>).</p>
@@ -2295,7 +2295,7 @@ Required
 <p>If a query param is repeated in an HTTP request, the behavior is purposely left undefined, since different data planes have different capabilities. However, it is <strong>recommended</strong> that implementations should match against the first value of the param if the data plane supports it, as this behavior is expected in other load balancing contexts outside of the Gateway API.</p>
 <p>Users SHOULD NOT route traffic based on repeated query params to guard themselves against potential differences in the implementations.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Type specifies how to match against the value of the query parameter.</p>
@@ -2303,7 +2303,7 @@ Required
 <p>Support: Implementation-specific (RegularExpression)</p>
 <p>Since RegularExpression QueryParamMatchType has Implementation-specific conformance, implementations can support POSIX, PCRE or any other dialects of regular expressions. Please read the implementation’s documentation to determine the supported dialect.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>value</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Value is the value of HTTP query param to be matched.</p></td>
@@ -2328,14 +2328,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>backendRequest</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>BackendRequest specifies a timeout for an individual request from the gateway to a backend. This covers the time from when the request first starts being sent from the gateway to when the full response has been received from the backend.</p>
@@ -2344,7 +2344,7 @@ Type
 <p>The value of BackendRequest must be a Gateway API Duration string as defined by GEP-2257. When this field is unspecified, its behavior is implementation-specific; when specified, the value of BackendRequest must be no more than the value of the Request timeout (since the Request timeout encompasses the BackendRequest timeout).</p>
 <p>Support: Extended</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>request</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Request specifies the maximum duration for a gateway to respond to an HTTP request. If the gateway has not been able to respond before this deadline is met, the gateway MUST return a timeout error.</p>
@@ -2375,21 +2375,21 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>parents</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Parents is a list of parent resources (usually Gateways) that are associated with the route, and the status of the route with respect to each parent. When this route attaches to a parent, the controller that manages the parent must add an entry to this list when the controller first sees the route and should update the entry as appropriate when the route or gateway is modified.</p>
 <p>Note that parent references that cannot be resolved by an implementation of this API will not be added to this list. Implementations of this API can only populate Route status for the Gateways/parent resources they are responsible for.</p>
 <p>A maximum of 32 Gateways will be represented in this list. An empty list means the route has not been attached to any Gateway.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>parents[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>RouteParentStatus describes the status of a route with respect to an associated Parent.</p></td>
@@ -2429,14 +2429,14 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>conditions</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Conditions describes the status of the route with respect to the Gateway. Note that the route’s availability is also subject to the Gateway’s own status conditions and listener status.</p>
@@ -2445,12 +2445,12 @@ Required
 <p>There are a number of cases where the "Accepted" condition may not be set due to lack of controller visibility, that includes when:</p>
 <p>* The Route refers to a nonexistent parent. * The Route is of a type that the controller does not support. * The Route is in a namespace the controller does not have access to.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>conditions[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Condition contains details for one aspect of the current state of this API Resource.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>controllerName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ControllerName is a domain/path string that indicates the name of the controller that wrote this status. This corresponds with the controllerName field on GatewayClass.</p>
@@ -2458,7 +2458,7 @@ Required
 <p>The format of this field is DOMAIN "/" PATH, where DOMAIN and PATH are valid Kubernetes names (<a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names">https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</a>).</p>
 <p>Controllers MUST populate this field when writing status. Controllers should ensure that entries to status populated with their ControllerName are cleaned up when they are no longer necessary.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>parentRef</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ParentRef corresponds with a ParentRef in the spec that this RouteParentStatus struct describes the status of.</p></td>
@@ -2505,14 +2505,14 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastTransitionTime` | `string` | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable. |
-| `message` | `string` | message is a human readable message indicating details about the transition. This may be an empty string. |
-| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance. |
-| `reason` | `string` | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
-| `status` | `string` | status of the condition, one of True, False, Unknown. |
-| `type` | `string` | type of condition in CamelCase or in foo.example.com/CamelCase. |
+| Property             | Type      | Description                                                                                                                                                                                                                                                                                                                     |
+|----------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string`  | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable.                                                                                            |
+| `message`            | `string`  | message is a human readable message indicating details about the transition. This may be an empty string.                                                                                                                                                                                                                       |
+| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.                                   |
+| `reason`             | `string`  | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
+| `status`             | `string`  | status of the condition, one of True, False, Unknown.                                                                                                                                                                                                                                                                           |
+| `type`               | `string`  | type of condition in CamelCase or in foo.example.com/CamelCase.                                                                                                                                                                                                                                                                 |
 
 ## .status.parents\[\].parentRef
 
@@ -2532,20 +2532,20 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>group</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Group is the group of the referent. When unspecified, "gateway.networking.k8s.io" is inferred. To set the core API group (such as for a "Service" kind referent), Group must be explicitly set to "" (empty string).</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>kind</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Kind is kind of the referent.</p>
@@ -2553,20 +2553,20 @@ Required
 <p>* Gateway (Gateway conformance profile) * Service (Mesh conformance profile, ClusterIP Services only)</p>
 <p>Support for other resources is Implementation-Specific.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name is the name of the referent.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>namespace</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Namespace is the namespace of the referent. When unspecified, this refers to the local namespace of the Route.</p>
 <p>Note that there are specific rules for ParentRefs which cross namespace boundaries. Cross-namespace references are only valid if they are explicitly allowed by something in the namespace they are referring to. For example: Gateway has the AllowedRoutes field, and ReferenceGrant provides a generic way to enable any other kind of cross-namespace reference.</p>
 <p>Support: Core</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>port</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Port is the network port this Route targets. It can be interpreted differently based on the type of parent resource.</p>
@@ -2575,7 +2575,7 @@ Required
 <p>For the purpose of status, an attachment is considered successful as long as the parent resource accepts it partially. For example, Gateway listeners can restrict which Routes can attach to them by Route kind, namespace, or hostname. If 1 of 2 Gateway listeners accept attachment from the referencing Route, the Route MUST be considered successfully attached. If no Gateway listeners accept attachment from this Route, the Route MUST be considered detached from the Gateway.</p>
 <p>Support: Extended</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>sectionName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>SectionName is the name of a section within the target resource. In the following resources, SectionName is interpreted as the following:</p>
@@ -2629,10 +2629,10 @@ HTTP method
 Description
 list objects of kind HTTPRoute
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`HTTPRouteList`](../objects/index.xml#io-k8s-networking-gateway-v1-HTTPRouteList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                              |
+|--------------------|-------------------------------------------------------------------------------------------|
+| 200 - OK           | [`HTTPRouteList`](../objects/index.xml#io-k8s-networking-gateway-v1-HTTPRouteList) schema |
+| 401 - Unauthorized | Empty                                                                                     |
 
 HTTP responses
 
@@ -2644,10 +2644,10 @@ HTTP method
 Description
 delete collection of HTTPRoute
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -2657,10 +2657,10 @@ HTTP method
 Description
 list objects of kind HTTPRoute
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`HTTPRouteList`](../objects/index.xml#io-k8s-networking-gateway-v1-HTTPRouteList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                              |
+|--------------------|-------------------------------------------------------------------------------------------|
+| 200 - OK           | [`HTTPRouteList`](../objects/index.xml#io-k8s-networking-gateway-v1-HTTPRouteList) schema |
+| 401 - Unauthorized | Empty                                                                                     |
 
 HTTP responses
 
@@ -2670,25 +2670,25 @@ HTTP method
 Description
 create a HTTPRoute
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |  |
+| Parameter | Type                                                                                                                    | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
-| 201 - Created | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
-| 202 - Accepted | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                            |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
+| 201 - Created      | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
+| 202 - Accepted     | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                   |
 
 HTTP responses
 
@@ -2706,17 +2706,17 @@ HTTP method
 Description
 delete a HTTPRoute
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -2726,10 +2726,10 @@ HTTP method
 Description
 read the specified HTTPRoute
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                            |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                   |
 
 HTTP responses
 
@@ -2739,17 +2739,17 @@ HTTP method
 Description
 partially update the specified HTTPRoute
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                            |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                   |
 
 HTTP responses
 
@@ -2759,24 +2759,24 @@ HTTP method
 Description
 replace the specified HTTPRoute
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |  |
+| Parameter | Type                                                                                                                    | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
-| 201 - Created | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                            |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
+| 201 - Created      | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                   |
 
 HTTP responses
 
@@ -2794,10 +2794,10 @@ HTTP method
 Description
 read status of the specified HTTPRoute
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                            |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                   |
 
 HTTP responses
 
@@ -2807,17 +2807,17 @@ HTTP method
 Description
 partially update status of the specified HTTPRoute
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                            |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                   |
 
 HTTP responses
 
@@ -2827,23 +2827,23 @@ HTTP method
 Description
 replace status of the specified HTTPRoute
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |  |
+| Parameter | Type                                                                                                                    | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
-| 201 - Created | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                            |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
+| 201 - Created      | [`HTTPRoute`](../network_apis/httproute-gateway-networking-k8s-io-v1.xml#httproute-gateway-networking-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                   |
 
 HTTP responses

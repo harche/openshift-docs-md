@@ -4,22 +4,15 @@ For VMware vSphere, you can enable boot image management as a Technology Preview
 
 For all other platforms, the MCO does not update the boot image with each cluster update.
 
-> [!IMPORTANT]
-> Boot image management on vSphere is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div>
+Boot image management on vSphere is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
-
-Additional resources
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
 - [Enabling features using feature gates](../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
-
-</div>
 
 # About boot image management
 
@@ -27,10 +20,13 @@ By default, for Google Cloud and Amazon Web Services (AWS) clusters, the Machine
 
 For VMware vSphere, you can enable boot image management as a Technology Preview feature. For information on how to enable this feature, see "Enabling boot image management".
 
-> [!IMPORTANT]
-> Boot image management on vSphere is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Boot image management on vSphere is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 You can disable the boot image management feature, if needed. When the feature is disabled, the boot image no longer updates with the cluster. For example, with the feature disabled, if your cluster was originally created with OpenShift Container Platform 4.16, the boot image that the MCO would use to create nodes is the same 4.16 version, even if your cluster is at a later version.
 
@@ -44,8 +40,11 @@ However, using an older boot image could cause the following issues:
 
 For information on how to disable this feature, see "Disabling boot image management". If you disable this feature, you can re-enable the feature at any time. For information, see "Enabling boot image management".
 
-> [!NOTE]
-> The ability to configure boot image management is available for only Google Cloud and AWS clusters. It is not supported for clusters managed by the Cluster CAPI Operator.
+<div class="note">
+
+The ability to configure boot image management is available for only Google Cloud and AWS clusters. It is not supported for clusters managed by the Cluster CAPI Operator.
+
+</div>
 
 How the cluster behaves after disabling or re-enabling the feature, depends upon when you made the change, including the following scenarios:
 
@@ -69,21 +68,25 @@ How the cluster behaves after disabling or re-enabling the feature, depends upon
 
   - When you scale up nodes, the new nodes use the current OpenShift Container Platform version in the cluster.
 
-> [!NOTE]
-> Because a boot image is used only when a node is scaled up, this feature has no effect on existing nodes.
+<div class="note">
+
+Because a boot image is used only when a node is scaled up, this feature has no effect on existing nodes.
+
+</div>
 
 To view the current boot image used in your cluster, use one of the following methods, based on your platform:
 
 - For Google Cloud and AWS, you can examine a machine set.
 
-  > [!NOTE]
-  > The location and format of the boot image within the machine set differs, based on the platform. However, the boot image is always listed in the `spec.template.spec.providerSpec.` parameter.
+  <div class="note">
 
-  <div class="formalpara">
+  The location and format of the boot image within the machine set differs, based on the platform. However, the boot image is always listed in the `spec.template.spec.providerSpec.` parameter.
 
-  <div class="title">
+  </div>
 
-  Example Google Cloud machine set with the boot image reference
+  <div class="formalpara-title">
+
+  **Example Google Cloud machine set with the boot image reference**
 
   </div>
 
@@ -109,15 +112,11 @@ To view the current boot image used in your cluster, use one of the following me
   # ...
   ```
 
-  </div>
-
   - This boot image is the same as the originally-installed OpenShift Container Platform version, in this example OpenShift Container Platform 4.12, regardless of the current version of the cluster. The way that the boot image is represented in the machine set depends on the platform, as the structure of the `providerSpec` field differs from platform to platform.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example AWS machine set with the boot image reference
+    **Example AWS machine set with the boot image reference**
 
     </div>
 
@@ -140,19 +139,15 @@ To view the current boot image used in your cluster, use one of the following me
     # ...
     ```
 
-    </div>
-
 - For VMware vSphere, examine an affected node by opening an `oc debug` session to the node and using the `rpm-ostree status` command.
 
   ``` terminal
   sh-5.1# rpm-ostree status
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example AWS node with the boot image reference
+  **Example AWS node with the boot image reference**
 
   </div>
 
@@ -161,30 +156,21 @@ To view the current boot image used in your cluster, use one of the following me
       * ostree-unverified-registry:quay.io/my-registry/...
                          Digest: sha256:...
 
-  </div>
+<div class="important">
 
-> [!IMPORTANT]
-> If any of the machine sets for which you want to enable boot image management use a `*-user-data` secret that is based on Ignition version 2.2.0, the Machine Config Operator converts the Ignition version to 3.4.0 when you enable the feature. OpenShift Container Platform versions 4.5 and lower use Ignition version 2.2.0. If this conversion fails, the MCO or your cluster could degrade. An error message that includes *err: converting ignition stub failed: failed to parse Ignition config* is added to the output of the `oc get ClusterOperator machine-config` command. You can use the following general steps to correct the problem:
->
-> 1.  Disable the boot image management feature. For information, see "Disabling boot image management".
->
-> 2.  Manually update the `*-user-data` secret to use Ignition version to 3.2.0.
->
-> 3.  Enable the boot image management feature. For information, see "Enabling boot image management".
+If any of the machine sets for which you want to enable boot image management use a `*-user-data` secret that is based on Ignition version 2.2.0, the Machine Config Operator converts the Ignition version to 3.4.0 when you enable the feature. OpenShift Container Platform versions 4.5 and lower use Ignition version 2.2.0. If this conversion fails, the MCO or your cluster could degrade. An error message that includes *err: converting ignition stub failed: failed to parse Ignition config* is added to the output of the `oc get ClusterOperator machine-config` command. You can use the following general steps to correct the problem:
 
-<div>
+1.  Disable the boot image management feature. For information, see "Disabling boot image management".
 
-<div class="title">
+2.  Manually update the `*-user-data` secret to use Ignition version to 3.2.0.
 
-Additional resources
+3.  Enable the boot image management feature. For information, see "Enabling boot image management".
 
 </div>
 
 - [Disabling boot image management](../../machine_configuration/mco-update-boot-images.xml#mco-update-boot-images-disable_machine-configs-configure)
 
 - [Enabling boot image management](../../machine_configuration/mco-update-boot-images.xml#mco-update-boot-images-configuring_machine-configs-configure)
-
-</div>
 
 # Disabling boot image management
 
@@ -195,14 +181,6 @@ You can disable the boot image management feature for your cluster by editing th
 Disabling this feature does not rollback the nodes or machine sets to the originally-installed boot image. The machine sets retain the boot image version that was present when the feature was disabled and is not updated if the cluster is upgraded to a new OpenShift Container Platform version in the future. This feature has no effect on existing nodes.
 
 After disabling the feature, you can re-enable the feature at any time. For more information, see "Enabling updated boot images".
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `MachineConfiguration` object to disable the boot image management feature for some or all of your machine sets:
 
@@ -235,27 +213,15 @@ Procedure
 
       - Specifies that the feature is disabled for all machine sets in the cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - When the affected nodes return to the `READY` state, view the current state of the boot image management feature by viewing the machine configuration object:
 
   ``` terminal
   $ oc get machineconfiguration cluster -o yaml
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example machine set with the boot image reference
+  **Example machine set with the boot image reference**
 
   </div>
 
@@ -285,8 +251,6 @@ Verification
           mode: All
   ```
 
-  </div>
-
 - When the affected nodes return to the `READY` state, check the current boot image by using one of the following methods:
 
   - For Google Cloud and AWS, get the boot image version by running the following command. The location and format of the boot image within the machine set differs, based on the platform. However, the boot image is always listed in the `spec.template.spec.providerSpec.` parameter.
@@ -295,11 +259,9 @@ Verification
     $ oc get machinesets <machineset_name> -n openshift-machine-api -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example machine set with the boot image reference
+    **Example machine set with the boot image reference**
 
     </div>
 
@@ -328,8 +290,6 @@ Verification
     # ...
     ```
 
-    </div>
-
     - This boot image is the same as the current OpenShift Container Platform version.
 
   - For VMware vSphere, get the boot image version from an affected node:
@@ -352,11 +312,9 @@ Verification
         sh-5.1# rpm-ostree status
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -364,10 +322,6 @@ Verification
             Deployments:
             * ostree-unverified-registry:quay.io/my-registry/...
                                Digest: sha256:...
-
-        </div>
-
-</div>
 
 # Enabling boot image management
 
@@ -377,25 +331,23 @@ If you disabled the boot image management feature, so that the boot images are n
 
 For VMware vSphere, you can enable boot image management as a Technology Preview feature.
 
-> [!IMPORTANT]
-> Boot image management on vSphere is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-Enabling the feature updates the boot image to the current OpenShift Container Platform version. If the cluster is again updated to a new OpenShift Container Platform version in the future, the boot image is updated again. New nodes created after enabling the feature use the updated boot image. This feature has no effect on existing nodes.
+Boot image management on vSphere is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div>
-
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
+Enabling the feature updates the boot image to the current OpenShift Container Platform version. If the cluster is again updated to a new OpenShift Container Platform version in the future, the boot image is updated again. New nodes created after enabling the feature use the updated boot image. This feature has no effect on existing nodes.
+
 - For vSphere, enable the `TechPreviewNoUpgrade` feature set on the cluster. For more information, see "Enabling features using feature gates".
 
-  > [!NOTE]
-  > Enabling the `TechPreviewNoUpgrade` feature set cannot be undone and prevents minor version updates. These feature sets are not recommended on production clusters.
+  <div class="note">
+
+  Enabling the `TechPreviewNoUpgrade` feature set cannot be undone and prevents minor version updates. These feature sets are not recommended on production clusters.
+
+  </div>
 
   Wait until the `managedBootImagesStatus` stanza displays in the `MachineConfiguration` object.
 
@@ -414,16 +366,6 @@ Prerequisites
         selection:
           mode: None
   ```
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `MachineConfiguration` object, named `cluster`, to enable the boot image management feature for some or all of your machine sets:
 
@@ -485,20 +427,13 @@ Procedure
 
       - Specifies that the feature is enabled for machine sets with the specified label.
 
-        > [!TIP]
-        > If an appropriate label is not present on the machine set, add a key-value pair by running a command similar to following:
-        >
-        >     $ oc label machineset.machine ci-ln-hmy310k-72292-5f87z-worker-a region="east" -n openshift-machine-api
+        <div class="tip">
 
-</div>
+        If an appropriate label is not present on the machine set, add a key-value pair by running a command similar to following:
 
-<div>
+            $ oc label machineset.machine ci-ln-hmy310k-72292-5f87z-worker-a region="east" -n openshift-machine-api
 
-<div class="title">
-
-Verification
-
-</div>
+        </div>
 
 - When the affected nodes return to the `READY` state, view the current state of the boot image management feature by viewing the machine configuration object:
 
@@ -506,11 +441,9 @@ Verification
   $ oc get machineconfiguration cluster -o yaml
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example machine set with the boot image reference
+  **Example machine set with the boot image reference**
 
   </div>
 
@@ -540,8 +473,6 @@ Verification
           mode: All
   ```
 
-  </div>
-
 - When the affected nodes return to the `READY` state, check the current boot image by using one of the following methods:
 
   - For Google Cloud and AWS, get the boot image version by running the following command. The location and format of the boot image within the machine set differs, based on the platform. However, the boot image is always listed in the `spec.template.spec.providerSpec.` parameter.
@@ -550,11 +481,9 @@ Verification
     $ oc get machinesets <machineset_name> -n openshift-machine-api -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example machine set with the boot image reference
+    **Example machine set with the boot image reference**
 
     </div>
 
@@ -583,8 +512,6 @@ Verification
     # ...
     ```
 
-    </div>
-
     - This boot image is the same as the current OpenShift Container Platform version.
 
   - For VMware vSphere, get the boot image version from an affected node:
@@ -607,11 +534,9 @@ Verification
         sh-5.1# rpm-ostree status
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -619,7 +544,3 @@ Verification
             Deployments:
             * ostree-unverified-registry:quay.io/my-registry/...
                                Digest: sha256:...
-
-        </div>
-
-</div>

@@ -15,10 +15,13 @@ You can use the following platforms with OpenShift Virtualization:
 Cloud platforms
 OpenShift Virtualization is also compatible with a variety of public cloud platforms. Each cloud platform has specific storage provider options available. The following table outlines which platforms are fully supported (GA) and which are currently offered as Technology Preview features.
 
-> [!IMPORTANT]
-> Installing OpenShift Virtualization on certain cloud platforms is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Installing OpenShift Virtualization on certain cloud platforms is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 <table>
 <colgroup>
@@ -28,7 +31,7 @@ OpenShift Virtualization is also compatible with a variety of public cloud platf
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Vendor</th>
 <th style="text-align: left;">Status</th>
 <th style="text-align: left;">Storage</th>
@@ -36,7 +39,7 @@ OpenShift Virtualization is also compatible with a variety of public cloud platf
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Amazon Web Services (AWS)</p></td>
 <td style="text-align: left;"><p>GA</p></td>
 <td style="text-align: left;"><p>Elastic Block Store (EBS), Red Hat OpenShift Data Foundation (ODF), Portworx, FSx (NetApp)</p></td>
@@ -44,7 +47,7 @@ OpenShift Virtualization is also compatible with a variety of public cloud platf
 <li><p><a href="../../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-customizations">Installing a cluster on AWS with customizations</a></p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Red Hat OpenShift Service on AWS (ROSA)</p></td>
 <td style="text-align: left;"><p>GA</p></td>
 <td style="text-align: left;"><p>EBS, Portworx, FSx (Q3), ODF</p></td>
@@ -53,7 +56,7 @@ OpenShift Virtualization is also compatible with a variety of public cloud platf
 <li><p><a href="https://docs.aws.amazon.com/rosa/latest/userguide/what-is-rosa.html">What is Red Hat OpenShift Service on AWS?</a> in the AWS documentation</p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Oracle Cloud Infrastructure (OCI)</p></td>
 <td style="text-align: left;"><p>GA</p></td>
 <td style="text-align: left;"><p>OCI native storage</p></td>
@@ -62,7 +65,7 @@ OpenShift Virtualization is also compatible with a variety of public cloud platf
 <li><p><a href="https://github.com/oracle-quickstart/oci-openshift/blob/main/docs/openshift-virtualization.md">Installing OpenShift Virtualization on OCI</a> in the <code>oracle-quickstart/oci-openshift</code> GitHub repository</p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Azure Red Hat OpenShift (ARO)</p></td>
 <td style="text-align: left;"><p>GA</p></td>
 <td style="text-align: left;"><p>ODF</p></td>
@@ -70,7 +73,7 @@ OpenShift Virtualization is also compatible with a variety of public cloud platf
 <li><p><a href="https://learn.microsoft.com/en-us/azure/openshift/howto-create-openshift-virtualization">OpenShift Virtualization for Azure Red Hat OpenShift (preview)</a> in the Microsoft documentation</p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Google Cloud</p></td>
 <td style="text-align: left;"><p>Technology Preview</p></td>
 <td style="text-align: left;"><p>Google Cloud native storage</p></td>
@@ -81,8 +84,11 @@ OpenShift Virtualization is also compatible with a variety of public cloud platf
 </tbody>
 </table>
 
-> [!TIP]
-> For platform-specific networking information, see the [networking overview](../../virt/vm_networking/virt-networking-overview.xml#virt-networking).
+<div class="tip">
+
+For platform-specific networking information, see the [networking overview](../../virt/vm_networking/virt-networking-overview.xml#virt-networking).
+
+</div>
 
 Bare metal instances or servers offered by other cloud providers are not supported.
 
@@ -90,8 +96,11 @@ Bare metal instances or servers offered by other cloud providers are not support
 
 You can run OpenShift Virtualization on an Amazon Web Services (AWS) bare metal OpenShift Container Platform cluster.
 
-> [!NOTE]
-> OpenShift Virtualization is also supported on Red Hat OpenShift Service on AWS (ROSA) Classic clusters, which have the same configuration requirements as AWS bare-metal clusters.
+<div class="note">
+
+OpenShift Virtualization is also supported on Red Hat OpenShift Service on AWS (ROSA) Classic clusters, which have the same configuration requirements as AWS bare-metal clusters.
+
+</div>
 
 Before you set up your cluster, review the following summary of supported features and limitations:
 
@@ -107,8 +116,11 @@ Accessing virtual machines (VMs)
 
 - You can expose VMs by using a `NodePort` or `LoadBalancer` service.
 
-  > [!NOTE]
-  > The load balancer approach is preferable because OpenShift Container Platform automatically creates the load balancer in AWS and manages its lifecycle. A security group is also created for the load balancer, and you can use annotations to attach existing security groups. When you remove the service, OpenShift Container Platform removes the load balancer and its associated resources.
+  <div class="note">
+
+  The load balancer approach is preferable because OpenShift Container Platform automatically creates the load balancer in AWS and manages its lifecycle. A security group is also created for the load balancer, and you can use annotations to attach existing security groups. When you remove the service, OpenShift Container Platform removes the load balancer and its associated resources.
+
+  </div>
 
 Networking
 
@@ -118,60 +130,22 @@ Storage
 
 - You can use any storage solution that is certified by the storage vendor to work with the underlying platform.
 
-  > [!IMPORTANT]
-  > AWS bare metal, Red Hat OpenShift Service on AWS, and Red Hat OpenShift Service on AWS classic architecture clusters might have different supported storage solutions. Ensure that you confirm support with your storage vendor.
+  <div class="important">
+
+  AWS bare metal, Red Hat OpenShift Service on AWS, and Red Hat OpenShift Service on AWS classic architecture clusters might have different supported storage solutions. Ensure that you confirm support with your storage vendor.
+
+  </div>
 
 - Using Amazon Elastic File System (EFS) or Amazon Elastic Block Store (EBS) with OpenShift Virtualization might cause performance and functionality limitations as shown in the following table:
 
-  <table style="width:100%;">
-  <caption>EFS and EBS performance and functionality limitations</caption>
-  <colgroup>
-  <col style="width: 16%" />
-  <col style="width: 16%" />
-  <col style="width: 16%" />
-  <col style="width: 16%" />
-  <col style="width: 16%" />
-  <col style="width: 16%" />
-  </colgroup>
-  <thead>
-  <tr>
-  <th style="text-align: left;">Feature</th>
-  <th colspan="3" style="text-align: center;">EBS volume</th>
-  <th style="text-align: left;">EFS volume</th>
-  <th style="text-align: left;">Shared storage solutions</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-  <td style="text-align: left;"></td>
-  <td style="text-align: center;"><p><strong>gp2</strong></p></td>
-  <td style="text-align: center;"><p><strong>gp3</strong></p></td>
-  <td style="text-align: center;"><p><strong>io2</strong></p></td>
-  <td style="text-align: left;"></td>
-  <td style="text-align: left;"></td>
-  </tr>
-  <tr>
-  <td style="text-align: left;"><p>VM live migration</p></td>
-  <td style="text-align: center;"><p>Not available</p></td>
-  <td style="text-align: center;"><p>Not available</p></td>
-  <td style="text-align: center;"><p>Available</p></td>
-  <td style="text-align: left;"><p>Available</p></td>
-  <td style="text-align: left;"><p>Available</p></td>
-  </tr>
-  <tr>
-  <td style="text-align: left;"><p>Fast VM creation by using cloning</p></td>
-  <td colspan="3" style="text-align: center;"><p>Available</p></td>
-  <td style="text-align: left;"><p>Not available</p></td>
-  <td style="text-align: left;"><p>Available</p></td>
-  </tr>
-  <tr>
-  <td style="text-align: left;"><p>VM backup and restore by using snapshots</p></td>
-  <td colspan="3" style="text-align: center;"><p>Available</p></td>
-  <td style="text-align: left;"><p>Not available</p></td>
-  <td style="text-align: left;"><p>Available</p></td>
-  </tr>
-  </tbody>
-  </table>
+  | Feature                                  | EBS volume    |               |           | EFS volume    | Shared storage solutions |
+  |------------------------------------------|---------------|---------------|-----------|---------------|--------------------------|
+  |                                          | **gp2**       | **gp3**       | **io2**   |               |                          |
+  | VM live migration                        | Not available | Not available | Available | Available     | Available                |
+  | Fast VM creation by using cloning        | Available     |               |           | Not available | Available                |
+  | VM backup and restore by using snapshots | Available     |               |           | Not available | Available                |
+
+  EFS and EBS performance and functionality limitations
 
   Consider using CSI storage, which supports ReadWriteMany (RWX), cloning, and snapshots to enable live migration, fast VM creation, and VM snapshots capabilities.
 
@@ -179,19 +153,11 @@ Hosted control planes (HCPs)
 
 - HCPs for OpenShift Virtualization are not currently supported on AWS infrastructure.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Connecting a virtual machine to an OVN-Kubernetes secondary network](../../virt/vm_networking/virt-connecting-vm-to-ovn-secondary-network.xml#virt-connecting-vm-to-ovn-secondary-network)
 
 - [Exposing a virtual machine by using a service](../../virt/vm_networking/virt-exposing-vm-with-service.xml#virt-exposing-vm-with-service)
-
-</div>
 
 ## ARM64 compatibility
 
@@ -285,10 +251,13 @@ If you deploy OpenShift Virtualization with Red Hat OpenShift Data Foundation, y
 IPv6
 OpenShift Virtualization support for single-stack IPv6 clusters is limited to the OVN-Kubernetes localnet and Linux bridge Container Network Interface (CNI) plugins.
 
-> [!IMPORTANT]
-> Deploying OpenShift Virtualization on a single-stack IPv6 cluster is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Deploying OpenShift Virtualization on a single-stack IPv6 cluster is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 <!-- -->
 
@@ -305,10 +274,13 @@ Review the following hardware and operating system requirements for OpenShift Vi
 
   See [Red Hat Ecosystem Catalog](https://catalog.redhat.com) for supported CPUs.
 
-  > [!NOTE]
-  > If your worker nodes have different CPUs, live migration failures might occur because different CPUs have different capabilities. You can mitigate this issue by ensuring that your worker nodes have CPUs with the appropriate capacity and by configuring node affinity rules for your virtual machines.
-  >
-  > See [Configuring a required node affinity rule](../../nodes/scheduling/nodes-scheduler-node-affinity.xml#nodes-scheduler-node-affinity-configuring-required_nodes-scheduler-node-affinity) for details.
+  <div class="note">
+
+  If your worker nodes have different CPUs, live migration failures might occur because different CPUs have different capabilities. You can mitigate this issue by ensuring that your worker nodes have CPUs with the appropriate capacity and by configuring node affinity rules for your virtual machines.
+
+  See [Configuring a required node affinity rule](../../nodes/scheduling/nodes-scheduler-node-affinity.xml#nodes-scheduler-node-affinity-configuring-required_nodes-scheduler-node-affinity) for details.
+
+  </div>
 
 - Supports AMD64, Intel 64-bit (x86-64-v2), IBM Z® (`s390x`), or ARM64-based (`arm64` or `aarch64`) architectures and their respective CPU extensions.
 
@@ -324,8 +296,11 @@ Review the following hardware and operating system requirements for OpenShift Vi
 
   See [About RHCOS](../../architecture/architecture-rhcos.xml#rhcos-about_architecture-rhcos) for details.
 
-  > [!NOTE]
-  > RHEL worker nodes are not supported.
+  <div class="note">
+
+  RHEL worker nodes are not supported.
+
+  </div>
 
 ## Storage requirements
 
@@ -333,8 +308,11 @@ Review the following hardware and operating system requirements for OpenShift Vi
 
 - You must create a default OpenShift Virtualization or OpenShift Container Platform storage class. The purpose of this is to address the unique storage needs of VM workloads and offer optimized performance, reliability, and user experience. If both OpenShift Virtualization and OpenShift Container Platform default storage classes exist, the OpenShift Virtualization class takes precedence when creating VM disks.
 
-> [!NOTE]
-> To mark a storage class as the default for virtualization workloads, set the annotation `storageclass.kubevirt.io/is-default-virt-class` to `"true"`.
+<div class="note">
+
+To mark a storage class as the default for virtualization workloads, set the annotation `storageclass.kubevirt.io/is-default-virt-class` to `"true"`.
+
+</div>
 
 - If the storage provisioner supports snapshots, you must associate a `VolumeSnapshotClass` object with the default storage class.
 
@@ -352,14 +330,17 @@ For best results, use the `ReadWriteMany` (RWX) access mode and the `Block` volu
 
   For example, if you use Red Hat OpenShift Data Foundation, Ceph RBD volumes are preferable to CephFS volumes.
 
-> [!IMPORTANT]
-> You cannot live migrate virtual machines with the following configurations:
->
-> - Storage volume with `ReadWriteOnce` (RWO) access mode
->
-> - Passthrough features such as GPUs
->
-> Set the `evictionStrategy` field to `None` for these virtual machines. The `None` strategy powers down VMs during node reboots.
+<div class="important">
+
+You cannot live migrate virtual machines with the following configurations:
+
+- Storage volume with `ReadWriteOnce` (RWO) access mode
+
+- Passthrough features such as GPUs
+
+Set the `evictionStrategy` field to `None` for these virtual machines. The `None` strategy powers down VMs during node reboots.
+
+</div>
 
 # Live migration requirements
 
@@ -367,17 +348,23 @@ For best results, use the `ReadWriteMany` (RWX) access mode and the `Block` volu
 
 - Sufficient RAM and network bandwidth.
 
-  > [!NOTE]
-  > You must ensure that there is enough memory request capacity in the cluster to support node drains that result in live migrations. You can determine the approximate required spare memory by using the following calculation:
-  >
-  >     Product of (Maximum number of nodes that can drain in parallel) and (Highest total VM memory request allocations across nodes)
-  >
-  > The default [number of migrations that can run in parallel](../../virt/live_migration/virt-configuring-live-migration.xml#virt-configuring-live-migration) in the cluster is 5.
+  <div class="note">
+
+  You must ensure that there is enough memory request capacity in the cluster to support node drains that result in live migrations. You can determine the approximate required spare memory by using the following calculation:
+
+      Product of (Maximum number of nodes that can drain in parallel) and (Highest total VM memory request allocations across nodes)
+
+  The default [number of migrations that can run in parallel](../../virt/live_migration/virt-configuring-live-migration.xml#virt-configuring-live-migration) in the cluster is 5.
+
+  </div>
 
 - If the virtual machine uses a host model CPU, the nodes must support the virtual machine’s host model CPU.
 
-> [!NOTE]
-> A [dedicated Multus network](../../virt/vm_networking/virt-dedicated-network-live-migration.xml#virt-dedicated-network-live-migration) for live migration is highly recommended. A dedicated network minimizes the effects of network saturation on tenant workloads during migration.
+<div class="note">
+
+A [dedicated Multus network](../../virt/vm_networking/virt-dedicated-network-live-migration.xml#virt-dedicated-network-live-migration) for live migration is highly recommended. A dedicated network minimizes the effects of network saturation on tenant workloads during migration.
+
+</div>
 
 # Physical resource overhead requirements
 
@@ -385,8 +372,11 @@ OpenShift Virtualization is an add-on to OpenShift Container Platform and impose
 
 Each cluster machine must accommodate the following overhead requirements in addition to the OpenShift Container Platform requirements. Oversubscribing the physical resources in a cluster can affect performance.
 
-> [!IMPORTANT]
-> The numbers noted in this documentation are based on Red Hat’s test methodology and setup. These numbers can vary based on your own individual setup and environments.
+<div class="important">
+
+The numbers noted in this documentation are based on Red Hat’s test methodology and setup. These numbers can vary based on your own individual setup and environments.
+
+</div>
 
 ## Memory overhead
 
@@ -465,17 +455,9 @@ However, you should be aware that Single-node OpenShift does not support the fol
 
 - Virtual machines or templates that have an eviction strategy configured
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Glossary of common terms for OpenShift Container Platform storage](../../storage/index.xml#openshift-storage-common-terms_storage-overview)
-
-</div>
 
 # Object maximums
 
@@ -491,17 +473,26 @@ You can configure one of the following high-availability (HA) options for your c
 
 - Automatic high availability for [installer-provisioned infrastructure](../../installing/installing_bare_metal/ipi/ipi-install-overview.xml#ipi-install-overview) (IPI) is available by deploying [machine health checks](../../machine_management/deploying-machine-health-checks.xml#machine-health-checks-about_deploying-machine-health-checks).
 
-  > [!NOTE]
-  > In OpenShift Container Platform clusters installed using installer-provisioned infrastructure and with a properly configured `MachineHealthCheck` resource, if a node fails the machine health check and becomes unavailable to the cluster, it is recycled. What happens next with VMs that ran on the failed node depends on a series of conditions. See [Run strategies](../../virt/nodes/virt-node-maintenance.xml#run-strategies) for more detailed information about the potential outcomes and how run strategies affect those outcomes.
-  >
-  > Currently, IPI is not supported on IBM Z®.
+  <div class="note">
+
+  In OpenShift Container Platform clusters installed using installer-provisioned infrastructure and with a properly configured `MachineHealthCheck` resource, if a node fails the machine health check and becomes unavailable to the cluster, it is recycled. What happens next with VMs that ran on the failed node depends on a series of conditions. See [Run strategies](../../virt/nodes/virt-node-maintenance.xml#run-strategies) for more detailed information about the potential outcomes and how run strategies affect those outcomes.
+
+  Currently, IPI is not supported on IBM Z®.
+
+  </div>
 
 - Automatic high availability for both IPI and non-IPI is available by using the **Node Health Check Operator** on the OpenShift Container Platform cluster to deploy the `NodeHealthCheck` controller. The controller identifies unhealthy nodes and uses a remediation provider, such as the Self Node Remediation Operator or Fence Agents Remediation Operator, to remediate the unhealthy nodes. For more information on remediation, fencing, and maintaining nodes, see the [Workload Availability for Red Hat OpenShift](https://access.redhat.com/documentation/en-us/workload_availability_for_red_hat_openshift) documentation.
 
-  > [!NOTE]
-  > Fence Agents Remediation uses supported fencing agents to reset failed nodes faster than the Self Node Remediation Operator. This improves overall virtual machine high availability. For more information, see the [OpenShift Virtualization - Fencing and VM High Availability Guide](https://access.redhat.com/articles/7057929) knowledgebase article.
+  <div class="note">
+
+  Fence Agents Remediation uses supported fencing agents to reset failed nodes faster than the Self Node Remediation Operator. This improves overall virtual machine high availability. For more information, see the [OpenShift Virtualization - Fencing and VM High Availability Guide](https://access.redhat.com/articles/7057929) knowledgebase article.
+
+  </div>
 
 - High availability for any platform is available by using either a monitoring system or a qualified human to monitor node availability. When a node is lost, shut it down and run `oc delete node <lost_node>`.
 
-  > [!NOTE]
-  > Without an external monitoring system or a qualified human monitoring node health, virtual machines lose high availability.
+  <div class="note">
+
+  Without an external monitoring system or a qualified human monitoring node health, virtual machines lose high availability.
+
+  </div>

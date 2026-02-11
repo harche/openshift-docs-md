@@ -11,16 +11,16 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `labels` | `object (string)` | labels is a optional set of labels that are applied to every object during the Template to Config transformation. |
-| `message` | `string` | message is an optional instructional message that will be displayed when this template is instantiated. This field should inform the user how to utilize the newly created resources. Parameter substitution will be performed on the message before being displayed so that generated credentials and other parameters can be included in the output. |
-| `metadata` | [`ObjectMeta_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta_v2) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `objects` | [`array (RawExtension)`](../objects/index.xml#io-k8s-apimachinery-pkg-runtime-RawExtension) | objects is an array of resources to include in this template. If a namespace value is hardcoded in the object, it will be removed during template instantiation, however if the namespace value is, or contains, a \${PARAMETER_REFERENCE}, the resolved value after parameter substitution will be respected and the object will be created in that namespace. |
-| `parameters` | `array` | parameters is an optional array of Parameters used during the Template to Config transformation. |
-| `parameters[]` | `object` | Parameter defines a name/value variable that is to be processed during the Template to Config transformation. |
+| Property       | Type                                                                                        | Description                                                                                                                                                                                                                                                                                                                                                     |
+|----------------|---------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion`   | `string`                                                                                    | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>                                                             |
+| `kind`         | `string`                                                                                    | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds>                                                            |
+| `labels`       | `object (string)`                                                                           | labels is a optional set of labels that are applied to every object during the Template to Config transformation.                                                                                                                                                                                                                                               |
+| `message`      | `string`                                                                                    | message is an optional instructional message that will be displayed when this template is instantiated. This field should inform the user how to utilize the newly created resources. Parameter substitution will be performed on the message before being displayed so that generated credentials and other parameters can be included in the output.          |
+| `metadata`     | [`ObjectMeta_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta_v2)  | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                                                           |
+| `objects`      | [`array (RawExtension)`](../objects/index.xml#io-k8s-apimachinery-pkg-runtime-RawExtension) | objects is an array of resources to include in this template. If a namespace value is hardcoded in the object, it will be removed during template instantiation, however if the namespace value is, or contains, a \${PARAMETER_REFERENCE}, the resolved value after parameter substitution will be respected and the object will be created in that namespace. |
+| `parameters`   | `array`                                                                                     | parameters is an optional array of Parameters used during the Template to Config transformation.                                                                                                                                                                                                                                                                |
+| `parameters[]` | `object`                                                                                    | Parameter defines a name/value variable that is to be processed during the Template to Config transformation.                                                                                                                                                                                                                                                   |
 
 ## .parameters
 
@@ -48,29 +48,29 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>description</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Description of a parameter. Optional.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>displayName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional: The name that will show in UI instead of parameter 'Name'</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>from</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>From is an input value for the generator. Optional.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>generate</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>generate specifies the generator to be used to generate random string from an input value specified by From field. The result string is stored into Value field. If empty, no generator is being used, leaving the result Value untouched. Optional.</p>
@@ -78,17 +78,17 @@ Required
 <p>Examples:</p>
 <p>from | value ----------------------------- "test[0-9]{1}x" | "test7x" "[0-1]{8}" | "01001100" "0x[A-F0-9]{4}" | "0xB3AF" "[a-zA-Z0-9]{8}" | "hW4yQU5i"</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name must be set and it can be referenced in Template Items using ${PARAMETER_NAME}. Required.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>required</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Optional: Indicates the parameter must have a value. Defaults to false.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>value</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Value holds the Parameter data. If specified, the generator will be ignored. The value replaces all occurrences of the Parameter ${Name} expression during the Template to Config transformation. Optional.</p></td>
@@ -146,10 +146,10 @@ HTTP method
 Description
 list or watch objects of kind Template
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`TemplateList`](../objects/index.xml#com-github-openshift-api-template-v1-TemplateList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                    |
+|--------------------|-------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`TemplateList`](../objects/index.xml#com-github-openshift-api-template-v1-TemplateList) schema |
+| 401 - Unauthorized | Empty                                                                                           |
 
 HTTP responses
 
@@ -161,10 +161,10 @@ HTTP method
 Description
 watch individual changes to a list of Template. deprecated: use the 'watch' parameter with a list operation instead.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -176,16 +176,16 @@ HTTP method
 Description
 delete collection of Template
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status_v9`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v9) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                              |
+|--------------------|-------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status_v9`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v9) schema |
+| 401 - Unauthorized | Empty                                                                                     |
 
 HTTP responses
 
@@ -195,10 +195,10 @@ HTTP method
 Description
 list or watch objects of kind Template
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`TemplateList`](../objects/index.xml#com-github-openshift-api-template-v1-TemplateList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                    |
+|--------------------|-------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`TemplateList`](../objects/index.xml#com-github-openshift-api-template-v1-TemplateList) schema |
+| 401 - Unauthorized | Empty                                                                                           |
 
 HTTP responses
 
@@ -208,25 +208,25 @@ HTTP method
 Description
 create a Template
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                          | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
-| 201 - Created | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
-| 202 - Accepted | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                  |
+|--------------------|---------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
+| 201 - Created      | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
+| 202 - Accepted     | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                         |
 
 HTTP responses
 
@@ -238,10 +238,10 @@ HTTP method
 Description
 watch individual changes to a list of Template. deprecated: use the 'watch' parameter with a list operation instead.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -259,17 +259,17 @@ HTTP method
 Description
 delete a Template
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
-| 202 - Accepted | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                  |
+|--------------------|---------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
+| 202 - Accepted     | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                         |
 
 HTTP responses
 
@@ -279,10 +279,10 @@ HTTP method
 Description
 read the specified Template
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                  |
+|--------------------|---------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                         |
 
 HTTP responses
 
@@ -292,18 +292,18 @@ HTTP method
 Description
 partially update the specified Template
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
-| 201 - Created | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                  |
+|--------------------|---------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
+| 201 - Created      | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                         |
 
 HTTP responses
 
@@ -313,32 +313,32 @@ HTTP method
 Description
 replace the specified Template
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                          | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
-| 201 - Created | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                  |
+|--------------------|---------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
+| 201 - Created      | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                         |
 
 HTTP responses
 
 ## /apis/template.openshift.io/v1/namespaces/{namespace}/processedtemplates
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Global query parameters
@@ -349,18 +349,18 @@ HTTP method
 Description
 create a Template
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                          | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
-| 201 - Created | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
-| 202 - Accepted | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                  |
+|--------------------|---------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
+| 201 - Created      | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
+| 202 - Accepted     | [`Template`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                         |
 
 HTTP responses
 
@@ -378,9 +378,9 @@ HTTP method
 Description
 watch changes to an object of kind Template. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses

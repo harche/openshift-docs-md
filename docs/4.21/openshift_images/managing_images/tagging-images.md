@@ -16,10 +16,10 @@ While image tags are primarily used for referencing images in configurations, Op
 
 Image tags are appended to the image name or image stream name by using a colon (`:`) as a separator.
 
-| Context | Syntax Format | Example |
-|----|----|----|
-| **External Registry** | `<registry_path>:<tag>` | `registry.access.redhat.com/openshift3/jenkins-2-rhel7:v3.11.59-2` |
-| **Local Image Stream** | `<image_stream_name>:<tag>` | `jenkins:latest` |
+| Context                | Syntax Format               | Example                                                            |
+|------------------------|-----------------------------|--------------------------------------------------------------------|
+| **External Registry**  | `<registry_path>:<tag>`     | `registry.access.redhat.com/openshift3/jenkins-2-rhel7:v3.11.59-2` |
+| **Local Image Stream** | `<image_stream_name>:<tag>` | `jenkins:latest`                                                   |
 
 # Image tag conventions
 
@@ -31,19 +31,22 @@ In very large clusters, the schema of creating new tags for every revised image 
 
 To ensure proper garbage collection, use broader, more generic tags that are designed to be updated when a new image revision is built. The following table provides some recommended tagging conventions using the format `<image_name>:<image_tag>`.
 
-| Description | Example |
-|----|----|
-| **Major/Minor Version** (Ideal for mutable pointers) | `myimage:v2.0` |
-| **Full Revision** (Often used for tracking, but requires manual pruning) | `myimage:v2.0.1` |
-| **Architecture** | `myimage:v2.0-x86_64` |
-| **Base image** | `myimage:v1.2-centos7` |
-| **Latest** | `myimage:latest` |
-| **Latest stable** | `myimage:stable` |
+| Description                                                              | Example                |
+|--------------------------------------------------------------------------|------------------------|
+| **Major/Minor Version** (Ideal for mutable pointers)                     | `myimage:v2.0`         |
+| **Full Revision** (Often used for tracking, but requires manual pruning) | `myimage:v2.0.1`       |
+| **Architecture**                                                         | `myimage:v2.0-x86_64`  |
+| **Base image**                                                           | `myimage:v1.2-centos7` |
+| **Latest**                                                               | `myimage:latest`       |
+| **Latest stable**                                                        | `myimage:stable`       |
 
 Image tag naming conventions
 
-> [!NOTE]
-> If your team requires the use of unique, date-specific, or highly revisioned tags like `v2.0.1-may-2019`, you must periodically inspect old and unsupported images and `istags` and remove them. Otherwise, you can experience increasing resource usage caused by retaining old images.
+<div class="note">
+
+If your team requires the use of unique, date-specific, or highly revisioned tags like `v2.0.1-may-2019`, you must periodically inspect old and unsupported images and `istags` and remove them. Otherwise, you can experience increasing resource usage caused by retaining old images.
+
+</div>
 
 # Adding tags to image streams
 
@@ -56,14 +59,6 @@ There are two types of tags available in OpenShift Container Platform:
 - Tracking tags: A tracking tag means that the destination tag’s metadata is updated during the import of the source tag.
 
 The default behavior creates a permanent tag that is pinned to an image ID.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Optional: Add a tag to an image stream by entering the following command. The default behavior creates a permanent tag that is pinned to an image ID:
 
@@ -85,8 +80,11 @@ Procedure
   $ oc tag --alias=true ruby:2.0 ruby:latest
   ```
 
-  > [!NOTE]
-  > A Tracking Tag created with `--alias=true` automatically updates its image ID whenever the source tag changes. Use the `latest` or `stable` tracking tags for creating common, long-lived aliases. This tracking behavior only works correctly within a single image stream. Trying to create a cross-image stream alias produces an error.
+  <div class="note">
+
+  A Tracking Tag created with `--alias=true` automatically updates its image ID whenever the source tag changes. Use the `latest` or `stable` tracking tags for creating common, long-lived aliases. This tracking behavior only works correctly within a single image stream. Trying to create a cross-image stream alias produces an error.
+
+  </div>
 
 - Optional: Use the `--scheduled=true` flag to have the destination tag be refreshed, or re-imported, periodically. The period is configured globally at the system level. For example:
 
@@ -112,19 +110,9 @@ Procedure
   $ oc tag <source_reference> <destination_image_stream>:<destination_tag> --reference-policy=local
   ```
 
-</div>
-
 # Removing tags from image streams
 
 To keep your image streams clean and maintain organized image references in OpenShift Container Platform, you can remove unused or outdated image stream tags. Remove tags by using the `oc delete istag` or `oc tag -d` commands.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Remove a tag from an image stream by entering the following command:
 
@@ -150,19 +138,9 @@ Procedure
   $ oc tag -d ruby:latest
   ```
 
-</div>
-
 # Using image stream reference syntax
 
 To ensure that your builds and deployments use the intended image version in OpenShift Container Platform, you must use the correct reference syntax format.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To reference an image by a mutable tag (`ImageStreamTag`) from an image stream within your cluster, use the `<image_stream_name>:<tag>` format in your build or deployment. For example:
 
@@ -194,8 +172,11 @@ Procedure
   `image`
   Specifies the image to use from the image stream. For example, `ruby@sha256:3a335d7d8a452970c5b4054ad7118ff134b3a6b50a2bb6d0c07c746e8986b28e`.
 
-  > [!NOTE]
-  > Using the image ID with the `@id` syntax ensures your configuration always uses the exact same image, even if the tag is later updated to point to a different image.
+  <div class="note">
+
+  Using the image ID with the `@id` syntax ensures your configuration always uses the exact same image, even if the tag is later updated to point to a different image.
+
+  </div>
 
 - To reference an image from an external registry by using the DockerImage format, use the standard Docker pull specification: `<registry>/<namespace>/<image_name>:<tag>`. For example:
 
@@ -217,10 +198,11 @@ Procedure
   `image`
   Specifies the image to use from the external registry. For example, `registry.redhat.io/rhel7:latest`.
 
-  > [!NOTE]
-  > When no tag is specified in a `DockerImage` reference, the `latest` tag is assumed.
+  <div class="note">
 
-</div>
+  When no tag is specified in a `DockerImage` reference, the `latest` tag is assumed.
+
+  </div>
 
 # Understanding image stream reference types
 
@@ -228,13 +210,16 @@ By using image streams in OpenShift Container Platform, you can reference contai
 
 `ImageStreamImage` objects are automatically created in OpenShift Container Platform when you import or tag an image into the image stream. You never have to explicitly define an `ImageStreamImage` object in any image stream definition that you use to create image streams.
 
-> [!NOTE]
-> Example image stream definitions often contain definitions of `ImageStreamTag` and references to `DockerImage`, but never contain definitions of `ImageStreamImage`.
+<div class="note">
 
-| Reference Type | Description | Syntax Examples |
-|----|----|----|
-| `ImageStreamTag` | References or retrieves an image for a given image stream and human-readable tag. | `image_stream_name:tag` |
-| `ImageStreamImage` | References or retrieves an image for a given image stream and immutable SHA ID (digest). | `image_stream_name@id` |
-| `DockerImage` | References or retrieves an image from an external registry. Uses the standard `docker pull` specification. | `openshift/ruby-20-centos7:2.0`, `registry.redhat.io/rhel7:latest`, `centos/ruby-22-centos7@sha256:3a335d7d…​` |
+Example image stream definitions often contain definitions of `ImageStreamTag` and references to `DockerImage`, but never contain definitions of `ImageStreamImage`.
+
+</div>
+
+| Reference Type     | Description                                                                                                | Syntax Examples                                                                                               |
+|--------------------|------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| `ImageStreamTag`   | References or retrieves an image for a given image stream and human-readable tag.                          | `image_stream_name:tag`                                                                                       |
+| `ImageStreamImage` | References or retrieves an image for a given image stream and immutable SHA ID (digest).                   | `image_stream_name@id`                                                                                        |
+| `DockerImage`      | References or retrieves an image from an external registry. Uses the standard `docker pull` specification. | `openshift/ruby-20-centos7:2.0`, `registry.redhat.io/rhel7:latest`, `centos/ruby-22-centos7@sha256:3a335d7d…​` |
 
 Imagestream reference types

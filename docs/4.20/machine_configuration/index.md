@@ -4,10 +4,13 @@ Aside from a few specialized features, most changes to operating systems on Open
 
 Tasks in this section describe how to use features of the Machine Config Operator to configure operating system features on OpenShift Container Platform nodes.
 
-> [!IMPORTANT]
-> NetworkManager stores new network configurations to `/etc/NetworkManager/system-connections/` in a key file format.
->
-> Previously, NetworkManager stored new network configurations to `/etc/sysconfig/network-scripts/` in the `ifcfg` format. Starting with RHEL 9.0, RHEL stores new network configurations at `/etc/NetworkManager/system-connections/` in a key file format. The connections configurations stored to `/etc/sysconfig/network-scripts/` in the old format still work uninterrupted. Modifications in existing profiles continue updating the older files.
+<div class="important">
+
+NetworkManager stores new network configurations to `/etc/NetworkManager/system-connections/` in a key file format.
+
+Previously, NetworkManager stored new network configurations to `/etc/sysconfig/network-scripts/` in the `ifcfg` format. Starting with RHEL 9.0, RHEL stores new network configurations at `/etc/NetworkManager/system-connections/` in a key file format. The connections configurations stored to `/etc/sysconfig/network-scripts/` in the old format still work uninterrupted. Modifications in existing profiles continue updating the older files.
+
+</div>
 
 # About the Machine Config Operator
 
@@ -25,42 +28,35 @@ The machine configuration is a subset of the Ignition configuration. The `machin
 
 When you perform node management operations, you create or modify a `KubeletConfig` custom resource (CR).
 
-> [!IMPORTANT]
-> When changes are made to a machine configuration, the Machine Config Operator (MCO) automatically reboots all corresponding nodes in order for the changes to take effect.
->
-> You can mitigate the disruption caused by some machine config changes by using a node disruption policy. See *Understanding node restart behaviors after machine config changes*.
->
-> Alternatively, you can prevent the nodes from automatically rebooting after machine configuration changes before making the changes. Pause the autoreboot process by setting the `spec.paused` field to `true` in the corresponding machine config pool. When paused, machine configuration changes are not applied until you set the `spec.paused` field to `false` and the nodes have rebooted into the new configuration.
->
-> - When the MCO detects any of the following changes, it applies the update without draining or rebooting the node:
->
->   - Changes to the SSH key in the `spec.config.passwd.users.sshAuthorizedKeys` parameter of a machine config.
->
->   - Changes to the global pull secret or pull secret in the `openshift-config` namespace.
->
->   - Automatic rotation of the `/etc/kubernetes/kubelet-ca.crt` certificate authority (CA) by the Kubernetes API Server Operator.
->
-> - When the MCO detects changes to the `/etc/containers/registries.conf` file, such as editing an `ImageDigestMirrorSet`, `ImageTagMirrorSet`, or `ImageContentSourcePolicy` object, it drains the corresponding nodes, applies the changes, and uncordons the nodes. The node drain does not happen for the following changes:
->
->   - The addition of a registry with the `pull-from-mirror = "digest-only"` parameter set for each mirror.
->
->   - The addition of a mirror with the `pull-from-mirror = "digest-only"` parameter set in a registry.
->
->   - The addition of items to the `unqualified-search-registries` list.
+<div class="important">
+
+When changes are made to a machine configuration, the Machine Config Operator (MCO) automatically reboots all corresponding nodes in order for the changes to take effect.
+
+You can mitigate the disruption caused by some machine config changes by using a node disruption policy. See *Understanding node restart behaviors after machine config changes*.
+
+Alternatively, you can prevent the nodes from automatically rebooting after machine configuration changes before making the changes. Pause the autoreboot process by setting the `spec.paused` field to `true` in the corresponding machine config pool. When paused, machine configuration changes are not applied until you set the `spec.paused` field to `false` and the nodes have rebooted into the new configuration.
+
+- When the MCO detects any of the following changes, it applies the update without draining or rebooting the node:
+
+  - Changes to the SSH key in the `spec.config.passwd.users.sshAuthorizedKeys` parameter of a machine config.
+
+  - Changes to the global pull secret or pull secret in the `openshift-config` namespace.
+
+  - Automatic rotation of the `/etc/kubernetes/kubelet-ca.crt` certificate authority (CA) by the Kubernetes API Server Operator.
+
+- When the MCO detects changes to the `/etc/containers/registries.conf` file, such as editing an `ImageDigestMirrorSet`, `ImageTagMirrorSet`, or `ImageContentSourcePolicy` object, it drains the corresponding nodes, applies the changes, and uncordons the nodes. The node drain does not happen for the following changes:
+
+  - The addition of a registry with the `pull-from-mirror = "digest-only"` parameter set for each mirror.
+
+  - The addition of a mirror with the `pull-from-mirror = "digest-only"` parameter set in a registry.
+
+  - The addition of items to the `unqualified-search-registries` list.
+
+</div>
 
 There might be situations where the configuration on a node does not fully match what the currently-applied machine config specifies. This state is called *configuration drift*. The Machine Config Daemon (MCD) regularly checks the nodes for configuration drift. If the MCD detects configuration drift, the MCO marks the node `degraded` until an administrator corrects the node configuration. A degraded node is online and operational, but, it cannot be updated.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [About the OVN-Kubernetes network plugin](../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#about-ovn-kubernetes)
-
-</div>
 
 # Machine config overview
 
@@ -70,8 +66,11 @@ The Machine Config Operator (MCO) manages updates to systemd, CRI-O and Kubelet,
 
 - MCO applies changes to operating systems in pools of machines. All OpenShift Container Platform clusters start with worker and control plane node pools. By adding more role labels, you can configure custom pools of nodes. For example, you can set up a custom pool of worker nodes that includes particular hardware features needed by an application. However, examples in this section focus on changes to the default pool types.
 
-  > [!IMPORTANT]
-  > A node can have multiple labels applied that indicate its type, such as `master` or `worker`, however it can be a member of only a **single** machine config pool.
+  <div class="important">
+
+  A node can have multiple labels applied that indicate its type, such as `master` or `worker`, however it can be a member of only a **single** machine config pool.
+
+  </div>
 
 - Machine configs are processed alphabetically, in lexicographically increasing order, by their name. The render controller uses the first machine config in the list as the base and appends the rest to the base machine config into a rendered machine config, which is then applied to the appropriate nodes.
 
@@ -113,10 +112,6 @@ The kinds of components that MCO can change include:
 
     <div class="important">
 
-    <div class="title">
-
-    </div>
-
     - Changing SSH keys by using a machine config is supported only for the `core` user.
 
     - Adding new users by using a machine config is not supported.
@@ -129,10 +124,13 @@ The kinds of components that MCO can change include:
 
 - **fips**: Enable [FIPS](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/security_hardening/index#using-the-system-wide-cryptographic-policies_security-hardening) mode. FIPS should be set at installation-time setting and not a postinstallation procedure.
 
-  > [!IMPORTANT]
-  > To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Switching RHEL to FIPS mode](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening).
-  >
-  > When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
+  <div class="important">
+
+  To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Switching RHEL to FIPS mode](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening).
+
+  When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
+
+  </div>
 
 - **extensions**: Extend RHCOS features by adding selected pre-packaged software. For this feature, available extensions include [usbguard](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/security_hardening/index#protecting-systems-against-intrusive-usb-devices_security-hardening) and kernel modules.
 
@@ -172,13 +170,19 @@ For worker nodes, you can create additional MCPs, or custom pools, to manage nod
 
 Custom pools are pools that inherit their configurations from the worker pool. They use any machine config targeted for the worker pool, but add the ability to deploy changes only targeted at the custom pool. Since a custom pool inherits its configuration from the worker pool, any change to the worker pool is applied to the custom pool as well. Custom pools that do not inherit their configurations from the worker pool are not supported by the MCO.
 
-> [!NOTE]
-> A node can only be included in one MCP. If a node has multiple labels that correspond to several MCPs, like `worker,infra`, it is managed by the infra custom pool, not the worker pool. Custom pools take priority on selecting nodes to manage based on node labels; nodes that do not belong to a custom pool are managed by the worker pool.
+<div class="note">
+
+A node can only be included in one MCP. If a node has multiple labels that correspond to several MCPs, like `worker,infra`, it is managed by the infra custom pool, not the worker pool. Custom pools take priority on selecting nodes to manage based on node labels; nodes that do not belong to a custom pool are managed by the worker pool.
+
+</div>
 
 It is recommended to have a custom pool for every node role you want to manage in your cluster. For example, if you create infra nodes to handle infra workloads, it is recommended to create a custom infra MCP to group those nodes together. If you apply an `infra` role label to a worker node so it has the `worker,infra` dual label, but do not have a custom infra MCP, the MCO considers it a worker node. If you remove the `worker` label from a node and apply the `infra` label without grouping it in a custom pool, the node is not recognized by the MCO and is unmanaged by the cluster.
 
-> [!IMPORTANT]
-> Any node labeled with the `infra` role that is only running infra workloads is not counted toward the total number of subscriptions. The MCP managing an infra node is mutually exclusive from how the cluster determines subscription charges; tagging a node with the appropriate `infra` role and using taints to prevent user workloads from being scheduled on that node are the only requirements for avoiding subscription charges for infra workloads.
+<div class="important">
+
+Any node labeled with the `infra` role that is only running infra workloads is not counted toward the total number of subscriptions. The MCP managing an infra node is mutually exclusive from how the cluster determines subscription charges; tagging a node with the appropriate `infra` role and using taints to prevent user workloads from being scheduled on that node are the only requirements for avoiding subscription charges for infra workloads.
+
+</div>
 
 The MCO applies updates for pools independently; for example, if there is an update that affects all pools, nodes from each pool update in parallel with each other. If you add a custom pool, nodes from that pool also attempt to update concurrently with the master and worker nodes.
 
@@ -202,8 +206,11 @@ After you make the changes, the MCO generates a new rendered machine config. In 
 
 Throughout this process, the MCO maintains the required number of pods based on the `MaxUnavailable` value set in the machine config pool.
 
-> [!NOTE]
-> There are conditions which can prevent the MCO from draining a node. If the MCO fails to drain a node, the Operator will be unable to reboot the node, preventing any changes made to the node through a machine config. For more information and mitigation steps, see the [MCCDrainError](https://github.com/openshift/runbooks/blob/master/alerts/machine-config-operator/MachineConfigControllerDrainError.md) runbook.
+<div class="note">
+
+There are conditions which can prevent the MCO from draining a node. If the MCO fails to drain a node, the Operator will be unable to reboot the node, preventing any changes made to the node through a machine config. For more information and mitigation steps, see the [MCCDrainError](https://github.com/openshift/runbooks/blob/master/alerts/machine-config-operator/MachineConfigControllerDrainError.md) runbook.
+
+</div>
 
 If the MCO drains pods on the master node, note the following conditions:
 
@@ -211,26 +218,19 @@ If the MCO drains pods on the master node, note the following conditions:
 
 - The MCO does not drain static pods in order to prevent interference with services, such as etcd.
 
-> [!NOTE]
-> In certain cases the nodes are not drained. For more information, see "About the Machine Config Operator."
+<div class="note">
 
-There are ways to mitigate the disruption caused by drain and reboot cycles by using node disruption policies or disabling control plane reboots. For more information, see "Understanding node restart behaviors after machine config changes" and "Disabling the Machine Config Operator from automatically rebooting."
-
-<div>
-
-<div class="title">
-
-Additional resources
+In certain cases the nodes are not drained. For more information, see "About the Machine Config Operator."
 
 </div>
+
+There are ways to mitigate the disruption caused by drain and reboot cycles by using node disruption policies or disabling control plane reboots. For more information, see "Understanding node restart behaviors after machine config changes" and "Disabling the Machine Config Operator from automatically rebooting."
 
 - [About the Machine Config Operator](../machine_configuration/index.xml#about-machine-config-operator_machine-config-overview)
 
 - [Using node disruption policies to minimize disruption from machine config changes](../machine_configuration/machine-config-node-disruption.xml#machine-configs-configure)
 
 - [Disabling the Machine Config Operator from automatically rebooting](../support/troubleshooting/troubleshooting-operator-issues.xml#troubleshooting-disabling-autoreboot-mco_troubleshooting-operator-issues)
-
-</div>
 
 # Understanding configuration drift detection
 
@@ -246,8 +246,11 @@ The MCD performs configuration drift detection upon each of the following condit
 
 - Before a new machine config is applied.
 
-  > [!NOTE]
-  > If you apply a new machine config to the nodes, the MCD temporarily shuts down configuration drift detection. This shutdown is needed because the new machine config necessarily differs from the machine config on the nodes. After the new machine config is applied, the MCD restarts detecting configuration drift using the new machine config.
+  <div class="note">
+
+  If you apply a new machine config to the nodes, the MCD temporarily shuts down configuration drift detection. This shutdown is needed because the new machine config necessarily differs from the machine config on the nodes. After the new machine config is applied, the MCD restarts detecting configuration drift using the new machine config.
+
+  </div>
 
 When performing configuration drift detection, the MCD validates that the file contents and permissions fully match what the currently-applied machine config specifies. Typically, the MCD detects configuration drift in less than a second after the detection is triggered.
 
@@ -269,11 +272,9 @@ $ oc get mcp worker
 
 If you have a degraded MCP, the `DEGRADEDMACHINECOUNT` field is non-zero, similar to the following output:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -282,19 +283,15 @@ NAME     CONFIG                                             UPDATED   UPDATING  
 worker   rendered-worker-404caf3180818d8ac1f50c32f14b57c3   False     True       True       2              1                   1                     1                      5h51m
 ```
 
-</div>
-
 You can determine if the problem is caused by configuration drift by examining the machine config pool:
 
 ``` terminal
 $ oc describe mcp worker
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -308,8 +305,6 @@ Example output
  ...
 ```
 
-</div>
-
 - This message shows that a node’s `/etc/mco-test-file` file, which was added by the machine config, has changed outside of the machine config.
 
 - The state of the node is `NodeDegraded`.
@@ -320,11 +315,9 @@ Or, if you know which node is degraded, examine that node:
 $ oc describe node/ci-ln-j4h8nkb-72292-pxqxz-worker-a-fjks4
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -343,8 +336,6 @@ Annotations:        cloud.network.openshift.io/egress-ipconfig: [{"interface":"n
  ...
 ```
 
-</div>
-
 - The error message indicating that configuration drift was detected between the node and the listed machine config. Here the error message indicates that the contents of the `/etc/mco-test-file`, which was added by the machine config, has changed outside of the machine config.
 
 - The state of the node is `Degraded`.
@@ -355,20 +346,15 @@ You can correct configuration drift and return the node to the `Ready` state by 
 
 - Generate a [force file](https://access.redhat.com/solutions/5414371) on the degraded node. The force file causes the MCD to bypass the usual configuration drift detection and reapplies the current machine config.
 
-  > [!NOTE]
-  > Generating a force file on a node causes that node to reboot.
+  <div class="note">
+
+  Generating a force file on a node causes that node to reboot.
+
+  </div>
 
 # Checking machine config pool status
 
 To see the status of the Machine Config Operator (MCO), its sub-components, and the resources it manages, use the following `oc` commands:
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To see the number of MCO-managed nodes available on your cluster for each machine config pool (MCP), run the following command:
 
@@ -376,11 +362,9 @@ Procedure
     $ oc get machineconfigpool
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -389,8 +373,6 @@ Procedure
     master    rendered-master-06c9c4…   True     False      False     3             3                  3                   0                     4h42m
     worker    rendered-worker-f4b64…    False    True       False     3             2                  2                   0                     4h42m
     ```
-
-    </div>
 
     where:
 
@@ -419,24 +401,23 @@ Procedure
 
     While the nodes in the MCP are updating, the machine config listed under `CONFIG` is the current machine config, which the MCP is being updated from. When the update is complete, the listed machine config is the desired machine config, which the MCP was updated to.
 
-    > [!NOTE]
-    > If a node is being cordoned, that node is not included in the `READYMACHINECOUNT`, but is included in the `MACHINECOUNT`. Also, the MCP status is set to `UPDATING`. Because the node has the current machine config, it is counted in the `UPDATEDMACHINECOUNT` total:
-    >
-    > <div class="formalpara">
-    >
-    > <div class="title">
-    >
-    > Example output
-    >
-    > </div>
-    >
-    > ``` terminal
-    > NAME      CONFIG                    UPDATED  UPDATING   DEGRADED  MACHINECOUNT  READYMACHINECOUNT  UPDATEDMACHINECOUNT DEGRADEDMACHINECOUNT  AGE
-    > master    rendered-master-06c9c4…   True     False      False     3             3                  3                   0                     4h42m
-    > worker    rendered-worker-c1b41a…   False    True       False     3             2                  3                   0                     4h42m
-    > ```
-    >
-    > </div>
+    <div class="note">
+
+    If a node is being cordoned, that node is not included in the `READYMACHINECOUNT`, but is included in the `MACHINECOUNT`. Also, the MCP status is set to `UPDATING`. Because the node has the current machine config, it is counted in the `UPDATEDMACHINECOUNT` total:
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    NAME      CONFIG                    UPDATED  UPDATING   DEGRADED  MACHINECOUNT  READYMACHINECOUNT  UPDATEDMACHINECOUNT DEGRADEDMACHINECOUNT  AGE
+    master    rendered-master-06c9c4…   True     False      False     3             3                  3                   0                     4h42m
+    worker    rendered-worker-c1b41a…   False    True       False     3             2                  3                   0                     4h42m
+    ```
+
+    </div>
 
 2.  To check the status of the nodes in an MCP by examining the `MachineConfigPool` custom resource, run the following command: :
 
@@ -444,11 +425,9 @@ Procedure
     $ oc describe mcp worker
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -463,30 +442,27 @@ Procedure
     Events:                       <none>
     ```
 
+    <div class="note">
+
+    If a node is being cordoned, the node is not included in the `Ready Machine Count`. It is included in the `Unavailable Machine Count`:
+
+    <div class="formalpara-title">
+
+    **Example output**
+
     </div>
 
-    > [!NOTE]
-    > If a node is being cordoned, the node is not included in the `Ready Machine Count`. It is included in the `Unavailable Machine Count`:
-    >
-    > <div class="formalpara">
-    >
-    > <div class="title">
-    >
-    > Example output
-    >
-    > </div>
-    >
-    > ``` terminal
-    > ...
-    >   Degraded Machine Count:     0
-    >   Machine Count:              3
-    >   Observed Generation:        2
-    >   Ready Machine Count:        2
-    >   Unavailable Machine Count:  1
-    >   Updated Machine Count:      3
-    > ```
-    >
-    > </div>
+    ``` terminal
+    ...
+      Degraded Machine Count:     0
+      Machine Count:              3
+      Observed Generation:        2
+      Ready Machine Count:        2
+      Unavailable Machine Count:  1
+      Updated Machine Count:      3
+    ```
+
+    </div>
 
 3.  To see each existing `MachineConfig` object, run the following command:
 
@@ -494,11 +470,9 @@ Procedure
     $ oc get machineconfigs
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -513,8 +487,6 @@ Procedure
     rendered-worker-fde...           2c9371fbb673b97a6fe8b1c52...   3.5.0            5h18m
     ```
 
-    </div>
-
     Note that the `MachineConfig` objects listed as `rendered` are not meant to be changed or deleted.
 
 4.  To view the contents of a particular machine config (in this case, `01-master-kubelet`), run the following command:
@@ -525,11 +497,9 @@ Procedure
 
     The output from the command shows that this `MachineConfig` object contains both configuration files (`cloud.conf` and `kubelet.conf`) and a systemd service (Kubernetes Kubelet):
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -563,10 +533,6 @@ Procedure
         kubelet \
           --config=/etc/kubernetes/kubelet.conf \ ...
     ```
-
-    </div>
-
-</div>
 
 If something goes wrong with a machine config that you apply, you can always back out that change. For example, if you had run `oc create -f ./myconfig.yaml` to apply a machine config, you could remove that machine config by running the following command:
 
@@ -628,11 +594,9 @@ For example, consider a cluster with a newly-created machine config:
 $ oc get machineconfig
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -647,8 +611,6 @@ rendered-worker-f351f6947f15cd0380514f4b1c89f8f2   c00e2c941bc6e236b50e0bf3988e6
 # ...
 ```
 
-</div>
-
 - The current machine config for the worker nodes.
 
 - The newly-created machine config that is being applied to the worker nodes.
@@ -659,11 +621,9 @@ You can watch as the nodes are updated with the new machine config:
 $ oc get machineconfignodes
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -676,8 +636,6 @@ ci-ln-ds73n5t-72292-9xsm9-worker-a-2d8tz   worker-cnf    rendered-worker-f351f69
 ci-ln-ds73n5t-72292-9xsm9-worker-b-gw5sd   worker        rendered-worker-f351f6947f15cd0380514f4b1c89f8f2   rendered-worker-01f27f752eb84eba917450e43636b210   False     20M
 ci-ln-ds73n5t-72292-9xsm9-worker-c-t227w   worker        rendered-worker-01f27f752eb84eba917450e43636b210   rendered-worker-01f27f752eb84eba917450e43636b210   True      19M
 ```
-
-</div>
 
 - This node has been updated. The new machine config, `rendered-worker-f351f6947f15cd0380514f4b1c89f8f2`, is shown as the desired and current machine configs.
 
@@ -692,29 +650,29 @@ ci-ln-ds73n5t-72292-9xsm9-worker-c-t227w   worker        rendered-worker-01f27f7
 <col style="width: 80%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Meaning</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>NAME</code></p></td>
 <td style="text-align: left;"><p>The name of the node.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>POOLNAME</code></p></td>
 <td style="text-align: left;"><p>The name of the machine config pool associated with that node.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>DESIREDCONFIG</code></p></td>
 <td style="text-align: left;"><p>The name of the new machine config that the node updates to.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>CURRENTCONFIG</code></p></td>
 <td style="text-align: left;"><p>The name of the current machine configuration on that node.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>UPDATED</code></p></td>
 <td style="text-align: left;"><p>Indicates if the node has been updated by using one of the following conditions:</p>
 <ul>
@@ -723,12 +681,14 @@ ci-ln-ds73n5t-72292-9xsm9-worker-c-t227w   worker        rendered-worker-01f27f7
 <li><p>If <code>True</code>, and the <code>CURRENTCONFIG</code> matches the old machine configuration shown in the <code>DESIREDCONFIG</code> field, that node has not been updated yet.</p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>AGE</code></p></td>
 <td style="text-align: left;"><p>The age of the machine configuration node from when it was created. The age is not changed if the associated node is updated.</p></td>
 </tr>
 </tbody>
 </table>
+
+Basic machine config node fields
 
 You can use the `-o wide` flag to display additional information about the updates:
 
@@ -736,11 +696,9 @@ You can use the `-o wide` flag to display additional information about the updat
 $ oc get machineconfignodes -o wide
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -754,22 +712,20 @@ ci-ln-ds73n5t-72292-9xsm9-worker-b-gw5sd   worker      rendered-worker-f351f6947
 ci-ln-ds73n5t-72292-9xsm9-worker-c-t227w   worker      rendered-worker-01f27f752eb84eba917450e43636b210   rendered-worker-01f27f752eb84eba917450e43636b210      True      19M   False            False            False                      False            False     False               False          False         False          False
 ```
 
-</div>
-
 In addition to the fields defined in the previous table, the `-o wide` output displays the following fields:
 
-| Phase Name | Definition |
-|----|----|
-| `UPDATEPREPARED` | Indicates if the MCO is preparing to update the node. |
-| `UPDATEEXECUTED` | Indicates if the MCO has completed the body of the update on the node. |
+| Phase Name                 | Definition                                                             |
+|----------------------------|------------------------------------------------------------------------|
+| `UPDATEPREPARED`           | Indicates if the MCO is preparing to update the node.                  |
+| `UPDATEEXECUTED`           | Indicates if the MCO has completed the body of the update on the node. |
 | `UPDATEPOSTACTIONCOMPLETE` | Indicates if the MCO has executed the post-update actions on the node. |
-| `UPDATECOMPLETE` | Indicates if the MCO has completed the update on the node. |
-| `RESUMED` | Indicates if the node has resumed normal processes. |
-| `UPDATEDFILESANDOS` | Indicates if the MCO has updated the node files and operating system. |
-| `CORDONEDNODE` | Indicates if the MCO has marked the node as not schedulable. |
-| `DRAINEDNODE` | Indicates if the MCO has drained the node. |
-| `REBOOTEDNODE` | Indicates if the MCO has restarted the node. |
-| `UNCORDONEDNODE` | Indicates if the MCO has marked the node as schedulable. |
+| `UPDATECOMPLETE`           | Indicates if the MCO has completed the update on the node.             |
+| `RESUMED`                  | Indicates if the node has resumed normal processes.                    |
+| `UPDATEDFILESANDOS`        | Indicates if the MCO has updated the node files and operating system.  |
+| `CORDONEDNODE`             | Indicates if the MCO has marked the node as not schedulable.           |
+| `DRAINEDNODE`              | Indicates if the MCO has drained the node.                             |
+| `REBOOTEDNODE`             | Indicates if the MCO has restarted the node.                           |
+| `UNCORDONEDNODE`           | Indicates if the MCO has marked the node as schedulable.               |
 
 Machine config node fields in the `-o wide` output
 
@@ -779,11 +735,9 @@ For more details on the update status, you can use the `oc describe machineconfi
 $ oc describe machineconfignode/<machine_config_node_name>
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -887,19 +841,7 @@ status:
 <3> The current machine config on the node.
 ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Enabling features using feature gates](../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
-
-</div>
 
 ## Checking node status during updates
 
@@ -907,25 +849,15 @@ During the update of a machine config pool (MCP), you can monitor the progress o
 
 For more information on the meaning of these fields, see "About checking machine config node status."
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - View the update status of all nodes in the cluster, including the current and desired machine configurations, by running the following command:
 
   ``` terminal
   $ oc get machineconfignodes
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -939,19 +871,15 @@ Procedure
   ci-ln-mdb23yt-72292-kzdsg-worker-c-mffrx   worker     rendered-worker-8f61bf839898a4487c3b5263a430e94a   rendered-worker-8f61bf839898a4487c3b5263a430e94a   True      19M
   ```
 
-  </div>
-
 - View of all machine config node status fields for the nodes in your cluster by running the following command:
 
   ``` terminal
   $ oc get machineconfignodes -o wide
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -965,8 +893,6 @@ Procedure
   ci-ln-g6dr34b-72292-g9btv-worker-c-gnpd6   worker     rendered-worker-d5534cb730e5e108905fc285c2a42b6c   rendered-worker-d5534cb730e5e108905fc285c2a42b6c   True      19M   False            False            False                      False            False     False               False          False         False          False
   ```
 
-  </div>
-
 - Check the update status of nodes in a specific machine config pool by running the following command:
 
   ``` terminal
@@ -978,11 +904,9 @@ Procedure
   `<pool_name>`
   Specifies the name of the machine config pool.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -993,19 +917,15 @@ Procedure
   ci-ln-g6dr34b-72292-g9btv-worker-c-gnpd6   worker     rendered-worker-faf6b50218a8bbce21f1370866283de5   rendered-worker-faf6b50218a8bbce21f1370866283de5   True      19M
   ```
 
-  </div>
-
 - Check the update status of an individual node by running the following command:
 
   ``` terminal
   $ oc describe machineconfignode/<node_name>
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -1068,10 +988,6 @@ Procedure
   # ...
   ```
 
-  </div>
-
-</div>
-
 # Understanding Machine Config Operator certificates
 
 Machine Config Operator certificates are used to secure connections between the Red Hat Enterprise Linux CoreOS (RHCOS) nodes and the Machine Config Server. For more information, see [Machine Config Operator certificates](../security/certificate_types_descriptions/machine-config-operator-certificates.xml#cert-types-machine-config-operator-certificates).
@@ -1090,25 +1006,9 @@ The MCC also handles the image registry certificates and its associated user bun
 
 You can get information about the listed certificates, including the underyling bundle the certificate comes from, and the signing and subject data.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - This procedure contains optional steps that require that the `python-yq` RPM package is installed.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Get detailed certificate information by running the following command:
 
@@ -1116,11 +1016,9 @@ Procedure
   $ oc get controllerconfig/machine-config-controller -o yaml | yq -y '.status.controllerCertificates'
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -1143,19 +1041,15 @@ Procedure
   # ...
   ```
 
-  </div>
-
 - Get a simpler version of the information found in the `ControllerConfig` resource by checking the machine config pool status using the following command:
 
   ``` terminal
   $ oc get mcp master -o yaml | yq -y '.status.certExpirys'
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -1174,8 +1068,6 @@ Procedure
     subject: CN=kube-apiserver-to-kubelet-signer,OU=openshift
   # ...
   ```
-
-  </div>
 
   This method is meant for OpenShift Container Platform applications that already consume machine config pool information.
 
@@ -1199,11 +1091,9 @@ Procedure
       sh-5.1# ls /etc/docker/certs.d
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -1211,7 +1101,3 @@ Procedure
       image-registry.openshift-image-registry.svc.cluster.local:5000
       image-registry.openshift-image-registry.svc:5000
       ```
-
-      </div>
-
-</div>

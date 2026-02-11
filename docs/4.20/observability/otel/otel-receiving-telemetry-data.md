@@ -4,14 +4,6 @@ After setting up the OpenTelemetry Collector and instrumenting your application,
 
 If you need the Collector to receive telemetry data from multiple remote clusters, create one OpenTelemetry Collector instance in each one of the remote clusters, and then have all of their telemetry data forwarded to a central OpenTelemetry Collector instance.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The Red Hat build of OpenTelemetry Operator is installed.
 
 - The Tempo Operator is installed.
@@ -19,16 +11,6 @@ Prerequisites
 - A TempoStack instance is deployed on the cluster.
 
 - The following mounted certificates: Issuer, self-signed certificate, CA issuer, client and server certificates. To create any of these certificates, see step 1.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Mount the following certificates in the OpenTelemetry Collector instance, skipping already mounted certificates.
 
@@ -120,11 +102,9 @@ Procedure
 
 2.  Create a service account for the OpenTelemetry Collector instance.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example ServiceAccount
+    **Example ServiceAccount**
 
     </div>
 
@@ -135,15 +115,11 @@ Procedure
       name: otel-collector-deployment
     ```
 
-    </div>
-
 3.  Create a cluster role for the service account.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example ClusterRole
+    **Example ClusterRole**
 
     </div>
 
@@ -160,19 +136,15 @@ Procedure
       verbs: ["get", "watch", "list"]
     ```
 
-    </div>
-
     - The `k8sattributesprocessor` requires permissions for pods and namespace resources.
 
     - The `resourcedetectionprocessor` requires permissions for infrastructures and status.
 
 4.  Bind the cluster role to the service account.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example ClusterRoleBinding
+    **Example ClusterRoleBinding**
 
     </div>
 
@@ -191,15 +163,11 @@ Procedure
       apiGroup: rbac.authorization.k8s.io
     ```
 
-    </div>
-
 5.  Create the YAML file to define the `OpenTelemetryCollector` custom resource (CR) in the edge clusters.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `OpenTelemetryCollector` custom resource for the edge clusters
+    **Example `OpenTelemetryCollector` custom resource for the edge clusters**
 
     </div>
 
@@ -258,17 +226,13 @@ Procedure
           mountPath: /certs
     ```
 
-    </div>
-
     - The Collector exporter is configured to export OTLP HTTP and points to the OpenTelemetry Collector from the central cluster.
 
 6.  Create the YAML file to define the `OpenTelemetryCollector` custom resource (CR) in the central cluster.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `OpenTelemetryCollector` custom resource for the central cluster
+    **Example `OpenTelemetryCollector` custom resource for the central cluster**
 
     </div>
 
@@ -313,10 +277,6 @@ Procedure
           mountPath: /certs
     ```
 
-    </div>
-
     - The Collector receiver requires the certificates listed in the first step.
 
     - The Collector exporter is configured to export OTLP and points to the Tempo distributor endpoint, which in this example is `"tempo-simplest-distributor:4317"` and already created.
-
-</div>

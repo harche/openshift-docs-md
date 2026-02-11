@@ -1,9 +1,12 @@
 The Network Observability Operator provides alerts using built-in metrics and the OpenShift Container Platform monitoring stack to quickly indicate your cluster’s network health.
 
-> [!IMPORTANT]
-> Network observability alerts is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Network observability alerts is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 # About network observability alerts
 
@@ -75,17 +78,7 @@ Click on a resource card to see more information. Next to each alert, a three do
 
 Network Observability Operator alerts are a Technology Preview feature. To use this feature, you must enable it in the `FlowCollector` custom resource (CR), and then continue with configuring alerts to your specific needs.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Edit the `FlowCollector` CR to set the experimental alerts flag to `true`:
-
-</div>
 
 ``` yaml
 apiVersion: flows.netobserv.io/v1beta1
@@ -133,8 +126,11 @@ spec:
           groupBy: Node
 ```
 
-> [!NOTE]
-> Customizing an alert replaces the default configuration for that template. If you want to keep the default configurations, you must manually replicate them.
+<div class="note">
+
+Customizing an alert replaces the default configuration for that template. If you want to keep the default configurations, you must manually replicate them.
+
+</div>
 
 ## About the PromQL expression for alerts
 
@@ -242,15 +238,15 @@ The `netobserv_io_network_health` annotation is optional, and controls how the a
 
 The `netobserv_io_network_health` annotation is a JSON string consisting of the following fields:
 
-| Field | Type | Description |
-|----|----|----|
-| `namespaceLabels` | List of strings | One or more labels that hold namespaces. When provided, the alert appears under the **Namespaces** tab. |
-| `nodeLabels` | List of strings | One or more labels that hold node names. When provided, the alert appears under the **Nodes** tab. |
-| `threshold` | String | The alert threshold, expected to match the threshold defined in the `PromQL` expression. |
-| `unit` | String | The data unit, used only for display purposes. |
-| `upperBound` | String | An upper bound value used to compute the score on a closed scale. Metric values exceeding this bound are clamped. |
-| `links` | List of objects | A list of links to display contextually with the alert. Each link requires a `name` (display name) and `url`. |
-| `trafficLinkFilter` | String | An additional filter to inject into the URL for the **Network Traffic** page. |
+| Field               | Type            | Description                                                                                                       |
+|---------------------|-----------------|-------------------------------------------------------------------------------------------------------------------|
+| `namespaceLabels`   | List of strings | One or more labels that hold namespaces. When provided, the alert appears under the **Namespaces** tab.           |
+| `nodeLabels`        | List of strings | One or more labels that hold node names. When provided, the alert appears under the **Nodes** tab.                |
+| `threshold`         | String          | The alert threshold, expected to match the threshold defined in the `PromQL` expression.                          |
+| `unit`              | String          | The data unit, used only for display purposes.                                                                    |
+| `upperBound`        | String          | An upper bound value used to compute the score on a closed scale. Metric values exceeding this bound are clamped. |
+| `links`             | List of objects | A list of links to display contextually with the alert. Each link requires a `name` (display name) and `url`.     |
+| `trafficLinkFilter` | String          | An additional filter to inject into the URL for the **Network Traffic** page.                                     |
 
 Fields for the netobserv_io_network_health annotation
 
@@ -260,14 +256,6 @@ The `namespaceLabels` and `nodeLabels` are mutually exclusive. If neither is pro
 
 Use the Prometheus Query Language (`PromQL`) to define a custom `AlertingRule` resource to trigger alerts based on specific network metrics (e.g., traffic surges).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Familiarity with `PromQL`.
 
 - You have installed OpenShift Container Platform 4.14 or later.
@@ -275,16 +263,6 @@ Prerequisites
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the Network Observability Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file named `custom-alert.yaml` that contains your `AlertingRule` resource.
 
@@ -294,15 +272,7 @@ Procedure
     $ oc apply -f custom-alert.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the `PrometheusRule` resource was created in the `netobserv` namespace by running the following command:
 
@@ -314,21 +284,11 @@ Verification
 
 2.  Confirm the rule is active by checking the **Network Health** dashboard in the OpenShift Container Platform web console → **Observe**.
 
-</div>
-
 ## Disabling predefined alerts
 
 Alert templates can be disabled in the `spec.processor.metrics.disableAlerts` field of the `FlowCollector` custom resource (CR). This setting accepts a list of alert template names. For a list of alert template names, see: "List of default alerts".
 
 If a template is disabled and overridden in the `spec.processor.metrics.alerts` field, the disable setting takes precedence and the alert rule is not created.
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [List of default alerts](../../observability/network_observability/network-observability-alerts.xml#network-observability-default-alert-templates_network-observability-alerts)
 
@@ -337,5 +297,3 @@ Additional resources
 - [Creating alerts](../../observability/network_observability/metrics-alerts-dashboards.xml#network-observability-netobserv-dashboard-high-traffic-alert_metrics-dashboards-alerts)
 
 - [Monitoring stack architecture](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/about_monitoring/monitoring-stack-architecture)
-
-</div>

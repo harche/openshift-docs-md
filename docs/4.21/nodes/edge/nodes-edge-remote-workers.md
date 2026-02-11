@@ -34,21 +34,13 @@ Adding remote worker nodes to a cluster involves some additional considerations.
 
 - To add remote worker nodes to an installer-provisioned cluster deployed with a provisioning network, ensure that `virtualMediaViaExternalNetwork` flag is set to `true` in the `install-config.yaml` file so that it will add the nodes using virtual media. Remote worker nodes will not have access to the local provisioning network. They must be deployed with virtual media rather than PXE. Additionally, specify each subnet for each group of remote worker nodes and the control plane nodes in the DHCP server.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Establishing communications between subnets](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#ipi-install-establishing-communication-between-subnets_ipi-install-installation-workflow)
 
 - [Configuring host network interfaces for subnets](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#ipi-install-configuring-host-network-interfaces-for-subnets_ipi-install-installation-workflow)
 
 - [Configuring network components to run on the control plane](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#configure-network-components-to-run-on-the-control-plane_ipi-install-installation-workflow)
-
-</div>
 
 # Network separation with remote worker nodes
 
@@ -82,8 +74,11 @@ If the Kubernetes Controller Manager Operator (kube controller) loses contact wi
 
 On the node, the pods must be restarted when the node recovers power and reconnects with the control plane.
 
-> [!NOTE]
-> If you want the pods to restart immediately upon restart, use static pods.
+<div class="note">
+
+If you want the pods to restart immediately upon restart, use static pods.
+
+</div>
 
 After the node restarts, the kubelet also restarts and attempts to restart the pods that were scheduled on the node. If the connection to the control plane takes longer than the default five minutes, the control plane cannot update the node health and remove the `node.kubernetes.io/unreachable` taint. On the node, the kubelet terminates any running pods. When these conditions are cleared, the scheduler can start scheduling pods to that node.
 
@@ -119,17 +114,7 @@ These worker latency profiles contain three sets of parameters that are predefin
 
 You can configure worker latency profiles when installing a cluster or at any time you notice increased latency in your cluster network.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Improving cluster stability in high latency environments using worker latency profiles ](../../nodes/clusters/nodes-cluster-worker-latency-profiles.xml#nodes-cluster-worker-latency-profiles)
-
-</div>
 
 # Remote worker node strategies
 
@@ -144,11 +129,9 @@ Daemon sets are the best approach to managing pods on remote worker nodes for th
 
 - Daemon set pods, by default, are created with `NoExecute` tolerations for the `node.kubernetes.io/unreachable` and `node.kubernetes.io/not-ready` taints with no `tolerationSeconds` value. These default values ensure that daemon set pods are never evicted if the control plane cannot reach a node. For example:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Tolerations added to daemon set pods by default
+  **Tolerations added to daemon set pods by default**
 
   </div>
 
@@ -174,20 +157,24 @@ Daemon sets are the best approach to managing pods on remote worker nodes for th
         effect: NoSchedule
   ```
 
-  </div>
-
 - Daemon sets can use labels to ensure that a workload runs on a matching worker node.
 
 - You can use an OpenShift Container Platform service endpoint to load balance daemon set pods.
 
-> [!NOTE]
-> Daemon sets do not schedule pods after a reboot of the node if OpenShift Container Platform cannot reach the node.
+<div class="note">
+
+Daemon sets do not schedule pods after a reboot of the node if OpenShift Container Platform cannot reach the node.
+
+</div>
 
 Static pods
 If you want pods restart if a node reboots, after a power loss for example, consider [static pods](https://kubernetes.io/docs/tasks/configure-pod-container/static-pod/). The kubelet on a node automatically restarts static pods as node restarts.
 
-> [!NOTE]
-> Static pods cannot use secrets and config maps.
+<div class="note">
+
+Static pods cannot use secrets and config maps.
+
+</div>
 
 Kubernetes zones
 [Kubernetes zones](https://kubernetes.io/docs/setup/best-practices/multiple-zones/) can slow down the rate or, in some cases, completely stop pod evictions.
@@ -200,11 +187,9 @@ For partially disrupted zones, where more than 55% of the nodes have a `False` o
 
 You assign a node to a specific zone by applying the `topology.kubernetes.io/region` label in the node specification.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample node labels for Kubernetes zones
+**Sample node labels for Kubernetes zones**
 
 </div>
 
@@ -216,8 +201,6 @@ metadata:
     topology.kubernetes.io/region=east
 ```
 
-</div>
-
 `KubeletConfig` objects
 
 You can adjust the amount of time that the kubelet checks the state of each node.
@@ -226,11 +209,9 @@ To set the interval that affects the timing of when the on-premise node controll
 
 The kubelet on each node determines the node status as defined by the `node-status-update-frequency` setting and reports that status to the cluster based on the `node-status-report-frequency` setting. By default, the kubelet determines the pod status every 10 seconds and reports the status every minute. However, if the node state changes, the kubelet reports the change to the cluster immediately. OpenShift Container Platform uses the `node-status-report-frequency` setting only when the Node Lease feature gate is enabled, which is the default state in OpenShift Container Platform clusters. If the Node Lease feature gate is disabled, the node reports its status based on the `node-status-update-frequency` setting.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example kubelet config
+**Example kubelet config**
 
 </div>
 
@@ -250,8 +231,6 @@ spec:
       - "1m"
 ```
 
-</div>
-
 - Specify the type of node type to which this `KubeletConfig` object applies using the label from the `MachineConfig` object.
 
 - Specify the frequency that the kubelet checks the status of a node associated with this `MachineConfig` object. The default value is `10s`. If you change this default, the `node-status-report-frequency` value is changed to the same value.
@@ -262,8 +241,11 @@ The `node-status-update-frequency` parameter works with the `node-monitor-grace-
 
 - The `node-monitor-grace-period` parameter specifies how long OpenShift Container Platform waits after a node associated with a `MachineConfig` object is marked `Unhealthy` if the controller manager does not receive the node heartbeat. Workloads on the node continue to run after this time. If the remote worker node rejoins the cluster after `node-monitor-grace-period` expires, pods continue to run. New pods can be scheduled to that node. The `node-monitor-grace-period` interval is `40s`. The `node-status-update-frequency` value must be lower than the `node-monitor-grace-period` value.
 
-> [!NOTE]
-> Modifying the `node-monitor-grace-period` parameter is not supported.
+<div class="note">
+
+Modifying the `node-monitor-grace-period` parameter is not supported.
+
+</div>
 
 Tolerations
 You can use pod tolerations to mitigate the effects if the on-premise node controller adds a `node.kubernetes.io/unreachable` taint with a `NoExecute` effect to a node it cannot reach.
@@ -276,16 +258,17 @@ A taint with the `NoExecute` effect affects pods that are running on the node in
 
 - Pods that tolerate the taint with a specified `tolerationSeconds` value remain bound for the specified amount of time. After the time elapses, the pods are queued for eviction.
 
-> [!NOTE]
-> Unless tolerations are explicitly set, Kubernetes automatically adds a toleration for `node.kubernetes.io/not-ready` and `node.kubernetes.io/unreachable` with `tolerationSeconds=300`, meaning that pods remain bound for 5 minutes if either of these taints is detected.
+<div class="note">
+
+Unless tolerations are explicitly set, Kubernetes automatically adds a toleration for `node.kubernetes.io/not-ready` and `node.kubernetes.io/unreachable` with `tolerationSeconds=300`, meaning that pods remain bound for 5 minutes if either of these taints is detected.
+
+</div>
 
 You can delay or avoid pod eviction by configuring pods tolerations with the `NoExecute` effect for the `node.kubernetes.io/unreachable` and `node.kubernetes.io/not-ready` taints.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example toleration in a pod spec
+**Example toleration in a pod spec**
 
 </div>
 
@@ -302,8 +285,6 @@ tolerations:
 ...
 ```
 
-</div>
-
 - The `NoExecute` effect without `tolerationSeconds` lets pods remain forever if the control plane cannot reach the node.
 
 - The `NoExecute` effect with `tolerationSeconds`: 600 lets pods remain for 10 minutes if the control plane marks the node as `Unhealthy`.
@@ -313,20 +294,15 @@ tolerations:
 Other types of OpenShift Container Platform objects
 You can use replica sets, deployments, and replication controllers. The scheduler can reschedule these pods onto other nodes after the node is disconnected for five minutes. Rescheduling onto other nodes can be beneficial for some workloads, such as REST APIs, where an administrator can guarantee a specific number of pods are running and accessible.
 
-> [!NOTE]
-> When working with remote worker nodes, rescheduling pods on different nodes might not be acceptable if remote worker nodes are intended to be reserved for specific functions.
+<div class="note">
+
+When working with remote worker nodes, rescheduling pods on different nodes might not be acceptable if remote worker nodes are intended to be reserved for specific functions.
+
+</div>
 
 [stateful sets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) do not get restarted when there is an outage. The pods remain in the `terminating` state until the control plane can acknowledge that the pods are terminated.
 
 To avoid scheduling a to a node that does not have access to the same type of persistent storage, OpenShift Container Platform cannot migrate pods that require persistent volumes to other zones in the case of network separation.
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - For more information on Daemonesets, see [DaemonSets](../../nodes/jobs/nodes-pods-daemonsets.xml#nodes-pods-daemonsets).
 
@@ -341,5 +317,3 @@ Additional resources
 - For more information on replication controllers, see [Replication controllers](../../applications/deployments/what-deployments-are.xml#deployments-replicationcontrollers_what-deployments-are).
 
 - For more information on the controller manager, see [Kubernetes Controller Manager Operator](../../operators/operator-reference.xml#kube-controller-manager-operator_operator-reference).
-
-</div>

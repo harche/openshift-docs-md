@@ -20,25 +20,7 @@ For example, a mapping or ratio of 10:1 maps 10 virtual CPUs to 1 physical CPU b
 
 To change the default number of vCPUs mapped to each physical CPU, set the `vmiCPUAllocationRatio` value in the `HyperConverged` CR. The pod CPU request is calculated by multiplying the number of vCPUs by the reciprocal of the CPU allocation ratio. For example, if `vmiCPUAllocationRatio` is set to 10, OpenShift Virtualization will request 10 times fewer CPUs on the pod for that VM.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -57,8 +39,6 @@ Procedure
     ```
 
     When `vmiCPUAllocationRatio` is set to `1`, the maximum amount of vCPUs are requested for the pod.
-
-</div>
 
 # Additional resources
 

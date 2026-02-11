@@ -12,17 +12,13 @@ If a node fails and [node health checks](https://access.redhat.com/articles/7057
 
 When you delete a node using the CLI, the node object is deleted in Kubernetes, but the pods that exist on the node are not deleted. Any bare pods not backed by a replication controller become inaccessible to OpenShift Container Platform. Pods backed by replication controllers are rescheduled to other available nodes. You must delete local manifest pods.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 Delete a node from an OpenShift Container Platform cluster running on bare metal by completing the following steps:
-
-</div>
 
 1.  Mark the node as unschedulable:
 
@@ -56,30 +52,12 @@ After all resources are terminated on the unhealthy node, a new virtual machine 
 
 You can list all virtual machine instances (VMIs) in your cluster, including standalone VMIs and those owned by virtual machines, by using the `oc` command-line interface (CLI).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - List all VMIs by running the following command:
 
   ``` terminal
   $ oc get vmis -A
   ```
-
-</div>

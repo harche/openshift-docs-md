@@ -4,25 +4,7 @@ The default OpenShift Container Platform configuration only allows the web conso
 
 If you need to access the API server or OAuth server from a JavaScript application using a different hostname, you can configure additional hostnames to allow.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `APIServer` resource:
 
@@ -51,17 +33,18 @@ Procedure
 
     - The hostname is specified as a [Golang regular expression](https://github.com/google/re2/wiki/Syntax) that matches against CORS headers from HTTP requests against the API server and OAuth server.
 
-      > [!NOTE]
-      > This example uses the following syntax:
-      >
-      > - The `(?i)` makes it case-insensitive.
-      >
-      > - The `//` pins to the beginning of the domain and matches the double slash following `http:` or `https:`.
-      >
-      > - The `\.` escapes dots in the domain name.
-      >
-      > - The `(:|\z)` matches the end of the domain name `(\z)` or a port separator `(:)`.
+      <div class="note">
+
+      This example uses the following syntax:
+
+      - The `(?i)` makes it case-insensitive.
+
+      - The `//` pins to the beginning of the domain and matches the double slash following `http:` or `https:`.
+
+      - The `\.` escapes dots in the domain name.
+
+      - The `(:|\z)` matches the end of the domain name `(\z)` or a port separator `(:)`.
+
+      </div>
 
 3.  Save the file to apply the changes.
-
-</div>

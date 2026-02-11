@@ -13,13 +13,13 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | ImageRegistrySpec defines the specs for the running registry. |
-| `status` | `object` | ImageRegistryStatus reports image registry operational status. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | ImageRegistrySpec defines the specs for the running registry.                                                                                                                                                                                                                                        |
+| `status`     | `object`                                                                             | ImageRegistryStatus reports image registry operational status.                                                                                                                                                                                                                                       |
 
 ## .spec
 
@@ -39,131 +39,131 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>affinity</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>affinity is a group of node affinity scheduling rules for the image registry pod(s).</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>defaultRoute</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>defaultRoute indicates whether an external facing route for the registry should be created using the default generated hostname.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>disableRedirect</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>disableRedirect controls whether to route all data through the Registry, rather than redirecting to the backend.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>httpSecret</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>httpSecret is the value needed by the registry to secure uploads, generated by default.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>logLevel</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>logLevel is an intent based logging for an overall component. It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands.</p>
 <p>Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>logging</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>logging is deprecated, use logLevel instead.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>managementState</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>managementState indicates whether and how the operator should manage the component</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>nodeSelector</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p>nodeSelector defines the node selection constraints for the registry pod.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>observedConfig</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>observedConfig holds a sparse config that controller has observed from the cluster state. It exists in spec because it is an input to the level for the operator</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>operatorLogLevel</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>operatorLogLevel is an intent based logging for the operator itself. It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves.</p>
 <p>Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxy</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>proxy defines the proxy to be used when calling master api, upstream registries, etc.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>readOnly</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>readOnly indicates whether the registry instance should reject attempts to push new images or delete existing ones.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>replicas</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>replicas determines the number of registry instances to run.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>requests</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>requests controls how many parallel requests a given registry instance will handle before queuing additional requests.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>resources</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>resources defines the resource requests+limits for the registry pod.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>rolloutStrategy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>rolloutStrategy defines rollout strategy for the image registry deployment.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>routes</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>routes defines additional external facing routes which should be created for the registry.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>routes[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ImageRegistryConfigRoute holds information on external route access to image registry.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>storage</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>storage details for configuring registry storage, e.g. S3 bucket coordinates.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tolerations</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>tolerations defines the tolerations for the registry pod.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tolerations[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The pod this Toleration is attached to tolerates any taint that matches the triple &lt;key,value,effect&gt; using the matching operator &lt;operator&gt;.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>topologySpreadConstraints</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>topologySpreadConstraints specify how to spread matching pods among the given topology.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>topologySpreadConstraints[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TopologySpreadConstraint specifies how to spread matching pods among the given topology.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>unsupportedConfigOverrides</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>unsupportedConfigOverrides overrides the final configuration that was computed by the operator. Red Hat does not support the use of this field. Misuse of this field could lead to unexpected behavior or conflict with other configuration options. Seek guidance from the Red Hat support before using this field. Use of this property blocks cluster upgrades, it must be removed before upgrading your cluster.</p></td>
@@ -179,10 +179,10 @@ affinity is a group of node affinity scheduling rules for the image registry pod
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `nodeAffinity` | `object` | Describes node affinity scheduling rules for the pod. |
-| `podAffinity` | `object` | Describes pod affinity scheduling rules (e.g. co-locate this pod in the same node, zone, etc. as some other pod(s)). |
+| Property          | Type     | Description                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------|
+| `nodeAffinity`    | `object` | Describes node affinity scheduling rules for the pod.                                                                         |
+| `podAffinity`     | `object` | Describes pod affinity scheduling rules (e.g. co-locate this pod in the same node, zone, etc. as some other pod(s)).          |
 | `podAntiAffinity` | `object` | Describes pod anti-affinity scheduling rules (e.g. avoid putting this pod in the same node, zone, etc. as some other pod(s)). |
 
 ## .spec.affinity.nodeAffinity
@@ -193,11 +193,11 @@ Describes node affinity scheduling rules for the pod.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `preferredDuringSchedulingIgnoredDuringExecution` | `array` | The scheduler will prefer to schedule pods to nodes that satisfy the affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling affinity expressions, etc.), compute a sum by iterating through the elements of this field and adding "weight" to the sum if the node matches the corresponding matchExpressions; the node(s) with the highest sum are the most preferred. |
-| `preferredDuringSchedulingIgnoredDuringExecution[]` | `object` | An empty preferred scheduling term matches all objects with implicit weight 0 (i.e. it’s a no-op). A null preferred scheduling term matches no objects (i.e. is also a no-op). |
-| `requiredDuringSchedulingIgnoredDuringExecution` | `object` | If the affinity requirements specified by this field are not met at scheduling time, the pod will not be scheduled onto the node. If the affinity requirements specified by this field cease to be met at some point during pod execution (e.g. due to an update), the system may or may not try to eventually evict the pod from its node. |
+| Property                                            | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|-----------------------------------------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `preferredDuringSchedulingIgnoredDuringExecution`   | `array`  | The scheduler will prefer to schedule pods to nodes that satisfy the affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling affinity expressions, etc.), compute a sum by iterating through the elements of this field and adding "weight" to the sum if the node matches the corresponding matchExpressions; the node(s) with the highest sum are the most preferred. |
+| `preferredDuringSchedulingIgnoredDuringExecution[]` | `object` | An empty preferred scheduling term matches all objects with implicit weight 0 (i.e. it’s a no-op). A null preferred scheduling term matches no objects (i.e. is also a no-op).                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `requiredDuringSchedulingIgnoredDuringExecution`    | `object` | If the affinity requirements specified by this field are not met at scheduling time, the pod will not be scheduled onto the node. If the affinity requirements specified by this field cease to be met at some point during pod execution (e.g. due to an update), the system may or may not try to eventually evict the pod from its node.                                                                                                                                                                                                                                                                                    |
 
 ## .spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution
 
@@ -220,10 +220,10 @@ Required
 
 - `weight`
 
-| Property | Type | Description |
-|----|----|----|
-| `preference` | `object` | A node selector term, associated with the corresponding weight. |
-| `weight` | `integer` | Weight associated with matching the corresponding nodeSelectorTerm, in the range 1-100. |
+| Property     | Type      | Description                                                                             |
+|--------------|-----------|-----------------------------------------------------------------------------------------|
+| `preference` | `object`  | A node selector term, associated with the corresponding weight.                         |
+| `weight`     | `integer` | Weight associated with matching the corresponding nodeSelectorTerm, in the range 1-100. |
 
 ## .spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].preference
 
@@ -233,12 +233,12 @@ A node selector term, associated with the corresponding weight.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | A list of node selector requirements by node’s labels. |
+| Property             | Type     | Description                                                                                                             |
+|----------------------|----------|-------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`  | A list of node selector requirements by node’s labels.                                                                  |
 | `matchExpressions[]` | `object` | A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchFields` | `array` | A list of node selector requirements by node’s fields. |
-| `matchFields[]` | `object` | A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
+| `matchFields`        | `array`  | A list of node selector requirements by node’s fields.                                                                  |
+| `matchFields[]`      | `object` | A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
 
 ## .spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].preference.matchExpressions
 
@@ -261,11 +261,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The label key that the selector applies to. |
-| `operator` | `string` | Represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt. |
-| `values` | `array (string)` | An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                                                                                                                         |
+|------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | The label key that the selector applies to.                                                                                                                                                                                                                                                                                                         |
+| `operator` | `string`         | Represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.                                                                                                                                                                                                                                |
+| `values`   | `array (string)` | An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].preference.matchFields
 
@@ -288,11 +288,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The label key that the selector applies to. |
-| `operator` | `string` | Represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt. |
-| `values` | `array (string)` | An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                                                                                                                         |
+|------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | The label key that the selector applies to.                                                                                                                                                                                                                                                                                                         |
+| `operator` | `string`         | Represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.                                                                                                                                                                                                                                |
+| `values`   | `array (string)` | An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution
 
@@ -305,9 +305,9 @@ Type
 Required
 - `nodeSelectorTerms`
 
-| Property | Type | Description |
-|----|----|----|
-| `nodeSelectorTerms` | `array` | Required. A list of node selector terms. The terms are ORed. |
+| Property              | Type     | Description                                                                                                                                                           |
+|-----------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `nodeSelectorTerms`   | `array`  | Required. A list of node selector terms. The terms are ORed.                                                                                                          |
 | `nodeSelectorTerms[]` | `object` | A null or empty node selector term matches no objects. The requirements of them are ANDed. The TopologySelectorTerm type implements a subset of the NodeSelectorTerm. |
 
 ## .spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms
@@ -326,12 +326,12 @@ A null or empty node selector term matches no objects. The requirements of them 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | A list of node selector requirements by node’s labels. |
+| Property             | Type     | Description                                                                                                             |
+|----------------------|----------|-------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`  | A list of node selector requirements by node’s labels.                                                                  |
 | `matchExpressions[]` | `object` | A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchFields` | `array` | A list of node selector requirements by node’s fields. |
-| `matchFields[]` | `object` | A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
+| `matchFields`        | `array`  | A list of node selector requirements by node’s fields.                                                                  |
+| `matchFields[]`      | `object` | A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
 
 ## .spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms\[\].matchExpressions
 
@@ -354,11 +354,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The label key that the selector applies to. |
-| `operator` | `string` | Represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt. |
-| `values` | `array (string)` | An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                                                                                                                         |
+|------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | The label key that the selector applies to.                                                                                                                                                                                                                                                                                                         |
+| `operator` | `string`         | Represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.                                                                                                                                                                                                                                |
+| `values`   | `array (string)` | An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms\[\].matchFields
 
@@ -381,11 +381,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The label key that the selector applies to. |
-| `operator` | `string` | Represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt. |
-| `values` | `array (string)` | An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                                                                                                                         |
+|------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | The label key that the selector applies to.                                                                                                                                                                                                                                                                                                         |
+| `operator` | `string`         | Represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.                                                                                                                                                                                                                                |
+| `values`   | `array (string)` | An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.podAffinity
 
@@ -395,12 +395,12 @@ Describes pod affinity scheduling rules (e.g. co-locate this pod in the same nod
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `preferredDuringSchedulingIgnoredDuringExecution` | `array` | The scheduler will prefer to schedule pods to nodes that satisfy the affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling affinity expressions, etc.), compute a sum by iterating through the elements of this field and adding "weight" to the sum if the node has pods which matches the corresponding podAffinityTerm; the node(s) with the highest sum are the most preferred. |
-| `preferredDuringSchedulingIgnoredDuringExecution[]` | `object` | The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s) |
-| `requiredDuringSchedulingIgnoredDuringExecution` | `array` | If the affinity requirements specified by this field are not met at scheduling time, the pod will not be scheduled onto the node. If the affinity requirements specified by this field cease to be met at some point during pod execution (e.g. due to a pod label update), the system may or may not try to eventually evict the pod from its node. When there are multiple elements, the lists of nodes corresponding to each podAffinityTerm are intersected, i.e. all terms must be satisfied. |
-| `requiredDuringSchedulingIgnoredDuringExecution[]` | `object` | Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key \<topologyKey\> matches that of any node on which a pod of the set of pods is running |
+| Property                                            | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|-----------------------------------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `preferredDuringSchedulingIgnoredDuringExecution`   | `array`  | The scheduler will prefer to schedule pods to nodes that satisfy the affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling affinity expressions, etc.), compute a sum by iterating through the elements of this field and adding "weight" to the sum if the node has pods which matches the corresponding podAffinityTerm; the node(s) with the highest sum are the most preferred. |
+| `preferredDuringSchedulingIgnoredDuringExecution[]` | `object` | The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `requiredDuringSchedulingIgnoredDuringExecution`    | `array`  | If the affinity requirements specified by this field are not met at scheduling time, the pod will not be scheduled onto the node. If the affinity requirements specified by this field cease to be met at some point during pod execution (e.g. due to a pod label update), the system may or may not try to eventually evict the pod from its node. When there are multiple elements, the lists of nodes corresponding to each podAffinityTerm are intersected, i.e. all terms must be satisfied.                                                                                                                                           |
+| `requiredDuringSchedulingIgnoredDuringExecution[]`  | `object` | Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key \<topologyKey\> matches that of any node on which a pod of the set of pods is running                                                                                                                                                                                                                                                                            |
 
 ## .spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution
 
@@ -423,10 +423,10 @@ Required
 
 - `weight`
 
-| Property | Type | Description |
-|----|----|----|
-| `podAffinityTerm` | `object` | Required. A pod affinity term, associated with the corresponding weight. |
-| `weight` | `integer` | weight associated with matching the corresponding podAffinityTerm, in the range 1-100. |
+| Property          | Type      | Description                                                                            |
+|-------------------|-----------|----------------------------------------------------------------------------------------|
+| `podAffinityTerm` | `object`  | Required. A pod affinity term, associated with the corresponding weight.               |
+| `weight`          | `integer` | weight associated with matching the corresponding podAffinityTerm, in the range 1-100. |
 
 ## .spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm
 
@@ -439,14 +439,14 @@ Type
 Required
 - `topologyKey`
 
-| Property | Type | Description |
-|----|----|----|
-| `labelSelector` | `object` | A label query over a set of resources, in this case pods. If it’s null, this PodAffinityTerm matches with no Pods. |
-| `matchLabelKeys` | `array (string)` | MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both matchLabelKeys and labelSelector. Also, matchLabelKeys cannot be set when labelSelector isn’t set. This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default). |
+| Property            | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|---------------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `labelSelector`     | `object`         | A label query over a set of resources, in this case pods. If it’s null, this PodAffinityTerm matches with no Pods.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `matchLabelKeys`    | `array (string)` | MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both matchLabelKeys and labelSelector. Also, matchLabelKeys cannot be set when labelSelector isn’t set. This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).             |
 | `mismatchLabelKeys` | `array (string)` | MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both mismatchLabelKeys and labelSelector. Also, mismatchLabelKeys cannot be set when labelSelector isn’t set. This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default). |
-| `namespaceSelector` | `object` | A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod’s namespace". An empty selector ({}) matches all namespaces. |
-| `namespaces` | `array (string)` | namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod’s namespace". |
-| `topologyKey` | `string` | This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed. |
+| `namespaceSelector` | `object`         | A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod’s namespace". An empty selector ({}) matches all namespaces.                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `namespaces`        | `array (string)` | namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod’s namespace".                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `topologyKey`       | `string`         | This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed.                                                                                                                                                                                                                                                                                                                                                                                    |
 
 ## .spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm.labelSelector
 
@@ -456,11 +456,11 @@ A label query over a set of resources, in this case pods. If it’s null, this P
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm.labelSelector.matchExpressions
 
@@ -483,11 +483,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm.namespaceSelector
 
@@ -497,11 +497,11 @@ A label query over the set of namespaces that the term applies to. The term is a
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm.namespaceSelector.matchExpressions
 
@@ -524,11 +524,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution
 
@@ -549,14 +549,14 @@ Type
 Required
 - `topologyKey`
 
-| Property | Type | Description |
-|----|----|----|
-| `labelSelector` | `object` | A label query over a set of resources, in this case pods. If it’s null, this PodAffinityTerm matches with no Pods. |
-| `matchLabelKeys` | `array (string)` | MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both matchLabelKeys and labelSelector. Also, matchLabelKeys cannot be set when labelSelector isn’t set. This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default). |
+| Property            | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|---------------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `labelSelector`     | `object`         | A label query over a set of resources, in this case pods. If it’s null, this PodAffinityTerm matches with no Pods.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `matchLabelKeys`    | `array (string)` | MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both matchLabelKeys and labelSelector. Also, matchLabelKeys cannot be set when labelSelector isn’t set. This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).             |
 | `mismatchLabelKeys` | `array (string)` | MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both mismatchLabelKeys and labelSelector. Also, mismatchLabelKeys cannot be set when labelSelector isn’t set. This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default). |
-| `namespaceSelector` | `object` | A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod’s namespace". An empty selector ({}) matches all namespaces. |
-| `namespaces` | `array (string)` | namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod’s namespace". |
-| `topologyKey` | `string` | This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed. |
+| `namespaceSelector` | `object`         | A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod’s namespace". An empty selector ({}) matches all namespaces.                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `namespaces`        | `array (string)` | namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod’s namespace".                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `topologyKey`       | `string`         | This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed.                                                                                                                                                                                                                                                                                                                                                                                    |
 
 ## .spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution\[\].labelSelector
 
@@ -566,11 +566,11 @@ A label query over a set of resources, in this case pods. If it’s null, this P
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution\[\].labelSelector.matchExpressions
 
@@ -593,11 +593,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution\[\].namespaceSelector
 
@@ -607,11 +607,11 @@ A label query over the set of namespaces that the term applies to. The term is a
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution\[\].namespaceSelector.matchExpressions
 
@@ -634,11 +634,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.podAntiAffinity
 
@@ -648,12 +648,12 @@ Describes pod anti-affinity scheduling rules (e.g. avoid putting this pod in the
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `preferredDuringSchedulingIgnoredDuringExecution` | `array` | The scheduler will prefer to schedule pods to nodes that satisfy the anti-affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling anti-affinity expressions, etc.), compute a sum by iterating through the elements of this field and adding "weight" to the sum if the node has pods which matches the corresponding podAffinityTerm; the node(s) with the highest sum are the most preferred. |
-| `preferredDuringSchedulingIgnoredDuringExecution[]` | `object` | The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s) |
-| `requiredDuringSchedulingIgnoredDuringExecution` | `array` | If the anti-affinity requirements specified by this field are not met at scheduling time, the pod will not be scheduled onto the node. If the anti-affinity requirements specified by this field cease to be met at some point during pod execution (e.g. due to a pod label update), the system may or may not try to eventually evict the pod from its node. When there are multiple elements, the lists of nodes corresponding to each podAffinityTerm are intersected, i.e. all terms must be satisfied. |
-| `requiredDuringSchedulingIgnoredDuringExecution[]` | `object` | Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key \<topologyKey\> matches that of any node on which a pod of the set of pods is running |
+| Property                                            | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|-----------------------------------------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `preferredDuringSchedulingIgnoredDuringExecution`   | `array`  | The scheduler will prefer to schedule pods to nodes that satisfy the anti-affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling anti-affinity expressions, etc.), compute a sum by iterating through the elements of this field and adding "weight" to the sum if the node has pods which matches the corresponding podAffinityTerm; the node(s) with the highest sum are the most preferred. |
+| `preferredDuringSchedulingIgnoredDuringExecution[]` | `object` | The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `requiredDuringSchedulingIgnoredDuringExecution`    | `array`  | If the anti-affinity requirements specified by this field are not met at scheduling time, the pod will not be scheduled onto the node. If the anti-affinity requirements specified by this field cease to be met at some point during pod execution (e.g. due to a pod label update), the system may or may not try to eventually evict the pod from its node. When there are multiple elements, the lists of nodes corresponding to each podAffinityTerm are intersected, i.e. all terms must be satisfied.                                                                                                                                           |
+| `requiredDuringSchedulingIgnoredDuringExecution[]`  | `object` | Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key \<topologyKey\> matches that of any node on which a pod of the set of pods is running                                                                                                                                                                                                                                                                                      |
 
 ## .spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution
 
@@ -676,10 +676,10 @@ Required
 
 - `weight`
 
-| Property | Type | Description |
-|----|----|----|
-| `podAffinityTerm` | `object` | Required. A pod affinity term, associated with the corresponding weight. |
-| `weight` | `integer` | weight associated with matching the corresponding podAffinityTerm, in the range 1-100. |
+| Property          | Type      | Description                                                                            |
+|-------------------|-----------|----------------------------------------------------------------------------------------|
+| `podAffinityTerm` | `object`  | Required. A pod affinity term, associated with the corresponding weight.               |
+| `weight`          | `integer` | weight associated with matching the corresponding podAffinityTerm, in the range 1-100. |
 
 ## .spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm
 
@@ -692,14 +692,14 @@ Type
 Required
 - `topologyKey`
 
-| Property | Type | Description |
-|----|----|----|
-| `labelSelector` | `object` | A label query over a set of resources, in this case pods. If it’s null, this PodAffinityTerm matches with no Pods. |
-| `matchLabelKeys` | `array (string)` | MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both matchLabelKeys and labelSelector. Also, matchLabelKeys cannot be set when labelSelector isn’t set. This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default). |
+| Property            | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|---------------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `labelSelector`     | `object`         | A label query over a set of resources, in this case pods. If it’s null, this PodAffinityTerm matches with no Pods.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `matchLabelKeys`    | `array (string)` | MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both matchLabelKeys and labelSelector. Also, matchLabelKeys cannot be set when labelSelector isn’t set. This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).             |
 | `mismatchLabelKeys` | `array (string)` | MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both mismatchLabelKeys and labelSelector. Also, mismatchLabelKeys cannot be set when labelSelector isn’t set. This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default). |
-| `namespaceSelector` | `object` | A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod’s namespace". An empty selector ({}) matches all namespaces. |
-| `namespaces` | `array (string)` | namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod’s namespace". |
-| `topologyKey` | `string` | This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed. |
+| `namespaceSelector` | `object`         | A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod’s namespace". An empty selector ({}) matches all namespaces.                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `namespaces`        | `array (string)` | namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod’s namespace".                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `topologyKey`       | `string`         | This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed.                                                                                                                                                                                                                                                                                                                                                                                    |
 
 ## .spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm.labelSelector
 
@@ -709,11 +709,11 @@ A label query over a set of resources, in this case pods. If it’s null, this P
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm.labelSelector.matchExpressions
 
@@ -736,11 +736,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm.namespaceSelector
 
@@ -750,11 +750,11 @@ A label query over the set of namespaces that the term applies to. The term is a
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution\[\].podAffinityTerm.namespaceSelector.matchExpressions
 
@@ -777,11 +777,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution
 
@@ -802,14 +802,14 @@ Type
 Required
 - `topologyKey`
 
-| Property | Type | Description |
-|----|----|----|
-| `labelSelector` | `object` | A label query over a set of resources, in this case pods. If it’s null, this PodAffinityTerm matches with no Pods. |
-| `matchLabelKeys` | `array (string)` | MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both matchLabelKeys and labelSelector. Also, matchLabelKeys cannot be set when labelSelector isn’t set. This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default). |
+| Property            | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|---------------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `labelSelector`     | `object`         | A label query over a set of resources, in this case pods. If it’s null, this PodAffinityTerm matches with no Pods.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `matchLabelKeys`    | `array (string)` | MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both matchLabelKeys and labelSelector. Also, matchLabelKeys cannot be set when labelSelector isn’t set. This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).             |
 | `mismatchLabelKeys` | `array (string)` | MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `labelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod’s pod (anti) affinity. Keys that don’t exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both mismatchLabelKeys and labelSelector. Also, mismatchLabelKeys cannot be set when labelSelector isn’t set. This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default). |
-| `namespaceSelector` | `object` | A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod’s namespace". An empty selector ({}) matches all namespaces. |
-| `namespaces` | `array (string)` | namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod’s namespace". |
-| `topologyKey` | `string` | This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed. |
+| `namespaceSelector` | `object`         | A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod’s namespace". An empty selector ({}) matches all namespaces.                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `namespaces`        | `array (string)` | namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod’s namespace".                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `topologyKey`       | `string`         | This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed.                                                                                                                                                                                                                                                                                                                                                                                    |
 
 ## .spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution\[\].labelSelector
 
@@ -819,11 +819,11 @@ A label query over a set of resources, in this case pods. If it’s null, this P
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution\[\].labelSelector.matchExpressions
 
@@ -846,11 +846,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution\[\].namespaceSelector
 
@@ -860,11 +860,11 @@ A label query over the set of namespaces that the term applies to. The term is a
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution\[\].namespaceSelector.matchExpressions
 
@@ -887,11 +887,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.proxy
 
@@ -901,10 +901,10 @@ proxy defines the proxy to be used when calling master api, upstream registries,
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `http` | `string` | http defines the proxy to be used by the image registry when accessing HTTP endpoints. |
-| `https` | `string` | https defines the proxy to be used by the image registry when accessing HTTPS endpoints. |
+| Property  | Type     | Description                                                                               |
+|-----------|----------|-------------------------------------------------------------------------------------------|
+| `http`    | `string` | http defines the proxy to be used by the image registry when accessing HTTP endpoints.    |
+| `https`   | `string` | https defines the proxy to be used by the image registry when accessing HTTPS endpoints.  |
 | `noProxy` | `string` | noProxy defines a comma-separated list of host names that shouldn’t go through any proxy. |
 
 ## .spec.requests
@@ -928,11 +928,11 @@ read defines limits for image registry’s reads.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `maxInQueue` | `integer` | maxInQueue sets the maximum queued api requests to the registry. |
-| `maxRunning` | `integer` | maxRunning sets the maximum in flight api requests to the registry. |
-| `maxWaitInQueue` | `string` | maxWaitInQueue sets the maximum time a request can wait in the queue before being rejected. |
+| Property         | Type      | Description                                                                                 |
+|------------------|-----------|---------------------------------------------------------------------------------------------|
+| `maxInQueue`     | `integer` | maxInQueue sets the maximum queued api requests to the registry.                            |
+| `maxRunning`     | `integer` | maxRunning sets the maximum in flight api requests to the registry.                         |
+| `maxWaitInQueue` | `string`  | maxWaitInQueue sets the maximum time a request can wait in the queue before being rejected. |
 
 ## .spec.requests.write
 
@@ -942,11 +942,11 @@ write defines limits for image registry’s writes.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `maxInQueue` | `integer` | maxInQueue sets the maximum queued api requests to the registry. |
-| `maxRunning` | `integer` | maxRunning sets the maximum in flight api requests to the registry. |
-| `maxWaitInQueue` | `string` | maxWaitInQueue sets the maximum time a request can wait in the queue before being rejected. |
+| Property         | Type      | Description                                                                                 |
+|------------------|-----------|---------------------------------------------------------------------------------------------|
+| `maxInQueue`     | `integer` | maxInQueue sets the maximum queued api requests to the registry.                            |
+| `maxRunning`     | `integer` | maxRunning sets the maximum in flight api requests to the registry.                         |
+| `maxWaitInQueue` | `string`  | maxWaitInQueue sets the maximum time a request can wait in the queue before being rejected. |
 
 ## .spec.resources
 
@@ -963,31 +963,31 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>claims</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.</p>
 <p>This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.</p>
 <p>This field is immutable. It can only be set for containers.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>claims[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ResourceClaim references one entry in PodSpec.ResourceClaims.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>limits</code></p></td>
 <td style="text-align: left;"><p><code>integer-or-string</code></p></td>
 <td style="text-align: left;"><p>Limits describes the maximum amount of compute resources allowed. More info: <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>requests</code></p></td>
 <td style="text-align: left;"><p><code>integer-or-string</code></p></td>
 <td style="text-align: left;"><p>Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/</a></p></td>
@@ -1018,9 +1018,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container. |
+| Property  | Type     | Description                                                                                                                                                         |
+|-----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`    | `string` | Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container.          |
 | `request` | `string` | Request is the name chosen for a request in the referenced claim. If empty, everything from the claim is made available, otherwise only the result of this request. |
 
 ## .spec.routes
@@ -1042,10 +1042,10 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `hostname` | `string` | hostname for the route. |
-| `name` | `string` | name of the route to be created. |
+| Property     | Type     | Description                                                                      |
+|--------------|----------|----------------------------------------------------------------------------------|
+| `hostname`   | `string` | hostname for the route.                                                          |
+| `name`       | `string` | name of the route to be created.                                                 |
 | `secretName` | `string` | secretName points to secret containing the certificates to be used by the route. |
 
 ## .spec.storage
@@ -1056,17 +1056,17 @@ storage details for configuring registry storage, e.g. S3 bucket coordinates.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `azure` | `object` | azure represents configuration that uses Azure Blob Storage. |
-| `emptyDir` | `object` | emptyDir represents ephemeral storage on the pod’s host node. WARNING: this storage cannot be used with more than 1 replica and is not suitable for production use. When the pod is removed from a node for any reason, the data in the emptyDir is deleted forever. |
-| `gcs` | `object` | gcs represents configuration that uses Google Cloud Storage. |
-| `ibmcos` | `object` | ibmcos represents configuration that uses IBM Cloud Object Storage. |
-| `managementState` | `string` | managementState indicates if the operator manages the underlying storage unit. If Managed the operator will remove the storage when this operator gets Removed. |
-| `oss` | `object` | Oss represents configuration that uses Alibaba Cloud Object Storage Service. |
-| `pvc` | `object` | pvc represents configuration that uses a PersistentVolumeClaim. |
-| `s3` | `object` | s3 represents configuration that uses Amazon Simple Storage Service. |
-| `swift` | `object` | swift represents configuration that uses OpenStack Object Storage. |
+| Property          | Type     | Description                                                                                                                                                                                                                                                          |
+|-------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `azure`           | `object` | azure represents configuration that uses Azure Blob Storage.                                                                                                                                                                                                         |
+| `emptyDir`        | `object` | emptyDir represents ephemeral storage on the pod’s host node. WARNING: this storage cannot be used with more than 1 replica and is not suitable for production use. When the pod is removed from a node for any reason, the data in the emptyDir is deleted forever. |
+| `gcs`             | `object` | gcs represents configuration that uses Google Cloud Storage.                                                                                                                                                                                                         |
+| `ibmcos`          | `object` | ibmcos represents configuration that uses IBM Cloud Object Storage.                                                                                                                                                                                                  |
+| `managementState` | `string` | managementState indicates if the operator manages the underlying storage unit. If Managed the operator will remove the storage when this operator gets Removed.                                                                                                      |
+| `oss`             | `object` | Oss represents configuration that uses Alibaba Cloud Object Storage Service.                                                                                                                                                                                         |
+| `pvc`             | `object` | pvc represents configuration that uses a PersistentVolumeClaim.                                                                                                                                                                                                      |
+| `s3`              | `object` | s3 represents configuration that uses Amazon Simple Storage Service.                                                                                                                                                                                                 |
+| `swift`           | `object` | swift represents configuration that uses OpenStack Object Storage.                                                                                                                                                                                                   |
 
 ## .spec.storage.azure
 
@@ -1076,12 +1076,12 @@ azure represents configuration that uses Azure Blob Storage.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `accountName` | `string` | accountName defines the account to be used by the registry. |
-| `cloudName` | `string` | cloudName is the name of the Azure cloud environment to be used by the registry. If empty, the operator will set it based on the infrastructure object. |
-| `container` | `string` | container defines Azure’s container to be used by registry. |
-| `networkAccess` | `object` | networkAccess defines the network access properties for the storage account. Defaults to type: External. |
+| Property        | Type     | Description                                                                                                                                             |
+|-----------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `accountName`   | `string` | accountName defines the account to be used by the registry.                                                                                             |
+| `cloudName`     | `string` | cloudName is the name of the Azure cloud environment to be used by the registry. If empty, the operator will set it based on the infrastructure object. |
+| `container`     | `string` | container defines Azure’s container to be used by registry.                                                                                             |
+| `networkAccess` | `object` | networkAccess defines the network access properties for the storage account. Defaults to type: External.                                                |
 
 ## .spec.storage.azure.networkAccess
 
@@ -1091,10 +1091,10 @@ networkAccess defines the network access properties for the storage account. Def
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `internal` | `object` | internal defines the vnet and subnet names to configure a private endpoint and connect it to the storage account in order to make it private. when type: Internal and internal is unset, the image registry operator will discover vnet and subnet names, and generate a private endpoint name. |
-| `type` | `string` | type is the network access level to be used for the storage account. type: Internal means the storage account will be private, type: External means the storage account will be publicly accessible. Internal storage accounts are only exposed within the cluster’s vnet. External storage accounts are publicly exposed on the internet. When type: Internal is used, a vnetName, subNetName and privateEndpointName may optionally be specified. If unspecificed, the image registry operator will discover vnet and subnet names, and generate a privateEndpointName. Defaults to "External". |
+| Property   | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `internal` | `object` | internal defines the vnet and subnet names to configure a private endpoint and connect it to the storage account in order to make it private. when type: Internal and internal is unset, the image registry operator will discover vnet and subnet names, and generate a private endpoint name.                                                                                                                                                                                                                                                                                                   |
+| `type`     | `string` | type is the network access level to be used for the storage account. type: Internal means the storage account will be private, type: External means the storage account will be publicly accessible. Internal storage accounts are only exposed within the cluster’s vnet. External storage accounts are publicly exposed on the internet. When type: Internal is used, a vnetName, subNetName and privateEndpointName may optionally be specified. If unspecificed, the image registry operator will discover vnet and subnet names, and generate a privateEndpointName. Defaults to "External". |
 
 ## .spec.storage.azure.networkAccess.internal
 
@@ -1104,12 +1104,12 @@ internal defines the vnet and subnet names to configure a private endpoint and c
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `networkResourceGroupName` | `string` | networkResourceGroupName is the resource group name where the cluster’s vnet and subnet are. When omitted, the registry operator will use the cluster resource group (from in the infrastructure status). If you set a networkResourceGroupName on your install-config.yaml, that value will be used automatically (for clusters configured with publish:Internal). Note that both vnet and subnet must be in the same resource group. It must be between 1 and 90 characters in length and must consist only of alphanumeric characters, hyphens (-), periods (.) and underscores (\_), and not end with a period. |
-| `privateEndpointName` | `string` | privateEndpointName is the name of the private endpoint for the registry. When provided, the registry will use it as the name of the private endpoint it will create for the storage account. When omitted, the registry will generate one. It must be between 2 and 64 characters in length and must consist only of alphanumeric characters, hyphens (-), periods (.) and underscores (\_). It must start with an alphanumeric character and end with an alphanumeric character or an underscore. |
-| `subnetName` | `string` | subnetName is the name of the subnet the registry operates in. When omitted, the registry operator will discover and set this by using the `kubernetes.io_cluster.<cluster-id>` tag in the vnet resource, then using one of listed subnets. Advanced cluster network configurations that use network security groups to protect subnets should ensure the provided subnetName has access to Azure Storage service. It must be between 1 and 80 characters in length and must consist only of alphanumeric characters, hyphens (-), periods (.) and underscores (\_). |
-| `vnetName` | `string` | vnetName is the name of the vnet the registry operates in. When omitted, the registry operator will discover and set this by using the `kubernetes.io_cluster.<cluster-id>` tag in the vnet resource. This tag is set automatically by the installer. Commonly, this will be the same vnet as the cluster. Advanced cluster network configurations should ensure the provided vnetName is the vnet of the nodes where the image registry pods are running from. It must be between 2 and 64 characters in length and must consist only of alphanumeric characters, hyphens (-), periods (.) and underscores (\_). It must start with an alphanumeric character and end with an alphanumeric character or an underscore. |
+| Property                   | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+|----------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `networkResourceGroupName` | `string` | networkResourceGroupName is the resource group name where the cluster’s vnet and subnet are. When omitted, the registry operator will use the cluster resource group (from in the infrastructure status). If you set a networkResourceGroupName on your install-config.yaml, that value will be used automatically (for clusters configured with publish:Internal). Note that both vnet and subnet must be in the same resource group. It must be between 1 and 90 characters in length and must consist only of alphanumeric characters, hyphens (-), periods (.) and underscores (\_), and not end with a period.                                                                                                     |
+| `privateEndpointName`      | `string` | privateEndpointName is the name of the private endpoint for the registry. When provided, the registry will use it as the name of the private endpoint it will create for the storage account. When omitted, the registry will generate one. It must be between 2 and 64 characters in length and must consist only of alphanumeric characters, hyphens (-), periods (.) and underscores (\_). It must start with an alphanumeric character and end with an alphanumeric character or an underscore.                                                                                                                                                                                                                     |
+| `subnetName`               | `string` | subnetName is the name of the subnet the registry operates in. When omitted, the registry operator will discover and set this by using the `kubernetes.io_cluster.<cluster-id>` tag in the vnet resource, then using one of listed subnets. Advanced cluster network configurations that use network security groups to protect subnets should ensure the provided subnetName has access to Azure Storage service. It must be between 1 and 80 characters in length and must consist only of alphanumeric characters, hyphens (-), periods (.) and underscores (\_).                                                                                                                                                    |
+| `vnetName`                 | `string` | vnetName is the name of the vnet the registry operates in. When omitted, the registry operator will discover and set this by using the `kubernetes.io_cluster.<cluster-id>` tag in the vnet resource. This tag is set automatically by the installer. Commonly, this will be the same vnet as the cluster. Advanced cluster network configurations should ensure the provided vnetName is the vnet of the nodes where the image registry pods are running from. It must be between 2 and 64 characters in length and must consist only of alphanumeric characters, hyphens (-), periods (.) and underscores (\_). It must start with an alphanumeric character and end with an alphanumeric character or an underscore. |
 
 ## .spec.storage.emptyDir
 
@@ -1127,12 +1127,12 @@ gcs represents configuration that uses Google Cloud Storage.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `bucket` | `string` | bucket is the bucket name in which you want to store the registry’s data. Optional, will be generated if not provided. |
-| `keyID` | `string` | keyID is the KMS key ID to use for encryption. Optional, buckets are encrypted by default on GCP. This allows for the use of a custom encryption key. |
-| `projectID` | `string` | projectID is the Project ID of the GCP project that this bucket should be associated with. |
-| `region` | `string` | region is the GCS location in which your bucket exists. Optional, will be set based on the installed GCS Region. |
+| Property    | Type     | Description                                                                                                                                           |
+|-------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `bucket`    | `string` | bucket is the bucket name in which you want to store the registry’s data. Optional, will be generated if not provided.                                |
+| `keyID`     | `string` | keyID is the KMS key ID to use for encryption. Optional, buckets are encrypted by default on GCP. This allows for the use of a custom encryption key. |
+| `projectID` | `string` | projectID is the Project ID of the GCP project that this bucket should be associated with.                                                            |
+| `region`    | `string` | region is the GCS location in which your bucket exists. Optional, will be set based on the installed GCS Region.                                      |
 
 ## .spec.storage.ibmcos
 
@@ -1142,13 +1142,13 @@ ibmcos represents configuration that uses IBM Cloud Object Storage.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `bucket` | `string` | bucket is the bucket name in which you want to store the registry’s data. Optional, will be generated if not provided. |
-| `location` | `string` | location is the IBM Cloud location in which your bucket exists. Optional, will be set based on the installed IBM Cloud location. |
-| `resourceGroupName` | `string` | resourceGroupName is the name of the IBM Cloud resource group that this bucket and its service instance is associated with. Optional, will be set based on the installed IBM Cloud resource group. |
-| `resourceKeyCRN` | `string` | resourceKeyCRN is the CRN of the IBM Cloud resource key that is created for the service instance. Commonly referred as a service credential and must contain HMAC type credentials. Optional, will be computed if not provided. |
-| `serviceInstanceCRN` | `string` | serviceInstanceCRN is the CRN of the IBM Cloud Object Storage service instance that this bucket is associated with. Optional, will be computed if not provided. |
+| Property             | Type     | Description                                                                                                                                                                                                                     |
+|----------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `bucket`             | `string` | bucket is the bucket name in which you want to store the registry’s data. Optional, will be generated if not provided.                                                                                                          |
+| `location`           | `string` | location is the IBM Cloud location in which your bucket exists. Optional, will be set based on the installed IBM Cloud location.                                                                                                |
+| `resourceGroupName`  | `string` | resourceGroupName is the name of the IBM Cloud resource group that this bucket and its service instance is associated with. Optional, will be set based on the installed IBM Cloud resource group.                              |
+| `resourceKeyCRN`     | `string` | resourceKeyCRN is the CRN of the IBM Cloud resource key that is created for the service instance. Commonly referred as a service credential and must contain HMAC type credentials. Optional, will be computed if not provided. |
+| `serviceInstanceCRN` | `string` | serviceInstanceCRN is the CRN of the IBM Cloud Object Storage service instance that this bucket is associated with. Optional, will be computed if not provided.                                                                 |
 
 ## .spec.storage.oss
 
@@ -1158,12 +1158,12 @@ Oss represents configuration that uses Alibaba Cloud Object Storage Service.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `bucket` | `string` | Bucket is the bucket name in which you want to store the registry’s data. About Bucket naming, more details you can look at the \[official documentation\](<https://www.alibabacloud.com/help/doc-detail/257087.htm>) Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default will be autogenerated in the form of \<clusterid\>-image-registry-\<region\>-\<random string 27 chars\> |
-| `encryption` | `object` | Encryption specifies whether you would like your data encrypted on the server side. More details, you can look cat the \[official documentation\](<https://www.alibabacloud.com/help/doc-detail/117914.htm>) |
-| `endpointAccessibility` | `string` | EndpointAccessibility specifies whether the registry use the OSS VPC internal endpoint Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default is `Internal`. |
-| `region` | `string` | Region is the Alibaba Cloud Region in which your bucket exists. For a list of regions, you can look at the \[official documentation\](<https://www.alibabacloud.com/help/doc-detail/31837.html>). Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default will be based on the installed Alibaba Cloud Region. |
+| Property                | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|-------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `bucket`                | `string` | Bucket is the bucket name in which you want to store the registry’s data. About Bucket naming, more details you can look at the \[official documentation\](<https://www.alibabacloud.com/help/doc-detail/257087.htm>) Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default will be autogenerated in the form of \<clusterid\>-image-registry-\<region\>-\<random string 27 chars\> |
+| `encryption`            | `object` | Encryption specifies whether you would like your data encrypted on the server side. More details, you can look cat the \[official documentation\](<https://www.alibabacloud.com/help/doc-detail/117914.htm>)                                                                                                                                                                                                                                                   |
+| `endpointAccessibility` | `string` | EndpointAccessibility specifies whether the registry use the OSS VPC internal endpoint Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default is `Internal`.                                                                                                                                                                                                                         |
+| `region`                | `string` | Region is the Alibaba Cloud Region in which your bucket exists. For a list of regions, you can look at the \[official documentation\](<https://www.alibabacloud.com/help/doc-detail/31837.html>). Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default will be based on the installed Alibaba Cloud Region.                                                                        |
 
 ## .spec.storage.oss.encryption
 
@@ -1173,9 +1173,9 @@ Encryption specifies whether you would like your data encrypted on the server si
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `kms` | `object` | KMS (key management service) is an encryption type that holds the struct for KMS KeyID |
+| Property | Type     | Description                                                                                                                                                                                          |
+|----------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `kms`    | `object` | KMS (key management service) is an encryption type that holds the struct for KMS KeyID                                                                                                               |
 | `method` | `string` | Method defines the different encrytion modes available Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default is `AES256`. |
 
 ## .spec.storage.oss.encryption.kms
@@ -1201,9 +1201,9 @@ pvc represents configuration that uses a PersistentVolumeClaim.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `claim` | `string` | claim defines the Persisent Volume Claim’s name to be used. |
+| Property | Type     | Description                                                 |
+|----------|----------|-------------------------------------------------------------|
+| `claim`  | `string` | claim defines the Persisent Volume Claim’s name to be used. |
 
 ## .spec.storage.s3
 
@@ -1220,55 +1220,55 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bucket</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>bucket is the bucket name in which you want to store the registry’s data. Optional, will be generated if not provided.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>chunkSizeMiB</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>chunkSizeMiB defines the size of the multipart upload chunks of the S3 API. The S3 API requires multipart upload chunks to be at least 5MiB. When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default value is 10 MiB. The value is an integer number of MiB. The minimum value is 5 and the maximum value is 5120 (5 GiB).</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>cloudFront</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>cloudFront configures Amazon Cloudfront as the storage middleware in a registry.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>encrypt</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>encrypt specifies whether the registry stores the image in encrypted format or not. Optional, defaults to false.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>keyID</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>keyID is the KMS key ID to use for encryption. Optional, Encrypt must be true, or this parameter is ignored.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>region</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>region is the AWS region in which your bucket exists. Optional, will be set based on the installed AWS Region.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>regionEndpoint</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>regionEndpoint is the endpoint for S3 compatible storage services. It should be a valid URL with scheme, e.g. <a href="https://s3.example.com">https://s3.example.com</a>. Optional, defaults based on the Region that is provided.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>trustedCA</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>trustedCA is a reference to a config map containing a CA bundle. The image registry and its operator use certificates from this bundle to verify S3 server certificates.</p>
 <p>The namespace for the config map referenced by trustedCA is "openshift-config". The key for the bundle in the config map is "ca-bundle.crt".</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>virtualHostedStyle</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>virtualHostedStyle enables using S3 virtual hosted style bucket paths with a custom RegionEndpoint Optional, defaults to false.</p></td>
@@ -1291,12 +1291,12 @@ Required
 
 - `privateKey`
 
-| Property | Type | Description |
-|----|----|----|
-| `baseURL` | `string` | baseURL contains the SCHEME://HOST\[/PATH\] at which Cloudfront is served. |
-| `duration` | `string` | duration is the duration of the Cloudfront session. |
-| `keypairID` | `string` | keypairID is key pair ID provided by AWS. |
-| `privateKey` | `object` | privateKey points to secret containing the private key, provided by AWS. |
+| Property     | Type     | Description                                                                |
+|--------------|----------|----------------------------------------------------------------------------|
+| `baseURL`    | `string` | baseURL contains the SCHEME://HOST\[/PATH\] at which Cloudfront is served. |
+| `duration`   | `string` | duration is the duration of the Cloudfront session.                        |
+| `keypairID`  | `string` | keypairID is key pair ID provided by AWS.                                  |
+| `privateKey` | `object` | privateKey points to secret containing the private key, provided by AWS.   |
 
 ## .spec.storage.s3.cloudFront.privateKey
 
@@ -1309,11 +1309,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.storage.s3.trustedCA
 
@@ -1325,9 +1325,9 @@ The namespace for the config map referenced by trustedCA is "openshift-config". 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name is the metadata.name of the referenced config map. This field must adhere to standard config map naming restrictions. The name must consist solely of alphanumeric characters, hyphens (-) and periods (.). It has a maximum length of 253 characters. If this field is not specified or is empty string, the default trust bundle will be used. |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                                                                           |
+|----------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | name is the metadata.name of the referenced config map. This field must adhere to standard config map naming restrictions. The name must consist solely of alphanumeric characters, hyphens (-) and periods (.). It has a maximum length of 253 characters. If this field is not specified or is empty string, the default trust bundle will be used. |
 
 ## .spec.storage.swift
 
@@ -1337,16 +1337,16 @@ swift represents configuration that uses OpenStack Object Storage.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `authURL` | `string` | authURL defines the URL for obtaining an authentication token. |
-| `authVersion` | `string` | authVersion specifies the OpenStack Auth’s version. |
-| `container` | `string` | container defines the name of Swift container where to store the registry’s data. |
-| `domain` | `string` | domain specifies Openstack’s domain name for Identity v3 API. |
-| `domainID` | `string` | domainID specifies Openstack’s domain id for Identity v3 API. |
-| `regionName` | `string` | regionName defines Openstack’s region in which container exists. |
-| `tenant` | `string` | tenant defines Openstack tenant name to be used by registry. |
-| `tenantID` | `string` | tenant defines Openstack tenant id to be used by registry. |
+| Property      | Type     | Description                                                                       |
+|---------------|----------|-----------------------------------------------------------------------------------|
+| `authURL`     | `string` | authURL defines the URL for obtaining an authentication token.                    |
+| `authVersion` | `string` | authVersion specifies the OpenStack Auth’s version.                               |
+| `container`   | `string` | container defines the name of Swift container where to store the registry’s data. |
+| `domain`      | `string` | domain specifies Openstack’s domain name for Identity v3 API.                     |
+| `domainID`    | `string` | domainID specifies Openstack’s domain id for Identity v3 API.                     |
+| `regionName`  | `string` | regionName defines Openstack’s region in which container exists.                  |
+| `tenant`      | `string` | tenant defines Openstack tenant name to be used by registry.                      |
+| `tenantID`    | `string` | tenant defines Openstack tenant id to be used by registry.                        |
 
 ## .spec.tolerations
 
@@ -1364,13 +1364,13 @@ The pod this Toleration is attached to tolerates any taint that matches the trip
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `effect` | `string` | Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute. |
-| `key` | `string` | Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys. |
-| `operator` | `string` | Operator represents a key’s relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category. |
+| Property            | Type      | Description                                                                                                                                                                                                                                                                                                                 |
+|---------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `effect`            | `string`  | Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute.                                                                                                                                                             |
+| `key`               | `string`  | Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys.                                                                                                                               |
+| `operator`          | `string`  | Operator represents a key’s relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category.                                                                                                 |
 | `tolerationSeconds` | `integer` | TolerationSeconds represents the period of time the toleration (which must be of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default, it is not set, which means tolerate the taint forever (do not evict). Zero and negative values will be treated as 0 (evict immediately) by the system. |
-| `value` | `string` | Value is the taint value the toleration matches to. If the operator is Exists, the value should be empty, otherwise just a regular string. |
+| `value`             | `string`  | Value is the taint value the toleration matches to. If the operator is Exists, the value should be empty, otherwise just a regular string.                                                                                                                                                                                  |
 
 ## .spec.topologySpreadConstraints
 
@@ -1402,53 +1402,53 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>labelSelector</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>LabelSelector is used to find matching pods. Pods that match this label selector are counted to determine the number of pods in their corresponding topology domain.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>matchLabelKeys</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>MatchLabelKeys is a set of pod label keys to select the pods over which spreading will be calculated. The keys are used to lookup values from the incoming pod labels, those key-value labels are ANDed with labelSelector to select the group of existing pods over which spreading will be calculated for the incoming pod. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. MatchLabelKeys cannot be set when LabelSelector isn’t set. Keys that don’t exist in the incoming pod labels will be ignored. A null or empty list means only match against labelSelector.</p>
 <p>This is a beta field and requires the MatchLabelKeysInPodTopologySpread feature gate to be enabled (enabled by default).</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxSkew</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>MaxSkew describes the degree to which pods may be unevenly distributed. When <code>whenUnsatisfiable=DoNotSchedule</code>, it is the maximum permitted difference between the number of matching pods in the target topology and the global minimum. The global minimum is the minimum number of matching pods in an eligible domain or zero if the number of eligible domains is less than MinDomains. For example, in a 3-zone cluster, MaxSkew is set to 1, and pods with the same labelSelector spread as 2/2/1: In this case, the global minimum is 1. | zone1 | zone2 | zone3 | | P P | P P | P | - if MaxSkew is 1, incoming pod can only be scheduled to zone3 to become 2/2/2; scheduling it onto zone1(zone2) would make the ActualSkew(3-1) on zone1(zone2) violate MaxSkew(1). - if MaxSkew is 2, incoming pod can be scheduled onto any zone. When <code>whenUnsatisfiable=ScheduleAnyway</code>, it is used to give higher precedence to topologies that satisfy it. It’s a required field. Default value is 1 and 0 is not allowed.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>minDomains</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>MinDomains indicates a minimum number of eligible domains. When the number of eligible domains with matching topology keys is less than minDomains, Pod Topology Spread treats "global minimum" as 0, and then the calculation of Skew is performed. And when the number of eligible domains with matching topology keys equals or greater than minDomains, this value has no effect on scheduling. As a result, when the number of eligible domains is less than minDomains, scheduler won’t schedule more than maxSkew Pods to those domains. If value is nil, the constraint behaves as if MinDomains is equal to 1. Valid values are integers greater than 0. When value is not nil, WhenUnsatisfiable must be DoNotSchedule.</p>
 <p>For example, in a 3-zone cluster, MaxSkew is set to 2, MinDomains is set to 5 and pods with the same labelSelector spread as 2/2/2: | zone1 | zone2 | zone3 | | P P | P P | P P | The number of domains is less than 5(MinDomains), so "global minimum" is treated as 0. In this situation, new pod with the same labelSelector cannot be scheduled, because computed skew will be 3(3 - 0) if new Pod is scheduled to any of the three zones, it will violate MaxSkew.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>nodeAffinityPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>NodeAffinityPolicy indicates how we will treat Pod’s nodeAffinity/nodeSelector when calculating pod topology spread skew. Options are: - Honor: only nodes matching nodeAffinity/nodeSelector are included in the calculations. - Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.</p>
 <p>If this value is nil, the behavior is equivalent to the Honor policy. This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>nodeTaintsPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>NodeTaintsPolicy indicates how we will treat node taints when calculating pod topology spread skew. Options are: - Honor: nodes without taints, along with tainted nodes for which the incoming pod has a toleration, are included. - Ignore: node taints are ignored. All nodes are included.</p>
 <p>If this value is nil, the behavior is equivalent to the Ignore policy. This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>topologyKey</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>TopologyKey is the key of node labels. Nodes that have a label with this key and identical values are considered to be in the same topology. We consider each &lt;key, value&gt; as a "bucket", and try to put balanced number of pods into each bucket. We define a domain as a particular instance of a topology. Also, we define an eligible domain as a domain whose nodes meet the requirements of nodeAffinityPolicy and nodeTaintsPolicy. e.g. If TopologyKey is "kubernetes.io/hostname", each Node is a domain of that topology. And, if TopologyKey is "topology.kubernetes.io/zone", each zone is a domain of that topology. It’s a required field.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>whenUnsatisfiable</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>WhenUnsatisfiable indicates how to deal with a pod if it doesn’t satisfy the spread constraint. - DoNotSchedule (default) tells the scheduler not to schedule it. - ScheduleAnyway tells the scheduler to schedule the pod in any location, but giving higher precedence to topologies that would help reduce the skew. A constraint is considered "Unsatisfiable" for an incoming pod if and only if every possible node assignment for that pod would violate "MaxSkew" on some topology. For example, in a 3-zone cluster, MaxSkew is set to 1, and pods with the same labelSelector spread as 3/1/1: | zone1 | zone2 | zone3 | | P P P | P | P | If WhenUnsatisfiable is set to DoNotSchedule, incoming pod can only be scheduled to zone2(zone3) to become 3/2/1(3/1/2) as ActualSkew(2-1) on zone2(zone3) satisfies MaxSkew(1). In other words, the cluster can still be imbalanced, but scheduler won’t make it <strong>more</strong> imbalanced. It’s a required field.</p></td>
@@ -1464,11 +1464,11 @@ LabelSelector is used to find matching pods. Pods that match this label selector
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.topologySpreadConstraints\[\].labelSelector.matchExpressions
 
@@ -1491,11 +1491,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .status
 
@@ -1510,18 +1510,18 @@ Required
 
 - `storageManaged`
 
-| Property | Type | Description |
-|----|----|----|
-| `conditions` | `array` | conditions is a list of conditions and their status |
-| `conditions[]` | `object` | OperatorCondition is just the standard condition fields. |
-| `generations` | `array` | generations are used to determine when an item needs to be reconciled or has changed in a way that needs a reaction. |
-| `generations[]` | `object` | GenerationStatus keeps track of the generation for a given resource so that decisions about forced updates can be made. |
-| `latestAvailableRevision` | `integer` | latestAvailableRevision is the deploymentID of the most recent deployment |
-| `observedGeneration` | `integer` | observedGeneration is the last generation change you’ve dealt with |
-| `readyReplicas` | `integer` | readyReplicas indicates how many replicas are ready and at the desired state |
-| `storage` | `object` | storage indicates the current applied storage configuration of the registry. |
-| `storageManaged` | `boolean` | storageManaged is deprecated, please refer to Storage.managementState |
-| `version` | `string` | version is the level this availability applies to |
+| Property                  | Type      | Description                                                                                                             |
+|---------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------|
+| `conditions`              | `array`   | conditions is a list of conditions and their status                                                                     |
+| `conditions[]`            | `object`  | OperatorCondition is just the standard condition fields.                                                                |
+| `generations`             | `array`   | generations are used to determine when an item needs to be reconciled or has changed in a way that needs a reaction.    |
+| `generations[]`           | `object`  | GenerationStatus keeps track of the generation for a given resource so that decisions about forced updates can be made. |
+| `latestAvailableRevision` | `integer` | latestAvailableRevision is the deploymentID of the most recent deployment                                               |
+| `observedGeneration`      | `integer` | observedGeneration is the last generation change you’ve dealt with                                                      |
+| `readyReplicas`           | `integer` | readyReplicas indicates how many replicas are ready and at the desired state                                            |
+| `storage`                 | `object`  | storage indicates the current applied storage configuration of the registry.                                            |
+| `storageManaged`          | `boolean` | storageManaged is deprecated, please refer to Storage.managementState                                                   |
+| `version`                 | `string`  | version is the level this availability applies to                                                                       |
 
 ## .status.conditions
 
@@ -1546,13 +1546,13 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
+| Property             | Type     | Description                                                                                                                                                                                                                          |
+|----------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `lastTransitionTime` | `string` | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable. |
-| `message` | `string` |  |
-| `reason` | `string` |  |
-| `status` | `string` | status of the condition, one of True, False, Unknown. |
-| `type` | `string` | type of condition in CamelCase or in foo.example.com/CamelCase. |
+| `message`            | `string` |                                                                                                                                                                                                                                      |
+| `reason`             | `string` |                                                                                                                                                                                                                                      |
+| `status`             | `string` | status of the condition, one of True, False, Unknown.                                                                                                                                                                                |
+| `type`               | `string` | type of condition in CamelCase or in foo.example.com/CamelCase.                                                                                                                                                                      |
 
 ## .status.generations
 
@@ -1579,14 +1579,14 @@ Required
 
 - `resource`
 
-| Property | Type | Description |
-|----|----|----|
-| `group` | `string` | group is the group of the thing you’re tracking |
-| `hash` | `string` | hash is an optional field set for resources without generation that are content sensitive like secrets and configmaps |
-| `lastGeneration` | `integer` | lastGeneration is the last generation of the workload controller involved |
-| `name` | `string` | name is the name of the thing you’re tracking |
-| `namespace` | `string` | namespace is where the thing you’re tracking is |
-| `resource` | `string` | resource is the resource type of the thing you’re tracking |
+| Property         | Type      | Description                                                                                                           |
+|------------------|-----------|-----------------------------------------------------------------------------------------------------------------------|
+| `group`          | `string`  | group is the group of the thing you’re tracking                                                                       |
+| `hash`           | `string`  | hash is an optional field set for resources without generation that are content sensitive like secrets and configmaps |
+| `lastGeneration` | `integer` | lastGeneration is the last generation of the workload controller involved                                             |
+| `name`           | `string`  | name is the name of the thing you’re tracking                                                                         |
+| `namespace`      | `string`  | namespace is where the thing you’re tracking is                                                                       |
+| `resource`       | `string`  | resource is the resource type of the thing you’re tracking                                                            |
 
 ## .status.storage
 
@@ -1596,17 +1596,17 @@ storage indicates the current applied storage configuration of the registry.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `azure` | `object` | azure represents configuration that uses Azure Blob Storage. |
-| `emptyDir` | `object` | emptyDir represents ephemeral storage on the pod’s host node. WARNING: this storage cannot be used with more than 1 replica and is not suitable for production use. When the pod is removed from a node for any reason, the data in the emptyDir is deleted forever. |
-| `gcs` | `object` | gcs represents configuration that uses Google Cloud Storage. |
-| `ibmcos` | `object` | ibmcos represents configuration that uses IBM Cloud Object Storage. |
-| `managementState` | `string` | managementState indicates if the operator manages the underlying storage unit. If Managed the operator will remove the storage when this operator gets Removed. |
-| `oss` | `object` | Oss represents configuration that uses Alibaba Cloud Object Storage Service. |
-| `pvc` | `object` | pvc represents configuration that uses a PersistentVolumeClaim. |
-| `s3` | `object` | s3 represents configuration that uses Amazon Simple Storage Service. |
-| `swift` | `object` | swift represents configuration that uses OpenStack Object Storage. |
+| Property          | Type     | Description                                                                                                                                                                                                                                                          |
+|-------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `azure`           | `object` | azure represents configuration that uses Azure Blob Storage.                                                                                                                                                                                                         |
+| `emptyDir`        | `object` | emptyDir represents ephemeral storage on the pod’s host node. WARNING: this storage cannot be used with more than 1 replica and is not suitable for production use. When the pod is removed from a node for any reason, the data in the emptyDir is deleted forever. |
+| `gcs`             | `object` | gcs represents configuration that uses Google Cloud Storage.                                                                                                                                                                                                         |
+| `ibmcos`          | `object` | ibmcos represents configuration that uses IBM Cloud Object Storage.                                                                                                                                                                                                  |
+| `managementState` | `string` | managementState indicates if the operator manages the underlying storage unit. If Managed the operator will remove the storage when this operator gets Removed.                                                                                                      |
+| `oss`             | `object` | Oss represents configuration that uses Alibaba Cloud Object Storage Service.                                                                                                                                                                                         |
+| `pvc`             | `object` | pvc represents configuration that uses a PersistentVolumeClaim.                                                                                                                                                                                                      |
+| `s3`              | `object` | s3 represents configuration that uses Amazon Simple Storage Service.                                                                                                                                                                                                 |
+| `swift`           | `object` | swift represents configuration that uses OpenStack Object Storage.                                                                                                                                                                                                   |
 
 ## .status.storage.azure
 
@@ -1616,12 +1616,12 @@ azure represents configuration that uses Azure Blob Storage.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `accountName` | `string` | accountName defines the account to be used by the registry. |
-| `cloudName` | `string` | cloudName is the name of the Azure cloud environment to be used by the registry. If empty, the operator will set it based on the infrastructure object. |
-| `container` | `string` | container defines Azure’s container to be used by registry. |
-| `networkAccess` | `object` | networkAccess defines the network access properties for the storage account. Defaults to type: External. |
+| Property        | Type     | Description                                                                                                                                             |
+|-----------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `accountName`   | `string` | accountName defines the account to be used by the registry.                                                                                             |
+| `cloudName`     | `string` | cloudName is the name of the Azure cloud environment to be used by the registry. If empty, the operator will set it based on the infrastructure object. |
+| `container`     | `string` | container defines Azure’s container to be used by registry.                                                                                             |
+| `networkAccess` | `object` | networkAccess defines the network access properties for the storage account. Defaults to type: External.                                                |
 
 ## .status.storage.azure.networkAccess
 
@@ -1631,10 +1631,10 @@ networkAccess defines the network access properties for the storage account. Def
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `internal` | `object` | internal defines the vnet and subnet names to configure a private endpoint and connect it to the storage account in order to make it private. when type: Internal and internal is unset, the image registry operator will discover vnet and subnet names, and generate a private endpoint name. |
-| `type` | `string` | type is the network access level to be used for the storage account. type: Internal means the storage account will be private, type: External means the storage account will be publicly accessible. Internal storage accounts are only exposed within the cluster’s vnet. External storage accounts are publicly exposed on the internet. When type: Internal is used, a vnetName, subNetName and privateEndpointName may optionally be specified. If unspecificed, the image registry operator will discover vnet and subnet names, and generate a privateEndpointName. Defaults to "External". |
+| Property   | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `internal` | `object` | internal defines the vnet and subnet names to configure a private endpoint and connect it to the storage account in order to make it private. when type: Internal and internal is unset, the image registry operator will discover vnet and subnet names, and generate a private endpoint name.                                                                                                                                                                                                                                                                                                   |
+| `type`     | `string` | type is the network access level to be used for the storage account. type: Internal means the storage account will be private, type: External means the storage account will be publicly accessible. Internal storage accounts are only exposed within the cluster’s vnet. External storage accounts are publicly exposed on the internet. When type: Internal is used, a vnetName, subNetName and privateEndpointName may optionally be specified. If unspecificed, the image registry operator will discover vnet and subnet names, and generate a privateEndpointName. Defaults to "External". |
 
 ## .status.storage.azure.networkAccess.internal
 
@@ -1644,12 +1644,12 @@ internal defines the vnet and subnet names to configure a private endpoint and c
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `networkResourceGroupName` | `string` | networkResourceGroupName is the resource group name where the cluster’s vnet and subnet are. When omitted, the registry operator will use the cluster resource group (from in the infrastructure status). If you set a networkResourceGroupName on your install-config.yaml, that value will be used automatically (for clusters configured with publish:Internal). Note that both vnet and subnet must be in the same resource group. It must be between 1 and 90 characters in length and must consist only of alphanumeric characters, hyphens (-), periods (.) and underscores (\_), and not end with a period. |
-| `privateEndpointName` | `string` | privateEndpointName is the name of the private endpoint for the registry. When provided, the registry will use it as the name of the private endpoint it will create for the storage account. When omitted, the registry will generate one. It must be between 2 and 64 characters in length and must consist only of alphanumeric characters, hyphens (-), periods (.) and underscores (\_). It must start with an alphanumeric character and end with an alphanumeric character or an underscore. |
-| `subnetName` | `string` | subnetName is the name of the subnet the registry operates in. When omitted, the registry operator will discover and set this by using the `kubernetes.io_cluster.<cluster-id>` tag in the vnet resource, then using one of listed subnets. Advanced cluster network configurations that use network security groups to protect subnets should ensure the provided subnetName has access to Azure Storage service. It must be between 1 and 80 characters in length and must consist only of alphanumeric characters, hyphens (-), periods (.) and underscores (\_). |
-| `vnetName` | `string` | vnetName is the name of the vnet the registry operates in. When omitted, the registry operator will discover and set this by using the `kubernetes.io_cluster.<cluster-id>` tag in the vnet resource. This tag is set automatically by the installer. Commonly, this will be the same vnet as the cluster. Advanced cluster network configurations should ensure the provided vnetName is the vnet of the nodes where the image registry pods are running from. It must be between 2 and 64 characters in length and must consist only of alphanumeric characters, hyphens (-), periods (.) and underscores (\_). It must start with an alphanumeric character and end with an alphanumeric character or an underscore. |
+| Property                   | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+|----------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `networkResourceGroupName` | `string` | networkResourceGroupName is the resource group name where the cluster’s vnet and subnet are. When omitted, the registry operator will use the cluster resource group (from in the infrastructure status). If you set a networkResourceGroupName on your install-config.yaml, that value will be used automatically (for clusters configured with publish:Internal). Note that both vnet and subnet must be in the same resource group. It must be between 1 and 90 characters in length and must consist only of alphanumeric characters, hyphens (-), periods (.) and underscores (\_), and not end with a period.                                                                                                     |
+| `privateEndpointName`      | `string` | privateEndpointName is the name of the private endpoint for the registry. When provided, the registry will use it as the name of the private endpoint it will create for the storage account. When omitted, the registry will generate one. It must be between 2 and 64 characters in length and must consist only of alphanumeric characters, hyphens (-), periods (.) and underscores (\_). It must start with an alphanumeric character and end with an alphanumeric character or an underscore.                                                                                                                                                                                                                     |
+| `subnetName`               | `string` | subnetName is the name of the subnet the registry operates in. When omitted, the registry operator will discover and set this by using the `kubernetes.io_cluster.<cluster-id>` tag in the vnet resource, then using one of listed subnets. Advanced cluster network configurations that use network security groups to protect subnets should ensure the provided subnetName has access to Azure Storage service. It must be between 1 and 80 characters in length and must consist only of alphanumeric characters, hyphens (-), periods (.) and underscores (\_).                                                                                                                                                    |
+| `vnetName`                 | `string` | vnetName is the name of the vnet the registry operates in. When omitted, the registry operator will discover and set this by using the `kubernetes.io_cluster.<cluster-id>` tag in the vnet resource. This tag is set automatically by the installer. Commonly, this will be the same vnet as the cluster. Advanced cluster network configurations should ensure the provided vnetName is the vnet of the nodes where the image registry pods are running from. It must be between 2 and 64 characters in length and must consist only of alphanumeric characters, hyphens (-), periods (.) and underscores (\_). It must start with an alphanumeric character and end with an alphanumeric character or an underscore. |
 
 ## .status.storage.emptyDir
 
@@ -1667,12 +1667,12 @@ gcs represents configuration that uses Google Cloud Storage.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `bucket` | `string` | bucket is the bucket name in which you want to store the registry’s data. Optional, will be generated if not provided. |
-| `keyID` | `string` | keyID is the KMS key ID to use for encryption. Optional, buckets are encrypted by default on GCP. This allows for the use of a custom encryption key. |
-| `projectID` | `string` | projectID is the Project ID of the GCP project that this bucket should be associated with. |
-| `region` | `string` | region is the GCS location in which your bucket exists. Optional, will be set based on the installed GCS Region. |
+| Property    | Type     | Description                                                                                                                                           |
+|-------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `bucket`    | `string` | bucket is the bucket name in which you want to store the registry’s data. Optional, will be generated if not provided.                                |
+| `keyID`     | `string` | keyID is the KMS key ID to use for encryption. Optional, buckets are encrypted by default on GCP. This allows for the use of a custom encryption key. |
+| `projectID` | `string` | projectID is the Project ID of the GCP project that this bucket should be associated with.                                                            |
+| `region`    | `string` | region is the GCS location in which your bucket exists. Optional, will be set based on the installed GCS Region.                                      |
 
 ## .status.storage.ibmcos
 
@@ -1682,13 +1682,13 @@ ibmcos represents configuration that uses IBM Cloud Object Storage.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `bucket` | `string` | bucket is the bucket name in which you want to store the registry’s data. Optional, will be generated if not provided. |
-| `location` | `string` | location is the IBM Cloud location in which your bucket exists. Optional, will be set based on the installed IBM Cloud location. |
-| `resourceGroupName` | `string` | resourceGroupName is the name of the IBM Cloud resource group that this bucket and its service instance is associated with. Optional, will be set based on the installed IBM Cloud resource group. |
-| `resourceKeyCRN` | `string` | resourceKeyCRN is the CRN of the IBM Cloud resource key that is created for the service instance. Commonly referred as a service credential and must contain HMAC type credentials. Optional, will be computed if not provided. |
-| `serviceInstanceCRN` | `string` | serviceInstanceCRN is the CRN of the IBM Cloud Object Storage service instance that this bucket is associated with. Optional, will be computed if not provided. |
+| Property             | Type     | Description                                                                                                                                                                                                                     |
+|----------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `bucket`             | `string` | bucket is the bucket name in which you want to store the registry’s data. Optional, will be generated if not provided.                                                                                                          |
+| `location`           | `string` | location is the IBM Cloud location in which your bucket exists. Optional, will be set based on the installed IBM Cloud location.                                                                                                |
+| `resourceGroupName`  | `string` | resourceGroupName is the name of the IBM Cloud resource group that this bucket and its service instance is associated with. Optional, will be set based on the installed IBM Cloud resource group.                              |
+| `resourceKeyCRN`     | `string` | resourceKeyCRN is the CRN of the IBM Cloud resource key that is created for the service instance. Commonly referred as a service credential and must contain HMAC type credentials. Optional, will be computed if not provided. |
+| `serviceInstanceCRN` | `string` | serviceInstanceCRN is the CRN of the IBM Cloud Object Storage service instance that this bucket is associated with. Optional, will be computed if not provided.                                                                 |
 
 ## .status.storage.oss
 
@@ -1698,12 +1698,12 @@ Oss represents configuration that uses Alibaba Cloud Object Storage Service.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `bucket` | `string` | Bucket is the bucket name in which you want to store the registry’s data. About Bucket naming, more details you can look at the \[official documentation\](<https://www.alibabacloud.com/help/doc-detail/257087.htm>) Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default will be autogenerated in the form of \<clusterid\>-image-registry-\<region\>-\<random string 27 chars\> |
-| `encryption` | `object` | Encryption specifies whether you would like your data encrypted on the server side. More details, you can look cat the \[official documentation\](<https://www.alibabacloud.com/help/doc-detail/117914.htm>) |
-| `endpointAccessibility` | `string` | EndpointAccessibility specifies whether the registry use the OSS VPC internal endpoint Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default is `Internal`. |
-| `region` | `string` | Region is the Alibaba Cloud Region in which your bucket exists. For a list of regions, you can look at the \[official documentation\](<https://www.alibabacloud.com/help/doc-detail/31837.html>). Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default will be based on the installed Alibaba Cloud Region. |
+| Property                | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|-------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `bucket`                | `string` | Bucket is the bucket name in which you want to store the registry’s data. About Bucket naming, more details you can look at the \[official documentation\](<https://www.alibabacloud.com/help/doc-detail/257087.htm>) Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default will be autogenerated in the form of \<clusterid\>-image-registry-\<region\>-\<random string 27 chars\> |
+| `encryption`            | `object` | Encryption specifies whether you would like your data encrypted on the server side. More details, you can look cat the \[official documentation\](<https://www.alibabacloud.com/help/doc-detail/117914.htm>)                                                                                                                                                                                                                                                   |
+| `endpointAccessibility` | `string` | EndpointAccessibility specifies whether the registry use the OSS VPC internal endpoint Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default is `Internal`.                                                                                                                                                                                                                         |
+| `region`                | `string` | Region is the Alibaba Cloud Region in which your bucket exists. For a list of regions, you can look at the \[official documentation\](<https://www.alibabacloud.com/help/doc-detail/31837.html>). Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default will be based on the installed Alibaba Cloud Region.                                                                        |
 
 ## .status.storage.oss.encryption
 
@@ -1713,9 +1713,9 @@ Encryption specifies whether you would like your data encrypted on the server si
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `kms` | `object` | KMS (key management service) is an encryption type that holds the struct for KMS KeyID |
+| Property | Type     | Description                                                                                                                                                                                          |
+|----------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `kms`    | `object` | KMS (key management service) is an encryption type that holds the struct for KMS KeyID                                                                                                               |
 | `method` | `string` | Method defines the different encrytion modes available Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default is `AES256`. |
 
 ## .status.storage.oss.encryption.kms
@@ -1741,9 +1741,9 @@ pvc represents configuration that uses a PersistentVolumeClaim.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `claim` | `string` | claim defines the Persisent Volume Claim’s name to be used. |
+| Property | Type     | Description                                                 |
+|----------|----------|-------------------------------------------------------------|
+| `claim`  | `string` | claim defines the Persisent Volume Claim’s name to be used. |
 
 ## .status.storage.s3
 
@@ -1760,55 +1760,55 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bucket</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>bucket is the bucket name in which you want to store the registry’s data. Optional, will be generated if not provided.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>chunkSizeMiB</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>chunkSizeMiB defines the size of the multipart upload chunks of the S3 API. The S3 API requires multipart upload chunks to be at least 5MiB. When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default value is 10 MiB. The value is an integer number of MiB. The minimum value is 5 and the maximum value is 5120 (5 GiB).</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>cloudFront</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>cloudFront configures Amazon Cloudfront as the storage middleware in a registry.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>encrypt</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>encrypt specifies whether the registry stores the image in encrypted format or not. Optional, defaults to false.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>keyID</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>keyID is the KMS key ID to use for encryption. Optional, Encrypt must be true, or this parameter is ignored.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>region</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>region is the AWS region in which your bucket exists. Optional, will be set based on the installed AWS Region.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>regionEndpoint</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>regionEndpoint is the endpoint for S3 compatible storage services. It should be a valid URL with scheme, e.g. <a href="https://s3.example.com">https://s3.example.com</a>. Optional, defaults based on the Region that is provided.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>trustedCA</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>trustedCA is a reference to a config map containing a CA bundle. The image registry and its operator use certificates from this bundle to verify S3 server certificates.</p>
 <p>The namespace for the config map referenced by trustedCA is "openshift-config". The key for the bundle in the config map is "ca-bundle.crt".</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>virtualHostedStyle</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>virtualHostedStyle enables using S3 virtual hosted style bucket paths with a custom RegionEndpoint Optional, defaults to false.</p></td>
@@ -1831,12 +1831,12 @@ Required
 
 - `privateKey`
 
-| Property | Type | Description |
-|----|----|----|
-| `baseURL` | `string` | baseURL contains the SCHEME://HOST\[/PATH\] at which Cloudfront is served. |
-| `duration` | `string` | duration is the duration of the Cloudfront session. |
-| `keypairID` | `string` | keypairID is key pair ID provided by AWS. |
-| `privateKey` | `object` | privateKey points to secret containing the private key, provided by AWS. |
+| Property     | Type     | Description                                                                |
+|--------------|----------|----------------------------------------------------------------------------|
+| `baseURL`    | `string` | baseURL contains the SCHEME://HOST\[/PATH\] at which Cloudfront is served. |
+| `duration`   | `string` | duration is the duration of the Cloudfront session.                        |
+| `keypairID`  | `string` | keypairID is key pair ID provided by AWS.                                  |
+| `privateKey` | `object` | privateKey points to secret containing the private key, provided by AWS.   |
 
 ## .status.storage.s3.cloudFront.privateKey
 
@@ -1849,11 +1849,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .status.storage.s3.trustedCA
 
@@ -1865,9 +1865,9 @@ The namespace for the config map referenced by trustedCA is "openshift-config". 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name is the metadata.name of the referenced config map. This field must adhere to standard config map naming restrictions. The name must consist solely of alphanumeric characters, hyphens (-) and periods (.). It has a maximum length of 253 characters. If this field is not specified or is empty string, the default trust bundle will be used. |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                                                                           |
+|----------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | name is the metadata.name of the referenced config map. This field must adhere to standard config map naming restrictions. The name must consist solely of alphanumeric characters, hyphens (-) and periods (.). It has a maximum length of 253 characters. If this field is not specified or is empty string, the default trust bundle will be used. |
 
 ## .status.storage.swift
 
@@ -1877,16 +1877,16 @@ swift represents configuration that uses OpenStack Object Storage.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `authURL` | `string` | authURL defines the URL for obtaining an authentication token. |
-| `authVersion` | `string` | authVersion specifies the OpenStack Auth’s version. |
-| `container` | `string` | container defines the name of Swift container where to store the registry’s data. |
-| `domain` | `string` | domain specifies Openstack’s domain name for Identity v3 API. |
-| `domainID` | `string` | domainID specifies Openstack’s domain id for Identity v3 API. |
-| `regionName` | `string` | regionName defines Openstack’s region in which container exists. |
-| `tenant` | `string` | tenant defines Openstack tenant name to be used by registry. |
-| `tenantID` | `string` | tenant defines Openstack tenant id to be used by registry. |
+| Property      | Type     | Description                                                                       |
+|---------------|----------|-----------------------------------------------------------------------------------|
+| `authURL`     | `string` | authURL defines the URL for obtaining an authentication token.                    |
+| `authVersion` | `string` | authVersion specifies the OpenStack Auth’s version.                               |
+| `container`   | `string` | container defines the name of Swift container where to store the registry’s data. |
+| `domain`      | `string` | domain specifies Openstack’s domain name for Identity v3 API.                     |
+| `domainID`    | `string` | domainID specifies Openstack’s domain id for Identity v3 API.                     |
+| `regionName`  | `string` | regionName defines Openstack’s region in which container exists.                  |
+| `tenant`      | `string` | tenant defines Openstack tenant name to be used by registry.                      |
+| `tenantID`    | `string` | tenant defines Openstack tenant id to be used by registry.                        |
 
 # API endpoints
 
@@ -1926,10 +1926,10 @@ HTTP method
 Description
 delete collection of Config
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -1939,10 +1939,10 @@ HTTP method
 Description
 list objects of kind Config
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ConfigList`](../objects/index.xml#io-openshift-operator-imageregistry-v1-ConfigList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                  |
+|--------------------|-----------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ConfigList`](../objects/index.xml#io-openshift-operator-imageregistry-v1-ConfigList) schema |
+| 401 - Unauthorized | Empty                                                                                         |
 
 HTTP responses
 
@@ -1952,25 +1952,25 @@ HTTP method
 Description
 create a Config
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
-| 201 - Created | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
-| 202 - Accepted | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                        |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
+| 201 - Created      | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
+| 202 - Accepted     | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                               |
 
 HTTP responses
 
@@ -1988,17 +1988,17 @@ HTTP method
 Description
 delete a Config
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -2008,10 +2008,10 @@ HTTP method
 Description
 read the specified Config
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                        |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                               |
 
 HTTP responses
 
@@ -2021,17 +2021,17 @@ HTTP method
 Description
 partially update the specified Config
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                        |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                               |
 
 HTTP responses
 
@@ -2041,24 +2041,24 @@ HTTP method
 Description
 replace the specified Config
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
-| 201 - Created | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                        |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
+| 201 - Created      | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                               |
 
 HTTP responses
 
@@ -2076,10 +2076,10 @@ HTTP method
 Description
 read status of the specified Config
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                        |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                               |
 
 HTTP responses
 
@@ -2089,17 +2089,17 @@ HTTP method
 Description
 partially update status of the specified Config
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                        |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                               |
 
 HTTP responses
 
@@ -2109,23 +2109,23 @@ HTTP method
 Description
 replace status of the specified Config
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
-| 201 - Created | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                        |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
+| 201 - Created      | [`Config`](../operator_apis/config-imageregistry-operator-openshift-io-v1.xml#config-imageregistry-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                               |
 
 HTTP responses

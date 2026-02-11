@@ -8,20 +8,15 @@ You cannot reduce the size of a VM disk.
 
 You can increase the size of a virtual machine (VM) disk by expanding the persistent volume claim (PVC) of the disk. To specify the increased PVC volume, you can use the web console with the VM running. Alternatively, you can edit the PVC manifest in the CLI.
 
-> [!NOTE]
-> If the PVC uses the file system volume mode, the disk image file expands to the available size while reserving some space for file system overhead.
+<div class="note">
+
+If the PVC uses the file system volume mode, the disk image file expands to the available size while reserving some space for file system overhead.
+
+</div>
 
 ## Expanding a VM disk PVC in the web console
 
 You can increase the size of a VM disk PVC in the web console without leaving the **VirtualMachines** page and with the VM running.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the **Administrator** or **Virtualization** perspective, open the **VirtualMachines** page.
 
@@ -37,32 +32,15 @@ Procedure
 
 6.  Click **Save**.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> You can enter any value greater than the current one. However, if the new value exceeds the available size, an error is displayed.
+You can enter any value greater than the current one. However, if the new value exceeds the available size, an error is displayed.
+
+</div>
 
 ## Expanding a VM disk PVC by editing its manifest
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `PersistentVolumeClaim` manifest of the VM disk that you want to expand:
 
@@ -88,49 +66,19 @@ Procedure
 
     - Specify the new disk size.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources for volume expansion
-
-</div>
-
 - [Extending a basic volume in Windows](https://docs.microsoft.com/en-us/windows-server/storage/disk-management/extend-a-basic-volume)
 
 - [Extending an existing file system partition without destroying data in Red Hat Enterprise Linux](https://access.redhat.com/solutions/29095)
 
 - [Extending a logical volume and its file system online in Red Hat Enterprise Linux](https://access.redhat.com/solutions/24770)
 
-</div>
-
 # Expanding available virtual storage by adding blank data volumes
 
 You can expand the available storage of a virtual machine (VM) by adding blank data volumes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have at least one persistent volume.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `DataVolume` manifest as shown in the following example:
 
@@ -159,18 +107,6 @@ Procedure
     $ oc create -f <blank-image-datavolume>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources for data volumes
-
-</div>
-
 - [Configuring preallocation mode for data volumes](../../../virt/storage/virt-using-preallocation-for-datavolumes.xml#virt-using-preallocation-for-datavolumes)
 
 - [Managing data volume annotations](../../../virt/storage/virt-managing-data-volume-annotations.xml#virt-managing-data-volume-annotations)
-
-</div>

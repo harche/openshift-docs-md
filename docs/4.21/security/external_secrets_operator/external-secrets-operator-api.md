@@ -15,12 +15,12 @@ The following list contains the External Secrets Operator for Red Hat OpenShift 
 
 The `externalSecretsManagerList` object fetches the list of `externalSecretsManager` objects.
 
-| Field | Type | Description | Default | Validation |
-|----|----|----|----|----|
-| `apiVersion` | *string* | The `apiVersion` specifies the version of the schema in use, which is `operator.openshift.io/v1alpha1`. |  |  |
-| `kind` | *string* | `kind` specifies the type of the object, which is `externalSecretsManagerList` for this API. |  |  |
-| `metadata` | [*ListMeta*](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#listmeta-v1-meta) | Refer to Kubernetes API documentation for details about the `metadata` fields. |  |  |
-| `items` | *array* |  |  |  |
+| Field        | Type                                                                                                | Description                                                                                             | Default | Validation |
+|--------------|-----------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|---------|------------|
+| `apiVersion` | *string*                                                                                            | The `apiVersion` specifies the version of the schema in use, which is `operator.openshift.io/v1alpha1`. |         |            |
+| `kind`       | *string*                                                                                            | `kind` specifies the type of the object, which is `externalSecretsManagerList` for this API.            |         |            |
+| `metadata`   | [*ListMeta*](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#listmeta-v1-meta) | Refer to Kubernetes API documentation for details about the `metadata` fields.                          |         |            |
+| `items`      | *array*                                                                                             |                                                                                                         |         |            |
 
 # externalSecretsManager
 
@@ -28,24 +28,24 @@ The `externalSecretsManager` object defines the configuration and information of
 
 You can configure global options by using `externalSecretsManager`. This serves as a centralized configuration for managing multiple controllers of the Operator. The Operator automatically creates the `externalSecretsManager` object during installation.
 
-| Field | Type | Description | Default | Validation |
-|----|----|----|----|----|
-| `apiVersion` | *string* | The `apiVersion` specifies the version of the schema in use, which is `operator.openshift.io/v1alpha1`. |  |  |
-| `kind` | *string* | `kind` specifies the type of the object, which is `externalSecretsManager` for this Object. |  |  |
-| `metadata` | [*ObjectMeta*](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#objectmeta-v1-meta) | Refer to Kubernetes API documentation for details about the `metadata` fields. |  |  |
-| `spec` | *object* | `spec` contains specifications of the desired behavior. |  |  |
-| `status` | *object* | `status` displays the most recently observed state of the controllers in the External Secrets Operator. |  |  |
+| Field        | Type                                                                                                    | Description                                                                                             | Default | Validation |
+|--------------|---------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|---------|------------|
+| `apiVersion` | *string*                                                                                                | The `apiVersion` specifies the version of the schema in use, which is `operator.openshift.io/v1alpha1`. |         |            |
+| `kind`       | *string*                                                                                                | `kind` specifies the type of the object, which is `externalSecretsManager` for this Object.             |         |            |
+| `metadata`   | [*ObjectMeta*](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#objectmeta-v1-meta) | Refer to Kubernetes API documentation for details about the `metadata` fields.                          |         |            |
+| `spec`       | *object*                                                                                                | `spec` contains specifications of the desired behavior.                                                 |         |            |
+| `status`     | *object*                                                                                                | `status` displays the most recently observed state of the controllers in the External Secrets Operator. |         |            |
 
 # externalSecretsConfigList
 
 The `externalSecretsConfigList` object fetches the list of `externalSecretsConfig` objects.
 
-| Field | Type | Description | Default | Validation |
-|----|----|----|----|----|
-| `apiVersion` | *string* | The `apiVersion` specifies the version of the schema in use, which is `operator.openshift.io/v1alpha1` |  |  |
-| `kind` | *string* | `kind` specifies the type of the object, which is `externalSecretsList` for this API. |  |  |
-| `metadata` | [*ListMeta*](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#listmeta-v1-meta) | Refer to Kubernetes API documentation for details about the `metadata` fields. |  |  |
-| `items` | *array* | `Items` contains a list of `externalSecrets` objects. |  |  |
+| Field        | Type                                                                                                | Description                                                                                            | Default | Validation |
+|--------------|-----------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|---------|------------|
+| `apiVersion` | *string*                                                                                            | The `apiVersion` specifies the version of the schema in use, which is `operator.openshift.io/v1alpha1` |         |            |
+| `kind`       | *string*                                                                                            | `kind` specifies the type of the object, which is `externalSecretsList` for this API.                  |         |            |
+| `metadata`   | [*ListMeta*](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#listmeta-v1-meta) | Refer to Kubernetes API documentation for details about the `metadata` fields.                         |         |            |
+| `items`      | *array*                                                                                             | `Items` contains a list of `externalSecrets` objects.                                                  |         |            |
 
 # externalSecretsConfig
 
@@ -53,13 +53,13 @@ The `externalSecretsConfig` object defines the configuration and information for
 
 Creating an `externalSecretsConfig` object triggers the deployment of the `external-secrets` operand and maintains the desired state.
 
-| Field | Type | Description | Default | Validation |
-|----|----|----|----|----|
-| `apiVersion` | *string* | The `apiVersion` specifies the version of the schema in use, which is `operator.openshift.io/v1alpha1`. |  |  |
-| `kind` | *string* | `kind` specifies the type of the object, which is `externalSecrets` for this object. |  |  |
-| `metadata` | [*ObjectMeta*](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#objectmeta-v1-meta) | Refer to Kubernetes API documentation for details about the `metadata` fields. |  |  |
-| `spec` | *object* | `spec` contains the specifications of the desired behavior of the `externalSecrets` object. |  |  |
-| `status` | *object* | `status` displays the most recently observed status of the `externalSecrets` object. |  |  |
+| Field        | Type                                                                                                    | Description                                                                                             | Default | Validation |
+|--------------|---------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|---------|------------|
+| `apiVersion` | *string*                                                                                                | The `apiVersion` specifies the version of the schema in use, which is `operator.openshift.io/v1alpha1`. |         |            |
+| `kind`       | *string*                                                                                                | `kind` specifies the type of the object, which is `externalSecrets` for this object.                    |         |            |
+| `metadata`   | [*ObjectMeta*](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#objectmeta-v1-meta) | Refer to Kubernetes API documentation for details about the `metadata` fields.                          |         |            |
+| `spec`       | *object*                                                                                                | `spec` contains the specifications of the desired behavior of the `externalSecrets` object.             |         |            |
+| `status`     | *object*                                                                                                | `status` displays the most recently observed status of the `externalSecrets` object.                    |         |            |
 
 # Listing fields in External Secrets Operator for Red Hat OpenShift APIs
 
@@ -69,9 +69,9 @@ The following fields apply to the External Secrets Operator for Red Hat OpenShif
 
 The `externalSecretsManagerSpec` field defines the desired behavior of the `externalSecretsManager` object.
 
-| Field | type | Description | Default | Validation |
-|----|----|----|----|----|
-| `globalConfig` | *object* | `globalConfig` configures the behavior of deployments that External Secrets Operator manages. |  | Optional |
+| Field          | type     | Description                                                                                   | Default | Validation |
+|----------------|----------|-----------------------------------------------------------------------------------------------|---------|------------|
+| `globalConfig` | *object* | `globalConfig` configures the behavior of deployments that External Secrets Operator manages. |         | Optional   |
 
 # externalSecretsManagerStatus
 
@@ -86,7 +86,7 @@ The `externalSecretsManagerStatus` field shows the most recently observed status
 <col style="width: 20%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
@@ -95,14 +95,14 @@ The `externalSecretsManagerStatus` field shows the most recently observed status
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>controllerStatuses</code></p></td>
 <td style="text-align: left;"><p><em>array</em></p></td>
 <td style="text-align: left;"><p><code>controllerStatuses</code> holds the observed conditions of the controllers used by the Operator.</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>lastTransitionTime</code></p></td>
 <td style="text-align: left;"><p><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#time-v1-meta"><em>Time</em></a></p></td>
 <td style="text-align: left;"><p><code>lastTransitionTime</code> records the most recent time the status of the condition changed.</p></td>
@@ -117,21 +117,21 @@ The `externalSecretsManagerStatus` field shows the most recently observed status
 
 The `externalSecretsConfigSpec` field defines the desired behavior of the `externalSecrets` object.
 
-| Field | Type | Description | Default | Validation |
-|----|----|----|----|----|
-| `appConfig` | *object* | `appConfig` configures the behavior of the `external-secrets` operand. |  | Optional |
-| `plugins` | *object* | `plugins` configures the optional provider plugins. |  | Optional |
-| `controllerConfig` | *object* | `controllerConfig` configures the controller to set up defaults that enable `external-secrets` operand. |  | Optional |
+| Field              | Type     | Description                                                                                             | Default | Validation |
+|--------------------|----------|---------------------------------------------------------------------------------------------------------|---------|------------|
+| `appConfig`        | *object* | `appConfig` configures the behavior of the `external-secrets` operand.                                  |         | Optional   |
+| `plugins`          | *object* | `plugins` configures the optional provider plugins.                                                     |         | Optional   |
+| `controllerConfig` | *object* | `controllerConfig` configures the controller to set up defaults that enable `external-secrets` operand. |         | Optional   |
 
 # externalSecretsConfigStatus
 
 The `externalSecretsConfigStatus` field shows the most recently observed status of the `externalSecretsConfig` Object.
 
-| Field | Type | Description | Default | Validation |
-|----|----|----|----|----|
-| `conditions` | [*Condition*](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) *array* | `conditions` contains information about the current state of deployment. |  |  |
-| `externalSecretsImage` | *string* | `externalSecretsImage` specifies the image name and tag used for deploy `external-secrets` operand. |  |  |
-| `bitwardenSDKServerImage` | *string* | `bitwardenSDKServerImage` specifies the name of the image and tag used for deploying the `bitwarden-sdk-server`. |  |  |
+| Field                     | Type                                                                                                          | Description                                                                                                      | Default | Validation |
+|---------------------------|---------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|---------|------------|
+| `conditions`              | [*Condition*](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) *array* | `conditions` contains information about the current state of deployment.                                         |         |            |
+| `externalSecretsImage`    | *string*                                                                                                      | `externalSecretsImage` specifies the image name and tag used for deploy `external-secrets` operand.              |         |            |
+| `bitwardenSDKServerImage` | *string*                                                                                                      | `bitwardenSDKServerImage` specifies the name of the image and tag used for deploying the `bitwarden-sdk-server`. |         |            |
 
 # globalConfig
 
@@ -146,7 +146,7 @@ The `globalConfig` field configures the behavior of the External Secrets Operato
 <col style="width: 20%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
@@ -155,7 +155,7 @@ The `globalConfig` field configures the behavior of the External Secrets Operato
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>labels</code></p></td>
 <td style="text-align: left;"><p><em>integer</em></p></td>
 <td style="text-align: left;"><p><code>labels</code> applies to all resources created by the Operator. This field can have a maximum of 20 entries</p></td>
@@ -164,7 +164,7 @@ The `globalConfig` field configures the behavior of the External Secrets Operato
 <p>The minimum number of properties is 0</p>
 <p>Optional</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>logLevel</code></p></td>
 <td style="text-align: left;"><p><em>integer</em></p></td>
 <td style="text-align: left;"><p><code>logLevel</code> supports a range of values as defined in the <a href="https://github.com/kubernetes/community/blob/master/contributors/devel/sig-instrumentation/logging.md#what-method-to-use">kubernetes logging guidelines</a>.</p></td>
@@ -173,21 +173,21 @@ The `globalConfig` field configures the behavior of the External Secrets Operato
 <p>The minimum range value is 1</p>
 <p>Optional</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>resources</code></p></td>
 <td style="text-align: left;"><p><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#resourcerequirements-v1-core"><em>ResourceRequirements</em></a></p></td>
 <td style="text-align: left;"><p><code>resources</code> defines the resource requirements. You cannot change the value of this field after setting it initially. For more information, see <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/</a></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Optional</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>affinity</code></p></td>
 <td style="text-align: left;"><p><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#affinity-v1-core"><em>Affinity</em></a></p></td>
 <td style="text-align: left;"><p><code>affinity</code> sets the scheduling affinity rules. For more information, see <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/">https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/</a></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Optional</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>tolerations</code></p></td>
 <td style="text-align: left;"><p><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#toleration-v1-core"><em>Toleration</em></a> <em>array</em></p></td>
 <td style="text-align: left;"><p><code>tolerations</code> sets the pod tolerations. For more information, see <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/">https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/</a></p></td>
@@ -196,7 +196,7 @@ The `globalConfig` field configures the behavior of the External Secrets Operato
 <p>The minimum number of items is 0</p>
 <p>Optional</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>nodeSelector</code></p></td>
 <td style="text-align: left;"><p><em>object (keys:string, values:string)</em></p></td>
 <td style="text-align: left;"><p><code>nodeSelector</code> defines the scheduling criteria by using the node labels. For more information, see <a href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/">https://kubernetes.io/docs/concepts/configuration/assign-pod-node/</a></p></td>
@@ -205,7 +205,7 @@ The `globalConfig` field configures the behavior of the External Secrets Operato
 <p>The minimum number of properties is 0</p>
 <p>Optional</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>proxy</code></p></td>
 <td style="text-align: left;"><p><em>object</em></p></td>
 <td style="text-align: left;"><p><code>proxy</code> sets the proxy configurations available in the operand containers managed by the Operator as environment variables.</p></td>
@@ -228,7 +228,7 @@ The `controllerConfig` specifies the configurations used by the controller when 
 <col style="width: 20%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
@@ -237,14 +237,14 @@ The `controllerConfig` specifies the configurations used by the controller when 
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>certProvider</code></p></td>
 <td style="text-align: left;"><p><em>string</em></p></td>
 <td style="text-align: left;"><p><code>certProvider</code> defines the configuration for the certificate providers used to manage TLS certificates for webhook and plugins.</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Optional</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>labels</code></p></td>
 <td style="text-align: left;"><p><em>object (keys:string, values:string)</em></p></td>
 <td style="text-align: left;"><p><code>labels</code> field applies labels to all resources created for the <code>external-secrets</code> operand deployment.</p></td>
@@ -260,11 +260,11 @@ The `controllerConfig` specifies the configurations used by the controller when 
 
 The `controllerStatus` field contains the observed conditions of the controllers used by the Operator.
 
-| Field | Type | Description | Default | Validation |
-|----|----|----|----|----|
-| `name` | *string* | `name` specifies the name of the controller for which the observed condition is recorded. |  | Required |
-| `conditions` | *array* | `conditions` contains information about the current state of the External Secrets Operator controllers. |  |  |
-| `observedGeneration` | *integer* | `observedGeneration` represents the `.metadata.generation` on the observed resource. |  | The minimum number of observed resources is 0. |
+| Field                | Type      | Description                                                                                             | Default | Validation                                     |
+|----------------------|-----------|---------------------------------------------------------------------------------------------------------|---------|------------------------------------------------|
+| `name`               | *string*  | `name` specifies the name of the controller for which the observed condition is recorded.               |         | Required                                       |
+| `conditions`         | *array*   | `conditions` contains information about the current state of the External Secrets Operator controllers. |         |                                                |
+| `observedGeneration` | *integer* | `observedGeneration` represents the `.metadata.generation` on the observed resource.                    |         | The minimum number of observed resources is 0. |
 
 # applicationConfig
 
@@ -279,7 +279,7 @@ The `applicationConfig` specifies the configurations for the `external-secrets` 
 <col style="width: 20%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
@@ -288,7 +288,7 @@ The `applicationConfig` specifies the configurations for the `external-secrets` 
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>logLevel</code></p></td>
 <td style="text-align: left;"><p><em>integer</em></p></td>
 <td style="text-align: left;"><p><code>logLevel</code> supports a range of values as defined in the <a href="https://github.com/kubernetes/community/blob/master/contributors/devel/sig-instrumentation/logging.md#what-method-to-use">kubernetes logging guidelines</a>.</p></td>
@@ -297,7 +297,7 @@ The `applicationConfig` specifies the configurations for the `external-secrets` 
 <p>The minimum range value is 1</p>
 <p>Optional</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>operatingNamespace</code></p></td>
 <td style="text-align: left;"><p><em>string</em></p></td>
 <td style="text-align: left;"><p><code>operatingNamespace</code> restricts the <code>external-secrets</code> operand operations to the provided namespace. Enabling this field disables <code>ClusterSecretStore</code> and <code>ClusterExternalSecret</code>.</p></td>
@@ -306,28 +306,28 @@ The `applicationConfig` specifies the configurations for the `external-secrets` 
 <p>The minimum length is 1</p>
 <p>Optional</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>webhookConfig</code></p></td>
 <td style="text-align: left;"><p><em>object</em></p></td>
 <td style="text-align: left;"><p><code>webhookConfig</code> configures webhook specifics of the <code>external-secrets</code> operand.</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>resources</code></p></td>
 <td style="text-align: left;"><p><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#resourcerequirements-v1-core"><em>ResourceRequirements</em></a></p></td>
 <td style="text-align: left;"><p><code>resources</code> defines the resource requirements. You cannot change the value of this field after setting it initially. For more information, see <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/</a></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Optional</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>affinity</code></p></td>
 <td style="text-align: left;"><p><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#affinity-v1-core"><em>Affinity</em></a></p></td>
 <td style="text-align: left;"><p><code>affinity</code> sets the scheduling affinity rules. For more information, see <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/">https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/</a></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Optional</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>tolerations</code></p></td>
 <td style="text-align: left;"><p><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#toleration-v1-core"><em>Toleration</em></a> <em>array</em></p></td>
 <td style="text-align: left;"><p><code>tolerations</code> sets the pod tolerations. For more information, see <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/">https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/</a></p></td>
@@ -336,7 +336,7 @@ The `applicationConfig` specifies the configurations for the `external-secrets` 
 <p>The minimum number of items is 0</p>
 <p>Optional</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>nodeSelector</code></p></td>
 <td style="text-align: left;"><p><em>object (keys:string, values:string)</em></p></td>
 <td style="text-align: left;"><p><code>nodeSelector</code> defines the scheduling criteria by using node labels. For more information, see <a href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/">https://kubernetes.io/docs/concepts/configuration/assign-pod-node/</a></p></td>
@@ -345,7 +345,7 @@ The `applicationConfig` specifies the configurations for the `external-secrets` 
 <p>The minimum number of properties is 0</p>
 <p>Optional</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>proxy</code></p></td>
 <td style="text-align: left;"><p><em>object (keys:string, values:string)</em></p></td>
 <td style="text-align: left;"><p><code>proxy</code> sets the proxy configurations available in operand containers managed by the Operator as environment variables.</p></td>
@@ -368,7 +368,7 @@ The `bitwardenSecretManagerProvider` field enables the Bitwarden secrets manager
 <col style="width: 20%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
@@ -377,7 +377,7 @@ The `bitwardenSecretManagerProvider` field enables the Bitwarden secrets manager
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mode</code></p></td>
 <td style="text-align: left;"><p><em>string</em></p></td>
 <td style="text-align: left;"><p><code>mode</code> field enables the <code>bitwardenSecretManagerProvider</code> provider state, which can be set to <code>Enabled</code> or <code>Disabled</code>. If set to <code>Enabled</code>, the Operator ensures the plugin is deployed and synchronized. If set to <code>Disabled</code>, the Bitwarden provider plugin reconciliation is disabled. The plugin and resources remain in their current state, and are not managed by the Operator.</p></td>
@@ -385,7 +385,7 @@ The `bitwardenSecretManagerProvider` field enables the Bitwarden secrets manager
 <td style="text-align: left;"><p>enum: [Enabled Disabled]</p>
 <p>Optional</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>secretRef</code></p></td>
 <td style="text-align: left;"><p><em>SecretReference</em></p></td>
 <td style="text-align: left;"><p><code>SecretRef</code> specifies the Kubernetes secret that contains the TLS key pair for the Bitwarden server. If this reference is not provided and the <code>certManagerConfig</code> field is configured, the issuer defined in <code>certManagerConfig</code> generates the required certificate. The secret must use <code>tls.crt</code> for certificate, <code>tls.key</code> for the private key, and <code>ca.crt</code> for CA certificate.</p></td>
@@ -399,9 +399,9 @@ The `bitwardenSecretManagerProvider` field enables the Bitwarden secrets manager
 
 The `webhookConfig` field configures the specifics of the `external-secrets` application webhook.
 
-| Field | Type | Description | Default | Validation |
-|----|----|----|----|----|
-| `certificateCheckInterval` | [*Duration*](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#duration-v1-meta) | `certificateCheckInterval` configures the polling interval to check certificate validity. | 5m | Optional |
+| Field                      | Type                                                                                                | Description                                                                               | Default | Validation |
+|----------------------------|-----------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|---------|------------|
+| `certificateCheckInterval` | [*Duration*](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#duration-v1-meta) | `certificateCheckInterval` configures the polling interval to check certificate validity. | 5m      | Optional   |
 
 # certManagerConfig
 
@@ -416,7 +416,7 @@ The `certManagerConfig` field configures the `cert-manager` Operator settings.
 <col style="width: 20%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
@@ -425,7 +425,7 @@ The `certManagerConfig` field configures the `cert-manager` Operator settings.
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>mode</code></p></td>
 <td style="text-align: left;"><p><em>string</em></p></td>
 <td style="text-align: left;"><p><code>mode</code> specifies whether to use cert-manager for certificate management instead of the built-in <code>cert-controller</code> which can be indicated by setting either <code>Enabled</code> or <code>Disabled</code>. If set to <code>Enabled</code>, uses <code>cert-manager</code> for obtaining the certificates for the webhook server and other components. If set to <code>Disabled</code>, uses the <code>cert-controller</code> for obtaining the certificates for the webhook server. <code>Disabled</code> is the default behavior.</p></td>
@@ -433,7 +433,7 @@ The `certManagerConfig` field configures the `cert-manager` Operator settings.
 <td style="text-align: left;"><p>enum: [true false]</p>
 <p>Required</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>injectAnnotations</code></p></td>
 <td style="text-align: left;"><p><em>string</em></p></td>
 <td style="text-align: left;"><p><code>injectAnnotations</code> adds the <code>cert-manager.io/inject-ca-from</code> annotation to the webhooks and custom resource definitions (CRDs) to automatically configure the webhook with the <code>cert-manager</code> Operator certificate authority (CA). This requires CA Injector to be enabled in <code>cert-manager</code> Operator. Set this field to <code>true</code> or <code>false</code>. When set, this field cannot be changed.</p></td>
@@ -441,21 +441,21 @@ The `certManagerConfig` field configures the `cert-manager` Operator settings.
 <td style="text-align: left;"><p>enum: [true false]</p>
 <p>Optional</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>issuerRef</code></p></td>
 <td style="text-align: left;"><p><em>ObjectReference</em></p></td>
 <td style="text-align: left;"><p><code>issuerRef</code> contains details of the referenced object used for obtaining certificates. The object must exist in the <code>external-secrets</code> namespace unless a cluster-scoped <code>cert-manager</code> Operator issuer is used.</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Required</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>certificateDuration</code></p></td>
 <td style="text-align: left;"><p><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#duration-v1-meta"><em>Duration</em></a></p></td>
 <td style="text-align: left;"><p><code>certificateDuration</code> sets the validity period of the webhook certificate.</p></td>
 <td style="text-align: left;"><p>8760h</p></td>
 <td style="text-align: left;"><p>Optional</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>certificateRenewBefore</code></p></td>
 <td style="text-align: left;"><p><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#duration-v1-meta"><em>Duration</em></a></p></td>
 <td style="text-align: left;"><p><code>certificateRenewBefore</code> sets the ahead time to renew the webhook certificate before expiry.</p></td>
@@ -469,9 +469,9 @@ The `certManagerConfig` field configures the `cert-manager` Operator settings.
 
 The `certProvidersConfig` defines the configuration for the certificate providers used to manage TLS certificates for webhook and plugins.
 
-| Field | Type | Description | Default | Validation |
-|----|----|----|----|----|
-| `certManager` | *object* | `certManager` defines the configuration for `cert-manager` provider specifics. |  | Optional |
+| Field         | Type     | Description                                                                    | Default | Validation |
+|---------------|----------|--------------------------------------------------------------------------------|---------|------------|
+| `certManager` | *object* | `certManager` defines the configuration for `cert-manager` provider specifics. |         | Optional   |
 
 # objectReference
 
@@ -486,7 +486,7 @@ The `ObjectReference` field refers to an object by its name, kind, and group.
 <col style="width: 20%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
@@ -495,7 +495,7 @@ The `ObjectReference` field refers to an object by its name, kind, and group.
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><em>string</em></p></td>
 <td style="text-align: left;"><p><code>name</code> specifies the name of the resource being referred to.</p></td>
@@ -504,7 +504,7 @@ The `ObjectReference` field refers to an object by its name, kind, and group.
 <p>The minimum length is 1 character.</p>
 <p>Required</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>kind</code></p></td>
 <td style="text-align: left;"><p><em>string</em></p></td>
 <td style="text-align: left;"><p><code>kind</code> specifies the kind of the resource being referred to.</p></td>
@@ -513,7 +513,7 @@ The `ObjectReference` field refers to an object by its name, kind, and group.
 <p>The minimum length is 1 character.</p>
 <p>Optional</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>group</code></p></td>
 <td style="text-align: left;"><p><em>string</em></p></td>
 <td style="text-align: left;"><p><code>group</code> specifies the group of the resource being referred to.</p></td>
@@ -538,7 +538,7 @@ The `secretReference` field refers to a secret with the given name in the same n
 <col style="width: 20%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
@@ -547,7 +547,7 @@ The `secretReference` field refers to a secret with the given name in the same n
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><em>string</em></p></td>
 <td style="text-align: left;"><p><code>name</code> specifies the name of the secret resource being referred to.</p></td>
@@ -563,36 +563,36 @@ The `secretReference` field refers to a secret with the given name in the same n
 
 The `condition` field holds information about the condition of the `external-secrets` deployment.
 
-| Field | Type | Description | Default | Validation |
-|----|----|----|----|----|
-| `type` | *string* | `type` contains the condition of the deployment. |  | Required |
-| `status` | [*ConditionStatus*](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#conditionstatus-v1-meta) | `status` contains the status of the condition of the deployment |  |  |
-| `message` | *string* | `message` provides details on the state of the deployment |  |  |
+| Field     | Type                                                                                                              | Description                                                     | Default | Validation |
+|-----------|-------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|---------|------------|
+| `type`    | *string*                                                                                                          | `type` contains the condition of the deployment.                |         | Required   |
+| `status`  | [*ConditionStatus*](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#conditionstatus-v1-meta) | `status` contains the status of the condition of the deployment |         |            |
+| `message` | *string*                                                                                                          | `message` provides details on the state of the deployment       |         |            |
 
 # conditionalStatus
 
 The `conditionalStatus` field holds information about the current state of the `external-secrets` deployment.
 
-| Field | Type | Description | Default | Validation |
-|----|----|----|----|----|
-| `conditions` | *array* | `conditions` contains information on the current state of the deployment. |  |  |
+| Field        | Type    | Description                                                               | Default | Validation |
+|--------------|---------|---------------------------------------------------------------------------|---------|------------|
+| `conditions` | *array* | `conditions` contains information on the current state of the deployment. |         |            |
 
 # mode
 
 The `mode` field indicates the operational state of the optional features.
 
-| Field | Type | Description | Default | Validation |
-|----|----|----|----|----|
-| `Enabled` |  | `Enabled` indicates the optional configuration is enabled. |  |  |
-| `Disabled` |  | `Disabled` indicates the optional configuration is disabled. |  |  |
+| Field      | Type | Description                                                  | Default | Validation |
+|------------|------|--------------------------------------------------------------|---------|------------|
+| `Enabled`  |      | `Enabled` indicates the optional configuration is enabled.   |         |            |
+| `Disabled` |      | `Disabled` indicates the optional configuration is disabled. |         |            |
 
 # pluginsConfig
 
 The `pluginsConfig` configures the optional plugins.
 
-| Field | Type | Description | Default | Validation |
-|----|----|----|----|----|
-| `bitwardenSecretManagerProvider` | *object* | `bitwardenSecretManagerProvider` enables the `bitwarden-secrets-manager` provider plugin for connecting with the 'bitwarden-secrets-manager'. |  | Optional |
+| Field                            | Type     | Description                                                                                                                                   | Default | Validation |
+|----------------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------|---------|------------|
+| `bitwardenSecretManagerProvider` | *object* | `bitwardenSecretManagerProvider` enables the `bitwarden-secrets-manager` provider plugin for connecting with the 'bitwarden-secrets-manager'. |         | Optional   |
 
 # proxyConfig
 
@@ -607,7 +607,7 @@ The `proxyConfig` holds the proxy configurations which are made available in the
 <col style="width: 20%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
@@ -616,7 +616,7 @@ The `proxyConfig` holds the proxy configurations which are made available in the
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>httpProxy</code></p></td>
 <td style="text-align: left;"><p><em>string</em></p></td>
 <td style="text-align: left;"><p>The <code>httpProxy</code> field contains the URL of the proxy for HTTP requests. This field can have a maximum of 2048 characters.</p></td>
@@ -625,7 +625,7 @@ The `proxyConfig` holds the proxy configurations which are made available in the
 <p>The minimum length is 0 characters.</p>
 <p>Optional</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>httpsProxy</code></p></td>
 <td style="text-align: left;"><p><em>string</em></p></td>
 <td style="text-align: left;"><p>The <code>httpsProxy</code> field contains the URL of the proxy for HTTPS requests. This field can have a maximum of 2048 characters.</p></td>
@@ -634,7 +634,7 @@ The `proxyConfig` holds the proxy configurations which are made available in the
 <p>The minimum length is 0 characters.</p>
 <p>Optional</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><em>string</em></p></td>
 <td style="text-align: left;"><p>The <code>noProxy</code> field is a comma-separated list of hostnames, classless inter-domain routings (CIDRs), and IP addresses or a combination of the three for which the proxy should not be used. This field can have a maximum of 4096 characters.</p></td>

@@ -1,9 +1,12 @@
 Alibaba Cloud provides a broad range of cloud computing and data storage services to online businesses and global enterprises. You can install an OpenShift Container Platform cluster on Alibaba Cloud using the Assisted Installer.
 
-> [!IMPORTANT]
-> Installing Alibaba Cloud with Assisted Installer is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Installing Alibaba Cloud with Assisted Installer is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 # Process outline for creating a cluster with the Assisted Installer
 
@@ -31,43 +34,15 @@ The main steps of the installation process are as follows:
 
 8.  Complete the cluster configuration and installation in the Assisted Installer.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Installing OpenShift Container Platform with the Assisted Installer](https://docs.redhat.com/en/documentation/assisted_installer_for_openshift_container_platform/2025)
-
-</div>
 
 # Converting the discovery image to QCOW2 format
 
 Convert the generated ISO to `QCOW2` format before importing it into Alibaba Cloud.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have created a cluster and downloaded the discovery image in the Assisted Installer.
 
 - You have access to a Linux machine that is outside the cluster, such as your desktop machine.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open the command-line interface on the Linux machine.
 
@@ -83,13 +58,14 @@ Procedure
     $ sudo dnf install -y qemu-img
     ```
 
-    > [!NOTE]
-    > If your system uses the `APT` package manager, install the package using the name `qemu-utils` instead.
+    <div class="note">
+
+    If your system uses the `APT` package manager, install the package using the name `qemu-utils` instead.
+
+    </div>
 
 4.  Convert the image to `QCOW2` by running the following command:
 
     ``` terminal
     $ qemu-img convert -O qcow2 ${CLUSTER_NAME}.iso ${CLUSTER_NAME}.qcow2
     ```
-
-</div>

@@ -1,16 +1,12 @@
 If your service mesh application is constructed with a complex array of microservices, you can use Red Hat OpenShift Service Mesh to customize the security of the communication between those services. The infrastructure of OpenShift Container Platform along with the traffic management features of Service Mesh help you manage the complexity of your applications and secure microservices.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Before you begin
+**Before you begin**
 
 </div>
 
 If you have a project, add your project to the [`ServiceMeshMemberRoll` resource](../../service_mesh/v2x/ossm-create-mesh.xml#ossm-member-roll-create_ossm-create-mesh).
-
-</div>
 
 If you don’t have a project, install the [Bookinfo sample application](../../service_mesh/v2x/ossm-create-mesh.xml#ossm-tutorial-bookinfo-overview_ossm-create-mesh) and add it to the `ServiceMeshMemberRoll` resource. The sample application helps illustrate security concepts.
 
@@ -38,14 +34,6 @@ spec:
 
 You can also enable mTLS by using the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Log in to the web console.
 
 2.  Click the **Project** menu and select the project where you installed the Service Mesh control plane, for example **istio-system**.
@@ -58,27 +46,15 @@ Procedure
 
 6.  On the **Details** page, click the toggle in the **Security** section for **Data Plane Security**.
 
-</div>
-
 ### Configuring sidecars for incoming connections for specific services
 
 You can also configure mTLS for individual services by creating a policy.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a YAML file using the following example.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    PeerAuthentication Policy example policy.yaml
+    **PeerAuthentication Policy example policy.yaml**
 
     </div>
 
@@ -93,8 +69,6 @@ Procedure
         mode: STRICT
     ```
 
-    </div>
-
     1.  Replace `<namespace>` with the namespace where the service is located.
 
 2.  Run the following command to create the resource in the namespace where the service is located. It must match the `namespace` field in the Policy resource you just created.
@@ -103,30 +77,21 @@ Procedure
     $ oc create -n <namespace> -f <policy.yaml>
     ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> If you are not using automatic mTLS and you are setting `PeerAuthentication` to STRICT, you must create a `DestinationRule` resource for your service.
+If you are not using automatic mTLS and you are setting `PeerAuthentication` to STRICT, you must create a `DestinationRule` resource for your service.
+
+</div>
 
 ### Configuring sidecars for outgoing connections
 
 Create a destination rule to configure Service Mesh to use mTLS when sending requests to other services in the mesh.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a YAML file using the following example.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    DestinationRule example destination-rule.yaml
+    **DestinationRule example destination-rule.yaml**
 
     </div>
 
@@ -143,8 +108,6 @@ Procedure
         mode: ISTIO_MUTUAL
     ```
 
-    </div>
-
     1.  Replace `<namespace>` with the namespace where the service is located.
 
 2.  Run the following command to create the resource in the namespace where the service is located. It must match the `namespace` field in the `DestinationRule` resource you just created.
@@ -152,8 +115,6 @@ Procedure
     ``` terminal
     $ oc create -n <namespace> -f <destination-rule.yaml>
     ```
-
-</div>
 
 ### Setting the minimum and maximum protocol versions
 
@@ -171,14 +132,6 @@ The default is `TLS_AUTO` and does not specify a version of TLS.
 
 Valid values
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Log in to the web console.
 
 2.  Click the **Project** menu and select the project where you installed the Service Mesh control plane, for example **istio-system**.
@@ -193,11 +146,9 @@ Procedure
 
 7.  Insert the following code snippet in the YAML editor. Replace the value in the `minProtocolVersion` with the TLS version value. In this example, the minimum TLS version is set to `TLSv1_2`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    ServiceMeshControlPlane snippet
+    **ServiceMeshControlPlane snippet**
 
     </div>
 
@@ -210,13 +161,9 @@ Procedure
             minProtocolVersion: TLSv1_2
     ```
 
-    </div>
-
 8.  Click **Save**.
 
 9.  Click **Refresh** to verify that the changes updated correctly.
-
-</div>
 
 ## Validating encryption with Kiali
 
@@ -279,14 +226,6 @@ An authorization policy includes a selector, an action, and a list of rules:
 
   - The `when` field specifies additional conditions that to apply the rule.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create your `AuthorizationPolicy` resource. The following example shows a resource that updates the ingress-policy `AuthorizationPolicy` to deny an IP address from accessing the ingress gateway.
 
     ``` yaml
@@ -312,19 +251,13 @@ Procedure
     $ oc create -n istio-system -f <filename>
     ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Next steps
+**Next steps**
 
 </div>
 
 Consider the following examples for other common configurations.
-
-</div>
 
 ## Configure intra-project communication
 
@@ -449,8 +382,11 @@ The `cipherSuites` setting is effective if your service mesh uses TLS 1.2 or ear
 
 Set your cipher suites in the comma separated list in order of priority. For example, `ecdhCurves: CurveP256, CurveP384` sets `CurveP256` as a higher priority than `CurveP384`.
 
-> [!NOTE]
-> You must include either `TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256` or `TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256` when you configure the cipher suite. HTTP/2 support requires at least one of these cipher suites.
+<div class="note">
+
+You must include either `TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256` or `TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256` when you configure the cipher suite. HTTP/2 support requires at least one of these cipher suites.
+
+</div>
 
 The supported cipher suites are:
 
@@ -496,14 +432,6 @@ The supported ECDH Curves are:
 
 You can configure your own JSON Web Key Sets (JWKS) resolver certificate authority (CA) from the `ServiceMeshControlPlane` (SMCP) spec.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Edit the `ServiceMeshControlPlane` spec file:
 
     ``` yaml
@@ -529,15 +457,11 @@ Procedure
 
 3.  Save the changes. OpenShift Container Platform automatically applies them.
 
-</div>
-
 A `ConfigMap` such as `pilot-jwks-cacerts-<SMCP name>` is created with the CA `.pem data`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example ConfigMap `pilot-jwks-cacerts-<SMCP name>`
+**Example ConfigMap `pilot-jwks-cacerts-<SMCP name>`**
 
 </div>
 
@@ -552,19 +476,9 @@ data:
       -----END CERTIFICATE-----
 ```
 
-</div>
-
 # Adding an external certificate authority key and certificate
 
 By default, Red Hat OpenShift Service Mesh generates a self-signed root certificate and key and uses them to sign the workload certificates. You can also use the user-defined certificate and key to sign workload certificates with user-defined root certificate. This task demonstrates an example to plug certificates and key into Service Mesh.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Install Red Hat OpenShift Service Mesh with mutual TLS enabled to configure certificates.
 
@@ -573,8 +487,6 @@ Prerequisites
 - Deploy the Bookinfo sample application to verify the results with these instructions.
 
 - OpenSSL is required to verify certificates.
-
-</div>
 
 ## Adding an existing certificate and key
 
@@ -737,14 +649,9 @@ The cert-manager tool ensures the certificates are valid and up-to-date by attem
 
 For Istio users, cert-manager also provides integration with `istio-csr`, which is a certificate authority (CA) server that handles certificate signing requests (CSR) from Istio proxies. The server then delegates signing to cert-manager, which forwards CSRs to the configured CA server.
 
-> [!NOTE]
-> Red Hat provides support for integrating with `istio-csr` and cert-manager. Red Hat does not provide direct support for the `istio-csr` or the community cert-manager components. The use of community cert-manager shown here is for demonstration purposes only.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Red Hat provides support for integrating with `istio-csr` and cert-manager. Red Hat does not provide direct support for the `istio-csr` or the community cert-manager components. The use of community cert-manager shown here is for demonstration purposes only.
 
 </div>
 
@@ -760,32 +667,23 @@ Prerequisites
 
 - `istio-csr` 0.6.0 or later
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> To avoid creating config maps in all namespaces when the `istio-csr` server is installed with the `jetstack/cert-manager-istio-csr` Helm chart, use the following setting: `app.controller.configmapNamespaceSelector: "maistra.io/member-of: <istio-namespace>"` in the `istio-csr.yaml` file.
+To avoid creating config maps in all namespaces when the `istio-csr` server is installed with the `jetstack/cert-manager-istio-csr` Helm chart, use the following setting: `app.controller.configmapNamespaceSelector: "maistra.io/member-of: <istio-namespace>"` in the `istio-csr.yaml` file.
+
+</div>
 
 ## Installing cert-manager
 
 You can install the `cert-manager` tool to manage the lifecycle of TLS certificates and ensure that they are valid and up-to-date. If you are running Istio in your environment, you can also install the `istio-csr` certificate authority (CA) server, which handles certificate signing requests (CSR) from Istio proxies. The `istio-csr` CA delegates signing to the `cert-manager` tool, which delegates to the configured CA.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the root cluster issuer:
 
     1.  Create the `cluster-issuer` object as in the following example:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `cluster-issuer.yaml`
+        **Example `cluster-issuer.yaml`**
 
         </div>
 
@@ -825,12 +723,13 @@ Procedure
             secretName: root-ca
         ```
 
-        </div>
-
         <div class="informalexample">
 
-        > [!NOTE]
-        > The namespace of the `selfsigned-root-issuer` issuer and `root-ca` certificate is `cert-manager` because `root-ca` is a cluster issuer, so the cert-manager looks for a referenced secret in its own namespace. The namespace is called `cert-manager` in the case of the cert-manager Operator for Red Hat OpenShift.
+        <div class="note">
+
+        The namespace of the `selfsigned-root-issuer` issuer and `root-ca` certificate is `cert-manager` because `root-ca` is a cluster issuer, so the cert-manager looks for a referenced secret in its own namespace. The namespace is called `cert-manager` in the case of the cert-manager Operator for Red Hat OpenShift.
+
+        </div>
 
         </div>
 
@@ -842,11 +741,9 @@ Procedure
 
     3.  Create the `istio-ca` object as in the following example:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `istio-ca.yaml`
+        **Example `istio-ca.yaml`**
 
         </div>
 
@@ -879,8 +776,6 @@ Procedure
             secretName: istio-ca
         ```
 
-        </div>
-
     4.  Use the following command to create the object:
 
         ``` terminal
@@ -895,11 +790,9 @@ Procedure
         -f deploy/examples/cert-manager/istio-csr/istio-csr.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `istio-csr.yaml`
+    **Example `istio-csr.yaml`**
 
     </div>
 
@@ -936,19 +829,15 @@ Procedure
         - cert-manager-istio-csr.istio-system.svc
     ```
 
-    </div>
-
 3.  Deploy SMCP:
 
     ``` terminal
     $ oc apply -f mesh.yaml -n istio-system
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `mesh.yaml`
+    **Example `mesh.yaml`**
 
     </div>
 
@@ -991,28 +880,23 @@ Procedure
       - sleep
     ```
 
-    </div>
-
-</div>
-
 <div class="informalexample">
 
-> [!NOTE]
-> `security.identity.type: ThirdParty` must be set when `security.certificateAuthority.type: cert-manager` is configured.
+<div class="note">
+
+`security.identity.type: ThirdParty` must be set when `security.certificateAuthority.type: cert-manager` is configured.
 
 </div>
 
-<div class="formalpara">
+</div>
 
-<div class="title">
+<div class="formalpara-title">
 
-Verification
+**Verification**
 
 </div>
 
 Use the sample `httpbin` service and `sleep` app to check mTLS traffic from ingress gateways and verify that the `cert-manager` tool is installed.
-
-</div>
 
 1.  Deploy the HTTP and `sleep` apps:
 
@@ -1037,19 +921,15 @@ Use the sample `httpbin` service and `sleep` app to check mTLS traffic from ingr
        -w "%{http_code}\n"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     200
     ```
-
-    </div>
 
 3.  Check mTLS traffic from the ingress gateway to the `httpbin` service:
 

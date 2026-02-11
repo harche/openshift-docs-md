@@ -38,17 +38,13 @@ When using the `--watch` option, the behavior is effectively the same as manuall
 
 Support for copying local files to or from a container is built into the CLI.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Prerequisites
+**Prerequisites**
 
 </div>
 
 When working with `oc rsync`, note the following:
-
-</div>
 
 - rsync must be installed. The `oc rsync` command uses the local `rsync` tool, if present on the client machine and the remote container.
 
@@ -56,16 +52,13 @@ When working with `oc rsync`, note the following:
 
   The **tar** copy method does not provide the same functionality as `oc rsync`. For example, `oc rsync` creates the destination directory if it does not exist and only sends files that are different between the source and the destination.
 
-  > [!NOTE]
-  > In Windows, the `cwRsync` client should be installed and added to the PATH for use with the `oc rsync` command.
+  <div class="note">
 
-<div>
+  In Windows, the `cwRsync` client should be installed and added to the PATH for use with the `oc rsync` command.
 
-<div class="title">
+  </div>
 
-Procedure
-
-</div>
+<!-- -->
 
 - To copy a local directory to a pod directory:
 
@@ -85,21 +78,15 @@ Procedure
   $ oc rsync devpod1234:/src /home/user/source
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
   ``` terminal
   $ oc rsync devpod1234:/src/status.txt /home/user/
   ```
-
-  </div>
-
-</div>
 
 # Using advanced Rsync features
 

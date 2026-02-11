@@ -10,11 +10,9 @@ You might encounter the following common issues with `Backup` and `Restore` cust
 
 If the persistent volume (PV) and the snapshot locations are in different regions, the `Backup` custom resource (CR) displays the following error message:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample error
+**Sample error**
 
 </div>
 
@@ -22,33 +20,13 @@ Sample error
 InvalidVolume.NotFound: The volume ‘vol-xxxx’ does not exist.
 ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Edit the value of the `spec.snapshotLocations.velero.config.region` key in the `DataProtectionApplication` manifest so that the snapshot location is in the same region as the PV.
 
 2.  Create a new `Backup` CR.
 
-</div>
-
 # Troubleshooting issue where backup CR status remains in progress
 
 If a backup is interrupted, it cannot be resumed, and the status of a `Backup` customer resource (CR) remains in the `InProgress` phase and does not complete.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Retrieve the details of the `Backup` CR by running the following command:
 
@@ -73,8 +51,6 @@ Procedure
     $ velero backup describe <backup_name> --details
     ```
 
-</div>
-
 # Troubleshooting issue where backup CR status remains partially failed
 
 The status of a `Backup` CR without Restic in use remains in the `PartiallyFailed` phase and is not completed. A snapshot of the affiliated PVC is not created.
@@ -84,14 +60,6 @@ If the backup created based on the CSI snapshot class is missing a label, the CS
 ``` text
 time="2023-02-17T16:33:13Z" level=error msg="Error backing up item" backup=openshift-adp/user1-backup-check5 error="error executing custom action (groupResource=persistentvolumeclaims, namespace=busy1, name=pvc1-user1): rpc error: code = Unknown desc = failed to get volumesnapshotclass for storageclass ocs-storagecluster-ceph-rbd: failed to get volumesnapshotclass for provisioner openshift-storage.rbd.csi.ceph.com, ensure that the desired volumesnapshot class has the velero.io/csi-volumesnapshot-class label" logSource="/remote-source/velero/app/pkg/backup/backup.go:417" name=busybox-79799557b5-vprq
 ```
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Delete the `Backup` CR by running the following command::
 
@@ -108,5 +76,3 @@ Procedure
     ```
 
 4.  Create a new `Backup` CR.
-
-</div>

@@ -12,11 +12,17 @@ When both options are in use, the lower of the two values limits the number of p
 
 - Resource overcommitting, leading to poor user application performance.
 
-> [!IMPORTANT]
-> In Kubernetes, a pod that is holding a single container actually uses two containers. The second container is used to set up networking prior to the actual container starting. Therefore, a system running 10 pods will actually have 20 containers running.
+<div class="important">
 
-> [!NOTE]
-> Disk IOPS throttling from the cloud provider might have an impact on CRI-O and kubelet. They might get overloaded when there are large number of I/O intensive pods running on the nodes. It is recommended that you monitor the disk I/O on the nodes and use volumes with sufficient throughput for the workload.
+In Kubernetes, a pod that is holding a single container actually uses two containers. The second container is used to set up networking prior to the actual container starting. Therefore, a system running 10 pods will actually have 20 containers running.
+
+</div>
+
+<div class="note">
+
+Disk IOPS throttling from the cloud provider might have an impact on CRI-O and kubelet. They might get overloaded when there are large number of I/O intensive pods running on the nodes. It is recommended that you monitor the disk I/O on the nodes and use volumes with sufficient throughput for the workload.
+
+</div>
 
 The `podsPerCore` parameter sets the number of pods the node can run based on the number of processor cores on the node. For example, if `podsPerCore` is set to `10` on a node with 4 processor cores, the maximum number of pods allowed on the node will be `40`.
 
@@ -40,14 +46,6 @@ Two parameters control the maximum number of pods that can be scheduled to a nod
 
 For example, if `podsPerCore` is set to `10` on a node with 4 processor cores, the maximum number of pods allowed on the node will be 40.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 1.  Obtain the label associated with the static `MachineConfigPool` CRD for the type of node you want to configure by entering the following command:
 
     ``` terminal
@@ -60,11 +58,9 @@ Prerequisites
     $ oc edit machineconfigpool worker
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -80,32 +76,23 @@ Prerequisites
     #...
     ```
 
-    </div>
-
     - The label appears under Labels.
 
-      > [!TIP]
-      > If the label is not present, add a key/value pair such as:
-      >
-      >     $ oc label machineconfigpool worker custom-kubelet=small-pods
+      <div class="tip">
 
-</div>
+      If the label is not present, add a key/value pair such as:
 
-<div>
+          $ oc label machineconfigpool worker custom-kubelet=small-pods
 
-<div class="title">
+      </div>
 
-Procedure
-
-</div>
+<!-- -->
 
 1.  Create a custom resource (CR) for your configuration change.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample configuration for a `max-pods` CR
+    **Sample configuration for a `max-pods` CR**
 
     </div>
 
@@ -124,8 +111,6 @@ Procedure
     #...
     ```
 
-    </div>
-
     - Assign a name to CR.
 
     - Specify the label from the machine config pool.
@@ -134,8 +119,11 @@ Procedure
 
     - Specify the number of pods the node can run to a fixed value, regardless of the properties of the node.
 
-      > [!NOTE]
-      > Setting `podsPerCore` to `0` disables this limit.
+      <div class="note">
+
+      Setting `podsPerCore` to `0` disables this limit.
+
+      </div>
 
       In the above example, the default value for `podsPerCore` is `10` and the default value for `maxPods` is `250`. This means that unless the node has 25 cores or more, by default, `podsPerCore` will be the limiting factor.
 
@@ -145,15 +133,7 @@ Procedure
     $ oc create -f <file_name>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  List the `MachineConfigPool` CRDs to see if the change is applied. The `UPDATING` column reports `True` if the change is picked up by the Machine Config Controller:
 
@@ -161,11 +141,9 @@ Verification
     $ oc get machineconfigpools
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -175,19 +153,15 @@ Verification
     worker   worker-8cecd1236b33ee3f8a5e   False     True       False
     ```
 
-    </div>
-
     Once the change is complete, the `UPDATED` column reports `True`.
 
     ``` terminal
     $ oc get machineconfigpools
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -196,7 +170,3 @@ Verification
     master   master-9cc2c72f205e103bb534   False     True       False
     worker   worker-8cecd1236b33ee3f8a5e   True      False      False
     ```
-
-    </div>
-
-</div>

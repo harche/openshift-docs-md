@@ -14,29 +14,13 @@ In this use case, you back up an application by using OADP and store the backup 
 
 - You create and verify the backup.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - You installed the OADP Operator.
 
 - You installed the ODF Operator.
 
 - You have an application with a database running in a separate namespace.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an OBC manifest file to request a NooBaa MCG bucket as shown in the following example:
 
@@ -78,11 +62,9 @@ Procedure
 
     `test-obc` is the name of the OBC.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -99,19 +81,15 @@ Procedure
     s3.openshift-storage.svc
     ```
 
-    </div>
-
 4.  To get the bucket credentials from the generated `secret`, run the following command:
 
     ``` terminal
     $ oc extract --to=- secret/test-obc
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -121,8 +99,6 @@ Procedure
     # AWS_SECRET_ACCESS_KEY
     YXf...+NaCkdyC3QPym
     ```
-
-    </div>
 
 5.  Get the public URL for the S3 endpoint from the s3 route in the `openshift-storage` namespace by running the following command:
 
@@ -207,11 +183,9 @@ Procedure
     $ oc get dpa -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -240,19 +214,15 @@ Procedure
       resourceVersion: ""
     ```
 
-    </div>
-
 11. Verify that the backup storage location (BSL) is available by running the following command:
 
     ``` terminal
     $ oc get backupstoragelocations.velero.io -n openshift-adp
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -260,8 +230,6 @@ Procedure
     NAME           PHASE       LAST VALIDATED   AGE   DEFAULT
     dpa-sample-1   Available   3s               15s   true
     ```
-
-    </div>
 
 12. Configure a backup CR as shown in the following example:
 
@@ -287,27 +255,15 @@ Procedure
     $ oc apply -f <backup_cr_filename>
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the backup object is in the `Completed` phase by running the following command. For more details, see the example output.
 
   ``` terminal
   $ oc describe backup test-backup -n openshift-adp
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -330,7 +286,3 @@ Verification
     Version:            1
   Events:               <none>
   ```
-
-  </div>
-
-</div>

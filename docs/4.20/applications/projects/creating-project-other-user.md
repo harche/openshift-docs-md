@@ -8,19 +8,9 @@ You can configure a request to the OpenShift Container Platform API to act as th
 
 You can impersonate a different user when you create a project request. Because `system:authenticated:oauth` is the only bootstrap group that can create project requests, you must impersonate that group.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - To create a project request on behalf of a different user:
 
   ``` terminal
   $ oc new-project <project> --as=<user> \
       --as-group=system:authenticated --as-group=system:authenticated:oauth
   ```
-
-</div>

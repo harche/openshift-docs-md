@@ -34,11 +34,9 @@ A rolling deployment typically waits for new pods to become `ready` via a readin
 
 A rolling deployment means you have both old and new versions of your code running at the same time. This typically requires that your application handle N-1 compatibility.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example rolling strategy definition
+**Example rolling strategy definition**
 
 </div>
 
@@ -61,8 +59,6 @@ spec:
       pre: {}
      post: {}
 ```
-
-</div>
 
 - The time to wait between individual pod updates. If unspecified, this value defaults to `1`.
 
@@ -88,8 +84,11 @@ The rolling strategy:
 
 5.  Executes any `post` lifecycle hook.
 
-> [!IMPORTANT]
-> When scaling down, the rolling strategy waits for pods to become ready so it can decide whether further scaling would affect availability. If scaled up pods never become ready, the deployment process will eventually time out and result in a deployment failure.
+<div class="important">
+
+When scaling down, the rolling strategy waits for pods to become ready so it can decide whether further scaling would affect availability. If scaled up pods never become ready, the deployment process will eventually time out and result in a deployment failure.
+
+</div>
 
 The `maxUnavailable` parameter is the maximum number of pods that can be unavailable during the update. The `maxSurge` parameter is the maximum number of pods that can be scheduled above the original number of pods. Both parameters can be set to either a percentage (e.g., `10%`) or an absolute value (e.g., `2`). The default value for both is `25%`.
 
@@ -103,8 +102,11 @@ These parameters allow the deployment to be tuned for availability and speed. Fo
 
 Generally, if you want fast rollouts, use `maxSurge`. If you have to take into account resource quota and can accept partial unavailability, use `maxUnavailable`.
 
-> [!WARNING]
-> The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
+<div class="warning">
+
+The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
+
+</div>
 
 ## Canary deployments
 
@@ -116,22 +118,17 @@ The readiness check is part of the application code and can be as sophisticated 
 
 Rolling deployments are the default type in OpenShift Container Platform. You can create a rolling deployment using the CLI.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create an application based on the example deployment images found in [Quay.io](https://quay.io/repository/openshifttest/deployment-example):
 
     ``` terminal
     $ oc new-app quay.io/openshifttest/deployment-example:latest
     ```
 
-    > [!NOTE]
-    > This image does not expose any ports. If you want to expose your applications over an external LoadBalancer service or enable access to the application over the public internet, create a service by using the `oc expose dc/deployment-example --port=<port>` command after completing this procedure.
+    <div class="note">
+
+    This image does not expose any ports. If you want to expose your applications over an external LoadBalancer service or enable access to the application over the public internet, create a service by using the `oc expose dc/deployment-example --port=<port>` command after completing this procedure.
+
+    </div>
 
 2.  If you have the router installed, make the application available via a route or use the service IP directly.
 
@@ -161,8 +158,6 @@ Procedure
     $ oc describe dc deployment-example
     ```
 
-</div>
-
 During the deployment process, the new replication controller is incrementally scaled up. After the new pods are marked as `ready` (by passing their readiness check), the deployment process continues.
 
 If the pods do not become ready, the process aborts, and the deployment rolls back to its previous version.
@@ -171,27 +166,9 @@ If the pods do not become ready, the process aborts, and the deployment rolls ba
 
 You can edit the deployment strategy, image settings, environment variables, and advanced options for your deployment by using the **Developer** perspective.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are in the **Developer** perspective of the web console.
 
 - You have created an application.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to the **Topology** view.
 
@@ -209,33 +186,13 @@ Procedure
 
 5.  Click **Save**.
 
-</div>
-
 ## Starting a rolling deployment using the Developer perspective
 
 You can upgrade an application by starting a rolling deployment.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are in the **Developer** perspective of the web console.
 
 - You have created an application.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the **Topology** view, click the application node to see the **Overview** tab in the side panel. Note that the **Update Strategy** is set to the default **Rolling** strategy.
 
@@ -246,31 +203,17 @@ Procedure
     <figcaption>Rolling update</figcaption>
     </figure>
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Creating and deploying applications on OpenShift Container Platform using the **Developer** perspective](../../applications/creating_applications/odc-creating-applications-using-developer-perspective.xml#odc-creating-applications-using-developer-perspective)
 
 - [Viewing the applications in your project](../../applications/odc-viewing-application-composition-using-topology-view.xml#odc-viewing-application-composition-using-topology-view)
-
-</div>
 
 # Recreate strategy
 
 The recreate strategy has basic rollout behavior and supports lifecycle hooks for injecting code into the deployment process.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example recreate strategy definition
+**Example recreate strategy definition**
 
 </div>
 
@@ -290,8 +233,6 @@ spec:
       post: {}
 ```
 
-</div>
-
 - `recreateParams` are optional.
 
 - `pre`, `mid`, and `post` are lifecycle hooks.
@@ -308,8 +249,11 @@ The recreate strategy:
 
 5.  Executes any `post` lifecycle hook.
 
-> [!IMPORTANT]
-> During scale up, if the replica count of the deployment is greater than one, the first replica of the deployment will be validated for readiness before fully scaling up the deployment. If the validation of the first replica fails, the deployment will be considered a failure.
+<div class="important">
+
+During scale up, if the replica count of the deployment is greater than one, the first replica of the deployment will be validated for readiness before fully scaling up the deployment. If the validation of the first replica fails, the deployment will be considered a failure.
+
+</div>
 
 **When to use a recreate deployment:**
 
@@ -325,27 +269,9 @@ A recreate deployment incurs downtime because, for a brief period, no instances 
 
 You can edit the deployment strategy, image settings, environment variables, and advanced options for your deployment by using the **Developer** perspective.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are in the **Developer** perspective of the web console.
 
 - You have created an application.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to the **Topology** view.
 
@@ -363,37 +289,21 @@ Procedure
 
 5.  Click **Save**.
 
-</div>
-
 ## Starting a recreate deployment using the Developer perspective
 
 You can switch the deployment strategy from the default rolling update to a recreate update using the **Developer** perspective in the web console.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Ensure that you are in the **Developer** perspective of the web console.
 
 - Ensure that you have created an application using the **Add** view and see it deployed in the **Topology** view.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To switch to a recreate update strategy and to upgrade an application:
-
-</div>
 
 1.  Click your application to see the **Details** panel.
 
@@ -410,29 +320,17 @@ To switch to a recreate update strategy and to upgrade an application:
     <figcaption>Recreate update</figcaption>
     </figure>
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Creating and deploying applications on OpenShift Container Platform using the **Developer** perspective](../../applications/creating_applications/odc-creating-applications-using-developer-perspective.xml#odc-creating-applications-using-developer-perspective)
 
 - [Viewing the applications in your project](../../applications/odc-viewing-application-composition-using-topology-view.xml#odc-viewing-application-composition-using-topology-view)
-
-</div>
 
 # Custom strategy
 
 The custom strategy allows you to provide your own deployment behavior.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example custom strategy definition
+**Example custom strategy definition**
 
 </div>
 
@@ -454,16 +352,14 @@ spec:
           value: VALUE_1
 ```
 
-</div>
-
 In the above example, the `organization/strategy` container image provides the deployment behavior. The optional `command` array overrides any `CMD` directive specified in the image’s `Dockerfile`. The optional environment variables provided are added to the execution environment of the strategy process.
 
 Additionally, OpenShift Container Platform provides the following environment variables to the deployment process:
 
-| Environment variable | Description |
-|----|----|
-| `OPENSHIFT_DEPLOYMENT_NAME` | The name of the new deployment, a replication controller. |
-| `OPENSHIFT_DEPLOYMENT_NAMESPACE` | The name space of the new deployment. |
+| Environment variable             | Description                                               |
+|----------------------------------|-----------------------------------------------------------|
+| `OPENSHIFT_DEPLOYMENT_NAME`      | The name of the new deployment, a replication controller. |
+| `OPENSHIFT_DEPLOYMENT_NAMESPACE` | The name space of the new deployment.                     |
 
 The replica count of the new deployment will initially be zero. The responsibility of the strategy is to make the new deployment active using the logic that best serves the needs of the user.
 
@@ -513,27 +409,9 @@ If the custom deployment strategy process requires access to the OpenShift Conta
 
 You can edit the deployment strategy, image settings, environment variables, and advanced options for your deployment by using the **Developer** perspective.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are in the **Developer** perspective of the web console.
 
 - You have created an application.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to the **Topology** view.
 
@@ -551,17 +429,13 @@ Procedure
 
 5.  Click **Save**.
 
-</div>
-
 # Lifecycle hooks
 
 The rolling and recreate strategies support *lifecycle hooks*, or deployment hooks, which allow behavior to be injected into the deployment process at predefined points within the strategy:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `pre` lifecycle hook
+**Example `pre` lifecycle hook**
 
 </div>
 
@@ -571,17 +445,15 @@ pre:
   execNewPod: {}
 ```
 
-</div>
-
 - `execNewPod` is a pod-based lifecycle hook.
 
 Every hook has a *failure policy*, which defines the action the strategy should take when a hook failure is encountered:
 
-|  |  |
-|----|----|
-| `Abort` | The deployment process will be considered a failure if the hook fails. |
-| `Retry` | The hook execution should be retried until it succeeds. |
-| `Ignore` | Any hook failure should be ignored and the deployment should proceed. |
+|          |                                                                        |
+|----------|------------------------------------------------------------------------|
+| `Abort`  | The deployment process will be considered a failure if the hook fails. |
+| `Retry`  | The hook execution should be retried until it succeeds.                |
+| `Ignore` | Any hook failure should be ignored and the deployment should proceed.  |
 
 Hooks have a type-specific field that describes how to execute the hook. Currently, pod-based hooks are the only supported hook type, specified by the `execNewPod` field.
 
@@ -645,14 +517,6 @@ In this example, the `pre` hook will be executed in a new pod using the `openshi
 
 You can set lifecycle hooks, or deployment hooks, for a deployment using the CLI.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Use the `oc set deployment-hook` command to set the type of hook you want: `--pre`, `--mid`, or `--post`. For example, to set a pre-deployment hook:
 
     ``` terminal
@@ -660,5 +524,3 @@ Procedure
         --pre -c helloworld -e CUSTOM_VAR1=custom_value1 \
         --volumes data --failure-policy=abort -- /usr/bin/command arg1 arg2
     ```
-
-</div>

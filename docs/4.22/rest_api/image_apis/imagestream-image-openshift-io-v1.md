@@ -8,13 +8,13 @@ Type
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta_v2) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | ImageStreamSpec represents options for ImageStreams. |
-| `status` | `object` | ImageStreamStatus contains information about the state of this image stream. |
+| Property     | Type                                                                                       | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                                   | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                                   | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta_v2) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                |
+| `spec`       | `object`                                                                                   | ImageStreamSpec represents options for ImageStreams.                                                                                                                                                                                                                                                 |
+| `status`     | `object`                                                                                   | ImageStreamStatus contains information about the state of this image stream.                                                                                                                                                                                                                         |
 
 ## .spec
 
@@ -24,12 +24,12 @@ ImageStreamSpec represents options for ImageStreams.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property                | Type     | Description                                                                                                                                                                                                                                                                                                  |
+|-------------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `dockerImageRepository` | `string` | dockerImageRepository is optional, if specified this stream is backed by a container repository on this server Deprecated: This field is deprecated as of v3.7 and will be removed in a future release. Specify the source for the tags to be imported in each tag via the spec.tags.from reference instead. |
-| `lookupPolicy` | `object` | ImageLookupPolicy describes how an image stream can be used to override the image references used by pods, builds, and other resources in a namespace. |
-| `tags` | `array` | tags map arbitrary string values to specific image locators |
-| `tags[]` | `object` | TagReference specifies optional annotations for images using this tag and an optional reference to an ImageStreamTag, ImageStreamImage, or DockerImage this tag should track. |
+| `lookupPolicy`          | `object` | ImageLookupPolicy describes how an image stream can be used to override the image references used by pods, builds, and other resources in a namespace.                                                                                                                                                       |
+| `tags`                  | `array`  | tags map arbitrary string values to specific image locators                                                                                                                                                                                                                                                  |
+| `tags[]`                | `object` | TagReference specifies optional annotations for images using this tag and an optional reference to an ImageStreamTag, ImageStreamImage, or DockerImage this tag should track.                                                                                                                                |
 
 ## .spec.lookupPolicy
 
@@ -42,9 +42,9 @@ Type
 Required
 - `local`
 
-| Property | Type | Description |
-|----|----|----|
-| `local` | `boolean` | local will change the docker short image references (like "mysql" or "php:latest") on objects in this namespace to the image ID whenever they match this image stream, instead of reaching out to a remote registry. The name will be fully qualified to an image ID if found. The tag’s referencePolicy is taken into account on the replaced value. Only works within the current namespace. |
+| Property | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                    |
+|----------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `local`  | `boolean` | local will change the docker short image references (like "mysql" or "php:latest") on objects in this namespace to the image ID whenever they match this image stream, instead of reaching out to a remote registry. The name will be fully qualified to an image ID if found. The tag’s referencePolicy is taken into account on the replaced value. Only works within the current namespace. |
 
 ## .spec.tags
 
@@ -65,15 +65,15 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `annotations` | `object (string)` | Optional; if specified, annotations that are applied to images retrieved via ImageStreamTags. |
-| `from` | [`ObjectReference`](../objects/index.xml#io-k8s-api-core-v1-ObjectReference) | Optional; if specified, a reference to another image that this tag should point to. Valid values are ImageStreamTag, ImageStreamImage, and DockerImage. ImageStreamTag references can only reference a tag within this same ImageStream. |
-| `generation` | `integer` | Generation is a counter that tracks mutations to the spec tag (user intent). When a tag reference is changed the generation is set to match the current stream generation (which is incremented every time spec is changed). Other processes in the system like the image importer observe that the generation of spec tag is newer than the generation recorded in the status and use that as a trigger to import the newest remote tag. To trigger a new import, clients may set this value to zero which will reset the generation to the latest stream generation. Legacy clients will send this value as nil which will be merged with the current tag generation. |
-| `importPolicy` | `object` | TagImportPolicy controls how images related to this tag will be imported. |
-| `name` | `string` | Name of the tag |
-| `reference` | `boolean` | Reference states if the tag will be imported. Default value is false, which means the tag will be imported. |
-| `referencePolicy` | `object` | TagReferencePolicy describes how pull-specs for images in this image stream tag are generated when image change triggers in deployment configs or builds are resolved. This allows the image stream author to control how images are accessed. |
+| Property          | Type                                                                         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+|-------------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `annotations`     | `object (string)`                                                            | Optional; if specified, annotations that are applied to images retrieved via ImageStreamTags.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `from`            | [`ObjectReference`](../objects/index.xml#io-k8s-api-core-v1-ObjectReference) | Optional; if specified, a reference to another image that this tag should point to. Valid values are ImageStreamTag, ImageStreamImage, and DockerImage. ImageStreamTag references can only reference a tag within this same ImageStream.                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `generation`      | `integer`                                                                    | Generation is a counter that tracks mutations to the spec tag (user intent). When a tag reference is changed the generation is set to match the current stream generation (which is incremented every time spec is changed). Other processes in the system like the image importer observe that the generation of spec tag is newer than the generation recorded in the status and use that as a trigger to import the newest remote tag. To trigger a new import, clients may set this value to zero which will reset the generation to the latest stream generation. Legacy clients will send this value as nil which will be merged with the current tag generation. |
+| `importPolicy`    | `object`                                                                     | TagImportPolicy controls how images related to this tag will be imported.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `name`            | `string`                                                                     | Name of the tag                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `reference`       | `boolean`                                                                    | Reference states if the tag will be imported. Default value is false, which means the tag will be imported.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `referencePolicy` | `object`                                                                     | TagReferencePolicy describes how pull-specs for images in this image stream tag are generated when image change triggers in deployment configs or builds are resolved. This allows the image stream author to control how images are accessed.                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ## .spec.tags\[\].importPolicy
 
@@ -83,11 +83,11 @@ TagImportPolicy controls how images related to this tag will be imported.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `importMode` | `string` | ImportMode describes how to import an image manifest. |
-| `insecure` | `boolean` | Insecure is true if the server may bypass certificate verification or connect directly over HTTP during image import. |
-| `scheduled` | `boolean` | Scheduled indicates to the server that this tag should be periodically checked to ensure it is up to date, and imported |
+| Property     | Type      | Description                                                                                                             |
+|--------------|-----------|-------------------------------------------------------------------------------------------------------------------------|
+| `importMode` | `string`  | ImportMode describes how to import an image manifest.                                                                   |
+| `insecure`   | `boolean` | Insecure is true if the server may bypass certificate verification or connect directly over HTTP during image import.   |
+| `scheduled`  | `boolean` | Scheduled indicates to the server that this tag should be periodically checked to ensure it is up to date, and imported |
 
 ## .spec.tags\[\].referencePolicy
 
@@ -100,9 +100,9 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `type` | `string` | Type determines how the image pull spec should be transformed when the image stream tag is used in deployment config triggers or new builds. The default value is `Source`, indicating the original location of the image should be used (if imported). The user may also specify `Local`, indicating that the pull spec should point to the integrated container image registry and leverage the registry’s ability to proxy the pull to an upstream registry. `Local` allows the credentials used to pull this image to be managed from the image stream’s namespace, so others on the platform can access a remote image but have no access to the remote secret. It also allows the image layers to be mirrored into the local registry which the images can still be pulled even if the upstream registry is unavailable. |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|----------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `type`   | `string` | Type determines how the image pull spec should be transformed when the image stream tag is used in deployment config triggers or new builds. The default value is `Source`, indicating the original location of the image should be used (if imported). The user may also specify `Local`, indicating that the pull spec should point to the integrated container image registry and leverage the registry’s ability to proxy the pull to an upstream registry. `Local` allows the credentials used to pull this image to be managed from the image stream’s namespace, so others on the platform can access a remote image but have no access to the remote secret. It also allows the image layers to be mirrored into the local registry which the images can still be pulled even if the upstream registry is unavailable. |
 
 ## .status
 
@@ -115,12 +115,12 @@ Type
 Required
 - `dockerImageRepository`
 
-| Property | Type | Description |
-|----|----|----|
-| `dockerImageRepository` | `string` | DockerImageRepository represents the effective location this stream may be accessed at. May be empty until the server determines where the repository is located |
+| Property                      | Type     | Description                                                                                                                                                                                                         |
+|-------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dockerImageRepository`       | `string` | DockerImageRepository represents the effective location this stream may be accessed at. May be empty until the server determines where the repository is located                                                    |
 | `publicDockerImageRepository` | `string` | PublicDockerImageRepository represents the public location from where the image can be pulled outside the cluster. This field may be empty if the administrator has not exposed the integrated registry externally. |
-| `tags` | `array` | Tags are a historical record of images associated with each tag. The first entry in the TagEvent array is the currently tagged image. |
-| `tags[]` | `object` | NamedTagEventList relates a tag to its image history. |
+| `tags`                        | `array`  | Tags are a historical record of images associated with each tag. The first entry in the TagEvent array is the currently tagged image.                                                                               |
+| `tags[]`                      | `object` | NamedTagEventList relates a tag to its image history.                                                                                                                                                               |
 
 ## .status.tags
 
@@ -143,13 +143,13 @@ Required
 
 - `items`
 
-| Property | Type | Description |
-|----|----|----|
-| `conditions` | `array` | Conditions is an array of conditions that apply to the tag event list. |
-| `conditions[]` | `object` | TagEventCondition contains condition information for a tag event. |
-| `items` | `array` | Standard object’s metadata. |
-| `items[]` | `object` | TagEvent is used by ImageStreamStatus to keep a historical record of images associated with a tag. |
-| `tag` | `string` | Tag is the tag for which the history is recorded |
+| Property       | Type     | Description                                                                                        |
+|----------------|----------|----------------------------------------------------------------------------------------------------|
+| `conditions`   | `array`  | Conditions is an array of conditions that apply to the tag event list.                             |
+| `conditions[]` | `object` | TagEventCondition contains condition information for a tag event.                                  |
+| `items`        | `array`  | Standard object’s metadata.                                                                        |
+| `items[]`      | `object` | TagEvent is used by ImageStreamStatus to keep a historical record of images associated with a tag. |
+| `tag`          | `string` | Tag is the tag for which the history is recorded                                                   |
 
 ## .status.tags\[\].conditions
 
@@ -174,14 +174,14 @@ Required
 
 - `generation`
 
-| Property | Type | Description |
-|----|----|----|
-| `generation` | `integer` | Generation is the spec tag generation that this status corresponds to |
-| `lastTransitionTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | LastTransitionTIme is the time the condition transitioned from one status to another. |
-| `message` | `string` | Message is a human readable description of the details about last transition, complementing reason. |
-| `reason` | `string` | Reason is a brief machine readable explanation for the condition’s last transition. |
-| `status` | `string` | Status of the condition, one of True, False, Unknown. |
-| `type` | `string` | Type of tag event condition, currently only ImportSuccess |
+| Property             | Type                                                                     | Description                                                                                         |
+|----------------------|--------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
+| `generation`         | `integer`                                                                | Generation is the spec tag generation that this status corresponds to                               |
+| `lastTransitionTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | LastTransitionTIme is the time the condition transitioned from one status to another.               |
+| `message`            | `string`                                                                 | Message is a human readable description of the details about last transition, complementing reason. |
+| `reason`             | `string`                                                                 | Reason is a brief machine readable explanation for the condition’s last transition.                 |
+| `status`             | `string`                                                                 | Status of the condition, one of True, False, Unknown.                                               |
+| `type`               | `string`                                                                 | Type of tag event condition, currently only ImportSuccess                                           |
 
 ## .status.tags\[\].items
 
@@ -208,12 +208,12 @@ Required
 
 - `generation`
 
-| Property | Type | Description |
-|----|----|----|
-| `created` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | Created holds the time the TagEvent was created |
-| `dockerImageReference` | `string` | DockerImageReference is the string that can be used to pull this image |
-| `generation` | `integer` | Generation is the spec tag generation that resulted in this tag being updated |
-| `image` | `string` | Image is the image |
+| Property               | Type                                                                     | Description                                                                   |
+|------------------------|--------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| `created`              | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | Created holds the time the TagEvent was created                               |
+| `dockerImageReference` | `string`                                                                 | DockerImageReference is the string that can be used to pull this image        |
+| `generation`           | `integer`                                                                | Generation is the spec tag generation that resulted in this tag being updated |
+| `image`                | `string`                                                                 | Image is the image                                                            |
 
 # API endpoints
 
@@ -269,10 +269,10 @@ HTTP method
 Description
 list or watch objects of kind ImageStream
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImageStreamList`](../objects/index.xml#com-github-openshift-api-image-v1-ImageStreamList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                       |
+|--------------------|----------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImageStreamList`](../objects/index.xml#com-github-openshift-api-image-v1-ImageStreamList) schema |
+| 401 - Unauthorized | Empty                                                                                              |
 
 HTTP responses
 
@@ -284,10 +284,10 @@ HTTP method
 Description
 watch individual changes to a list of ImageStream. deprecated: use the 'watch' parameter with a list operation instead.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -299,16 +299,16 @@ HTTP method
 Description
 delete collection of ImageStream
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status_v5`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v5) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                              |
+|--------------------|-------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status_v5`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v5) schema |
+| 401 - Unauthorized | Empty                                                                                     |
 
 HTTP responses
 
@@ -318,10 +318,10 @@ HTTP method
 Description
 list or watch objects of kind ImageStream
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImageStreamList`](../objects/index.xml#com-github-openshift-api-image-v1-ImageStreamList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                       |
+|--------------------|----------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImageStreamList`](../objects/index.xml#com-github-openshift-api-image-v1-ImageStreamList) schema |
+| 401 - Unauthorized | Empty                                                                                              |
 
 HTTP responses
 
@@ -331,25 +331,25 @@ HTTP method
 Description
 create an ImageStream
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                          | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
-| 201 - Created | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
-| 202 - Accepted | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                  |
+|--------------------|---------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
+| 201 - Created      | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
+| 202 - Accepted     | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                         |
 
 HTTP responses
 
@@ -361,10 +361,10 @@ HTTP method
 Description
 watch individual changes to a list of ImageStream. deprecated: use the 'watch' parameter with a list operation instead.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -382,17 +382,17 @@ HTTP method
 Description
 delete an ImageStream
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status_v5`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v5) schema |
-| 202 - Accepted | [`Status_v5`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v5) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                              |
+|--------------------|-------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status_v5`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v5) schema |
+| 202 - Accepted     | [`Status_v5`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v5) schema |
+| 401 - Unauthorized | Empty                                                                                     |
 
 HTTP responses
 
@@ -402,10 +402,10 @@ HTTP method
 Description
 read the specified ImageStream
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                  |
+|--------------------|---------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                         |
 
 HTTP responses
 
@@ -415,18 +415,18 @@ HTTP method
 Description
 partially update the specified ImageStream
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
-| 201 - Created | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                  |
+|--------------------|---------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
+| 201 - Created      | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                         |
 
 HTTP responses
 
@@ -436,24 +436,24 @@ HTTP method
 Description
 replace the specified ImageStream
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                          | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
-| 201 - Created | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                  |
+|--------------------|---------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
+| 201 - Created      | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                         |
 
 HTTP responses
 
@@ -471,10 +471,10 @@ HTTP method
 Description
 watch changes to an object of kind ImageStream. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -492,10 +492,10 @@ HTTP method
 Description
 read status of the specified ImageStream
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                  |
+|--------------------|---------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                         |
 
 HTTP responses
 
@@ -505,18 +505,18 @@ HTTP method
 Description
 partially update status of the specified ImageStream
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
-| 201 - Created | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                  |
+|--------------------|---------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
+| 201 - Created      | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                         |
 
 HTTP responses
 
@@ -526,23 +526,23 @@ HTTP method
 Description
 replace status of the specified ImageStream
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                          | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
-| 201 - Created | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                  |
+|--------------------|---------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
+| 201 - Created      | [`ImageStream`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                         |
 
 HTTP responses

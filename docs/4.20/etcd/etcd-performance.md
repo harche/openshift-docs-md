@@ -10,19 +10,9 @@ When an etcd client such as `kube-apiserver` connects to an etcd member that is 
 
 When the etcd client requests an action that requires a quorum from the leader, the leader keeps the client connection open while it writes the local Raft log, broadcasts the log to the followers, and waits for the majority of the followers to acknowledge to have committed the log without failures. Only then does the leader send the acknowledgment to the etcd client and close the session. If failure notifications are received from the followers and the majority fails to reach a consensus, the leader returns the error message to the client and closes the session.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [The etcd learner design](https://etcd.io/docs/v3.5/learning/design-learner/)
 
 - [Failure modes](https://etcd.io/docs/v3.5/op-guide/failures/)
-
-</div>
 
 # Node scaling for etcd
 
@@ -34,8 +24,11 @@ Scaling a cluster to 4 or 5 control plane nodes is available only on bare metal 
 
 For more information about how to scale control plane nodes by using the Assisted Installer, see "Adding hosts with the API" and "Replacing a control plane node in a healthy cluster".
 
-> [!NOTE]
-> While adding control plane nodes can increase reliability and availability, it can decrease throughput and increase latency, affecting performance.
+<div class="note">
+
+While adding control plane nodes can increase reliability and availability, it can decrease throughput and increase latency, affecting performance.
+
+</div>
 
 The following table shows failure tolerance for clusters of different sizes:
 
@@ -50,14 +43,6 @@ Failure tolerances by cluster size
 
 For more information about recovering from quorum loss, see "Restoring to a previous cluster state".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Adding hosts with the API](https://docs.redhat.com/en/documentation/assisted_installer_for_openshift_container_platform/2025/html/installing_openshift_container_platform_with_the_assisted_installer/expanding-the-cluster#adding-hosts-with-the-api_expanding-the-cluster)
 
 - [Replacing a control plane node in a healthy cluster](https://docs.redhat.com/en/documentation/assisted_installer_for_openshift_container_platform/2025/html/installing_openshift_container_platform_with_the_assisted_installer/expanding-the-cluster#installing-control-plane-node-healthy-cluster_expanding-the-cluster)
@@ -65,8 +50,6 @@ Additional resources
 - [Expanding the cluster](https://docs.redhat.com/en/documentation/assisted_installer_for_openshift_container_platform/2024/html/installing_openshift_container_platform_with_the_assisted_installer/expanding-the-cluster#installing-control-plane-node-healthy-cluster_expanding-the-cluster)
 
 - [Restoring to a previous cluster state](../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
-
-</div>
 
 # Effects of disk latency on etcd
 
@@ -96,25 +79,7 @@ By using the `etcdctl` CLI, you can monitor the latency for reaching consensus a
 
 This procedure, which validates and monitors cluster health, can be run only on an active cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - During planning for cluster deployment, you completed the disk and network tests.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Enter the following command:
 
@@ -122,11 +87,9 @@ Procedure
     # oc get pods -n openshift-etcd -l app=etcd
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -137,19 +100,15 @@ Procedure
     etcd-m2   4/4     Running   4          8h
     ```
 
-    </div>
-
 2.  Enter the following command. To better understand the etcd latency for consensus, you can run this command on a precise watch cycle for a few minutes to observe that the numbers remain below the ~66 ms threshold. The closer the consensus time is to 100 ms, the more likely the cluster will experience service-affecting events and instability.
 
     ``` terminal
     # oc exec -ti etcd-m0 -- etcdctl endpoint health -w table
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -163,19 +122,15 @@ Procedure
     +----------------------------+--------+-------------+-------+
     ```
 
-    </div>
-
 3.  Enter the following command:
 
     ``` terminal
     # oc exec -ti etcd-m0 -- watch -dp -c etcdctl endpoint health -w table
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -189,47 +144,30 @@ Procedure
     +----------------------------+--------+-------------+-------+
     ```
 
-    </div>
-
-</div>
-
 # Moving etcd to a different disk
 
 You can move etcd from a shared disk to a separate disk to prevent or resolve performance issues.
 
 The Machine Config Operator (MCO) is responsible for mounting a secondary disk for OpenShift Container Platform 4.17 container storage.
 
-> [!NOTE]
-> This encoded script only supports device names for the following device types:
->
-> SCSI or SATA
-> `/dev/sd*`
->
-> Virtual device
-> `/dev/vd*`
->
-> NVMe
-> `/dev/nvme*[0-9]*n*`
+<div class="note">
 
-<div>
+This encoded script only supports device names for the following device types:
 
-<div class="title">
+SCSI or SATA
+`/dev/sd*`
 
-Limitations
+Virtual device
+`/dev/vd*`
+
+NVMe
+`/dev/nvme*[0-9]*n*`
 
 </div>
 
 - When the new disk is attached to the cluster, the etcd database is part of the root mount. It is not part of the secondary disk or the intended disk when the primary node is recreated. As a result, the primary node will not create a separate `/var/lib/etcd` mount.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - You have a backup of your cluster’s etcd data.
 
@@ -241,19 +179,15 @@ Prerequisites
 
 - The `MachineConfigPool` must match `metadata.labels[machineconfiguration.openshift.io/role]`. This applies to a controller, worker, or a custom pool.
 
+<div class="note">
+
+This procedure does not move parts of the root file system, such as `/var/`, to another disk or partition on an installed node.
+
 </div>
 
-> [!NOTE]
-> This procedure does not move parts of the root file system, such as `/var/`, to another disk or partition on an installed node.
+<div class="important">
 
-> [!IMPORTANT]
-> This procedure is not supported when using control plane machine sets.
-
-<div>
-
-<div class="title">
-
-Procedure
+This procedure is not supported when using control plane machine sets.
 
 </div>
 
@@ -399,16 +333,6 @@ Procedure
     $ oc create -f etcd-mc.yml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification steps
-
-</div>
-
 - Run the `grep /var/lib/etcd /proc/mounts` command in a debug shell for the node to ensure that the disk is mounted:
 
   ``` terminal
@@ -419,11 +343,9 @@ Verification steps
   # grep -w "/var/lib/etcd" /proc/mounts
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -431,21 +353,9 @@ Verification steps
   /dev/sdb /var/lib/etcd xfs rw,seclabel,relatime,attr2,inode64,logbufs=8,logbsize=32k,noquota 0 0
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Red Hat Enterprise Linux CoreOS (RHCOS)](../architecture/architecture-rhcos.xml#architecture-rhcos)
-
-</div>
 
 # Defragmenting etcd data
 
@@ -465,8 +375,11 @@ History compaction is performed automatically every five minutes and leaves gaps
 
 Defragmentation occurs automatically, but you can also trigger it manually.
 
-> [!NOTE]
-> Automatic defragmentation is good for most cases, because the etcd operator uses cluster information to determine the most efficient operation for the user.
+<div class="note">
+
+Automatic defragmentation is good for most cases, because the etcd operator uses cluster information to determine the most efficient operation for the user.
+
+</div>
 
 ## Automatic defragmentation
 
@@ -480,14 +393,15 @@ Verify that the defragmentation process is successful by viewing one of these lo
 
 - operator status error log
 
-> [!WARNING]
-> Automatic defragmentation can cause leader election failure in various OpenShift core components, such as the Kubernetes controller manager, which triggers a restart of the failing component. The restart is harmless and either triggers failover to the next running instance or the component resumes work again after the restart.
+<div class="warning">
 
-<div class="formalpara">
+Automatic defragmentation can cause leader election failure in various OpenShift core components, such as the Kubernetes controller manager, which triggers a restart of the failing component. The restart is harmless and either triggers failover to the next running instance or the component resumes work again after the restart.
 
-<div class="title">
+</div>
 
-Example log output for successful defragmentation
+<div class="formalpara-title">
+
+**Example log output for successful defragmentation**
 
 </div>
 
@@ -495,21 +409,15 @@ Example log output for successful defragmentation
 etcd member has been defragmented: <member_name>, memberID: <member_id>
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example log output for unsuccessful defragmentation
+**Example log output for unsuccessful defragmentation**
 
 </div>
 
 ``` terminal
 failed defrag on member: <member_name>, memberID: <member_id>: <error_message>
 ```
-
-</div>
 
 ## Manual defragmentation
 
@@ -521,30 +429,15 @@ A Prometheus alert indicates when you need to use manual defragmentation. The al
 
 You can also determine whether defragmentation is needed by checking the etcd database size in MB that will be freed by defragmentation with the PromQL expression: `(etcd_mvcc_db_total_size_in_bytes - etcd_mvcc_db_total_size_in_use_in_bytes)/1024/1024`
 
-> [!WARNING]
-> Defragmenting etcd is a blocking action. The etcd member will not respond until defragmentation is complete. For this reason, wait at least one minute between defragmentation actions on each of the pods to allow the cluster to recover.
+<div class="warning">
+
+Defragmenting etcd is a blocking action. The etcd member will not respond until defragmentation is complete. For this reason, wait at least one minute between defragmentation actions on each of the pods to allow the cluster to recover.
+
+</div>
 
 Follow this procedure to defragment etcd data on each etcd member.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Determine which etcd member is the leader, because the leader should be defragmented last.
 
@@ -554,11 +447,9 @@ Procedure
         $ oc -n openshift-etcd get pods -l k8s-app=etcd -o wide
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -568,19 +459,15 @@ Procedure
         etcd-ip-10-0-199-170.example.redhat.com                3/3     Running     0          176m   10.0.199.170   ip-10-0-199-170.example.redhat.com   <none>           <none>
         ```
 
-        </div>
-
     2.  Choose a pod and run the following command to determine which etcd member is the leader:
 
         ``` terminal
         $ oc rsh -n openshift-etcd etcd-ip-10-0-159-225.example.redhat.com etcdctl endpoint status --cluster -w table
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -595,8 +482,6 @@ Procedure
         | https://10.0.199.170:2379 | 9ac311f93915cc79 |   3.5.9 |  104 MB |      true |      false |         7 |      91624 |              91624 |        |
         +---------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+
         ```
-
-        </div>
 
         Based on the `IS LEADER` column of this output, the `https://10.0.199.170:2379` endpoint is the leader. Matching this endpoint with the output of the previous step, the pod name of the leader is `etcd-ip-10-0-199-170.example.redhat.com`.
 
@@ -620,19 +505,15 @@ Procedure
         sh-4.4# etcdctl --command-timeout=30s --endpoints=https://localhost:2379 defrag
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
         ``` terminal
         Finished defragmenting etcd member[https://localhost:2379]
         ```
-
-        </div>
 
         If a timeout error occurs, increase the value for `--command-timeout` until the command succeeds.
 
@@ -642,11 +523,9 @@ Procedure
         sh-4.4# etcdctl endpoint status -w table --cluster
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -659,8 +538,6 @@ Procedure
         | https://10.0.199.170:2379 | 9ac311f93915cc79 |   3.5.9 |  104 MB |      true |      false |         7 |      91624 |              91624 |        |
         +---------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+
         ```
-
-        </div>
 
         This example shows that the database size for this etcd member is now 41 MB as opposed to the starting size of 104 MB.
 
@@ -676,11 +553,9 @@ Procedure
         sh-4.4# etcdctl alarm list
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -688,15 +563,11 @@ Procedure
         memberID:12345678912345678912 alarm:NOSPACE
         ```
 
-        </div>
-
     2.  Clear the alarms:
 
         ``` terminal
         sh-4.4# etcdctl alarm disarm
         ```
-
-</div>
 
 # Setting tuning parameters for etcd
 
@@ -710,25 +581,15 @@ By selecting one of the other values, you are overriding the default. If you see
 
 To change the hardware speed tolerance for etcd, complete the following steps.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Check to see what the current value is by entering the following command:
 
     ``` terminal
     $ oc describe etcd/cluster | grep "Control Plane Hardware Speed"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -736,10 +597,11 @@ Procedure
     Control Plane Hardware Speed:  <VALUE>
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > If the output is empty, the field has not been set and should be considered as the default ("").
+    If the output is empty, the field has not been set and should be considered as the default ("").
+
+    </div>
 
 2.  Change the value by entering the following command. Replace `<value>` with one of the valid values: `""`, `"Standard"`, or `"Slower"`:
 
@@ -758,11 +620,9 @@ Procedure
 
 3.  Review the output:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -770,15 +630,11 @@ Procedure
     etcd.operator.openshift.io/cluster patched
     ```
 
-    </div>
-
     If you enter any value besides the valid values, error output is displayed. For example, if you entered `"Faster"` as the value, the output is as follows:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -786,27 +642,21 @@ Procedure
     The Etcd "cluster" is invalid: spec.controlPlaneHardwareSpeed: Unsupported value: "Faster": supported values: "", "Standard", "Slower"
     ```
 
-    </div>
-
 4.  Verify that the value was changed by entering the following command:
 
     ``` terminal
     $ oc describe etcd/cluster | grep "Control Plane Hardware Speed"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     Control Plane Hardware Speed:  ""
     ```
-
-    </div>
 
 5.  Wait for etcd pods to roll out:
 
@@ -816,11 +666,9 @@ Procedure
 
     The following output shows the expected entries for master-0. Before you continue, wait until all masters show a status of `4/4 Running`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -846,30 +694,19 @@ Procedure
     etcd-ci-ln-qkgs94t-72292-9clnd-master-0                  4/4     Running             0          20s
     ```
 
-    </div>
-
 6.  Enter the following command to review to the values:
 
     ``` terminal
     $ oc describe -n openshift-etcd pod/<ETCD_PODNAME> | grep -e HEARTBEAT_INTERVAL -e ELECTION_TIMEOUT
     ```
 
-    > [!NOTE]
-    > These values might not have changed from the default.
+    <div class="note">
 
-</div>
+    These values might not have changed from the default.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+    </div>
 
 - [Understanding feature gates](../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features-about_nodes-cluster-enabling-features)
-
-</div>
 
 # OpenShift Container Platform timer tunables for etcd
 
@@ -913,14 +750,6 @@ If there is a change of 10% of the etcd database during the disconnection of one
 
 You can determine the size of an etcd database by using the OpenShift Container Platform console or by running commands in the `etcdctl` tool.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - To find the database size in the OpenShift Container Platform console, go to the **etcd** dashboard to view a plot that reports the size of the etcd database.
 
 - To find the database size by using the etcdctl tool, you can enter two commands:
@@ -931,11 +760,9 @@ Procedure
       # oc get pods -n openshift-etcd -l app=etcd
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -946,19 +773,15 @@ Procedure
       etcd-m2   4/4     Running   4          22h
       ```
 
-      </div>
-
   2.  Enter the following command and view the database size in the output:
 
       ``` terminal
       # oc exec -t etcd-m0 -- etcdctl endpoint status -w simple | cut -d, -f 1,3,4
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -967,10 +790,6 @@ Procedure
       https://198.18.111.13:2379, 3.5.6, 1.1 GB
       https://198.18.111.14:2379, 3.5.6, 1.1 GB
       ```
-
-      </div>
-
-</div>
 
 # Increasing the database size for etcd
 
@@ -984,22 +803,17 @@ If you increase the disk quota, the disk space that you specify is not immediate
 
 For large etcd databases, the control plane nodes must have additional memory and storage. Because you must account for the API server cache, the minimum memory required is at least three times the configured size of the etcd database.
 
-> [!IMPORTANT]
-> Increasing the database size for etcd is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Increasing the database size for etcd is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 ## Changing the etcd database size
 
 To change the database size for etcd, complete the following steps.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Check the current value of the disk quota for each etcd instance by entering the following command:
 
@@ -1007,11 +821,9 @@ Procedure
     $ oc describe etcd/cluster | grep "Backend Quota"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1019,19 +831,15 @@ Procedure
     Backend Quota Gi B: <value>
     ```
 
-    </div>
-
 2.  Change the value of the disk quota by entering the following command:
 
     ``` terminal
     $ oc patch etcd/cluster --type=merge -p '{"spec": {"backendQuotaGiB": <value>}}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1039,17 +847,7 @@ Procedure
     etcd.operator.openshift.io/cluster patched
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the new value for the disk quota is set by entering the following command:
 
@@ -1067,11 +865,9 @@ Verification
 
     The following output shows the expected entries.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1098,8 +894,6 @@ Verification
     revision-pruner-8-ci-ln-b6kfsw2-72292-mzwbq-master-2   0/1     Completed   0          42m
     ```
 
-    </div>
-
 3.  Verify that the disk quota value is updated for the etcd pod by entering the following command:
 
     ``` terminal
@@ -1108,11 +902,9 @@ Verification
 
     The value might not have changed from the default value of `8`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1120,12 +912,11 @@ Verification
     ETCD_QUOTA_BACKEND_BYTES:                               8589934592
     ```
 
+    <div class="note">
+
+    While the value that you set is an integer in GiB, the value shown in the output is converted to bytes.
+
     </div>
-
-    > [!NOTE]
-    > While the value that you set is an integer in GiB, the value shown in the output is converted to bytes.
-
-</div>
 
 ## Troubleshooting
 
@@ -1139,11 +930,9 @@ If the value that you specify is less than `8`, you see the following error mess
 $ oc patch etcd/cluster --type=merge -p '{"spec": {"backendQuotaGiB": 5}}'
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example error message
+**Example error message**
 
 </div>
 
@@ -1152,8 +941,6 @@ The Etcd "cluster" is invalid:
 * spec.backendQuotaGiB: Invalid value: 5: spec.backendQuotaGiB in body should be greater than or equal to 8
 * spec.backendQuotaGiB: Invalid value: "integer": etcd backendQuotaGiB may not be decreased
 ```
-
-</div>
 
 To resolve this issue, specify an integer between `8` and `32`.
 
@@ -1165,19 +952,15 @@ If the value that you specify is greater than `32`, you see the following error 
 $ oc patch etcd/cluster --type=merge -p '{"spec": {"backendQuotaGiB": 64}}'
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example error message
+**Example error message**
 
 </div>
 
 ``` terminal
 The Etcd "cluster" is invalid: spec.backendQuotaGiB: Invalid value: 64: spec.backendQuotaGiB in body should be less than or equal to 32
 ```
-
-</div>
 
 To resolve this issue, specify an integer between `8` and `32`.
 
@@ -1191,11 +974,9 @@ If the value is set to a valid value between `8` and `32`, you cannot decrease t
     $ oc describe etcd/cluster | grep "Backend Quota"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1203,27 +984,21 @@ If the value is set to a valid value between `8` and `32`, you cannot decrease t
     Backend Quota Gi B: 10
     ```
 
-    </div>
-
 2.  Decrease the disk quota value by entering the following command:
 
     ``` terminal
     $ oc patch etcd/cluster --type=merge -p '{"spec": {"backendQuotaGiB": 8}}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example error message
+    **Example error message**
 
     </div>
 
     ``` terminal
     The Etcd "cluster" is invalid: spec.backendQuotaGiB: Invalid value: "integer": etcd backendQuotaGiB may not be decreased
     ```
-
-    </div>
 
 3.  To resolve this issue, specify an integer greater than `10`.
 
@@ -1243,29 +1018,11 @@ Consider network latency with network jitter for more accurate calculations. *Ne
 
 It’s important to measure the network jitter among all control plane nodes. To do so, you can use the `iPerf3` tool in UDP mode.
 
-<div>
-
-<div class="title">
-
-Prerequisite
-
-</div>
-
 - You built your own iPerf image. For more information, see the following Red Hat Knowledgebase articles
 
   - [Testing Network Bandwidth in OpenShift using iPerf Container](https://access.redhat.com/articles/5233541)
 
   - [How to run iPerf network performance test in OpenShift 4](https://access.redhat.com/solutions/6129701)
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Connect to one of the control plane nodes and run the iPerf container as iPerf server in host network mode. When you are running in server mode, the tool accepts TCP and UDP tests. Enter the following command, being careful to replace `<iperf_image>` with your iPerf image:
 
@@ -1287,11 +1044,9 @@ Procedure
     # oc debug node/m1
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1301,8 +1056,6 @@ Procedure
     Pod IP: 198.18.111.13
     If you don't see a command prompt, try pressing enter.
     ```
-
-    </div>
 
 4.  Enter the following commands:
 
@@ -1314,11 +1067,9 @@ Procedure
     sh-4.4# podman run -ti --rm --net host <iperf_image> iperf3 -u -c m0
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1344,19 +1095,15 @@ Procedure
     iperf Done.
     ```
 
-    </div>
-
 5.  On the iPerf server, the output shows the jitter on every second interval. The average is shown at the end. For the purpose of this test, you want to identify the maximum jitter that is experienced during the test, ignoring the output of the first second as it might contain an invalid measurement. Enter the following command:
 
     ``` terminal
     # oc debug node/m0
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1366,8 +1113,6 @@ Procedure
     Pod IP: 198.18.111.12
     If you don't see a command prompt, try pressing enter.
     ```
-
-    </div>
 
 6.  Enter the following commands:
 
@@ -1379,11 +1124,9 @@ Procedure
     sh-4.4# podman run -ti --rm --net host <iperf_image> iperf3 -s
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1413,8 +1156,6 @@ Procedure
     -----------------------------------------------------------
     ```
 
-    </div>
-
 7.  Add the calculated jitter as a penalty to the network latency. For example, if the network latency is 80 ms and the jitter is 30 ms, consider an effective network latency of 110 ms for the purposes of the control plane. In this example, that value goes above the 100 ms threshold, and the system will miss heartbeats.
 
 8.  When you calculate the network latency for etcd, use the effective network latency, which is the sum of the following equation:
@@ -1429,8 +1170,6 @@ Procedure
 
     Effective Network Latency = RTT + max(jitter)
 
-</div>
-
 # How etcd peer round trip time affects performance
 
 The etcd peer round trip time is an end-to-end test metric on how quickly something can be replicated among members. It shows the latency of etcd to finish replicating a client request among all the etcd members. The etcd peer round trip time is not the same thing as the network round trip time.
@@ -1439,8 +1178,11 @@ You can monitor various etcd metrics on dashboards in the OpenShift Container Pl
 
 Near the end of the **etcd** dashboard, you can find a plot that summarizes the etcd peer round trip time.
 
-> [!NOTE]
-> These etcd metrics are collected by the OpenShift metrics system in Prometheus. You can access them from the CLI by following the Red Hat Knowledgebase solution, [How to query from the command line Prometheus statistics](https://access.redhat.com/solutions/5151831).
+<div class="note">
+
+These etcd metrics are collected by the OpenShift metrics system in Prometheus. You can access them from the CLI by following the Red Hat Knowledgebase solution, [How to query from the command line Prometheus statistics](https://access.redhat.com/solutions/5151831).
+
+</div>
 
 ``` terminal
 # Get token to connect to Prometheus
@@ -1492,14 +1234,6 @@ When you are using stretched control planes, the Kubernetes API transaction rate
 
 As a result, when you use stretched control planes, cluster administrators must test the environment to determine the sustained transaction rate that is possible for the environment. The `kube-burner` tool is useful for that purpose. The binary includes a wrapper for testing OpenShift clusters: `kube-burner-ocp`. You can use `kube-burner-ocp` to test cluster or node density. To test the control plane, `kube-burner-ocp` has three workload profiles: cluster-density, cluster-density-v2, and cluster-density-ms. Each workload profile creates a series of resources that are designed to load the control plane. For more information about each profile, see the `kube-burner-ocp` workload documentation.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Enter a command to create and delete resources. The following example shows a command that creates and deletes resources within 20 minutes:
 
     ``` terminal
@@ -1512,16 +1246,4 @@ Procedure
 
     On the dashboard, notice how the control plane responds during load and the 99th percentile transaction rate it can achieve for the execution of various verbs and request rates by read and write. Use this information and the knowledge of your organization’s workload to determine the load that the organization can put in the clusters for the specific stretched control plane deployment.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [kube-burner-ocp documentation](https://kube-burner.github.io/kube-burner-ocp/latest/)
-
-</div>

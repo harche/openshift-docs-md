@@ -2,8 +2,11 @@ The *KubeMacPool* component allocates MAC addresses for virtual machine (VM) net
 
 A virtual machine instance created from that VM retains the assigned MAC address across reboots.
 
-> [!NOTE]
-> KubeMacPool does not handle virtual machine instances created independently from a virtual machine.
+<div class="note">
+
+KubeMacPool does not handle virtual machine instances created independently from a virtual machine.
+
+</div>
 
 # Managing KubeMacPool by using the CLI
 
@@ -11,25 +14,9 @@ You can disable and re-enable KubeMacPool by using the command line.
 
 KubeMacPool is enabled by default.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To disable KubeMacPool in two namespaces, run the following command:
 
@@ -42,5 +29,3 @@ Procedure
   ``` terminal
   $ oc label namespace <namespace1> <namespace2> mutatevirtualmachines.kubemacpool.io-
   ```
-
-</div>

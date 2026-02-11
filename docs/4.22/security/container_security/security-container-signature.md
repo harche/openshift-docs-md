@@ -8,18 +8,13 @@ To verify the integrity of those images between Red Hat registries and your infr
 
 Enabling container signature validation for Red Hat Container Registries requires writing a signature verification policy file specifying the keys to verify images from these registries. For RHEL8 nodes, the registries are already defined in `/etc/containers/registries.d` by default.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a Butane config file, `51-worker-rh-registry-trust.bu`, containing the necessary configuration for the worker nodes.
 
-    > [!NOTE]
-    > The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+    <div class="note">
+
+    The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+
+    </div>
 
     ``` yaml
     variant: openshift
@@ -89,11 +84,9 @@ Procedure
         $ oc get mc
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Sample output
+        **Sample output**
 
         </div>
 
@@ -119,8 +112,6 @@ Procedure
         rendered-worker-be3b3bce4f4aa52a62902304bac9da3c   a2178ad522c49ee330b0033bb5cb5ea132060b0a   3.5.0             48s
         ```
 
-        </div>
-
         - New machine config
 
         - New rendered machine config
@@ -131,11 +122,9 @@ Procedure
         $ oc get mcp
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Sample output
+        **Sample output**
 
         </div>
 
@@ -144,8 +133,6 @@ Procedure
         master   rendered-master-af1e7ff78da0a9c851bab4be2777773b   True      False      False      3              3                   3                     0                      30m
         worker   rendered-worker-be3b3bce4f4aa52a62902304bac9da3c   False     True       False      3              0                   0                     0                      30m
         ```
-
-        </div>
 
         - When the `UPDATING` field is `True`, the machine config pool is updating with the new machine config. When the field becomes `False`, the worker machine config pool has rolled out to the new machine config.
 
@@ -181,31 +168,11 @@ Procedure
 
     5.  Exit the debug session.
 
-</div>
-
 # Verifying the signature verification configuration
 
 After you apply the machine configs to the cluster, the Machine Config Controller detects the new `MachineConfig` object and generates a new `rendered-worker-<hash>` version.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You enabled signature verification by using a machine config file.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  On the command line, run the following command to display information about a desired worker:
 
@@ -213,11 +180,9 @@ Procedure
     $ oc describe machineconfigpool/worker
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output of initial worker monitoring
+    **Example output of initial worker monitoring**
 
     </div>
 
@@ -317,19 +282,15 @@ Procedure
     Events:                       <none>
     ```
 
-    </div>
-
 2.  Run the `oc describe` command again:
 
     ``` terminal
     $ oc describe machineconfigpool/worker
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output after the worker is updated
+    **Example output after the worker is updated**
 
     </div>
 
@@ -375,10 +336,11 @@ Procedure
     ...
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > The `Observed Generation` parameter shows an increased count based on the generation of the controller-produced configuration. This controller updates this value even if it fails to process the specification and generate a revision. The `Configuration Source` value points to the `51-worker-rh-registry-trust` configuration.
+    The `Observed Generation` parameter shows an increased count based on the generation of the controller-produced configuration. This controller updates this value even if it fails to process the specification and generate a revision. The `Configuration Source` value points to the `51-worker-rh-registry-trust` configuration.
+
+    </div>
 
 3.  Confirm that the `policy.json` file exists with the following command:
 
@@ -386,11 +348,9 @@ Procedure
     $ oc debug node/<node> -- chroot /host cat /etc/containers/policy.json
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -431,19 +391,15 @@ Procedure
     }
     ```
 
-    </div>
-
 4.  Confirm that the `registry.redhat.io.yaml` file exists with the following command:
 
     ``` terminal
     $ oc debug node/<node> -- chroot /host cat /etc/containers/registries.d/registry.redhat.io.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -455,19 +411,15 @@ Procedure
              sigstore: https://registry.redhat.io/containers/sigstore
     ```
 
-    </div>
-
 5.  Confirm that the `registry.access.redhat.com.yaml` file exists with the following command:
 
     ``` terminal
     $ oc debug node/<node> -- chroot /host cat /etc/containers/registries.d/registry.access.redhat.com.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -479,21 +431,15 @@ Procedure
              sigstore: https://access.redhat.com/webassets/docker/content/sigstore
     ```
 
-    </div>
-
-</div>
-
 # Understanding the verification of container images lacking verifiable signatures
 
 Each OpenShift Container Platform release image is immutable and signed with a Red Hat production key. During an OpenShift Container Platform update or installation, a release image might deploy container images that do not have verifiable signatures. Each signed release image digest is immutable. Each reference in the release image is to the immutable digest of another image, so the contents can be trusted transitively. In other words, the signature on the release image validates all release contents.
 
 For example, the image references lacking a verifiable signature are contained in the signed OpenShift Container Platform release image:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example release info output
+**Example release info output**
 
 </div>
 
@@ -501,8 +447,6 @@ Example release info output
 $ oc adm release info quay.io/openshift-release-dev/ocp-release@sha256:2309578b68c5666dad62aed696f1f9d778ae1a089ee461060ba7b9514b7ca417 -o pullspec
 quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:9aafb914d5d7d0dec4edd800d02f811d7383a7d49e500af548eab5d00c1bffdb
 ```
-
-</div>
 
 - Signed release image SHA.
 
@@ -514,41 +458,13 @@ Verification of signatures is automatic. The OpenShift Cluster Version Operator 
 
 Verification of signatures can also be done manually using the `skopeo` command-line utility.
 
-<div id="additional-resources">
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Introduction to OpenShift Updates](../../updating/understanding_updates/intro-to-updates.xml#understanding-openshift-updates)
-
-</div>
 
 ## Using skopeo to verify signatures of Red Hat container images
 
 You can verify the signatures for container images included in an OpenShift Container Platform release image by pulling those signatures from [OCP release mirror site](https://mirror.openshift.com/pub/openshift-v4/signatures/openshift-release-dev/ocp-release/). Because the signatures on the mirror site are not in a format readily understood by Podman or CRI-O, you can use the `skopeo standalone-verify` command to verify that the your release images are signed by Red Hat.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the `skopeo` command-line utility.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Get the full SHA for your release by running the following command:
 
@@ -558,11 +474,9 @@ Procedure
 
     - Substitute \<release_version\> with your release number, for example, `4.14.3`.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output snippet
+      **Example output snippet**
 
       </div>
 
@@ -571,8 +485,6 @@ Procedure
       Pull From: quay.io/openshift-release-dev/ocp-release@sha256:e73ab4b33a9c3ff00c9f800a38d69853ca0c4dfa5a88e3df331f66df8f18ec55
       ---
       ```
-
-      </div>
 
 2.  Pull down the Red Hat release key by running the following command:
 
@@ -610,21 +522,15 @@ Procedure
     `<arch>`
     Specifies the architecture, for example `x86_64`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     Signature verified using fingerprint 567E347AD0044ADE55BA8A5F199E2F91FD431D51, digest sha256:e73ab4b33a9c3ff00c9f800a38d69853ca0c4dfa5a88e3df331f66df8f18ec55
     ```
-
-    </div>
-
-</div>
 
 # Additional resources
 

@@ -16,27 +16,9 @@ The following are the limitations of External Secrets Operator for Red Hat OpenS
 
 Install the External Secrets Operator for Red Hat OpenShift by using the web console to add secret management features to your cluster. By doing this task, you can select an update channel and approval strategy to ensure the Operator stays current.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -68,45 +50,17 @@ Procedure
 
     5.  Click **Install**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Navigate to **Ecosystem** → **Installed Operators**.
 
 2.  Verify that **External Secrets Operator** is listed with a **Status** of **Succeeded** in the `external-secrets-operator` namespace.
 
-</div>
-
 # Installing the External Secrets Operator for Red Hat OpenShift by using the CLI
 
 You can use the command-line interface (CLI) to install the External Secrets Operator for Red Hat OpenShift.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a new project named `external-secrets-operator` by running the following command:
 
@@ -157,15 +111,7 @@ Procedure
     $ oc create -f subscription.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the OLM subscription is created by running the following command:
 
@@ -206,8 +152,6 @@ Verification
     external-secrets-operator-controller-manager-5699f4bc54-kbsmn   1/1     Running   0          25h
     ```
 
-</div>
-
 # Additional resources
 
 - [Adding Operators to a cluster](../../operators/admin/olm-adding-operators-to-cluster.xml#olm-adding-operators-to-a-cluster)
@@ -216,33 +160,13 @@ Verification
 
 Install the External Secrets operand on OpenShift Container Platform by using the CLI to create the necessary configuration object. By completing this task, you ensure that the External Secrets Operator is properly configured to manage secrets from external APIs on your cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an `externalsecretsconfig.openshift.operator.io` object by defining a YAML file with the following content:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `externalsecretsconfig.yaml` file.
+    **Example `externalsecretsconfig.yaml` file.**
 
     </div>
 
@@ -263,8 +187,6 @@ Procedure
           name: allow-external-secrets-egress
     ```
 
-    </div>
-
     For more information on spec configuration, see "External Secrets Operator for Red Hat OpenShift APIs".
 
 2.  Create the `externalsecretsconfigs.openshift.operator.io` object by running the following command:
@@ -273,15 +195,7 @@ Procedure
     $ oc create -f externalsecretsconfig.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the `external-secrets` pods are running by entering the following command:
 
@@ -289,11 +203,9 @@ Verification
     $ oc get pods -n external-secrets
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -304,19 +216,15 @@ Verification
     external-secrets-webhook-b566658ff-7m4d5            1/1     Running   0          4h5m
     ```
 
-    </div>
-
 2.  Verify that the `external-secrets-operator` deployment object reports a successful status by running the following command:
 
     ``` terminal
     $ oc get externalsecretsconfig.operator.openshift.io cluster -n external-secrets-operator -o jsonpath='{.status.conditions}' | jq .
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -341,21 +249,7 @@ Verification
     ]
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Next step
-
-</div>
-
 - Configure the network policies of the operand as described in "Configuring network policy for the operand".
-
-</div>
 
 # Understanding update channels of the External Secrets Operator for Red Hat OpenShift
 
@@ -371,8 +265,11 @@ The External Secrets Operator for Red Hat OpenShift offers the following update 
 
 Select the `stable-v1` channel to install and update the latest release of the External Secrets Operator for Red Hat OpenShift. By selecting this channel, you can use the most recent stable release for your Operator.
 
-> [!NOTE]
-> The `stable-v1` channel is the default and suggested channel while installing the External Secrets Operator for Red Hat OpenShift.
+<div class="note">
+
+The `stable-v1` channel is the default and suggested channel while installing the External Secrets Operator for Red Hat OpenShift.
+
+</div>
 
 The `stable-v1` channel offers the following update approval strategies:
 

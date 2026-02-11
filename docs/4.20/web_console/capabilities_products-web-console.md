@@ -26,53 +26,17 @@ The Red Hat Developer Hub is a platform you can use to experience a streamlined 
 
 The web console provides a quick start with instructions on how to install the Red Hat Developer Hub Operator.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must be logged in to the OpenShift Container Platform web console with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  On the **Overview** page, click **Install Red Hat Developer Hub (RHDH) with an Operator** in the **Getting started resources** tile.
 
 2.  A quick start pane is displayed with instructions for you to install the Red Hat Developer Hub with an Operator. Follow the quick start for instructions on how to install the Operator, create a Red Hat Developer Hub instance, and add your instance to the **OpenShift Console Application** menu.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  You can click the **Application launcher** link that is displayed to verify your **Application** tab is available.
 
 2.  Verify your Janus IDP instance can be opened.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Understanding the software catalog](../operators/understanding/olm-understanding-software-catalog.xml#olm-understanding-software-catalog)
 
@@ -89,5 +53,3 @@ Additional resources
 - [Installing the OpenShift Serverless Operator from the web console](https://access.redhat.com/documentation/en-us/red_hat_openshift_serverless/1.31/html/installing_serverless/install-serverless-operator#serverless-install-web-console_install-serverless-operator)
 
 - [Product Documentation for Red Hat Developer Hub](https://access.redhat.com/documentation/en-us/red_hat_developer_hub/1.0)
-
-</div>

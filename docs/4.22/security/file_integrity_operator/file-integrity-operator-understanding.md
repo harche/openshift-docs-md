@@ -1,7 +1,10 @@
 The File Integrity Operator is an OpenShift Container Platform Operator that continually runs file integrity checks on the cluster nodes. It deploys a daemon set that initializes and runs privileged advanced intrusion detection environment (AIDE) containers on each node, providing a status object with a log of files that are modified during the initial run of the daemon set pods.
 
-> [!IMPORTANT]
-> Currently, only Red Hat Enterprise Linux CoreOS (RHCOS) nodes are supported.
+<div class="important">
+
+Currently, only Red Hat Enterprise Linux CoreOS (RHCOS) nodes are supported.
+
+</div>
 
 # Creating the FileIntegrity custom resource
 
@@ -9,21 +12,11 @@ An instance of a `FileIntegrity` custom resource (CR) represents a set of contin
 
 Each `FileIntegrity` CR is backed by a daemon set running AIDE on the nodes matching the `FileIntegrity` CR specification.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the following example `FileIntegrity` CR named `worker-fileintegrity.yaml` to enable scans on worker nodes:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example FileIntegrity CR
+    **Example FileIntegrity CR**
 
     </div>
 
@@ -52,8 +45,6 @@ Procedure
       phase: Active
     ```
 
-    </div>
-
     - Defines the selector for scheduling node scans.
 
     - Specify `tolerations` to schedule on nodes with custom taints. When not specified, a default toleration allowing running on main and infra nodes is applied.
@@ -68,11 +59,11 @@ Procedure
 
     - The running status of the `FileIntegrity` instance. Statuses are `Initializing`, `Pending`, or `Active`.
 
-      |  |  |
-      |----|----|
+      |                |                                                                                            |
+      |----------------|--------------------------------------------------------------------------------------------|
       | `Initializing` | The `FileIntegrity` object is currently initializing or re-initializing the AIDE database. |
-      | `Pending` | The `FileIntegrity` deployment is still being created. |
-      | `Active` | The scans are active and ongoing. |
+      | `Pending`      | The `FileIntegrity` deployment is still being created.                                     |
+      | `Active`       | The scans are active and ongoing.                                                          |
 
 2.  Apply the YAML file to the `openshift-file-integrity` namespace:
 
@@ -80,27 +71,15 @@ Procedure
     $ oc apply -f worker-fileintegrity.yaml -n openshift-file-integrity
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Confirm the `FileIntegrity` object was created successfully by running the following command:
 
   ``` terminal
   $ oc get fileintegrities -n openshift-file-integrity
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -109,21 +88,9 @@ Verification
   worker-fileintegrity   14s
   ```
 
-  </div>
-
-</div>
-
 # Checking the FileIntegrity custom resource status
 
 The `FileIntegrity` custom resource (CR) reports its status through the .`status.phase` subresource.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To query the `FileIntegrity` CR status, run:
 
@@ -131,21 +98,15 @@ Procedure
   $ oc get fileintegrities/worker-fileintegrity  -o jsonpath="{ .status.phase }"
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
   ``` terminal
   Active
   ```
-
-  </div>
-
-</div>
 
 # FileIntegrity custom resource phases
 
@@ -163,11 +124,9 @@ The scan results of the `FileIntegrity` CR are reported in another object called
 $ oc get fileintegritynodestatuses
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -178,10 +137,11 @@ worker-fileintegrity-ip-10-0-147-133.ec2.internal   109s
 worker-fileintegrity-ip-10-0-165-160.ec2.internal   102s
 ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> It might take some time for the `FileIntegrityNodeStatus` object results to be available.
+It might take some time for the `FileIntegrityNodeStatus` object results to be available.
+
+</div>
 
 There is one result object per node. The `nodeName` attribute of each `FileIntegrityNodeStatus` object corresponds to the node being scanned. The status of the file integrity scan is represented in the `results` array, which holds scan conditions.
 
@@ -195,11 +155,9 @@ The `fileintegritynodestatus` object reports the latest status of an AIDE run an
 $ oc get fileintegritynodestatuses -w
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -218,8 +176,6 @@ example-fileintegrity-ip-10-0-150-230.us-east-2.compute.internal   ip-10-0-150-2
 example-fileintegrity-ip-10-0-180-200.us-east-2.compute.internal   ip-10-0-180-200.us-east-2.compute.internal   Succeeded
 ```
 
-</div>
-
 # FileIntegrityNodeStatus CR status types
 
 These conditions are reported in the results array of the corresponding `FileIntegrityNodeStatus` CR status:
@@ -232,11 +188,9 @@ These conditions are reported in the results array of the corresponding `FileInt
 
 ## FileIntegrityNodeStatus CR success example
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output of a condition with a success status
+**Example output of a condition with a success status**
 
 </div>
 
@@ -261,8 +215,6 @@ Example output of a condition with a success status
 ]
 ```
 
-</div>
-
 In this case, all three scans succeeded and so far there are no other conditions.
 
 ## FileIntegrityNodeStatus CR failure status example
@@ -273,11 +225,9 @@ To simulate a failure condition, modify one of the files AIDE tracks. For exampl
 $ oc debug node/ip-10-0-130-192.ec2.internal
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -294,8 +244,6 @@ Removing debug pod ...
 Removing debug namespace/openshift-debug-node-ldfbj ...
 ```
 
-</div>
-
 After some time, the `Failed` condition is reported in the results array of the corresponding `FileIntegrityNodeStatus` object. The previous `Succeeded` condition is retained, which allows you to pinpoint the time the check failed.
 
 ``` terminal
@@ -308,11 +256,9 @@ Alternatively, if you are not mentioning the object name, run:
 $ oc get fileintegritynodestatuses.fileintegrity.openshift.io -ojsonpath='{.items[*].results}' | jq
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -332,19 +278,15 @@ Example output
 ]
 ```
 
-</div>
-
 The `Failed` condition points to a config map that gives more details about what exactly failed and why:
 
 ``` terminal
 $ oc describe cm aide-ds-worker-fileintegrity-ip-10-0-130-192.ec2.internal-failed
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -387,16 +329,17 @@ File: /hostroot/etc/resolv.conf
 Events:  <none>
 ```
 
-</div>
-
 Due to the config map data size limit, AIDE logs over 1 MB are added to the failure config map as a base64-encoded gzip archive. Use the following command to extract the log:
 
 ``` terminal
 $ oc get cm <failure-cm-name> -o json | jq -r '.data.integritylog' | base64 -d | gunzip
 ```
 
-> [!NOTE]
-> Compressed logs are indicated by the presence of a `file-integrity.openshift.io/compressed` annotation key in the config map.
+<div class="note">
+
+Compressed logs are indicated by the presence of a `file-integrity.openshift.io/compressed` annotation key in the config map.
+
+</div>
 
 # Understanding events
 
@@ -406,11 +349,9 @@ Transitions in the status of the `FileIntegrity` and `FileIntegrityNodeStatus` o
 $ oc get events --field-selector reason=FileIntegrityStatus
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -421,19 +362,15 @@ LAST SEEN   TYPE     REASON                OBJECT                               
 37s         Normal   FileIntegrityStatus   fileintegrity/example-fileintegrity   Active
 ```
 
-</div>
-
 When a node scan fails, an event is created with the `add/changed/removed` and config map information.
 
 ``` terminal
 $ oc get events --field-selector reason=NodeIntegrityStatus
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -448,19 +385,15 @@ LAST SEEN   TYPE      REASON                OBJECT                              
 87m         Warning   NodeIntegrityStatus   fileintegrity/example-fileintegrity   node ip-10-0-152-92.ec2.internal has changed! a:1,c:1,r:0 \ log:openshift-file-integrity/aide-ds-example-fileintegrity-ip-10-0-152-92.ec2.internal-failed
 ```
 
-</div>
-
 Changes to the number of added, changed, or removed files results in a new event, even if the status of the node has not transitioned.
 
 ``` terminal
 $ oc get events --field-selector reason=NodeIntegrityStatus
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -475,5 +408,3 @@ LAST SEEN   TYPE      REASON                OBJECT                              
 87m         Warning   NodeIntegrityStatus   fileintegrity/example-fileintegrity   node ip-10-0-152-92.ec2.internal has changed! a:1,c:1,r:0 \ log:openshift-file-integrity/aide-ds-example-fileintegrity-ip-10-0-152-92.ec2.internal-failed
 40m         Warning   NodeIntegrityStatus   fileintegrity/example-fileintegrity   node ip-10-0-152-92.ec2.internal has changed! a:3,c:1,r:0 \ log:openshift-file-integrity/aide-ds-example-fileintegrity-ip-10-0-152-92.ec2.internal-failed
 ```
-
-</div>

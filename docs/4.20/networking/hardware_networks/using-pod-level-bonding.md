@@ -14,14 +14,6 @@ Bond-CNI can be created using Single Root I/O Virtualization (SR-IOV) virtual fu
 
 OpenShift Container Platform only supports Bond-CNI using SR-IOV virtual functions. The SR-IOV Network Operator provides the SR-IOV CNI plugin needed to manage the virtual functions. Other CNIs or types of interfaces are not supported.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The SR-IOV Network Operator must be installed and configured to obtain virtual functions in a container.
 
 - To configure SR-IOV interfaces, an SR-IOV network and policy must be created for each interface.
@@ -29,8 +21,6 @@ Prerequisites
 - The SR-IOV Network Operator creates a network attachment definition for each SR-IOV interface, based on the SR-IOV network and policy defined.
 
 - The `linkState` is set to the default value `auto` for the SR-IOV virtual function.
-
-</div>
 
 ## Creating a bond network attachment definition
 
@@ -71,16 +61,19 @@ apiVersion: "k8s.cni.cncf.io/v1"
 
 - The `mode` attribute specifies the bonding mode.
 
-  > [!NOTE]
-  > The bonding modes supported are:
-  >
-  > - `balance-rr` - 0
-  >
-  > - `active-backup` - 1
-  >
-  > - `balance-xor` - 2
-  >
-  > For `balance-rr` or `balance-xor` modes, you must set the `trust` mode to `on` for the SR-IOV virtual function.
+  <div class="note">
+
+  The bonding modes supported are:
+
+  - `balance-rr` - 0
+
+  - `active-backup` - 1
+
+  - `balance-xor` - 2
+
+  For `balance-rr` or `balance-xor` modes, you must set the `trust` mode to `on` for the SR-IOV virtual function.
+
+  </div>
 
 - The `failover` attribute is mandatory for active-backup mode and must be set to 1.
 
@@ -145,8 +138,11 @@ apiVersion: "k8s.cni.cncf.io/v1"
 
     - The `net2` interface is based on an SR-IOV virtual function.
 
-      > [!NOTE]
-      > If no interface names are configured in the pod annotation, interface names are assigned automatically as `net<n>`, with `<n>` starting at `1`.
+      <div class="note">
+
+      If no interface names are configured in the pod annotation, interface names are assigned automatically as `net<n>`, with `<n>` starting at `1`.
+
+      </div>
 
 4.  Optional: If you want to set a specific interface name for example `bond0`, edit the `k8s.v1.cni.cncf.io/networks` annotation and set `bond0` as the interface name as follows:
 

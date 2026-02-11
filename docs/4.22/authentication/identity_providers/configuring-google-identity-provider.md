@@ -4,27 +4,25 @@ Configure the `google` identity provider using the [Google OpenID Connect integr
 
 By default, only a `kubeadmin` user exists on your cluster. To specify an identity provider, you must create a custom resource (CR) that describes that identity provider and add it to the cluster.
 
-> [!NOTE]
-> OpenShift Container Platform user names containing `/`, `:`, and `%` are not supported.
+<div class="note">
+
+OpenShift Container Platform user names containing `/`, `:`, and `%` are not supported.
+
+</div>
 
 # About Google authentication
 
 Using Google as an identity provider allows any Google user to authenticate to your server. You can limit authentication to members of a specific hosted domain with the `hostedDomain` configuration attribute.
 
-> [!NOTE]
-> Using Google as an identity provider requires users to get a token using `<namespace_route>/oauth/token/request` to use with command-line tools.
+<div class="note">
+
+Using Google as an identity provider requires users to get a token using `<namespace_route>/oauth/token/request` to use with command-line tools.
+
+</div>
 
 # Creating the secret
 
 Identity providers use OpenShift Container Platform `Secret` objects in the `openshift-config` namespace to contain the client secret, client certificates, and keys.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Create a `Secret` object containing a string by using the following command:
 
@@ -32,19 +30,22 @@ Procedure
   $ oc create secret generic <secret_name> --from-literal=clientSecret=<secret> -n openshift-config
   ```
 
-  > [!TIP]
-  > You can alternatively apply the following YAML to create the secret:
-  >
-  > ``` yaml
-  > apiVersion: v1
-  > kind: Secret
-  > metadata:
-  >   name: <secret_name>
-  >   namespace: openshift-config
-  > type: Opaque
-  > data:
-  >   clientSecret: <base64_encoded_client_secret>
-  > ```
+  <div class="tip">
+
+  You can alternatively apply the following YAML to create the secret:
+
+  ``` yaml
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: <secret_name>
+    namespace: openshift-config
+  type: Opaque
+  data:
+    clientSecret: <base64_encoded_client_secret>
+  ```
+
+  </div>
 
 - You can define a `Secret` object containing the contents of a file by using the following command:
 
@@ -52,17 +53,13 @@ Procedure
   $ oc create secret generic <secret_name> --from-file=<path_to_file> -n openshift-config
   ```
 
-</div>
-
 # Sample Google CR
 
 The following custom resource (CR) shows the parameters and acceptable values for a Google identity provider.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Google CR
+**Google CR**
 
 </div>
 
@@ -83,8 +80,6 @@ spec:
       hostedDomain: "example.com"
 ```
 
-</div>
-
 - This provider name is prefixed to the Google numeric user ID to form an identity name. It is also used to build the redirect URL.
 
 - Controls how mappings are established between this provider’s identities and `User` objects.
@@ -95,29 +90,13 @@ spec:
 
 - A [hosted domain](https://developers.google.com/identity/protocols/OpenIDConnect#hd-param) used to restrict sign-in accounts. Optional if the `lookup` `mappingMethod` is used. If empty, any Google account is allowed to authenticate.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - See [Identity provider parameters](../../authentication/understanding-identity-provider.xml#identity-provider-parameters_understanding-identity-provider) for information on parameters, such as `mappingMethod`, that are common to all identity providers.
-
-</div>
 
 # Adding an identity provider to your cluster
 
 After you install your cluster, add an identity provider to it so your users can authenticate.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Create an OpenShift Container Platform cluster.
 
@@ -125,24 +104,17 @@ Prerequisites
 
 - You must be logged in as an administrator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Apply the defined CR:
 
     ``` terminal
     $ oc apply -f </path/to/CR>
     ```
 
-    > [!NOTE]
-    > If a CR does not exist, `oc apply` creates a new CR and might trigger the following warning: `Warning: oc apply should be used on resources created by either oc create --save-config or oc apply`. In this case you can safely ignore this warning.
+    <div class="note">
+
+    If a CR does not exist, `oc apply` creates a new CR and might trigger the following warning: `Warning: oc apply should be used on resources created by either oc create --save-config or oc apply`. In this case you can safely ignore this warning.
+
+    </div>
 
 2.  Obtain a token from the OAuth server.
 
@@ -156,13 +128,14 @@ Procedure
     $ oc login --token=<token>
     ```
 
-    > [!NOTE]
-    > This identity provider does not support logging in with a user name and password.
+    <div class="note">
+
+    This identity provider does not support logging in with a user name and password.
+
+    </div>
 
 4.  Confirm that the user logged in successfully, and display the user name.
 
     ``` terminal
     $ oc whoami
     ```
-
-</div>

@@ -10,18 +10,13 @@ You can customize the memory limit ratio for a specific namespace by adding the 
 $ oc label ns/my-virtualization-project  alpha.kubevirt.io/auto-memory-limits-ratio=1.2
 ```
 
-> [!WARNING]
-> Avoid managing resource quota limits manually. To prevent misconfigurations or scheduling issues, rely on the automatic resource limit management provided by OpenShift Virtualization unless you have a specific need to override the defaults.
+<div class="warning">
 
-Resource quotas that only use requests automatically work with VMs. If your resource quota uses limits, you must manually set resource limits on VMs. Memory resource limits, defined by the `spec.template.spec.domain.resources.limits.memory` value, must be at least 500 MiB, or 2% larger than the `spec.template.spec.domain.memory.guest` value.
-
-<div>
-
-<div class="title">
-
-Procedure
+Avoid managing resource quota limits manually. To prevent misconfigurations or scheduling issues, rely on the automatic resource limit management provided by OpenShift Virtualization unless you have a specific need to override the defaults.
 
 </div>
+
+Resource quotas that only use requests automatically work with VMs. If your resource quota uses limits, you must manually set resource limits on VMs. Memory resource limits, defined by the `spec.template.spec.domain.resources.limits.memory` value, must be at least 500 MiB, or 2% larger than the `spec.template.spec.domain.memory.guest` value.
 
 1.  Set limits for a VM by editing the `VirtualMachine` manifest. For example:
 
@@ -53,8 +48,6 @@ Procedure
     This example configuration is supported because the `spec.template.spec.domain.resources.limits.memory` value is at least `100Mi` larger than the `spec.template.spec.domain.memory.guest` value.
 
 2.  Save the `VirtualMachine` manifest.
-
-</div>
 
 # Additional resources
 

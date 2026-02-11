@@ -4,29 +4,11 @@ As a cluster administrator, you can modify network traffic rules for an existing
 
 As a cluster administrator, you can update the egress firewall for a project.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - A cluster using the OVN-Kubernetes network plugin.
 
 - Install the OpenShift CLI (`oc`).
 
 - You must log in to the cluster as a cluster administrator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Find the name of the `EgressFirewall` CR for the project. Replace `<project>` with the name of the project.
 
@@ -47,5 +29,3 @@ Procedure
     ``` terminal
     $ oc replace -f <filename>.yaml
     ```
-
-</div>

@@ -26,14 +26,6 @@ OADP 1.1 and OADP 1.2 are no longer supported. The DataMover feature in OADP 1.1
 
 Enable the built-in Data Mover by configuring the CSI plugin and node agent in the `DataProtectionApplication` custom resource (CR). This provides volume-level backup and restore operations by using the Kopia uploader.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Include the CSI plugin and enable the node agent in the `DataProtectionApplication` custom resource (CR) as shown in the following example:
 
   ``` yaml
@@ -72,8 +64,6 @@ Procedure
   `defaultVolumesToFSBackup`
   Specifies the default behavior for volumes. In OADP 1.3.1 and later, set to `true` if you use Data Mover only for volumes that opt out of `fs-backup`. Set to `false` if you use Data Mover by default for volumes.
 
-</div>
-
 # Built-in Data Mover controller and custom resource definitions (CRDs)
 
 Review the custom resource definitions (CRDs) that the built-in Data Mover uses to manage volume snapshot backup and restore operations. This helps you understand how Data Mover handles data upload, download, and repository management.
@@ -90,17 +80,17 @@ The built-in Data Mover feature introduces three new API objects defined as CRDs
 
 OADP supports incremental backups of `block` and `Filesystem` persistent volumes for both containerized, and OpenShift Virtualization workloads. The following table summarizes the support for File System Backup (FSB), Container Storage Interface (CSI), and CSI Data Mover:
 
-| Volume mode | FSB - Restic | FSB - Kopia | CSI | CSI Data Mover |
-|----|----|----|----|----|
-| Filesystem | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
-| Block | N <sup>\[3\]</sup> | N <sup>\[3\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
+| Volume mode | FSB - Restic                           | FSB - Kopia                            | CSI                | CSI Data Mover                         |
+|-------------|----------------------------------------|----------------------------------------|--------------------|----------------------------------------|
+| Filesystem  | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
+| Block       | N <sup>\[3\]</sup>                     | N <sup>\[3\]</sup>                     | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
 
 OADP backup support matrix for containerized workloads
 
-| Volume mode | FSB - Restic | FSB - Kopia | CSI | CSI Data Mover |
-|----|----|----|----|----|
-| Filesystem | N <sup>\[3\]</sup> | N <sup>\[3\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
-| Block | N <sup>\[3\]</sup> | N <sup>\[3\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
+| Volume mode | FSB - Restic       | FSB - Kopia        | CSI                | CSI Data Mover                         |
+|-------------|--------------------|--------------------|--------------------|----------------------------------------|
+| Filesystem  | N <sup>\[3\]</sup> | N <sup>\[3\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
+| Block       | N <sup>\[3\]</sup> | N <sup>\[3\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
 
 OADP backup support matrix for OpenShift Virtualization workloads
 
@@ -110,5 +100,8 @@ OADP backup support matrix for OpenShift Virtualization workloads
 
 3.  Not supported
 
-> [!NOTE]
-> The CSI Data Mover backups use Kopia regardless of `uploaderType`.
+<div class="note">
+
+The CSI Data Mover backups use Kopia regardless of `uploaderType`.
+
+</div>

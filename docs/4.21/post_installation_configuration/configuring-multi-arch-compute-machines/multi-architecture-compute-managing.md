@@ -13,11 +13,9 @@ Scheduling a workload to an appropriate node based on architecture works in the 
 Using `nodeAffinity` to schedule nodes with specific architectures
 You can allow a workload to be scheduled on only a set of nodes with architectures supported by its images, you can set the `spec.affinity.nodeAffinity` field in your pod’s template specification.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example deployment with node affinity set
+**Example deployment with node affinity set**
 
 </div>
 
@@ -44,8 +42,6 @@ spec:
 
 - Specify the supported architectures. Valid values include `amd64`,`arm64`, or both values.
 
-</div>
-
 <!-- -->
 
 Tainting each node for a specific architecture
@@ -53,11 +49,9 @@ You can taint a node to avoid the node scheduling workloads that are incompatibl
 
 Before you add a taint to a node, you must scale down the `MachineSet` object or remove existing available machines. For more information, see *Modifying a compute machine set*.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example machine set with taint set
+**Example machine set with taint set**
 
 </div>
 
@@ -77,8 +71,6 @@ spec:
         value: arm64
 ```
 
-</div>
-
 You can also set a taint on a specific node by running the following command:
 
 ``` terminal
@@ -90,11 +82,9 @@ $ oc adm taint nodes <node-name> multiarch.openshift.io/arch=arm64:NoSchedule
 Creating a default toleration in a namespace
 When a node or machine set has a taint, only workloads that tolerate that taint can be scheduled. You can annotate a namespace so all of the workloads get the same default toleration by running the following command:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example default toleration set on a namespace
+**Example default toleration set on a namespace**
 
 </div>
 
@@ -103,18 +93,14 @@ $ oc annotate namespace my-namespace \
   'scheduler.alpha.kubernetes.io/defaultTolerations'='[{"operator": "Exists", "effect": "NoSchedule", "key": "multiarch.openshift.io/arch"}]'
 ```
 
-</div>
-
 <!-- -->
 
 Tolerating architecture taints in workloads
 When a node or machine set has a taint, only workloads that tolerate that taint can be scheduled. You can configure your workload with a `toleration` so that it is scheduled on nodes with specific architecture taints.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example deployment with toleration set
+**Example deployment with toleration set**
 
 </div>
 
@@ -136,18 +122,14 @@ spec:
 
 This example deployment can be scheduled on nodes and machine sets that have the `multiarch.openshift.io/arch=arm64` taint specified.
 
-</div>
-
 <!-- -->
 
 Using node affinity with taints and tolerations
 When a scheduler computes the set of nodes to schedule a pod, tolerations can broaden the set while node affinity restricts the set. If you set a taint on nodes that have a specific architecture, you must also add a toleration to workloads that you want to be scheduled there.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example deployment with node affinity and toleration set
+**Example deployment with node affinity and toleration set**
 
 </div>
 
@@ -177,16 +159,6 @@ spec:
         effect: "NoSchedule"
 ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator)
 
 - [Controlling pod placement using node taints](../../nodes/scheduling/nodes-scheduler-taints-tolerations.xml#nodes-scheduler-taints-tolerations)
@@ -197,20 +169,13 @@ Additional resources
 
 - [Modifying a compute machine set](../../machine_management/modifying-machineset.xml#machineset-modifying_modifying-machineset)
 
-</div>
-
 # Enabling 64k pages on the Red Hat Enterprise Linux CoreOS (RHCOS) kernel
 
 You can enable the 64k memory page in the Red Hat Enterprise Linux CoreOS (RHCOS) kernel on the 64-bit ARM compute machines in your cluster. The 64k page size kernel specification can be used for large GPU or high memory workloads. This is done using the Machine Config Operator (MCO) which uses a machine config pool to update the kernel. To enable 64k page sizes, you must dedicate a machine config pool for ARM64 to enable on the kernel.
 
-> [!IMPORTANT]
-> Using 64k pages is exclusive to 64-bit ARM architecture compute nodes or clusters installed on 64-bit ARM machines. If you configure the 64k pages kernel on a machine config pool using 64-bit x86 machines, the machine config pool and MCO will degrade.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Using 64k pages is exclusive to 64-bit ARM architecture compute nodes or clusters installed on 64-bit ARM machines. If you configure the 64k pages kernel on a machine config pool using 64-bit x86 machines, the machine config pool and MCO will degrade.
 
 </div>
 
@@ -218,35 +183,21 @@ Prerequisites
 
 - You created a cluster with compute nodes of different architecture on one of the supported platforms.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Label the nodes where you want to run the 64k page size kernel:
 
     ``` terminal
     $ oc label node <node_name> <label>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example command
+    **Example command**
 
     </div>
 
     ``` terminal
     $ oc label node worker-arm64-01 node-role.kubernetes.io/worker-64k-pages=
     ```
-
-    </div>
 
 2.  Create a machine config pool that contains the worker role that uses the ARM64 architecture and the `worker-64k-pages` role:
 
@@ -275,11 +226,9 @@ Procedure
     $ oc create -f <filename>.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example MachineConfig
+    **Example MachineConfig**
 
     </div>
 
@@ -294,24 +243,15 @@ Procedure
       kernelType: 64k-pages
     ```
 
-    </div>
-
     - Specify the value of the `machineconfiguration.openshift.io/role` label in the custom machine config pool. The example MachineConfig uses the `worker-64k-pages` label to enable 64k pages in the `worker-64k-pages` pool.
 
     - Specify your desired kernel type. Valid values are `64k-pages` and `default`
 
-      > [!NOTE]
-      > The `64k-pages` type is supported on only 64-bit ARM architecture based compute nodes. The `realtime` type is supported on only 64-bit x86 architecture based compute nodes.
+      <div class="note">
 
-</div>
+      The `64k-pages` type is supported on only 64-bit ARM architecture based compute nodes. The `realtime` type is supported on only 64-bit x86 architecture based compute nodes.
 
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+      </div>
 
 - To view your new `worker-64k-pages` machine config pool, run the following command:
 
@@ -319,11 +259,9 @@ Verification
   $ oc get mcp
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -334,33 +272,13 @@ Verification
   worker-64k-pages  rendered-worker-64k-pages-e7b61751c4a5b7ff995d64b967c421ff   True      False      False      2              2                   2                     0                      35m
   ```
 
-  </div>
-
-</div>
-
 # Importing manifest lists in image streams on your multi-architecture compute machines
 
 On an OpenShift Container Platform 4.17 cluster with multi-architecture compute machines, the image streams in the cluster do not import manifest lists automatically. You must manually change the default `importMode` option to the `PreserveOriginal` option in order to import the manifest list.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You installed the OpenShift Container Platform CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - The following example command shows how to patch the `ImageStream` cli-artifacts so that the `cli-artifacts:latest` image stream tag is imported as a manifest list.
 
@@ -368,15 +286,7 @@ Procedure
   $ oc patch is/cli-artifacts -n openshift -p '{"spec":{"tags":[{"name":"latest","importPolicy":{"importMode":"PreserveOriginal"}}]}}'
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - You can check that the manifest lists imported properly by inspecting the image stream tag. The following command will list the individual architecture manifests for a particular tag.
 
@@ -386,11 +296,9 @@ Verification
 
   If the `dockerImageManifests` object is present, then the manifest list import was successful.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output of the `dockerImageManifests` object
+  **Example output of the `dockerImageManifests` object**
 
   </div>
 
@@ -417,7 +325,3 @@ Verification
       mediaType: application/vnd.docker.distribution.manifest.v2+json
       os: linux
   ```
-
-  </div>
-
-</div>

@@ -6,20 +6,20 @@ Type
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `authorizeToken` | `string` | authorizeToken contains the token that authorized this token |
-| `clientName` | `string` | clientName references the client that created this token. |
-| `expiresIn` | `integer` | expiresIn is the seconds from CreationTime before this token expires. |
-| `inactivityTimeoutSeconds` | `integer` | inactivityTimeoutSeconds is the value in seconds, from the CreationTimestamp, after which this token can no longer be used. The value is automatically incremented when the token is used. |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `redirectURI` | `string` | redirectURI is the redirection associated with the token. |
-| `refreshToken` | `string` | refreshToken is the value by which this token can be renewed. Can be blank. |
-| `scopes` | `array (string)` | scopes is an array of the requested scopes. |
-| `userName` | `string` | userName is the user name associated with this token |
-| `userUID` | `string` | userUID is the unique UID associated with this token |
+| Property                   | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|----------------------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion`               | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `authorizeToken`           | `string`                                                                             | authorizeToken contains the token that authorized this token                                                                                                                                                                                                                                         |
+| `clientName`               | `string`                                                                             | clientName references the client that created this token.                                                                                                                                                                                                                                            |
+| `expiresIn`                | `integer`                                                                            | expiresIn is the seconds from CreationTime before this token expires.                                                                                                                                                                                                                                |
+| `inactivityTimeoutSeconds` | `integer`                                                                            | inactivityTimeoutSeconds is the value in seconds, from the CreationTimestamp, after which this token can no longer be used. The value is automatically incremented when the token is used.                                                                                                           |
+| `kind`                     | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`                 | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                |
+| `redirectURI`              | `string`                                                                             | redirectURI is the redirection associated with the token.                                                                                                                                                                                                                                            |
+| `refreshToken`             | `string`                                                                             | refreshToken is the value by which this token can be renewed. Can be blank.                                                                                                                                                                                                                          |
+| `scopes`                   | `array (string)`                                                                     | scopes is an array of the requested scopes.                                                                                                                                                                                                                                                          |
+| `userName`                 | `string`                                                                             | userName is the user name associated with this token                                                                                                                                                                                                                                                 |
+| `userUID`                  | `string`                                                                             | userUID is the unique UID associated with this token                                                                                                                                                                                                                                                 |
 
 # API endpoints
 
@@ -51,10 +51,10 @@ HTTP method
 Description
 list or watch objects of kind UserOAuthAccessToken
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`UserOAuthAccessTokenList`](../objects/index.xml#com-github-openshift-api-oauth-v1-UserOAuthAccessTokenList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                         |
+|--------------------|----------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`UserOAuthAccessTokenList`](../objects/index.xml#com-github-openshift-api-oauth-v1-UserOAuthAccessTokenList) schema |
+| 401 - Unauthorized | Empty                                                                                                                |
 
 HTTP responses
 
@@ -66,10 +66,10 @@ HTTP method
 Description
 watch individual changes to a list of UserOAuthAccessToken. deprecated: use the 'watch' parameter with a list operation instead.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -87,17 +87,17 @@ HTTP method
 Description
 delete an UserOAuthAccessToken
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -107,10 +107,10 @@ HTTP method
 Description
 read the specified UserOAuthAccessToken
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`UserOAuthAccessToken`](../oauth_apis/useroauthaccesstoken-oauth-openshift-io-v1.xml#useroauthaccesstoken-oauth-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                             |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`UserOAuthAccessToken`](../oauth_apis/useroauthaccesstoken-oauth-openshift-io-v1.xml#useroauthaccesstoken-oauth-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                    |
 
 HTTP responses
 
@@ -128,9 +128,9 @@ HTTP method
 Description
 watch changes to an object of kind UserOAuthAccessToken. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses

@@ -6,10 +6,13 @@ Currently, the following General Availability and Technology Preview connectors 
 
 The Count Connector counts trace spans, trace span events, metrics, metric data points, and log records in exporter pipelines.
 
-> [!IMPORTANT]
-> The Count Connector is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+The Count Connector is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 The following are the default metric names:
 
@@ -25,11 +28,9 @@ The following are the default metric names:
 
 You can also expose custom metric names.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector custom resource (CR) with an enabled Count Connector
+**OpenTelemetry Collector custom resource (CR) with an enabled Count Connector**
 
 </div>
 
@@ -57,24 +58,23 @@ OpenTelemetry Collector custom resource (CR) with an enabled Count Connector
 # ...
 ```
 
-</div>
-
 - It is important to correctly configure the Count Connector as an exporter or receiver in the pipeline and to export the generated metrics to the correct exporter.
 
 - The Count Connector is configured to receive spans as an exporter.
 
 - The Count Connector is configured to emit generated metrics as a receiver.
 
-  > [!TIP]
-  > If the Count Connector is not generating the expected metrics, you can check whether the OpenTelemetry Collector is receiving the expected spans, metrics, and logs, and whether the telemetry data flow through the Count Connector as expected. You can also use the Debug Exporter to inspect the incoming telemetry data.
+  <div class="tip">
+
+  If the Count Connector is not generating the expected metrics, you can check whether the OpenTelemetry Collector is receiving the expected spans, metrics, and logs, and whether the telemetry data flow through the Count Connector as expected. You can also use the Debug Exporter to inspect the incoming telemetry data.
+
+  </div>
 
 The Count Connector can count telemetry data according to defined conditions and expose those data as metrics when configured by using such fields as `spans`, `spanevents`, `metrics`, `datapoints`, or `logs`. See the next example.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example OpenTelemetry Collector CR for the Count Connector to count spans by conditions
+**Example OpenTelemetry Collector CR for the Count Connector to count spans by conditions**
 
 </div>
 
@@ -92,22 +92,21 @@ Example OpenTelemetry Collector CR for the Count Connector to count spans by con
 # ...
 ```
 
-</div>
-
 - In this example, the exposed metric counts spans with the specified conditions.
 
 - You can specify a custom metric name such as `cluster.prod.event.count`.
 
-  > [!TIP]
-  > Write conditions correctly and follow the required syntax for attribute matching or telemetry field conditions. Improperly defined conditions are the most likely sources of errors.
+  <div class="tip">
+
+  Write conditions correctly and follow the required syntax for attribute matching or telemetry field conditions. Improperly defined conditions are the most likely sources of errors.
+
+  </div>
 
 The Count Connector can count telemetry data according to defined attributes when configured by using such fields as `spans`, `spanevents`, `metrics`, `datapoints`, or `logs`. See the next example. The attribute keys are injected into the telemetry data. You must define a value for the `default_value` field for missing attributes.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example OpenTelemetry Collector CR for the Count Connector to count logs by attributes
+**Example OpenTelemetry Collector CR for the Count Connector to count logs by attributes**
 
 </div>
 
@@ -125,8 +124,6 @@ Example OpenTelemetry Collector CR for the Count Connector to count logs by attr
 # ...
 ```
 
-</div>
-
 - Specifies attributes for logs.
 
 - You can specify a custom metric name such as `my.log.count`.
@@ -137,16 +134,17 @@ Example OpenTelemetry Collector CR for the Count Connector to count logs by attr
 
 The Routing Connector routes logs, metrics, and traces to specified pipelines according to resource attributes and their routing conditions, which are written as OpenTelemetry Transformation Language (OTTL) statements.
 
-> [!IMPORTANT]
-> The Routing Connector is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Routing Connector is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with an enabled Routing Connector
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with an enabled Routing Connector**
 
 </div>
 
@@ -177,8 +175,6 @@ OpenTelemetry Collector custom resource with an enabled Routing Connector
 # ...
 ```
 
-</div>
-
 - Connector routing table.
 
 - Routing conditions written as OTTL statements.
@@ -195,16 +191,17 @@ OpenTelemetry Collector custom resource with an enabled Routing Connector
 
 The Forward Connector merges two pipelines of the same type.
 
-> [!IMPORTANT]
-> The Forward Connector is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Forward Connector is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with an enabled Forward Connector
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with an enabled Forward Connector**
 
 </div>
 
@@ -244,17 +241,13 @@ OpenTelemetry Collector custom resource with an enabled Forward Connector
 # ...
 ```
 
-</div>
-
 # Spanmetrics Connector
 
 The Spanmetrics Connector aggregates Request, Error, and Duration (R.E.D) OpenTelemetry metrics from span data.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector custom resource with an enabled Spanmetrics Connector
+**OpenTelemetry Collector custom resource with an enabled Spanmetrics Connector**
 
 </div>
 
@@ -272,8 +265,6 @@ OpenTelemetry Collector custom resource with an enabled Spanmetrics Connector
           receivers: [spanmetrics]
 # ...
 ```
-
-</div>
 
 - Defines the flush interval of the generated metrics. Defaults to `15s`.
 

@@ -4,8 +4,11 @@ Before you deploy an OpenShift Container Platform on IBM Power® Virtual Server,
 
 The following tables specify the required, optional, and IBM Power Virtual Server-specific installation configuration parameters that you can set as part of the installation process.
 
-> [!IMPORTANT]
-> After installation, you cannot change these parameters in the `install-config.yaml` file.
+<div class="important">
+
+After installation, you cannot change these parameters in the `install-config.yaml` file.
+
+</div>
 
 ## Required configuration parameters
 
@@ -18,39 +21,39 @@ Required installation configuration parameters are described in the following ta
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>apiVersion:</code></pre></td>
 <td style="text-align: left;"><p>The API version for the <code>install-config.yaml</code> content. The current version is <code>v1</code>. The installation program might also support older API versions.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>baseDomain:</code></pre></td>
 <td style="text-align: left;"><p>The base domain of your cloud provider. The base domain is used to create routes to your OpenShift Container Platform cluster components. The full DNS name for your cluster is a combination of the <code>baseDomain</code> and <code>metadata.name</code> parameter values that uses the <code>&lt;metadata.name&gt;.&lt;baseDomain&gt;</code> format.</p>
 <p><strong>Value:</strong> A fully-qualified domain or subdomain name, such as <code>example.com</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>metadata:</code></pre></td>
 <td style="text-align: left;"><p>Kubernetes resource <code>ObjectMeta</code>, from which only the <code>name</code> parameter is consumed.</p>
 <p><strong>Value:</strong> Object</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>metadata:
   name:</code></pre></td>
 <td style="text-align: left;"><p>The name of the cluster. DNS records for the cluster are all subdomains of <code>{{.metadata.name}}.{}</code>.</p>
 <p><strong>Value:</strong> String of lowercase letters, hyphens (<code>-</code>), and periods (<code>.</code>), such as <code>dev</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:</code></pre></td>
 <td style="text-align: left;"><p>The configuration for the specific platform upon which to perform the installation: <code>aws</code>, <code>baremetal</code>, <code>azure</code>, <code>gcp</code>, <code>ibmcloud</code>, <code>nutanix</code>, <code>openstack</code>, <code>powervs</code>, <code>vsphere</code>, or <code>{}</code>. For additional information about <code>platform.&lt;platform&gt;</code> parameters, consult the table for your specific platform that follows.</p>
 <p><strong>Value:</strong> Object</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>pullSecret:</code></pre></td>
 <td style="text-align: left;"><p>Get a <a href="https://console.redhat.com/openshift/install/pull-secret">pull secret from Red Hat OpenShift Cluster Manager</a> to authenticate downloading container images for OpenShift Container Platform components from services such as Quay.io.</p>
 <p><strong>Value:</strong></p>
@@ -67,28 +70,28 @@ Required installation configuration parameters are described in the following ta
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>   <span class="fu">}</span></span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     userID:</code></pre></td>
 <td style="text-align: left;"><p>The UserID is the login for the user’s IBM Cloud® account.</p>
 <p><strong>Value:</strong> String. For example, <code>existing_user_id</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     powervsResourceGroup:</code></pre></td>
 <td style="text-align: left;"><p>The PowerVSResourceGroup is the resource group in which IBM Power® Virtual Server resources are created. If using an existing VPC, the existing VPC and subnets should be in this resource group.</p>
 <p><strong>Value:</strong> String. For example, <code>existing_resource_group</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     region:</code></pre></td>
 <td style="text-align: left;"><p>Specifies the IBM Cloud® region where the cluster is created.</p>
 <p><strong>Value:</strong> String. For example, <code>existing_region</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     zone:</code></pre></td>
@@ -97,6 +100,8 @@ Required installation configuration parameters are described in the following ta
 </tr>
 </tbody>
 </table>
+
+Required parameters
 
 ## Network configuration parameters
 
@@ -111,29 +116,27 @@ Only IPv4 addresses are supported.
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>networking:</code></pre></td>
 <td style="text-align: left;"><p>The configuration for the cluster network.</p>
 <p><strong>Value:</strong> Object</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>You cannot change parameters specified by the <code>networking</code> object after installation.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>networking:
   networkType:</code></pre></td>
 <td style="text-align: left;"><p>The Red Hat OpenShift Networking network plugin to install.</p>
 <p><strong>Value:</strong> The default value is <code>OVNKubernetes</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>networking:
   clusterNetwork:</code></pre></td>
 <td style="text-align: left;"><p>The IP address blocks for pods.</p>
@@ -145,7 +148,7 @@ Only IPv4 addresses are supported.
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">cidr</span><span class="kw">:</span><span class="at"> 10.128.0.0/14</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hostPrefix</span><span class="kw">:</span><span class="at"> </span><span class="dv">23</span></span></code></pre></div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>networking:
   clusterNetwork:
     cidr:</code></pre></td>
@@ -153,7 +156,7 @@ Only IPv4 addresses are supported.
 <p>An IPv4 network.</p>
 <p><strong>Value:</strong> An IP address block in Classless Inter-Domain Routing (CIDR) notation. The prefix length for an IPv4 block is between <code>0</code> and <code>32</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>networking:
   clusterNetwork:
     hostPrefix:</code></pre></td>
@@ -161,7 +164,7 @@ Only IPv4 addresses are supported.
 <p><strong>Value:</strong> A subnet prefix.</p>
 <p>The default value is <code>23</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>networking:
   serviceNetwork:</code></pre></td>
 <td style="text-align: left;"><p>The IP address block for services. The default value is <code>172.30.0.0/16</code>.</p>
@@ -171,7 +174,7 @@ Only IPv4 addresses are supported.
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">serviceNetwork</span><span class="kw">:</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">   </span><span class="kw">-</span><span class="at"> 172.30.0.0/16</span></span></code></pre></div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>networking:
   machineNetwork:</code></pre></td>
 <td style="text-align: left;"><p>The IP address blocks for machines.</p>
@@ -180,7 +183,7 @@ Only IPv4 addresses are supported.
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">machineNetwork</span><span class="kw">:</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">cidr</span><span class="kw">:</span><span class="at"> 10.0.0.0/16</span></span></code></pre></div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>networking:
   machineNetwork:
     cidr:</code></pre></td>
@@ -188,12 +191,10 @@ Only IPv4 addresses are supported.
 <p><strong>Value:</strong> An IP network block in CIDR notation.</p>
 <p>For example, <code>192.168.0.0/24</code>.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>Set the <code>networking.machineNetwork</code> to match the CIDR that the preferred NIC resides in.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>networking:
   ovnKubernetesConfig:
     ipv4:
@@ -203,6 +204,8 @@ Only IPv4 addresses are supported.
 </tr>
 </tbody>
 </table>
+
+Network parameters
 
 ## Optional configuration parameters
 
@@ -215,80 +218,78 @@ Optional installation configuration parameters are described in the following ta
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>additionalTrustBundle:</code></pre></td>
 <td style="text-align: left;"><p>A PEM-encoded X.509 certificate bundle that is added to the nodes' trusted certificate store. This trust bundle might also be used when a proxy has been configured.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>capabilities:</code></pre></td>
 <td style="text-align: left;"><p>Controls the installation of optional core cluster components. You can reduce the footprint of your OpenShift Container Platform cluster by disabling optional components. For more information, see the "Cluster capabilities" page in <em>Installing</em>.</p>
 <p><strong>Value:</strong> String array</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>capabilities:
   baselineCapabilitySet:</code></pre></td>
 <td style="text-align: left;"><p>Selects an initial set of optional capabilities to enable. Valid values are <code>None</code>, <code>v4.11</code>, <code>v4.12</code> and <code>vCurrent</code>. The default value is <code>vCurrent</code>.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>capabilities:
   additionalEnabledCapabilities:</code></pre></td>
 <td style="text-align: left;"><p>Extends the set of optional capabilities beyond what you specify in <code>baselineCapabilitySet</code>. You can specify multiple capabilities in this parameter.</p>
 <p><strong>Value:</strong> String array</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>cpuPartitioningMode:</code></pre></td>
 <td style="text-align: left;"><p>Enables workload partitioning, which isolates OpenShift Container Platform services, cluster management workloads, and infrastructure pods to run on a reserved set of CPUs. You can only enable workload partitioning during installation. You cannot disable it after installation. While this field enables workload partitioning, it does not configure workloads to use specific CPUs. For more information, see the <em>Workload partitioning</em> page in the <em>Scalability and Performance</em> section.</p>
 <p><strong>Value:</strong> <code>None</code> or <code>AllNodes</code>. <code>None</code> is the default value.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:</code></pre></td>
 <td style="text-align: left;"><p>The configuration for the machines that comprise the compute nodes.</p>
 <p><strong>Value:</strong> Array of <code>MachinePool</code> objects.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   architecture:</code></pre></td>
 <td style="text-align: left;"><p>Determines the instruction set architecture of the machines in the pool. Currently, heterogeneous clusters are not supported, so all pools must specify the same architecture. The valid value is the default: <code>ppc64le</code>.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:
   hyperthreading:</code></pre></td>
 <td style="text-align: left;"><p>Whether to enable or disable simultaneous multithreading, or <code>hyperthreading</code>, on compute machines. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>If you disable simultaneous multithreading, ensure that your capacity planning accounts for the dramatically decreased machine performance.</p>
 </div>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   smtLevel:</code></pre></td>
 <td style="text-align: left;"><p>The SMTLevel specifies the level of SMT to set to the control plane and compute machines. Valid values are <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code>, <code>5</code>, <code>6</code>, <code>7</code>, <code>8</code>, <code>off</code>, and <code>on</code>.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:
   name:</code></pre></td>
 <td style="text-align: left;"><p>Required if you use <code>compute</code>. The name of the machine pool.</p>
 <p><strong>Value:</strong> <code>worker</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   platform:</code></pre></td>
 <td style="text-align: left;"><p>Required if you use <code>compute</code>. Use this parameter to specify the cloud provider to host the worker machines. This parameter value must match the <code>controlPlane.platform</code> parameter value.</p>
 <p>Example usage, <code>compute.platform.powervs.sysType</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>compute:
   platform:
     powervs:
@@ -297,52 +298,50 @@ Optional installation configuration parameters are described in the following ta
 <p><strong>Value:</strong> The available system types depend on the zone you want to target. Supported values are <code>e980</code>, <code>s922</code>, <code>e1080</code>, or <code>s1022</code>.</p>
 <p><strong>Value:</strong> <code>aws</code>, <code>azure</code>, <code>gcp</code>, <code>ibmcloud</code>, <code>nutanix</code>, <code>openstack</code>, <code>powervs</code>, <code>vsphere</code>, or <code>{}</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>compute:
   replicas:</code></pre></td>
 <td style="text-align: left;"><p>The number of compute machines, which are also known as worker machines, to provision.</p>
 <p><strong>Value:</strong> A positive integer greater than or equal to <code>2</code>. The default value is <code>3</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>featureSet:</code></pre></td>
 <td style="text-align: left;"><p>Enables the cluster for a feature set. A feature set is a collection of OpenShift Container Platform features that are not enabled by default. For more information about enabling a feature set during installation, see "Enabling features using feature gates".</p>
 <p><strong>Value:</strong> String. The name of the feature set to enable, such as <code>TechPreviewNoUpgrade</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:</code></pre></td>
 <td style="text-align: left;"><p>The configuration for the machines that form the control plane.</p>
 <p><strong>Value:</strong> Array of <code>MachinePool</code> objects.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   architecture:</code></pre></td>
 <td style="text-align: left;"><p>Determines the instruction set architecture of the machines in the pool. Currently, heterogeneous clusters are not supported, so all pools must specify the same architecture. The valid value is the default: <code>ppc64le</code>.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   hyperthreading:</code></pre></td>
 <td style="text-align: left;"><p>Whether to enable or disable simultaneous multithreading, or <code>hyperthreading</code>, on control plane machines. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>If you disable simultaneous multithreading, ensure that your capacity planning accounts for the dramatically decreased machine performance.</p>
 </div>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   name:</code></pre></td>
 <td style="text-align: left;"><p>Required if you use <code>controlPlane</code>. The name of the machine pool.</p>
 <p><strong>Value:</strong> <code>master</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:</code></pre></td>
 <td style="text-align: left;"><p>Required if you use <code>controlPlane</code>. Use this parameter to specify the cloud provider that hosts the control plane machines. This parameter value must match the <code>compute.platform</code> parameter value.</p>
 <p>Example usage, <code>controlPlane.platform.powervs.processors</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     powervs:
@@ -351,129 +350,125 @@ Optional installation configuration parameters are described in the following ta
 <p><strong>Value:</strong> The available system types depend on the zone you want to target. Supported values are <code>e980</code>, <code>s922</code>, <code>e1080</code>, or <code>s1022</code>.</p>
 <p><strong>Value:</strong> <code>aws</code>, <code>azure</code>, <code>gcp</code>, <code>ibmcloud</code>, <code>nutanix</code>, <code>openstack</code>, <code>powervs</code>, <code>vsphere</code>, or <code>{}</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   replicas:</code></pre></td>
 <td style="text-align: left;"><p>The number of control plane machines to provision.</p>
 <p><strong>Value:</strong> Supported values are <code>3</code>, or <code>1</code> when deploying single-node OpenShift.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>arbiter:
     name: arbiter</code></pre></td>
 <td style="text-align: left;"><p>The OpenShift Container Platform cluster requires a name for arbiter nodes. For example, <code>arbiter</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>arbiter:
     replicas: 1</code></pre></td>
 <td style="text-align: left;"><p>The <code>replicas</code> parameter sets the number of arbiter nodes for the OpenShift Container Platform cluster. You cannot set this field to a value that is greater than 1.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>credentialsMode:</code></pre></td>
 <td style="text-align: left;"><p>The Cloud Credential Operator (CCO) mode. If no mode is specified, the CCO dynamically tries to determine the capabilities of the provided credentials, with a preference for mint mode on the platforms where multiple modes are supported.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>Not all CCO modes are supported for all cloud providers. For more information about CCO modes, see the "Managing cloud provider credentials" entry in the <em>Authentication and authorization</em> content.</p>
 </div>
 <p><strong>Value:</strong> <code>Mint</code>, <code>Passthrough</code>, <code>Manual</code> or an empty string (<code>""</code>).</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>imageContentSources:</code></pre></td>
 <td style="text-align: left;"><p>Sources and repositories for the release-image content.</p>
 <p><strong>Value:</strong> Array of objects. Includes a <code>source</code> and, optionally, <code>mirrors</code>, as described in the following rows of this table.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>imageContentSources:
   source:</code></pre></td>
 <td style="text-align: left;"><p>Required if you use <code>imageContentSources</code>. Specify the repository that users refer to, for example, in image pull specifications.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>imageContentSources:
   mirrors:</code></pre></td>
 <td style="text-align: left;"><p>Specify one or more repositories that might also contain the same images.</p>
 <p><strong>Value:</strong> Array of strings</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>publish:</code></pre></td>
 <td style="text-align: left;"><p>How to publish or expose the user-facing endpoints of your cluster, such as the Kubernetes API, OpenShift routes.</p>
 <p><strong>Value:</strong> <code>Internal</code> or <code>External</code>. The default value is <code>External</code>.</p>
 <p>Setting this field to <code>Internal</code> is not supported on non-cloud platforms.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>sshKey:</code></pre></td>
 <td style="text-align: left;"><p>The SSH key to authenticate access to your cluster machines.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your <code>ssh-agent</code> process uses.</p>
 </div>
 <p><strong>Value:</strong> For example, <code>sshKey: ssh-ed25519 AAAA..</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     vpcRegion:</code></pre></td>
 <td style="text-align: left;"><p>Specifies the IBM Cloud® region in which to create VPC resources.</p>
 <p><strong>Value:</strong> String. For example, <code>existing_vpc_region</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     vpcSubnets:</code></pre></td>
 <td style="text-align: left;"><p>Specifies existing subnets by name where cluster resources are created.</p>
 <p><strong>Value:</strong> String. For example, <code>powervs_region_example_subnet</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     vpcName:</code></pre></td>
 <td style="text-align: left;"><p>Specifies the IBM Cloud® name.</p>
 <p><strong>Value:</strong> String. For example, <code>existing_vpcName</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     serviceInstanceGUID:</code></pre></td>
 <td style="text-align: left;"><p>Specifies the ID of the Power IAAS instance created from the IBM Cloud® Catalog.</p>
 <p><strong>Value:</strong> String. For example, <code>existing_service_instance_GUID</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     clusterOSImage:</code></pre></td>
 <td style="text-align: left;"><p>Specifies a pre-created IBM Power® Virtual Server boot image that overrides the default image for cluster nodes.</p>
 <p><strong>Value:</strong> String. For example, <code>existing_cluster_os_image</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     defaultMachinePlatform:</code></pre></td>
 <td style="text-align: left;"><p>Specifies the default configuration used when installing on IBM Power® Virtual Server for machine pools that do not define their own platform configuration.</p>
 <p><strong>Value:</strong> String. For example, <code>existing_machine_platform</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     memoryGiB:</code></pre></td>
 <td style="text-align: left;"><p>Specifies the size of a virtual machine’s memory, in GB.</p>
 <p><strong>Value:</strong> The valid integer must be an integer number of GB that is at least <code>2</code> and no more than <code>64</code>, depending on the machine type.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     procType:</code></pre></td>
 <td style="text-align: left;"><p>Defines the processor sharing model for the instance.</p>
 <p><strong>Value:</strong> The valid values are <code>Capped</code>, <code>Dedicated</code>, and <code>Shared</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     processors:</code></pre></td>
 <td style="text-align: left;"><p>Defines the processing units for the instance.</p>
 <p><strong>Value:</strong> The number of processors must be from <code>.5</code> to <code>32</code> cores. The processors must be in increments of <code>.25</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     tgName:</code></pre></td>
@@ -482,3 +477,5 @@ Optional installation configuration parameters are described in the following ta
 </tr>
 </tbody>
 </table>
+
+Optional parameters

@@ -6,11 +6,9 @@ Currently, the following General Availability and Technology Preview processors 
 
 The Batch Processor batches traces and metrics to reduce the number of outgoing connections needed to transfer the telemetry information.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example of the OpenTelemetry Collector custom resource when using the Batch Processor
+**Example of the OpenTelemetry Collector custom resource when using the Batch Processor**
 
 </div>
 
@@ -30,15 +28,13 @@ Example of the OpenTelemetry Collector custom resource when using the Batch Proc
 # ...
 ```
 
-</div>
-
-| Parameter | Description | Default |
-|----|----|----|
-| `timeout` | Sends the batch after a specific time duration and irrespective of the batch size. | `200ms` |
-| `send_batch_size` | Sends the batch of telemetry data after the specified number of spans or metrics. | `8192` |
-| `send_batch_max_size` | The maximum allowable size of the batch. Must be equal or greater than the `send_batch_size`. | `0` |
-| `metadata_keys` | When activated, a batcher instance is created for each unique set of values found in the `client.Metadata`. | `[]` |
-| `metadata_cardinality_limit` | When the `metadata_keys` are populated, this configuration restricts the number of distinct metadata key-value combinations processed throughout the duration of the process. | `1000` |
+| Parameter                    | Description                                                                                                                                                                   | Default |
+|------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| `timeout`                    | Sends the batch after a specific time duration and irrespective of the batch size.                                                                                            | `200ms` |
+| `send_batch_size`            | Sends the batch of telemetry data after the specified number of spans or metrics.                                                                                             | `8192`  |
+| `send_batch_max_size`        | The maximum allowable size of the batch. Must be equal or greater than the `send_batch_size`.                                                                                 | `0`     |
+| `metadata_keys`              | When activated, a batcher instance is created for each unique set of values found in the `client.Metadata`.                                                                   | `[]`    |
+| `metadata_cardinality_limit` | When the `metadata_keys` are populated, this configuration restricts the number of distinct metadata key-value combinations processed throughout the duration of the process. | `1000`  |
 
 Parameters used by the Batch Processor
 
@@ -46,11 +42,9 @@ Parameters used by the Batch Processor
 
 The Memory Limiter Processor periodically checks the Collector’s memory usage and pauses data processing when the soft memory limit is reached. This processor supports traces, metrics, and logs. The preceding component, which is typically a receiver, is expected to retry sending the same data and may apply a backpressure to the incoming data. When memory usage exceeds the hard limit, the Memory Limiter Processor forces garbage collection to run.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example of the OpenTelemetry Collector custom resource when using the Memory Limiter Processor
+**Example of the OpenTelemetry Collector custom resource when using the Memory Limiter Processor**
 
 </div>
 
@@ -71,15 +65,13 @@ Example of the OpenTelemetry Collector custom resource when using the Memory Lim
 # ...
 ```
 
-</div>
-
-| Parameter | Description | Default |
-|----|----|----|
-| `check_interval` | Time between memory usage measurements. The optimal value is `1s`. For spiky traffic patterns, you can decrease the `check_interval` or increase the `spike_limit_mib`. | `0s` |
-| `limit_mib` | The hard limit, which is the maximum amount of memory in MiB allocated on the heap. Typically, the total memory usage of the OpenTelemetry Collector is about 50 MiB greater than this value. | `0` |
-| `spike_limit_mib` | Spike limit, which is the maximum expected spike of memory usage in MiB. The optimal value is approximately 20% of `limit_mib`. To calculate the soft limit, subtract the `spike_limit_mib` from the `limit_mib`. | 20% of `limit_mib` |
-| `limit_percentage` | Same as the `limit_mib` but expressed as a percentage of the total available memory. The `limit_mib` setting takes precedence over this setting. | `0` |
-| `spike_limit_percentage` | Same as the `spike_limit_mib` but expressed as a percentage of the total available memory. Intended to be used with the `limit_percentage` setting. | `0` |
+| Parameter                | Description                                                                                                                                                                                                       | Default            |
+|--------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------|
+| `check_interval`         | Time between memory usage measurements. The optimal value is `1s`. For spiky traffic patterns, you can decrease the `check_interval` or increase the `spike_limit_mib`.                                           | `0s`               |
+| `limit_mib`              | The hard limit, which is the maximum amount of memory in MiB allocated on the heap. Typically, the total memory usage of the OpenTelemetry Collector is about 50 MiB greater than this value.                     | `0`                |
+| `spike_limit_mib`        | Spike limit, which is the maximum expected spike of memory usage in MiB. The optimal value is approximately 20% of `limit_mib`. To calculate the soft limit, subtract the `spike_limit_mib` from the `limit_mib`. | 20% of `limit_mib` |
+| `limit_percentage`       | Same as the `limit_mib` but expressed as a percentage of the total available memory. The `limit_mib` setting takes precedence over this setting.                                                                  | `0`                |
+| `spike_limit_percentage` | Same as the `spike_limit_mib` but expressed as a percentage of the total available memory. Intended to be used with the `limit_percentage` setting.                                                               | `0`                |
 
 Parameters used by the Memory Limiter Processor
 
@@ -87,16 +79,17 @@ Parameters used by the Memory Limiter Processor
 
 The Resource Detection Processor identifies host resource details in alignment with OpenTelemetry’s resource semantic standards. Using the detected information, this processor can add or replace the resource values in telemetry data. This processor supports traces and metrics. You can use this processor with multiple detectors such as the Docket metadata detector or the `OTEL_RESOURCE_ATTRIBUTES` environment variable detector.
 
-> [!IMPORTANT]
-> The Resource Detection Processor is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Resource Detection Processor is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenShift Container Platform permissions required for the Resource Detection Processor
+</div>
+
+<div class="formalpara-title">
+
+**OpenShift Container Platform permissions required for the Resource Detection Processor**
 
 </div>
 
@@ -111,13 +104,9 @@ rules:
 # ...
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-OpenTelemetry Collector using the Resource Detection Processor
+**OpenTelemetry Collector using the Resource Detection Processor**
 
 </div>
 
@@ -137,13 +126,9 @@ OpenTelemetry Collector using the Resource Detection Processor
 # ...
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-OpenTelemetry Collector using the Resource Detection Processor with an environment variable detector
+**OpenTelemetry Collector using the Resource Detection Processor with an environment variable detector**
 
 </div>
 
@@ -157,8 +142,6 @@ OpenTelemetry Collector using the Resource Detection Processor with an environme
         override: false
 # ...
 ```
-
-</div>
 
 - Specifies which detector to use. In this example, the environment detector is specified.
 
@@ -189,11 +172,9 @@ Extracts values by using a regular expression rule from the input key to the tar
 Convert
 Converts an existing attribute to a specified type.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector using the Attributes Processor
+**OpenTelemetry Collector using the Attributes Processor**
 
 </div>
 
@@ -224,17 +205,13 @@ OpenTelemetry Collector using the Attributes Processor
 # ...
 ```
 
-</div>
-
 # Resource Processor
 
 The Resource Processor applies changes to the resource attributes. This processor supports traces, metrics, and logs.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector using the Resource Processor
+**OpenTelemetry Collector using the Resource Processor**
 
 </div>
 
@@ -254,8 +231,6 @@ OpenTelemetry Collector using the Resource Processor
 # ...
 ```
 
-</div>
-
 Attributes represent the actions that are applied to the resource attributes, such as delete the attribute, insert the attribute, or upsert the attribute.
 
 # Span Processor
@@ -264,16 +239,17 @@ The Span Processor modifies the span name based on its attributes or extracts th
 
 Span renaming requires specifying attributes for the new name by using the `from_attributes` configuration.
 
-> [!IMPORTANT]
-> The Span Processor is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Span Processor is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector using the Span Processor for renaming a span
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector using the Span Processor for renaming a span**
 
 </div>
 
@@ -288,19 +264,15 @@ OpenTelemetry Collector using the Span Processor for renaming a span
 # ...
 ```
 
-</div>
-
 - Defines the keys to form the new span name.
 
 - An optional separator.
 
 You can use this processor to extract attributes from the span name.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector using the Span Processor for extracting attributes from a span name
+**OpenTelemetry Collector using the Span Processor for extracting attributes from a span name**
 
 </div>
 
@@ -316,17 +288,13 @@ OpenTelemetry Collector using the Span Processor for extracting attributes from 
 # ...
 ```
 
-</div>
-
 - This rule defines how the extraction is to be executed. You can define more rules: for example, in this case, if the regular expression matches the name, a `documentID` attribute is created. In this example, if the input span name is `/api/v1/document/12345678/update`, this results in the `/api/v1/document/{documentId}/update` output span name, and a new `"documentId"="12345678"` attribute is added to the span.
 
 You can have the span status modified.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector using the Span Processor for status change
+**OpenTelemetry Collector using the Span Processor for status change**
 
 </div>
 
@@ -341,17 +309,13 @@ OpenTelemetry Collector using the Span Processor for status change
 # ...
 ```
 
-</div>
-
 # Kubernetes Attributes Processor
 
 The Kubernetes Attributes Processor enables automatic configuration of spans, metrics, and log resource attributes by using the Kubernetes metadata. This processor supports traces, metrics, and logs. This processor automatically identifies the Kubernetes resources, extracts the metadata from them, and incorporates this extracted metadata as resource attributes into relevant spans, metrics, and logs. It utilizes the Kubernetes API to discover all pods operating within a cluster, maintaining records of their IP addresses, pod UIDs, and other relevant metadata.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Minimum OpenShift Container Platform permissions required for the Kubernetes Attributes Processor
+**Minimum OpenShift Container Platform permissions required for the Kubernetes Attributes Processor**
 
 </div>
 
@@ -369,13 +333,9 @@ rules:
 # ...
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-OpenTelemetry Collector using the Kubernetes Attributes Processor
+**OpenTelemetry Collector using the Kubernetes Attributes Processor**
 
 </div>
 
@@ -389,22 +349,21 @@ OpenTelemetry Collector using the Kubernetes Attributes Processor
 # ...
 ```
 
-</div>
-
 # Filter Processor
 
 The Filter Processor leverages the OpenTelemetry Transformation Language to establish criteria for discarding telemetry data. If any of these conditions are satisfied, the telemetry data are discarded. You can combine the conditions by using the logical OR operator. This processor supports traces, metrics, and logs.
 
-> [!IMPORTANT]
-> The Filter Processor is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Filter Processor is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with an enabled Filter Processor
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with an enabled Filter Processor**
 
 </div>
 
@@ -420,8 +379,6 @@ OpenTelemetry Collector custom resource with an enabled Filter Processor
           - 'resource.attributes["host.name"] == "localhost"'
 # ...
 ```
-
-</div>
 
 - Defines the error mode. When set to `ignore`, ignores errors returned by conditions. When set to `propagate`, returns the error up the pipeline. An error causes the payload to be dropped from the Collector.
 
@@ -439,16 +396,17 @@ Because this processor calculates delta by storing the previous value of a metri
 
 This processor does not convert non-monotonic sums and exponential histograms.
 
-> [!IMPORTANT]
-> The Cumulative-to-Delta Processor is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Cumulative-to-Delta Processor is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-Example of an OpenTelemetry Collector custom resource with an enabled Cumulative-to-Delta Processor
+</div>
+
+<div class="formalpara-title">
+
+**Example of an OpenTelemetry Collector custom resource with an enabled Cumulative-to-Delta Processor**
 
 </div>
 
@@ -470,8 +428,6 @@ config:
 # ...
 ```
 
-</div>
-
 - To tie the Collector’s lifecycle to the metric source, you can run the Collector as a sidecar to the application that emits the cumulative temporality metrics.
 
 - Optional: You can limit which metrics the processor converts by explicitly defining which metrics you want converted in this stanza. If you omit this field, the processor converts all metrics, except the metrics that are listed in the `exclude` field.
@@ -486,18 +442,19 @@ config:
 
 The Group-by-Attributes Processor groups all spans, log records, and metric datapoints that share the same attributes by reassigning them to a Resource that matches those attributes.
 
-> [!IMPORTANT]
-> The Group-by-Attributes Processor is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+The Group-by-Attributes Processor is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 At minimum, configuring this processor involves specifying an array of attribute keys to be used to group spans, log records, or metric datapoints together, as in the following example:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example of the OpenTelemetry Collector custom resource when using the Group-by-Attributes Processor
+**Example of the OpenTelemetry Collector custom resource when using the Group-by-Attributes Processor**
 
 </div>
 
@@ -512,8 +469,6 @@ Example of the OpenTelemetry Collector custom resource when using the Group-by-A
 # ...
 ```
 
-</div>
-
 - Specifies attribute keys to group by.
 
 - If a processed span, log record, or metric datapoint contains at least one of the specified attribute keys, it is reassigned to a Resource that shares the same attribute values; and if no such Resource exists, a new one is created. If none of the specified attribute keys is present in the processed span, log record, or metric datapoint, then it remains associated with its current Resource. Multiple instances of the same Resource are consolidated.
@@ -524,16 +479,17 @@ The Transform Processor enables modification of telemetry data according to spec
 
 All statements are written in the OTTL. You can configure multiple context statements for different signals, traces, metrics, and logs. The value of the `context` type specifies which OTTL Context the processor must use when interpreting the associated statements.
 
-> [!IMPORTANT]
-> The Transform Processor is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Transform Processor is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-Configuration summary
+</div>
+
+<div class="formalpara-title">
+
+**Configuration summary**
 
 </div>
 
@@ -560,8 +516,6 @@ config:
 # ...
 ```
 
-</div>
-
 - Optional: See the following table "Values for the optional `error_mode` field".
 
 - Indicates a signal to be transformed.
@@ -570,11 +524,9 @@ config:
 
 - Optional: Conditions for performing a transformation.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example of the OpenTelemetry Collector custom resource when using the Transform Processor
+**Example of the OpenTelemetry Collector custom resource when using the Transform Processor**
 
 </div>
 
@@ -600,8 +552,6 @@ Example of the OpenTelemetry Collector custom resource when using the Transform 
 # ...
 ```
 
-</div>
-
 - Transforms a trace signal.
 
 - Keeps keys on the resources.
@@ -618,11 +568,11 @@ Example of the OpenTelemetry Collector custom resource when using the Transform 
 
 Values for the `context` field
 
-| Value | Description |
-|----|----|
-| `ignore` | Ignores and logs errors returned by statements and then continues to the next statement. |
-| `silent` | Ignores and doesn’t log errors returned by statements and then continues to the next statement. |
-| `propagate` | Returns errors up the pipeline and drops the payload. Implicit default. |
+| Value       | Description                                                                                     |
+|-------------|-------------------------------------------------------------------------------------------------|
+| `ignore`    | Ignores and logs errors returned by statements and then continues to the next statement.        |
+| `silent`    | Ignores and doesn’t log errors returned by statements and then continues to the next statement. |
+| `propagate` | Returns errors up the pipeline and drops the payload. Implicit default.                         |
 
 Values for the optional `error_mode` field
 
@@ -630,18 +580,17 @@ Values for the optional `error_mode` field
 
 The Tail Sampling Processor samples traces according to user-defined policies when all of the spans are completed. Tail-based sampling enables you to filter the traces of interest and reduce your data ingestion and storage costs.
 
-> [!IMPORTANT]
-> The Tail Sampling Processor is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+The Tail Sampling Processor is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 This processor reassembles spans into new batches and strips spans of their original context.
 
 <div class="tip">
-
-<div class="title">
-
-</div>
 
 - In pipelines, place this processor downstream of any processors that rely on context: for example, after the Kubernetes Attributes Processor.
 
@@ -649,11 +598,9 @@ This processor reassembles spans into new batches and strips spans of their orig
 
 </div>
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example of the OpenTelemetry Collector custom resource when using the Tail Sampling Processor
+**Example of the OpenTelemetry Collector custom resource when using the Tail Sampling Processor**
 
 </div>
 
@@ -679,8 +626,6 @@ config:
         ]
 # ...
 ```
-
-</div>
 
 - Processor name.
 
@@ -984,28 +929,23 @@ You can choose and combine policies from the following list:
 
   - Allocates percentages of spans according to the order of applied policies. For example, if you set the `100` value in the `max_total_spans_per_second` field, you can set the following values in the `rate_allocation` section: the `50` percent value in the `policy: <composite_policy_1>` section to allocate 50 spans per second, and the `25` percent value in the `policy: <composite_policy_2>` section to allocate 25 spans per second. To fill the remaining capacity, you can set the `always_sample` value in the `type` field of the `name: <composite_policy_3>` section.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [OpenTelemetry Blog: Tail Sampling with OpenTelemetry: Why it’s useful, how to do it, and what to consider](https://opentelemetry.io/blog/2022/tail-sampling/)
 
 - [OpenTelemetry Documentation: Gateway](https://opentelemetry.io/docs/collector/deployment/gateway/)
 
-</div>
-
 # Probabilistic Sampling Processor
 
 If you handle high volumes of telemetry data and seek to reduce costs by reducing processed data volumes, you can use the Probabilistic Sampling Processor as an alternative to the Tail Sampling Processor.
 
-> [!IMPORTANT]
-> Probabilistic Sampling Processor is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Probabilistic Sampling Processor is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 The processor samples a specified percentage of trace spans or log records statelessly and per request.
 

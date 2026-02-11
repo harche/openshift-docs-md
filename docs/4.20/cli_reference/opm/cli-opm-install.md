@@ -4,45 +4,17 @@ The `opm` CLI tool is provided by the Operator Framework for use with the Operat
 
 A catalog contains a database of pointers to Operator manifest content that can be queried through an included API that is served when the container image is run. On OpenShift Container Platform, Operator Lifecycle Manager (OLM) can reference the image in a catalog source, defined by a `CatalogSource` object, which polls the image at regular intervals to enable frequent updates to installed Operators on the cluster.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - See [Operator Framework packaging format](../../operators/understanding/olm-packaging-format.xml#olm-bundle-format_olm-packaging-format) for more information about the bundle format.
-
-</div>
 
 # Installing the opm CLI
 
 You can install the `opm` CLI tool on your Linux, macOS, or Windows workstation.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - For Red Hat Enterprise Linux (RHEL) 9.0 and later, you must provide the following packages:
 
   - `podman` version 1.9.3+ (version 2.0+ recommended)
 
   - `glibc` version 2.28+
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to the [OpenShift mirror site](https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest-4.17/) and download the latest version of the tarball that matches your operating system.
 
@@ -86,23 +58,11 @@ Procedure
           C:\> move opm.exe <directory>
           ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - After you install the `opm` CLI, verify that it is available:
 
   ``` terminal
   $ opm version
   ```
-
-</div>
 
 # Additional resources
 

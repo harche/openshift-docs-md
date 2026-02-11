@@ -11,14 +11,20 @@ You can use OADP to back up all applications on the OpenShift Platform, or you c
 
 OADP backs up Kubernetes objects and internal images by saving them as an archive file on object storage. OADP backs up persistent volumes (PVs) by creating snapshots with the native cloud snapshot API or with the Container Storage Interface (CSI). For cloud providers that do not support snapshots, OADP backs up resources and PV data with Restic.
 
-> [!NOTE]
-> You must exclude Operators from the backup of an application for backup and restore to succeed.
+<div class="note">
+
+You must exclude Operators from the backup of an application for backup and restore to succeed.
+
+</div>
 
 Restore
 You can restore resources and PVs from a backup. You can restore all objects in a backup or filter the objects by namespace, PV, or label.
 
-> [!NOTE]
-> You must exclude Operators from the backup of an application for backup and restore to succeed.
+<div class="note">
+
+You must exclude Operators from the backup of an application for backup and restore to succeed.
+
+</div>
 
 Schedule
 You can schedule backups at specified intervals.
@@ -32,70 +38,20 @@ The OpenShift API for Data Protection (OADP) provides default Velero plugins tha
 
 OADP also provides plugins for OpenShift Container Platform resource backups, OpenShift Virtualization resource backups, and Container Storage Interface (CSI) snapshots.
 
-<table>
-<caption>OADP plugins</caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">OADP plugin</th>
-<th style="text-align: left;">Function</th>
-<th style="text-align: left;">Storage location</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td rowspan="2" style="text-align: left;"><p><code>aws</code></p></td>
-<td style="text-align: left;"><p>Backs up and restores Kubernetes objects.</p></td>
-<td style="text-align: left;"><p>AWS S3</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Backs up and restores volumes with snapshots.</p></td>
-<td style="text-align: left;"><p>AWS EBS</p></td>
-</tr>
-<tr>
-<td rowspan="2" style="text-align: left;"><p><code>azure</code></p></td>
-<td style="text-align: left;"><p>Backs up and restores Kubernetes objects.</p></td>
-<td style="text-align: left;"><p>Microsoft Azure Blob storage</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Backs up and restores volumes with snapshots.</p></td>
-<td style="text-align: left;"><p>Microsoft Azure Managed Disks</p></td>
-</tr>
-<tr>
-<td rowspan="2" style="text-align: left;"><p><code>gcp</code></p></td>
-<td style="text-align: left;"><p>Backs up and restores Kubernetes objects.</p></td>
-<td style="text-align: left;"><p>Google Cloud Storage</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Backs up and restores volumes with snapshots.</p></td>
-<td style="text-align: left;"><p>Google Compute Engine Disks</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>openshift</code></p></td>
-<td style="text-align: left;"><p>Backs up and restores OpenShift Container Platform resources. <sup>[1]</sup></p></td>
-<td style="text-align: left;"><p>Object store</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>kubevirt</code></p></td>
-<td style="text-align: left;"><p>Backs up and restores OpenShift Virtualization resources. <sup>[2]</sup></p></td>
-<td style="text-align: left;"><p>Object store</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>csi</code></p></td>
-<td style="text-align: left;"><p>Backs up and restores volumes with CSI snapshots. <sup>[3]</sup></p></td>
-<td style="text-align: left;"><p>Cloud storage that supports CSI snapshots</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>hypershift</code></p></td>
-<td style="text-align: left;"><p>Backs up and restores HyperShift hosted cluster resources. <sup>[4]</sup></p></td>
-<td style="text-align: left;"><p>Object store</p></td>
-</tr>
-</tbody>
-</table>
+| OADP plugin                                   | Function                                                                       | Storage location                          |
+|-----------------------------------------------|--------------------------------------------------------------------------------|-------------------------------------------|
+| `aws`                                         | Backs up and restores Kubernetes objects.                                      | AWS S3                                    |
+| Backs up and restores volumes with snapshots. | AWS EBS                                                                        |                                           |
+| `azure`                                       | Backs up and restores Kubernetes objects.                                      | Microsoft Azure Blob storage              |
+| Backs up and restores volumes with snapshots. | Microsoft Azure Managed Disks                                                  |                                           |
+| `gcp`                                         | Backs up and restores Kubernetes objects.                                      | Google Cloud Storage                      |
+| Backs up and restores volumes with snapshots. | Google Compute Engine Disks                                                    |                                           |
+| `openshift`                                   | Backs up and restores OpenShift Container Platform resources. <sup>\[1\]</sup> | Object store                              |
+| `kubevirt`                                    | Backs up and restores OpenShift Virtualization resources. <sup>\[2\]</sup>     | Object store                              |
+| `csi`                                         | Backs up and restores volumes with CSI snapshots. <sup>\[3\]</sup>             | Cloud storage that supports CSI snapshots |
+| `hypershift`                                  | Backs up and restores HyperShift hosted cluster resources. <sup>\[4\]</sup>    | Object store                              |
+
+OADP plugins
 
 1.  Mandatory.
 
@@ -137,17 +93,13 @@ You can install any of the following default Velero cloud provider plugins when 
 
 You specify the desired default plugins in the `oadp_v1alpha1_dpa.yaml` file during deployment.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example file
+**Example file**
 
 </div>
 
 The following `.yaml` file installs the `openshift`, `aws`, `azure`, and `gcp` plugins:
-
-</div>
 
 ``` yaml
  apiVersion: oadp.openshift.io/v1alpha1
@@ -170,17 +122,13 @@ You can install a custom Velero plugin by specifying the plugin `image` and `nam
 
 You specify the desired custom plugins in the `oadp_v1alpha1_dpa.yaml` file during deployment.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example file
+**Example file**
 
 </div>
 
 The following `.yaml` file installs the default `openshift`, `azure`, and `gcp` plugins and a custom plugin that has the name `custom-plugin-example` and the image `quay.io/example-repo/custom-velero-plugin`:
-
-</div>
 
 ``` yaml
 apiVersion: oadp.openshift.io/v1alpha1
@@ -211,8 +159,11 @@ OpenShift API for Data Protection (OADP) supports the following architectures:
 
 - s390x
 
-> [!NOTE]
-> OADP 1.2.0 and later versions support the ARM64 architecture.
+<div class="note">
+
+OADP 1.2.0 and later versions support the ARM64 architecture.
+
+</div>
 
 # OADP support for IBM Power and IBM Z
 
@@ -267,14 +218,6 @@ runtime error: index out of range with length 1, stack trace: goroutine 94…
 
 Use the following workaround to avoid the Velero plugin panic error.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Label the custom BSL with the relevant label by using the following command:
 
     ``` terminal
@@ -283,26 +226,17 @@ Procedure
 
 2.  After the BSL is labeled, wait until the DPA reconciles.
 
-    > [!NOTE]
-    > You can force the reconciliation by making any minor change to the DPA itself.
+    <div class="note">
 
-</div>
+    You can force the reconciliation by making any minor change to the DPA itself.
 
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+    </div>
 
 - After the DPA is reconciled, confirm that the parameter has been created and that the correct registry data has been populated into it by entering the following command:
 
   ``` terminal
   $ oc -n openshift-adp get secret/oadp-<bsl_name>-<bsl_provider>-registry-secret -o json | jq -r '.data'
   ```
-
-</div>
 
 # Workaround for OpenShift ADP Controller segmentation fault
 

@@ -8,8 +8,11 @@ For security reasons, the cluster administrators and the project administrators 
 
 For more information on daemon sets, see the [Kubernetes documentation](http://kubernetes.io/docs/admin/daemons/).
 
-> [!IMPORTANT]
-> Daemon set scheduling is incompatible with project’s default node selector. If you fail to disable it, the daemon set gets restricted by merging with the default node selector. This results in frequent pod recreates on the nodes that got unselected by the merged node selector, which in turn puts unwanted load on the cluster.
+<div class="important">
+
+Daemon set scheduling is incompatible with project’s default node selector. If you fail to disable it, the daemon set gets restricted by merging with the default node selector. This results in frequent pod recreates on the nodes that got unselected by the merged node selector, which in turn puts unwanted load on the cluster.
+
+</div>
 
 # Scheduled by default scheduler
 
@@ -45,14 +48,6 @@ In addition, a `node.kubernetes.io/unschedulable:NoSchedule` toleration is added
 
 When creating daemon sets, the `nodeSelector` field is used to indicate the nodes on which the daemon set should deploy replicas.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Before you start using daemon sets, disable the default project-wide node selector in your namespace, by setting the namespace annotation `openshift.io/node-selector` to an empty string:
 
   ``` terminal
@@ -60,18 +55,21 @@ Prerequisites
       '{"metadata": {"annotations": {"openshift.io/node-selector": ""}}}'
   ```
 
-  > [!TIP]
-  > You can alternatively apply the following YAML to disable the default project-wide node selector for a namespace:
-  >
-  > ``` yaml
-  > apiVersion: v1
-  > kind: Namespace
-  > metadata:
-  >   name: <namespace>
-  >   annotations:
-  >     openshift.io/node-selector: ''
-  > #...
-  > ```
+  <div class="tip">
+
+  You can alternatively apply the following YAML to disable the default project-wide node selector for a namespace:
+
+  ``` yaml
+  apiVersion: v1
+  kind: Namespace
+  metadata:
+    name: <namespace>
+    annotations:
+      openshift.io/node-selector: ''
+  #...
+  ```
+
+  </div>
 
 - If you are creating a new project, overwrite the default node selector:
 
@@ -79,19 +77,13 @@ Prerequisites
   $ oc adm new-project <name> --node-selector=""
   ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To create a daemon set:
-
-</div>
 
 1.  Define the daemon set yaml file:
 
@@ -145,11 +137,9 @@ To create a daemon set:
         $ oc get pods
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -158,19 +148,15 @@ To create a daemon set:
         hello-daemonset-e3md9   1/1       Running   0          2m
         ```
 
-        </div>
-
     2.  View the pods to verify the pod has been placed onto the node:
 
         ``` terminal
         $ oc describe pod/hello-daemonset-cx6md|grep Node
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -178,17 +164,13 @@ To create a daemon set:
         Node:        openshift-node01.hostname.com/10.14.20.134
         ```
 
-        </div>
-
         ``` terminal
         $ oc describe pod/hello-daemonset-e3md9|grep Node
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -196,13 +178,7 @@ To create a daemon set:
         Node:        openshift-node02.hostname.com/10.14.20.137
         ```
 
-        </div>
-
 <div class="important">
-
-<div class="title">
-
-</div>
 
 - If you update a daemon set pod template, the existing pod replicas are not affected.
 

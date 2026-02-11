@@ -10,33 +10,15 @@ The hardware acceleration capabilities of the AMD GPU Operator provide enhanced 
 
 As a cluster administrator, you can install the AMD GPU Operator by using the OpenShift CLI and the web console. This is a multi-step procedure that requires the installation of the Node Feature Discovery Operator, the Kernel Module Management Operator, and then the AMD GPU Operator. Use the following steps in succession to install the AMD community release of the Operator.
 
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 1.  Install the [Node Feature Discovery Operator](../hardware_enablement/psap-node-feature-discovery-operator.xml#installing-the-node-feature-discovery-operator_node-feature-discovery-operator).
 
 2.  Install the [Kernel Module Management Operator](../hardware_enablement/kmm-kernel-module-management.xml#kmm-install_kernel-module-management-operator).
 
 3.  Install and configure the [AMD GPU Operator](https://instinct.docs.amd.com/projects/gpu-operator/en/main/installation/openshift-olm.html#install-amd-gpu-operator).
 
-</div>
-
 # Testing the AMD GPU Operator
 
 Use the following procedure to test the ROCmInfo installation and view the logs for the AMD MI210 GPU.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file that tests ROCmInfo:
 
@@ -68,11 +50,9 @@ Procedure
     $ oc create -f rocminfo.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -81,19 +61,15 @@ Procedure
     pod/rocminfo created
     ```
 
-    </div>
-
 3.  Check the `rocmnfo` log with one MI210 GPU:
 
     ``` terminal
     $ oc logs rocminfo | grep -A5 "Agent"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -123,26 +99,18 @@ Procedure
       Vendor Name:             AMD
     ```
 
-    </div>
-
 4.  Delete the pod:
 
     ``` terminal
     $ oc delete -f rocminfo.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     pod "rocminfo" deleted
     ```
-
-    </div>
-
-</div>

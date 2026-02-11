@@ -6,8 +6,11 @@ You must [back up etcd data](../backup_and_restore/control_plane_backup_and_rest
 
 When you want to get your cluster running again, [restart the cluster gracefully](../backup_and_restore/graceful-cluster-restart.xml#graceful-restart-cluster).
 
-> [!NOTE]
-> A cluster’s certificates expire one year after the installation date. You can shut down a cluster and expect it to restart gracefully while the certificates are still valid. Although the cluster automatically retrieves the expired control plane certificates, you must still [approve the certificate signing requests (CSRs)](../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-3-expired-certs.xml#dr-recovering-expired-certs).
+<div class="note">
+
+A cluster’s certificates expire one year after the installation date. You can shut down a cluster and expect it to restart gracefully while the certificates are still valid. Although the cluster automatically retrieves the expired control plane certificates, you must still [approve the certificate signing requests (CSRs)](../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-3-expired-certs.xml#dr-recovering-expired-certs).
+
+</div>
 
 You might run into several situations where OpenShift Container Platform does not work as expected, such as:
 
@@ -19,17 +22,7 @@ You might run into several situations where OpenShift Container Platform does no
 
 You can always recover from a disaster situation by [restoring your cluster to its previous state](../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state) using the saved etcd snapshots.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Quorum protection with machine lifecycle hooks](../machine_management/deleting-machine.xml#machine-lifecycle-hook-deletion-etcd_deleting-machine)
-
-</div>
 
 # Application backup and restore operations
 
@@ -57,10 +50,13 @@ OADP has the following requirements:
 
   - IBM Cloud® Object Storage S3
 
-> [!NOTE]
-> If you want to use CSI backup on OCP 4.11 and later, install OADP 1.1.*x*.
->
-> OADP 1.0.*x* does not support CSI backup on OCP 4.11 and later. OADP 1.0.*x* includes Velero 1.7.*x* and expects the API group `snapshot.storage.k8s.io/v1beta1`, which is not present on OCP 4.11 and later.
+<div class="note">
+
+If you want to use CSI backup on OCP 4.11 and later, install OADP 1.1.*x*.
+
+OADP 1.0.*x* does not support CSI backup on OCP 4.11 and later. OADP 1.0.*x* includes Velero 1.7.*x* and expects the API group `snapshot.storage.k8s.io/v1beta1`, which is not present on OCP 4.11 and later.
+
+</div>
 
 - To back up PVs with snapshots, you must have cloud storage that has a native snapshot API or supports Container Storage Interface (CSI) snapshots, such as the following providers:
 
@@ -72,8 +68,11 @@ OADP has the following requirements:
 
   - CSI snapshot-enabled cloud storage, such as Ceph RBD or Ceph FS
 
-> [!NOTE]
-> If you do not want to back up PVs by using snapshots, you can use [Restic](https://restic.net/), which is installed by the OADP Operator by default.
+<div class="note">
+
+If you do not want to back up PVs by using snapshots, you can use [Restic](https://restic.net/), which is installed by the OADP Operator by default.
+
+</div>
 
 ## Backing up and restoring applications
 

@@ -6,14 +6,6 @@ To configure a custom certificate for the API server, specify the certificate de
 
 You can configure a custom certificate during either day-1 or day-2 operations. However, because the service publishing strategy is immutable after you set it during hosted cluster creation, you must know what the hostname is for the Kubernetes API server that you plan to configure.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You created a Kubernetes secret that contains your custom certificate in the management cluster. The secret contains the following keys:
 
   - `tls.crt`: The certificate
@@ -25,16 +17,6 @@ Prerequisites
 - The certificate must be valid for the external API endpoint.
 
 - The validity period of the certificate aligns with your cluster’s expected life cycle.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a secret with your custom certificate by entering the following command:
 
@@ -69,35 +51,15 @@ Procedure
     $ oc apply -f <hosted_cluster_config>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Check the API server pods to ensure that the new certificate is mounted.
 
 - Test the connection to the API server by using the custom domain name.
 
 - Verify the certificate details in your browser or by using tools such as `openssl`.
 
-</div>
-
 # Configuring the Kubernetes API server for a hosted cluster
 
 If you want to customize the Kubernetes API server for your hosted cluster, complete the following steps.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have a running hosted cluster.
 
@@ -115,31 +77,17 @@ Prerequisites
 
 - You have a configured custom certificate. For more information, see "Configuring a custom API server certificate in a hosted cluster".
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  In your provider platform, configure the DNS record so that the `kubeAPIServerDNSName` URL points to the IP address that the Kubernetes API server is being exposed to. The DNS record must be properly configured and resolvable from your cluster.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example command to configure the DNS record
+    **Example command to configure the DNS record**
 
     </div>
 
     ``` terminal
     $ dig + short kubeAPIServerDNSName
     ```
-
-    </div>
 
 2.  In your `HostedCluster` specification, modify the `kubeAPIServerDNSName` field, as shown in the following example:
 
@@ -188,22 +136,15 @@ Procedure
 
     2.  To retrieve the secret by using the console, go to your hosted cluster and click **Download Kubeconfig**.
 
-        > [!NOTE]
-        > You cannot consume the new `kubeconfig` secret by using the **show login command** option in the console.
+        <div class="note">
 
-</div>
+        You cannot consume the new `kubeconfig` secret by using the **show login command** option in the console.
+
+        </div>
 
 # Troubleshooting accessing a hosted cluster by using a custom DNS
 
 If you encounter issues when you access a hosted cluster by using a custom DNS, complete the following steps.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Verify that the DNS record is properly configured and resolved.
 
@@ -220,11 +161,9 @@ Procedure
 
 4.  In the `HostedCluster` resource, verify that the status shows the correct custom `kubeconfig` information, as shown in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `HostedCluster` status
+    **Example `HostedCluster` status**
 
     </div>
 
@@ -234,13 +173,9 @@ Procedure
         name: sample-hosted-custom-admin-kubeconfig
     ```
 
-    </div>
-
 5.  Check the `kube-apiserver` logs in the `HostedControlPlane` namespace by entering the following command:
 
     ``` terminal
     $ oc logs -n <hosted_control_plane_namespace> \
       -l app=kube-apiserver -f -c kube-apiserver
     ```
-
-</div>

@@ -18,17 +18,9 @@ However, if you have a strong reason to update to that version, for example, if 
 
 - Follow the links provided in the conditional update description, investigate the bug, and determine if it is likely to cause issues for your cluster. If you need help understanding the risk, contact Red Hat Support.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Evaluation of update availability](../../updating/understanding_updates/how-updates-work.xml#update-evaluate-availability_how-updates-work)
-
-</div>
 
 # etcd backups before cluster updates
 
@@ -36,24 +28,17 @@ etcd backups record the state of your cluster and all of its resource objects. Y
 
 In the context of updates, you can attempt an etcd restoration of the cluster if an update introduced catastrophic conditions that cannot be fixed without reverting to the previous cluster version. etcd restorations might be destructive and destabilizing to a running cluster, use them only as a last resort.
 
-> [!WARNING]
-> Due to their high consequences, etcd restorations are not intended to be used as a rollback solution. Rolling your cluster back to a previous version is not supported. If your update is failing to complete, contact Red Hat support.
+<div class="warning">
 
-There are several factors that affect the viability of an etcd restoration. For more information, see "Backing up etcd data" and "Restoring to a previous cluster state".
-
-<div>
-
-<div class="title">
-
-Additional resources
+Due to their high consequences, etcd restorations are not intended to be used as a rollback solution. Rolling your cluster back to a previous version is not supported. If your update is failing to complete, contact Red Hat support.
 
 </div>
+
+There are several factors that affect the viability of an etcd restoration. For more information, see "Backing up etcd data" and "Restoring to a previous cluster state".
 
 - [Backing up etcd](../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd)
 
 - [Restoring to a previous cluster state](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
-
-</div>
 
 # Preparing for Gateway API management succession by the Ingress Operator
 
@@ -61,14 +46,9 @@ Starting in OpenShift Container Platform 4.19, the Ingress Operator manages the 
 
 Updating from a version before 4.19 of OpenShift Container Platform where this management was not present requires you to replace or remove any Gateway API CRDs that already exist in the cluster so that they conform to the specific OpenShift Container Platform specification required by the Ingress Operator. OpenShift Container Platform version 4.19 requires Gateway API Standard version 1.2.1 CRDs.
 
-> [!WARNING]
-> Updating or deleting Gateway API resources can result in downtime and loss of service or data. Be sure you understand how this will affect your cluster before performing the steps in this procedure. If necessary, back up any Gateway API objects in YAML format in order to restore it later.
+<div class="warning">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Updating or deleting Gateway API resources can result in downtime and loss of service or data. Be sure you understand how this will affect your cluster before performing the steps in this procedure. If necessary, back up any Gateway API objects in YAML format in order to restore it later.
 
 </div>
 
@@ -78,18 +58,11 @@ Prerequisites
 
 - Optional: You have backed up any necessary Gateway API objects.
 
-  > [!WARNING]
-  > Backup and restore can fail or result in data loss for any CRD fields that were present in the old definitions but are absent in the new definitions.
+  <div class="warning">
 
-</div>
+  Backup and restore can fail or result in data loss for any CRD fields that were present in the old definitions but are absent in the new definitions.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  List all the Gateway API CRDs that you need to remove by running the following command:
 
@@ -97,11 +70,9 @@ Procedure
     $ oc get crd | grep -F -e gateway.networking.k8s.io -e gateway.networking.x-k8s.io
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -113,8 +84,6 @@ Procedure
     referencegrants.gateway.networking.k8s.io
     ```
 
-    </div>
-
 2.  Delete the Gateway API CRDs from the previous step by running the following command:
 
     ``` terminal
@@ -125,8 +94,11 @@ Procedure
     oc delete crd referencesgrants.gateway.networking.k8s.io
     ```
 
-    > [!IMPORTANT]
-    > Deleting CRDs removes every custom resource that relies on them and can result in data loss. Back up any necessary data before deleting the Gateway API CRDs. Any controller that was previously managing the lifecycle of the Gateway API CRDs will fail to operate properly. Attempting to force its use in conjunction with the Ingress Operator to manage Gateway API CRDs might prevent the cluster update from succeeding.
+    <div class="important">
+
+    Deleting CRDs removes every custom resource that relies on them and can result in data loss. Back up any necessary data before deleting the Gateway API CRDs. Any controller that was previously managing the lifecycle of the Gateway API CRDs will fail to operate properly. Attempting to force its use in conjunction with the Ingress Operator to manage Gateway API CRDs might prevent the cluster update from succeeding.
+
+    </div>
 
 3.  Get the supported Gateway API CRDs by running the following command:
 
@@ -134,24 +106,15 @@ Procedure
     $ oc apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.1/standard-install.yaml
     ```
 
-    > [!WARNING]
-    > You can perform this step without deleting your CRDs. If your update to a CRD removes a field that is used by a custom resource, you can lose data. Updating a CRD a second time, to a version that re-adds a field, can cause any previously deleted data to reappear. Any third-party controller that depends on a specific Gateway API CRD version that is not supported in OpenShift Container Platform 4.17 will break upon updating that CRD to one supported by Red Hat.
-    >
-    > For more information on the OpenShift Container Platform implementation and the dead fields issue, see *Gateway API implementation for OpenShift Container Platform*.
+    <div class="warning">
 
-</div>
+    You can perform this step without deleting your CRDs. If your update to a CRD removes a field that is used by a custom resource, you can lose data. Updating a CRD a second time, to a version that re-adds a field, can cause any previously deleted data to reappear. Any third-party controller that depends on a specific Gateway API CRD version that is not supported in OpenShift Container Platform 4.17 will break upon updating that CRD to one supported by Red Hat.
 
-<div>
+    For more information on the OpenShift Container Platform implementation and the dead fields issue, see *Gateway API implementation for OpenShift Container Platform*.
 
-<div class="title">
-
-Additional resources
-
-</div>
+    </div>
 
 - [Gateway API implementation for OpenShift Container Platform](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/ingress-gateway-api.xml#nw-ingress-gateway-api-implementation)
-
-</div>
 
 # Best practices for cluster updates
 
@@ -183,8 +146,11 @@ OpenShift SDN network plugin was deprecated in versions 4.15 and 4.16. With this
 
 If your OpenShift Container Platform cluster is still using the OpenShift SDN CNI, see [Migrating from the OpenShift SDN network plugin](https://docs.redhat.com/en/documentation/openshift_container_platform/4.16/html/networking/ovn-kubernetes-network-plugin#migrate-from-openshift-sdn).
 
-> [!IMPORTANT]
-> It is not possible to update a cluster to OpenShift Container Platform 4.17 if it is using the OpenShift SDN network plugin. You must migrate to the OVN-Kubernetes plugin before upgrading to OpenShift Container Platform 4.17.
+<div class="important">
+
+It is not possible to update a cluster to OpenShift Container Platform 4.17 if it is using the OpenShift SDN network plugin. You must migrate to the OVN-Kubernetes plugin before upgrading to OpenShift Container Platform 4.17.
+
+</div>
 
 ## Ensure that enough spare nodes are available
 
@@ -194,8 +160,11 @@ Depending on the configured value of the cluster’s `maxUnavailable` spec, the 
 
 Make sure that you have enough available nodes in each worker pool, as well as enough spare capacity on your compute nodes, to increase the chance of successful node updates.
 
-> [!WARNING]
-> The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
+<div class="warning">
+
+The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
+
+</div>
 
 ## Ensure that the cluster’s PodDisruptionBudget is properly configured
 
@@ -209,29 +178,13 @@ When planning a cluster update, check the configuration of the `PodDisruptionBud
 
 - For workloads that are not highly available, make sure they are either not protected by a `PodDisruptionBudget` or have some alternative mechanism for draining these workloads eventually, such as periodic restart or guaranteed eventual termination.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Understanding cluster Operator condition types](../../updating/understanding_updates/intro-to-updates.xml#understanding_clusteroperator_conditiontypes_understanding-openshift-updates)
-
-</div>
 
 # Minimizing worker node deployment time
 
 You can minimize deployment time during cluster worker node installation by applying configuration changes across nodes simultaneously.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the configuration file for your required installation method (`install-config.yaml` or similar).
 
@@ -242,16 +195,6 @@ Prerequisites
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You create more than one worker Machine Configuration Pool (MCP) in the cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a MCP YAML file for each custom worker MCP that you intend to use, as in the following example:
 
@@ -283,13 +226,19 @@ Procedure
 
     - **paused**: Set this value to `true` if you plan to apply additional Day 2 configurations, such as `PerformanceProfile`, after installation. All Day 2 configurations can be applied while the MCP is paused. They will be queued and applied when you unpause the node. Set this value to `false` if no further configurations are required.
 
-      > [!NOTE]
-      > For bare-metal servers, the reboot time can take up to a couple of minutes.
+      <div class="note">
+
+      For bare-metal servers, the reboot time can take up to a couple of minutes.
+
+      </div>
 
 2.  Place the YAML files in the directory generated by the installation program. Ensure that your worker nodes get assigned the correct labels, such as `node-role.kubernetes.io/worker-0`, during the provisioning phase or immediately upon joining.
 
-    > [!NOTE]
-    > Proper labeling ensures that the nodes get assigned to the correct custom MCP rather than the default worker pool.
+    <div class="note">
+
+    Proper labeling ensures that the nodes get assigned to the correct custom MCP rather than the default worker pool.
+
+    </div>
 
 3.  Optional: If you set the `paused` parameter to `true` to apply additional configurations, complete the following steps:
 
@@ -301,11 +250,9 @@ Procedure
         $ oc patch mcp/worker-0 --patch '{"spec":{"paused":false}}' --type=merge
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -313,10 +260,11 @@ Procedure
         machineconfigpool.machineconfiguration.openshift.io/worker-0 patched
         ```
 
-        </div>
+        <div class="note">
 
-        > [!NOTE]
-        > If you did not set the `paused` parameter to `true`, the configuration will apply sequentially and reboot if needed.
+        If you did not set the `paused` parameter to `true`, the configuration will apply sequentially and reboot if needed.
+
+        </div>
 
 4.  Verify that the MCPs updated successfully:
 
@@ -324,11 +272,9 @@ Procedure
     $ oc get machineconfigpools
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -338,26 +284,18 @@ Procedure
     worker-0   rendered-worker-config-new                       False     True       False      10             0                   0                     0                      5m
     ```
 
-    </div>
-
 5.  When all MCPs are set to `UPDATED=true`, update the MCPs with the appropriate `maxUnavailable` based on workload requirements. This ensures cluster stability and high availability when users deploy workloads onto the cluster. For example, set `maxUnavailable` to 1 by running the following command:
 
     ``` terminal
     $ oc patch mcp/worker-0 --patch '{"spec":{"maxUnavailable":1}}' --type=merge
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     machineconfigpool.machineconfiguration.openshift.io/worker-0 patched
     ```
-
-    </div>
-
-</div>

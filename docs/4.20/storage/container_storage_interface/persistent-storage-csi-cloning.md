@@ -30,41 +30,25 @@ By default, OpenShift Container Platform supports CSI volume cloning with these 
 
 When you create a cloned persistent volume claim (PVC) API object, you trigger the provisioning of a CSI volume clone. The clone pre-populates with the contents of another PVC, adhering to the same rules as any other persistent volume. The one exception is that you must add a `dataSource` that references an existing PVC in the same namespace.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to a running OpenShift Container Platform cluster.
 
 - Your PVC is created using a CSI driver that supports volume cloning.
 
 - Your storage back end is configured for dynamic provisioning. Cloning support is not available for static provisioners.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To clone a PVC from an existing PVC:
 
-</div>
-
 1.  Create and save a file with the `PersistentVolumeClaim` object described by the following YAML:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    pvc-clone.yaml
+    **pvc-clone.yaml**
 
     </div>
 
@@ -85,8 +69,6 @@ To clone a PVC from an existing PVC:
         kind: PersistentVolumeClaim
         name: pvc-1
     ```
-
-    </div>
 
     - The name of the storage class that provisions the storage back end. The default storage class can be used and `storageClassName` can be omitted in the spec.
 

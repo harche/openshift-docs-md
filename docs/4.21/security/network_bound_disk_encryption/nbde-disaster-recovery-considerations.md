@@ -14,14 +14,6 @@ The loss of network connectivity to an individual node will cause it to become u
 
 If you are planning work that might cause a loss of network connectivity, you can reveal the passphrase for an onsite technician to use manually, and then rotate the keys afterwards to invalidate it:
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Before the network becomes unavailable, show the password used in the first slot `-s 1` of device `/dev/vda2` with this command:
 
     ``` terminal
@@ -33,8 +25,6 @@ Procedure
     ``` terminal
     $ sudo clevis luks regen -d /dev/vda2 -s 1
     ```
-
-</div>
 
 # Unexpected loss of network connectivity
 
@@ -50,14 +40,6 @@ If the network disruption is unexpected and a node reboots, consider the followi
 
 A somewhat complex and manually intensive process is also available to the onsite technician for network recovery.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  The onsite technician extracts the Clevis header from the hard disks. Depending on BIOS lockdown, this might involve removing the disks and installing them in a lab machine.
 
 2.  The onsite technician transmits the Clevis headers to a colleague with legitimate access to the Tang network who then performs the decryption.
@@ -69,8 +51,6 @@ Procedure
 5.  The machine successfully starts even without direct access to the Tang servers. Note that the transmission of the key material from the install site to another site with network access must be done carefully.
 
 6.  When network connectivity is restored, the technician rotates the encryption keys.
-
-</div>
 
 # Emergency recovery of network connectivity
 
@@ -112,14 +92,6 @@ You can mitigate the physical loss of a Tang server by either reinstalling the s
 
 If key material is potentially exposed to unauthorized third parties, such as through the physical theft of a Tang server or associated data, immediately rotate the keys.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Rekey any Tang server holding the affected material.
 
 2.  Rekey all clients using the Tang server.
@@ -128,7 +100,8 @@ Procedure
 
 4.  Scrutinize any incidents that result in unintended exposure of the master encryption key. If possible, take compromised nodes offline and re-encrypt their disks.
 
-</div>
+<div class="tip">
 
-> [!TIP]
-> Reformatting and reinstalling on the same physical hardware, although slow, is easy to automate and test.
+Reformatting and reinstalling on the same physical hardware, although slow, is easy to automate and test.
+
+</div>

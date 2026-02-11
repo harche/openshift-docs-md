@@ -1,7 +1,10 @@
 You can use installer-provisioned installation to install OpenShift Container Platform on IBM Cloud® Bare Metal (Classic) nodes. This document describes the prerequisites and procedures when installing OpenShift Container Platform on IBM Cloud® nodes.
 
-> [!IMPORTANT]
-> Red Hat supports IPMI and PXE on the provisioning network only. Red Hat has not tested Red Fish, virtual media, or other complementary technologies such as Secure Boot on IBM Cloud® deployments. A provisioning network is required.
+<div class="important">
+
+Red Hat supports IPMI and PXE on the provisioning network only. Red Hat has not tested Red Fish, virtual media, or other complementary technologies such as Secure Boot on IBM Cloud® deployments. A provisioning network is required.
+
+</div>
 
 Installer-provisioned installation of OpenShift Container Platform requires:
 
@@ -19,8 +22,11 @@ Before starting an installer-provisioned installation of OpenShift Container Pla
 
 To deploy an OpenShift Container Platform cluster on IBM Cloud® Bare Metal (Classic) infrastructure, you must first provision the IBM Cloud® nodes.
 
-> [!IMPORTANT]
-> Red Hat supports IPMI and PXE on the `provisioning` network only. Red Hat has not tested Red Fish, virtual media, or other complementary technologies such as Secure Boot on IBM Cloud® deployments. The `provisioning` network is required.
+<div class="important">
+
+Red Hat supports IPMI and PXE on the `provisioning` network only. Red Hat has not tested Red Fish, virtual media, or other complementary technologies such as Secure Boot on IBM Cloud® deployments. The `provisioning` network is required.
+
+</div>
 
 You can customize IBM Cloud® nodes using the IBM Cloud® API. When creating IBM Cloud® nodes, you must consider the following requirements.
 
@@ -69,8 +75,11 @@ In the previous example, NIC1 on all control plane and worker nodes connects to 
 | NIC1 PXE-enabled `provisioning` network | 1          |
 | NIC2 `baremetal` network.               | 2          |
 
-> [!NOTE]
-> Ensure PXE is enabled on the NIC used for the `provisioning` network and is disabled on all other NICs.
+<div class="note">
+
+Ensure PXE is enabled on the NIC used for the `provisioning` network and is disabled on all other NICs.
+
+</div>
 
 ## Configuring canonical names
 
@@ -109,22 +118,31 @@ The following table provides an example of fully qualified domain names. The API
 
 OpenShift Container Platform includes functionality that uses cluster membership information to generate `A` records. This resolves the node names to their IP addresses. After the nodes are registered with the API, the cluster can disperse node information without using CoreDNS-mDNS. This eliminates the network traffic associated with multicast DNS.
 
-> [!IMPORTANT]
-> After provisioning the IBM Cloud® nodes, you must create a DNS entry for the `api.<cluster_name>.<domain>` domain name on the external DNS because removing CoreDNS causes the local entry to disappear. Failure to create a DNS record for the `api.<cluster_name>.<domain>` domain name in the external DNS server prevents worker nodes from joining the cluster.
+<div class="important">
+
+After provisioning the IBM Cloud® nodes, you must create a DNS entry for the `api.<cluster_name>.<domain>` domain name on the external DNS because removing CoreDNS causes the local entry to disappear. Failure to create a DNS record for the `api.<cluster_name>.<domain>` domain name in the external DNS server prevents worker nodes from joining the cluster.
+
+</div>
 
 ## Network Time Protocol (NTP)
 
 Each OpenShift Container Platform node in the cluster must have access to an NTP server. OpenShift Container Platform nodes use NTP to synchronize their clocks. For example, cluster nodes use SSL certificates that require validation, which might fail if the date and time between the nodes are not in sync.
 
-> [!IMPORTANT]
-> Define a consistent clock date and time format in each cluster node’s BIOS settings, or installation might fail.
+<div class="important">
+
+Define a consistent clock date and time format in each cluster node’s BIOS settings, or installation might fail.
+
+</div>
 
 ## Configure a DHCP server
 
 IBM Cloud® Bare Metal (Classic) does not run DHCP on the public or private VLANs. After provisioning IBM Cloud® nodes, you must set up a DHCP server for the public VLAN, which corresponds to OpenShift Container Platform’s `baremetal` network.
 
-> [!NOTE]
-> The IP addresses allocated to each node do not need to match the IP addresses allocated by the IBM Cloud® Bare Metal (Classic) provisioning system.
+<div class="note">
+
+The IP addresses allocated to each node do not need to match the IP addresses allocated by the IBM Cloud® Bare Metal (Classic) provisioning system.
+
+</div>
 
 See the "Configuring the public subnet" section for details.
 
@@ -158,5 +176,8 @@ $ ibmcloud sl hardware create --hostname <SERVERNAME> \
 
 See [Installing the stand-alone IBM Cloud® CLI](https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli) for details on installing the IBM Cloud® CLI.
 
-> [!NOTE]
-> IBM Cloud® servers might take 3-5 hours to become available.
+<div class="note">
+
+IBM Cloud® servers might take 3-5 hours to become available.
+
+</div>

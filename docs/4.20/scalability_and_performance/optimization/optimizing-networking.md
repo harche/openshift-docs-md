@@ -22,30 +22,21 @@ The NIC MTU is configured at the time of OpenShift Container Platform installati
 
 For a cluster that uses the OVN-Kubernetes plugin, the MTU must be less than `100` bytes to the maximum supported value of the NIC of your network. If you are optimizing for throughput, choose the largest possible value, such as `8900`. If you are optimizing for lowest latency, choose a lower value.
 
-> [!IMPORTANT]
-> If your cluster uses the OVN-Kubernetes plugin and the network uses a NIC to send and receive unfragmented jumbo frame packets over the network, you must specify `9000` bytes as the MTU value for the NIC so that pods do not fail.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Additional resources
+If your cluster uses the OVN-Kubernetes plugin and the network uses a NIC to send and receive unfragmented jumbo frame packets over the network, you must specify `9000` bytes as the MTU value for the NIC so that pods do not fail.
 
 </div>
 
 - [Changing cluster network MTU](../../networking/advanced_networking/changing-cluster-network-mtu.xml#changing-cluster-network-mtu)
 
-</div>
-
 # Recommended practices for installing large scale clusters
 
 When installing large clusters or scaling the cluster to larger node counts, set the cluster network `cidr` accordingly in your `install-config.yaml` file before you install the cluster.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `install-config.yaml` file with a network configuration for a cluster with a large node count
+**Example `install-config.yaml` file with a network configuration for a cluster with a large node count**
 
 </div>
 
@@ -60,8 +51,6 @@ networking:
   serviceNetwork:
   - 172.30.0.0/16
 ```
-
-</div>
 
 The default cluster network `cidr` `10.128.0.0/14` cannot be used if the cluster size is more than 500 nodes. The `cidr` must be set to `10.128.0.0/12` or `10.128.0.0/10` to get to larger node counts beyond 500 nodes.
 

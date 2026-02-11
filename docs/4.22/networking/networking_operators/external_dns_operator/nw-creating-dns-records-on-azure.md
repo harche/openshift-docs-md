@@ -1,33 +1,18 @@
 To create DNS records on Microsoft Azure, use the External DNS Operator. By using this Operator, you can manage external name resolution for your cluster services.
 
-> [!IMPORTANT]
-> Using the External DNS Operator on a Microsoft Entra Workload ID-enabled cluster or a cluster that runs in Microsoft Azure Government (MAG) regions is not supported.
+<div class="important">
+
+Using the External DNS Operator on a Microsoft Entra Workload ID-enabled cluster or a cluster that runs in Microsoft Azure Government (MAG) regions is not supported.
+
+</div>
 
 # Creating DNS records on an Azure DNS zone
 
 To create DNS records on a public or private DNS zone for Azure, use the External DNS Operator. The Operator manages external name resolution for your cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have administrator privileges.
 
 - The `admin` user must have access to the `kube-system` namespace.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Fetch the credentials from the `kube-system` namespace to use the cloud provider client by running the following command:
 
@@ -63,11 +48,9 @@ Procedure
     $ oc get routes --all-namespaces | grep console
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -75,8 +58,6 @@ Procedure
     openshift-console          console             console-openshift-console.apps.test.azure.example.com                       console             https   reencrypt/Redirect     None
     openshift-console          downloads           downloads-openshift-console.apps.test.azure.example.com                     downloads           http    edge/Redirect          None
     ```
-
-    </div>
 
 4.  Get a list of DNS zones.
 
@@ -94,11 +75,9 @@ Procedure
 
 5.  Create a YAML file, for example, `external-dns-sample-azure.yaml`, that defines the `ExternalDNS` object:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `external-dns-sample-azure.yaml` file
+    **Example `external-dns-sample-azure.yaml` file**
 
     </div>
 
@@ -118,8 +97,6 @@ Procedure
         type: OpenShiftRoute
     # ...
     ```
-
-    </div>
 
     where:
 
@@ -141,15 +118,7 @@ Procedure
     `source.type`
     Specifies the `route` resource as the source for the Azure DNS records.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Troubleshooting
-
-</div>
+<!-- -->
 
 1.  Check the records created for the routes.
 
@@ -164,5 +133,3 @@ Troubleshooting
         ``` terminal
         $ az network private-dns record-set list -g "${RESOURCE_GROUP}" -z "${ZONE_NAME}" | grep console
         ```
-
-</div>

@@ -4,10 +4,6 @@ You can update your virtual hardware immediately or schedule an update in vCente
 
 <div class="important">
 
-<div class="title">
-
-</div>
-
 - Version 4.17 of OpenShift Container Platform requires VMware virtual hardware version 15 or later.
 
 - Before upgrading OpenShift 4.12 to OpenShift 4.13, you must update vSphere to **v8.0 Update 1 or later**; otherwise, the OpenShift 4.12 cluster is marked **un-upgradeable**.
@@ -18,34 +14,19 @@ You can update your virtual hardware immediately or schedule an update in vCente
 
 To update the hardware of your virtual machines (VMs) on VMware vSphere, update your virtual machines separately to reduce the risk of downtime for your cluster.
 
-> [!IMPORTANT]
-> As of OpenShift Container Platform 4.13, VMware virtual hardware version 13 is no longer supported. You need to update to VMware version 15 or later for supporting functionality.
+<div class="important">
+
+As of OpenShift Container Platform 4.13, VMware virtual hardware version 13 is no longer supported. You need to update to VMware version 15 or later for supporting functionality.
+
+</div>
 
 ## Updating the virtual hardware for control plane nodes on vSphere
 
 To reduce the risk of downtime, it is recommended that control plane nodes be updated serially. This ensures that the Kubernetes API remains available and etcd retains quorum.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have cluster administrator permissions to execute the required permissions in the vCenter instance hosting your OpenShift Container Platform cluster.
 
 - Your vSphere ESXi hosts are version 8.0 Update 1 or later, or VWware vSphere Foundation 9, or VMware Cloud Foundation 9.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List the control plane nodes in your cluster.
 
@@ -53,11 +34,9 @@ Procedure
     $ oc get nodes -l node-role.kubernetes.io/master
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -67,8 +46,6 @@ Procedure
     control-plane-node-1    Ready    master   75m   v1.33.4
     control-plane-node-2    Ready    master   75m   v1.33.4
     ```
-
-    </div>
 
     Note the names of your control plane nodes.
 
@@ -98,20 +75,13 @@ Procedure
 
 8.  Repeat this procedure for each control plane node in your cluster.
 
-</div>
-
 ## Updating the virtual hardware for compute nodes on vSphere
 
 To reduce the risk of downtime, it is recommended that compute nodes be updated serially.
 
-> [!NOTE]
-> Multiple compute nodes can be updated in parallel given workloads are tolerant of having multiple nodes in a `NotReady` state. It is the responsibility of the administrator to ensure that the required compute nodes are available.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Multiple compute nodes can be updated in parallel given workloads are tolerant of having multiple nodes in a `NotReady` state. It is the responsibility of the administrator to ensure that the required compute nodes are available.
 
 </div>
 
@@ -119,27 +89,15 @@ Prerequisites
 
 - Your vSphere ESXi hosts are version 8.0 Update 1 or later, or VWware vSphere Foundation 9, or VMware Cloud Foundation 9.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  List the compute nodes in your cluster.
 
     ``` terminal
     $ oc get nodes -l node-role.kubernetes.io/worker
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -149,8 +107,6 @@ Procedure
     compute-node-1    Ready    worker   30m   v1.33.4
     compute-node-2    Ready    worker   30m   v1.33.4
     ```
-
-    </div>
 
     Note the names of your compute nodes.
 
@@ -188,60 +144,37 @@ Procedure
 
 9.  Repeat this procedure for each compute node in your cluster.
 
-</div>
-
 ## Updating the virtual hardware for template on vSphere
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have cluster administrator permissions to execute the required permissions in the vCenter instance hosting your OpenShift Container Platform cluster.
 
 - Your vSphere ESXi hosts are version 8.0 Update 1 or later, or VWware vSphere Foundation 9, or VMware Cloud Foundation 9.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  If the RHCOS template is configured as a vSphere template follow [Convert a Template to a Virtual Machine](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-D632CAC5-BA5E-4A1E-959B-382D9ACB1DD0_copy.html) in the VMware documentation prior to the next step.
 
-    > [!NOTE]
-    > Once converted from a template, do not power on the virtual machine.
+    <div class="note">
+
+    Once converted from a template, do not power on the virtual machine.
+
+    </div>
 
 2.  Update the virtual machine (VM) in the VMware vSphere client. Complete the steps outlined in [Upgrade the Compatibility of a Virtual Machine Manually](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-60768C2F-72E1-42E0-8A17-CA76849F2950.html) (VMware vSphere documentation).
 
-    > [!IMPORTANT]
-    > If you modified the VM settings, those changes might reset after moving to a newer virtual hardware. Please review that all your configured settings are still in place after your upgrade before proceeding to the next step.
+    <div class="important">
+
+    If you modified the VM settings, those changes might reset after moving to a newer virtual hardware. Please review that all your configured settings are still in place after your upgrade before proceeding to the next step.
+
+    </div>
 
 3.  Convert the VM in the vSphere client to a template by right-clicking on the VM and then selecting **Template → Convert to Template**.
 
-    > [!IMPORTANT]
-    > The steps for converting a VM to a template might change in future vSphere documentation versions.
+    <div class="important">
 
-</div>
+    The steps for converting a VM to a template might change in future vSphere documentation versions.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+    </div>
 
 - [Understanding how to evacuate pods on nodes](../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working-evacuating_nodes-nodes-working)
-
-</div>
 
 # Scheduling an update for virtual hardware on vSphere
 

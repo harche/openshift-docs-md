@@ -4,14 +4,6 @@ You can back up and restore persistent volumes by using the OADP 1.3 Data Mover.
 
 You can use the OADP Data Mover to back up Container Storage Interface (CSI) volume snapshots to a remote object store.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster with the `cluster-admin` role.
 
 - You have installed the OADP Operator.
@@ -21,16 +13,6 @@ Prerequisites
 - You have an application with persistent volumes running in a separate namespace.
 
 - You have added the `metadata.labels.velero.io/csi-volumesnapshot-class: "true"` key-value pair to the `VolumeSnapshotClass` CR.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file for the `Backup` object, as in the following example:
 
@@ -70,27 +52,20 @@ Procedure
 
     A `DataUpload` CR is created after the snapshot creation is complete.
 
-    > [!NOTE]
-    > If you format the volume by using XFS filesystem and the volume is at 100% capacity, the backup fails with a `no space left on device` error. For example:
-    >
-    > ``` terminal
-    > Error: relabel failed /var/lib/kubelet/pods/3ac..34/volumes/ \
-    > kubernetes.io~csi/pvc-684..12c/mount: lsetxattr /var/lib/kubelet/ \
-    > pods/3ac..34/volumes/kubernetes.io~csi/pvc-68..2c/mount/data-xfs-103: \
-    > no space left on device
-    > ```
-    >
-    > In this scenario, consider resizing the volume or using a different filesystem type, for example, `ext4`, so that the backup completes successfully.
+    <div class="note">
 
-</div>
+    If you format the volume by using XFS filesystem and the volume is at 100% capacity, the backup fails with a `no space left on device` error. For example:
 
-<div>
+    ``` terminal
+    Error: relabel failed /var/lib/kubelet/pods/3ac..34/volumes/ \
+    kubernetes.io~csi/pvc-684..12c/mount: lsetxattr /var/lib/kubelet/ \
+    pods/3ac..34/volumes/kubernetes.io~csi/pvc-68..2c/mount/data-xfs-103: \
+    no space left on device
+    ```
 
-<div class="title">
+    In this scenario, consider resizing the volume or using a different filesystem type, for example, `ext4`, so that the backup completes successfully.
 
-Verification
-
-</div>
+    </div>
 
 - Verify that the snapshot data is successfully transferred to the remote object store by monitoring the `status.phase` field of the `DataUpload` CR. Possible values are `In Progress`, `Completed`, `Failed`, or `Canceled`. The object store is configured in the `backupLocations` stanza of the `DataProtectionApplication` CR.
 
@@ -100,11 +75,9 @@ Verification
     $ oc get datauploads -A
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -114,19 +87,15 @@ Verification
     openshift-adp   mongo-block-7dtpf     Completed   14m       1073741824   1073741824    dpa-sample-1       14m     ip-10-0-150-57.us-west-2.compute.internal
     ```
 
-    </div>
-
   - Check the value of the `status.phase` field of the specific `DataUpload` object by running the following command:
 
     ``` terminal
     $ oc get datauploads <dataupload_name> -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -158,27 +127,18 @@ Verification
       startTimestamp: "2023-11-02T16:56:22Z"
     ```
 
-    </div>
-
     where:
 
     `phase: Completed`
     Indicates that snapshot data is successfully transferred to the remote object store.
 
-</div>
-
 # Restoring CSI volume snapshots
 
 You can restore a volume snapshot by creating a `Restore` CR.
 
-> [!NOTE]
-> You cannot restore Volsync backups from OADP 1.2 with the OAPD 1.3 built-in Data Mover. It is recommended to do a file system backup of all of your workloads with Restic before upgrading to OADP 1.3.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You cannot restore Volsync backups from OADP 1.2 with the OAPD 1.3 built-in Data Mover. It is recommended to do a file system backup of all of your workloads with Restic before upgrading to OADP 1.3.
 
 </div>
 
@@ -186,23 +146,11 @@ Prerequisites
 
 - You have an OADP `Backup` CR from which to restore the data.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a YAML file for the `Restore` CR, as in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `Restore` CR
+    **Example `Restore` CR**
 
     </div>
 
@@ -217,8 +165,6 @@ Procedure
     # ...
     ```
 
-    </div>
-
 2.  Apply the manifest:
 
     ``` terminal
@@ -226,16 +172,6 @@ Procedure
     ```
 
     A `DataDownload` CR is created when the restore starts.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - You can monitor the status of the restore process by checking the `status.phase` field of the `DataDownload` CR. Possible values are `In Progress`, `Completed`, `Failed`, or `Canceled`.
 
@@ -245,11 +181,9 @@ Verification
     $ oc get datadownloads -A
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -258,19 +192,15 @@ Verification
     openshift-adp   restore-test-1-sk7lg   Completed   7m11s     108104082    108104082     dpa-sample-1       7m11s   ip-10-0-150-57.us-west-2.compute.internal
     ```
 
-    </div>
-
   - Enter the following command to check the value of the `status.phase` field of the specific `DataDownload` object:
 
     ``` terminal
     $ oc get datadownloads <datadownload_name> -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -299,14 +229,10 @@ Verification
       startTimestamp: "2023-11-02T17:00:52Z"
     ```
 
-    </div>
-
     where:
 
     `phase: Completed`
     Indicates that the CSI snapshot data is successfully restored.
-
-</div>
 
 # Deletion policy for OADP 1.3
 

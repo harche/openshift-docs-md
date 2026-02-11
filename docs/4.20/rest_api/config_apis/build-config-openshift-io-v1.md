@@ -13,12 +13,12 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | spec holds user-settable values for the build controller configuration |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | spec holds user-settable values for the build controller configuration                                                                                                                                                                                                                               |
 
 ## .spec
 
@@ -35,25 +35,25 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>additionalTrustedCA</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>additionalTrustedCA is a reference to a ConfigMap containing additional CAs that should be trusted for image pushes and pulls during builds. The namespace for this config map is openshift-config.</p>
 <p>DEPRECATED: Additional CAs for image pull and push should be set on image.config.openshift.io/cluster instead.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>buildDefaults</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>buildDefaults controls the default information for Builds</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>buildOverrides</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>buildOverrides controls override settings for builds</p></td>
@@ -93,46 +93,46 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>defaultProxy</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>defaultProxy contains the default proxy settings for all build operations, including image pull/push and source download.</p>
 <p>Values can be overrode by setting the <code>HTTP_PROXY</code>, <code>HTTPS_PROXY</code>, and <code>NO_PROXY</code> environment variables in the build config’s strategy.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>env</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>env is a set of default environment variables that will be applied to the build if the specified variables do not exist on the build</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>env[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>EnvVar represents an environment variable present in a Container.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>gitProxy</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>gitProxy contains the proxy settings for git operations only. If set, this will override any Proxy settings for all git commands, such as git clone.</p>
 <p>Values that are not set here will be inherited from DefaultProxy.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>imageLabels</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>imageLabels is a list of docker labels that are applied to the resulting image. User can override a default label by providing a label with the same name in their Build/BuildConfig.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>imageLabels[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>resources</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>resources defines resource requirements to execute the build.</p></td>
@@ -157,34 +157,34 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>httpProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>httpProxy is the URL of the proxy for HTTP requests. Empty means unset and will not result in an env var.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>httpsProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>httpsProxy is the URL of the proxy for HTTPS requests. Empty means unset and will not result in an env var.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>noProxy is a comma-separated list of hostnames and/or CIDRs and/or IPs for which the proxy should not be used. Empty means unset and will not result in an env var.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>readinessEndpoints</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>readinessEndpoints is a list of endpoints used to verify readiness of the proxy.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>trustedCA</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>trustedCA is a reference to a ConfigMap containing a CA certificate bundle. The trustedCA field should only be consumed by a proxy validator. The validator is responsible for reading the certificate bundle from the required key "ca-bundle.crt", merging it with the system default trust bundle, and writing the merged trust bundle to a ConfigMap named "trusted-ca-bundle" in the "openshift-config-managed" namespace. Clients that expect to make proxy connections must use the trusted-ca-bundle for all HTTPS requests to the proxy, and may use the trusted-ca-bundle for non-proxy HTTPS requests as well.</p>
@@ -232,11 +232,11 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name of the environment variable. Must be a C_IDENTIFIER. |
-| `value` | `string` | Variable references \$(VAR_NAME) are expanded using the previously defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "". |
-| `valueFrom` | `object` | Source for the environment variable’s value. Cannot be used if value is not empty. |
+| Property    | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|-------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`      | `string` | Name of the environment variable. Must be a C_IDENTIFIER.                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `value`     | `string` | Variable references \$(VAR_NAME) are expanded using the previously defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "". |
+| `valueFrom` | `object` | Source for the environment variable’s value. Cannot be used if value is not empty.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
 ## .spec.buildDefaults.env\[\].valueFrom
 
@@ -246,12 +246,12 @@ Source for the environment variable’s value. Cannot be used if value is not em
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `configMapKeyRef` | `object` | Selects a key of a ConfigMap. |
-| `fieldRef` | `object` | Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs. |
-| `resourceFieldRef` | `object` | Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported. |
-| `secretKeyRef` | `object` | Selects a key of a secret in the pod’s namespace |
+| Property           | Type     | Description                                                                                                                                                                                                              |
+|--------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `configMapKeyRef`  | `object` | Selects a key of a ConfigMap.                                                                                                                                                                                            |
+| `fieldRef`         | `object` | Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs. |
+| `resourceFieldRef` | `object` | Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.     |
+| `secretKeyRef`     | `object` | Selects a key of a secret in the pod’s namespace                                                                                                                                                                         |
 
 ## .spec.buildDefaults.env\[\].valueFrom.configMapKeyRef
 
@@ -264,11 +264,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key to select. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key to select.                                                                                                                                                                                                                                                                           |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the ConfigMap or its key must be defined                                                                                                                                                                                                                                     |
 
 ## .spec.buildDefaults.env\[\].valueFrom.fieldRef
 
@@ -281,10 +281,10 @@ Type
 Required
 - `fieldPath`
 
-| Property | Type | Description |
-|----|----|----|
+| Property     | Type     | Description                                                                   |
+|--------------|----------|-------------------------------------------------------------------------------|
 | `apiVersion` | `string` | Version of the schema the FieldPath is written in terms of, defaults to "v1". |
-| `fieldPath` | `string` | Path of the field to select in the specified API version. |
+| `fieldPath`  | `string` | Path of the field to select in the specified API version.                     |
 
 ## .spec.buildDefaults.env\[\].valueFrom.resourceFieldRef
 
@@ -297,11 +297,11 @@ Type
 Required
 - `resource`
 
-| Property | Type | Description |
-|----|----|----|
-| `containerName` | `string` | Container name: required for volumes, optional for env vars |
-| `divisor` | `integer-or-string` | Specifies the output format of the exposed resources, defaults to "1" |
-| `resource` | `string` | Required: resource to select |
+| Property        | Type                | Description                                                           |
+|-----------------|---------------------|-----------------------------------------------------------------------|
+| `containerName` | `string`            | Container name: required for volumes, optional for env vars           |
+| `divisor`       | `integer-or-string` | Specifies the output format of the exposed resources, defaults to "1" |
+| `resource`      | `string`            | Required: resource to select                                          |
 
 ## .spec.buildDefaults.env\[\].valueFrom.secretKeyRef
 
@@ -314,11 +314,11 @@ Type
 Required
 - `key`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | The key of the secret to select from. Must be a valid secret key. |
-| `name` | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `optional` | `boolean` | Specify whether the Secret or its key must be defined |
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.buildDefaults.gitProxy
 
@@ -337,34 +337,34 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>httpProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>httpProxy is the URL of the proxy for HTTP requests. Empty means unset and will not result in an env var.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>httpsProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>httpsProxy is the URL of the proxy for HTTPS requests. Empty means unset and will not result in an env var.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>noProxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>noProxy is a comma-separated list of hostnames and/or CIDRs and/or IPs for which the proxy should not be used. Empty means unset and will not result in an env var.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>readinessEndpoints</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>readinessEndpoints is a list of endpoints used to verify readiness of the proxy.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>trustedCA</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>trustedCA is a reference to a ConfigMap containing a CA certificate bundle. The trustedCA field should only be consumed by a proxy validator. The validator is responsible for reading the certificate bundle from the required key "ca-bundle.crt", merging it with the system default trust bundle, and writing the merged trust bundle to a ConfigMap named "trusted-ca-bundle" in the "openshift-config-managed" namespace. Clients that expect to make proxy connections must use the trusted-ca-bundle for all HTTPS requests to the proxy, and may use the trusted-ca-bundle for non-proxy HTTPS requests as well.</p>
@@ -408,10 +408,10 @@ Description
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name defines the name of the label. It must have non-zero length. |
-| `value` | `string` | value defines the literal value of the label. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `name`   | `string` | name defines the name of the label. It must have non-zero length. |
+| `value`  | `string` | value defines the literal value of the label.                     |
 
 ## .spec.buildDefaults.resources
 
@@ -428,31 +428,31 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>claims</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.</p>
 <p>This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.</p>
 <p>This field is immutable. It can only be set for containers.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>claims[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ResourceClaim references one entry in PodSpec.ResourceClaims.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>limits</code></p></td>
 <td style="text-align: left;"><p><code>integer-or-string</code></p></td>
 <td style="text-align: left;"><p>Limits describes the maximum amount of compute resources allowed. More info: <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>requests</code></p></td>
 <td style="text-align: left;"><p><code>integer-or-string</code></p></td>
 <td style="text-align: left;"><p>Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/</a></p></td>
@@ -483,9 +483,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container. |
+| Property  | Type     | Description                                                                                                                                                         |
+|-----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`    | `string` | Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container.          |
 | `request` | `string` | Request is the name chosen for a request in the referenced claim. If empty, everything from the claim is made available, otherwise only the result of this request. |
 
 ## .spec.buildOverrides
@@ -496,14 +496,14 @@ buildOverrides controls override settings for builds
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `forcePull` | `boolean` | forcePull overrides, if set, the equivalent value in the builds, i.e. false disables force pull for all builds, true enables force pull for all builds, independently of what each build specifies itself |
-| `imageLabels` | `array` | imageLabels is a list of docker labels that are applied to the resulting image. If user provided a label in their Build/BuildConfig with the same name as one in this list, the user’s label will be overwritten. |
-| `imageLabels[]` | `object` |  |
-| `nodeSelector` | `object (string)` | nodeSelector is a selector which must be true for the build pod to fit on a node |
-| `tolerations` | `array` | tolerations is a list of Tolerations that will override any existing tolerations set on a build pod. |
-| `tolerations[]` | `object` | The pod this Toleration is attached to tolerates any taint that matches the triple \<key,value,effect\> using the matching operator \<operator\>. |
+| Property        | Type              | Description                                                                                                                                                                                                       |
+|-----------------|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `forcePull`     | `boolean`         | forcePull overrides, if set, the equivalent value in the builds, i.e. false disables force pull for all builds, true enables force pull for all builds, independently of what each build specifies itself         |
+| `imageLabels`   | `array`           | imageLabels is a list of docker labels that are applied to the resulting image. If user provided a label in their Build/BuildConfig with the same name as one in this list, the user’s label will be overwritten. |
+| `imageLabels[]` | `object`          |                                                                                                                                                                                                                   |
+| `nodeSelector`  | `object (string)` | nodeSelector is a selector which must be true for the build pod to fit on a node                                                                                                                                  |
+| `tolerations`   | `array`           | tolerations is a list of Tolerations that will override any existing tolerations set on a build pod.                                                                                                              |
+| `tolerations[]` | `object`          | The pod this Toleration is attached to tolerates any taint that matches the triple \<key,value,effect\> using the matching operator \<operator\>.                                                                 |
 
 ## .spec.buildOverrides.imageLabels
 
@@ -520,10 +520,10 @@ Description
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name defines the name of the label. It must have non-zero length. |
-| `value` | `string` | value defines the literal value of the label. |
+| Property | Type     | Description                                                       |
+|----------|----------|-------------------------------------------------------------------|
+| `name`   | `string` | name defines the name of the label. It must have non-zero length. |
+| `value`  | `string` | value defines the literal value of the label.                     |
 
 ## .spec.buildOverrides.tolerations
 
@@ -541,13 +541,13 @@ The pod this Toleration is attached to tolerates any taint that matches the trip
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `effect` | `string` | Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute. |
-| `key` | `string` | Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys. |
-| `operator` | `string` | Operator represents a key’s relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category. |
+| Property            | Type      | Description                                                                                                                                                                                                                                                                                                                 |
+|---------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `effect`            | `string`  | Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute.                                                                                                                                                             |
+| `key`               | `string`  | Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys.                                                                                                                               |
+| `operator`          | `string`  | Operator represents a key’s relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category.                                                                                                 |
 | `tolerationSeconds` | `integer` | TolerationSeconds represents the period of time the toleration (which must be of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default, it is not set, which means tolerate the taint forever (do not evict). Zero and negative values will be treated as 0 (evict immediately) by the system. |
-| `value` | `string` | Value is the taint value the toleration matches to. If the operator is Exists, the value should be empty, otherwise just a regular string. |
+| `value`             | `string`  | Value is the taint value the toleration matches to. If the operator is Exists, the value should be empty, otherwise just a regular string.                                                                                                                                                                                  |
 
 # API endpoints
 
@@ -587,10 +587,10 @@ HTTP method
 Description
 delete collection of Build
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -600,10 +600,10 @@ HTTP method
 Description
 list objects of kind Build
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`BuildList`](../objects/index.xml#io-openshift-config-v1-BuildList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                |
+|--------------------|-----------------------------------------------------------------------------|
+| 200 - OK           | [`BuildList`](../objects/index.xml#io-openshift-config-v1-BuildList) schema |
+| 401 - Unauthorized | Empty                                                                       |
 
 HTTP responses
 
@@ -613,25 +613,25 @@ HTTP method
 Description
 create a Build
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                           | Description |
+|-----------|------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
-| 201 - Created | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
-| 202 - Accepted | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
+| 201 - Created      | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
+| 202 - Accepted     | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                          |
 
 HTTP responses
 
@@ -649,17 +649,17 @@ HTTP method
 Description
 delete a Build
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -669,10 +669,10 @@ HTTP method
 Description
 read the specified Build
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                          |
 
 HTTP responses
 
@@ -682,17 +682,17 @@ HTTP method
 Description
 partially update the specified Build
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                          |
 
 HTTP responses
 
@@ -702,24 +702,24 @@ HTTP method
 Description
 replace the specified Build
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                           | Description |
+|-----------|------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
-| 201 - Created | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
+| 201 - Created      | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                          |
 
 HTTP responses
 
@@ -737,10 +737,10 @@ HTTP method
 Description
 read status of the specified Build
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                          |
 
 HTTP responses
 
@@ -750,17 +750,17 @@ HTTP method
 Description
 partially update status of the specified Build
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                          |
 
 HTTP responses
 
@@ -770,23 +770,23 @@ HTTP method
 Description
 replace status of the specified Build
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                           | Description |
+|-----------|------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
-| 201 - Created | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
+| 201 - Created      | [`Build`](../config_apis/build-config-openshift-io-v1.xml#build-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                          |
 
 HTTP responses

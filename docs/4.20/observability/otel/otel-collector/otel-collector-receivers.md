@@ -6,11 +6,9 @@ Currently, the following General Availability and Technology Preview receivers a
 
 The OTLP Receiver ingests traces, metrics, and logs by using the OpenTelemetry Protocol (OTLP).
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector custom resource with an enabled OTLP Receiver
+**OpenTelemetry Collector custom resource with an enabled OTLP Receiver**
 
 </div>
 
@@ -41,8 +39,6 @@ OpenTelemetry Collector custom resource with an enabled OTLP Receiver
 # ...
 ```
 
-</div>
-
 - The OTLP gRPC endpoint. If omitted, the default `0.0.0.0:4317` is used.
 
 - The server-side TLS configuration. Defines paths to TLS certificates. If omitted, the TLS is disabled.
@@ -59,11 +55,9 @@ OpenTelemetry Collector custom resource with an enabled OTLP Receiver
 
 The Jaeger Receiver ingests traces in the Jaeger formats.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector custom resource with an enabled Jaeger Receiver
+**OpenTelemetry Collector custom resource with an enabled Jaeger Receiver**
 
 </div>
 
@@ -90,8 +84,6 @@ OpenTelemetry Collector custom resource with an enabled Jaeger Receiver
 # ...
 ```
 
-</div>
-
 - The Jaeger gRPC endpoint. If omitted, the default `0.0.0.0:14250` is used.
 
 - The Jaeger Thrift HTTP endpoint. If omitted, the default `0.0.0.0:14268` is used.
@@ -106,11 +98,9 @@ OpenTelemetry Collector custom resource with an enabled Jaeger Receiver
 
 The Host Metrics Receiver ingests metrics in the OTLP format.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector custom resource with an enabled Host Metrics Receiver
+**OpenTelemetry Collector custom resource with an enabled Host Metrics Receiver**
 
 </div>
 
@@ -188,8 +178,6 @@ spec:
 # ...
 ```
 
-</div>
-
 - Sets the time interval for host metrics collection. If omitted, the default value is `1m`.
 
 - Sets the initial time delay for host metrics collection. If omitted, the default value is `1s`.
@@ -202,16 +190,17 @@ spec:
 
 The Kubernetes Objects Receiver pulls or watches objects to be collected from the Kubernetes API server. This receiver watches primarily Kubernetes events, but it can collect any type of Kubernetes objects. This receiver gathers telemetry for the cluster as a whole, so only one instance of this receiver suffices for collecting all the data.
 
-> [!IMPORTANT]
-> The Kubernetes Objects Receiver is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Kubernetes Objects Receiver is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with an enabled Kubernetes Objects Receiver
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with an enabled Kubernetes Objects Receiver**
 
 </div>
 
@@ -292,8 +281,6 @@ spec:
 # ...
 ```
 
-</div>
-
 - The Resource name that this receiver observes: for example, `pods`, `deployments`, or `events`.
 
 - The observation mode that this receiver uses: `pull` or `watch`.
@@ -310,11 +297,9 @@ spec:
 
 The Kubelet Stats Receiver extracts metrics related to nodes, pods, containers, and volumes from the kubelet’s API server. These metrics are then channeled through the metrics-processing pipeline for additional analysis.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector custom resource with an enabled Kubelet Stats Receiver
+**OpenTelemetry Collector custom resource with an enabled Kubelet Stats Receiver**
 
 </div>
 
@@ -339,17 +324,13 @@ OpenTelemetry Collector custom resource with an enabled Kubelet Stats Receiver
 # ...
 ```
 
-</div>
-
 - Sets the `K8S_NODE_NAME` to authenticate to the API.
 
 The Kubelet Stats Receiver requires additional permissions for the service account used for running the OpenTelemetry Collector.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Permissions required by the service account
+**Permissions required by the service account**
 
 </div>
 
@@ -368,19 +349,15 @@ rules:
 # ...
 ```
 
-</div>
-
 - The permissions required when using the `extra_metadata_labels` or `request_utilization` or `limit_utilization` metrics.
 
 # Prometheus Receiver
 
 The Prometheus Receiver scrapes the metrics endpoints.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector custom resource with an enabled Prometheus Receiver
+**OpenTelemetry Collector custom resource with an enabled Prometheus Receiver**
 
 </div>
 
@@ -402,8 +379,6 @@ OpenTelemetry Collector custom resource with an enabled Prometheus Receiver
 # ...
 ```
 
-</div>
-
 - Scrapes configurations using the Prometheus format.
 
 - The Prometheus job name.
@@ -416,16 +391,17 @@ OpenTelemetry Collector custom resource with an enabled Prometheus Receiver
 
 The OTLP JSON File Receiver extracts pipeline information from files containing data in the [ProtoJSON](https://protobuf.dev/programming-guides/json/) format and conforming to the [OpenTelemetry Protocol](https://opentelemetry.io/docs/specs/otel/protocol/) specification. The receiver watches a specified directory for changes such as created or modified files to process.
 
-> [!IMPORTANT]
-> The OTLP JSON File Receiver is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The OTLP JSON File Receiver is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with the enabled OTLP JSON File Receiver
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with the enabled OTLP JSON File Receiver**
 
 </div>
 
@@ -440,8 +416,6 @@ OpenTelemetry Collector custom resource with the enabled OTLP JSON File Receiver
 # ...
 ```
 
-</div>
-
 - The list of file path glob patterns to watch.
 
 - The list of file path glob patterns to ignore.
@@ -450,11 +424,9 @@ OpenTelemetry Collector custom resource with the enabled OTLP JSON File Receiver
 
 The Zipkin Receiver ingests traces in the Zipkin v1 and v2 formats.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector custom resource with the enabled Zipkin Receiver
+**OpenTelemetry Collector custom resource with the enabled Zipkin Receiver**
 
 </div>
 
@@ -472,8 +444,6 @@ OpenTelemetry Collector custom resource with the enabled Zipkin Receiver
 # ...
 ```
 
-</div>
-
 - The Zipkin HTTP endpoint. If omitted, the default `0.0.0.0:9411` is used.
 
 - The server-side TLS configuration. See the OTLP Receiver configuration section for more details.
@@ -482,16 +452,17 @@ OpenTelemetry Collector custom resource with the enabled Zipkin Receiver
 
 The Kafka Receiver receives traces, metrics, and logs from Kafka in the OTLP format.
 
-> [!IMPORTANT]
-> The Kafka Receiver is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Kafka Receiver is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with the enabled Kafka Receiver
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with the enabled Kafka Receiver**
 
 </div>
 
@@ -520,8 +491,6 @@ OpenTelemetry Collector custom resource with the enabled Kafka Receiver
 # ...
 ```
 
-</div>
-
 - The list of Kafka brokers. The default is `localhost:9092`.
 
 - The Kafka protocol version. For example, `2.0.0`. This is a required field.
@@ -540,16 +509,17 @@ OpenTelemetry Collector custom resource with the enabled Kafka Receiver
 
 The Kubernetes Cluster Receiver gathers cluster metrics and entity events from the Kubernetes API server. It uses the Kubernetes API to receive information about updates. Authentication for this receiver is only supported through service accounts.
 
-> [!IMPORTANT]
-> The Kubernetes Cluster Receiver is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Kubernetes Cluster Receiver is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with the enabled Kubernetes Cluster Receiver
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with the enabled Kubernetes Cluster Receiver**
 
 </div>
 
@@ -573,15 +543,11 @@ OpenTelemetry Collector custom resource with the enabled Kubernetes Cluster Rece
 # ...
 ```
 
-</div>
-
 This receiver requires a configured service account, RBAC rules for the cluster role, and the cluster role binding that binds the RBAC with the service account.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-`ServiceAccount` object
+**`ServiceAccount` object**
 
 </div>
 
@@ -595,13 +561,9 @@ metadata:
 # ...
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-RBAC rules for the `ClusterRole` object
+**RBAC rules for the `ClusterRole` object**
 
 </div>
 
@@ -680,13 +642,9 @@ rules:
 # ...
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-`ClusterRoleBinding` object
+**`ClusterRoleBinding` object**
 
 </div>
 
@@ -708,20 +666,19 @@ subjects:
 # ...
 ```
 
-</div>
-
 # OpenCensus Receiver
 
 The OpenCensus Receiver provides backwards compatibility with the OpenCensus project for easier migration of instrumented codebases. It receives metrics and traces in the OpenCensus format via gRPC or HTTP and JSON.
 
-> [!WARNING]
-> The OpenCensus Receiver is deprecated and might be removed in a future release.
+<div class="warning">
 
-<div class="formalpara">
+The OpenCensus Receiver is deprecated and might be removed in a future release.
 
-<div class="title">
+</div>
 
-OpenTelemetry Collector custom resource with the enabled OpenCensus Receiver
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with the enabled OpenCensus Receiver**
 
 </div>
 
@@ -741,8 +698,6 @@ OpenTelemetry Collector custom resource with the enabled OpenCensus Receiver
 # ...
 ```
 
-</div>
-
 - The OpenCensus endpoint. If omitted, the default is `0.0.0.0:55678`.
 
 - The server-side TLS configuration. See the OTLP Receiver configuration section for more details.
@@ -753,11 +708,9 @@ OpenTelemetry Collector custom resource with the enabled OpenCensus Receiver
 
 The Filelog Receiver tails and parses logs from files.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector custom resource with an enabled Filelog Receiver that tails a text file
+**OpenTelemetry Collector custom resource with an enabled Filelog Receiver that tails a text file**
 
 </div>
 
@@ -778,19 +731,15 @@ OpenTelemetry Collector custom resource with an enabled Filelog Receiver that ta
 # ...
 ```
 
-</div>
-
 - A list of file glob patterns that match the file paths to be read.
 
 - An array of Operators. Each Operator performs a simple task such as parsing a timestamp or JSON. To process logs into a needed format, chain the Operators together.
 
 The next example shows how to make the Filelog Receiver work within security context constraints.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector custom resource with an enabled Filelog Receiver that parses cluster logs
+**OpenTelemetry Collector custom resource with an enabled Filelog Receiver that parses cluster logs**
 
 </div>
 
@@ -905,8 +854,6 @@ spec:
       path: /var/log/pods
 ```
 
-</div>
-
 - Configure a security context constraint (SCC) to allow access to files on the host.
 
 - The OpenTelemetry Operator created this service account for the Collector. Assign the SCC to this service account.
@@ -925,11 +872,9 @@ To collect logs from application containers, you can use this receiver with side
 
 To use this receiver in sidecar mode to collect logs from application containers, you must configure volume mounts in the `OpenTelemetryCollector` custom resource. Both the application container and the sidecar Collector must mount the same shared volume, such as `emptyDir`. Define the volume in the application’s `Pod` specification. See the following example:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector custom resource with the Filelog Receiver configured in sidecar mode
+**OpenTelemetry Collector custom resource with the Filelog Receiver configured in sidecar mode**
 
 </div>
 
@@ -967,8 +912,6 @@ spec:
           exporters: [debug]
 ```
 
-</div>
-
 - Defines the volume mount that the sidecar Collector uses to access the target log files. This volume must match the volume name defined in the application deployment.
 
 - Specifies file glob patterns for matching the log files to tail. This receiver watches these paths for new log entries.
@@ -977,16 +920,17 @@ spec:
 
 The Journald Receiver parses **journald** events from the **systemd** journal and sends them as logs.
 
-> [!IMPORTANT]
-> The Journald Receiver is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Journald Receiver is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with the enabled Journald Receiver
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with the enabled Journald Receiver**
 
 </div>
 
@@ -1088,8 +1032,6 @@ spec:
 # ...
 ```
 
-</div>
-
 - Filters output by message priorities or priority ranges. The default value is `info`.
 
 - Lists the units to read entries from. If empty, entries are read from all units.
@@ -1108,16 +1050,17 @@ spec:
 
 The Kubernetes Events Receiver collects events from the Kubernetes API server. The collected events are converted into logs.
 
-> [!IMPORTANT]
-> The Kubernetes Events Receiver is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Kubernetes Events Receiver is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenShift Container Platform permissions required for the Kubernetes Events Receiver
+</div>
+
+<div class="formalpara-title">
+
+**OpenShift Container Platform permissions required for the Kubernetes Events Receiver**
 
 </div>
 
@@ -1188,13 +1131,9 @@ rules:
 # ...
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-OpenTelemetry Collector custom resource with the enabled Kubernetes Event Receiver
+**OpenTelemetry Collector custom resource with the enabled Kubernetes Event Receiver**
 
 </div>
 
@@ -1212,8 +1151,6 @@ OpenTelemetry Collector custom resource with the enabled Kubernetes Event Receiv
 # ...
 ```
 
-</div>
-
 - The service account of the Collector that has the required ClusterRole `otel-collector` RBAC.
 
 - The list of namespaces to collect events from. The default value is empty, which means that all namespaces are collected.
@@ -1222,16 +1159,17 @@ OpenTelemetry Collector custom resource with the enabled Kubernetes Event Receiv
 
 The Prometheus Remote Write Receiver receives metrics from Prometheus using the Remote Write protocol and converts them to the OpenTelemetry format. This receiver supports only the Prometheus Remote Write v2 protocol.
 
-> [!IMPORTANT]
-> The Prometheus Remote Write Receiver is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Prometheus Remote Write Receiver is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with the enabled Prometheus Remote Write Receiver
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with the enabled Prometheus Remote Write Receiver**
 
 </div>
 
@@ -1249,8 +1187,6 @@ OpenTelemetry Collector custom resource with the enabled Prometheus Remote Write
 # ...
 ```
 
-</div>
-
 - The endpoint where the receiver listens for Prometheus Remote Write requests.
 
 The following are the prerequisites for using this receiver with Prometheus:
@@ -1265,14 +1201,6 @@ The following are the prerequisites for using this receiver with Prometheus:
 
 For more information about enabling these Prometheus features, see the Prometheus documentation.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Feature flags: Metadata WAL Records](https://prometheus.io/docs/prometheus/latest/feature_flags/#metadata-wal-records)
 
 - [Prometheus Remote-Write 2.0 specification (EXPERIMENTAL)](https://prometheus.io/docs/specs/prw/remote_write_spec_2_0/)
@@ -1282,8 +1210,6 @@ Additional resources
 - [Feature flags: Native Histograms](https://prometheus.io/docs/prometheus/latest/feature_flags/#native-histograms)
 
 - [Prometheus Configuration](https://prometheus.io/docs/prometheus/latest/configuration/configuration/)
-
-</div>
 
 # Additional resources
 

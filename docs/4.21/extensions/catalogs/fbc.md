@@ -20,8 +20,11 @@ File-based catalogs are stored in an arbitrary directory hierarchy, which enable
 
 This composability enables decentralized catalogs. The format permits Operator authors to maintain Operator-specific catalogs, and it permits maintainers to trivially build a catalog composed of individual Operator catalogs. File-based catalogs can be composed by combining multiple other catalogs, by extracting subsets of one catalog, or a combination of both of these.
 
-> [!NOTE]
-> Duplicate packages and duplicate bundles within a package are not permitted. The `opm validate` command returns an error if any duplicates are found.
+<div class="note">
+
+Duplicate packages and duplicate bundles within a package are not permitted. The `opm validate` command returns an error if any duplicates are found.
+
+</div>
 
 Because Operator authors are most familiar with their Operator, its dependencies, and its upgrade compatibility, they are able to maintain their own Operator-specific catalog and have direct control over its contents. With file-based catalogs, Operator authors own the task of building and maintaining their packages in a catalog. Composite catalog maintainers, however, only own the task of curating the packages in their catalog and publishing the catalog to users.
 
@@ -38,11 +41,9 @@ File-based catalogs can be stored and loaded from directory-based file systems. 
 
 Non-catalog files can be ignored using `.indexignore` files, which have the same rules for patterns and precedence as `.gitignore` files.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `.indexignore` file
+**Example `.indexignore` file**
 
 </div>
 
@@ -55,15 +56,11 @@ Example `.indexignore` file
 **/objects/*.yaml
 ```
 
-</div>
-
 Catalog maintainers have the flexibility to choose their desired layout, but it is recommended to store each package’s file-based catalog blobs in separate subdirectories. Each individual file can be either JSON or YAML; it is not necessary for every file in a catalog to use the same format.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Basic recommended structure
+**Basic recommended structure**
 
 </div>
 
@@ -81,19 +78,15 @@ catalog
     └── deprecations.yaml
 ```
 
-</div>
-
 This recommended structure has the property that each subdirectory in the directory hierarchy is a self-contained catalog, which makes catalog composition, discovery, and navigation trivial file system operations. The catalog can also be included in a parent catalog by copying it into the parent catalog’s root directory.
 
 # Schemas
 
 File-based catalogs use a format, based on the [CUE language specification](https://cuelang.org/docs/references/spec/), that can be extended with arbitrary schemas. The following `_Meta` CUE schema defines the format that all file-based catalog blobs must adhere to:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-`_Meta` schema
+**`_Meta` schema**
 
 </div>
 
@@ -118,29 +111,25 @@ _Meta: {
 }
 ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> No CUE schemas listed in this specification should be considered exhaustive. The `opm validate` command has additional validations that are difficult or impossible to express concisely in CUE.
+No CUE schemas listed in this specification should be considered exhaustive. The `opm validate` command has additional validations that are difficult or impossible to express concisely in CUE.
+
+</div>
 
 An Operator Lifecycle Manager (OLM) catalog currently uses three schemas (`olm.package`, `olm.channel`, and `olm.bundle`), which correspond to OLM’s existing package and bundle concepts.
 
 Each Operator package in a catalog requires exactly one `olm.package` blob, at least one `olm.channel` blob, and one or more `olm.bundle` blobs.
 
-> [!NOTE]
-> All `olm.*` schemas are reserved for OLM-defined schemas. Custom schemas must use a unique prefix, such as a domain that you own.
+<div class="note">
+
+All `olm.*` schemas are reserved for OLM-defined schemas. Custom schemas must use a unique prefix, such as a domain that you own.
+
+</div>
 
 ## olm.package schema
 
 The `olm.package` schema defines package-level metadata for an Operator. This includes its name, description, default channel, and icon.
-
-<div class="example">
-
-<div class="title">
-
-`olm.package` schema
-
-</div>
 
 ``` go
 #Package: {
@@ -163,8 +152,6 @@ The `olm.package` schema defines package-level metadata for an Operator. This in
 }
 ```
 
-</div>
-
 ## olm.channel schema
 
 The `olm.channel` schema defines a channel within a package, the bundle entries that are members of the channel, and the upgrade paths for those bundles.
@@ -172,14 +159,6 @@ The `olm.channel` schema defines a channel within a package, the bundle entries 
 If a bundle entry represents an edge in multiple `olm.channel` blobs, it can only appear once per channel.
 
 It is valid for an entry’s `replaces` value to reference another bundle name that cannot be found in this catalog or another catalog. However, all other channel invariants must hold true, such as a channel not having multiple heads.
-
-<div class="example">
-
-<div class="title">
-
-`olm.channel` schema
-
-</div>
 
 ``` go
 #Channel: {
@@ -209,22 +188,15 @@ It is valid for an entry’s `replaces` value to reference another bundle name t
 }
 ```
 
-</div>
+<div class="warning">
 
-> [!WARNING]
-> When using the `skipRange` field, the skipped Operator versions are pruned from the update graph and are longer installable by users with the `spec.startingCSV` property of `Subscription` objects.
->
-> You can update an Operator incrementally while keeping previously installed versions available to users for future installation by using both the `skipRange` and `replaces` field. Ensure that the `replaces` field points to the immediate previous version of the Operator version in question.
+When using the `skipRange` field, the skipped Operator versions are pruned from the update graph and are longer installable by users with the `spec.startingCSV` property of `Subscription` objects.
+
+You can update an Operator incrementally while keeping previously installed versions available to users for future installation by using both the `skipRange` and `replaces` field. Ensure that the `replaces` field points to the immediate previous version of the Operator version in question.
+
+</div>
 
 ## olm.bundle schema
-
-<div class="example">
-
-<div class="title">
-
-`olm.bundle` schema
-
-</div>
 
 ``` go
 #Bundle: {
@@ -254,8 +226,6 @@ It is valid for an entry’s `replaces` value to reference another bundle name t
 }
 ```
 
-</div>
-
 ## olm.deprecations schema
 
 The optional `olm.deprecations` schema defines deprecation information for packages, bundles, and channels in a catalog. Operator authors can use this schema to provide relevant messages about their Operators, such as support status and recommended upgrade paths, to users running those Operators from a catalog.
@@ -273,14 +243,6 @@ An `olm.deprecations` schema entry contains one or more of the following `refere
 Deprecation `reference` types
 
 Each `reference` type has their own requirements, as detailed in the following example.
-
-<div class="example">
-
-<div class="title">
-
-Example `olm.deprecations` schema with each `reference` type
-
-</div>
 
 ``` yaml
 schema: olm.deprecations
@@ -315,18 +277,17 @@ entries:
 
 - The `name` field for the `olm.bundle` schema is required.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The deprecation feature does not consider overlapping deprecation, for example package versus channel versus bundle.
+The deprecation feature does not consider overlapping deprecation, for example package versus channel versus bundle.
+
+</div>
 
 Operator authors can save `olm.deprecations` schema entries as a `deprecations.yaml` file in the same directory as the package’s `index.yaml` file:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example directory structure for a catalog with deprecations
+**Example directory structure for a catalog with deprecations**
 
 </div>
 
@@ -337,19 +298,7 @@ my-catalog
     └── deprecations.yaml
 ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Updating or filtering a file-based catalog image](../../operators/admin/olm-managing-custom-catalogs.xml#olm-filtering-fbc_olm-managing-custom-catalogs)
-
-</div>
 
 # Properties
 
@@ -361,14 +310,6 @@ OLM defines a handful of property types, again using the reserved `olm.*` prefix
 
 The `olm.package` property defines the package name and version. This is a required property on bundles, and there must be exactly one of these properties. The `packageName` field must match the bundle’s first-class `package` field, and the `version` field must be a valid semantic version.
 
-<div class="example">
-
-<div class="title">
-
-`olm.package` property
-
-</div>
-
 ``` go
 #PropertyPackage: {
   type: "olm.package"
@@ -379,19 +320,9 @@ The `olm.package` property defines the package name and version. This is a requi
 }
 ```
 
-</div>
-
 ## olm.gvk property
 
 The `olm.gvk` property defines the group/version/kind (GVK) of a Kubernetes API that is provided by this bundle. This property is used by OLM to resolve a bundle with this property as a dependency for other bundles that list the same GVK as a required API. The GVK must adhere to Kubernetes GVK validations.
-
-<div class="example">
-
-<div class="title">
-
-`olm.gvk` property
-
-</div>
 
 ``` go
 #PropertyGVK: {
@@ -404,19 +335,9 @@ The `olm.gvk` property defines the group/version/kind (GVK) of a Kubernetes API 
 }
 ```
 
-</div>
-
 ## olm.package.required
 
 The `olm.package.required` property defines the package name and version range of another package that this bundle requires. For every required package property a bundle lists, OLM ensures there is an Operator installed on the cluster for the listed package and in the required version range. The `versionRange` field must be a valid semantic version (semver) range.
-
-<div class="example">
-
-<div class="title">
-
-`olm.package.required` property
-
-</div>
 
 ``` go
 #PropertyPackageRequired: {
@@ -428,19 +349,9 @@ The `olm.package.required` property defines the package name and version range o
 }
 ```
 
-</div>
-
 ## olm.gvk.required
 
 The `olm.gvk.required` property defines the group/version/kind (GVK) of a Kubernetes API that this bundle requires. For every required GVK property a bundle lists, OLM ensures there is an Operator installed on the cluster that provides it. The GVK must adhere to Kubernetes GVK validations.
-
-<div class="example">
-
-<div class="title">
-
-`olm.gvk.required` property
-
-</div>
 
 ``` terminal
 #PropertyGVKRequired: {
@@ -453,8 +364,6 @@ The `olm.gvk.required` property defines the group/version/kind (GVK) of a Kubern
 }
 ```
 
-</div>
-
 # Example catalog
 
 With file-based catalogs, catalog maintainers can focus on Operator curation and compatibility. Because Operator authors have already produced Operator-specific catalogs for their Operators, catalog maintainers can build their catalog by rendering each Operator catalog into a subdirectory of the catalog’s root directory.
@@ -463,11 +372,9 @@ There are many possible ways to build a file-based catalog; the following steps 
 
 1.  Maintain a single configuration file for the catalog, containing image references for each Operator in the catalog:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example catalog configuration file
+    **Example catalog configuration file**
 
     </div>
 
@@ -482,15 +389,11 @@ There are many possible ways to build a file-based catalog; the following steps 
       image: quay.io/prometheus-operator/index@sha256:e258d248fda94c63753607f7c4494ee0fcbe92f1a76bfdac795c9d84101eb317
     ```
 
-    </div>
-
 2.  Run a script that parses the configuration file and creates a new catalog from its references:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example script
+    **Example script**
 
     </div>
 
@@ -508,8 +411,6 @@ There are many possible ways to build a file-based catalog; the following steps 
     docker build -t "$indexImage" -f "$name.Dockerfile" .
     docker push "$indexImage"
     ```
-
-    </div>
 
 # Guidelines
 

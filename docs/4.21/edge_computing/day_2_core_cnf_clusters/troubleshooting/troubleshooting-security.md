@@ -6,14 +6,6 @@ Determine which identity providers are in your cluster. For more information abo
 
 After you know which providers are configured, you can inspect the `openshift-authentication` namespace to determine if there are potential issues.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Check the events in the `openshift-authentication` namespace by running the following command:
 
     ``` terminal
@@ -32,16 +24,4 @@ Procedure
     $ oc logs -n openshift-authentication <pod_name>
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Supported identity providers](../../../authentication/understanding-identity-provider.xml#supported-identity-providers)
-
-</div>

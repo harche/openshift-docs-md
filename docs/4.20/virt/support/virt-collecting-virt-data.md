@@ -13,29 +13,11 @@ The Alertmanager service handles alerts received from Prometheus. The Alertmanag
 
 Collecting data about your environment minimizes the time required to analyze and determine the root cause.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - [Set the retention time for Prometheus metrics data](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.20/html/configuring_core_platform_monitoring/storing-and-recording-data#modifying-retention-time-and-size-for-prometheus-metrics-data_storing-and-recording-data) to a minimum of seven days.
 
 - [Configure the Alertmanager to capture relevant alerts and to send alert notifications to a dedicated mailbox](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.20/html/configuring_core_platform_monitoring/configuring-alerts-and-notifications) so that they can be viewed and persisted outside the cluster.
 
 - Record the exact number of affected nodes and virtual machines.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  [Collect must-gather data for the cluster](../../support/gathering-cluster-data.xml#support_gathering_data_gathering-cluster-data).
 
@@ -45,19 +27,9 @@ Procedure
 
 4.  [Collect Prometheus metrics for the cluster](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.20/html/accessing_metrics/accessing-metrics-as-an-administrator#querying-metrics-for-all-projects-with-mon-dashboard_accessing-metrics-as-an-administrator).
 
-</div>
-
 # Collecting data about virtual machines
 
 Collecting data about malfunctioning virtual machines (VMs) minimizes the time required to analyze and determine the root cause.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Linux VMs: [Install the latest QEMU guest agent](../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent-on-linux-vm_virt-installing-qemu-guest-agent).
 
@@ -71,16 +43,6 @@ Prerequisites
 
   - If Remote Desktop Protocol (RDP) is enabled, connect by using the [desktop viewer](../../virt/managing_vms/virt-accessing-vm-consoles.xml#desktop-viewer_virt-accessing-vm-consoles) to determine whether there is a problem with the connection software.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  [Collect must-gather data for the VMs](../../virt/support/virt-collecting-virt-data.xml#virt-must-gather-options_virt-collecting-virt-data) using the `/usr/bin/gather` script.
 
 2.  Collect screenshots of VMs that have crashed *before* you restart them.
@@ -88,8 +50,6 @@ Procedure
 3.  [Collect memory dumps from VMs](../../virt/support/virt-collecting-virt-data.xml#virt-generating-a-vm-memory-dump_virt-collecting-virt-data) *before* remediation attempts.
 
 4.  Record factors that the malfunctioning VMs have in common. For example, the VMs have the same host or network.
-
-</div>
 
 # Using the must-gather tool for OpenShift Virtualization
 
@@ -107,25 +67,9 @@ The default data collection includes information about the following resources:
 
 You can add optional environment details and scripts to the `must-gather` command to collect additional information. Use these environment variables and scripts to collect data about specific VMs, images, or instance types.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Run the `must-gather` command to collect data about OpenShift Virtualization:
 
@@ -135,12 +79,15 @@ Procedure
     -- /usr/bin/gather
   ```
 
-  > [!NOTE]
-  > You can also collect `must-gather` logs for all Operators and products on your cluster by running following command:
-  >
-  > ``` terminal
-  > $ oc adm must-gather --all-images
-  > ```
+  <div class="note">
+
+  You can also collect `must-gather` logs for all Operators and products on your cluster by running following command:
+
+  ``` terminal
+  $ oc adm must-gather --all-images
+  ```
+
+  </div>
 
   1.  Run the following command to modify the number of processes running in parallel when collecting `must-gather` data:
 
@@ -178,8 +125,6 @@ Procedure
        /usr/bin/gather --instancetypes
       ```
 
-</div>
-
 ## must-gather tool options
 
 To troubleshoot complex issues and collect specific data beyond the default logs, add optional parameters to the `must-gather` command when gathering information from your cluster.
@@ -207,8 +152,11 @@ Collect details about a particular virtual machine. To use this option, you must
 `PROS=<number_of_processes>`
 Modify the maximum number of parallel processes that the `must-gather` tool uses. The default value is `5`.
 
-> [!IMPORTANT]
-> Using too many parallel processes can cause performance issues. Increasing the maximum number of parallel processes is not recommended.
+<div class="important">
+
+Using too many parallel processes can cause performance issues. Increasing the maximum number of parallel processes is not recommended.
+
+</div>
 
 ### Scripts
 
@@ -230,11 +178,9 @@ Collect instance types information. This information is not currently collected 
 
 You can run a script by itself or with one or more compatible environment variables.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-must-gather syntax with optional parameters
+**must-gather syntax with optional parameters**
 
 </div>
 
@@ -244,8 +190,6 @@ $ oc adm must-gather \
   -- <environment_variable_1> <environment_variable_2> <script_name>
 ```
 
-</div>
-
 <table>
 <caption>Compatible parameters</caption>
 <colgroup>
@@ -253,40 +197,34 @@ $ oc adm must-gather \
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Script</th>
 <th style="text-align: left;">Compatible environment variable</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>/usr/bin/gather</code></p></td>
 <td style="text-align: left;"><p>* <code>PROS=&lt;number_of_processes&gt;</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>/usr/bin/gather --vms_details</code></p></td>
 <td style="text-align: left;"><p>* For a namespace: <code>NS=&lt;namespace_name&gt;</code></p>
 <p>* For a VM: <code>VM=&lt;vm_name&gt; NS=&lt;namespace_name&gt;</code></p>
 <p>* <code>PROS=&lt;number_of_processes&gt;</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>/usr/bin/gather --images</code></p></td>
 <td style="text-align: left;"><p>* <code>PROS=&lt;number_of_processes&gt;</code></p></td>
 </tr>
 </tbody>
 </table>
 
+Compatible parameters
+
 # Generating a VM memory dump
 
 When a virtual machine (VM) terminates unexpectedly, you can use the `virtctl memory-dump` to generate a memory dump command to output a VM memory dump and save it on a persistent volume claim (PVC). Afterwards, you can analyze the memory dump to diagnose and troubleshoot issues on the VM.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - The hot plug feature gate is enabled in the `HyperConverged` custom resource. To do so, run the following command:
 
@@ -303,16 +241,6 @@ Prerequisites
   - The PVC must be large enough to contain the memory dump.
 
     The formula for calculating the PVC size is `(VMMemorySize + 100Mi) * FileSystemOverhead`, where `100Mi` is the memory dump overhead, and `FileSystemOverhead` is defined in the `HCO` object.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a memory dump of the required VM:
 
@@ -343,8 +271,6 @@ Procedure
     ``` terminal
     $ virtctl memory-dump remove <vm_name>
     ```
-
-</div>
 
 # Additional resources
 

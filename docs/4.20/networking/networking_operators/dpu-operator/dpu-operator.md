@@ -1,9 +1,12 @@
 As a cluster administrator, you can add the DPU Operator to your cluster to manage DPU devices and network attachments.
 
-> [!IMPORTANT]
-> The DPU Operator is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+The DPU Operator is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 # Orchestrating DPUs with the DPU Operator
 
@@ -17,16 +20,19 @@ The DPU Operator is responsible for managing the DPU devices and network attachm
 
 The following table describes the currently supported DPU devices.
 
-| Vendor | Device | Firmware | Description |
-|----|----|----|----|
-| Intel | IPU E2100 | Version 2.0.0.11126 or later | A DPU designed to offload networking, storage, and security tasks from host CPUs in data centers, improving efficiency and performance. For instructions on deploying a full end-to-end solution, see the Red Hat Knowledgebase solution [Accelerating Confidential AI on OpenShift with the Intel E2100 IPU, DPU Operator, and F5 NGINX](https://access.redhat.com/articles/7120276). |
-| Senao | SX904 | 35.23.47.0008 or later | A SmartNIC designed to offload compute and network services from the host CPUs in data centers and edge computing environments, improving efficiency and isolation of workloads. |
-| Marvell | Marvell Octeon 10 CN106 | SDK12.25.01 or later | A DPU designed to offload workloads that require high speed data processing from host CPUs in data centers and edge computing environments, improving performance and energy efficiency |
+| Vendor  | Device                  | Firmware                     | Description                                                                                                                                                                                                                                                                                                                                                                            |
+|---------|-------------------------|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Intel   | IPU E2100               | Version 2.0.0.11126 or later | A DPU designed to offload networking, storage, and security tasks from host CPUs in data centers, improving efficiency and performance. For instructions on deploying a full end-to-end solution, see the Red Hat Knowledgebase solution [Accelerating Confidential AI on OpenShift with the Intel E2100 IPU, DPU Operator, and F5 NGINX](https://access.redhat.com/articles/7120276). |
+| Senao   | SX904                   | 35.23.47.0008 or later       | A SmartNIC designed to offload compute and network services from the host CPUs in data centers and edge computing environments, improving efficiency and isolation of workloads.                                                                                                                                                                                                       |
+| Marvell | Marvell Octeon 10 CN106 | SDK12.25.01 or later         | A DPU designed to offload workloads that require high speed data processing from host CPUs in data centers and edge computing environments, improving performance and energy efficiency                                                                                                                                                                                                |
 
 Supported devices
 
-> [!NOTE]
-> The NVIDIA BlueField-3 is not supported.
+<div class="note">
+
+The NVIDIA BlueField-3 is not supported.
+
+</div>
 
 # Installing the DPU Operator
 
@@ -34,8 +40,11 @@ You can install the Data Processing Unit (DPU) Operator on both host and DPU clu
 
 Cluster administrators can install the DPU Operator on the host cluster and all DPU clusters using the OpenShift Container Platform CLI or the web console. The DPU Operator manages the lifecycle, DPU devices, and network attachments for all supported DPUs."
 
-> [!NOTE]
-> You need to install the DPU Operator on the host cluster and each of the DPU clusters.
+<div class="note">
+
+You need to install the DPU Operator on the host cluster and each of the DPU clusters.
+
+</div>
 
 ## Installing the DPU Operator by using the CLI
 
@@ -43,30 +52,15 @@ You can install the DPU Operator by using the CLI. You can use the DPU Operator 
 
 As a cluster administrator, you can install the DPU Operator by using the CLI.
 
-> [!NOTE]
-> The CLI must be used to install the DPU Operator on the DPU cluster.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The CLI must be used to install the DPU Operator on the DPU cluster.
 
 </div>
 
 - Install the OpenShift CLI (`oc`).
 
 - An account with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `openshift-dpu-operator` namespace by entering the following command:
 
@@ -113,15 +107,7 @@ Procedure
     EOF
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  To verify that the Operator is installed, enter the following command and then check that output shows `Succeeded` for the Operator:
 
@@ -142,11 +128,9 @@ Verification
     $ oc get pods -n openshift-dpu-operator
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -155,37 +139,15 @@ Verification
     dpu-operator-controller-manager-6b7bbb5db8-7lvkj   2/2     Running   0          2m9s
     ```
 
-    </div>
-
-</div>
-
 ## Installing the DPU Operator using the web console
 
 You can install the DPU Operator by using the web console. You can use the DPU Operator to simplify the installation process when setting up DPU device management on host clusters.
 
 As a cluster administrator, you can install the DPU Operator by using the web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - An account with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform web console, click **Ecosystem** → **Software Catalog**.
 
@@ -195,32 +157,17 @@ Procedure
 
     1.  Click **Install**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Navigate to the **Ecosystem** → **Installed Operators** page.
 
 2.  Ensure that the **openshift-dpu-operator** project lists **DPU Operator** with a **Status** of **InstallSucceeded**.
 
-    > [!NOTE]
-    > During installation an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
+    <div class="note">
 
-</div>
+    During installation an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
 
-<div>
-
-<div class="title">
-
-Troubleshooting
-
-</div>
+    </div>
 
 - Inspect the **Operator Subscriptions** and **Install Plans** tabs for any failure or errors under **Status**.
 
@@ -232,10 +179,11 @@ Troubleshooting
   $ oc annotate ns/openshift-dpu-operator workload.openshift.io/allowed=management
   ```
 
-  > [!NOTE]
-  > For single-node OpenShift clusters, the annotation `workload.openshift.io/allowed=management` is required for the namespace.
+  <div class="note">
 
-</div>
+  For single-node OpenShift clusters, the annotation `workload.openshift.io/allowed=management` is required for the namespace.
+
+  </div>
 
 # Configuring the DPU Operator
 
@@ -244,14 +192,6 @@ You can configure the DPU Operator after installation to enable management of DP
 You can configure the DPU Operator to manage the DPU devices and network attachments in your cluster.
 
 To configure the DPU Operator follow these steps:
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `DpuOperatorConfig` Custom Resource (CR) based on your deployment mode:
 
@@ -293,14 +233,15 @@ Procedure
     `node_name`
     Refers to the name of your node, such as `worker-1`.
 
-    > [!NOTE]
-    > There are two ways to deploy clusters that are compatible with DPUs:
-    >
-    > - Dual cluster deployment: This consists of OpenShift Container Platform running on the hosts and Red Hat build of MicroShift (MicroShift) running on the DPU. In this mode, the Red Hat build of MicroShift (MicroShift) instance also needs to deploy the DPU Operator, and you must set the label `dpu=true` on the node.
-    >
-    > - Single cluster deployment: This consists of only OpenShift Container Platform running on hosts, where the DPUs are integrated into the main cluster. DPUs just require the label `dpu=true` for both the host nodes with DPUs installed and the DPU nodes themselves. The DPU Operator automatically detects the role of the node whether it is running as a DPU or a host with an attached DPU.
+    <div class="note">
 
-</div>
+    There are two ways to deploy clusters that are compatible with DPUs:
+
+    - Dual cluster deployment: This consists of OpenShift Container Platform running on the hosts and Red Hat build of MicroShift (MicroShift) running on the DPU. In this mode, the Red Hat build of MicroShift (MicroShift) instance also needs to deploy the DPU Operator, and you must set the label `dpu=true` on the node.
+
+    - Single cluster deployment: This consists of only OpenShift Container Platform running on hosts, where the DPUs are integrated into the main cluster. DPUs just require the label `dpu=true` for both the host nodes with DPUs installed and the DPU nodes themselves. The DPU Operator automatically detects the role of the node whether it is running as a DPU or a host with an attached DPU.
+
+    </div>
 
 # Running a workload on the host with DPU
 
@@ -310,29 +251,11 @@ Running workloads on a DPU enables offloading specialized infrastructure tasks s
 
 Follow these steps to deploy a workload on the host with DPU. This is the standard deployment model where the application runs on the host’s x86 CPU but utilizes the DPU for network acceleration and offload.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The OpenShift CLI (`oc`) is installed.
 
 - An account with `cluster-admin` privileges is available.
 
 - The DPU Operator is installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a sample workload designed to run on the host-side worker node by using the following YAML. Save the file as `workload-host.yaml`:
 
@@ -367,16 +290,17 @@ Procedure
 
     `spec.nodeSelector`: The node selector schedules the pod on the node with the DPU resource. You can use any standard Kubernetes selector for this, such as `kubernetes.io/hostname`, to target a specific node as shown in the example YAML.
 
-    > [!NOTE]
-    > For flexible scheduling, the DPU Operator creates the label dpu.config.openshift.io/dpuside: "dpu-host". This label enables the default scheduler to place the workload on any host with a DPU. The workload automatically joins that DPU secondary network. When the label on the node is `dpu.config.openshift.io/dpuside: "dpu"`, this signifies that the node is the DPU itself. The DPU Operator creates and manages the `dpu.config.openshift.io/dpuside` label .
+    <div class="note">
+
+    For flexible scheduling, the DPU Operator creates the label dpu.config.openshift.io/dpuside: "dpu-host". This label enables the default scheduler to place the workload on any host with a DPU. The workload automatically joins that DPU secondary network. When the label on the node is `dpu.config.openshift.io/dpuside: "dpu"`, this signifies that the node is the DPU itself. The DPU Operator creates and manages the `dpu.config.openshift.io/dpuside` label .
+
+    </div>
 
 2.  Create the workload by running the following command:
 
     ``` terminal
     $ oc apply -f workload-host.yaml
     ```
-
-</div>
 
 # Running a workload on the DPU
 
@@ -386,29 +310,11 @@ The DPU offloads network workloads, such as security functions or virtualized ap
 
 Follow this procedure to deploy a simple pod directly onto the DPU.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - An account with `cluster-admin` privileges.
 
 - Install the DPU Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Save the following YAML file example as `dpu-pod.yaml`. This is an example of a simple pod that will be scheduled directly onto a DPU node by the Kubernetes default scheduler.
 
@@ -463,8 +369,6 @@ Procedure
 
     Ensure the pod’s status is `Running`.
 
-</div>
-
 # Monitoring the status of DPU
 
 You can monitor the DPU infrastructure status to check the current state and health of your DPU devices across the cluster.
@@ -473,29 +377,11 @@ You can monitor the DPU status to see the current state of the DPU infrastructur
 
 The `oc get dpu` command shows the current state of the DPU infrastructure. Follow this procedure to monitor the status of various cards.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The OpenShift CLI (`oc`) is installed.
 
 - An account with `cluster-admin` privileges is available.
 
 - The DPU Operator is installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the following command to check the overall health of your nodes:
 
@@ -546,10 +432,11 @@ Procedure
 
     - `STATUS`:Indicates whether the DPU is functioning correctly (`True`) or has issues (`False`).
 
-      > [!NOTE]
-      > Run `oc get dpu -o yaml` to get more details about the status.
+      <div class="note">
 
-</div>
+      Run `oc get dpu -o yaml` to get more details about the status.
+
+      </div>
 
 # Uninstalling the DPU Operator
 
@@ -557,27 +444,9 @@ You can uninstall the DPU Operator from your cluster when you no longer need DPU
 
 To uninstall the DPU Operator, you must first delete any running DPU workloads. Follow this procedure to uninstall the DPU Operator.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
 
 - You have the DPU Operator installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Delete the `DpuOperatorConfig` CR that was created by running the following command
 
@@ -605,11 +474,9 @@ Procedure
         $ oc get csv -n openshift-dpu-operator
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -617,8 +484,6 @@ Procedure
         NAME                                DISPLAY        VERSION               REPLACES   PHASE
         dpu-operator.v4.20.0-202503130333   DPU Operator   4.20.0-202503130333              Failed
         ```
-
-        </div>
 
     2.  Delete the DPU Operator by running the following command:
 
@@ -632,15 +497,7 @@ Procedure
     $ oc delete namespace openshift-dpu-operator
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the DPU Operator is uninstalled by running the following command. An example of successful command output is `No resources found in openshift-dpu-operator namespace`.
 
@@ -648,16 +505,4 @@ Verification
     $ oc get csv -n openshift-dpu-operator
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Deleting Operators from a cluster](../../../operators/admin/olm-deleting-operators-from-cluster.xml#olm-deleting-operators-from-a-cluster)
-
-</div>

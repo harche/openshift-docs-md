@@ -24,14 +24,9 @@ You can install the multicluster engine Operator and deploy a hub cluster with t
 
 You can mirror the required OpenShift Container Platform container images, the multicluster engine Operator, and the Local Storage Operator (LSO) into your local mirror registry in a disconnected environment. Ensure that you note the local DNS hostname and port of your mirror registry.
 
-> [!NOTE]
-> To mirror your OpenShift Container Platform image repository to your mirror registry, you can use either the `oc adm release image` or `oc mirror` command. In this procedure, the `oc mirror` command is used as an example.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+To mirror your OpenShift Container Platform image repository to your mirror registry, you can use either the `oc adm release image` or `oc mirror` command. In this procedure, the `oc mirror` command is used as an example.
 
 </div>
 
@@ -39,11 +34,9 @@ Procedure
 
 2.  To mirror an OpenShift Container Platform image repository, the multicluster engine, and the LSO, create a `ImageSetConfiguration.yaml` file with the following settings:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `ImageSetConfiguration.yaml`
+    **Example `ImageSetConfiguration.yaml`**
 
     </div>
 
@@ -70,8 +63,6 @@ Procedure
               - name: local-storage-operator
     ```
 
-    </div>
-
     - Specify the maximum size, in GiB, of each file within the image set.
 
     - Set the back-end location to receive the image set metadata. This location can be a registry or local directory. It is required to specify `storageConfig` values.
@@ -88,8 +79,11 @@ Procedure
 
     - The LSO packages and channels.
 
-      > [!NOTE]
-      > This file is required by the `oc mirror` command when mirroring content.
+      <div class="note">
+
+      This file is required by the `oc mirror` command when mirroring content.
+
+      </div>
 
 3.  To mirror a specific OpenShift Container Platform image repository, the multicluster engine, and the LSO, run the following command:
 
@@ -99,11 +93,9 @@ Procedure
 
 4.  Update the registry and certificate in the `install-config.yaml` file:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `imageContentSources.yaml`
+    **Example `imageContentSources.yaml`**
 
     </div>
 
@@ -129,15 +121,11 @@ Procedure
             - "<your-local-registry-dns-name>:<your-local-registry-port>/redhat"
     ```
 
-    </div>
-
     Additionally, ensure your certificate is present in the `additionalTrustBundle` field of the `install-config.yaml`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `install-config.yaml`
+    **Example `install-config.yaml`**
 
     </div>
 
@@ -148,10 +136,11 @@ Procedure
       -----END CERTIFICATE-------
     ```
 
-    </div>
+    <div class="important">
 
-    > [!IMPORTANT]
-    > The `oc mirror` command creates a folder called `oc-mirror-workspace` with several outputs. This includes the `imageContentSourcePolicy.yaml` file that identifies all the mirrors you need for OpenShift Container Platform and your selected Operators.
+    The `oc mirror` command creates a folder called `oc-mirror-workspace` with several outputs. This includes the `imageContentSourcePolicy.yaml` file that identifies all the mirrors you need for OpenShift Container Platform and your selected Operators.
+
+    </div>
 
 5.  Generate the cluster manifests by running the following command:
 
@@ -161,32 +150,23 @@ Procedure
 
     This command updates the cluster manifests folder to include a `mirror` folder that contains your mirror configuration.
 
-</div>
-
 # Preparing an Agent-based cluster deployment for the multicluster engine for Kubernetes Operator while connected
 
 Create the required manifests for the multicluster engine Operator, the Local Storage Operator (LSO), and to deploy an agent-based OpenShift Container Platform cluster as a hub cluster.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a sub-folder named `openshift` in the `<assets_directory>` folder. This sub-folder is used to store the extra manifests that will be applied during the installation to further customize the deployed cluster. The `<assets_directory>` folder contains all the assets including the `install-config.yaml` and `agent-config.yaml` files.
 
-    > [!NOTE]
-    > The installer does not validate extra manifests.
+    <div class="note">
+
+    The installer does not validate extra manifests.
+
+    </div>
 
 2.  For the multicluster engine, create the following manifests and save them in the `<assets_directory>/openshift` folder:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `mce_namespace.yaml`
+    **Example `mce_namespace.yaml`**
 
     </div>
 
@@ -199,13 +179,9 @@ Procedure
         name: multicluster-engine
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example `mce_operatorgroup.yaml`
+    **Example `mce_operatorgroup.yaml`**
 
     </div>
 
@@ -220,13 +196,9 @@ Procedure
         - multicluster-engine
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example `mce_subscription.yaml`
+    **Example `mce_subscription.yaml`**
 
     </div>
 
@@ -243,18 +215,17 @@ Procedure
         sourceNamespace: openshift-marketplace
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > You can install a distributed unit (DU) at scale with the Red Hat Advanced Cluster Management (RHACM) using the assisted installer (AI). These distributed units must be enabled in the hub cluster. The AI service requires persistent volumes (PVs), which are manually created.
+    You can install a distributed unit (DU) at scale with the Red Hat Advanced Cluster Management (RHACM) using the assisted installer (AI). These distributed units must be enabled in the hub cluster. The AI service requires persistent volumes (PVs), which are manually created.
+
+    </div>
 
 3.  For the AI service, create the following manifests and save them in the `<assets_directory>/openshift` folder:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `lso_namespace.yaml`
+    **Example `lso_namespace.yaml`**
 
     </div>
 
@@ -267,13 +238,9 @@ Procedure
         name: openshift-local-storage
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example `lso_operatorgroup.yaml`
+    **Example `lso_operatorgroup.yaml`**
 
     </div>
 
@@ -288,13 +255,9 @@ Procedure
           - openshift-local-storage
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example `lso_subscription.yaml`
+    **Example `lso_subscription.yaml`**
 
     </div>
 
@@ -311,33 +274,30 @@ Procedure
         sourceNamespace: openshift-marketplace
     ```
 
+    <div class="note">
+
+    After creating all the manifests, your filesystem must display as follows:
+
+    <div class="formalpara-title">
+
+    **Example Filesystem**
+
     </div>
 
-    > [!NOTE]
-    > After creating all the manifests, your filesystem must display as follows:
-    >
-    > <div class="formalpara">
-    >
-    > <div class="title">
-    >
-    > Example Filesystem
-    >
-    > </div>
-    >
-    > ``` terminal
-    > <assets_directory>
-    >     ├─ install-config.yaml
-    >     ├─ agent-config.yaml
-    >     └─ /openshift
-    >         ├─ mce_namespace.yaml
-    >         ├─ mce_operatorgroup.yaml
-    >         ├─ mce_subscription.yaml
-    >         ├─ lso_namespace.yaml
-    >         ├─ lso_operatorgroup.yaml
-    >         └─ lso_subscription.yaml
-    > ```
-    >
-    > </div>
+    ``` terminal
+    <assets_directory>
+        ├─ install-config.yaml
+        ├─ agent-config.yaml
+        └─ /openshift
+            ├─ mce_namespace.yaml
+            ├─ mce_operatorgroup.yaml
+            ├─ mce_subscription.yaml
+            ├─ lso_namespace.yaml
+            ├─ lso_operatorgroup.yaml
+            └─ lso_subscription.yaml
+    ```
+
+    </div>
 
 4.  Create the agent ISO image by running the following command:
 
@@ -353,8 +313,11 @@ Procedure
     $ openshift-install agent wait-for install-complete --dir <assets_directory>
     ```
 
-    > [!NOTE]
-    > To configure a fully functional hub cluster, you must create the following manifests and manually apply them by running the command `$ oc apply -f <manifest-name>`. The order of the manifest creation is important and where required, the waiting condition is displayed.
+    <div class="note">
+
+    To configure a fully functional hub cluster, you must create the following manifests and manually apply them by running the command `$ oc apply -f <manifest-name>`. The order of the manifest creation is important and where required, the waiting condition is displayed.
+
+    </div>
 
 7.  For the PVs that are required by the AI service, create the following manifests:
 
@@ -383,21 +346,15 @@ Procedure
 
     <div class="note">
 
-    <div class="title">
-
-    </div>
-
         The `devicePath` is an example and may vary depending on the actual hardware configuration used.
 
     </div>
 
 9.  Create a manifest for a multicluster engine instance.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `MultiClusterEngine.yaml`
+    **Example `MultiClusterEngine.yaml`**
 
     </div>
 
@@ -409,15 +366,11 @@ Procedure
       spec: {}
     ```
 
-    </div>
-
 10. Create a manifest to enable the AI service.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `agentserviceconfig.yaml`
+    **Example `agentserviceconfig.yaml`**
 
     </div>
 
@@ -444,15 +397,11 @@ Procedure
           storage: 10Gi
     ```
 
-    </div>
-
 11. Create a manifest to deploy subsequently spoke clusters.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `clusterimageset.yaml`
+    **Example `clusterimageset.yaml`**
 
     </div>
 
@@ -465,15 +414,11 @@ Procedure
         releaseImage: quay.io/openshift-release-dev/ocp-release:4.17.0-x86_64
     ```
 
-    </div>
-
 12. Create a manifest to import the agent installed cluster (that hosts the multicluster engine and the Assisted Service) as the hub cluster.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `autoimport.yaml`
+    **Example `autoimport.yaml`**
 
     </div>
 
@@ -490,23 +435,11 @@ Procedure
        hubAcceptsClient: true
     ```
 
-    </div>
-
 13. Wait for the managed cluster to be created.
 
     ``` terminal
     $ oc wait -n multicluster-engine managedclusters local-cluster --for condition=ManagedClusterJoined=True --timeout 10m
     ```
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - To confirm that the managed cluster installation is successful, run the following command:
 
@@ -516,16 +449,6 @@ Verification
   local-cluster   true           https://<your cluster url>:6443   True     True       77m
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [The Local Storage Operator](../../storage/persistent_storage_local/persistent-storage-local.xml#persistent-storage-using-local-volume)
-
-</div>

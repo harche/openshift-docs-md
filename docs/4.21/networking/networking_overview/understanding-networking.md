@@ -65,14 +65,4 @@ An `AdminNetworkPolicy` object is a more powerful, cluster-scoped version of a `
 
 Administrative network policies have a higher priority than standard `NetworkPolicy` objects. This allows administrators to enforce cluster-wide security rules that cannot be overridden by users in their own projects. For example, an administrator could use an `AdminNetworkPolicy` to block all traffic between development and production namespaces or to enforce baseline security rules for the entire cluster.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [About network policy](../../networking/network_security/network_policy/about-network-policy.xml#about-network-policy)
-
-</div>

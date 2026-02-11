@@ -8,27 +8,9 @@ When a pod is created, a secondary network is attached to the pod. However, if a
 
 The pod must be in the same namespace as the secondary network.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in to the cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Add an annotation to the `Pod` object. Only one of the following annotation formats can be used:
 
@@ -125,35 +107,15 @@ Procedure
     `k8s.v1.cni.cncf.io/network-status`
     Specifies a JSON array of objects. Each object describes the status of a secondary network attached to the pod. The annotation value is stored as a plain text value.
 
-</div>
-
 ## Specifying pod-specific addressing and routing options
 
 To set static IP addresses, MAC addresses, and default routes for a pod in OpenShift Container Platform, you can configure pod-specific addressing and routing options using JSON-formatted annotations. With these annotations, you can customize network behavior for individual pods on secondary networks.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - The pod must be in the same namespace as the secondary network.
 
 - Install the OpenShift CLI (`oc`).
 
 - You must log in to the cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `Pod` resource definition. If you are editing an existing `Pod` resource, run the following command to edit its definition in the default editor. Replace `<name>` with the name of the `Pod` resource to edit.
 
@@ -208,8 +170,11 @@ Procedure
 
     The default route will cause any traffic that is not specified in other routes to be routed to the gateway.
 
-    > [!IMPORTANT]
-    > Setting the default route to an interface other than the default network interface for OpenShift Container Platform may cause traffic that is anticipated for pod-to-pod traffic to be routed over another interface.
+    <div class="important">
+
+    Setting the default route to an interface other than the default network interface for OpenShift Container Platform may cause traffic that is anticipated for pod-to-pod traffic to be routed over another interface.
+
+    </div>
 
     To verify the routing properties of a pod, the `oc` command may be used to execute the `ip` command within a pod.
 
@@ -217,8 +182,11 @@ Procedure
     $ oc exec -it <pod_name> -- ip route
     ```
 
-    > [!NOTE]
-    > You may also reference the pod’s `k8s.v1.cni.cncf.io/network-status` to see which secondary network has been assigned the default route, by the presence of the `default-route` key in the JSON-formatted list of objects.
+    <div class="note">
+
+    You may also reference the pod’s `k8s.v1.cni.cncf.io/network-status` to see which secondary network has been assigned the default route, by the presence of the `default-route` key in the JSON-formatted list of objects.
+
+    </div>
 
     To set a static IP address or MAC address for a pod you can use the JSON formatted annotations. This requires you create networks that specifically allow for this functionality. This can be specified in a rawCNIConfig for the CNO.
 
@@ -230,11 +198,9 @@ Procedure
 
     The following YAML describes the configuration parameters for the CNO:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Cluster Network Operator YAML configuration
+    **Cluster Network Operator YAML configuration**
 
     </div>
 
@@ -246,8 +212,6 @@ Procedure
     }'
     type: Raw
     ```
-
-    </div>
 
     where:
 
@@ -262,11 +226,9 @@ Procedure
 
     The following object describes the configuration parameters for utilizing static MAC address and IP address using the macvlan CNI plugin:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    macvlan CNI plugin JSON configuration object using static IP and MAC address
+    **macvlan CNI plugin JSON configuration object using static IP and MAC address**
 
     </div>
 
@@ -288,8 +250,6 @@ Procedure
         }]
     }
     ```
-
-    </div>
 
     where:
 
@@ -316,11 +276,9 @@ Procedure
     $ oc edit pod <name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    macvlan CNI plugin JSON configuration object using static IP and MAC address
+    **macvlan CNI plugin JSON configuration object using static IP and MAC address**
 
     </div>
 
@@ -339,8 +297,6 @@ Procedure
         ]'
     ```
 
-    </div>
-
     where:
 
     `name`
@@ -352,7 +308,8 @@ Procedure
     `mac`
     Specifies the MAC address.
 
-    > [!NOTE]
-    > Static IP addresses and MAC addresses do not have to be used at the same time. You can use them individually, or together.
+    <div class="note">
 
-</div>
+    Static IP addresses and MAC addresses do not have to be used at the same time. You can use them individually, or together.
+
+    </div>

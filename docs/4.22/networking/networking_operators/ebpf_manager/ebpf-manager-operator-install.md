@@ -1,35 +1,20 @@
 To manage eBPF programs across your cluster nodes, you can install the eBPF Manager Operator by using the OpenShift Container Platform CLI or the web console. This Operator provides a standardized way to deploy, monitor, and secure eBPF-based networking and observability tools.
 
-> [!IMPORTANT]
-> eBPF Manager Operator is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+eBPF Manager Operator is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 # Installing the eBPF Manager Operator using the CLI
 
 As a cluster administrator, you can install the Operator using the CLI.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have an account with administrator privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To create the `bpfman` namespace, enter the following command:
 
@@ -82,11 +67,9 @@ Procedure
     $ oc get ip -n bpfman
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -95,19 +78,15 @@ Procedure
     install-ppjxl   security-profiles-operator.v0.8.5   Automatic   true
     ```
 
-    </div>
-
 5.  To verify the version of the Operator, enter the following command:
 
     ``` terminal
     $ oc get csv -n bpfman
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -116,35 +95,13 @@ Procedure
     bpfman-operator.v0.5.0              eBPF Manager Operator              0.5.0     bpfman-operator.v0.4.2              Succeeded
     ```
 
-    </div>
-
-</div>
-
 # Installing the eBPF Manager Operator using the web console
 
 As a cluster administrator, you can install the eBPF Manager Operator using the web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have an account with administrator privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Install the eBPF Manager Operator:
 
@@ -164,8 +121,11 @@ Procedure
 
     2.  Ensure that **eBPF Manager Operator** is listed in the **openshift-ingress-node-firewall** project with a **Status** of **InstallSucceeded**.
 
-        > [!NOTE]
-        > During installation an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
+        <div class="note">
+
+        During installation an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
+
+        </div>
 
         If the Operator does not have a **Status** of **InstallSucceeded**, troubleshoot using the following steps:
 
@@ -173,18 +133,6 @@ Procedure
 
         - Navigate to the **Workloads** → **Pods** page and check the logs for pods in the `bpfman` project.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Deploying a containerized eBPF program](../../../networking/networking_operators/ebpf_manager/ebpf-manager-operator-deploy.xml#bpfman-operator-deploy)
 
 - [Configuring Ingress Node Firewall Operator to use the eBPF Manager Operator](../../../networking/networking_operators/ingress-node-firewall-operator.xml#bpfman-infw-configure_ingress-node-firewall-operator)
-
-</div>

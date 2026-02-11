@@ -4,27 +4,9 @@ You can configure timeout and image settings for the web terminal, either for yo
 
 You can change the default timeout period for the web terminal for your current session.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to an OpenShift Container Platform cluster that has the Web Terminal Operator installed.
 
 - You are logged into the web console.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Click the web terminal icon (![odc wto icon](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAbCAYAAABiFp9rAAAABHNCSVQICAgIfAhkiAAAAwVJREFUSIm9lstu5EQUhr9y+Va2Jz2dSYOQmC0wPADKSFzEJSIzIwGvgBDvgAQL3gMhHgExghWIPTPsIw3bCZBF0m23u90uu6pYJHRwuqcvgPLvyj7lz+eqIwaDgeMa5F0HBMDf1FD6Pr70kVICYK2lNS1t0/x3kOdJVKJQSUYYRkjp4XkeILDWYq1Ba82smjApS6y124Nipej1+qgkJQgDhPAQQizYWWtpsxtkN6aMhkOq6WRzUJpm3Ly1h1IJnrcccOm1RxCG+EGA7wfkozOKPF8PUknK7t4ApRKEt1mtCCEQQqCSFE9KrHWU46L7Q/88RHFMv3+LeAvIVWAUxfR394ii+NkglaQkWXaR8HPdv3fIm2+8joq7F1fBYqXo9XeBy5DPvxjHiizb6UAAxuMxDx7c4+7dfcIw3BwWK6I4mj+TaZp+CRdV1u/P++RvHR//jnOWjz78gKIY8+fJCcaYtSCAttHMZlXXI98/r5qrMsbw408/c3R0xKeffMzt2y9u5FUQBMQqmZ99OC9RKZe3lJSSd95+i1fv3OGrr7/h6dPjhfA653BucWQKIfA8D2vtetD+/mvcPzzk4fc/8MujR2RZxisvv4TvX9oX4zFPnvy2BOR1QdY5rFse995Oj2+/e8jjx79S1zXvH7zHwcG7RNFlos9Oh3z2+RdLbjvshadiMBg4IQS9/i7PPf/CyimwjZxzFPmIkz+Occ6dF4NzDtO2K4fitrLW0jTNPHfzrLZtQ6P1/wZqG90ZsHOQrmumk9WjflNZa6nrmvqihzogYwxlOWZWVUtLdVM552i0pshHncbuNMSsqshHQxqt/xXMOYcxhqLImU7Kzjuva2iZlAXD4Sl6S5hzjrZtyUdnjIanC3cXutQYM3d7Z+cmKkkW5t8yyHQ6YZznjIscaxd7cuk4sMZQFjmN1iRpShwrwihCXllOjGnRWlPPKiZlSTWdAsuj8MydwTnHrJpSzyqCICQIQ6SU8zlnrcNYQ6s1Wtdrw7x23XLOoXWN1vU605W6tgXyL7dibW7uBvzsAAAAAElFTkSuQmCC)).
 
@@ -44,33 +26,13 @@ Procedure
 
 4.  Click **Start** to begin a terminal instance using the specified timeout setting.
 
-</div>
-
 # Configuring the web terminal timeout for all users
 
 You can use the **Administrator** perspective of the web console to set the default web terminal timeout period for all users.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have cluster administrator permissions and are logged in to the web console.
 
 - You have installed the Web Terminal Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the **Administrator** perspective, navigate to **Administation** → **Cluster Settings**.
 
@@ -90,33 +52,13 @@ Procedure
 
 7.  Click **Save**.
 
-</div>
-
 # Configuring the web terminal image for a session
 
 You can change the default image for the web terminal for your current session.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to an OpenShift Container Platform cluster that has the Web Terminal Operator installed.
 
 - You are logged into the web console.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Click the web terminal icon (![odc wto icon](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAbCAYAAABiFp9rAAAABHNCSVQICAgIfAhkiAAAAwVJREFUSIm9lstu5EQUhr9y+Va2Jz2dSYOQmC0wPADKSFzEJSIzIwGvgBDvgAQL3gMhHgExghWIPTPsIw3bCZBF0m23u90uu6pYJHRwuqcvgPLvyj7lz+eqIwaDgeMa5F0HBMDf1FD6Pr70kVICYK2lNS1t0/x3kOdJVKJQSUYYRkjp4XkeILDWYq1Ba82smjApS6y124Nipej1+qgkJQgDhPAQQizYWWtpsxtkN6aMhkOq6WRzUJpm3Ly1h1IJnrcccOm1RxCG+EGA7wfkozOKPF8PUknK7t4ApRKEt1mtCCEQQqCSFE9KrHWU46L7Q/88RHFMv3+LeAvIVWAUxfR394ii+NkglaQkWXaR8HPdv3fIm2+8joq7F1fBYqXo9XeBy5DPvxjHiizb6UAAxuMxDx7c4+7dfcIw3BwWK6I4mj+TaZp+CRdV1u/P++RvHR//jnOWjz78gKIY8+fJCcaYtSCAttHMZlXXI98/r5qrMsbw408/c3R0xKeffMzt2y9u5FUQBMQqmZ99OC9RKZe3lJSSd95+i1fv3OGrr7/h6dPjhfA653BucWQKIfA8D2vtetD+/mvcPzzk4fc/8MujR2RZxisvv4TvX9oX4zFPnvy2BOR1QdY5rFse995Oj2+/e8jjx79S1zXvH7zHwcG7RNFlos9Oh3z2+RdLbjvshadiMBg4IQS9/i7PPf/CyimwjZxzFPmIkz+Occ6dF4NzDtO2K4fitrLW0jTNPHfzrLZtQ6P1/wZqG90ZsHOQrmumk9WjflNZa6nrmvqihzogYwxlOWZWVUtLdVM552i0pshHncbuNMSsqshHQxqt/xXMOYcxhqLImU7Kzjuva2iZlAXD4Sl6S5hzjrZtyUdnjIanC3cXutQYM3d7Z+cmKkkW5t8yyHQ6YZznjIscaxd7cuk4sMZQFjmN1iRpShwrwihCXllOjGnRWlPPKiZlSTWdAsuj8MydwTnHrJpSzyqCICQIQ6SU8zlnrcNYQ6s1Wtdrw7x23XLOoXWN1vU605W6tgXyL7dibW7uBvzsAAAAAElFTkSuQmCC)).
 
@@ -126,33 +68,13 @@ Procedure
 
 4.  Click **Start** to begin a terminal instance using the specified image setting.
 
-</div>
-
 # Configuring the web terminal image for all users
 
 You can use the **Administrator** perspective of the web console to set the default web terminal image for all users.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have cluster administrator permissions and are logged in to the web console.
 
 - You have installed the Web Terminal Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the **Administrator** perspective, navigate to **Administation** → **Cluster Settings**.
 
@@ -171,5 +93,3 @@ Procedure
 6.  Enter the URL of the image that you want to use.
 
 7.  Click **Save**.
-
-</div>

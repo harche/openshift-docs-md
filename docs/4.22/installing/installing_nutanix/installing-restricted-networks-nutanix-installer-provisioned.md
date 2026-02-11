@@ -16,15 +16,21 @@ In OpenShift Container Platform 4.17, you can install a cluster on Nutanix infra
 
   If your Nutanix environment uses an internal CA to issue certificates, you must configure a cluster-wide proxy as part of the installation process. For more information, see [Configuring a custom PKI](../../networking/configuring_network_settings/configuring-a-custom-pki.xml#configuring-a-custom-pki).
 
-  > [!IMPORTANT]
-  > Use 2048-bit certificates. The installation fails if you use 4096-bit certificates with Prism Central 2022.x.
+  <div class="important">
+
+  Use 2048-bit certificates. The installation fails if you use 4096-bit certificates with Prism Central 2022.x.
+
+  </div>
 
 - You have a container image registry, such as Red Hat Quay. If you do not already have a registry, you can create a mirror registry using [*mirror registry for Red Hat OpenShift*](../../disconnected/installing-mirroring-creating-registry.xml#installing-mirroring-creating-registry).
 
 - You have used the [oc-mirror OpenShift CLI (oc) plugin](../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2) to mirror all of the required OpenShift Container Platform content and other images, including the Nutanix CSI Operator, to your mirror registry.
 
-  > [!IMPORTANT]
-  > Because the installation media is on the mirror host, you can use that computer to complete all installation steps.
+  <div class="important">
+
+  Because the installation media is on the mirror host, you can use that computer to complete all installation steps.
+
+  </div>
 
 # About installations in restricted networks
 
@@ -50,17 +56,15 @@ The SSH public key gets added to the `~/.ssh/authorized_keys` list for the `core
 
 If you want to SSH in to your cluster nodes to perform installation debugging or disaster recovery, you must provide the SSH public key during the installation process. The `./openshift-install gather` command also requires the SSH public key to be in place on the cluster nodes.
 
-> [!IMPORTANT]
-> Do not skip this procedure in production environments, where disaster recovery and debugging is required.
+<div class="important">
 
-> [!NOTE]
-> You must use a local key, not one that you configured with platform-specific approaches.
+Do not skip this procedure in production environments, where disaster recovery and debugging is required.
 
-<div>
+</div>
 
-<div class="title">
+<div class="note">
 
-Procedure
+You must use a local key, not one that you configured with platform-specific approaches.
 
 </div>
 
@@ -72,8 +76,11 @@ Procedure
 
     Specifies the path and file name, such as `~/.ssh/id_ed25519`, of the new SSH key. If you have an existing key pair, ensure your public key is in the your `~/.ssh` directory.
 
-    > [!NOTE]
-    > If you plan to install an OpenShift Container Platform cluster that uses the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the `x86_64`, `ppc64le`, and `s390x` architectures, do not create a key that uses the `ed25519` algorithm. Instead, create a key that uses the `rsa` or `ecdsa` algorithm.
+    <div class="note">
+
+    If you plan to install an OpenShift Container Platform cluster that uses the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the `x86_64`, `ppc64le`, and `s390x` architectures, do not create a key that uses the `ed25519` algorithm. Instead, create a key that uses the `rsa` or `ecdsa` algorithm.
+
+    </div>
 
 2.  View the public SSH key:
 
@@ -89,8 +96,11 @@ Procedure
 
 3.  Add the SSH private key identity to the SSH agent for your local user, if it has not already been added. SSH agent management of the key is required for password-less SSH authentication onto your cluster nodes, or if you want to use the `./openshift-install gather` command.
 
-    > [!NOTE]
-    > On some distributions, default SSH private key identities such as `~/.ssh/id_rsa` and `~/.ssh/id_dsa` are managed automatically.
+    <div class="note">
+
+    On some distributions, default SSH private key identities such as `~/.ssh/id_rsa` and `~/.ssh/id_dsa` are managed automatically.
+
+    </div>
 
     1.  If the `ssh-agent` process is not already running for your local user, start it as a background task:
 
@@ -98,11 +108,9 @@ Procedure
         $ eval "$(ssh-agent -s)"
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -110,10 +118,11 @@ Procedure
         Agent pid 31874
         ```
 
-        </div>
+        <div class="note">
 
-        > [!NOTE]
-        > If your cluster is in FIPS mode, only use FIPS-compliant algorithms to generate the SSH key. The key must be either RSA or ECDSA.
+        If your cluster is in FIPS mode, only use FIPS-compliant algorithms to generate the SSH key. The key must be either RSA or ECDSA.
+
+        </div>
 
 4.  Add your SSH private key to the `ssh-agent`:
 
@@ -123,11 +132,9 @@ Procedure
 
     Specifies the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -135,33 +142,11 @@ Procedure
     Identity added: /home/<you>/<path>/<file_name> (<computer_name>)
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - When you install OpenShift Container Platform, provide the SSH public key to the installation program.
-
-</div>
 
 # Adding Nutanix root CA certificates to your system trust
 
 Because the installation program requires access to the Prism Central API, you must add your Nutanix trusted root CA certificates to your system trust before you install an OpenShift Container Platform cluster.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  From the Prism Central web console, download the Nutanix root CA certificates.
 
@@ -179,31 +164,11 @@ Procedure
     # update-ca-trust extract
     ```
 
-</div>
-
 # Downloading the RHCOS cluster image
 
 Prism Central requires access to the Red Hat Enterprise Linux CoreOS (RHCOS) image to install the cluster. You can use the installation program to locate and download the RHCOS image and make it available through an internal HTTP server or Nutanix Objects.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Obtain the OpenShift Container Platform installation program and the pull secret for your cluster. For a restricted network installation, these files are on your mirror host.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Change to the directory that contains the installation program and run the following command:
 
@@ -213,11 +178,9 @@ Procedure
 
 2.  Use the output of the command to find the location of the Nutanix image, and click the link to download it.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -231,19 +194,13 @@ Procedure
             "sha256": "42e227cac6f11ac37ee8a2f9528bb3665146566890577fd55f9b950949e5a54b"
     ```
 
-    </div>
-
 3.  Make the image available through an internal HTTP server or Nutanix Objects.
 
 4.  Note the location of the downloaded image. You update the `platform` section in the installation configuration file (`install-config.yaml`) with the image’s location before deploying the cluster.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Snippet of an `install-config.yaml` file that specifies the RHCOS image
+**Snippet of an `install-config.yaml` file that specifies the RHCOS image**
 
 </div>
 
@@ -253,19 +210,9 @@ platform:
     clusterOSImage: http://example.com/images/rhcos-411.86.202210041459-0-nutanix.x86_64.qcow2
 ```
 
-</div>
-
 # Creating the installation configuration file
 
 You can customize the OpenShift Container Platform cluster you install on Nutanix.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have the OpenShift Container Platform installation program and the pull secret for your cluster. For a restricted network installation, these files are on your mirror host.
 
@@ -278,16 +225,6 @@ Prerequisites
 - You have retrieved a Red Hat Enterprise Linux CoreOS (RHCOS) image and uploaded it to an accessible location.
 
 - You have verified that you have met the Nutanix networking requirements. For more information, see "Preparing to install on Nutanix".
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `install-config.yaml` file.
 
@@ -309,8 +246,11 @@ Procedure
 
         1.  Optional: Select an SSH key to use to access your cluster machines.
 
-            > [!NOTE]
-            > For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+            <div class="note">
+
+            For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+
+            </div>
 
         2.  Select **nutanix** as the platform to target.
 
@@ -391,34 +331,31 @@ Procedure
 
     For more information about the parameters, see "Installation configuration parameters".
 
-    > [!NOTE]
-    > If you are installing a three-node cluster, be sure to set the `compute.replicas` parameter to `0`. This ensures that cluster’s control planes are schedulable. For more information, see "Installing a three-node cluster on {platform}".
+    <div class="note">
+
+    If you are installing a three-node cluster, be sure to set the `compute.replicas` parameter to `0`. This ensures that cluster’s control planes are schedulable. For more information, see "Installing a three-node cluster on {platform}".
+
+    </div>
 
 5.  Back up the `install-config.yaml` file so that you can use it to install multiple clusters.
 
-    > [!IMPORTANT]
-    > The `install-config.yaml` file is consumed during the installation process. If you want to reuse the file, you must back it up now.
+    <div class="important">
 
-</div>
+    The `install-config.yaml` file is consumed during the installation process. If you want to reuse the file, you must back it up now.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+    </div>
 
 - [Installation configuration parameters for Nutanix](../../installing/installing_nutanix/installation-config-parameters-nutanix.xml#installation-config-parameters-nutanix)
-
-</div>
 
 ## Sample customized install-config.yaml file for Nutanix
 
 You can customize the `install-config.yaml` file to specify more details about your OpenShift Container Platform cluster’s platform or modify the values of the required parameters.
 
-> [!IMPORTANT]
-> This sample YAML file is provided for reference only. You must obtain your `install-config.yaml` file by using the installation program and modify it.
+<div class="important">
+
+This sample YAML file is provided for reference only. You must obtain your `install-config.yaml` file by using the installation program and modify it.
+
+</div>
 
 ``` yaml
 apiVersion: v1
@@ -513,8 +450,11 @@ imageContentSources:
 
 - Whether to enable or disable simultaneous multithreading, or `hyperthreading`. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
 
-  > [!IMPORTANT]
-  > If you disable simultaneous multithreading, ensure that your capacity planning accounts for the dramatically decreased machine performance.
+  <div class="important">
+
+  If you disable simultaneous multithreading, ensure that your capacity planning accounts for the dramatically decreased machine performance.
+
+  </div>
 
 - Optional: Provide additional configuration for the machine pool parameters for the compute and control plane machines.
 
@@ -530,13 +470,19 @@ imageContentSources:
 
 - Whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
 
-  > [!IMPORTANT]
-  > When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
+  <div class="important">
+
+  When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
+
+  </div>
 
 - Optional: You can provide the `sshKey` value that you use to access the machines in your cluster.
 
-  > [!NOTE]
-  > For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+  <div class="note">
+
+  For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+
+  </div>
 
 - Provide the contents of the certificate file that you used for your mirror registry.
 
@@ -546,28 +492,13 @@ imageContentSources:
 
 Failure domains improve the fault tolerance of an OpenShift Container Platform cluster by distributing control plane and compute machines across multiple Nutanix Prism Elements (clusters).
 
-> [!TIP]
-> It is recommended that you configure three failure domains to ensure high-availability.
+<div class="tip">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+It is recommended that you configure three failure domains to ensure high-availability.
 
 </div>
 
 - You have an installation configuration file (`install-config.yaml`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `install-config.yaml` file and add the following stanza to configure the first failure domain:
 
@@ -608,11 +539,9 @@ Procedure
 
     - If compute and control plane machines can share the same set of failure domains, add the failure domain names under the cluster’s default machine configuration.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example of control plane and compute machines sharing a set of failure domains
+      **Example of control plane and compute machines sharing a set of failure domains**
 
       </div>
 
@@ -631,15 +560,11 @@ Procedure
       # ...
       ```
 
-      </div>
-
     - If compute and control plane machines must use different failure domains, add the failure domain names under the respective machine pools.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example of control plane and compute machines using different failure domains
+      **Example of control plane and compute machines using different failure domains**
 
       </div>
 
@@ -665,42 +590,23 @@ Procedure
       # ...
       ```
 
-      </div>
-
 4.  Save the file.
-
-</div>
 
 ## Configuring the cluster-wide proxy during installation
 
 To enable internet access in environments that deny direct connections, configure a cluster-wide proxy in the `install-config.yaml` file. This configuration ensures that the new OpenShift Container Platform cluster routes traffic through the specified HTTP or HTTPS proxy.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have an existing `install-config.yaml` file.
 
 - You have reviewed the sites that your cluster requires access to and determined whether any of them need to bypass the proxy. By default, all cluster egress traffic is proxied, including calls to hosting cloud provider APIs. You added sites to the `Proxy` object’s `spec.noProxy` field to bypass the proxy if necessary.
 
-  > [!NOTE]
-  > The `Proxy` object `status.noProxy` field is populated with the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
-  >
-  > For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field is also populated with the instance metadata endpoint (`169.254.169.254`).
+  <div class="note">
 
-</div>
+  The `Proxy` object `status.noProxy` field is populated with the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
 
-<div>
+  For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field is also populated with the instance metadata endpoint (`169.254.169.254`).
 
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  Edit your `install-config.yaml` file and add the proxy settings. For example:
 
@@ -736,41 +642,43 @@ Procedure
     `additionalTrustBundlePolicy`
     Specifies the policy that determines the configuration of the `Proxy` object to reference the `user-ca-bundle` config map in the `trustedCA` field. The allowed values are `Proxyonly` and `Always`. Use `Proxyonly` to reference the `user-ca-bundle` config map only when `http/https` proxy is configured. Use `Always` to always reference the `user-ca-bundle` config map. The default value is `Proxyonly`. Optional parameter.
 
-    > [!NOTE]
-    > The installation program does not support the proxy `readinessEndpoints` field.
+    <div class="note">
 
-    > [!NOTE]
-    > If the installer times out, restart and then complete the deployment by using the `wait-for` command of the installer. For example:
-    >
-    > \+
-    >
-    > ``` terminal
-    > $ ./openshift-install wait-for install-complete --log-level debug
-    > ```
+    The installation program does not support the proxy `readinessEndpoints` field.
+
+    </div>
+
+    <div class="note">
+
+    If the installer times out, restart and then complete the deployment by using the `wait-for` command of the installer. For example:
+
+    \+
+
+    ``` terminal
+    $ ./openshift-install wait-for install-complete --log-level debug
+    ```
+
+    </div>
 
 2.  Save the file and reference it when installing OpenShift Container Platform.
 
     The installation program creates a cluster-wide proxy that is named `cluster` that uses the proxy settings in the provided `install-config.yaml` file. If no proxy settings are provided, a `cluster` `Proxy` object is still created, but it will have a nil `spec`.
 
-    > [!NOTE]
-    > Only the `Proxy` object named `cluster` is supported, and no additional proxies can be created.
+    <div class="note">
 
-</div>
+    Only the `Proxy` object named `cluster` is supported, and no additional proxies can be created.
+
+    </div>
 
 # Installing the OpenShift CLI on Linux
 
 To manage your cluster and deploy applications from the command line, install the OpenShift CLI (`oc`) binary on Linux.
 
-> [!IMPORTANT]
-> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
->
-> Download and install the new version of `oc`.
+<div class="important">
 
-<div>
+If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
 
-<div class="title">
-
-Procedure
+Download and install the new version of `oc`.
 
 </div>
 
@@ -796,38 +704,21 @@ Procedure
     $ echo $PATH
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - After you install the OpenShift CLI, it is available using the `oc` command:
 
   ``` terminal
   $ oc <command>
   ```
 
-</div>
-
 # Installing the OpenShift CLI on Windows
 
 To manage your cluster and deploy applications from the command line, install OpenShift CLI (`oc`) binary on Windows.
 
-> [!IMPORTANT]
-> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
->
-> Download and install the new version of `oc`.
+<div class="important">
 
-<div>
+If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
 
-<div class="title">
-
-Procedure
+Download and install the new version of `oc`.
 
 </div>
 
@@ -847,38 +738,21 @@ Procedure
     C:\> path
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - After you install the OpenShift CLI, it is available using the `oc` command:
 
   ``` terminal
   C:\> oc <command>
   ```
 
-</div>
-
 # Installing the OpenShift CLI on macOS
 
 To manage your cluster and deploy applications from the command line, install the OpenShift CLI (`oc`) binary on macOS.
 
-> [!IMPORTANT]
-> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
->
-> Download and install the new version of `oc`.
+<div class="important">
 
-<div>
+If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
 
-<div class="title">
-
-Procedure
+Download and install the new version of `oc`.
 
 </div>
 
@@ -890,8 +764,11 @@ Procedure
 
 4.  Click **Download Now** next to the **OpenShift v4.17 macOS Clients** entry and save the file.
 
-    > [!NOTE]
-    > For macOS arm64, choose the **OpenShift v4.17 macOS arm64 Client** entry.
+    <div class="note">
+
+    For macOS arm64, choose the **OpenShift v4.17 macOS arm64 Client** entry.
+
+    </div>
 
 5.  Unpack and unzip the archive.
 
@@ -903,57 +780,25 @@ Procedure
     $ echo $PATH
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify your installation by using an `oc` command:
 
   ``` terminal
   $ oc <command>
   ```
 
-</div>
-
 # Configuring IAM for Nutanix
 
 Installing the cluster requires that the Cloud Credential Operator (CCO) operate in manual mode. While the installation program configures the CCO for manual mode, you must specify the identity and access management secrets.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have configured the `ccoctl` binary.
 
 - You have an `install-config.yaml` file.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a YAML file that contains the credentials data in the following format:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Credentials data format
+    **Credentials data format**
 
     </div>
 
@@ -969,8 +814,6 @@ Procedure
           username: <username_for_prism_element>
           password: <password_for_prism_element>
     ```
-
-    </div>
 
     - Specify the authentication type. Only basic authentication is supported.
 
@@ -1001,11 +844,9 @@ Procedure
 
     - Specify the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Sample `CredentialsRequest` object
+      **Sample `CredentialsRequest` object**
 
       </div>
 
@@ -1028,8 +869,6 @@ Procedure
             namespace: openshift-machine-api
       ```
 
-      </div>
-
 4.  Use the `ccoctl` tool to process all `CredentialsRequest` objects by running the following command:
 
     ``` terminal
@@ -1047,11 +886,9 @@ Procedure
 
 5.  Edit the `install-config.yaml` configuration file so that the `credentialsMode` parameter is set to `Manual`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `install-config.yaml` configuration file
+    **Example `install-config.yaml` configuration file**
 
     </div>
 
@@ -1061,8 +898,6 @@ Procedure
     credentialsMode: Manual
     ...
     ```
-
-    </div>
 
     - Add this line to set the `credentialsMode` parameter to `Manual`.
 
@@ -1080,27 +915,15 @@ Procedure
     $ cp <ccoctl_output_dir>/manifests/*credentials.yaml ./<installation_directory>/manifests
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Ensure that the appropriate secrets exist in the `manifests` directory.
 
   ``` terminal
   $ ls ./<installation_directory>/manifests
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -1122,22 +945,13 @@ Verification
   openshift-machine-api-nutanix-credentials-credentials.yaml
   ```
 
-  </div>
-
-</div>
-
 # Deploying the cluster
 
 You can install OpenShift Container Platform on a compatible cloud platform.
 
-> [!IMPORTANT]
-> You can run the `create cluster` command of the installation program only once, during initial installation.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You can run the `create cluster` command of the installation program only once, during initial installation.
 
 </div>
 
@@ -1145,15 +959,7 @@ Prerequisites
 
 - You have verified that the cloud provider account on your host has the correct permissions to deploy the cluster. An account with incorrect permissions causes the installation process to fail with an error message that displays the missing permissions.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - In the directory that contains the installation program, initialize the cluster deployment by running the following command:
 
@@ -1166,32 +972,27 @@ Procedure
 
   - To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 When the cluster deployment completes successfully:
 
-</div>
-
 - The terminal displays directions for accessing your cluster, including a link to the web console and credentials for the `kubeadmin` user.
 
 - Credential information also outputs to `<installation_directory>/.openshift_install.log`.
 
-> [!IMPORTANT]
-> Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
+<div class="important">
 
-<div class="formalpara">
+Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
 
-<div class="title">
+</div>
 
-Example output
+<div class="formalpara-title">
+
+**Example output**
 
 </div>
 
@@ -1204,13 +1005,7 @@ INFO Login to the console with user: "kubeadmin", and password: "password"
 INFO Time elapsed: 36m22s
 ```
 
-</div>
-
 <div class="important">
-
-<div class="title">
-
-</div>
 
 - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
@@ -1226,14 +1021,6 @@ Complete the following steps to complete the configuration of your cluster.
 
 Operator catalogs that source content provided by Red Hat and community projects are configured for the software catalog by default during an OpenShift Container Platform installation. In a restricted network environment, you must disable the default catalogs as a cluster administrator.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Disable the sources for the default catalogs by adding `disableAllDefaultSources: true` to the `OperatorHub` object:
 
   ``` terminal
@@ -1241,10 +1028,11 @@ Procedure
       -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
   ```
 
-</div>
+<div class="tip">
 
-> [!TIP]
-> Alternatively, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
+Alternatively, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
+
+</div>
 
 ## Installing the policy resources into the cluster
 
@@ -1254,36 +1042,21 @@ Mirroring the OpenShift Container Platform content using the oc-mirror OpenShift
 
 - The `CatalogSource` resource is used by Operator Lifecycle Manager (OLM) Classic to retrieve information about the available Operators in the mirror registry, which lets users discover and install Operators.
 
-  > [!NOTE]
-  > OLM v1 uses the `ClusterCatalog` resource to retrieve information about the available cluster extensions in the mirror registry.
-  >
-  > The oc-mirror plugin v1 does not generate `ClusterCatalog` resources automatically; you must manually create them. The oc-mirror plugin v2 does, however, generate `ClusterCatalog` resources automatically.
-  >
-  > For more information on creating and applying `ClusterCatalog` resources, see "Adding a catalog to a cluster" in "Extensions".
+  <div class="note">
+
+  OLM v1 uses the `ClusterCatalog` resource to retrieve information about the available cluster extensions in the mirror registry.
+
+  The oc-mirror plugin v1 does not generate `ClusterCatalog` resources automatically; you must manually create them. The oc-mirror plugin v2 does, however, generate `ClusterCatalog` resources automatically.
+
+  For more information on creating and applying `ClusterCatalog` resources, see "Adding a catalog to a cluster" in "Extensions".
+
+  </div>
 
 After you install the cluster, you must install these resources into the cluster.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have mirrored the image set to the registry mirror in the disconnected environment.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift CLI as a user with the `cluster-admin` role.
 
@@ -1293,15 +1066,7 @@ Procedure
     $ oc apply -f ./oc-mirror-workspace/results-<id>/
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the `ImageContentSourcePolicy` resources were successfully installed:
 
@@ -1315,19 +1080,7 @@ Verification
     $ oc get catalogsource --all-namespaces
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Adding a catalog to a cluster](../../extensions/catalogs/managing-catalogs.xml#olmv1-adding-a-catalog-to-a-cluster_managing-catalogs) in "Extensions"
-
-</div>
 
 ## Configuring the default storage container
 

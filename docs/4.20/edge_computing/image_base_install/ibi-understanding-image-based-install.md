@@ -2,8 +2,11 @@ Image-based installations significantly reduce the deployment time of single-nod
 
 This approach enables the preinstallation of configured and validated instances of single-node OpenShift on target hosts. These preinstalled hosts can be rapidly reconfigured and deployed at the far edge of the network, including in disconnected environments, with minimal intervention.
 
-> [!NOTE]
-> To deploy a managed cluster using an imaged-based approach in combination with GitOps Zero Touch Provisioning (ZTP), you can use the SiteConfig operator. For more information, see [SiteConfig operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/multicluster_engine_operator_with_red_hat_advanced_cluster_management/index#siteconfig-intro).
+<div class="note">
+
+To deploy a managed cluster using an imaged-based approach in combination with GitOps Zero Touch Provisioning (ZTP), you can use the SiteConfig operator. For more information, see [SiteConfig operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/multicluster_engine_operator_with_red_hat_advanced_cluster_management/index#siteconfig-intro).
+
+</div>
 
 # Overview of image-based installation and deployment for single-node OpenShift clusters
 
@@ -101,17 +104,7 @@ When you deploy managed clusters, the IBI Operator creates a configuration ISO f
 `openshift-install` program
 Creates the installation and configuration ISO, and embeds the seed image URL in the live installation ISO. If the IBI Operator is not used, you must manually attach the configuration ISO to a preinstalled host to complete the deployment.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Deploying a single-node OpenShift cluster using the `openshift-install` program](../../edge_computing/image_base_install/ibi_deploying_sno_clusters/ibi-edge-image-based-install-standalone.xml#create-standalone-config-iso_ibi-edge-image-based-install)
-
-</div>
 
 # Cluster guidelines for image-based installation and deployment
 
@@ -145,22 +138,17 @@ For a successful image-based installation and deployment, see the following guid
 
   - Disconnected registry
 
-    > [!NOTE]
-    > If the target cluster uses a disconnected registry, your seed cluster must use a disconnected registry. The registries do not have to be the same.
+    <div class="note">
+
+    If the target cluster uses a disconnected registry, your seed cluster must use a disconnected registry. The registries do not have to be the same.
+
+    </div>
 
   - FIPS configuration
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Configuring a shared container partition between ostree stateroots](../../edge_computing/image_base_install/ibi-preparing-for-image-based-install.xml#cnf-image-based-upgrade-shared-container-partition_ibi-preparing-image-based-install)
-
-</div>
 
 # Software prerequisites for an image-based installation and deployment
 
@@ -177,16 +165,6 @@ An image-based installation and deployment requires the following minimum softwa
 
 Minimum software requirements
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Multicluster architecture](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.12/html/about/welcome-to-red-hat-advanced-cluster-management-for-kubernetes#multicluster-architecture)
 
 - [Understanding the image-based upgrade for single-node OpenShift clusters](../../edge_computing/image_based_upgrade/cnf-understanding-image-based-upgrade.xml#cnf-understanding-image-based-upgrade)
-
-</div>

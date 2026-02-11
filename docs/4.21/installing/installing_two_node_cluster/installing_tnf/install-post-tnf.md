@@ -1,7 +1,10 @@
-> [!IMPORTANT]
-> Two-node OpenShift cluster with fencing is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Two-node OpenShift cluster with fencing is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 Use the following sections help you with recovering from issues in a two-node OpenShift cluster with fencing.
 
@@ -17,28 +20,13 @@ You might need to perform manual recovery steps if a disruption event prevents f
 
 4.  Replace a control plane node that cannot be recovered: Replace the node to restore cluster functionality.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have administrative access to the control plane nodes.
 
 - You can connect to the nodes by using SSH.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> Do an etcd backup before proceeding to ensure that you can restore the cluster if any issues occur.
-
-<div>
-
-<div class="title">
-
-Procedure
+Do an etcd backup before proceeding to ensure that you can restore the cluster if any issues occur.
 
 </div>
 
@@ -162,19 +150,13 @@ Procedure
 
     If manual recovery is still required and it fails, collect a must-gather and SOS report, and file a bug.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 For information about verifying that both control plane nodes and etcd are operating correctly, see "Verifying etcd health in a two-node OpenShift cluster with fencing".
-
-</div>
 
 # Additional resources
 
@@ -186,14 +168,6 @@ For information about verifying that both control plane nodes and etcd are opera
 
 You can replace a failed control plane node in a two-node OpenShift cluster. The replacement node must use the same host name and IP address as the failed node.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have a functioning survivor control plane node.
 
 - You have verified that either the machine is not running or the node is not ready.
@@ -202,16 +176,9 @@ Prerequisites
 
 - You know the host name and IP address of the failed node.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> Do an etcd backup before proceeding to ensure that you can restore the cluster if any issues occur.
-
-<div>
-
-<div class="title">
-
-Procedure
+Do an etcd backup before proceeding to ensure that you can restore the cluster if any issues occur.
 
 </div>
 
@@ -221,11 +188,9 @@ Procedure
     $ sudo pcs quorum status
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -254,8 +219,6 @@ Procedure
              2          1         NR master-1
     ```
 
-    </div>
-
     1.  If quorum is lost and one control plane node is still running, restore quorum manually on the survivor node by running the following command:
 
         ``` terminal
@@ -276,8 +239,11 @@ Procedure
 
         If etcd still does not start, force it manually on the survivor node, skipping fencing:
 
-        > [!IMPORTANT]
-        > Before running this commands, ensure that the node being replaced is inaccessible. Otherwise, you risk etcd corruption.
+        <div class="important">
+
+        Before running this commands, ensure that the node being replaced is inaccessible. Otherwise, you risk etcd corruption.
+
+        </div>
 
         ``` terminal
         $ sudo pcs resource debug-stop etcd
@@ -307,8 +273,11 @@ Procedure
     $ oc delete secret etcd-serving-metrics-<node_name>
     ```
 
-    > [!NOTE]
-    > To replace the failed node, you must delete its etcd secrets first. When etcd is running, it might take some time for the API server to respond to these commands.
+    <div class="note">
+
+    To replace the failed node, you must delete its etcd secrets first. When etcd is running, it might take some time for the API server to respond to these commands.
+
+    </div>
 
 3.  Delete resources for the failed node:
 
@@ -347,23 +316,27 @@ Procedure
         $ oc delete machines.machine.openshift.io/<machine_name>-<failed nodename> -n openshift-machine-api
         ```
 
-        > [!NOTE]
-        > The node object is deleted automatically after deleting the `Machine` object.
+        <div class="note">
+
+        The node object is deleted automatically after deleting the `Machine` object.
+
+        </div>
 
 4.  Recreate the failed host by using the same name and IP address:
 
-    > [!IMPORTANT]
-    > You must perform this step only if you are using installer-provisioned infrastructure or the Machine API to create the original node. For information about replacing a failed bare-metal control plane node, see "Replacing an unhealthy etcd member on bare metal".
+    <div class="important">
+
+    You must perform this step only if you are using installer-provisioned infrastructure or the Machine API to create the original node. For information about replacing a failed bare-metal control plane node, see "Replacing an unhealthy etcd member on bare metal".
+
+    </div>
 
     1.  Remove the BMH and `Machine` objects. The machine controller automatically deletes the node object.
 
     2.  Provision a new machine by using the following sample configuration:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `Machine` object configuration
+        **Example `Machine` object configuration**
 
         </div>
 
@@ -399,8 +372,6 @@ Procedure
               userData:
                 name: master-user-data-managed
         ```
-
-        </div>
 
         - `metadata.annotations.metal3.io/BareMetalHost`: Replace `{bmh_name}` with the name of the BMH object that is associated with the host that you are replacing.
 
@@ -463,8 +434,11 @@ Procedure
 
     The value of the `STATUS` column in the output of this command must be `Provisioned`.
 
-    > [!NOTE]
-    > The provisioning process can take 10 to 20 minutes to complete.
+    <div class="note">
+
+    The provisioning process can take 10 to 20 minutes to complete.
+
+    </div>
 
 6.  Verify that both control plane nodes are in the `Ready` state by running the following command:
 
@@ -482,8 +456,11 @@ Procedure
 
 8.  Rejoin the replacement node to the pacemaker cluster by running the following command:
 
-    > [!NOTE]
-    > Run the following command on the survivor control plane node, not the node being replaced.
+    <div class="note">
+
+    Run the following command on the survivor control plane node, not the node being replaced.
+
+    </div>
 
     ``` terminal
     $ sudo pcs cluster node remove <node_name>
@@ -507,19 +484,13 @@ Procedure
     $ oc delete job tnf-after-setup-job-<node_name>
     ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 For information about verifying that both control plane nodes and etcd are operating correctly, see "Verifying etcd health in a two-node OpenShift cluster with fencing".
-
-</div>
 
 # Additional resources
 
@@ -529,27 +500,9 @@ For information about verifying that both control plane nodes and etcd are opera
 
 After completing node recovery or maintenance procedures, verify that both control plane nodes and etcd are operating correctly.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with `cluster-admin` privileges.
 
 - You can access at least one control plane node through SSH.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Check the overall node status by running the following command:
 
@@ -588,5 +541,3 @@ Procedure
     - The `kubelet` and `etcd` resources are running.
 
     - Fencing is correctly configured for both nodes.
-
-</div>

@@ -12,18 +12,19 @@ Extending nodes to Local Zones or Wavelength Zones locations comprises the follo
 
 - Creating a subnet in the existing VPC for a Local Zones or Wavelength Zones location.
 
-  > [!IMPORTANT]
-  > Before you extend an existing OpenShift Container Platform cluster on AWS to use Local Zones or Wavelength Zones, check that the existing VPC contains available Classless Inter-Domain Routing (CIDR) blocks. These blocks are needed for creating the subnets.
+  <div class="important">
+
+  Before you extend an existing OpenShift Container Platform cluster on AWS to use Local Zones or Wavelength Zones, check that the existing VPC contains available Classless Inter-Domain Routing (CIDR) blocks. These blocks are needed for creating the subnets.
+
+  </div>
 
 - Creating the machine set manifest, and then creating a node in each Local Zone or Wavelength Zone location.
 
 - Local Zones only: Adding the permission `ec2:ModifyAvailabilityZoneGroup` to the Identity and Access Management (IAM) user or role, so that the required network resources can be created. For example:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example of an additional IAM policy for AWS Local Zones deployments
+  **Example of an additional IAM policy for AWS Local Zones deployments**
 
   </div>
 
@@ -42,15 +43,11 @@ Extending nodes to Local Zones or Wavelength Zones locations comprises the follo
   }
   ```
 
-  </div>
-
 - Wavelength Zone only: Adding the permissions `ec2:ModifyAvailabilityZoneGroup`, `ec2:CreateCarrierGateway`, and `ec2:DeleteCarrierGateway` to the Identity and Access Management (IAM) user or role, so that the required network resources can be created. For example:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example of an additional IAM policy for AWS Wavelength Zones deployments
+  **Example of an additional IAM policy for AWS Wavelength Zones deployments**
 
   </div>
 
@@ -77,21 +74,11 @@ Extending nodes to Local Zones or Wavelength Zones locations comprises the follo
   }
   ```
 
-  </div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [AWS Local Zones features (AWS documentation)](https://aws.amazon.com/about-aws/global-infrastructure/localzones/features/)
 
 - [AWS Wavelength features (AWS documentation)](https://aws.amazon.com/wavelength/features/)
-
-</div>
 
 ## About edge compute pools
 
@@ -103,16 +90,19 @@ When deploying a cluster that uses Local Zones or Wavelength Zones, consider the
 
 - The latency is lower between the applications running in AWS Local Zones or Wavelength Zones and the end user. A latency impact exists for some workloads if, for example, ingress traffic is mixed between Local Zones or Wavelength Zones and Availability Zones.
 
-> [!IMPORTANT]
-> Generally, the maximum transmission unit (MTU) between an Amazon EC2 instance in a Local Zones or Wavelength Zones and an Amazon EC2 instance in the Region is 1300. The cluster network MTU must be always less than the EC2 MTU to account for the overhead. The specific overhead is determined by the network plugin. For example: OVN-Kubernetes has an overhead of `100 bytes`.
->
-> The network plugin can provide additional features, such as IPsec, that also affect the MTU sizing.
->
-> You can access the following resources to learn more about a respective zone type:
->
-> - See [How Local Zones work](https://docs.aws.amazon.com/local-zones/latest/ug/how-local-zones-work.html) in the AWS documentation.
->
-> - See [How AWS Wavelength work](https://docs.aws.amazon.com/wavelength/latest/developerguide/how-wavelengths-work.html) in the AWS documentation.
+<div class="important">
+
+Generally, the maximum transmission unit (MTU) between an Amazon EC2 instance in a Local Zones or Wavelength Zones and an Amazon EC2 instance in the Region is 1300. The cluster network MTU must be always less than the EC2 MTU to account for the overhead. The specific overhead is determined by the network plugin. For example: OVN-Kubernetes has an overhead of `100 bytes`.
+
+The network plugin can provide additional features, such as IPsec, that also affect the MTU sizing.
+
+You can access the following resources to learn more about a respective zone type:
+
+- See [How Local Zones work](https://docs.aws.amazon.com/local-zones/latest/ug/how-local-zones-work.html) in the AWS documentation.
+
+- See [How AWS Wavelength work](https://docs.aws.amazon.com/wavelength/latest/developerguide/how-wavelengths-work.html) in the AWS documentation.
+
+</div>
 
 OpenShift Container Platform 4.12 introduced a new compute pool, *edge*, that is designed for use in remote zones. The edge compute pool configuration is common between AWS Local Zones or Wavelength Zones locations. Because of the type and size limitations of resources like EC2 and EBS on Local Zones or Wavelength Zones resources, the default instance type can vary from the traditional compute pool.
 
@@ -164,8 +154,11 @@ When planning your maximum transmission unit (MTU) migration there are two relat
 
 If your cluster requires different MTU values for different nodes, you must subtract the overhead value for your network plugin from the lowest MTU value that is used by any node in your cluster. For example, if some nodes in your cluster have an MTU of `9001`, and some have an MTU of `1500`, you must set this value to `1400`.
 
-> [!IMPORTANT]
-> To avoid selecting an MTU value that is not acceptable by a node, verify the maximum MTU value (`maxmtu`) that is accepted by the network interface by using the `ip -d link` command.
+<div class="important">
+
+To avoid selecting an MTU value that is not acceptable by a node, verify the maximum MTU value (`maxmtu`) that is accepted by the network interface by using the `ip -d link` command.
+
+</div>
 
 ### How the migration process works
 
@@ -178,13 +171,13 @@ The following table summarizes the migration process by segmenting between the u
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">User-initiated steps</th>
 <th style="text-align: left;">OpenShift Container Platform activity</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Set the following values in the Cluster Network Operator configuration:</p>
 <ul>
 <li><p><code>spec.migration.mtu.machine.to</code></p></li>
@@ -200,7 +193,7 @@ The following table summarizes the migration process by segmenting between the u
 <p>If the values provided are valid, the CNO writes out a new temporary configuration with the MTU for the cluster network set to the value of the <code>mtu.network.to</code> field.</p>
 <p><strong>Machine Config Operator (MCO)</strong>: Performs a rolling reboot of each node in the cluster.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Reconfigure the MTU of the primary network interface for the nodes on the cluster. You can use one of the following methods to accomplish this:</p>
 <ul>
 <li><p>Deploying a new NetworkManager connection profile with the MTU change</p></li>
@@ -209,27 +202,24 @@ The following table summarizes the migration process by segmenting between the u
 </ul></td>
 <td style="text-align: left;"><p>N/A</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Set the <code>mtu</code> value in the CNO configuration for the network plugin and set <code>spec.migration</code> to <code>null</code>.</p></td>
 <td style="text-align: left;"><p><strong>Machine Config Operator (MCO)</strong>: Performs a rolling reboot of each node in the cluster with the new MTU configuration.</p></td>
 </tr>
 </tbody>
 </table>
 
+Live migration of the cluster MTU
+
 ## Changing the cluster network MTU
 
 As a cluster administrator, you can increase or decrease the maximum transmission unit (MTU) for your cluster.
 
-> [!IMPORTANT]
-> You cannot roll back an MTU value for nodes during the MTU migration process, but you can roll back the value after the MTU migration process completes.
->
-> The migration is disruptive and nodes in your cluster might be temporarily unavailable as the MTU update takes effect.
+<div class="important">
 
-<div>
+You cannot roll back an MTU value for nodes during the MTU migration process, but you can roll back the value after the MTU migration process completes.
 
-<div class="title">
-
-Prerequisites
+The migration is disruptive and nodes in your cluster might be temporarily unavailable as the MTU update takes effect.
 
 </div>
 
@@ -243,19 +233,9 @@ Prerequisites
 
 - If your nodes are virtual machines (VMs), ensure that the hypervisor and the connected network switches support jumbo frames.
 
-</div>
-
 ### Checking the current cluster MTU value
 
 Use the following procedure to obtain the current maximum transmission unit (MTU) for the cluster network.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To obtain the current MTU for the cluster network, enter the following command:
 
@@ -263,11 +243,9 @@ Procedure
   $ oc describe network.config cluster
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -284,21 +262,9 @@ Procedure
   ...
   ```
 
-  </div>
-
-</div>
-
 ### Beginning the MTU migration
 
 Use the following procedure to start the MTU migration.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To begin the MTU migration, specify the migration configuration by entering the following command. The Machine Config Operator performs a rolling reboot of the nodes in the cluster in preparation for the MTU change.
 
@@ -331,22 +297,15 @@ Procedure
 
     A successfully updated node has the following status: `UPDATED=true`, `UPDATING=false`, `DEGRADED=false`.
 
-    > [!NOTE]
-    > By default, the Machine Config Operator updates one machine per pool at a time, causing the total time the migration takes to increase with the size of the cluster.
+    <div class="note">
 
-</div>
+    By default, the Machine Config Operator updates one machine per pool at a time, causing the total time the migration takes to increase with the size of the cluster.
+
+    </div>
 
 ### Verifying the machine configuration
 
 Use the following procedure to verify the machine configuration.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Confirm the status of the new machine configuration on the hosts:
 
@@ -356,11 +315,9 @@ Procedure
       $ oc describe node | egrep "hostname|machineconfig"
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -371,8 +328,6 @@ Procedure
       machineconfiguration.openshift.io/reason:
       machineconfiguration.openshift.io/state: Done
       ```
-
-      </div>
 
   2.  Verify that the following statements are true:
 
@@ -397,19 +352,9 @@ Procedure
       ExecStart=/usr/local/bin/mtu-migration.sh
       ```
 
-</div>
-
 ### Finalizing the MTU migration
 
 Use the following procedure to finalize the MTU migration.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To finalize the MTU migration, enter the following command for the OVN-Kubernetes network plugin:
 
@@ -431,35 +376,15 @@ Procedure
 
     A successfully updated node has the following status: `UPDATED=true`, `UPDATING=false`, `DEGRADED=false`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the node in your cluster uses the MTU that you specified by entering the following command:
 
   ``` terminal
   $ oc describe network.config cluster
   ```
 
-</div>
-
 ## Opting in to AWS Local Zones or Wavelength Zones
 
 If you plan to create subnets in AWS Local Zones or Wavelength Zones, you must opt in to each zone group separately.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the AWS CLI.
 
@@ -467,23 +392,11 @@ Prerequisites
 
 - You have attached a permissive IAM policy to a user or role account that opts in to the zone group.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  List the zones that are available in your AWS Region by running the following command:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example command for listing available AWS Local Zones in an AWS Region
+    **Example command for listing available AWS Local Zones in an AWS Region**
 
     </div>
 
@@ -494,13 +407,9 @@ Procedure
         --all-availability-zones
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example command for listing available AWS Wavelength Zones in an AWS Region
+    **Example command for listing available AWS Wavelength Zones in an AWS Region**
 
     </div>
 
@@ -510,8 +419,6 @@ Procedure
         --filters Name=zone-type,Values=wavelength-zone \
         --all-availability-zones
     ```
-
-    </div>
 
     Depending on the AWS Region, the list of available zones might be long. The command returns the following fields:
 
@@ -534,8 +441,6 @@ Procedure
 
     - Replace `<value_of_GroupName>` with the name of the group of the Local Zones or Wavelength Zones where you want to create subnets.
 
-</div>
-
 ## Create network requirements in an existing VPC that uses AWS Local Zones or Wavelength Zones
 
 If you want a Machine API to create an Amazon EC2 instance in a remote zone location, you must create a subnet in a Local Zones or Wavelength Zones location. You can use any provisioning tool, such as Ansible or Terraform, to create subnets in the existing Virtual Private Cloud (VPC).
@@ -554,8 +459,11 @@ Extending nodes to Wavelength Zones requires that you create the following resou
 
 - 2 VPC Subnets: public and private. The public subnet associates to the public route table for an AWS Wavelength Zone. The private subnet associates to the provided route table ID.
 
-> [!IMPORTANT]
-> Considering the limitation of NAT Gateways in Wavelength Zones, the provided CloudFormation templates support only associating the private subnets with the provided route table ID. A route table ID is attached to a valid NAT Gateway in the AWS Region.
+<div class="important">
+
+Considering the limitation of NAT Gateways in Wavelength Zones, the provided CloudFormation templates support only associating the private subnets with the provided route table ID. A route table ID is attached to a valid NAT Gateway in the AWS Region.
+
+</div>
 
 ## Wavelength Zones only: Creating a VPC carrier gateway
 
@@ -581,8 +489,11 @@ The following list explains the functions of a carrier gateway in the context of
 
 - Authorizes outbound traffic to a carrier network and the internet.
 
-> [!NOTE]
-> No inbound connection configuration exists from the internet to a Wavelength Zone through the carrier gateway.
+<div class="note">
+
+No inbound connection configuration exists from the internet to a Wavelength Zone through the carrier gateway.
+
+</div>
 
 You can use the provided CloudFormation template to create a stack of the following AWS resources:
 
@@ -594,30 +505,15 @@ You can use the provided CloudFormation template to create a stack of the follow
 
 - VPC gateway endpoint for an AWS Simple Storage Service (S3).
 
-> [!NOTE]
-> If you do not use the provided CloudFormation template to create your AWS infrastructure, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you do not use the provided CloudFormation template to create your AWS infrastructure, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
 
 </div>
 
 - You configured an AWS account.
 
 - You added your AWS keys and region to your local AWS profile by running `aws configure`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to the next section of the documentation named "CloudFormation template for the VPC Carrier Gateway", and then copy the syntax from the **CloudFormation template for VPC Carrier Gateway** template. Save the copied template syntax as a YAML file on your local system. This template describes the VPC that your cluster requires.
 
@@ -640,29 +536,15 @@ Procedure
 
     - `<ClusterName>` is a custom value that prefixes to resources that the CloudFormation stack creates. You can use the same name that is defined in the `metadata.name` section of the `install-config.yaml` configuration file.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
       ``` terminal
       arn:aws:cloudformation:us-east-1:123456789012:stack/<stack_name>/dbedae40-2fd3-11eb-820e-12a48460849f
       ```
-
-      </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Confirm that the CloudFormation template components exist by running the following command:
 
@@ -672,23 +554,13 @@ Verification
 
   After the `StackStatus` displays `CREATE_COMPLETE`, the output displays values for the following parameter. Ensure that you provide the parameter value to the other CloudFormation templates that you run to create for your cluster.
 
-  |  |  |
-  |----|----|
+  |                      |                                                          |
+  |----------------------|----------------------------------------------------------|
   | `PublicRouteTableId` | The ID of the Route Table in the Carrier infrastructure. |
-
-</div>
 
 ## Wavelength Zones only: CloudFormation template for the VPC Carrier Gateway
 
 You can use the following CloudFormation template to deploy the Carrier Gateway on AWS Wavelength infrastructure.
-
-<div class="example">
-
-<div class="title">
-
-CloudFormation template for VPC Carrier Gateway
-
-</div>
 
 ``` yaml
 AWSTemplateFormatVersion: 2010-09-09
@@ -758,22 +630,15 @@ Outputs:
     Value: !Ref PublicRouteTable
 ```
 
-</div>
-
 ## Creating subnets for AWS edge compute services
 
 Before you configure a machine set for edge compute nodes in your OpenShift Container Platform cluster, you must create a subnet in Local Zones or Wavelength Zones. Complete the following procedure for each Wavelength Zone that you want to deploy compute nodes to.
 
 You can use the provided CloudFormation template and create a CloudFormation stack. You can then use this stack to custom provision a subnet.
 
-> [!NOTE]
-> If you do not use the provided CloudFormation template to create your AWS infrastructure, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you do not use the provided CloudFormation template to create your AWS infrastructure, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
 
 </div>
 
@@ -782,16 +647,6 @@ Prerequisites
 - You added your AWS keys and region to your local AWS profile by running `aws configure`.
 
 - You opted in to the Local Zones or Wavelength Zones group.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to the section of the documentation named "CloudFormation template for the VPC subnet", and copy the syntax from the template. Save the copied template syntax as a YAML file on your local system. This template describes the VPC that your cluster requires.
 
@@ -829,29 +684,15 @@ Procedure
 
     - `${SUBNET_CIDR_PVT}` is a valid CIDR block that is used to create the private subnet. This block must be part of the VPC CIDR block `VpcCidr`.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
       ``` text
       arn:aws:cloudformation:us-east-1:123456789012:stack/<stack_name>/dbedae40-820e-11eb-2fd3-12a48460849f
       ```
-
-      </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Confirm that the template components exist by running the following command:
 
@@ -861,26 +702,16 @@ Verification
 
   After the `StackStatus` displays `CREATE_COMPLETE`, the output displays values for the following parameters:
 
-  |  |  |
-  |----|----|
-  | `PublicSubnetId` | The IDs of the public subnet created by the CloudFormation stack. |
+  |                   |                                                                    |
+  |-------------------|--------------------------------------------------------------------|
+  | `PublicSubnetId`  | The IDs of the public subnet created by the CloudFormation stack.  |
   | `PrivateSubnetId` | The IDs of the private subnet created by the CloudFormation stack. |
 
   Ensure that you provide these parameter values to the other CloudFormation templates that you run to create for your cluster.
 
-</div>
-
 ## CloudFormation template for the VPC subnet
 
 You can use the following CloudFormation template to deploy the private and public subnets in a zone on Local Zones or Wavelength Zones infrastructure.
-
-<div class="example">
-
-<div class="title">
-
-CloudFormation template for VPC subnets
-
-</div>
 
 ``` yaml
 AWSTemplateFormatVersion: 2010-09-09
@@ -970,8 +801,6 @@ Outputs:
       !Join ["", [!Ref PrivateSubnet]]
 ```
 
-</div>
-
 ## Creating a machine set manifest for an AWS Local Zones or Wavelength Zones node
 
 After you create subnets in AWS Local Zones or Wavelength Zones, you can create a machine set manifest.
@@ -986,25 +815,9 @@ The installation program sets the following labels for the `edge` machine pools 
 
 The following procedure details how you can create a machine set configuraton that matches the `edge` compute pool configuration.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have created subnets in AWS Local Zones or Wavelength Zones.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Manually preserve `edge` machine pool labels when creating the machine set manifest by gathering the AWS API. To complete this action, enter the following command in your command-line interface (CLI):
 
@@ -1023,11 +836,9 @@ Procedure
 
   - For `<value_of_ZoneName>`, specify the name of the Local Zones or Wavelength Zones.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output for Local Zone `us-east-1-nyc-1a`
+    **Example output for Local Zone `us-east-1-nyc-1a`**
 
     </div>
 
@@ -1042,13 +853,9 @@ Procedure
     ]
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example output for Wavelength Zone `us-east-1-wl1`
+    **Example output for Wavelength Zone `us-east-1-wl1`**
 
     </div>
 
@@ -1063,16 +870,15 @@ Procedure
     ]
     ```
 
-    </div>
-
-</div>
-
 ### Sample YAML for a compute machine set custom resource on AWS
 
 This sample YAML defines a compute machine set that runs in the `us-east-1-nyc-1a` Amazon Web Services (AWS) zone and creates nodes that are labeled with `node-role.kubernetes.io/edge: ""`.
 
-> [!NOTE]
-> If you want to reference the sample YAML file in the context of Wavelength Zones, ensure that you replace the AWS Region and zone information with supported Wavelength Zone values.
+<div class="note">
+
+If you want to reference the sample YAML file in the context of Wavelength Zones, ensure that you replace the AWS Region and zone information with supported Wavelength Zone values.
+
+</div>
 
 In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<edge>` is the node label to add.
 
@@ -1174,41 +980,29 @@ spec:
 
 - Optional: Specify custom tag data for your cluster. For example, you might add an admin contact email address by specifying a `name:value` pair of `Email:admin-email@example.com`.
 
-  > [!NOTE]
-  > Custom tags can also be specified during installation in the `install-config.yml` file. If the `install-config.yml` file and the machine set include a tag with the same `name` data, the value for the tag from the machine set takes priority over the value for the tag in the `install-config.yml` file.
+  <div class="note">
+
+  Custom tags can also be specified during installation in the `install-config.yml` file. If the `install-config.yml` file and the machine set include a tag with the same `name` data, the value for the tag from the machine set takes priority over the value for the tag in the `install-config.yml` file.
+
+  </div>
 
 - Specify a taint to prevent user workloads from being scheduled on `edge` nodes.
 
-  > [!NOTE]
-  > After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+  <div class="note">
+
+  After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+
+  </div>
 
 ### Creating a compute machine set
 
 In addition to the compute machine sets created by the installation program, you can create your own to dynamically manage the machine compute resources for specific workloads of your choice.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Deploy an OpenShift Container Platform cluster.
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in to `oc` as a user with `cluster-admin` permission.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a new YAML file that contains the compute machine set custom resource (CR) sample and is named `<file_name>.yaml`.
 
@@ -1222,11 +1016,9 @@ Procedure
         $ oc get machinesets -n openshift-machine-api
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1240,8 +1032,6 @@ Procedure
         agl030519-vplxk-worker-us-east-1f   0         0                             55m
         ```
 
-        </div>
-
     2.  To view values of a specific compute machine set custom resource (CR), run the following command:
 
         ``` terminal
@@ -1249,11 +1039,9 @@ Procedure
           -n openshift-machine-api -o yaml
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1283,14 +1071,15 @@ Procedure
                 ...
         ```
 
-        </div>
-
         - The cluster infrastructure ID.
 
         - A default node label.
 
-          > [!NOTE]
-          > For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
+          <div class="note">
+
+          For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
+
+          </div>
 
         - The values in the `<providerSpec>` section of the compute machine set CR are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
 
@@ -1300,27 +1089,15 @@ Procedure
     $ oc create -f <file_name>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - View the list of compute machine sets by running the following command:
 
   ``` terminal
   $ oc get machineset -n openshift-machine-api
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -1335,8 +1112,6 @@ Verification
   agl030519-vplxk-worker-us-east-1f          0         0                             55m
   ```
 
-  </div>
-
   When the new compute machine set is available, the `DESIRED` and `CURRENT` values match. If the compute machine set is not available, wait a few minutes and run the command again.
 
 - Optional: To check nodes that were created by the edge machine, run the following command:
@@ -1345,11 +1120,9 @@ Verification
   $ oc get nodes -l node-role.kubernetes.io/edge
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -1358,23 +1131,11 @@ Verification
   ip-10-0-207-188.ec2.internal   Ready    edge,worker   172m   v1.25.2+d2e245f
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Installing a cluster on AWS with compute nodes on AWS Local Zones](../../installing/installing_aws/ipi/installing-aws-localzone.xml#installing-aws-localzone)
 
 - [Installing a cluster on AWS with compute nodes on AWS Wavelength Zones](../../installing/installing_aws/ipi/installing-aws-wavelength-zone.xml#installing-aws-wavelength-zone)
-
-</div>
 
 # Creating user workloads in AWS Local Zones or Wavelength Zones
 
@@ -1384,14 +1145,9 @@ When you use the installation program to create a cluster, the installation prog
 
 The installation program creates the compute machine set manifests file with `node-role.kubernetes.io/edge` and `node-role.kubernetes.io/worker` labels applied to each edge compute node that is located in a Local Zones or Wavelength Zones subnet.
 
-> [!NOTE]
-> The examples in the procedure are for a Local Zones infrastructure. If you are working with a Wavelength Zones infrastructure, ensure you adapt the examples to what is supported in this infrastructure.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The examples in the procedure are for a Local Zones infrastructure. If you are working with a Wavelength Zones infrastructure, ensure you adapt the examples to what is supported in this infrastructure.
 
 </div>
 
@@ -1401,23 +1157,11 @@ Prerequisites
 
 - You ensured that the compute machine set for the edge compute nodes on Local Zones or Wavelength Zones subnets specifies the taints for `node-role.kubernetes.io/edge`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a `deployment` resource YAML file for an example application to be deployed in the edge compute node that operates in a Local Zones subnet. Ensure that you specify the correct tolerations that match the taints for the edge compute node.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example of a configured `deployment` resource for an edge compute node that operates in a Local Zone subnet
+    **Example of a configured `deployment` resource for an edge compute node that operates in a Local Zone subnet**
 
     </div>
 
@@ -1487,8 +1231,6 @@ Procedure
               claimName: <pvc_name>
     ```
 
-    </div>
-
     - `storageClassName`: For the Local Zone configuration, you must specify `gp2-csi`.
 
     - `kind`: Defines the `deployment` resource.
@@ -1505,11 +1247,9 @@ Procedure
 
 2.  Create a `service` resource YAML file for the node. This resource exposes a pod from a targeted edge compute node to services that run inside your Local Zone network.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example of a configured `service` resource for an edge compute node that operates in a Local Zone subnet
+    **Example of a configured `service` resource for an edge compute node that operates in a Local Zone subnet**
 
     </div>
 
@@ -1529,29 +1269,15 @@ Procedure
         app: <local_zone_application>
     ```
 
-    </div>
-
     - `kind`: Defines the `service` resource.
 
     - `selector:` Specifies the label type applied to managed pods.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Installing a cluster on AWS with compute nodes on AWS Local Zones](../../installing/installing_aws/ipi/installing-aws-localzone.xml#installing-aws-localzone)
 
 - [Installing a cluster on AWS with compute nodes on AWS Wavelength Zones](../../installing/installing_aws/ipi/installing-aws-wavelength-zone.xml#installing-aws-wavelength-zone)
 
 - [Understanding taints and tolerations](../../nodes/scheduling/nodes-scheduler-taints-tolerations.xml#nodes-scheduler-taints-tolerations-about_nodes-scheduler-taints-tolerations)
-
-</div>
 
 # Next steps
 

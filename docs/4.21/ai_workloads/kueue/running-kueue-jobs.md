@@ -4,29 +4,13 @@ You can run Kubernetes jobs with Red Hat build of Kueue enabled to manage resou
 
 Before you can submit a job to a queue, you must find the name of the local queue.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - A cluster administrator has installed and configured Red Hat build of Kueue on your OpenShift Container Platform cluster.
 
 - A cluster administrator has assigned you the `kueue-batch-user-role` cluster role.
 
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Run the following command to list available local queues in your namespace:
 
@@ -34,11 +18,9 @@ Procedure
   $ oc -n <namespace> get localqueues
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -46,10 +28,6 @@ Procedure
   NAME         CLUSTERQUEUE    PENDING WORKLOADS
   user-queue   cluster-queue   3
   ```
-
-  </div>
-
-</div>
 
 # Defining a job to run with Red Hat build of Kueue
 
@@ -61,14 +39,6 @@ When you are defining a job to run with Red Hat build of Kueue, ensure that it 
 
 Red Hat build of Kueue suspends the job, and then starts it when resources are available. Red Hat build of Kueue creates a corresponding workload, represented as a `Workload` object with a name that matches the job.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - A cluster administrator has installed and configured Red Hat build of Kueue on your OpenShift Container Platform cluster.
 
 - A cluster administrator has assigned you the `kueue-batch-user-role` cluster role.
@@ -77,23 +47,11 @@ Prerequisites
 
 - You have identified the name of the local queue that you want to submit jobs to.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a `Job` object.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example job
+    **Example job**
 
     </div>
 
@@ -121,8 +79,6 @@ Procedure
           restartPolicy: Never
     ```
 
-    </div>
-
     - Defines the resource type as a `Job` object, which represents a batch computation task.
 
     - Provides a prefix for generating a unique name for the job.
@@ -137,27 +93,15 @@ Procedure
     $ oc create -f <filename>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that pods are running for the job you have created, by running the following command and observing the output:
 
   ``` terminal
   $ oc get job <job-name>
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -166,19 +110,15 @@ Verification
   sample-job-sk42x   Suspended   0/1                      2m12s
   ```
 
-  </div>
-
 - Verify that a workload has been created in your namespace for the job, by running the following command and observing the output:
 
   ``` terminal
   $ oc -n <namespace> get workloads
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -186,7 +126,3 @@ Verification
   NAME                         QUEUE          RESERVED IN   ADMITTED   FINISHED   AGE
   job-sample-job-sk42x-77c03   user-queue                                         3m8s
   ```
-
-  </div>
-
-</div>

@@ -4,14 +4,9 @@ You can remove a cluster that you deployed to IBM Power® Virtual Server.
 
 You can remove a cluster that uses installer-provisioned infrastructure that you provisioned from your cloud platform.
 
-> [!NOTE]
-> After uninstallation, check your cloud provider for any resources that were not removed properly, especially with user-provisioned infrastructure clusters. Some resources might exist because either the installation program did not create the resource or could not access the resource.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+After uninstallation, check your cloud provider for any resources that were not removed properly, especially with user-provisioned infrastructure clusters. Some resources might exist because either the installation program did not create the resource or could not access the resource.
 
 </div>
 
@@ -22,16 +17,6 @@ Prerequisites
 - You have configured the `ccoctl` binary.
 
 - You have installed the IBM Cloud® CLI and installed or updated the VPC infrastructure service plugin. For more information see "Prerequisites" in the [IBM Cloud® CLI documentation](https://cloud.ibm.com/docs/vpc?topic=vpc-infrastructure-cli-plugin-vpc-reference&interface=ui#cli-ref-prereqs).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  If the following conditions are met, this step is required:
 
@@ -65,8 +50,11 @@ Procedure
     $ export IBMCLOUD_API_KEY=<api_key>
     ```
 
-    > [!NOTE]
-    > You must set the variable name exactly as specified. The installation program expects the variable name to be present to remove the service IDs that were created when the cluster was installed.
+    <div class="note">
+
+    You must set the variable name exactly as specified. The installation program expects the variable name to be present to remove the service IDs that were created when the cluster was installed.
+
+    </div>
 
 3.  From the directory that has the installation program on the computer that you used to install the cluster, run the following command:
 
@@ -85,10 +73,6 @@ Procedure
 
     <div class="note">
 
-    <div class="title">
-
-    </div>
-
     - You must specify the directory that has the cluster definition files for your cluster. The installation program requires the `metadata.json` file in this directory to delete the cluster.
 
     - You might have to run the `openshift-install destroy` command up to three times to ensure a proper cleanup.
@@ -103,9 +87,10 @@ Procedure
         --name <cluster_name>
     ```
 
-    > [!NOTE]
-    > If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
+    <div class="note">
+
+    If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
+
+    </div>
 
 5.  Optional: Delete the `<installation_directory>` directory and the OpenShift Container Platform installation program.
-
-</div>

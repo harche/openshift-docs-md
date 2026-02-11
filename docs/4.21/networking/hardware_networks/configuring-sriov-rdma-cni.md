@@ -4,14 +4,9 @@ Remote Direct Memory Access (RDMA) allows direct memory access between two syste
 
 Configure an RDMA CNI on SR-IOV.
 
-> [!NOTE]
-> This procedure applies only to Mellanox devices.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+This procedure applies only to Mellanox devices.
 
 </div>
 
@@ -21,23 +16,11 @@ Prerequisites
 
 - You have installed the SR-IOV Network Operator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create an `SriovNetworkPoolConfig` CR and save it as `sriov-nw-pool.yaml`, as shown in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `SriovNetworkPoolConfig` CR
+    **Example `SriovNetworkPoolConfig` CR**
 
     </div>
 
@@ -55,8 +38,6 @@ Procedure
       rdmaMode: exclusive
     ```
 
-    </div>
-
     - Set RDMA network namespace mode to `exclusive`.
 
 2.  Create the `SriovNetworkPoolConfig` resource by running the following command:
@@ -67,11 +48,9 @@ Procedure
 
 3.  Create an `SriovNetworkNodePolicy` CR and save it as `sriov-node-policy.yaml`, as shown in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `SriovNetworkNodePolicy` CR
+    **Example `SriovNetworkNodePolicy` CR**
 
     </div>
 
@@ -93,8 +72,6 @@ Procedure
       resourceName: sriov_nic_pf1
     ```
 
-    </div>
-
     - Activate RDMA mode.
 
 4.  Create the `SriovNetworkNodePolicy` resource by running the following command:
@@ -105,11 +82,9 @@ Procedure
 
 5.  Create an `SriovNetwork` CR and save it as `sriov-network.yaml`, as shown in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `SriovNetwork` CR
+    **Example `SriovNetwork` CR**
 
     </div>
 
@@ -129,8 +104,6 @@ Procedure
         }
     ```
 
-    </div>
-
     - Create the RDMA plugin.
 
 6.  Create the `SriovNetwork` resource by running the following command:
@@ -139,23 +112,13 @@ Procedure
     $ oc create -f sriov-network.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Create a `Pod` CR and save it as `sriov-test-pod.yaml`, as shown in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example runtime configuration
+    **Example runtime configuration**
 
     </div>
 
@@ -181,8 +144,6 @@ Verification
         command: ["sleep", "infinity"]
     ```
 
-    </div>
-
 2.  Create the test pod by running the following command:
 
     ``` terminal
@@ -201,11 +162,9 @@ Verification
     $ ls /sys/bus/pci/devices/${PCIDEVICE_OPENSHIFT_IO_SRIOV_NIC_PF1}/infiniband/*/ports/1/hw_counters/
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -215,7 +174,3 @@ Verification
     lifespan                packet_seq_err req_remote_invalid_request   resp_remote_access_errors   roce_slow_restart       rx_read_requests
     local_ack_timeout_err  req_cqe_error resp_cqe_error                 rnr_nak_retry_err           roce_slow_restart_cnps  rx_write_requests
     ```
-
-    </div>
-
-</div>

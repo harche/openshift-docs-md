@@ -10,8 +10,11 @@ You can update your control plane machines to reflect changes in your underlying
 
 The following example YAML illustrates a valid configuration for a Nutanix cluster.
 
-> [!NOTE]
-> When you create a control plane machine set for an existing cluster, the provider specification must match the `providerSpec` configuration in the control plane machine custom resource (CR) that the installation program creates.
+<div class="note">
+
+When you create a control plane machine set for an existing cluster, the provider specification must match the `providerSpec` configuration in the control plane machine custom resource (CR) that the installation program creates.
+
+</div>
 
 In the following example, the `<cluster_id>` string is the infrastructure ID. The infrastructure ID matches the cluster ID that the installation program used during cluster provisioning. If you have the OpenShift CLI (`oc`) installed, you can obtain the infrastructure ID by running the following command:
 
@@ -19,11 +22,9 @@ In the following example, the `<cluster_id>` string is the infrastructure ID. Th
 $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample Nutanix `providerSpec` values
+**Sample Nutanix `providerSpec` values**
 
 </div>
 
@@ -70,8 +71,6 @@ spec:
             vcpusPerSocket: 1
 ```
 
-</div>
-
 where:
 
 `spec.template.spec.providerSpec.value.bootType`
@@ -79,8 +78,11 @@ Specifies the boot type that the control plane machines use. For more informatio
 
 Valid values are `Legacy`, `SecureBoot`, or `UEFI`. The default is `Legacy`.
 
-> [!NOTE]
-> You must use the `Legacy` boot type in OpenShift Container Platform 4.17.
+<div class="note">
+
+You must use the `Legacy` boot type in OpenShift Container Platform 4.17.
+
+</div>
 
 `spec.template.spec.providerSpec.value.categories`
 Specifies one or more Nutanix Prism categories to apply to control plane machines. This stanza requires `key` and `value` parameters for a category key-value pair that exists in Prism Central. For more information about categories, see [Category management](https://portal.nutanix.com/page/documents/details?targetId=Prism-Central-Guide-vpc_2022_6:ssp-ssp-categories-manage-pc-c.html).
@@ -88,8 +90,11 @@ Specifies one or more Nutanix Prism categories to apply to control plane machine
 `spec.template.spec.providerSpec.value.cluster`
 Specifies a Nutanix Prism Element cluster configuration. In this example, the cluster type is `uuid`, so there is a `uuid` stanza.
 
-> [!NOTE]
-> If the cluster uses a failure domain, configure this parameter in the failure domain. If you specify this value in the provider specification when using a failure domain, the Control Plane Machine Set Operator ignores it and uses the value in the failure domain.
+<div class="note">
+
+If the cluster uses a failure domain, configure this parameter in the failure domain. If you specify this value in the provider specification when using a failure domain, the Control Plane Machine Set Operator ignores it and uses the value in the failure domain.
+
+</div>
 
 `spec.template.spec.providerSpec.value.credentialsSecret`
 Specifies the secret name for the cluster. Do not change this value.
@@ -109,13 +114,19 @@ Specifies the Nutanix project that you use for your cluster. In this example, th
 `spec.template.spec.providerSpec.value.subnets`
 Specify one or more Prism Element subnet objects. In this example, the subnet type is `uuid`, so there is a `uuid` stanza. A maximum of 32 subnets for each Prism Element failure domain in the cluster is supported.
 
-> [!IMPORTANT]
-> Do not remove the original subnet, which hosts the API server and ingress server, from the cluster.
+<div class="important">
+
+Do not remove the original subnet, which hosts the API server and ingress server, from the cluster.
+
+</div>
 
 The CIDR IP address prefix for one of the specified subnets must contain the virtual IP addresses that the OpenShift Container Platform cluster uses. All subnet UUID values must be unique.
 
-> [!NOTE]
-> If the cluster uses a failure domain, configure this parameter in the failure domain. If you specify this value in the provider specification when using a failure domain, the Control Plane Machine Set Operator ignores it and uses the value in the failure domain.
+<div class="note">
+
+If the cluster uses a failure domain, configure this parameter in the failure domain. If you specify this value in the provider specification when using a failure domain, the Control Plane Machine Set Operator ignores it and uses the value in the failure domain.
+
+</div>
 
 `spec.template.spec.providerSpec.value.systemDiskSize`
 Specifies the VM disk size for the control plane machines.

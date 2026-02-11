@@ -33,8 +33,11 @@ status:
 
 - Content image location.
 
-  > [!IMPORTANT]
-  > The base image used for the content images must include `coreutils`.
+  <div class="important">
+
+  The base image used for the content images must include `coreutils`.
+
+  </div>
 
 # Updating security content
 
@@ -44,11 +47,9 @@ Security content is included as container images that the `ProfileBundle` object
 $ oc -n openshift-compliance get profilebundles rhcos4 -oyaml
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -76,8 +77,6 @@ status:
     type: Ready
   dataStreamStatus: VALID
 ```
-
-</div>
 
 - Security container image.
 

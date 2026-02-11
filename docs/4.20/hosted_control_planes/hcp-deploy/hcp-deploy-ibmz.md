@@ -1,7 +1,10 @@
 You can deploy hosted control planes by configuring a cluster to function as a management cluster. The management cluster is the OpenShift Container Platform cluster where the control planes are hosted. The management cluster is also known as the *hosting* cluster.
 
-> [!NOTE]
-> The *management* cluster is not the *managed* cluster. A managed cluster is a cluster that the hub cluster manages. The *management* cluster can run on either the x86_64 architecture, supported beginning with OpenShift Container Platform 4.17 and multicluster engine for Kubernetes Operator 2.7, or the s390x architecture, supported beginning with OpenShift Container Platform 4.20 and multicluster engine for Kubernetes Operator 2.10.
+<div class="note">
+
+The *management* cluster is not the *managed* cluster. A managed cluster is a cluster that the hub cluster manages. The *management* cluster can run on either the x86_64 architecture, supported beginning with OpenShift Container Platform 4.17 and multicluster engine for Kubernetes Operator 2.7, or the s390x architecture, supported beginning with OpenShift Container Platform 4.20 and multicluster engine for Kubernetes Operator 2.10.
+
+</div>
 
 You can convert a managed cluster to a management cluster by using the `hypershift` add-on to deploy the HyperShift Operator on that cluster. Then, you can start to create the hosted cluster.
 
@@ -29,14 +32,9 @@ When you create a hosted cluster with the Agent platform, HyperShift Operator in
 
 - You need to install the hosted control plane command-line interface. For more information, see *Installing the hosted control plane command-line interface*.
 
-> [!NOTE]
-> The *management* cluster can run on either the x86_64 architecture, supported beginning with OpenShift Container Platform 4.17 and multicluster engine for Kubernetes Operator 2.7, or the s390x architecture, supported beginning with OpenShift Container Platform 4.20 and multicluster engine for Kubernetes Operator 2.10.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+The *management* cluster can run on either the x86_64 architecture, supported beginning with OpenShift Container Platform 4.17 and multicluster engine for Kubernetes Operator 2.7, or the s390x architecture, supported beginning with OpenShift Container Platform 4.20 and multicluster engine for Kubernetes Operator 2.10.
 
 </div>
 
@@ -45,8 +43,6 @@ Additional resources
 - [Enabling the central infrastructure management service](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#enable-cim)
 
 - [Installing the hosted control planes command-line interface](../../hosted_control_planes/hcp-prepare/hcp-cli.xml#hcp-cli-terminal_hcp-cli)
-
-</div>
 
 # IBM Z infrastructure requirements
 
@@ -72,11 +68,9 @@ See the following example of a DNS configuration:
 $ cat /var/named/<example.krnl.es.zone>
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -96,8 +90,6 @@ api-int               IN A 1xx.2x.2xx.1xx
 ;
 ;EOF
 ```
-
-</div>
 
 - The record refers to the IP address of the API load balancer that handles ingress and egress traffic for hosted control planes.
 
@@ -120,27 +112,11 @@ As a cluster administrator, you can create a hosted cluster with an external API
 
 You can define a DNS name either during your initial setup or during postinstallation operations, by entering a domain name in the `kubeAPIServerDNSName` parameter of a `HostedCluster` object.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have a valid TLS certificate that covers the DNS name that you set in the `kubeAPIServerDNSName` parameter.
 
 - You have a resolvable DNS name URI that can reach and point to the correct address.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - In the specification for the `HostedCluster` object, add the `kubeAPIServerDNSName` parameter and the address for the domain and specify which certificate to use, as shown in the following example:
 
@@ -161,16 +137,17 @@ Procedure
 
   - The value for the `kubeAPIServerDNSName` parameter must be a valid and addressable domain.
 
-</div>
-
 After you define the `kubeAPIServerDNSName` parameter and specify the certificate, the Control Plane Operator controllers create a `kubeconfig` file named `custom-admin-kubeconfig`, where the file gets stored in the `HostedControlPlane` namespace. The generation of certificates happen from the root CA, and the `HostedControlPlane` namespace manages their expiration and renewal.
 
 The Control Plane Operator reports a new `kubeconfig` file named `CustomKubeconfig` in the `HostedControlPlane` namespace. That file uses the defined new server in the `kubeAPIServerDNSName` parameter.
 
 A reference for the custom `kubeconfig` file exists in the `status` parameter as `CustomKubeconfig` of the `HostedCluster` object. The `CustomKubeConfig` parameter is optional, and you can add the parameter only if the `kubeAPIServerDNSName` parameter is not empty. After you set the `CustomKubeConfig` parameter, the parameter triggers the generation of a secret named `<hosted_cluster_name>-custom-admin-kubeconfig` in the `HostedCluster` namespace. You can use the secret to access the `HostedCluster` API server. If you remove the `CustomKubeConfig` parameter during postinstallation operations, deletion of all related secrets and status references occur.
 
-> [!NOTE]
-> Defining a custom DNS name does not directly impact the data plane, so no expected rollouts occur. The `HostedControlPlane` namespace receives the changes from the HyperShift Operator and deletes the corresponding parameters.
+<div class="note">
+
+Defining a custom DNS name does not directly impact the data plane, so no expected rollouts occur. The `HostedControlPlane` namespace receives the changes from the HyperShift Operator and deletes the corresponding parameters.
+
+</div>
 
 If you remove the `kubeAPIServerDNSName` parameter from the specification for the `HostedCluster` object, all newly generated secrets and the `CustomKubeconfig` reference are removed from the cluster and from the `status` parameter.
 
@@ -182,14 +159,6 @@ You can create a hosted cluster or import one. When the Assisted Installer is en
 
 On bare-metal infrastructure, you can create or import a hosted cluster. After you enable the Assisted Installer as an add-on to multicluster engine Operator and you create a hosted cluster with the Agent platform, the HyperShift Operator installs the Agent Cluster API provider in the hosted control plane namespace. The Agent Cluster API provider connects a management cluster that hosts the control plane and a hosted cluster that consists of only the compute nodes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Each hosted cluster must have a cluster-wide unique name. A hosted cluster name cannot be the same as any existing managed cluster. Otherwise, the multicluster engine Operator cannot manage the hosted cluster.
 
 - Do not use the word `clusters` as a hosted cluster name.
@@ -199,16 +168,6 @@ Prerequisites
 - For best security and management practices, create a hosted cluster separate from other hosted clusters.
 
 - Verify that you have a default storage class configured for your cluster. Otherwise, you might see pending persistent volume claims (PVCs).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a namespace by entering the following command:
 
@@ -290,35 +249,15 @@ Procedure
 
 5.  Confirm that the hosted cluster is ready. The status of `Available: True` indicates the readiness of the control plane.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Manually importing a hosted cluster](../../hosted_control_planes/hcp-import.xml)
 
 - [Extracting the release image digest](../../hosted_control_planes/hcp-disconnected/hcp-deploy-dc-bm.xml#hcp-dc-extract_hcp-deploy-dc-bm)
 
 - [Creating a hosted cluster on bare metal by using the console](../../hosted_control_planes/hcp-deploy/hcp-deploy-bm.xml#hcp-bm-hc-console_hcp-deploy-bm)
 
-</div>
-
 # Creating an InfraEnv resource for hosted control planes on IBM Z
 
 An `InfraEnv` is an environment where hosts that are booted with PXE images can join as agents. In this case, the agents are created in the same namespace as your hosted control plane.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file to contain the configuration. See the following example:
 
@@ -349,8 +288,6 @@ Procedure
     $ oc -n <hosted_control_plane_namespace> get InfraEnv <hosted_cluster_name> -o json
     ```
 
-</div>
-
 # Adding IBM Z agents to the InfraEnv resource
 
 To attach compute nodes to a hosted control plane, create agents that help you to scale the node pool. Adding agents in an IBM Z environment requires additional steps, which are described in detail in this section.
@@ -360,14 +297,6 @@ Unless stated otherwise, these procedures apply to both z/VM and RHEL KVM instal
 ## Adding IBM Z KVM as agents
 
 For IBM Z with KVM, run the following command to start your IBM Z environment with the downloaded PXE images from the `InfraEnv` resource. After the Agents are created, the host communicates with the Assisted Service and registers in the same namespace as the `InfraEnv` resource on the management cluster.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the following command:
 
@@ -423,27 +352,15 @@ Procedure
 
     - Specify the operating system version that you are using.
 
-</div>
-
 ## Adding IBM Z LPAR as agents
 
 You can add the Logical Partition (LPAR) on IBM Z or IBM LinuxONE as a compute node to a hosted control plane.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a boot parameter file for the agents:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example parameter file
+    **Example parameter file**
 
     </div>
 
@@ -460,8 +377,6 @@ Procedure
     ai.ip_cfg_override=1 \
     random.trust_cpu=on rd.luks.options=discard
     ```
-
-    </div>
 
     - For the `coreos.live.rootfs_url` artifact, specify the matching `rootfs` artifact for the `kernel` and `initramfs` that you are starting. Only HTTP and HTTPS protocols are supported.
 
@@ -481,11 +396,9 @@ Procedure
         $ curl -k -L -o generic.ins "< url for ins-file >"
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example URL
+        **Example URL**
 
         </div>
 
@@ -493,15 +406,11 @@ Procedure
         https://…/boot-artifacts/ins-file?arch=s390x&version=4.17.0
         ```
 
-        </div>
-
     2.  Update the `initrd` URL endpoint to include `s390x-initrd-addrsize`:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example URL
+        **Example URL**
 
         </div>
 
@@ -509,27 +418,13 @@ Procedure
         https://…./s390x-initrd-addrsize?api_key=<api-key>&arch=s390x&version=4.17.0
         ```
 
-        </div>
-
 3.  Transfer the `initrd`, `kernel`, `generic.ins`, and `initrd.img.addrsize` parameter files to the file server. For more information about how to transfer the files with FTP and boot, see "Installing in an LPAR".
 
 4.  Start the machine.
 
 5.  Repeat the procedure for all other machines in the cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Installing in an LPAR](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/performing_a_standard_rhel_8_installation/installing-in-an-lpar_installing-rhel)
-
-</div>
 
 ## Adding IBM z/VM as agents
 
@@ -537,21 +432,11 @@ If you want to use a static IP for z/VM guest, you must configure the `NMStateCo
 
 Complete the following steps to start your IBM Z environment with the downloaded PXE images from the `InfraEnv` resource. After the Agents are created, the host communicates with the Assisted Service and registers in the same namespace as the `InfraEnv` resource on the management cluster.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Update the parameter file to add the `rootfs_url`, `network_adaptor` and `disk_type` values.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example parameter file
+    **Example parameter file**
 
     </div>
 
@@ -568,22 +453,21 @@ Procedure
     ai.ip_cfg_override=1 \
     ```
 
-    </div>
-
     - For the `coreos.live.rootfs_url` artifact, specify the matching `rootfs` artifact for the `kernel` and `initramfs` that you are starting. Only HTTP and HTTPS protocols are supported.
 
     - For the `ip` parameter, manually assign the IP address, as described in *Installing a cluster with z/VM on IBM Z and IBM LinuxONE*.
 
     - For installations on DASD-type disks, use `rd.dasd` to specify the DASD where Red Hat Enterprise Linux CoreOS (RHCOS) is to be installed. For installations on FCP-type disks, use `rd.zfcp=<adapter>,<wwpn>,<lun>` to specify the FCP disk where RHCOS is to be installed.
 
-      > [!NOTE]
-      > For FCP multipath configurations, provide two disks instead of one.
+      <div class="note">
 
-      <div class="formalpara">
+      For FCP multipath configurations, provide two disks instead of one.
 
-      <div class="title">
+      </div>
 
-      Example
+      <div class="formalpara-title">
+
+      **Example**
 
       </div>
 
@@ -591,8 +475,6 @@ Procedure
       rd.zfcp=<adapter1>,<wwpn1>,<lun1> \
       rd.zfcp=<adapter2>,<wwpn2>,<lun2>
       ```
-
-      </div>
 
     - Specify this parameter when you use an Open Systems Adapter (OSA) or HiperSockets.
 
@@ -622,11 +504,9 @@ Procedure
     $ oc -n <hosted_control_plane_namespace> get agents
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -635,8 +515,6 @@ Procedure
     50c23cda-cedc-9bbd-bcf1-9b3a5c75804d    auto-assign
     5e498cd3-542c-e54f-0c58-ed43e28b568a    auto-assign
     ```
-
-    </div>
 
 5.  Run the following command to approve the agent.
 
@@ -655,11 +533,9 @@ Procedure
     $ oc -n <hosted_control_plane_namespace> get agents
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -669,23 +545,11 @@ Procedure
     5e498cd3-542c-e54f-0c58-ed43e28b568a             true       auto-assign
     ```
 
-    </div>
-
-</div>
-
 # Scaling the NodePool object for a hosted cluster on IBM Z
 
 The `NodePool` object is created when you create a hosted cluster. By scaling the `NodePool` object, you can add more compute nodes to the hosted control plane.
 
 When you scale up a node pool, a machine is created. The Cluster API provider finds an Agent that is approved, is passing validations, is not currently in use, and meets the requirements that are specified in the node pool specification. You can monitor the installation of an Agent by checking its status and conditions.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the following command to scale the `NodePool` object to two nodes:
 
@@ -715,11 +579,9 @@ Procedure
       Agent: {@.metadata.name} State: {@.status.debugInfo.state}{"\n"}{end}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -728,19 +590,15 @@ Procedure
     BMH: Agent: 5e498cd3-542c-e54f-0c58-ed43e28b568a State: insufficient
     ```
 
-    </div>
-
 3.  Run the following command to see the transition phases:
 
     ``` terminal
     $ oc -n <hosted_control_plane_namespace> get agent
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -750,8 +608,6 @@ Procedure
     5e498cd3-542c-e54f-0c58-ed43e28b568a                      true          auto-assign
     da503cf1-a347-44f2-875c-4960ddb04091   hosted-forwarder   true          auto-assign
     ```
-
-    </div>
 
 4.  Run the following command to generate the `kubeconfig` file to access the hosted cluster:
 
@@ -767,11 +623,9 @@ Procedure
     $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -781,8 +635,6 @@ Procedure
     worker-zvm-1.hostedn.example.com Ready    worker   6m3s     v1.24.0+3882f8f
     ```
 
-    </div>
-
     Cluster Operators start to reconcile by adding workloads to the nodes.
 
 6.  Enter the following command to verify that two machines were created when you scaled up the `NodePool` object:
@@ -791,11 +643,9 @@ Procedure
     $ oc -n <hosted_control_plane_namespace> get machine.cluster.x-k8s.io
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -805,19 +655,15 @@ Procedure
     hosted-forwarder-79558597ff-lfjfk   hosted-forwarder-crqq5   worker-zvm-1.hostedn.example.com   agent://5e498cd3-542c-e54f-0c58-ed43e28b568a   Running   41h   4.15.0
     ```
 
-    </div>
-
 7.  Run the following command to check the cluster version:
 
     ``` terminal
     $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get clusterversion,co
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -826,15 +672,11 @@ Procedure
     clusterversion.config.openshift.io/version   4.15.0-ec.2   True        False         40h     Cluster version is 4.15.0-ec.2
     ```
 
-    </div>
-
 8.  Run the following command to check the cluster operator status:
 
     ``` terminal
     $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get clusteroperators
     ```
-
-</div>
 
 For each component of your cluster, the output shows the following cluster operator statuses: `NAME`, `VERSION`, `AVAILABLE`, `PROGRESSING`, `DEGRADED`, `SINCE`, and `MESSAGE`.
 

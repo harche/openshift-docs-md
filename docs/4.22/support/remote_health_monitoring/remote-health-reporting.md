@@ -10,27 +10,9 @@ To enable remote health reporting, you must change the global cluster pull secre
 
 You can change your existing global cluster pull secret to enable remote health reporting. If you have disabled remote health monitoring, you must download a new pull secret with your `console.openshift.com` access token from Red Hat OpenShift Cluster Manager.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the cluster as a user with the `cluster-admin` role.
 
 - Access to OpenShift Cluster Manager.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to the [Downloads](https://console.redhat.com/openshift/downloads) page on the Red Hat Hybrid Cloud Console.
 
@@ -78,15 +60,7 @@ Procedure
 
     You might need to wait several minutes for the secret to update and your cluster to begin reporting.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  For a verification check from the OpenShift Container Platform web console, complete the following steps:
 
@@ -99,8 +73,6 @@ Verification
     ``` terminal
     $ oc get co insights -o jsonpath='{.status.conditions[?(@.type=="Disabled")]}'
     ```
-
-</div>
 
 # Consequences of disabling remote health reporting
 
@@ -116,8 +88,11 @@ Before you disable remote health reporting, read the following benefits of a con
 
 - Connected clusters enable the OpenShift Cluster Manager service to offer an overview of your clusters and their subscription status.
 
-> [!NOTE]
-> Consider leaving health and usage reporting enabled for pre-production, test, and production clusters. This means that Red Hat can participate in qualifying OpenShift Container Platform in your environments and react more rapidly to product issues.
+<div class="note">
+
+Consider leaving health and usage reporting enabled for pre-production, test, and production clusters. This means that Red Hat can participate in qualifying OpenShift Container Platform in your environments and react more rapidly to product issues.
+
+</div>
 
 The following lists some consequences of disabling remote health reporting on a connected cluster:
 
@@ -135,25 +110,7 @@ In restricted networks, Telemetry and Red Hat Lightspeed data still gets gather
 
 You can change your existing global cluster pull secret to disable remote health reporting. This configuration disables both Telemetry and the Insights Operator.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Download the global cluster pull secret to your local file system:
 
@@ -173,36 +130,19 @@ Procedure
 
     You might need to wait several minutes for the secret to update in your cluster.
 
-</div>
-
 # Registering your disconnected cluster
 
 Register your disconnected OpenShift Container Platform cluster on the Red Hat Hybrid Cloud Console so that your cluster does not get impacted by disabling remote health reporting. For more information, see "Consequences of disabling remote health reporting".
 
-> [!IMPORTANT]
-> By registering your disconnected cluster, you can continue to report your subscription usage to Red Hat. Red Hat can then return accurate usage and capacity trends associated with your subscription, so that you can use the returned information to better organize subscription allocations across all of your resources.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+By registering your disconnected cluster, you can continue to report your subscription usage to Red Hat. Red Hat can then return accurate usage and capacity trends associated with your subscription, so that you can use the returned information to better organize subscription allocations across all of your resources.
 
 </div>
 
 - You logged in to the OpenShift Container Platform web console as the `cluster-admin` role.
 
 - You can log in to the Red Hat Hybrid Cloud Console.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to the [**Register disconnected cluster**](https://console.redhat.com/openshift/register) web page on the Red Hat Hybrid Cloud Console.
 
@@ -214,8 +154,6 @@ Procedure
 
 5.  To register your disconnected cluster, select the **Register cluster** button.
 
-</div>
-
 - [How does the subscriptions service show my subscription data?](https://access.redhat.com/documentation/en-us/subscription_central/2023/html/getting_started_with_the_subscriptions_service/con-how-does-subscriptionwatch-show-data_assembly-viewing-understanding-subscriptionwatch-data-ctxt)(Getting Started with the Subscription Service)
 
 # Updating the global cluster pull secret
@@ -224,25 +162,7 @@ To add new registries or update authentication for your OpenShift Container Plat
 
 Use this procedure when you need a separate registry to store images than the registry used during installation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Optional: To append a new pull secret to the existing pull secret:
 
@@ -298,11 +218,9 @@ Procedure
 
     The secret must contain a valid DockerConfigJSON format.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example pull secret
+    **Example pull secret**
 
     </div>
 
@@ -316,8 +234,6 @@ Procedure
     data:
       .dockerconfigjson: <base64-encoded-docker-config-json>
     ```
-
-    </div>
 
     This results in the following states of the each pull secret:
 
@@ -335,16 +251,4 @@ Procedure
 
     This triggers the automatic cleanup process across your nodes.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Transferring cluster ownership](https://docs.redhat.com/en/documentation/openshift_cluster_manager/1-latest/html-single/managing_clusters/index#transferring-cluster-ownership_downloading-and-updating-pull-secrets)
-
-</div>

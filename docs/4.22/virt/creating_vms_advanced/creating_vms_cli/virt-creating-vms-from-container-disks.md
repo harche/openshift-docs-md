@@ -2,12 +2,15 @@ You can create virtual machines (VMs) by using container disks built from operat
 
 You can enable auto updates for your container disks. See [Managing automatic boot source updates](../../../virt/storage/virt-automatic-bootsource-updates.xml#virt-automatic-bootsource-updates) for details.
 
-> [!IMPORTANT]
-> If the container disks are large, the I/O traffic might increase and cause worker nodes to be unavailable. You can perform the following tasks to resolve this issue:
->
-> - [Pruning `DeploymentConfig` objects](../../../applications/pruning-objects.xml#pruning-deployments_pruning-objects).
->
-> - [Configuring garbage collection](../../../nodes/nodes/nodes-nodes-garbage-collection.xml#nodes-nodes-garbage-collection-configuring_nodes-nodes-configuring).
+<div class="important">
+
+If the container disks are large, the I/O traffic might increase and cause worker nodes to be unavailable. You can perform the following tasks to resolve this issue:
+
+- [Pruning `DeploymentConfig` objects](../../../applications/pruning-objects.xml#pruning-deployments_pruning-objects).
+
+- [Configuring garbage collection](../../../nodes/nodes/nodes-nodes-garbage-collection.xml#nodes-nodes-garbage-collection-configuring_nodes-nodes-configuring).
+
+</div>
 
 You create a VM from a container disk by performing the following steps:
 
@@ -17,8 +20,11 @@ You create a VM from a container disk by performing the following steps:
 
 3.  Create a VM with the container disk as the disk source by using the [web console](../../../virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-from-container-disks.xml#virt-creating-vm-custom-image-web_virt-creating-vms-from-container-disks) or the [command line](../../../virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-from-container-disks.xml#virt-creating-vm-import-cli_virt-creating-vms-from-container-disks).
 
-> [!IMPORTANT]
-> You must install the [QEMU guest agent](../../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent) on VMs created from operating system images that are not provided by Red Hat.
+<div class="important">
+
+You must install the [QEMU guest agent](../../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent) on VMs created from operating system images that are not provided by Red Hat.
+
+</div>
 
 # Building and uploading a container disk
 
@@ -26,30 +32,15 @@ You can build a virtual machine (VM) image into a container disk and upload it t
 
 The size of a container disk is limited by the maximum layer size of the registry where the container disk is hosted.
 
-> [!NOTE]
-> For [Red Hat Quay](https://access.redhat.com/documentation/en-us/red_hat_quay/), you can change the maximum layer size by editing the YAML configuration file that is created when Red Hat Quay is first deployed.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+For [Red Hat Quay](https://access.redhat.com/documentation/en-us/red_hat_quay/), you can change the maximum layer size by editing the YAML configuration file that is created when Red Hat Quay is first deployed.
 
 </div>
 
 - You must have `podman` installed.
 
 - You must have a QCOW2 or RAW image file.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a Dockerfile to build the VM image into a container image. The VM image must be owned by QEMU, which has a UID of `107`, and placed in the `/disk/` directory inside the container. Permissions for the `/disk/` directory must then be set to `0440`.
 
@@ -83,31 +74,11 @@ Procedure
     $ podman push <registry>/<container_disk_name>:latest
     ```
 
-</div>
-
 # Disabling TLS for a container registry
 
 You can disable TLS (transport layer security) for one or more container registries by editing the `insecureRegistries` field of the `HyperConverged` custom resource.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -134,19 +105,9 @@ Procedure
 
     - Replace the examples in this list with valid registry hostnames.
 
-</div>
-
 # Creating a VM from a container disk by using the web console
 
 You can create a virtual machine (VM) by importing a container disk from a container registry by using the OpenShift Container Platform web console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **Catalog** in the web console.
 
@@ -164,35 +125,15 @@ Procedure
 
 8.  Click **Create VirtualMachine**.
 
-</div>
-
 # Creating a VM from a container disk by using the CLI
 
 You can create a virtual machine (VM) from a container disk by using the command line.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You must have access credentials for the container registry that contains the container disk.
 
 - You have installed the `virtctl` CLI.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `VirtualMachine` manifest for your VM and save it as a YAML file. For example, to create a minimal Red Hat Enterprise Linux (RHEL) VM from a container disk, run the following command:
 
@@ -241,15 +182,7 @@ Procedure
     $ oc create -f <vm_manifest_file>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Monitor the status of the VM:
 
@@ -275,5 +208,3 @@ Verification
     ``` terminal
     Successfully connected to vm-rhel-9 console. The escape sequence is ^]
     ```
-
-</div>

@@ -1,9 +1,12 @@
 You can optimize CPU usage in OpenShift Container Platform clusters by using mount namespace encapsulation to provide a private namespace for kubelet and CRI-O processes. This reduces the cluster CPU resources used by systemd with no difference in functionality.
 
-> [!IMPORTANT]
-> Mount namespace encapsulation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Mount namespace encapsulation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 # Encapsulating mount namespaces
 
@@ -49,30 +52,15 @@ The following diagram illustrates the system state after encapsulation.
 
 You can configure mount namespace encapsulation so that a cluster runs with less resource overhead.
 
-> [!NOTE]
-> Mount namespace encapsulation is a Technology Preview feature and it is disabled by default. To use it, you must enable the feature manually.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Mount namespace encapsulation is a Technology Preview feature and it is disabled by default. To use it, you must enable the feature manually.
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a file called `mount_namespace_config.yaml` with the following YAML:
 
@@ -114,11 +102,9 @@ Procedure
     $ oc apply -f mount_namespace_config.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -127,19 +113,15 @@ Procedure
     machineconfig.machineconfiguration.openshift.io/99-kubens-worker created
     ```
 
-    </div>
-
 3.  The `MachineConfig` CR can take up to 30 minutes to finish being applied in the cluster. You can check the status of the `MachineConfig` CR by running the following command:
 
     ``` terminal
     $ oc get mcp
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -149,19 +131,15 @@ Procedure
     worker   rendered-worker-10577f6ab0117ed1825f8af2ac687ddf   False     True       False      3              1                   1
     ```
 
-    </div>
-
 4.  Wait for the `MachineConfig` CR to be applied successfully across all control plane and worker nodes after running the following command:
 
     ``` terminal
     $ oc wait --for=condition=Updated mcp --all --timeout=30m
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -170,21 +148,13 @@ Procedure
     machineconfigpool.machineconfiguration.openshift.io/worker condition met
     ```
 
-    </div>
+<div class="formalpara-title">
 
-</div>
-
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 To verify encapsulation for a cluster host, run the following commands:
-
-</div>
 
 1.  Open a debug shell to the cluster host:
 
@@ -204,11 +174,9 @@ To verify encapsulation for a cluster host, run the following commands:
     sh-4.4# readlink /proc/1/ns/mnt
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -216,27 +184,21 @@ To verify encapsulation for a cluster host, run the following commands:
     mnt:[4026531953]
     ```
 
-    </div>
-
 4.  Check kubelet mount namespace:
 
     ``` terminal
     sh-4.4# readlink /proc/$(pgrep kubelet)/ns/mnt
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     mnt:[4026531840]
     ```
-
-    </div>
 
 5.  Check the CRI-O mount namespace:
 
@@ -244,19 +206,15 @@ To verify encapsulation for a cluster host, run the following commands:
     sh-4.4# readlink /proc/$(pgrep crio)/ns/mnt
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     mnt:[4026531840]
     ```
-
-    </div>
 
 These commands return the mount namespaces associated with systemd, kubelet, and the container runtime. In OpenShift Container Platform, the container runtime is CRI-O.
 
@@ -268,34 +226,19 @@ You can inspect Kubernetes-specific mount points in the cluster host operating s
 
 SSH shell sessions to the cluster host are in the default namespace. To inspect Kubernetes-specific mount points in an SSH shell prompt, you need to run the `kubensenter` script as root. The `kubensenter` script is aware of the state of the mount encapsulation, and is safe to run even if encapsulation is not enabled.
 
-> [!NOTE]
-> `oc debug` remote shell sessions start inside the Kubernetes namespace by default. You do not need to run `kubensenter` to inspect mount points when you use `oc debug`.
+<div class="note">
 
-If the encapsulation feature is not enabled, the `kubensenter findmnt` and `findmnt` commands return the same output, regardless of whether they are run in an `oc debug` session or in an SSH shell prompt.
-
-<div>
-
-<div class="title">
-
-Prerequisites
+`oc debug` remote shell sessions start inside the Kubernetes namespace by default. You do not need to run `kubensenter` to inspect mount points when you use `oc debug`.
 
 </div>
+
+If the encapsulation feature is not enabled, the `kubensenter findmnt` and `findmnt` commands return the same output, regardless of whether they are run in an `oc debug` session or in an SSH shell prompt.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in as a user with `cluster-admin` privileges.
 
 - You have configured SSH access to the cluster host.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open a remote SSH shell to the cluster host. For example:
 
@@ -309,11 +252,9 @@ Procedure
     [core@control-plane-1 ~]$ sudo kubensenter findmnt
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -326,29 +267,21 @@ Procedure
     ...
     ```
 
-    </div>
-
 3.  To start a new interactive shell inside the Kubernetes namespace, run the `kubensenter` script without any arguments:
 
     ``` terminal
     [core@control-plane-1 ~]$ sudo kubensenter
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     kubensenter: Autodetect: kubens.service namespace found at /run/kubens/mnt
     ```
-
-    </div>
-
-</div>
 
 # Running additional services in the encapsulated namespace
 

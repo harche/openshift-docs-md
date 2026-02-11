@@ -90,8 +90,11 @@ The following advisory is available for the OpenShift Compliance Operator 1.7.1:
 
 - [RHBA-2025:14639 - OpenShift Compliance Operator 1.7.1 bug fix update](https://access.redhat.com/errata/RHBA-2025:14639)
 
-> [!NOTE]
-> The OpenShift Compliance Operator 1.7.1 supports PCI-DSS versions 3.2.1 and 4.0.0 on IBM Z® (`s390x`) architecture.
+<div class="note">
+
+The OpenShift Compliance Operator 1.7.1 supports PCI-DSS versions 3.2.1 and 4.0.0 on IBM Z® (`s390x`) architecture.
+
+</div>
 
 ## Bug fixes
 
@@ -295,10 +298,13 @@ This update addresses a CVE in an underlying dependency.
 
 - You can install and use the Compliance Operator in an OpenShift Container Platform cluster running in FIPS mode.
 
-  > [!IMPORTANT]
-  > To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Switching RHEL to FIPS mode](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening).
-  >
-  > When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
+  <div class="important">
+
+  To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Switching RHEL to FIPS mode](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening).
+
+  When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
+
+  </div>
 
 ## Known issue
 
@@ -326,10 +332,13 @@ The following advisory is available for the OpenShift Compliance Operator 1.2.0:
 
 - The CIS OpenShift Container Platform 4 Benchmark v1.4.0 profile is now available for platform and node applications. To locate the CIS OpenShift Container Platform v4 Benchmark, go to [CIS Benchmarks](https://www.cisecurity.org/benchmark/kubernetes) and click **Download Latest CIS Benchmark**, where you can then register to download the benchmark.
 
-  > [!IMPORTANT]
-  > Upgrading to Compliance Operator 1.2.0 will overwrite the CIS OpenShift Container Platform 4 Benchmark 1.1.0 profiles.
-  >
-  > If your OpenShift Container Platform environment contains existing `cis` and `cis-node` remediations, there might be some differences in scan results after upgrading to Compliance Operator 1.2.0.
+  <div class="important">
+
+  Upgrading to Compliance Operator 1.2.0 will overwrite the CIS OpenShift Container Platform 4 Benchmark 1.1.0 profiles.
+
+  If your OpenShift Container Platform environment contains existing `cis` and `cis-node` remediations, there might be some differences in scan results after upgrading to Compliance Operator 1.2.0.
+
+  </div>
 
 - Additional clarity for auditing security context constraints (SCCs) is now available for the `scc-limit-container-allowed-capabilities` rule.
 

@@ -41,14 +41,6 @@ Consider the following when managing this user account:
 
 For more information, see the Nutanix documentation about creating a [Custom Cloud Native role](https://opendocs.nutanix.com/guides/cloud_native_role/), [assigning a role](https://portal.nutanix.com/page/documents/details?targetId=Nutanix-Security-Guide:ssp-ssp-role-assignment-pc-t.html), and [adding a user to a project](https://portal.nutanix.com/page/documents/details?targetId=Prism-Central-Admin-Center-Guide-vpc_2023_1_0_1:ssp-projects-add-users-t.html).
 
-<div class="example">
-
-<div class="title">
-
-Required permissions for creating a Custom Cloud Native role
-
-</div>
-
 <table>
 <colgroup>
 <col style="width: 25%" />
@@ -57,7 +49,7 @@ Required permissions for creating a Custom Cloud Native role
 <col style="width: 25%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Nutanix Object</th>
 <th style="text-align: left;">When required</th>
 <th style="text-align: left;">Required permissions in Nutanix API</th>
@@ -65,7 +57,7 @@ Required permissions for creating a Custom Cloud Native role
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Categories</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Create_Category_Mapping</code><br />
@@ -79,7 +71,7 @@ Required permissions for creating a Custom Cloud Native role
 <code>View_Value_Category</code></p></td>
 <td style="text-align: left;"><p>Create, read, and delete categories that are assigned to the OpenShift Container Platform machines.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Images</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Create_Image</code><br />
@@ -87,7 +79,7 @@ Required permissions for creating a Custom Cloud Native role
 <code>View_Image</code></p></td>
 <td style="text-align: left;"><p>Create, read, and delete the operating system images used for the OpenShift Container Platform machines.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Virtual Machines</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Create_Virtual_Machine</code><br />
@@ -95,31 +87,31 @@ Required permissions for creating a Custom Cloud Native role
 <code>View_Virtual_Machine</code></p></td>
 <td style="text-align: left;"><p>Create, read, and delete the OpenShift Container Platform machines.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Clusters</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>View_Cluster</code></p></td>
 <td style="text-align: left;"><p>View the Prism Element clusters that host the OpenShift Container Platform machines.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Subnets</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>View_Subnet</code></p></td>
 <td style="text-align: left;"><p>View the subnets that host the OpenShift Container Platform machines.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Projects</p></td>
 <td style="text-align: left;"><p>If you will associate a project with compute machines, control plane machines, or all machines.</p></td>
 <td style="text-align: left;"><p><code>View_Project</code></p></td>
 <td style="text-align: left;"><p>View the projects defined in Prism Central and allow a project to be assigned to the OpenShift Container Platform machines.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Tasks</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>View_Task</code></p></td>
 <td style="text-align: left;"><p>Fetch and view tasks on the Prism Element that contain OpenShift Container Platform machines and nodes.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Hosts</p></td>
 <td style="text-align: left;"><p>If you use GPUs with compute machines.</p></td>
 <td style="text-align: left;"><p><code>View_Host</code></p></td>
@@ -127,8 +119,6 @@ Required permissions for creating a Custom Cloud Native role
 </tr>
 </tbody>
 </table>
-
-</div>
 
 ## Cluster limits
 
@@ -164,8 +154,11 @@ You must use either AHV IP Address Management (IPAM) or Dynamic Host Configurati
 
 Nutanix Flow Virtual Networking is supported for new cluster installations. To use this feature, enable Flow Virtual Networking on your AHV cluster before installing. For more information, see [Flow Virtual Networking overview](https://portal.nutanix.com/page/documents/details?targetId=Nutanix-Flow-Virtual-Networking-Guide-vpc_2024_1:ear-flow-nw-overview-pc.html).
 
-> [!NOTE]
-> It is recommended that each OpenShift Container Platform node in the cluster have access to a Network Time Protocol (NTP) server that is discoverable via DHCP. Installation is possible without an NTP server. However, an NTP server prevents errors typically associated with asynchronous server clocks.
+<div class="note">
+
+It is recommended that each OpenShift Container Platform node in the cluster have access to a Network Time Protocol (NTP) server that is discoverable via DHCP. Installation is possible without an NTP server. However, an NTP server prevents errors typically associated with asynchronous server clocks.
+
+</div>
 
 ### Required IP Addresses
 
@@ -185,9 +178,9 @@ If you use your own DNS or DHCP server, you must also create records for each no
 
 A complete DNS record takes the form: `<component>.<cluster_name>.<base_domain>.`.
 
-| Component | Record | Description |
-|----|----|----|
-| API VIP | `api.<cluster_name>.<base_domain>.` | This DNS A/AAAA or CNAME record must point to the load balancer for the control plane machines. This record must be resolvable by both clients external to the cluster and from all the nodes within the cluster. |
+| Component   | Record                                 | Description                                                                                                                                                                                                                                                                                 |
+|-------------|----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| API VIP     | `api.<cluster_name>.<base_domain>.`    | This DNS A/AAAA or CNAME record must point to the load balancer for the control plane machines. This record must be resolvable by both clients external to the cluster and from all the nodes within the cluster.                                                                           |
 | Ingress VIP | `*.apps.<cluster_name>.<base_domain>.` | A wildcard DNS A/AAAA or CNAME record that points to the load balancer that targets the machines that run the Ingress router pods, which are the worker nodes by default. This record must be resolvable by both clients external to the cluster and from all the nodes within the cluster. |
 
 Required DNS records
@@ -198,30 +191,15 @@ The Cloud Credential Operator (CCO) manages cloud provider credentials as Kubern
 
 To create and manage cloud credentials from outside of the cluster when the Cloud Credential Operator (CCO) is operating in manual mode, extract and prepare the CCO utility (`ccoctl`) binary.
 
-> [!NOTE]
-> The `ccoctl` utility is a Linux binary that must run in a Linux environment.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The `ccoctl` utility is a Linux binary that must run in a Linux environment.
 
 </div>
 
 - You have access to an OpenShift Container Platform account with cluster administrator access.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Set a variable for the OpenShift Container Platform release image by running the following command:
 
@@ -235,8 +213,11 @@ Procedure
     $ CCO_IMAGE=$(oc adm release info --image-for='cloud-credential-operator' $RELEASE_IMAGE -a ~/.pull-secret)
     ```
 
-    > [!NOTE]
-    > Ensure that the architecture of the `$RELEASE_IMAGE` matches the architecture of the environment in which you will use the `ccoctl` tool.
+    <div class="note">
+
+    Ensure that the architecture of the `$RELEASE_IMAGE` matches the architecture of the environment in which you will use the `ccoctl` tool.
+
+    </div>
 
 3.  Extract the `ccoctl` binary from the CCO container image within the OpenShift Container Platform release image by running the following command:
 
@@ -252,8 +233,11 @@ Procedure
 
       - `rhel9`: Specify this value for hosts that use RHEL 9.
 
-    > [!NOTE]
-    > The `ccoctl` binary is created in the directory from where you executed the command and not in `/usr/bin/`. You must rename the directory or move the `ccoctl.<rhel_version>` binary to `ccoctl`.
+    <div class="note">
+
+    The `ccoctl` binary is created in the directory from where you executed the command and not in `/usr/bin/`. You must rename the directory or move the `ccoctl.<rhel_version>` binary to `ccoctl`.
+
+    </div>
 
 4.  Change the permissions to make `ccoctl` executable by running the following command:
 
@@ -261,27 +245,15 @@ Procedure
     $ chmod 775 ccoctl
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - To verify that `ccoctl` is ready to use, display the help file. Use a relative file name when you run the command, for example:
 
   ``` terminal
   $ ./ccoctl
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -305,18 +277,6 @@ Verification
   Use "ccoctl [command] --help" for more information about a command.
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Preparing to update a cluster with manually maintained credentials](../../updating/preparing_for_updates/preparing-manual-creds-update.xml#preparing-manual-creds-update)
-
-</div>

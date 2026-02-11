@@ -8,25 +8,9 @@ OpenShift Virtualization offers the following tuning options at the control-plan
 
 You can use the `highBurst` profile to create and maintain a large number of virtual machines (VMs) in one cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Apply the following patch to enable the `highBurst` tuning policy profile:
 
@@ -36,15 +20,7 @@ Procedure
     "value": "highBurst"}]'
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - Run the following command to verify the `highBurst` tuning policy profile is enabled:
 
@@ -55,5 +31,3 @@ Verification
     "webhookConfiguration" "controllerConfiguration" "handlerConfiguration"}} \
     {{"\n"}} {{$config}} = {{$value}} {{end}} {{end}} {{"\n"}}
   ```
-
-</div>

@@ -6,25 +6,7 @@ To enable metrics collection for user-defined projects, configure user workload 
 
 For more information, see "Setting up metrics collection for user-defined projects".
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `cluster-monitoring-config.yaml` YAML file:
 
@@ -45,27 +27,15 @@ Procedure
     $ oc apply -f cluster-monitoring-config.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the monitoring components for user workloads are running in the `openshift-user-workload-monitoring` namespace by running the following command:
 
   ``` terminal
   $ oc -n openshift-user-workload-monitoring get pod
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -76,51 +46,21 @@ Verification
   thanos-ruler-user-workload-0           4/4     Running   0          25h
   ```
 
-  </div>
-
   The status of the pods such as `prometheus-operator`, `prometheus-user-workload`, and `thanos-ruler-user-workload` must be `Running`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Setting up metrics collection for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/configuring-metrics-uwm#setting-up-metrics-collection-for-user-defined-projects_configuring-metrics-uwm)
-
-</div>
 
 # Configuring metrics collection for External Secrets Operator for Red Hat OpenShift by using a ServiceMonitor
 
 The External Secrets Operator for Red Hat OpenShift exposes metrics by default on port `8443` at the `/metrics` service endpoint. You can configure metrics collection for the Operator by creating a `ServiceMonitor` custom resource (CR) that enables the Prometheus Operator to collect custom metrics. For more information, see "Configuring user workload monitoring".
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the External Secrets Operator for Red Hat OpenShift.
 
 - You have enabled the user workload monitoring.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Configure the Operator to use `HTTP` for the metrics server. `HTTPS` is enabled by default.
 
@@ -282,15 +222,7 @@ Procedure
 
         After the `ServiceMonitor` CR is created, the user workload Prometheus instance begins metrics collection from the Operator. The collected metrics are labeled with `job="external-secrets-operator-controller-manager-metrics-service"`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  In the OpenShift Container Platform web console, navigate to **Observe** → **Targets**.
 
@@ -302,47 +234,17 @@ Verification
 
 3.  Confirm that the **Status** column shows `Up` for the `external-secrets-operator`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configurable monitoring components](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm#configurable-monitoring-components_preparing-to-configure-the-monitoring-stack-uwm)
-
-</div>
 
 # Querying metrics for the External Secrets Operator for Red Hat OpenShift
 
 As a cluster administrator, or as a user with view access to all namespaces, you can query the Operator metrics by using the OpenShift Container Platform web console or the command-line interface (CLI). For more information, see "Accessing metrics".
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the External Secrets Operator for Red Hat OpenShift.
 
 - You have enabled monitoring and metrics collection by creating a `ServiceMonitor` object.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Observe** → **Metrics**.
 
@@ -352,47 +254,17 @@ Procedure
     {job="external-secrets-operator-controller-manager-metrics-service"}
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Accessing metrics](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/accessing_metrics/index)
-
-</div>
 
 # Configuring metrics collection for External Secrets Operator for Red Hat OpenShift operands by using a ServiceMonitor
 
 The External Secrets Operator for Red Hat OpenShift operands exposes metrics by default on port `8080` at the `/metrics` service endpoint for all three components (`external-secrets`, `external-secrets-cert-controll`, and `external-secrets-webhook`). You can configure metrics collection for the external-secrets operands by creating a `ServiceMonitor` custom resource (CR) that enables the Prometheus Operator to collect custom metrics. For more information, see "Configuring user workload monitoring".
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the External Secrets Operator for Red Hat OpenShift.
 
 - You have enabled the user workload monitoring.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `ClusterRoleBinding` resource required for granting permissions to access metrics:
 
@@ -477,15 +349,7 @@ Procedure
 
         After the `ServiceMonitor` CR is created, the user workload Prometheus instance begins metrics collection from the External Secrets Operator for Red Hat OpenShift operands. The collected metrics are labeled with `job="external-secrets"`,`job="external-secrets-cainjector"`, and `job="external-secrets-webhook"`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  In the OpenShift Container Platform web console, navigate to **Observe** → **Targets**.
 
@@ -505,47 +369,17 @@ Verification
 
 3.  Confirm that the **Status** column shows `Up` for the `external-secrets`, `external-secrets-cert-controller` and `external-secrets-webhook`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring user workload monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm)
-
-</div>
 
 # Querying metrics for the external-secrets operand
 
 As a cluster administrator, or as a user with view access to all namespaces, you can query `external-secrets` operand metrics by using the OpenShift Container Platform web console or the command-line interface (CLI). For more information, see "Accessing metrics".
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the External Secrets Operator for Red Hat OpenShift.
 
 - You have enabled monitoring and metrics collection by creating a `ServiceMonitor` object.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Observe** → **Metrics**.
 
@@ -563,16 +397,4 @@ Procedure
     {job="external-secrets-cert-controller-metrics"}
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Accessing metrics](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/accessing_metrics/index)
-
-</div>

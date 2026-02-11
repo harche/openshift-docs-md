@@ -1,7 +1,10 @@
 You can deploy hosted control planes by configuring a cluster to function as a management cluster. The management cluster is the OpenShift Container Platform cluster where the control planes are hosted. In some contexts, the management cluster is also known as the *hosting* cluster.
 
-> [!NOTE]
-> The management cluster is not the same thing as the *managed* cluster. A managed cluster is a cluster that the hub cluster manages.
+<div class="note">
+
+The management cluster is not the same thing as the *managed* cluster. A managed cluster is a cluster that the hub cluster manages.
+
+</div>
 
 The hosted control planes feature is enabled by default.
 
@@ -37,26 +40,21 @@ As you prepare to deploy hosted control planes on bare metal, consider the follo
 
 - You need to install the hosted control plane command-line interface.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Advanced configuration](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#advanced-config-engine)
 
 - [Enabling the central infrastructure management service](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#enable-cim)
 
-</div>
-
 ## Bare metal firewall, port, and service requirements
 
 You must meet the firewall, port, and service requirements so that ports can communicate between the management cluster, the control plane, and hosted clusters.
 
-> [!NOTE]
-> Services run on their default ports. However, if you use the `NodePort` publishing strategy, services run on the port that is assigned by the `NodePort` service.
+<div class="note">
+
+Services run on their default ports. However, if you use the `NodePort` publishing strategy, services run on the port that is assigned by the `NodePort` service.
+
+</div>
 
 Use firewall rules, security groups, or other access controls to restrict access to only required sources. Avoid exposing ports publicly unless necessary. For production deployments, use a load balancer to simplify access through a single IP address.
 
@@ -98,17 +96,9 @@ You do not need the following services on bare metal:
 
 - `OIDC`
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Configuring the cluster-wide proxy](../../networking/configuring_network_settings/enable-cluster-wide-proxy.xml#enable-cluster-wide-proxy)
-
-</div>
 
 ## Bare metal infrastructure requirements
 
@@ -118,13 +108,7 @@ The Agent platform does not create any infrastructure, but it does have the foll
 
 - DNS: The API and ingress endpoints must be routable.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Recommended etcd practices](../../etcd/etcd-practices.xml#recommended-etcd-practices)
 
@@ -136,19 +120,15 @@ Additional resources
 
 - [Configuring Ansible Automation Platform jobs to run on hosted clusters](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#ansible-config-hosted-cluster)
 
-</div>
-
 # DNS configurations on bare metal
 
 The API Server for the hosted cluster is exposed as a `NodePort` service. A DNS entry must exist for `api.<hosted_cluster_name>.<base_domain>` that points to destination where the API Server can be reached.
 
 The DNS entry can be as simple as a record that points to one of the nodes in the management cluster that is running the hosted control plane. The entry can also point to a load balancer that is deployed to redirect incoming traffic to the ingress pods.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example DNS configuration
+**Example DNS configuration**
 
 </div>
 
@@ -162,18 +142,17 @@ api-int.example.krnl.es.    IN A 192.168.122.22
 `*`.apps.example.krnl.es. IN A 192.168.122.23
 ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> In the previous example, `*.apps.example.krnl.es. IN A 192.168.122.23` is either a node in the hosted cluster or a load balancer, if one has been configured.
+In the previous example, `*.apps.example.krnl.es. IN A 192.168.122.23` is either a node in the hosted cluster or a load balancer, if one has been configured.
+
+</div>
 
 If you are configuring DNS for a disconnected environment on an IPv6 network, the configuration looks like the following example.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example DNS configuration for an IPv6 network
+**Example DNS configuration for an IPv6 network**
 
 </div>
 
@@ -187,15 +166,11 @@ api-int.example.krnl.es.    IN A 2620:52:0:1306::7
 `*`.apps.example.krnl.es. IN A 2620:52:0:1306::10
 ```
 
-</div>
-
 If you are configuring DNS for a disconnected environment on a dual stack network, be sure to include DNS entries for both IPv4 and IPv6.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example DNS configuration for a dual stack network
+**Example DNS configuration for a dual stack network**
 
 </div>
 
@@ -219,8 +194,6 @@ dhcp-host=aa:aa:aa:aa:10:06,ocp-installer,[2620:52:0:1306::8]
 dhcp-host=aa:aa:aa:aa:10:07,ocp-bootstrap,[2620:52:0:1306::9]
 ```
 
-</div>
-
 ## Defining a custom DNS name
 
 As a cluster administrator, you can create a hosted cluster with an external API DNS name that differs from the internal endpoint that gets used for node bootstraps and control plane communication. You might want to define a different DNS name for the following reasons:
@@ -233,27 +206,11 @@ As a cluster administrator, you can create a hosted cluster with an external API
 
 You can define a DNS name either during your initial setup or during postinstallation operations, by entering a domain name in the `kubeAPIServerDNSName` parameter of a `HostedCluster` object.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have a valid TLS certificate that covers the DNS name that you set in the `kubeAPIServerDNSName` parameter.
 
 - You have a resolvable DNS name URI that can reach and point to the correct address.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - In the specification for the `HostedCluster` object, add the `kubeAPIServerDNSName` parameter and the address for the domain and specify which certificate to use, as shown in the following example:
 
@@ -274,16 +231,17 @@ Procedure
 
   - The value for the `kubeAPIServerDNSName` parameter must be a valid and addressable domain.
 
-</div>
-
 After you define the `kubeAPIServerDNSName` parameter and specify the certificate, the Control Plane Operator controllers create a `kubeconfig` file named `custom-admin-kubeconfig`, where the file gets stored in the `HostedControlPlane` namespace. The generation of certificates happen from the root CA, and the `HostedControlPlane` namespace manages their expiration and renewal.
 
 The Control Plane Operator reports a new `kubeconfig` file named `CustomKubeconfig` in the `HostedControlPlane` namespace. That file uses the defined new server in the `kubeAPIServerDNSName` parameter.
 
 A reference for the custom `kubeconfig` file exists in the `status` parameter as `CustomKubeconfig` of the `HostedCluster` object. The `CustomKubeConfig` parameter is optional, and you can add the parameter only if the `kubeAPIServerDNSName` parameter is not empty. After you set the `CustomKubeConfig` parameter, the parameter triggers the generation of a secret named `<hosted_cluster_name>-custom-admin-kubeconfig` in the `HostedCluster` namespace. You can use the secret to access the `HostedCluster` API server. If you remove the `CustomKubeConfig` parameter during postinstallation operations, deletion of all related secrets and status references occur.
 
-> [!NOTE]
-> Defining a custom DNS name does not directly impact the data plane, so no expected rollouts occur. The `HostedControlPlane` namespace receives the changes from the HyperShift Operator and deletes the corresponding parameters.
+<div class="note">
+
+Defining a custom DNS name does not directly impact the data plane, so no expected rollouts occur. The `HostedControlPlane` namespace receives the changes from the HyperShift Operator and deletes the corresponding parameters.
+
+</div>
 
 If you remove the `kubeAPIServerDNSName` parameter from the specification for the `HostedCluster` object, all newly generated secrets and the `CustomKubeconfig` reference are removed from the cluster and from the `status` parameter.
 
@@ -294,14 +252,6 @@ Before you can create a hosted cluster on bare metal, you need an `InfraEnv` res
 ## Creating an InfraEnv resource and adding nodes
 
 On hosted control planes, the control-plane components run as pods on the management cluster while the data plane runs on dedicated nodes. You can use the Assisted Service to boot your hardware with a discovery ISO that adds your hardware to a hardware inventory. Later, when you create a hosted cluster, the hardware from the inventory is used to provision the data-plane nodes. The object that is used to get the discovery ISO is an `InfraEnv` resource. You need to create a `BareMetalHost` object that configures the cluster to boot the bare-metal node from the discovery ISO.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a namespace to store your hardware inventory by entering the following command:
 
@@ -318,19 +268,15 @@ Procedure
     \<namespace_example\>
     Is the name of the namespace that you are creating; for example, `hardware-inventory`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     namespace/hardware-inventory created
     ```
-
-    </div>
 
 2.  Copy the pull secret of the management cluster by entering the following command:
 
@@ -351,19 +297,15 @@ Procedure
     \<namespace_example\>
     Is the name of the namespace that you are creating; for example, `hardware-inventory`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     secret/pull-secret created
     ```
-
-    </div>
 
 3.  Create the `InfraEnv` resource by adding the following content to a YAML file:
 
@@ -419,11 +361,9 @@ Procedure
           $ oc -n <hosted_control_plane_namespace> get agents
           ```
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example output
+          **Example output**
 
           </div>
 
@@ -432,8 +372,6 @@ Procedure
           86f7ac75-4fc4-4b36-8130-40fa12602218                        auto-assign
           e57a637f-745b-496e-971d-1abbf03341ba                        auto-assign
           ```
-
-          </div>
 
           ``` terminal
           $ oc -n <hosted_control_plane_namespace> \
@@ -453,11 +391,9 @@ Procedure
           $ oc -n <hosted_control_plane_namespace> get agents
           ```
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example output
+          **Example output**
 
           </div>
 
@@ -466,8 +402,6 @@ Procedure
           86f7ac75-4fc4-4b36-8130-40fa12602218             true       auto-assign
           e57a637f-745b-496e-971d-1abbf03341ba             true       auto-assign
           ```
-
-          </div>
 
     - If you use the Metal3 Operator, you can automate the bare-metal host registration by creating the following objects:
 
@@ -589,16 +523,19 @@ Procedure
           \<bmc_address\>
           Is the BMC address for the `BareMetalHost` object.
 
-          > [!NOTE]
-          > When you apply this YAML file, the following objects are created:
-          >
-          > - Secrets with credentials for the Baseboard Management Controller (BMCs)
-          >
-          > - The `BareMetalHost` objects
-          >
-          > - A role for the HyperShift Operator to be able to manage the agents
-          >
-          > Notice how the `InfraEnv` resource is referenced in the `BareMetalHost` objects by using the `infraenvs.agent-install.openshift.io: hosted` custom label. This ensures that the nodes are booted with the ISO generated.
+          <div class="note">
+
+          When you apply this YAML file, the following objects are created:
+
+          - Secrets with credentials for the Baseboard Management Controller (BMCs)
+
+          - The `BareMetalHost` objects
+
+          - A role for the HyperShift Operator to be able to manage the agents
+
+          Notice how the `InfraEnv` resource is referenced in the `BareMetalHost` objects by using the `infraenvs.agent-install.openshift.io: hosted` custom label. This ensures that the nodes are booted with the ISO generated.
+
+          </div>
 
       2.  Apply the changes to the YAML file by entering the following command:
 
@@ -614,11 +551,9 @@ Procedure
     $ oc --kubeconfig ~/<directory_example>/mgmt-kubeconfig -n <namespace_example> get bmh
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -629,19 +564,15 @@ Procedure
     hosted-worker2   provisioning              true             106s
     ```
 
-    </div>
-
 8.  Enter the following command to verify that nodes are booting and showing up as agents. This process can take a few minutes, and you might need to enter the command more than once.
 
     ``` terminal
     $ oc --kubeconfig ~/<directory_example>/mgmt-kubeconfig -n <namespace_example> get agent
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -652,21 +583,9 @@ Procedure
     aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0203             true       auto-assign
     ```
 
-    </div>
-
-</div>
-
 ## Creating an InfraEnv resource by using the console
 
 To create an `InfraEnv` resource by using the console, complete the following steps.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open the OpenShift Container Platform web console and log in by entering your administrator credentials. For instructions to open the console, see "Accessing the web console".
 
@@ -675,8 +594,6 @@ Procedure
 3.  Click **Infrastructure → Host inventory → Create infrastructure environment**.
 
 4.  After you create the `InfraEnv` resource, add bare-metal hosts from within the **InfraEnv** view by clicking **Add hosts** and selecting from the available options.
-
-</div>
 
 ## Additional resources
 
@@ -689,14 +606,6 @@ You can create a hosted cluster on bare metal by using the command-line interfac
 ## Creating a hosted cluster by using the CLI
 
 On bare-metal infrastructure, you can create or import a hosted cluster. After you enable the Assisted Installer as an add-on to multicluster engine Operator and you create a hosted cluster with the Agent platform, the HyperShift Operator installs the Agent Cluster API provider in the hosted control plane namespace. The Agent Cluster API provider connects a management cluster that hosts the control plane and a hosted cluster that consists of only the compute nodes.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Each hosted cluster must have a cluster-wide unique name. A hosted cluster name cannot be the same as any existing managed cluster. Otherwise, the multicluster engine Operator cannot manage the hosted cluster.
 
@@ -725,16 +634,6 @@ Prerequisites
   ```
 
 - Ensure that you have added bare-metal nodes to a hardware inventory.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a namespace by entering the following command:
 
@@ -983,11 +882,9 @@ Procedure
         $ oc get svc metallb-ingress -n openshift-ingress
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -995,8 +892,6 @@ Procedure
         NAME              TYPE           CLUSTER-IP       EXTERNAL-IP    PORT(S)                      AGE
         metallb-ingress   LoadBalancer   172.31.127.129   10.11.176.71   80:30961/TCP,443:32090/TCP   16h
         ```
-
-        </div>
 
 9.  Configure the DNS to work with the load balancer:
 
@@ -1008,11 +903,9 @@ Procedure
         $ nslookup console-openshift-console.apps.<hosted_cluster_namespace>.<base_domain> <load_balancer_ip_address>
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1024,17 +917,7 @@ Procedure
         Address: 10.11.176.71
         ```
 
-        </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Check the cluster Operators by entering the following command:
 
@@ -1058,33 +941,13 @@ Verification
     https://console-openshift-console.apps.<hosted_cluster_namespace>.<base_domain>
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Manually importing a hosted cluster](../../hosted_control_planes/hcp-import.xml)
 
 - [Extracting the release image digest](../../hosted_control_planes/hcp-disconnected/hcp-deploy-dc-bm.xml#hcp-dc-extract_hcp-deploy-dc-bm)
 
-</div>
-
 ## Creating a hosted cluster on bare metal by using the console
 
 To create a hosted cluster by using the console, complete the following steps.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open the OpenShift Container Platform web console and log in by entering your administrator credentials. For instructions to open the console, see "Accessing the web console".
 
@@ -1098,16 +961,19 @@ Procedure
 
 5.  On the **Create cluster** page, follow the prompts to enter details about the cluster, node pools, networking, and automation.
 
-    > [!NOTE]
-    > As you enter details about the cluster, you might find the following tips useful:
-    >
-    > - If you want to use predefined values to automatically populate fields in the console, you can create a host inventory credential. For more information, see "Creating a credential for an on-premises environment".
-    >
-    > - On the **Cluster details** page, the pull secret is your OpenShift Container Platform pull secret that you use to access OpenShift Container Platform resources. If you selected a host inventory credential, the pull secret is automatically populated.
-    >
-    > - On the **Node pools** page, the namespace contains the hosts for the node pool. If you created a host inventory by using the console, the console creates a dedicated namespace.
-    >
-    > - On the **Networking** page, you select an API server publishing strategy. The API server for the hosted cluster can be exposed either by using an existing load balancer or as a service of the `NodePort` type. A DNS entry must exist for the `api.<hosted_cluster_name>.<base_domain>` setting that points to the destination where the API server can be reached. This entry can be a record that points to one of the nodes in the management cluster or a record that points to a load balancer that redirects incoming traffic to the Ingress pods.
+    <div class="note">
+
+    As you enter details about the cluster, you might find the following tips useful:
+
+    - If you want to use predefined values to automatically populate fields in the console, you can create a host inventory credential. For more information, see "Creating a credential for an on-premises environment".
+
+    - On the **Cluster details** page, the pull secret is your OpenShift Container Platform pull secret that you use to access OpenShift Container Platform resources. If you selected a host inventory credential, the pull secret is automatically populated.
+
+    - On the **Node pools** page, the namespace contains the hosts for the node pool. If you created a host inventory by using the console, the console creates a dedicated namespace.
+
+    - On the **Networking** page, you select an API server publishing strategy. The API server for the hosted cluster can be exposed either by using an existing load balancer or as a service of the `NodePort` type. A DNS entry must exist for the `api.<hosted_cluster_name>.<base_domain>` setting that points to the destination where the API server can be reached. This entry can be a record that points to one of the nodes in the management cluster or a record that points to a load balancer that redirects incoming traffic to the Ingress pods.
+
+    </div>
 
 6.  Review your entries and click **Create**.
 
@@ -1121,31 +987,11 @@ Procedure
 
 10. To view the node pool status, scroll to the **NodePool** section. The process to install the nodes takes about 10 minutes. You can also click **Nodes** to confirm whether the nodes joined the hosted cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - To access the web console, see [Accessing the web console](../../web_console/web-console.xml#web-console-overview).
-
-</div>
 
 ## Creating a hosted cluster on bare metal by using a mirror registry
 
 You can use a mirror registry to create a hosted cluster on bare metal by specifying the `--image-content-sources` flag in the `hcp create cluster` command.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file to define Image Content Source Policies (ICSP). See the following example:
 
@@ -1196,16 +1042,6 @@ Procedure
 
     - Specify the supported OpenShift Container Platform version that you want to use, for example, `4.20.0-multi`. If you are using a disconnected environment, replace `<ocp_release_image>` with the digest image. To extract the OpenShift Container Platform release image digest, see "Extracting the OpenShift Container Platform release image digest".
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - To create credentials that you can reuse when you create a hosted cluster with the console, see [Creating a credential for an on-premises environment](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#creating-a-credential-for-an-on-premises-environment).
 
 - To access a hosted cluster, see [Accessing the hosted cluster](../../hosted_control_planes/hcp-manage/hcp-manage-bm.xml#hcp-bm-access_hcp-manage-bm).
@@ -1214,19 +1050,9 @@ Next steps
 
 - To extract the OpenShift Container Platform release image digest, see [Extracting the OpenShift Container Platform release image digest](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#configure-hosted-disconnected-digest-image).
 
-</div>
-
 # Verifying hosted cluster creation
 
 After the deployment process is complete, you can verify that the hosted cluster was created successfully. Follow these steps a few minutes after you create the hosted cluster.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Obtain the kubeconfig for your new hosted cluster by entering the extract command:
 
@@ -1241,11 +1067,9 @@ Procedure
     $ oc get co --kubeconfig=kubeconfig-<hosted-cluster-name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1255,19 +1079,15 @@ Procedure
         image-registry                             4.10.26   True        False         False      2m8s
         ingress                                    4.10.26   True        False         False      22m
 
-    </div>
-
 3.  You can also view the running pods on your hosted cluster by entering the following command:
 
     ``` terminal
     $ oc get pods -A --kubeconfig=kubeconfig-<hosted-cluster-name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1281,23 +1101,11 @@ Procedure
         openshift-dns-operator                             dns-operator-77d755cd8c-xjfbn                             2/2     Running            0               21m
         openshift-dns                                      dns-default-kfqnh                                         2/2     Running            0               113s
 
-    </div>
-
-</div>
-
 # Configuring a custom API server certificate in a hosted cluster
 
 To configure a custom certificate for the API server, specify the certificate details in the `spec.configuration.apiServer` section of your `HostedCluster` configuration.
 
 You can configure a custom certificate during either day-1 or day-2 operations. However, because the service publishing strategy is immutable after you set it during hosted cluster creation, you must know what the hostname is for the Kubernetes API server that you plan to configure.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You created a Kubernetes secret that contains your custom certificate in the management cluster. The secret contains the following keys:
 
@@ -1310,16 +1118,6 @@ Prerequisites
 - The certificate must be valid for the external API endpoint.
 
 - The validity period of the certificate aligns with your cluster’s expected life cycle.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a secret with your custom certificate by entering the following command:
 
@@ -1354,20 +1152,8 @@ Procedure
     $ oc apply -f <hosted_cluster_config>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Check the API server pods to ensure that the new certificate is mounted.
 
 - Test the connection to the API server by using the custom domain name.
 
 - Verify the certificate details in your browser or by using tools such as `openssl`.
-
-</div>

@@ -52,28 +52,15 @@ Cluster administrators can allow developers to create their own projects. In mos
 
 This procedure creates a new project called `user-getting-started`. You will use this project throughout the rest of this tutorial.
 
-> [!IMPORTANT]
-> If you are using Developer Sandbox to complete this tutorial, skip this procedure. A project has already been created for you.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you are using Developer Sandbox to complete this tutorial, skip this procedure. A project has already been created for you.
 
 </div>
 
 - You have logged in to the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Create a project by running the following command:
 
@@ -81,11 +68,9 @@ Procedure
   $ oc new-project user-getting-started
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -94,21 +79,9 @@ Procedure
   ...
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [oc new-project](../cli_reference/openshift_cli/developer-cli-commands.xml#oc-new-project)
-
-</div>
 
 # Granting view permissions
 
@@ -120,29 +93,13 @@ By default, the `default` service account has limited permissions to interact wi
 
 As a requirement of the application, you must assign the `view` role to the `default` service account to allow it to communicate with the OpenShift API to learn about pods, services, and resources within the project.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to an OpenShift Container Platform cluster.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have `cluster-admin` or project-level `admin` privileges.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Add the `view` role to the `default` service account in the `user-getting-started` project by running the following command:
 
@@ -150,24 +107,17 @@ Procedure
   $ oc adm policy add-role-to-user view -z default -n user-getting-started
   ```
 
-  > [!IMPORTANT]
-  > If you are using a different project, replace `user-getting-started` with the name of your project.
+  <div class="important">
 
-</div>
+  If you are using a different project, replace `user-getting-started` with the name of your project.
 
-<div>
+  </div>
 
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [RBAC overview](../authentication/using-rbac.xml#authorization-overview_using-rbac)
 
 - [oc adm policy add-role-to-user](../cli_reference/openshift_cli/administrator-cli-commands.xml#oc-adm-policy-add-role-to-user)
-
-</div>
 
 # Deploying the front-end application
 
@@ -177,27 +127,11 @@ The simplest way to deploy an application in OpenShift Container Platform is to 
 
 The following procedure deploys `parksmap`, which is the front-end component of the `national-parks-app` application. The web application displays an interactive map of the locations of national parks across the world.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to an OpenShift Container Platform cluster.
 
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Deploy the `parksmap` application by running the following command:
 
@@ -205,11 +139,9 @@ Procedure
   $ oc new-app quay.io/openshiftroadshow/parksmap:latest --name=parksmap -l 'app=national-parks-app,component=parksmap,role=frontend,app.kubernetes.io/part-of=national-parks-app'
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -228,21 +160,9 @@ Procedure
       Run 'oc status' to view your app.
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [oc new-app](../cli_reference/openshift_cli/developer-cli-commands.xml#oc-new-app)
-
-</div>
 
 ## Exposing the front-end service
 
@@ -252,27 +172,11 @@ A `Route` object is a OpenShift Container Platform networking resource similar t
 
 Optionally, you can define security, such as TLS, for the route.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have deployed the `parksmap` front-end application.
 
 - You have `cluster-admin` or project-level `admin` privileges.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Create a route to expose the `parksmap` front-end application by running the following command:
 
@@ -280,15 +184,7 @@ Procedure
   $ oc create route edge parksmap --service=parksmap
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - Verify that the application route was successfully created by running the following command:
 
@@ -296,11 +192,9 @@ Verification
   $ oc get route parksmap
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -309,23 +203,11 @@ Verification
   parksmap    parksmap-user-getting-started.apps.cluster.example.com             parksmap   8080-tcp   edge          None
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [oc create route edge](../cli_reference/openshift_cli/developer-cli-commands.xml#oc-create-route-edge)
 
 - [oc get](../cli_reference/openshift_cli/developer-cli-commands.xml#oc-get)
-
-</div>
 
 ## Viewing pod details
 
@@ -335,25 +217,9 @@ OpenShift Container Platform uses the Kubernetes concept of a *pod*, which is on
 
 You can view the pods in your cluster and to determine the health of those pods and the cluster as a whole.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have deployed the `parksmap` front-end application.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - List all pods in the current project by running the following command:
 
@@ -361,11 +227,9 @@ Procedure
   $ oc get pods
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -374,19 +238,15 @@ Procedure
   parksmap-5f9579955-6sng8   1/1     Running   0          77s
   ```
 
-  </div>
-
 - Show details for a pod by running the following command:
 
   ``` terminal
   $ oc describe pod parksmap-5f9579955-6sng8
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -406,19 +266,15 @@ Procedure
   ...
   ```
 
-  </div>
-
 - View logs for a pod by running the following command:
 
   ``` terminal
   $ oc logs parksmap-5f9579955-6sng8
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -429,17 +285,7 @@ Procedure
   2025-03-26 18:03:24.801  INFO 1 --- [           main] c.o.evg.roadshow.ParksMapApplication     : Started ParksMapApplication in 4.053 seconds (JVM running for 4.46)
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [oc describe](../cli_reference/openshift_cli/developer-cli-commands.xml#oc-describe)
 
@@ -448,8 +294,6 @@ Additional resources
 - [Viewing pods](../cli_reference/openshift_cli/getting-started-cli.xml#viewing-pods)
 
 - [Viewing pod logs](../cli_reference/openshift_cli/getting-started-cli.xml#viewing-pod-logs)
-
-</div>
 
 ## Scaling up the deployment
 
@@ -461,25 +305,9 @@ When you deploy the `parksmap` image, a deployment resource is created. In this 
 
 The following procedure scales the `parksmap` deployment to use two instances.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have deployed the `parksmap` front-end application.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Scale your deployment from one pod instance to two pod instances by running the following command:
 
@@ -487,11 +315,9 @@ Procedure
   $ oc scale --replicas=2 deployment/parksmap
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -499,17 +325,7 @@ Procedure
   deployment.apps/parksmap scaled
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - Verify that your deployment scaled up properly by running the following command:
 
@@ -517,11 +333,9 @@ Verification
   $ oc get pods
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -531,30 +345,21 @@ Verification
   parksmap-5f9579955-8tgft   1/1     Running   0          24s
   ```
 
-  </div>
-
   Verify that two `parksmap` pods are listed.
 
-  > [!TIP]
-  > To scale your deployment back down to one pod instance, pass in `1` to the `--replicas` option:
-  >
-  > ``` terminal
-  > $ oc scale --replicas=1 deployment/parksmap
-  > ```
+  <div class="tip">
 
-</div>
+  To scale your deployment back down to one pod instance, pass in `1` to the `--replicas` option:
 
-<div>
+  ``` terminal
+  $ oc scale --replicas=1 deployment/parksmap
+  ```
 
-<div class="title">
+  </div>
 
-Additional resources
-
-</div>
+<!-- -->
 
 - [oc scale](../cli_reference/openshift_cli/developer-cli-commands.xml#oc-scale)
-
-</div>
 
 # Deploying the back-end application
 
@@ -562,25 +367,9 @@ Deploy the back-end application that provides the service that queries the datab
 
 The following procedure deploys `nationalparks`, which is the back-end component for the `national-parks-app` application. The Python application performs 2D geo-spatial queries against a MongoDB database to locate and return map coordinates of all national parks in the world.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have deployed the `parksmap` front-end application.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Create the `nationalparks` back-end application by running the following command:
 
@@ -588,11 +377,9 @@ Procedure
   $ oc new-app python~https://github.com/openshift-roadshow/nationalparks-py.git --name nationalparks -l 'app=national-parks-app,component=nationalparks,role=backend,app.kubernetes.io/part-of=national-parks-app,app.kubernetes.io/name=python' --allow-missing-images=true
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -615,35 +402,13 @@ Procedure
       Run 'oc status' to view your app.
   ```
 
-  </div>
-
-</div>
-
 ## Exposing the back-end service
 
 To expose the back-end service so that it is accessible externally, create a route.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have deployed the `nationalparks` back-end application.
 
 - You have `cluster-admin` or project-level `admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a route to expose the `nationalparks` back-end application by running the following command:
 
@@ -659,45 +424,17 @@ Procedure
 
     The application code expects the `nationalparks` route to be labeled with `type=parksmap-backend`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [oc label](../cli_reference/openshift_cli/developer-cli-commands.xml#oc-label)
-
-</div>
 
 # Deploying the database application
 
 Deploy a MongoDB database application to contain the information that your application requires. For this tutorial, you will deploy a database application called `mongodb-nationalparks` that holds the national park location information.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have deployed the `parksmap` front-end application.
 
 - You have deployed the `nationalparks` back-end application.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Deploy the `mongodb-nationalparks` database application by running the following command:
 
@@ -705,11 +442,9 @@ Procedure
   $ oc new-app registry.redhat.io/rhmap47/mongodb --name mongodb-nationalparks -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=mongodb -e MONGODB_ADMIN_PASSWORD=mongodb -l 'app.kubernetes.io/part-of=national-parks-app,app.kubernetes.io/name=mongodb'
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -728,10 +463,6 @@ Procedure
       Run 'oc status' to view your app.
   ```
 
-  </div>
-
-</div>
-
 ## Providing access to the database by creating a secret
 
 Create a `Secret` resource to securely provide the back-end application with the sensitive database connection credentials.
@@ -744,27 +475,9 @@ You can use a *secret* to store sensitive information, and share that secret wit
 
 The following procedure creates the `nationalparks-mongodb-parameters` secret and mounts it to the `nationalparks` workload.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have deployed the `nationalparks` back-end application.
 
 - You have deployed the `mongodb-nationalparks` database application.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the secret with the required database access information by running the following command:
 
@@ -784,29 +497,15 @@ Procedure
     $ oc rollout status deployment nationalparks
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     deployment "nationalparks" successfully rolled out
     ```
-
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Understanding secrets](../nodes/pods/nodes-pods-secrets.xml#nodes-pods-secrets-about_nodes-pods-secrets)
 
@@ -816,33 +515,15 @@ Additional resources
 
 - [oc rollout status](../cli_reference/openshift_cli/developer-cli-commands.xml#oc-rollout-status)
 
-</div>
-
 ## Loading data into the database
 
 After you have deployed the `mongodb-nationalparks` database application, load the national park location information into the database.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have deployed the `nationalparks` back-end application.
 
 - You have deployed the `mongodb-nationalparks` database application.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Load the national parks data by running the following command:
 
@@ -850,11 +531,9 @@ Procedure
   $ oc exec $(oc get pods -l component=nationalparks | tail -n 1 | awk '{print $1;}') -- curl -s http://localhost:8080/ws/data/load
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -862,17 +541,7 @@ Procedure
   "Items inserted in database: 2893"
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - Verify that the map data was loaded properly by running the following command:
 
@@ -880,11 +549,9 @@ Verification
   $ oc exec $(oc get pods -l component=nationalparks | tail -n 1 | awk '{print $1;}') -- curl -s http://localhost:8080/ws/data/all
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output (trimmed)
+  **Example output (trimmed)**
 
   </div>
 
@@ -893,33 +560,13 @@ Verification
   , {"id": "Great Zimbabwe", "latitude": "-20.2674635", "longitude": "30.9337986", "name": "Great Zimbabwe"}]
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [oc exec](../cli_reference/openshift_cli/developer-cli-commands.xml#oc-exec)
-
-</div>
 
 # Viewing the application in a web browser
 
 After you have deployed the necessary applications and loaded data into the database, you are now ready view your application through a browser. You can get the URL for the application by retrieving the route information for the front-end application.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have deployed the `parksmap` front-end application.
 
@@ -929,27 +576,15 @@ Prerequisites
 
 - You have loaded the data into the `mongodb-nationalparks` database.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Get your route information to retrieve your map application URL by running the following command:
 
     ``` terminal
     $ oc get route parksmap
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -958,25 +593,19 @@ Procedure
     parksmap   parksmap-user-getting-started.apps.cluster.example.com            parksmap    8080-tcp   edge          None
     ```
 
-    </div>
-
 2.  From the above output, copy the value in the `HOST/PORT` column.
 
 3.  Add `https://` in front of the copied value to get the application URL. This is necessary because the route is a secured route.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example application URL
+    **Example application URL**
 
     </div>
 
     ``` text
     https://parksmap-user-getting-started.apps.cluster.example.com
     ```
-
-    </div>
 
 4.  Paste this application URL into your web browser. Your browser should display a map of the national parks across the world.
 
@@ -986,5 +615,3 @@ Procedure
     </figure>
 
     If you allow the application to access your location, the map will center on your location.
-
-</div>

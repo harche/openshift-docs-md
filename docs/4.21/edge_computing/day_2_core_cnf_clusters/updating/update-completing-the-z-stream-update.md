@@ -4,20 +4,19 @@ Complete the following steps to perform a z-stream cluster update.
 
 When updating from one y-stream release to the next, you must ensure that the intermediate z-stream releases are also compatible.
 
-> [!NOTE]
-> You can verify that you are updating to a viable release by running the `oc adm upgrade` command. The `oc adm upgrade` command lists the compatible update releases.
+<div class="note">
 
-<div class="formalpara">
+You can verify that you are updating to a viable release by running the `oc adm upgrade` command. The `oc adm upgrade` command lists the compatible update releases.
 
-<div class="title">
+</div>
 
-Procedure
+<div class="formalpara-title">
+
+**Procedure**
 
 </div>
 
 \+ . Start the update:
-
-</div>
 
 \+
 
@@ -27,10 +26,6 @@ $ oc adm upgrade --to=4.15.33
 
 <div class="important">
 
-<div class="title">
-
-</div>
-
 - **Control plane only update**: Ensure you point to the interim \<y+1\> release path
 
 - **Y-stream update** - Ensure you use the correct \<y.z\> release that follows the Kubernetes [version skew policy](https://kubernetes.io/releases/version-skew-policy/).
@@ -39,11 +34,9 @@ $ oc adm upgrade --to=4.15.33
 
 </div>
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -51,21 +44,11 @@ Example output
 Requested update to 4.15.33
 ```
 
-</div>
-
 - The `Requested update` value changes depending on your particular update.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Selecting the target release](../../../edge_computing/day_2_core_cnf_clusters/updating/update-api.xml#update-selecting-the-target-release_update-api)
-
-</div>
 
 # Updating the worker nodes
 
@@ -73,8 +56,11 @@ You upgrade the worker nodes after you have updated the control plane by unpausi
 
 In the case of control plane only upgrades, note that when a worker node is updated it will only require one reboot and will jump \<y+2\>-release versions. This is a feature that was added to decrease the amount of time that it takes to upgrade large bare-metal clusters.
 
-> [!IMPORTANT]
-> This is a potential holding point. You can have a cluster version that is fully supported to run in production with the control plane that is updated to a new EUS release while the worker nodes are at a \<y-2\>-release. This allows large clusters to upgrade in steps across several maintenance windows.
+<div class="important">
+
+This is a potential holding point. You can have a cluster version that is fully supported to run in production with the control plane that is updated to a new EUS release while the worker nodes are at a \<y-2\>-release. This allows large clusters to upgrade in steps across several maintenance windows.
+
+</div>
 
 1.  You can check how many nodes are managed in an `mcp` group. Run the following command to get the list of `mcp` groups:
 
@@ -82,11 +68,9 @@ In the case of control plane only upgrades, note that when a worker node is upda
     $ oc get mcp
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -98,10 +82,11 @@ In the case of control plane only upgrades, note that when a worker node is upda
     worker   rendered-worker-f1ab7b9a768e1b0ac9290a18817f60f0   True      False      False      0              0                   0                     0                      36d
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > You decide how many `mcp` groups to upgrade at a time. This depends on how many pods can be taken down at a time and how your pod disruption budget and anti-affinity settings are configured.
+    You decide how many `mcp` groups to upgrade at a time. This depends on how many pods can be taken down at a time and how your pod disruption budget and anti-affinity settings are configured.
+
+    </div>
 
 2.  Get the list of nodes in the cluster:
 
@@ -109,11 +94,9 @@ In the case of control plane only upgrades, note that when a worker node is upda
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -126,19 +109,15 @@ In the case of control plane only upgrades, note that when a worker node is upda
     worker-1       Ready    mcp-2,worker           5d8h   v1.27.15+6147456
     ```
 
-    </div>
-
 3.  Confirm the `MachineConfigPool` groups that are paused:
 
     ``` terminal
     $ oc get mcp -o json | jq -r '["MCP","Paused"], ["---","------"], (.items[] | [(.metadata.name), (.spec.paused)]) | @tsv' | grep -v worker
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -150,10 +129,11 @@ In the case of control plane only upgrades, note that when a worker node is upda
     mcp-2   true
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > Each `MachineConfigPool` can be unpaused independently. Therefore, if a maintenance window runs out of time other MCPs do not need to be unpaused immediately. The cluster is supported to run with some worker nodes still at \<y-2\>-release version.
+    Each `MachineConfigPool` can be unpaused independently. Therefore, if a maintenance window runs out of time other MCPs do not need to be unpaused immediately. The cluster is supported to run with some worker nodes still at \<y-2\>-release version.
+
+    </div>
 
 4.  Unpause the required `mcp` group to begin the upgrade:
 
@@ -161,11 +141,9 @@ In the case of control plane only upgrades, note that when a worker node is upda
     $ oc patch mcp/mcp-1 --type merge --patch '{"spec":{"paused":false}}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -173,19 +151,15 @@ In the case of control plane only upgrades, note that when a worker node is upda
     machineconfigpool.machineconfiguration.openshift.io/mcp-1 patched
     ```
 
-    </div>
-
 5.  Confirm that the required `mcp` group is unpaused:
 
     ``` terminal
     $ oc get mcp -o json | jq -r '["MCP","Paused"], ["---","------"], (.items[] | [(.metadata.name), (.spec.paused)]) | @tsv' | grep -v worker
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -197,19 +171,15 @@ In the case of control plane only upgrades, note that when a worker node is upda
     mcp-2   true
     ```
 
-    </div>
-
 6.  As each `mcp` group is upgraded, continue to unpause and upgrade the remaining nodes.
 
     ``` terminal
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -222,23 +192,17 @@ In the case of control plane only upgrades, note that when a worker node is upda
     worker-1       NotReady,SchedulingDisabled   mcp-2,worker           5d8h   v1.27.15+6147456
     ```
 
-    </div>
-
 # Verifying the health of the newly updated cluster
 
 After updating the cluster, verify that the cluster is back up and running.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 \+ . Check the cluster version by running the following command:
-
-</div>
 
 \+
 
@@ -261,11 +225,9 @@ version   4.16.14   True        False         4h38m   Cluster version is 4.16.14
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -278,8 +240,6 @@ version   4.16.14   True        False         4h38m   Cluster version is 4.16.14
     worker-1       Ready    mcp-2,worker           5d9h   v1.29.8+f10c92d
     ```
 
-    </div>
-
     All nodes in the cluster should be in a `Ready` status and running the same version.
 
 2.  Check that there are no paused `mcp` resources in the cluster:
@@ -288,11 +248,9 @@ version   4.16.14   True        False         4h38m   Cluster version is 4.16.14
     $ oc get mcp -o json | jq -r '["MCP","Paused"], ["---","------"], (.items[] | [(.metadata.name), (.spec.paused)]) | @tsv' | grep -v worker
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -304,19 +262,15 @@ version   4.16.14   True        False         4h38m   Cluster version is 4.16.14
     mcp-2   false
     ```
 
-    </div>
-
 3.  Check that all cluster Operators are available:
 
     ``` terminal
     $ oc get co
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -357,8 +311,6 @@ version   4.16.14   True        False         4h38m   Cluster version is 4.16.14
     storage                                    4.16.14   True        False         False      5d9h
     ```
 
-    </div>
-
     All cluster Operators should report `True` in the `AVAILABLE` column.
 
 4.  Check that all pods are healthy:
@@ -369,5 +321,8 @@ version   4.16.14   True        False         4h38m   Cluster version is 4.16.14
 
     This should not return any pods.
 
-    > [!NOTE]
-    > You might see a few pods still moving after the update. Watch this for a while to make sure all pods are cleared.
+    <div class="note">
+
+    You might see a few pods still moving after the update. Watch this for a while to make sure all pods are cleared.
+
+    </div>

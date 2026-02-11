@@ -1,26 +1,22 @@
 When developing consumer applications that make use of Precision Time Protocol (PTP) events on a bare-metal cluster node, you deploy your consumer application in a separate application pod. The consumer application subscribes to PTP events by using the PTP events REST API v2.
 
-> [!NOTE]
-> The following information provides general guidance for developing consumer applications that use PTP events. A complete events consumer application example is outside the scope of this information.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+The following information provides general guidance for developing consumer applications that use PTP events. A complete events consumer application example is outside the scope of this information.
 
 </div>
 
 - [PTP events REST API v2 reference](../../../networking/advanced_networking/ptp/ptp-events-rest-api-reference-v2.xml#ptp-events-rest-api-reference-v2)
 
-</div>
-
 # About the PTP fast event notifications framework
 
 Use the Precision Time Protocol (PTP) fast event REST API v2 to subscribe cluster applications to PTP events that the bare-metal cluster node generates.
 
-> [!NOTE]
-> The fast events notifications framework uses a REST API for communication. The PTP events REST API v2 is based on the *O-RAN O-Cloud Notification API Specification for Event Consumers 4.0* that is available from [O-RAN ALLIANCE Specifications](https://orandownloadsweb.azurewebsites.net/specifications).
+<div class="note">
+
+The fast events notifications framework uses a REST API for communication. The PTP events REST API v2 is based on the *O-RAN O-Cloud Notification API Specification for Event Consumers 4.0* that is available from [O-RAN ALLIANCE Specifications](https://orandownloadsweb.azurewebsites.net/specifications).
+
+</div>
 
 # Retrieving PTP events with the PTP events REST API v2
 
@@ -47,29 +43,11 @@ The consumer application sends an API request to the producer `cloud-event-proxy
 
 To start using PTP fast event notifications for a network interface in your cluster, you must enable the fast event publisher in the PTP Operator `PtpOperatorConfig` custom resource (CR) and configure `ptpClockThreshold` values in a `PtpConfig` CR that you create.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift Container Platform CLI (`oc`).
 
 - You have logged in as a user with `cluster-admin` privileges.
 
 - You have installed the PTP Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Modify the default PTP Operator config to enable PTP fast events.
 
@@ -120,19 +98,7 @@ Procedure
 
     - Optional. If the `ptpClockThreshold` stanza is not present, default values are used for the `ptpClockThreshold` fields. The stanza shows default `ptpClockThreshold` values. The `ptpClockThreshold` values configure how long after the PTP master clock is disconnected before PTP events are triggered. `holdOverTimeout` is the time value in seconds before the PTP clock event state changes to `FREERUN` when the PTP master clock is disconnected. The `maxOffsetThreshold` and `minOffsetThreshold` settings configure offset values in nanoseconds that compare against the values for `CLOCK_REALTIME` (`phc2sys`) or master offset (`ptp4l`). When the `ptp4l` or `phc2sys` offset value is outside this range, the PTP clock state is set to `FREERUN`. When the offset value is within this range, the PTP clock state is set to `LOCKED`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - For a complete example CR that configures `linuxptp` services as an ordinary clock with PTP fast events, see [Configuring linuxptp services as ordinary clock](../../../networking/advanced_networking/ptp/configuring-ptp.xml#configuring-linuxptp-services-as-ordinary-clock_configuring-ptp).
-
-</div>
 
 # PTP events REST API v2 consumer application reference
 
@@ -146,11 +112,9 @@ PTP event consumer applications require the following features:
 
 The following example Go snippets illustrate these requirements:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example PTP events consumer server function in Go
+**Example PTP events consumer server function in Go**
 
 </div>
 
@@ -175,13 +139,9 @@ func getEvent(w http.ResponseWriter, req *http.Request) {
 }
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example PTP events createSubscription function in Go
+**Example PTP events createSubscription function in Go**
 
 </div>
 
@@ -231,15 +191,11 @@ func createSubscription(resourceAddress string) (sub pubsub.PubSub, err error) {
 }
 ```
 
-</div>
-
 - Replace `<node_name>` with the FQDN of the node that is generating the PTP events. For example, `compute-1.example.com`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example PTP events consumer getCurrentState function in Go
+**Example PTP events consumer getCurrentState function in Go**
 
 </div>
 
@@ -260,19 +216,15 @@ func getCurrentState(resource string) {
 }
 ```
 
-</div>
-
 - Replace `<node_name>` with the FQDN of the node that is generating the PTP events. For example, `compute-1.example.com`.
 
 # Reference event consumer deployment and service CRs using PTP events REST API v2
 
 Use the following example PTP event consumer custom resources (CRs) as a reference when deploying your PTP events consumer application for use with the PTP events REST API v2.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Reference cloud event consumer namespace
+**Reference cloud event consumer namespace**
 
 </div>
 
@@ -292,13 +244,9 @@ metadata:
     workload.openshift.io/allowed: management
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Reference cloud event consumer deployment
+**Reference cloud event consumer deployment**
 
 </div>
 
@@ -347,13 +295,9 @@ spec:
           emptyDir: {}
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Reference cloud event consumer service account
+**Reference cloud event consumer service account**
 
 </div>
 
@@ -365,13 +309,9 @@ metadata:
   namespace: cloud-events
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Reference cloud event consumer service
+**Reference cloud event consumer service**
 
 </div>
 
@@ -395,40 +335,23 @@ spec:
   type: ClusterIP
 ```
 
-</div>
-
 # Subscribing to PTP events with the REST API v2
 
 Deploy your `cloud-event-consumer` application container and subscribe the `cloud-event-consumer` application to PTP events posted by the `cloud-event-proxy` container in the pod managed by the PTP Operator.
 
 Subscribe consumer applications to PTP events by sending a `POST` request to `http://ptp-event-publisher-service-NODE_NAME.openshift-ptp.svc.cluster.local:9043/api/ocloudNotifications/v2/subscriptions` passing the appropriate subscription request payload.
 
-> [!NOTE]
-> `9043` is the default port for the `cloud-event-proxy` container deployed in the PTP event producer pod. You can configure a different port for your application as required.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+`9043` is the default port for the `cloud-event-proxy` container deployed in the PTP event producer pod. You can configure a different port for your application as required.
 
 </div>
 
 - [api/ocloudNotifications/v2/subscriptions](../../../networking/advanced_networking/ptp/ptp-events-rest-api-reference-v2.xml#api-ocloud-notifications-v2-subscriptions_using-ptp-hardware-fast-events-framework-v2)
 
-</div>
-
 # Verifying that the PTP events REST API v2 consumer application is receiving events
 
 Verify that the `cloud-event-consumer` container in the application pod is receiving Precision Time Protocol (PTP) events.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -438,27 +361,15 @@ Prerequisites
 
 - You have deployed a cloud events application pod and PTP events consumer application.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Check the logs for the deployed events consumer application. For example, run the following command:
 
     ``` terminal
     $ oc -n cloud-events logs -f deployment/cloud-consumer-deployment
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -483,19 +394,15 @@ Procedure
     level = info msg = "received event {\"specversion\":\"1.0\",\"id\":\"ab423275-f65d-4760-97af-5b0b846605e4\",\"source\":\"/sync/ptp-status/clock-class\",\"type\":\"event.sync.ptp-status.ptp-clock-class-change\",\"time\":\"2024-09-02T13:49:07.226494483Z\",\"data\":{\"version\":\"1.0\",\"values\":[{\"ResourceAddress\":\"/cluster/node/compute-1.example.com/ptp-not-set\",\"data_type\":\"metric\",\"value_type\":\"decimal64.3\",\"value\":\"0\"}]}}"
     ```
 
-    </div>
-
 2.  Optional. Test the REST API by using `oc` and port-forwarding port `9043` from the `linuxptp-daemon` deployment. For example, run the following command:
 
     ``` terminal
     $ oc port-forward -n openshift-ptp ds/linuxptp-daemon 9043:9043
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -505,19 +412,15 @@ Procedure
     Handling connection for 9043
     ```
 
-    </div>
-
     Open a new shell prompt and test the REST API v2 endpoints:
 
     ``` terminal
     $ curl -X GET http://localhost:9043/api/ocloudNotifications/v2/health
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -525,37 +428,15 @@ Procedure
     OK
     ```
 
-    </div>
-
-</div>
-
 # Monitoring PTP fast event metrics
 
 You can monitor PTP fast events metrics from cluster nodes where the `linuxptp-daemon` is running. You can also monitor PTP fast event metrics in the OpenShift Container Platform web console by using the preconfigured and self-updating Prometheus monitoring stack.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Install the OpenShift Container Platform CLI `oc`.
 
 - Log in as a user with `cluster-admin` privileges.
 
 - Install and configure the PTP Operator on a node with PTP-capable hardware.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Start a debug pod for the node by running the following command:
 
@@ -569,11 +450,9 @@ Procedure
     sh-4.4# curl http://localhost:9091/metrics
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -585,8 +464,6 @@ Procedure
     cne_api_events_published{address="/cluster/node/compute-1.example.com/sync/ptp-status/class-change",status="success"} 18
     cne_api_events_published{address="/cluster/node/compute-1.example.com/sync/sync-status/os-clock-sync-state",status="success"} 27
     ```
-
-    </div>
 
 3.  Optional. You can also find PTP events in the logs for the `cloud-event-proxy` container. For example, run the following command:
 
@@ -600,19 +477,7 @@ Procedure
 
 6.  Paste the PTP metric name into the **Expression** field, and click **Run queries**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Accessing metrics as a developer](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.20/html/accessing_metrics/accessing-metrics-as-a-developer)
-
-</div>
 
 # PTP fast event metrics reference
 
@@ -626,64 +491,64 @@ The following table describes the PTP fast events metrics that are available fro
 <col style="width: 37%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Metric</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Example</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>openshift_ptp_clock_class</code></p></td>
 <td style="text-align: left;"><p>Returns the PTP clock class for the interface. Possible values for PTP clock class are 6 (<code>LOCKED</code>), 7 (<code>PRC UNLOCKED IN-SPEC</code>), 52 (<code>PRC UNLOCKED OUT-OF-SPEC</code>), 187 (<code>PRC UNLOCKED OUT-OF-SPEC</code>), 135 (<code>T-BC HOLDOVER IN-SPEC</code>), 165 (<code>T-BC HOLDOVER OUT-OF-SPEC</code>), 248 (<code>DEFAULT</code>), or 255 (<code>SLAVE ONLY CLOCK</code>).</p></td>
 <td style="text-align: left;"><p><code>{node="compute-1.example.com",process="ptp4l"} 6</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>openshift_ptp_clock_state</code></p></td>
 <td style="text-align: left;"><p>Returns the current PTP clock state for the interface. Possible values for PTP clock state are <code>FREERUN</code>, <code>LOCKED</code>, or <code>HOLDOVER</code>.</p></td>
 <td style="text-align: left;"><p><code>{iface="CLOCK_REALTIME", node="compute-1.example.com", process="phc2sys"} 1</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>openshift_ptp_delay_ns</code></p></td>
 <td style="text-align: left;"><p>Returns the delay in nanoseconds between the primary clock sending the timing packet and the secondary clock receiving the timing packet.</p></td>
 <td style="text-align: left;"><p><code>{from="master", iface="ens2fx", node="compute-1.example.com", process="ts2phc"} 0</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>openshift_ptp_ha_profile_status</code></p></td>
 <td style="text-align: left;"><p>Returns the current status of the highly available system clock when there are multiple time sources on different NICs. Possible values are 0 (<code>INACTIVE</code>) and 1 (<code>ACTIVE</code>).</p></td>
 <td style="text-align: left;"><p><code>{node="node1",process="phc2sys",profile="profile1"} 1</code> <code>{node="node1",process="phc2sys",profile="profile2"} 0</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>openshift_ptp_frequency_adjustment_ns</code></p></td>
 <td style="text-align: left;"><p>Returns the frequency adjustment in nanoseconds between 2 PTP clocks. For example, between the upstream clock and the NIC, between the system clock and the NIC, or between the PTP hardware clock (<code>phc</code>) and the NIC.</p></td>
 <td style="text-align: left;"><p><code>{from="phc", iface="CLOCK_REALTIME", node="compute-1.example.com", process="phc2sys"} -6768</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>openshift_ptp_interface_role</code></p></td>
 <td style="text-align: left;"><p>Returns the configured PTP clock role for the interface. Possible values are 0 (<code>PASSIVE</code>), 1 (<code>SLAVE</code>), 2 (<code>MASTER</code>), 3 (<code>FAULTY</code>), 4 (<code>UNKNOWN</code>), or 5 (<code>LISTENING</code>).</p></td>
 <td style="text-align: left;"><p><code>{iface="ens2f0", node="compute-1.example.com", process="ptp4l"} 2</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>openshift_ptp_max_offset_ns</code></p></td>
 <td style="text-align: left;"><p>Returns the maximum offset in nanoseconds between 2 clocks or interfaces. For example, between the upstream GNSS clock and the NIC (<code>ts2phc</code>), or between the PTP hardware clock (<code>phc</code>) and the system clock (<code>phc2sys</code>).</p></td>
 <td style="text-align: left;"><p><code>{from="master", iface="ens2fx", node="compute-1.example.com", process="ts2phc"} 1.038099569e+09</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>openshift_ptp_offset_ns</code></p></td>
 <td style="text-align: left;"><p>Returns the offset in nanoseconds between the DPLL clock or the GNSS clock source and the NIC hardware clock.</p></td>
 <td style="text-align: left;"><p><code>{from="phc", iface="CLOCK_REALTIME", node="compute-1.example.com", process="phc2sys"} -9</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>openshift_ptp_process_restart_count</code></p></td>
 <td style="text-align: left;"><p>Returns a count of the number of times the <code>ptp4l</code> and <code>ts2phc</code> processes were restarted.</p></td>
 <td style="text-align: left;"><p><code>{config="ptp4l.0.config", node="compute-1.example.com",process="phc2sys"} 1</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>openshift_ptp_process_status</code></p></td>
 <td style="text-align: left;"><p>Returns a status code that shows whether the PTP processes are running or not.</p></td>
 <td style="text-align: left;"><p><code>{config="ptp4l.0.config", node="compute-1.example.com",process="phc2sys"} 1</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>openshift_ptp_threshold</code></p></td>
 <td style="text-align: left;"><p>Returns values for <code>HoldOverTimeout</code>, <code>MaxOffsetThreshold</code>, and <code>MinOffsetThreshold</code>.</p>
 <ul>
@@ -695,16 +560,18 @@ The following table describes the PTP fast events metrics that are available fro
 </tbody>
 </table>
 
+PTP fast event metrics
+
 ## PTP fast event metrics only when T-GM is enabled
 
 The following table describes the PTP fast event metrics that are available only when PTP grandmaster clock (T-GM) is enabled.
 
-| Metric | Description | Example |
-|----|----|----|
-| `openshift_ptp_frequency_status` | Returns the current status of the digital phase-locked loop (DPLL) frequency for the NIC. Possible values are -1 (`UNKNOWN`), 0 (`INVALID`), 1 (`FREERUN`), 2 (`LOCKED`), 3 (`LOCKED_HO_ACQ`), or 4 (`HOLDOVER`). | `{from="dpll",iface="ens2fx",node="compute-1.example.com",process="dpll"} 3` |
-| `openshift_ptp_nmea_status` | Returns the current status of the NMEA connection. NMEA is the protocol that is used for 1PPS NIC connections. Possible values are 0 (`UNAVAILABLE`) and 1 (`AVAILABLE`). | `{iface="ens2fx",node="compute-1.example.com",process="ts2phc"} 1` |
-| `openshift_ptp_phase_status` | Returns the status of the DPLL phase for the NIC. Possible values are -1 (`UNKNOWN`), 0 (`INVALID`), 1 (`FREERUN`), 2 (`LOCKED`), 3 (`LOCKED_HO_ACQ`), or 4 (`HOLDOVER`). | `{from="dpll",iface="ens2fx",node="compute-1.example.com",process="dpll"} 3` |
-| `openshift_ptp_pps_status` | Returns the current status of the NIC 1PPS connection. You use the 1PPS connection to synchronize timing between connected NICs. Possible values are 0 (`UNAVAILABLE`) and 1 (`AVAILABLE`). | `{from="dpll",iface="ens2fx",node="compute-1.example.com",process="dpll"} 1` |
-| `openshift_ptp_gnss_status` | Returns the current status of the global navigation satellite system (GNSS) connection. GNSS provides satellite-based positioning, navigation, and timing services globally. Possible values are 0 (`NOFIX`), 1 (`DEAD RECKONING ONLY`), 2 (`2D-FIX`), 3 (`3D-FIX`), 4 (`GPS+DEAD RECKONING FIX`), 5, (`TIME ONLY FIX`). | `{from="gnss",iface="ens2fx",node="compute-1.example.com",process="gnss"} 3` |
+| Metric                           | Description                                                                                                                                                                                                                                                                                                              | Example                                                                      |
+|----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
+| `openshift_ptp_frequency_status` | Returns the current status of the digital phase-locked loop (DPLL) frequency for the NIC. Possible values are -1 (`UNKNOWN`), 0 (`INVALID`), 1 (`FREERUN`), 2 (`LOCKED`), 3 (`LOCKED_HO_ACQ`), or 4 (`HOLDOVER`).                                                                                                        | `{from="dpll",iface="ens2fx",node="compute-1.example.com",process="dpll"} 3` |
+| `openshift_ptp_nmea_status`      | Returns the current status of the NMEA connection. NMEA is the protocol that is used for 1PPS NIC connections. Possible values are 0 (`UNAVAILABLE`) and 1 (`AVAILABLE`).                                                                                                                                                | `{iface="ens2fx",node="compute-1.example.com",process="ts2phc"} 1`           |
+| `openshift_ptp_phase_status`     | Returns the status of the DPLL phase for the NIC. Possible values are -1 (`UNKNOWN`), 0 (`INVALID`), 1 (`FREERUN`), 2 (`LOCKED`), 3 (`LOCKED_HO_ACQ`), or 4 (`HOLDOVER`).                                                                                                                                                | `{from="dpll",iface="ens2fx",node="compute-1.example.com",process="dpll"} 3` |
+| `openshift_ptp_pps_status`       | Returns the current status of the NIC 1PPS connection. You use the 1PPS connection to synchronize timing between connected NICs. Possible values are 0 (`UNAVAILABLE`) and 1 (`AVAILABLE`).                                                                                                                              | `{from="dpll",iface="ens2fx",node="compute-1.example.com",process="dpll"} 1` |
+| `openshift_ptp_gnss_status`      | Returns the current status of the global navigation satellite system (GNSS) connection. GNSS provides satellite-based positioning, navigation, and timing services globally. Possible values are 0 (`NOFIX`), 1 (`DEAD RECKONING ONLY`), 2 (`2D-FIX`), 3 (`3D-FIX`), 4 (`GPS+DEAD RECKONING FIX`), 5, (`TIME ONLY FIX`). | `{from="gnss",iface="ens2fx",node="compute-1.example.com",process="gnss"} 3` |
 
 PTP fast event metrics when T-GM is enabled

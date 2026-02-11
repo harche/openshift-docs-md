@@ -21,14 +21,6 @@ data:
 
 # Replacing the CA Bundle certificate
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a config map that includes the root CA certificate used to sign the wildcard certificate:
 
     ``` terminal
@@ -46,8 +38,6 @@ Procedure
          --type=merge \
          --patch='{"spec":{"trustedCA":{"name":"custom-ca"}}}'
     ```
-
-</div>
 
 # Additional resources
 

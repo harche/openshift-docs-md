@@ -4,12 +4,12 @@ The *software catalog* is the web console interface in OpenShift Container Platf
 
 Cluster administrators can choose from catalogs grouped into the following categories:
 
-| Category | Description |
-|----|----|
-| Red Hat Operators | Red Hat products packaged and shipped by Red Hat. Supported by Red Hat. |
-| Certified Operators | Products from leading independent software vendors (ISVs). Red Hat partners with ISVs to package and ship. Supported by the ISV. |
+| Category            | Description                                                                                                                                                                                                                                                                   |
+|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Red Hat Operators   | Red Hat products packaged and shipped by Red Hat. Supported by Red Hat.                                                                                                                                                                                                       |
+| Certified Operators | Products from leading independent software vendors (ISVs). Red Hat partners with ISVs to package and ship. Supported by the ISV.                                                                                                                                              |
 | Community Operators | Optionally-visible software maintained by relevant representatives in the [redhat-openshift-ecosystem/community-operators-prod/operators](https://github.com/redhat-openshift-ecosystem/community-operators-prod/tree/main/operators) GitHub repository. No official support. |
-| Custom Operators | Operators you add to the cluster yourself. If you have not added any custom Operators, the **Custom** category does not appear in the web console software catalog. |
+| Custom Operators    | Operators you add to the cluster yourself. If you have not added any custom Operators, the **Custom** category does not appear in the web console software catalog.                                                                                                           |
 
 Operators in the software catalog are packaged to run on OLM. This includes a YAML file called a cluster service version (CSV) containing all of the CRDs, RBAC rules, deployments, and container images required to install and securely run the Operator. It also contains user-visible information like a description of its features and supported Kubernetes versions.
 
@@ -21,11 +21,9 @@ The software catalog UI component is driven by the Marketplace Operator by defau
 
 The Marketplace Operator manages an `OperatorHub` custom resource (CR) named `cluster` that manages the default `CatalogSource` objects provided with the software catalog. You can modify this resource to enable or disable the default catalogs, which is useful when configuring OpenShift Container Platform in restricted network environments.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `OperatorHub` custom resource
+**Example `OperatorHub` custom resource**
 
 </div>
 
@@ -43,8 +41,6 @@ spec:
     }
   ]
 ```
-
-</div>
 
 - `disableAllDefaultSources` is an override that controls availability of all default catalogs that are configured by default during an OpenShift Container Platform installation.
 

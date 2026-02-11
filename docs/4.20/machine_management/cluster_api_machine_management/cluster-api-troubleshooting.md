@@ -1,7 +1,10 @@
-> [!IMPORTANT]
-> Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 Use the information in this section to understand and recover from issues you might encounter. Generally, troubleshooting steps for problems with the Cluster API are similar to those steps for problems with the Machine API.
 
@@ -28,27 +31,11 @@ Due to this behavior, the following unintended outcomes can occur on a cluster t
 Workaround
 You can ensure that `oc` commands act on the type of objects you intend by using the corresponding fully qualified name.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster using an account with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To delete a Machine API machine, use the fully qualified name `machine.machine.openshift.io` when running the `oc delete machine` command:
 
@@ -61,8 +48,6 @@ Procedure
   ``` terminal
   $ oc delete machine.cluster.x-k8s.io <machine_name>
   ```
-
-</div>
 
 # Duplicated machine set and machine resources
 
@@ -104,10 +89,13 @@ Although the resources have the same names as their counterparts in the other na
 Result
 Only one of each resource that seems to be a duplicate is active at a time. The inactive nonauthoritative resources do not impact functionality.
 
-> [!IMPORTANT]
-> Do not delete any nonauthoritative resource that does not use the current authoritative API unless you want to delete the corresponding resource that does use the current authoritative API.
->
-> When you delete a nonauthoritative resource that does not use the current authoritative API, the synchronization controller deletes the corresponding resource that does use the current authoritative API. For more information, see "Unexpected resource deletion behavior".
+<div class="important">
+
+Do not delete any nonauthoritative resource that does not use the current authoritative API unless you want to delete the corresponding resource that does use the current authoritative API.
+
+When you delete a nonauthoritative resource that does not use the current authoritative API, the synchronization controller deletes the corresponding resource that does use the current authoritative API. For more information, see "Unexpected resource deletion behavior".
+
+</div>
 
 # Unexpected behavior when changing resource configurations
 
@@ -159,16 +147,19 @@ When you migrate a resource to use a different authoritative API, you might enco
 
 The authoritative API of a compute machine depends on the values of the `.spec.authoritativeAPI` and `.spec.template.spec.authoritativeAPI` fields in the Machine API compute machine set that creates it.
 
-|  |  |  |  |  |
-|----|----|----|----|----|
-| **`.spec.authoritativeAPI` value** | `ClusterAPI` | `ClusterAPI` | `MachineAPI` | `MachineAPI` |
-| **`.spec.template.spec.authoritativeAPI` value** | `ClusterAPI` | `MachineAPI` | `MachineAPI` | `ClusterAPI` |
+|                                                       |              |              |              |              |
+|-------------------------------------------------------|--------------|--------------|--------------|--------------|
+| **`.spec.authoritativeAPI` value**                    | `ClusterAPI` | `ClusterAPI` | `MachineAPI` | `MachineAPI` |
+| **`.spec.template.spec.authoritativeAPI` value**      | `ClusterAPI` | `MachineAPI` | `MachineAPI` | `ClusterAPI` |
 | **`authoritativeAPI` value for new compute machines** | `ClusterAPI` | `ClusterAPI` | `MachineAPI` | `ClusterAPI` |
 
 Interaction of `authoritativeAPI` fields when creating compute machines
 
-> [!NOTE]
-> When the `.spec.authoritativeAPI` value is `ClusterAPI`, the Machine API machine set is not authoritative and the `.spec.template.spec.authoritativeAPI` value is not used. As a result, the only combination that creates a compute machine with the Machine API as authoritative is where the `.spec.authoritativeAPI` and `.spec.template.spec.authoritativeAPI` values are `MachineAPI`.
+<div class="note">
+
+When the `.spec.authoritativeAPI` value is `ClusterAPI`, the Machine API machine set is not authoritative and the `.spec.template.spec.authoritativeAPI` value is not used. As a result, the only combination that creates a compute machine with the Machine API as authoritative is where the `.spec.authoritativeAPI` and `.spec.template.spec.authoritativeAPI` values are `MachineAPI`.
+
+</div>
 
 ## Unexpected machine counts after scaling
 
@@ -229,8 +220,11 @@ The Machine API does not support all configuration options for the Cluster API. 
 
 Attempting to use the following configurations might cause a migration to fail or result in errors.
 
-> [!NOTE]
-> This list might not be exhaustive.
+<div class="note">
+
+This list might not be exhaustive.
+
+</div>
 
 ### General limitations
 

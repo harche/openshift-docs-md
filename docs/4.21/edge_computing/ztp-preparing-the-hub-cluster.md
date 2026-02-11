@@ -46,8 +46,11 @@ Different versions of RHACM can have varying performance characteristics and res
 
 Use the following representative configuration and network specifications to develop your own Hub cluster and network specifications.
 
-> [!IMPORTANT]
-> The following guidelines are based on internal lab benchmark testing only and do not represent complete bare-metal host specifications.
+<div class="important">
+
+The following guidelines are based on internal lab benchmark testing only and do not represent complete bare-metal host specifications.
+
+</div>
 
 <table style="width:90%;">
 <caption>Representative three-node hub cluster machine specifications</caption>
@@ -56,39 +59,44 @@ Use the following representative configuration and network specifications to dev
 <col style="width: 45%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Requirement</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Server hardware</p></td>
 <td style="text-align: left;"><p>3 x Dell PowerEdge R650 rack servers</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>NVMe hard disks</p></td>
 <td style="text-align: left;"><ul>
 <li><p>50 GB disk for <code>/var/lib/etcd</code></p></li>
 <li><p>2.9 TB disk for <code>/var/lib/containers</code></p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>SSD hard disks</p></td>
 <td style="text-align: left;"><ul>
 <li><p>1 SSD split into 15 200GB thin-provisioned logical volumes provisioned as <code>PV</code> CRs</p></li>
 <li><p>1 SSD serving as an extra large <code>PV</code> resource</p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Number of applied DU profile policies</p></td>
 <td style="text-align: left;"><p>5</p></td>
 </tr>
 </tbody>
 </table>
 
-> [!IMPORTANT]
-> The following network specifications are representative of a typical real-world RAN network and were applied to the scale lab environment during testing.
+Representative three-node hub cluster machine specifications
+
+<div class="important">
+
+The following network specifications are representative of a typical real-world RAN network and were applied to the scale lab environment during testing.
+
+</div>
 
 | Specification                 | Description       |
 |-------------------------------|-------------------|
@@ -98,29 +106,11 @@ Use the following representative configuration and network specifications to dev
 
 Simulated lab environment network specifications
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Creating and managing single-node OpenShift clusters with RHACM](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.7/html/install/installing#single-node)
-
-</div>
 
 # Installing GitOps ZTP in a disconnected environment
 
 Use Red Hat Advanced Cluster Management (RHACM), Red Hat OpenShift GitOps, and Topology Aware Lifecycle Manager (TALM) on the hub cluster in the disconnected environment to manage the deployment of multiple managed clusters.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift Container Platform CLI (`oc`).
 
@@ -128,32 +118,19 @@ Prerequisites
 
 - You have configured a disconnected mirror registry for use in the cluster.
 
-  > [!NOTE]
-  > The disconnected mirror registry that you create must contain a version of TALM backup and pre-cache images that matches the version of TALM running in the hub cluster. The spoke cluster must be able to resolve these images in the disconnected mirror registry.
+  <div class="note">
 
-</div>
+  The disconnected mirror registry that you create must contain a version of TALM backup and pre-cache images that matches the version of TALM running in the hub cluster. The spoke cluster must be able to resolve these images in the disconnected mirror registry.
 
-<div>
+  </div>
 
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Install RHACM in the hub cluster. See [Installing RHACM in a disconnected environment](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/install/installing#install-on-disconnected-networks).
 
 - Install GitOps and TALM in the hub cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Installing OpenShift GitOps](https://docs.openshift.com/gitops/latest/installing_gitops/installing-openshift-gitops.html#installing-openshift-gitops)
 
@@ -161,32 +138,15 @@ Additional resources
 
 - [Mirroring an Operator catalog](../disconnected/using-olm.xml#olm-mirror-catalog_olm-restricted-networks)
 
-</div>
-
 # Adding RHCOS ISO and RootFS images to the disconnected mirror host
 
 Before you begin installing clusters in the disconnected environment with Red Hat Advanced Cluster Management (RHACM), you must first host Red Hat Enterprise Linux CoreOS (RHCOS) images for it to use. Use a disconnected mirror to host the RHCOS images.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Deploy and configure an HTTP server to host the RHCOS image resources on the network. You must be able to access the HTTP server from your computer, and from the machines that you create.
 
-</div>
+<div class="important">
 
-> [!IMPORTANT]
-> The RHCOS images might not change with every release of OpenShift Container Platform. You must download images with the highest version that is less than or equal to the version that you install. Use the image versions that match your OpenShift Container Platform version if they are available. You require ISO and RootFS images to install RHCOS on the hosts. RHCOS QCOW2 images are not supported for this installation type.
-
-<div>
-
-<div class="title">
-
-Procedure
+The RHCOS images might not change with every release of OpenShift Container Platform. You must download images with the highest version that is less than or equal to the version that you install. Use the image versions that match your OpenShift Container Platform version if they are available. You require ISO and RootFS images to install RHCOS on the hosts. RHCOS QCOW2 images are not supported for this installation type.
 
 </div>
 
@@ -224,27 +184,15 @@ Procedure
         $ sudo wget https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.17/${OCP_VERSION}/${ROOTFS_IMAGE_NAME} -O /var/www/html/${ROOTFS_IMAGE_NAME}
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification steps
-
-</div>
-
 - Verify that the images downloaded successfully and are being served on the disconnected mirror host, for example:
 
   ``` terminal
   $ wget http://$(hostname)/${ISO_IMAGE_NAME}
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -253,51 +201,21 @@ Verification steps
   rhcos-4.17.1-x86_64-live.x86_64.iso-  11%[====>    ]  10.01M  4.71MB/s
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Creating a mirror registry](../disconnected/installing-mirroring-creating-registry.xml#installing-mirroring-creating-registry)
 
 - [Mirroring images for a disconnected installation](../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images)
 
-</div>
-
 # Enabling the assisted service
 
 Red Hat Advanced Cluster Management (RHACM) uses the assisted service to deploy OpenShift Container Platform clusters. The assisted service is deployed automatically when you enable the MultiClusterHub Operator on Red Hat Advanced Cluster Management (RHACM). After that, you need to configure the `Provisioning` resource to watch all namespaces and to update the `AgentServiceConfig` custom resource (CR) with references to the ISO and RootFS images that are hosted on the mirror registry HTTP server.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in to the hub cluster as a user with `cluster-admin` privileges.
 
 - You have RHACM with `MultiClusterHub` enabled.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Enable the `Provisioning` resource to watch all namespaces and configure mirrors for disconnected environments. For more information, see [Enabling the central infrastructure management service](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.9/html/clusters/cluster_mce_overview#enable-cim).
 
@@ -333,34 +251,17 @@ Procedure
 
 4.  Save and quit the editor to apply the changes.
 
-</div>
-
 # Configuring the hub cluster to use a disconnected mirror registry
 
 You can configure the hub cluster to use a disconnected mirror registry for a disconnected environment.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have a disconnected hub cluster installation with Red Hat Advanced Cluster Management (RHACM) 2.15 installed.
 
 - You have hosted the `rootfs` and `iso` images on an HTTP server. See the *Additional resources* section for guidance about *Mirroring the OpenShift Container Platform image repository*.
 
-</div>
+<div class="warning">
 
-> [!WARNING]
-> If you enable TLS for the HTTP server, you must confirm the root certificate is signed by an authority trusted by the client and verify the trusted certificate chain between your OpenShift Container Platform hub and managed clusters and the HTTP server. Using a server configured with an untrusted certificate prevents the images from being downloaded to the image creation service. Using untrusted HTTPS servers is not supported.
-
-<div>
-
-<div class="title">
-
-Procedure
+If you enable TLS for the HTTP server, you must confirm the root certificate is signed by an authority trusted by the client and verify the trusted certificate chain between your OpenShift Container Platform hub and managed clusters and the HTTP server. Using a server configured with an untrusted certificate prevents the images from being downloaded to the image creation service. Using untrusted HTTPS servers is not supported.
 
 </div>
 
@@ -404,11 +305,9 @@ Procedure
 
     This updates `mirrorRegistryRef` in the `AgentServiceConfig` custom resource, as shown below:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -440,8 +339,6 @@ Procedure
           url: <iso_url>
     ```
 
-    </div>
-
     - Set the `AgentServiceConfig` namespace to `multicluster-engine` to match the `ConfigMap` namespace.
 
     - Set `mirrorRegistryRef.name` to match the definition specified in the related `ConfigMap` CR.
@@ -450,34 +347,17 @@ Procedure
 
     - Set the URL for the ISO hosted on the `httpd` server.
 
-</div>
+<div class="important">
 
-> [!IMPORTANT]
-> A valid NTP server is required during cluster installation. Ensure that a suitable NTP server is available and can be reached from the installed clusters through the disconnected network.
-
-<div>
-
-<div class="title">
-
-Additional resources
+A valid NTP server is required during cluster installation. Ensure that a suitable NTP server is available and can be reached from the installed clusters through the disconnected network.
 
 </div>
 
 - [Mirroring the OpenShift Container Platform repository](../disconnected/installing-mirroring-installation-images.xml#installation-mirror-repository_installing-mirroring-installation-images)
 
-</div>
-
 # Configuring the hub cluster to use unauthenticated registries
 
 You can configure the hub cluster to use unauthenticated registries. Unauthenticated registries does not require authentication to access and download images.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed and configured a hub cluster and installed Red Hat Advanced Cluster Management (RHACM) on the hub cluster.
 
@@ -486,16 +366,6 @@ Prerequisites
 - You have logged in as a user with `cluster-admin` privileges.
 
 - You have configured an unauthenticated registry for use with the hub cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Update the `AgentServiceConfig` custom resource (CR) by running the following command:
 
@@ -519,22 +389,19 @@ Procedure
 
     Unauthenticated registries are listed under `spec.unauthenticatedRegistries` in the `AgentServiceConfig` resource. Any registry on this list is not required to have an entry in the pull secret used for the spoke cluster installation. `assisted-service` validates the pull secret by making sure it contains the authentication information for every image registry used for installation.
 
+<div class="note">
+
+Mirror registries are automatically added to the ignore list and do not need to be added under `spec.unauthenticatedRegistries`. Specifying the `PUBLIC_CONTAINER_REGISTRIES` environment variable in the `ConfigMap` overrides the default values with the specified value. The `PUBLIC_CONTAINER_REGISTRIES` defaults are [quay.io](https://quay.io) and [registry.svc.ci.openshift.org](https://registry.svc.ci.openshift.org).
+
 </div>
 
-> [!NOTE]
-> Mirror registries are automatically added to the ignore list and do not need to be added under `spec.unauthenticatedRegistries`. Specifying the `PUBLIC_CONTAINER_REGISTRIES` environment variable in the `ConfigMap` overrides the default values with the specified value. The `PUBLIC_CONTAINER_REGISTRIES` defaults are [quay.io](https://quay.io) and [registry.svc.ci.openshift.org](https://registry.svc.ci.openshift.org).
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 Verify that you can access the newly added registry from the hub cluster by running the following commands:
-
-</div>
 
 1.  Open a debug shell prompt to the hub cluster:
 
@@ -553,11 +420,9 @@ Verify that you can access the newly added registry from the hub cluster by runn
     \<unauthenticated_registry\>
     Is the new registry, for example, `unauthenticated-image-registry.openshift-image-registry.svc:5000`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -565,36 +430,19 @@ Verify that you can access the newly added registry from the hub cluster by runn
     Login Succeeded!
     ```
 
-    </div>
-
 # Configuring the hub cluster with ArgoCD
 
 You can configure the hub cluster with a set of ArgoCD applications that generate the required installation and policy custom resources (CRs) for each site with GitOps Zero Touch Provisioning (ZTP).
 
-> [!NOTE]
-> Red Hat Advanced Cluster Management (RHACM) uses `ClusterInstance` CRs to generate the Day 1 managed cluster installation CRs for ArgoCD. Each ArgoCD application can manage a maximum of 1000 `ClusterInstance` CRs.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Red Hat Advanced Cluster Management (RHACM) uses `ClusterInstance` CRs to generate the Day 1 managed cluster installation CRs for ArgoCD. Each ArgoCD application can manage a maximum of 1000 `ClusterInstance` CRs.
 
 </div>
 
 - You have a OpenShift Container Platform hub cluster with Red Hat Advanced Cluster Management (RHACM) and Red Hat OpenShift GitOps installed.
 
 - You have extracted the reference deployment from the GitOps ZTP plugin container as described in the "Preparing the GitOps ZTP site configuration repository" section. Extracting the reference deployment creates the `out/argocd/deployment` directory referenced in the following procedure.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Prepare the ArgoCD pipeline configuration:
 
@@ -614,9 +462,9 @@ Procedure
 
         - `path` specifies the path to the `ClusterInstance` and `PolicyGenerator` or `PolicyGentemplate` CRs, respectively.
 
-</div>
+<!-- -->
 
-2.  To install the GitOps ZTP plugin, patch the ArgoCD instance in the hub cluster with the relevant multicluster engine (MCE) subscription image. Customize the patch file that you previously extracted into the `out/argocd/deployment/` directory for your environment.
+1.  To install the GitOps ZTP plugin, patch the ArgoCD instance in the hub cluster with the relevant multicluster engine (MCE) subscription image. Customize the patch file that you previously extracted into the `out/argocd/deployment/` directory for your environment.
 
     1.  Select the `multicluster-operators-subscription` image that matches your RHACM version.
 
@@ -624,10 +472,13 @@ Procedure
 
         - For RHACM 2.10 and later, use the `registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v<rhacm_version>` image.
 
-        > [!IMPORTANT]
-        > The version of the `multicluster-operators-subscription` image must match the RHACM version. Beginning with the MCE 2.10 release, RHEL 9 is the base image for `multicluster-operators-subscription` images.
-        >
-        > Click `[Expand for Operator list]` in the "Platform Aligned Operators" table in [OpenShift Operator Life Cycles](https://access.redhat.com/support/policy/updates/openshift_operators) to view the complete supported Operators matrix for OpenShift Container Platform.
+        <div class="important">
+
+        The version of the `multicluster-operators-subscription` image must match the RHACM version. Beginning with the MCE 2.10 release, RHEL 9 is the base image for `multicluster-operators-subscription` images.
+
+        Click `[Expand for Operator list]` in the "Platform Aligned Operators" table in [OpenShift Operator Life Cycles](https://access.redhat.com/support/policy/updates/openshift_operators) to view the complete supported Operators matrix for OpenShift Container Platform.
+
+        </div>
 
     2.  Modify the `out/argocd/deployment/argocd-openshift-gitops-patch.json` file with the `multicluster-operators-subscription` image that matches your RHACM version:
 
@@ -666,30 +517,28 @@ Procedure
         --patch-file out/argocd/deployment/argocd-openshift-gitops-patch.json
         ```
 
-3.  In RHACM 2.7 and later, the multicluster engine enables the `cluster-proxy-addon` feature by default. Apply the following patch to disable the `cluster-proxy-addon` feature and remove the relevant hub cluster and managed pods that are responsible for this add-on. Run the following command:
+2.  In RHACM 2.7 and later, the multicluster engine enables the `cluster-proxy-addon` feature by default. Apply the following patch to disable the `cluster-proxy-addon` feature and remove the relevant hub cluster and managed pods that are responsible for this add-on. Run the following command:
 
     ``` terminal
     $ oc patch multiclusterengines.multicluster.openshift.io multiclusterengine --type=merge --patch-file out/argocd/deployment/disable-cluster-proxy-addon.json
     ```
 
-4.  Apply the pipeline configuration to your hub cluster by running the following command:
+3.  Apply the pipeline configuration to your hub cluster by running the following command:
 
     ``` terminal
     $ oc apply -k out/argocd/deployment
     ```
 
-5.  Optional: If you have existing ArgoCD applications, verify that the `PrunePropagationPolicy=background` policy is set in the `Application` resource by running the following command:
+4.  Optional: If you have existing ArgoCD applications, verify that the `PrunePropagationPolicy=background` policy is set in the `Application` resource by running the following command:
 
     ``` terminal
     $ oc -n openshift-gitops get applications.argoproj.io  \
     clusters -o jsonpath='{.spec.syncPolicy.syncOptions}' |jq
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output for an existing policy
+    **Example output for an existing policy**
 
     </div>
 
@@ -700,8 +549,6 @@ Procedure
       "RespectIgnoreDifferences=true"
     ]
     ```
-
-    </div>
 
     1.  If the `spec.syncPolicy.syncOption` field does not contain a `PrunePropagationPolicy` parameter or `PrunePropagationPolicy` is set to the `foreground` value, set the policy to `background` in the `Application` resource. See the following example:
 
@@ -719,32 +566,17 @@ Procedure
 
 Before you can use the GitOps Zero Touch Provisioning (ZTP) pipeline, you need to prepare the Git repository to host the site configuration data.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have configured the hub cluster GitOps applications for generating the required installation and policy custom resources (CRs).
 
 - You have deployed the managed clusters using GitOps ZTP.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a directory structure with separate paths for the `ClusterInstance` and `PolicyGenerator` or `PolicyGentemplate` CRs.
 
-    > [!NOTE]
-    > Keep `ClusterInstance` and `PolicyGenerator` or `PolicyGentemplate` CRs in separate directories. Both the `ClusterInstance` and `PolicyGenerator` or `PolicyGentemplate` directories must contain a `kustomization.yaml` file that explicitly includes the files in that directory.
+    <div class="note">
+
+    Keep `ClusterInstance` and `PolicyGenerator` or `PolicyGentemplate` CRs in separate directories. Both the `ClusterInstance` and `PolicyGenerator` or `PolicyGentemplate` directories must contain a `kustomization.yaml` file that explicitly includes the files in that directory.
+
+    </div>
 
 2.  Export the `argocd` directory from the `ztp-site-generate` container image using the following commands:
 
@@ -791,8 +623,6 @@ Procedure
 
 6.  Commit the directory structure and the `kustomization.yaml` files and push to your Git repository. The initial push to Git should include the `kustomization.yaml` files.
 
-</div>
-
 You can use the directory structure under `out/argocd/example` as a reference for the structure and content of your Git repository. That structure includes `ClusterInstance` and `PolicyGenerator` or `PolicyGentemplate` reference CRs for single-node, three-node, and standard clusters. Remove references to cluster types that you are not using.
 
 For all cluster types, you must:
@@ -825,16 +655,11 @@ example/
 
 - Contains custom manifests.
 
-> [!IMPORTANT]
-> Using `PolicyGenTemplate` CRs to manage and deploy policies to managed clusters will be deprecated in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
->
-> For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/governance/index#integrate-policy-generator) documentation.
+<div class="important">
 
-<div>
+Using `PolicyGenTemplate` CRs to manage and deploy policies to managed clusters will be deprecated in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
 
-<div class="title">
-
-Additional resources
+For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/governance/index#integrate-policy-generator) documentation.
 
 </div>
 
@@ -842,36 +667,19 @@ Additional resources
 
 - [Comparing RHACM PolicyGenerator and PolicyGenTemplate resource patching](../edge_computing/policygenerator_for_ztp/ztp-configuring-managed-clusters-policygenerator.xml#ztp-comparing-pgt-and-rhacm-pg-patching-strategies_ztp-configuring-managed-clusters-policygenerator)
 
-</div>
-
 # Preparing the GitOps ZTP site configuration repository for version independence
 
 You can use GitOps ZTP to manage source custom resources (CRs) for managed clusters that are running different versions of OpenShift Container Platform. This means that the version of OpenShift Container Platform running on the hub cluster can be independent of the version running on the managed clusters.
 
-> [!NOTE]
-> The following procedure assumes you are using `PolicyGenerator` resources instead of `PolicyGentemplate` resources for cluster policies management.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The following procedure assumes you are using `PolicyGenerator` resources instead of `PolicyGentemplate` resources for cluster policies management.
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a directory structure with separate paths for the `ClusterInstance` and `PolicyGenerator` CRs.
 
@@ -940,16 +748,17 @@ Procedure
 
     - Create a folder to hold user-provided manifests.
 
-      > [!NOTE]
-      > In the example directory structure, each version subdirectory in the custom `/clusterinstance` directory contains two further subdirectories, one containing the reference manifests copied from the container, the other for custom manifests that you provide. The names assigned to those directories are examples.
+      <div class="note">
+
+      In the example directory structure, each version subdirectory in the custom `/clusterinstance` directory contains two further subdirectories, one containing the reference manifests copied from the container, the other for custom manifests that you provide. The names assigned to those directories are examples.
+
+      </div>
 
 4.  Create ConfigMaps from the manifest directories and reference them in the `ClusterInstance` CR using the `extraManifestsRefs` field.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example kustomization.yaml with configMapGenerator
+    **Example kustomization.yaml with configMapGenerator**
 
     </div>
 
@@ -970,19 +779,15 @@ Procedure
       disableNameSuffixHash: true
     ```
 
-    </div>
-
     - Extra manifest files from the `ztp-site-generate` container.
 
     - User-provided custom manifest files.
 
 5.  Edit the `ClusterInstance` CR to reference the `ConfigMap` CR:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example ClusterInstance CR
+    **Example ClusterInstance CR**
 
     </div>
 
@@ -998,8 +803,6 @@ Procedure
       - name: extra-manifests-cm
     ```
 
-    </div>
-
     - Reference the ConfigMap containing the extra manifests.
 
 6.  Edit the top-level `kustomization.yaml` file to control which OpenShift Container Platform versions are active. The following is an example of a `kustomization.yaml` file at the top level:
@@ -1014,43 +817,21 @@ Procedure
 
     - Use comments to deactivate a version.
 
-</div>
-
 # Configuring the hub cluster for backup and restore
 
 You can use GitOps ZTP to configure a set of policies to back up `BareMetalHost` resources. This allows you to recover data from a failed hub cluster and deploy a replacement cluster using Red Hat Advanced Cluster Management (RHACM).
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in as a user with `cluster-admin` privileges.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a policy to add the `cluster.open-cluster-management.io/backup=cluster-activation` label to all `BareMetalHost` resources that have the `infraenvs.agent-install.openshift.io` label. Save the policy as `BareMetalHostBackupPolicy.yaml`.
 
     The following example adds the `cluster.open-cluster-management.io/backup` label to all `BareMetalHost` resources that have the `infraenvs.agent-install.openshift.io` label:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example Policy
+    **Example Policy**
 
     </div>
 
@@ -1123,8 +904,6 @@ Procedure
       clusterSet: default
     ```
 
-    </div>
-
     - If you apply the `cluster.open-cluster-management.io/backup: cluster-activation` label to `BareMetalHost` resources, the RHACM cluster backs up those resources. You can restore the `BareMetalHost` resources if the active cluster becomes unavailable, when restoring the hub activation resources.
 
 2.  Apply the policy by running the following command:
@@ -1133,15 +912,7 @@ Procedure
     $ oc apply -f BareMetalHostBackupPolicy.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Find all `BareMetalHost` resources with the label `infraenvs.agent-install.openshift.io` by running the following command:
 
@@ -1149,11 +920,9 @@ Verification
     $ oc get BareMetalHost -A -l infraenvs.agent-install.openshift.io
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1161,8 +930,6 @@ Verification
     NAMESPACE      NAME             STATE   CONSUMER   ONLINE   ERROR   AGE
     baremetal-ns   baremetal-name                      false            50s
     ```
-
-    </div>
 
 2.  Verify that the policy has applied the label `cluster.open-cluster-management.io/backup=cluster-activation` to all these resources, by running the following command:
 
@@ -1170,11 +937,9 @@ Verification
     $ oc get BareMetalHost -A -l infraenvs.agent-install.openshift.io,cluster.open-cluster-management.io/backup=cluster-activation
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1182,8 +947,6 @@ Verification
     NAMESPACE      NAME             STATE   CONSUMER   ONLINE   ERROR   AGE
     baremetal-ns   baremetal-name                      false            50s
     ```
-
-    </div>
 
     The output must show the same list as in the previous step, which listed all `BareMetalHost` resources with the label `infraenvs.agent-install.openshift.io`. This confirms that all the `BareMetalHost` resources with the `infraenvs.agent-install.openshift.io` label also have the `cluster.open-cluster-management.io/backup: cluster-activation` label.
 
@@ -1200,45 +963,38 @@ Verification
       namespace: baremetal-ns
     ```
 
-</div>
-
 You can now use Red Hat Advanced Cluster Management to restore a managed cluster.
 
-> [!IMPORTANT]
-> When you restore `BareMetalHosts` resources as part of restoring the cluster activation data, you must restore the `BareMetalHosts` status. The following RHACM `Restore` resource example restores activation resources, including `BareMetalHosts`, and also restores the status for the `BareMetalHosts` resources:
->
-> ``` yaml
-> apiVersion: cluster.open-cluster-management.io/v1beta1
-> kind: Restore
-> metadata:
->   name: restore-acm-bmh
->   namespace: open-cluster-management-backup
-> spec:
->   cleanupBeforeRestore: CleanupRestored
->   veleroManagedClustersBackupName: latest
->   veleroCredentialsBackupName: latest
->   veleroResourcesBackupName: latest
->   restoreStatus:
->     includedResources:
->       - BareMetalHosts
-> ```
+<div class="important">
+
+When you restore `BareMetalHosts` resources as part of restoring the cluster activation data, you must restore the `BareMetalHosts` status. The following RHACM `Restore` resource example restores activation resources, including `BareMetalHosts`, and also restores the status for the `BareMetalHosts` resources:
+
+``` yaml
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: Restore
+metadata:
+  name: restore-acm-bmh
+  namespace: open-cluster-management-backup
+spec:
+  cleanupBeforeRestore: CleanupRestored
+  veleroManagedClustersBackupName: latest
+  veleroCredentialsBackupName: latest
+  veleroResourcesBackupName: latest
+  restoreStatus:
+    includedResources:
+      - BareMetalHosts
+```
+
+</div>
 
 - Set `veleroManagedClustersBackupName: latest` to restore activation resources.
 
 - Restores the status for `BareMetalHosts` resources.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Restoring managed cluster activation data](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/latest/html/business_continuity/business-cont-overview#managed-cluster-activation-data)
 
 - [Active-passive configuration](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/latest/html/business_continuity/business-cont-overview#active-passive-config)
 
 - [Restoring activation resources](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/latest/html/business_continuity/business-cont-overview#restore-activation-resources)
-
-</div>

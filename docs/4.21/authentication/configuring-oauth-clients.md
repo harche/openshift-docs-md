@@ -4,11 +4,11 @@ Several OAuth clients are created by default in OpenShift Container Platform. Yo
 
 The following OAuth clients are automatically created when starting the OpenShift Container Platform API:
 
-| OAuth client | Usage |
-|----|----|
-| `openshift-browser-client` | Requests tokens at `<namespace_route>/oauth/token/request` with a user-agent that can handle interactive logins. <sup>\[1\]</sup> |
-| `openshift-challenging-client` | Requests tokens with a user-agent that can handle `WWW-Authenticate` challenges. |
-| `openshift-cli-client` | Requests tokens by using a local HTTP server fetching an authorization code grant. |
+| OAuth client                   | Usage                                                                                                                             |
+|--------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| `openshift-browser-client`     | Requests tokens at `<namespace_route>/oauth/token/request` with a user-agent that can handle interactive logins. <sup>\[1\]</sup> |
+| `openshift-challenging-client` | Requests tokens with a user-agent that can handle `WWW-Authenticate` challenges.                                                  |
+| `openshift-cli-client`         | Requests tokens by using a local HTTP server fetching an authorization code grant.                                                |
 
 1.  `<namespace_route>` refers to the namespace route. This is found by running the following command:
 
@@ -19,14 +19,6 @@ The following OAuth clients are automatically created when starting the OpenShif
 # Registering an additional OAuth client
 
 If you need an additional OAuth client to manage authentication for your OpenShift Container Platform cluster, you can register one.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To register additional OAuth clients:
 
@@ -51,20 +43,13 @@ Procedure
 
   - The `grantMethod` is used to determine what action to take when this client requests tokens and has not yet been granted access by the user. Specify `auto` to automatically approve the grant and retry the request, or `prompt` to prompt the user to approve or deny the grant.
 
-</div>
-
 # Configuring token inactivity timeout for an OAuth client
 
 You can configure OAuth clients to expire OAuth tokens after a set period of inactivity. By default, no token inactivity timeout is set.
 
-> [!NOTE]
-> If the token inactivity timeout is also configured in the internal OAuth server configuration, the timeout that is set in the OAuth client overrides that value.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If the token inactivity timeout is also configured in the internal OAuth server configuration, the timeout that is set in the OAuth client overrides that value.
 
 </div>
 
@@ -72,15 +57,7 @@ Prerequisites
 
 - You have configured an identity provider (IDP).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Update the `OAuthClient` configuration to set a token inactivity timeout.
 
@@ -107,16 +84,6 @@ Procedure
 
   2.  Save the file to apply the changes.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 1.  Log in to the cluster with an identity from your IDP. Be sure to use the OAuth client that you just configured.
 
 2.  Perform an action and verify that it was successful.
@@ -126,8 +93,6 @@ Verification
 4.  Try to perform an action from the same identity’s session.
 
     This attempt should fail because the token should have expired due to inactivity longer than the configured timeout.
-
-</div>
 
 # Additional resources
 

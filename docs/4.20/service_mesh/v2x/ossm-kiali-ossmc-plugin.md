@@ -1,19 +1,28 @@
 The OpenShift Service Mesh Console (OSSMC) plugin is an extension to the OpenShift Container Platform web console that provides visibility into your Service Mesh. With the OSSMC plugin installed, a new **Service Mesh** menu option is available in the navigation menu on the left side of the web console, as well as new **Service Mesh** tabs that enhance the existing **Workloads** and **Services** console pages.
 
-> [!IMPORTANT]
-> If you are using a certificate that your browser does not initially trust, you must tell your browser to trust the certificate first before you are able to access the OSSMC plugin. To do this, go to the Kiali standalone user interface (UI) and tell the browser to accept its certificate.
+<div class="important">
+
+If you are using a certificate that your browser does not initially trust, you must tell your browser to trust the certificate first before you are able to access the OSSMC plugin. To do this, go to the Kiali standalone user interface (UI) and tell the browser to accept its certificate.
+
+</div>
 
 # About the OpenShift Service Mesh Console plugin
 
 The OpenShift Service Mesh Console (OSSMC) plugin is an extension to the OpenShift Container Platform web console that provides visibility into your Service Mesh.
 
-> [!WARNING]
-> The OSSMC plugin only supports a single Kiali instance. Whether that Kiali instance is configured to access only a subset of OpenShift projects or has access cluster-wide to all projects does not matter. However, only a single Kiali instance can be accessed.
+<div class="warning">
+
+The OSSMC plugin only supports a single Kiali instance. Whether that Kiali instance is configured to access only a subset of OpenShift projects or has access cluster-wide to all projects does not matter. However, only a single Kiali instance can be accessed.
+
+</div>
 
 You can install the OSSMC plugin in only one of two ways: using the OpenShift Container Platform web console, or through the CLI.
 
-> [!NOTE]
-> The OSSMC plugin is only supported on Service Mesh 2.5 or later. Specifically, the `ServiceMeshControlPlane` version must be set to 2.5 or later.
+<div class="note">
+
+The OSSMC plugin is only supported on Service Mesh 2.5 or later. Specifically, the `ServiceMeshControlPlane` version must be set to 2.5 or later.
+
+</div>
 
 Installing the OSSMC plugin creates a new category, **Service Mesh**, in the main OpenShift Container Platform web console navigation. Click **Service Mesh** to see:
 
@@ -53,14 +62,6 @@ Under **Networking**, the OSSMC plugin adds a **Service Mesh** tab to Services a
 
 You can install the OpenShift Service Mesh Console (OSSMC) plugin using the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - OpenShift Container Platform is installed.
 
 - Kiali Operator provided by Red Hat 1.73 is installed.
@@ -68,16 +69,6 @@ Prerequisites
 - Red Hat OpenShift Service Mesh (OSSM) is installed.
 
 - `ServiceMeshControlPlane` 2.5 or later is installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Installed Operators**.
 
@@ -89,26 +80,19 @@ Procedure
 
     - **Name** and **Version** are required fields.
 
-      > [!NOTE]
-      > The **Version** field must match the `spec.version` field in your Kiali CR.
+      <div class="note">
+
+      The **Version** field must match the `spec.version` field in your Kiali CR.
+
+      </div>
 
 5.  Click **Create**.
 
 6.  Navigate back to the OpenShift Container Platform web console and use the new menu options for visibility into your Service Mesh.
 
-</div>
-
 # Installing OpenShift Service Mesh Console plugin using the CLI
 
 You can install the OpenShift Service Mesh Console (OSSMC) plugin using the CLI, instead of the OpenShift Container Platform web console.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - OpenShift Container Platform is installed.
 
@@ -117,16 +101,6 @@ Prerequisites
 - Red Hat OpenShift Service Mesh (OSSM) is installed.
 
 - `ServiceMeshControlPlane` (SMCP) 2.5 or later is installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a small `OSSMConsole` custom resource (CR) to instruct the operator to install the plugin:
 
@@ -140,26 +114,19 @@ Procedure
     EOM
     ```
 
-    > [!NOTE]
-    > The plugin resources are deployed in the same namespace where the `OSSMConsole` CR is created.
+    <div class="note">
+
+    The plugin resources are deployed in the same namespace where the `OSSMConsole` CR is created.
+
+    </div>
 
 2.  Go to the OpenShift Container Platform web console.
 
 3.  Refresh the browser window to see the new OSSMC plugin menu options.
 
-</div>
-
 # Uninstalling OpenShift Service Mesh Console plugin using the OpenShift Container Platform web console
 
 You can uninstall the OpenShift Service Mesh Console (OSSMC) plugin by using the OpenShift Container Platform web console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Installed Operators** → **Operator details**.
 
@@ -167,22 +134,15 @@ Procedure
 
 3.  Click **Delete OSSMConsole** from the options menu.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> If you intend to also uninstall the Kiali Operator provided by Red Hat, you must first uninstall the OSSMC plugin and then uninstall the Operator. If you uninstall the Operator before ensuring the `OSSMConsole` CR is deleted then you may have difficulty removing that CR and its namespace. If this occurs then you must manually remove the finalizer on the CR in order to delete it and its namespace. You can do this using: `$ oc patch ossmconsoles <CR name> -n <CR namespace> -p '{"metadata":{"finalizers": []}}' --type=merge`.
+If you intend to also uninstall the Kiali Operator provided by Red Hat, you must first uninstall the OSSMC plugin and then uninstall the Operator. If you uninstall the Operator before ensuring the `OSSMConsole` CR is deleted then you may have difficulty removing that CR and its namespace. If this occurs then you must manually remove the finalizer on the CR in order to delete it and its namespace. You can do this using: `$ oc patch ossmconsoles <CR name> -n <CR namespace> -p '{"metadata":{"finalizers": []}}' --type=merge`.
+
+</div>
 
 # Uninstalling OpenShift Service Mesh Console plugin using the CLI
 
 You can uninstall the OpenShift Service Mesh Console (OSSMC) plugin by using the OpenShift CLI (`oc`).
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Remove the `OSSMC` custom resource (CR) by running the following command:
 
@@ -195,8 +155,6 @@ Procedure
     ``` terminal
     for r in $(oc get ossmconsoles --ignore-not-found=true --all-namespaces -o custom-columns=NS:.metadata.namespace,N:.metadata.name --no-headers | sed 's/  */:/g'); do oc delete ossmconsoles -n $(echo $r|cut -d: -f1) $(echo $r|cut -d: -f2); done
     ```
-
-</div>
 
 # Additional resources
 

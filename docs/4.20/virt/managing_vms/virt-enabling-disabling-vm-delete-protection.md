@@ -10,14 +10,6 @@ To prevent the inadvertent deletion of a virtual machine (VM), you can enable VM
 
 By default, delete protection is not enabled for VMs. You must set the option for each individual VM.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  From the OpenShift Container Platform web console, choose your view:
 
     - For a virtualization-focused view, select **Administrator** → **Virtualization** → **VirtualMachines**.
@@ -42,33 +34,15 @@ Procedure
 
       2.  Click **Disable** to disable the protection.
 
-</div>
-
 # Enabling or disabling VM delete protection by using the CLI
 
 To prevent the inadvertent deletion of a virtual machine (VM), you can enable VM delete protection by using the command line. You can also disable delete protection for a VM.
 
 By default, delete protection is not enabled for VMs. You must set the option for each individual VM.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Enable delete protection for a VM by running the following command:
 
@@ -82,8 +56,6 @@ Procedure
   $ oc patch vm <vm_name> --type json -p '[{"op": "remove", "path": "/metadata/labels/kubevirt.io~1vm-delete-protection"}]' -n <namespace>
   ```
 
-</div>
-
 # Removing the VM delete protection option
 
 When you enable delete protection on a virtual machine (VM), you ensure that the VM cannot be inadvertently deleted. You can also disable the protection for a VM.
@@ -92,27 +64,9 @@ As a cluster administrator, you can choose not to make the VM delete protection 
 
 You can remove the delete protection option by establishing a validation admission policy for the cluster and then creating the necessary binding to use the policy in the cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have cluster administrator privileges.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the validation admission policy, as shown in the following example:
 
@@ -165,8 +119,6 @@ Procedure
     ``` terminal
     $ oc apply -f disable-vm-delete-protection-binding.yaml
     ```
-
-</div>
 
 # Additional resources
 

@@ -24,8 +24,11 @@ Review the following information to learn about worker latency profiles, which a
 
 Worker latency profiles are four different categories of carefully-tuned parameters. The four parameters which implement these values are `node-status-update-frequency`, `node-monitor-grace-period`, `default-not-ready-toleration-seconds` and `default-unreachable-toleration-seconds`.
 
-> [!IMPORTANT]
-> Setting these parameters manually is not supported. Incorrect parameter settings adversely affect cluster stability.
+<div class="important">
+
+Setting these parameters manually is not supported. Incorrect parameter settings adversely affect cluster stability.
+
+</div>
 
 All worker latency profiles configure the following parameters:
 
@@ -58,45 +61,12 @@ The Kubernetes Controller Manager waits 40 seconds (`node-monitor-grace-period`)
 
 If a pod is on a node that has the `NoExecute` taint, the pod runs according to `tolerationSeconds`. If the node has no taint, it will be evicted in 300 seconds (`default-not-ready-toleration-seconds` and `default-unreachable-toleration-seconds` settings of the `Kube API Server`).
 
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 16%" />
-<col style="width: 33%" />
-<col style="width: 16%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Profile</th>
-<th style="text-align: left;">Component</th>
-<th style="text-align: left;">Parameter</th>
-<th style="text-align: left;">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td rowspan="4" style="text-align: left;"><p>Default</p></td>
-<td style="text-align: left;"><p>kubelet</p></td>
-<td style="text-align: left;"><p><code>node-status-update-frequency</code></p></td>
-<td style="text-align: left;"><p>10s</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Kubelet Controller Manager</p></td>
-<td style="text-align: left;"><p><code>node-monitor-grace-period</code></p></td>
-<td style="text-align: left;"><p>40s</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Kubernetes API Server Operator</p></td>
-<td style="text-align: left;"><p><code>default-not-ready-toleration-seconds</code></p></td>
-<td style="text-align: left;"><p>300s</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Kubernetes API Server Operator</p></td>
-<td style="text-align: left;"><p><code>default-unreachable-toleration-seconds</code></p></td>
-<td style="text-align: left;"><p>300s</p></td>
-</tr>
-</tbody>
-</table>
+| Profile                        | Component                                | Parameter                      | Value |
+|--------------------------------|------------------------------------------|--------------------------------|-------|
+| Default                        | kubelet                                  | `node-status-update-frequency` | 10s   |
+| Kubelet Controller Manager     | `node-monitor-grace-period`              | 40s                            |       |
+| Kubernetes API Server Operator | `default-not-ready-toleration-seconds`   | 300s                           |       |
+| Kubernetes API Server Operator | `default-unreachable-toleration-seconds` | 300s                           |       |
 
 Medium worker latency profile
 Use the `MediumUpdateAverageReaction` profile if the network latency is slightly higher than usual.
@@ -105,45 +75,12 @@ The `MediumUpdateAverageReaction` profile reduces the frequency of kubelet updat
 
 The Kubernetes Controller Manager waits for 2 minutes to consider a node unhealthy. In another minute, the eviction process starts.
 
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 16%" />
-<col style="width: 33%" />
-<col style="width: 16%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Profile</th>
-<th style="text-align: left;">Component</th>
-<th style="text-align: left;">Parameter</th>
-<th style="text-align: left;">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td rowspan="4" style="text-align: left;"><p>MediumUpdateAverageReaction</p></td>
-<td style="text-align: left;"><p>kubelet</p></td>
-<td style="text-align: left;"><p><code>node-status-update-frequency</code></p></td>
-<td style="text-align: left;"><p>20s</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Kubelet Controller Manager</p></td>
-<td style="text-align: left;"><p><code>node-monitor-grace-period</code></p></td>
-<td style="text-align: left;"><p>2m</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Kubernetes API Server Operator</p></td>
-<td style="text-align: left;"><p><code>default-not-ready-toleration-seconds</code></p></td>
-<td style="text-align: left;"><p>60s</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Kubernetes API Server Operator</p></td>
-<td style="text-align: left;"><p><code>default-unreachable-toleration-seconds</code></p></td>
-<td style="text-align: left;"><p>60s</p></td>
-</tr>
-</tbody>
-</table>
+| Profile                        | Component                                | Parameter                      | Value |
+|--------------------------------|------------------------------------------|--------------------------------|-------|
+| MediumUpdateAverageReaction    | kubelet                                  | `node-status-update-frequency` | 20s   |
+| Kubelet Controller Manager     | `node-monitor-grace-period`              | 2m                             |       |
+| Kubernetes API Server Operator | `default-not-ready-toleration-seconds`   | 60s                            |       |
+| Kubernetes API Server Operator | `default-unreachable-toleration-seconds` | 60s                            |       |
 
 Low worker latency profile
 Use the `LowUpdateSlowReaction` profile if the network latency is extremely high.
@@ -152,48 +89,18 @@ The `LowUpdateSlowReaction` profile reduces the frequency of kubelet updates to 
 
 The Kubernetes Controller Manager waits for 5 minutes to consider a node unhealthy. In another minute, the eviction process starts.
 
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 16%" />
-<col style="width: 33%" />
-<col style="width: 16%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Profile</th>
-<th style="text-align: left;">Component</th>
-<th style="text-align: left;">Parameter</th>
-<th style="text-align: left;">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td rowspan="4" style="text-align: left;"><p>LowUpdateSlowReaction</p></td>
-<td style="text-align: left;"><p>kubelet</p></td>
-<td style="text-align: left;"><p><code>node-status-update-frequency</code></p></td>
-<td style="text-align: left;"><p>1m</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Kubelet Controller Manager</p></td>
-<td style="text-align: left;"><p><code>node-monitor-grace-period</code></p></td>
-<td style="text-align: left;"><p>5m</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Kubernetes API Server Operator</p></td>
-<td style="text-align: left;"><p><code>default-not-ready-toleration-seconds</code></p></td>
-<td style="text-align: left;"><p>60s</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Kubernetes API Server Operator</p></td>
-<td style="text-align: left;"><p><code>default-unreachable-toleration-seconds</code></p></td>
-<td style="text-align: left;"><p>60s</p></td>
-</tr>
-</tbody>
-</table>
+| Profile                        | Component                                | Parameter                      | Value |
+|--------------------------------|------------------------------------------|--------------------------------|-------|
+| LowUpdateSlowReaction          | kubelet                                  | `node-status-update-frequency` | 1m    |
+| Kubelet Controller Manager     | `node-monitor-grace-period`              | 5m                             |       |
+| Kubernetes API Server Operator | `default-not-ready-toleration-seconds`   | 60s                            |       |
+| Kubernetes API Server Operator | `default-unreachable-toleration-seconds` | 60s                            |       |
 
-> [!NOTE]
-> The latency profiles do not support custom machine config pools, only the default worker machine config pools.
+<div class="note">
+
+The latency profiles do not support custom machine config pools, only the default worker machine config pools.
+
+</div>
 
 # Using and changing worker latency profiles
 
@@ -201,14 +108,9 @@ You can change a worker latency profile to deal with network latency at any time
 
 You must move one worker latency profile at a time. For example, you cannot move directly from the `Default` profile to the `LowUpdateSlowReaction` worker latency profile. You must move from the `Default` worker latency profile to the `MediumUpdateAverageReaction` profile first, then to `LowUpdateSlowReaction`. Similarly, when returning to the `Default` profile, you must move from the low profile to the medium profile first, then to `Default`.
 
-> [!NOTE]
-> You can also configure worker latency profiles upon installing an OpenShift Container Platform cluster.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+You can also configure worker latency profiles upon installing an OpenShift Container Platform cluster.
 
 </div>
 
@@ -222,11 +124,9 @@ Procedure
 
     2.  Add `spec.workerLatencyProfile: MediumUpdateAverageReaction`:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `node.config` object
+        **Example `node.config` object**
 
         </div>
 
@@ -255,8 +155,6 @@ Procedure
         # ...
         ```
 
-        </div>
-
         where:
 
         `spec.workerLatencyProfile.MediumUpdateAverageReaction`
@@ -274,11 +172,9 @@ Procedure
 
     2.  Change the `spec.workerLatencyProfile` value to `LowUpdateSlowReaction`:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `node.config` object
+        **Example `node.config` object**
 
         </div>
 
@@ -307,8 +203,6 @@ Procedure
         # ...
         ```
 
-        </div>
-
         where:
 
         `spec.workerLatencyProfile.LowUpdateSlowReaction`
@@ -316,27 +210,15 @@ Procedure
 
         Scheduling on each worker node is disabled as the change is being applied.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - When all nodes return to the `Ready` condition, you can use the following command to look in the Kubernetes Controller Manager to ensure it was applied:
 
   ``` terminal
   $ oc get KubeControllerManager -o yaml | grep -i workerlatency -A 5 -B 5
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -360,13 +242,9 @@ Verification
   # ...
   ```
 
-  </div>
-
   where:
 
   `status.message: all static pod revision(s) have updated latency profile`
   Specifies that the profile is applied and active.
-
-</div>
 
 To change the medium profile to default or change the default to medium, edit the `node.config` object and set the `spec.workerLatencyProfile` parameter to the appropriate value.

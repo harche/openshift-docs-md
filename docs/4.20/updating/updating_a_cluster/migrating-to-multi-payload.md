@@ -4,18 +4,13 @@ For information about configuring your multi-architecture compute machines, see 
 
 Before migrating your single-architecture cluster to a cluster with multi-architecture compute machines, it is recommended to install the Multiarch Tuning Operator, and deploy a `ClusterPodPlacementConfig` custom resource. For more information, see [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator).
 
-> [!IMPORTANT]
-> Migration from a multi-architecture payload to a single-architecture payload is not supported. Once a cluster has transitioned to using a multi-architecture payload, it can no longer accept a single-architecture update payload.
+<div class="important">
 
-# Migrating to a cluster with multi-architecture compute machines using the CLI
-
-<div>
-
-<div class="title">
-
-Prerequisites
+Migration from a multi-architecture payload to a single-architecture payload is not supported. Once a cluster has transitioned to using a multi-architecture payload, it can no longer accept a single-architecture update payload.
 
 </div>
+
+# Migrating to a cluster with multi-architecture compute machines using the CLI
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -30,16 +25,6 @@ Prerequisites
 - Your OpenShift Container Platform cluster is installed on AWS, Azure, Google Cloud, bare metal or IBM P/Z platforms.
 
   For more information on selecting a supported platform for your cluster installation, see *Selecting a cluster installation type*.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Verify that the `RetrievedUpdates` condition is `True` in the Cluster Version Operator (CVO) by running the following command:
 
@@ -71,27 +56,15 @@ Procedure
     $ oc adm upgrade --to-multi-arch
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - You can monitor the migration by running the following command:
 
   ``` terminal
   $ oc adm upgrade
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -99,10 +72,11 @@ Verification
   working towards ${VERSION}: 106 of 841 done (12% complete), waiting on machine-config
   ```
 
-  </div>
+  <div class="important">
 
-  > [!IMPORTANT]
-  > Machine launches may fail as the cluster settles into the new state. To notice and recover when machines fail to launch, we recommend deploying machine health checks. For more information about machine health checks and how to deploy them, see *About machine health checks*.
+  Machine launches may fail as the cluster settles into the new state. To notice and recover when machines fail to launch, we recommend deploying machine health checks. For more information about machine health checks and how to deploy them, see *About machine health checks*.
+
+  </div>
 
   1.  Optional: To retrieve more detailed information about the status of your update, monitor the migration by running the following command:
 
@@ -112,17 +86,7 @@ Verification
 
       For more information about how to use the `oc adm upgrade status` command, see *Gathering cluster update status using oc adm upgrade status (Technology Preview)*.
 
-</div>
-
 The migrations must be complete and all the cluster operators must be stable before you can add compute machine sets with different architectures to your cluster.
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Configuring multi-architecture compute machines on an OpenShift Container Platform cluster](../../post_installation_configuration/configuring-multi-arch-compute-machines/multi-architecture-configuration.xml#multi-architecture-configuration)
 
@@ -140,33 +104,13 @@ Additional resources
 
 - [About machine health checks](../../machine_management/deploying-machine-health-checks.xml#machine-health-checks-about_deploying-machine-health-checks)
 
-</div>
-
 # Migrating the x86 control plane to arm64 architecture on Amazon Web Services
 
 You can migrate the control plane in your cluster from `x86` to `arm64` architecture on Amazon Web Services (AWS).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You logged in to `oc` as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Check the architecture of the control plane nodes by running the following command:
 
@@ -174,11 +118,9 @@ Procedure
     $ oc get nodes -o wide
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -191,8 +133,6 @@ Procedure
     master-002.example.com        Ready    control-plane,master   120d   v1.30.7   10.x.x.x    <none>        Red Hat Enterprise Linux CoreOS 4xx.xx.xxxxx-0   5.x.x-xxx.x.x.el9_xx.x86_64    cri-o://1.30.x
     master-003.example.com        Ready    control-plane,master   120d   v1.30.7   10.x.x.x    <none>        Red Hat Enterprise Linux CoreOS 4xx.xx.xxxxx-0   5.x.x-xxx.x.x.el9_xx.x86_64    cri-o://1.30.x
     ```
-
-    </div>
 
     The `KERNEL-VERSION` field in the output indicates the architecture of the nodes.
 
@@ -232,19 +172,15 @@ Procedure
       $ oc get infrastructure cluster -o jsonpath='{.status.platformStatus.aws.region}'
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
       ``` terminal
       ami-xxxxxxx
       ```
-
-      </div>
 
 5.  Update the control plane machine set to support the `arm64` architecture by running the following command:
 
@@ -256,27 +192,15 @@ Procedure
 
     For more information about configuring the control plane machine set for AWS, see "Control plane configuration options for Amazon Web Services".
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the control plane nodes are now running on the `arm64` architecture:
 
   ``` terminal
   $ oc get nodes -o wide
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -290,35 +214,13 @@ Verification
   master-003.example.com        Ready    control-plane,master   120d   v1.30.7   10.x.x.x    <none>        Red Hat Enterprise Linux CoreOS 4xx.xx.xxxxx-0   5.x.x-xxx.x.x.el9_xx.aarch64   cri-o://1.30.x
   ```
 
-  </div>
-
-</div>
-
 # Migrating control plane or infra machine sets between architectures on Google Cloud
 
 You can migrate the control plane or infra machine sets in your Google Cloud cluster between `x86` and `arm64` architectures.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You logged in to `oc` as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Check the architecture of the control plane or infra nodes by running the following command:
 
@@ -326,11 +228,9 @@ Procedure
     $ oc get nodes -o wide
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -339,8 +239,6 @@ Procedure
     worker-001.example.com        Ready    infra                 100d   v1.30.7   10.x.x.x    <none>        Red Hat Enterprise Linux CoreOS 4xx.xx.xxxxx-0   5.x.x-xxx.x.x.el9_xx.x86_64    cri-o://1.30.x
     master-001.example.com        Ready    control-plane,master   120d   v1.30.7   10.x.x.x    <none>        Red Hat Enterprise Linux CoreOS 4xx.xx.xxxxx-0   5.x.x-xxx.x.x.el9_xx.x86_64    cri-o://1.30.x
     ```
-
-    </div>
 
     The `KERNEL-VERSION` field in the output indicates the architecture of the nodes.
 
@@ -381,11 +279,9 @@ Procedure
       -r '.architectures.aarch64.images.gcp'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -396,8 +292,6 @@ Procedure
         "name": "rhcos-415-92-202309142014-0-gcp-aarch64"
       }
     ```
-
-    </div>
 
     Use the `project` and `name` parameters from the output to form the `image` parameter in the following format: `projects/<project>/global/images/<name>`.
 
@@ -425,16 +319,6 @@ Procedure
 
     3.  Replace the `machineType` parameter with the instance type that you selected.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Control plane configuration options for Amazon Web Services](../../machine_management/control_plane_machine_management/cpmso_provider_configurations/cpmso-config-options-aws.xml#cpmso-config-options-aws)
 
 - [Tested instance types for AWS on 64-bit ARM infrastructures](../../installing/installing_aws/upi/upi-aws-installation-reqs.xml#installation-aws-arm-tested-machine-types_upi-aws-installation-reqs)
@@ -442,5 +326,3 @@ Additional resources
 - [Tested instance types for Google Cloud on 64-bit ARM infrastructures](../../installing/installing_gcp/installing-gcp-customizations.xml#installation-gcp-tested-machine-types-arm_installing-gcp-customizations)
 
 - [Migrating to a cluster with multi-architecture compute machines using the CLI](../../updating/updating_a_cluster/migrating-to-multi-payload.xml#migrating-to-multi-arch-cli_updating-clusters-overview)
-
-</div>

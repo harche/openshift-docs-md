@@ -18,10 +18,13 @@ For more information, see [Backing up applications with File System Backup: Kopi
 
 To install the OADP Operator in a restricted network environment, you must first disable the default software catalog sources and mirror the Operator catalog. See [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks) for details.
 
-> [!IMPORTANT]
-> Red Hat only supports the combination of OADP versions 1.3.0 and later, and OpenShift Virtualization versions 4.14 and later.
->
-> OADP versions before 1.3.0 are not supported for back up and restore of OpenShift Virtualization.
+<div class="important">
+
+Red Hat only supports the combination of OADP versions 1.3.0 and later, and OpenShift Virtualization versions 4.14 and later.
+
+OADP versions before 1.3.0 are not supported for back up and restore of OpenShift Virtualization.
+
+</div>
 
 # Installing and configuring OADP with OpenShift Virtualization
 
@@ -29,25 +32,7 @@ As a cluster administrator, you install OADP by installing the OADP Operator.
 
 The latest version of the OADP Operator installs [Velero 1.16](https://velero.io/docs/v1.16).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Install the OADP Operator according to the instructions for your storage provider.
 
@@ -55,28 +40,21 @@ Procedure
 
 3.  Back up virtual machines by creating a `Backup` custom resource (CR).
 
-    > [!WARNING]
-    > Red Hat support is limited to only the following options:
-    >
-    > - CSI backups
-    >
-    > - CSI backups with DataMover.
+    <div class="warning">
+
+    Red Hat support is limited to only the following options:
+
+    - CSI backups
+
+    - CSI backups with DataMover.
+
+    </div>
 
     You restore the `Backup` CR by creating a `Restore` CR.
-
-</div>
 
 # Installing the Data Protection Application
 
 You install the Data Protection Application (DPA) by creating an instance of the `DataProtectionApplication` API.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You must install the OADP Operator.
 
@@ -86,18 +64,11 @@ Prerequisites
 
 - If the backup and snapshot locations use the same credentials, you must create a `Secret` with the default name, `cloud-credentials`.
 
-  > [!NOTE]
-  > If you do not want to specify backup or snapshot locations during the installation, you can create a default `Secret` with an empty `credentials-velero` file. If there is no default `Secret`, the installation will fail.
+  <div class="note">
 
-</div>
+  If you do not want to specify backup or snapshot locations during the installation, you can create a default `Secret` with an empty `credentials-velero` file. If there is no default `Secret`, the installation will fail.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  Click **Ecosystem** → **Installed Operators** and select the OADP Operator.
 
@@ -183,15 +154,7 @@ Procedure
 
 4.  Click **Create**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify the installation by viewing the OpenShift API for Data Protection (OADP) resources by running the following command:
 
@@ -244,22 +207,15 @@ Verification
     dpa-sample-1   Available   1s               3d16h   true
     ```
 
-</div>
+<div class="warning">
 
-> [!WARNING]
-> If you run a backup of a Microsoft Windows virtual machine (VM) immediately after the VM reboots, the backup might fail with a `PartiallyFailed` error. This is because, immediately after a VM boots, the Microsoft Windows Volume Shadow Copy Service (VSS) and Guest Agent (GA) service are not ready. The VSS and GA service being unready causes the backup to fail. In such a case, retry the backup a few minutes after the VM boots.
+If you run a backup of a Microsoft Windows virtual machine (VM) immediately after the VM reboots, the backup might fail with a `PartiallyFailed` error. This is because, immediately after a VM boots, the Microsoft Windows Volume Shadow Copy Service (VSS) and Guest Agent (GA) service are not ready. The VSS and GA service being unready causes the backup to fail. In such a case, retry the backup a few minutes after the VM boots.
+
+</div>
 
 # Backing up a single VM
 
 If you have a namespace with multiple virtual machines (VMs), and want to back up only one of them, you can use the label selector to filter the VM that needs to be included in the backup. You can filter the VM by using the `app: vmname` label.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OADP Operator.
 
@@ -269,23 +225,11 @@ Prerequisites
 
 - You have configured the `BackupStorageLocation` CR in the `DataProtectionApplication` CR and `BackupStorageLocation` is available.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Configure the `Backup` CR as shown in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `Backup` CR
+    **Example `Backup` CR**
 
     </div>
 
@@ -304,8 +248,6 @@ Procedure
           app: <vm_app_name>
       storageLocation: <backup_storage_location_name>
     ```
-
-    </div>
 
     where:
 
@@ -329,41 +271,19 @@ Procedure
     `backup_cr_file_name`
     Specifies the name of the `Backup` CR file.
 
-</div>
-
 # Restoring a single VM
 
 After you have backed up a single virtual machine (VM) by using the label selector in the `Backup` custom resource (CR), you can create a `Restore` CR and point it to the backup. This restore operation restores a single VM.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OADP Operator.
 
 - You have backed up a single VM by using the label selector.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Configure the `Restore` CR as shown in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `Restore` CR
+    **Example `Restore` CR**
 
     </div>
 
@@ -377,8 +297,6 @@ Procedure
       backupName: vmbackupsingle
       restorePVs: true
     ```
-
-    </div>
 
     where:
 
@@ -396,40 +314,23 @@ Procedure
     `restore_cr_file_name`
     Specifies the name of the `Restore` CR file.
 
-    > [!NOTE]
-    > When you restore a backup of VMs, you might notice that the Ceph storage capacity allocated for the restore is higher than expected. This behavior is observed only during the `kubevirt` restore and if the volume type of the VM is `block`.
-    >
-    > Use the `rbd sparsify` tool to reclaim space on target volumes. For more details, see [Reclaiming space on target volumes](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/latest/html-single/managing_and_allocating_storage_resources/index#reclaiming-space-on-target-volumes_rhodf).
+    <div class="note">
 
-</div>
+    When you restore a backup of VMs, you might notice that the Ceph storage capacity allocated for the restore is higher than expected. This behavior is observed only during the `kubevirt` restore and if the volume type of the VM is `block`.
+
+    Use the `rbd sparsify` tool to reclaim space on target volumes. For more details, see [Reclaiming space on target volumes](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/latest/html-single/managing_and_allocating_storage_resources/index#reclaiming-space-on-target-volumes_rhodf).
+
+    </div>
 
 # Restoring a single VM from a backup of multiple VMs
 
 If you have a backup containing multiple virtual machines (VMs), and you want to restore only one VM, you can use the `LabelSelectors` section in the `Restore` CR to select the VM to restore. To ensure that the persistent volume claim (PVC) attached to the VM is correctly restored, and the restored VM is not stuck in a `Provisioning` status, use both the `app: <vm_name>` and the `kubevirt.io/created-by` labels. To match the `kubevirt.io/created-by` label, use the UID of `DataVolume` of the VM.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OADP Operator.
 
 - You have labeled the VMs that need to be backed up.
 
 - You have a backup of multiple VMs.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Before you take a backup of many VMs, ensure that the VMs are labeled by running the following command:
 
@@ -439,11 +340,9 @@ Procedure
 
 2.  Configure the label selectors in the `Restore` CR as shown in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `Restore` CR
+    **Example `Restore` CR**
 
     </div>
 
@@ -462,8 +361,6 @@ Procedure
         - matchLabels:
             app: <vm_name>
     ```
-
-    </div>
 
     where:
 
@@ -484,41 +381,21 @@ Procedure
     `restore_cr_file_name`
     Specifies the name of the `Restore` CR file.
 
-</div>
-
 # Configuring the DPA with client burst and QPS settings
 
 The burst setting determines how many requests can be sent to the `velero` server before the limit is applied. After the burst limit is reached, the queries per second (QPS) setting determines how many additional requests can be sent per second.
 
 You can set the burst and QPS values of the `velero` server by configuring the Data Protection Application (DPA) with the burst and QPS values. You can use the `dpa.configuration.velero.client-burst` and `dpa.configuration.velero.client-qps` fields of the DPA to set the burst and QPS values.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OADP Operator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Configure the `client-burst` and the `client-qps` fields in the DPA as shown in the following example:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example Data Protection Application
+  **Example Data Protection Application**
 
   </div>
 
@@ -559,8 +436,6 @@ Procedure
           - kubevirt
   ```
 
-  </div>
-
   where:
 
   `client-burst`
@@ -569,38 +444,23 @@ Procedure
   `client-qps`
   Specifies the `client-qps` value. In this example, the `client-qps` field is set to 300.
 
-</div>
-
 # Configuring the node agent as a non-root and non-privileged user
 
 To enhance the node agent security, you can configure the OADP Operator node agent daemonset to run as a non-root and non-privileged user by using the `spec.configuration.velero.disableFsBackup` setting in the `DataProtectionApplication` (DPA) custom resource (CR).
 
 By setting the `spec.configuration.velero.disableFsBackup` setting to `true`, the node agent security context sets the root file system to read-only and sets the `privileged` flag to `false`.
 
-> [!NOTE]
-> Setting `spec.configuration.velero.disableFsBackup` to `true` enhances the node agent security by removing the need for privileged containers and enforcing a read-only root file system.
->
-> However, it also disables File System Backup (FSB) with Kopia. If your workloads rely on FSB for backing up volumes that do not support native snapshots, then you should evaluate whether the `disableFsBackup` configuration fits your use case.
+<div class="note">
 
-<div>
+Setting `spec.configuration.velero.disableFsBackup` to `true` enhances the node agent security by removing the need for privileged containers and enforcing a read-only root file system.
 
-<div class="title">
-
-Prerequisites
+However, it also disables File System Backup (FSB) with Kopia. If your workloads rely on FSB for backing up volumes that do not support native snapshots, then you should evaluate whether the `disableFsBackup` configuration fits your use case.
 
 </div>
 
 - You have installed the OADP Operator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Configure the `disableFsBackup` field in the DPA as shown in the following example:
 
@@ -640,16 +500,6 @@ Procedure
 
   `disableFsBackup`
   Specifies to set the `disableFsBackup` field to `true`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 1.  Verify that the node agent security context is set to run as non-root and the root file system is `readOnly` by running the following command:
 
@@ -712,19 +562,9 @@ Verification
     `runAsNonRoot`
     Specifies that the node agent is run as a non-root user.
 
-</div>
-
 # Configuring node agents and node labels
 
 The Data Protection Application (DPA) uses the `nodeSelector` field to select which nodes can run the node agent. The `nodeSelector` field is the recommended form of node selection constraint.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the node agent on any node that you choose by adding a custom label:
 
@@ -732,8 +572,11 @@ Procedure
     $ oc label node/<node_name> node-role.kubernetes.io/nodeAgent=""
     ```
 
-    > [!NOTE]
-    > Any label specified must match the labels on each node.
+    <div class="note">
+
+    Any label specified must match the labels on each node.
+
+    </div>
 
 2.  Use the same custom label in the `DPA.spec.configuration.nodeAgent.podConfig.nodeSelector` field, which you used for labeling nodes:
 
@@ -758,8 +601,6 @@ Procedure
                 node-role.kubernetes.io/worker: ""
     ```
 
-</div>
-
 # Configuring node agent load affinity
 
 You can schedule the node agent pods on specific nodes by using the `spec.podConfig.nodeSelector` object of the `DataProtectionApplication` (DPA) custom resource (CR).
@@ -782,29 +623,13 @@ spec:
 
 You can add more restrictions on the node agent pods scheduling by using the `nodeagent.loadAffinity` object in the DPA spec.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must be logged in as a user with `cluster-admin` privileges.
 
 - You have installed the OADP Operator.
 
 - You have configured the DPA CR.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Configure the DPA spec `nodegent.loadAffinity` object as shown in the following example.
 
@@ -836,8 +661,6 @@ Procedure
 
   `matchExpressions`
   Specifies the `matchExpressions` object to add restrictions on the node agent pods scheduling.
-
-</div>
 
 # Node agent load affinity guidelines
 
@@ -880,25 +703,9 @@ You can configure it using one of the following fields of the Data Protection Ap
 
 - `perNodeConfig`: Specifies different concurrency limits for specific nodes based on `nodeSelector` labels. This provides flexibility for environments where certain nodes might have different resource capacities or roles.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - You must be logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  If you want to use load concurrency for specific nodes, add labels to those nodes:
 
@@ -933,8 +740,6 @@ Procedure
     `number`
     Specifies the per-node concurrent number. You can specify many per-node concurrent numbers, for example, based on the instance type and size. The range of per-node concurrent number is the same as the global concurrent number. If the configuration file contains a per-node concurrent number and a global concurrent number, the per-node concurrent number takes precedence.
 
-</div>
-
 # Configuring repository maintenance
 
 OADP repository maintenance is a background job, you can configure it independently of the node agent pods. This means that you can schedule the repository maintenance pod on a node where the node agent is or is not running.
@@ -943,29 +748,13 @@ You can use the repository maintenance job affinity configurations in the `DataP
 
 You have the option to configure the load affinity at the global level affecting all repositories. Or you can configure the load affinity for each repository. You can also use a combination of global and per-repository configuration.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must be logged in as a user with `cluster-admin` privileges.
 
 - You have installed the OADP Operator.
 
 - You have configured the DPA CR.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Configure the `loadAffinity` object in the DPA spec by using either one or both of the following methods:
 
@@ -1021,8 +810,6 @@ Procedure
     `myrepositoryname`
     Specifies the `repositoryMaintenance` object for each repository.
 
-</div>
-
 # Configuring Velero load affinity
 
 With each OADP deployment, there is one Velero pod and its main purpose is to schedule Velero workloads. To schedule the Velero pod, you can use the `velero.podConfig.nodeSelector` and the `velero.loadAffinity` objects in the `DataProtectionApplication` (DPA) custom resource (CR) spec.
@@ -1031,29 +818,13 @@ Use the `podConfig.nodeSelector` object to assign the Velero pod to specific nod
 
 The OpenShift scheduler applies the rules and performs the scheduling of the Velero pod deployment.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must be logged in as a user with `cluster-admin` privileges.
 
 - You have installed the OADP Operator.
 
 - You have configured the DPA CR.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Configure the `velero.podConfig.nodeSelector` and the `velero.loadAffinity` objects in the DPA spec as shown in the following examples:
 
@@ -1088,8 +859,6 @@ Procedure
                       - EU
     ```
 
-</div>
-
 # Overriding the imagePullPolicy setting in the DPA
 
 In OADP 1.4.0 or earlier, the Operator sets the `imagePullPolicy` field of the Velero and node agent pods to `Always` for all images.
@@ -1102,33 +871,15 @@ In OADP 1.4.1 or later, the Operator first checks if each image has the `sha256`
 
 You can also override the `imagePullPolicy` field by using the `spec.imagePullPolicy` field in the Data Protection Application (DPA).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OADP Operator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Configure the `spec.imagePullPolicy` field in the DPA as shown in the following example:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example Data Protection Application
+  **Example Data Protection Application**
 
   </div>
 
@@ -1169,30 +920,26 @@ Procedure
     imagePullPolicy: Never
   ```
 
-  </div>
-
   where:
 
   `imagePullPolicy`
   Specifies the value for `imagePullPolicy`. In this example, the `imagePullPolicy` field is set to `Never`.
 
-</div>
-
 # About incremental back up support
 
 OADP supports incremental backups of `block` and `Filesystem` persistent volumes for both containerized, and OpenShift Virtualization workloads. The following table summarizes the support for File System Backup (FSB), Container Storage Interface (CSI), and CSI Data Mover:
 
-| Volume mode | FSB - Restic | FSB - Kopia | CSI | CSI Data Mover |
-|----|----|----|----|----|
-| Filesystem | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
-| Block | N <sup>\[3\]</sup> | N <sup>\[3\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
+| Volume mode | FSB - Restic                           | FSB - Kopia                            | CSI                | CSI Data Mover                         |
+|-------------|----------------------------------------|----------------------------------------|--------------------|----------------------------------------|
+| Filesystem  | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
+| Block       | N <sup>\[3\]</sup>                     | N <sup>\[3\]</sup>                     | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
 
 OADP backup support matrix for containerized workloads
 
-| Volume mode | FSB - Restic | FSB - Kopia | CSI | CSI Data Mover |
-|----|----|----|----|----|
-| Filesystem | N <sup>\[3\]</sup> | N <sup>\[3\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
-| Block | N <sup>\[3\]</sup> | N <sup>\[3\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
+| Volume mode | FSB - Restic       | FSB - Kopia        | CSI                | CSI Data Mover                         |
+|-------------|--------------------|--------------------|--------------------|----------------------------------------|
+| Filesystem  | N <sup>\[3\]</sup> | N <sup>\[3\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
+| Block       | N <sup>\[3\]</sup> | N <sup>\[3\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
 
 OADP backup support matrix for OpenShift Virtualization workloads
 
@@ -1202,14 +949,9 @@ OADP backup support matrix for OpenShift Virtualization workloads
 
 3.  Not supported
 
-> [!NOTE]
-> The CSI Data Mover backups use Kopia regardless of `uploaderType`.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+The CSI Data Mover backups use Kopia regardless of `uploaderType`.
 
 </div>
 
@@ -1220,5 +962,3 @@ Additional resources
 - [`Restore` CR](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/restoring-applications.xml#restoring-applications)
 
 - [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks)
-
-</div>

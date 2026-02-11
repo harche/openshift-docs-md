@@ -28,17 +28,9 @@ You can manage the resources on your AWS Outpost similarly to those on a cloud-b
 
   For more information, see "Using the AWS Load Balancer Operator in an AWS VPC cluster extended into an Outpost".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Using the AWS Load Balancer Operator in an AWS VPC cluster extended into an Outpost](../../../installing/installing_aws/ipi/installing-aws-outposts.xml#nw-aws-load-balancer-with-outposts_installing-aws-outposts)
-
-</div>
 
 # Obtaining information about your environment
 
@@ -48,14 +40,9 @@ To extend an AWS VPC cluster to your Outpost, you must provide information about
 
 You can use the OpenShift CLI (`oc`) to obtain information from your OpenShift Container Platform cluster.
 
-> [!TIP]
-> You might find it convenient to store some or all of these values as environment variables by using the `export` command.
+<div class="tip">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You might find it convenient to store some or all of these values as environment variables by using the `export` command.
 
 </div>
 
@@ -64,16 +51,6 @@ Prerequisites
 - You have access to the cluster using an account with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List the infrastructure ID for the cluster by running the following command. Retain this value.
 
@@ -89,11 +66,9 @@ Procedure
         $ oc get machinesets.machine.openshift.io -n openshift-machine-api
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -102,8 +77,6 @@ Procedure
         <compute_machine_set_name_1>   1         1         1       1           55m
         <compute_machine_set_name_2>   1         1         1       1           55m
         ```
-
-        </div>
 
     2.  Display the Amazon Machine Image (AMI) ID for one of the listed compute machine sets. Retain this value.
 
@@ -121,20 +94,13 @@ Procedure
           -o jsonpath='{.spec.template.spec.providerSpec.value.subnet.id}'
         ```
 
-</div>
-
 ## Obtaining information from your AWS account
 
 You can use the AWS CLI (`aws`) to obtain information from your AWS account.
 
-> [!TIP]
-> You might find it convenient to store some or all of these values as environment variables by using the `export` command.
+<div class="tip">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You might find it convenient to store some or all of these values as environment variables by using the `export` command.
 
 </div>
 
@@ -143,16 +109,6 @@ Prerequisites
 - Your Outpost is connected to your AWS account.
 
 - You have access to your AWS account by using the AWS CLI (`aws`) as a user with permissions to perform the required tasks.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List the Outposts that are connected to your AWS account by running the following command:
 
@@ -168,8 +124,11 @@ Procedure
 
     - The Outpost availability zone.
 
-      > [!NOTE]
-      > The output of the `aws outposts list-outposts` command includes two values related to the availability zone: `AvailabilityZone` and `AvailabilityZoneId`. You use the `AvailablilityZone` value to configure a compute machine set that creates compute machines in your Outpost.
+      <div class="note">
+
+      The output of the `aws outposts list-outposts` command includes two values related to the availability zone: `AvailabilityZone` and `AvailabilityZoneId`. You use the `AvailablilityZone` value to configure a compute machine set that creates compute machines in your Outpost.
+
+      </div>
 
 3.  Using the value of the Outpost ID, show the instance types that are available in your Outpost by running the following command. Retain the values of the available instance types.
 
@@ -185,8 +144,6 @@ Procedure
       --filters Name=outpost-arn,Values=<outpost_arn_value>
     ```
 
-</div>
-
 # Configuring your network for your Outpost
 
 To extend your VPC cluster into an Outpost, you must complete the following network configuration tasks:
@@ -199,20 +156,15 @@ To extend your VPC cluster into an Outpost, you must complete the following netw
 
 During installation, the maximum transmission unit (MTU) for the cluster network is detected automatically based on the MTU of the primary network interface of nodes in the cluster. You might need to decrease the MTU value for the cluster network to support an AWS Outposts subnet.
 
-> [!IMPORTANT]
-> You cannot roll back an MTU value for nodes during the MTU migration process, but you can roll back the value after the MTU migration process completes.
->
-> The migration is disruptive and nodes in your cluster might be temporarily unavailable as the MTU update takes effect.
+<div class="important">
 
-For more details about the migration process, including important service interruption considerations, see "Changing the MTU for the cluster network" in the additional resources for this procedure.
+You cannot roll back an MTU value for nodes during the MTU migration process, but you can roll back the value after the MTU migration process completes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The migration is disruptive and nodes in your cluster might be temporarily unavailable as the MTU update takes effect.
 
 </div>
+
+For more details about the migration process, including important service interruption considerations, see "Changing the MTU for the cluster network" in the additional resources for this procedure.
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -224,19 +176,9 @@ Prerequisites
 
 - If your nodes are virtual machines (VMs), ensure that the hypervisor and the connected network switches support jumbo frames.
 
-</div>
-
 ### Checking the current cluster MTU value
 
 Use the following procedure to obtain the current maximum transmission unit (MTU) for the cluster network.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To obtain the current MTU for the cluster network, enter the following command:
 
@@ -244,11 +186,9 @@ Procedure
   $ oc describe network.config cluster
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -265,21 +205,9 @@ Procedure
   ...
   ```
 
-  </div>
-
-</div>
-
 ### Beginning the MTU migration
 
 Use the following procedure to start the MTU migration.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To begin the MTU migration, specify the migration configuration by entering the following command. The Machine Config Operator performs a rolling reboot of the nodes in the cluster in preparation for the MTU change.
 
@@ -312,22 +240,15 @@ Procedure
 
     A successfully updated node has the following status: `UPDATED=true`, `UPDATING=false`, `DEGRADED=false`.
 
-    > [!NOTE]
-    > By default, the Machine Config Operator updates one machine per pool at a time, causing the total time the migration takes to increase with the size of the cluster.
+    <div class="note">
 
-</div>
+    By default, the Machine Config Operator updates one machine per pool at a time, causing the total time the migration takes to increase with the size of the cluster.
+
+    </div>
 
 ### Verifying the machine configuration
 
 Use the following procedure to verify the machine configuration.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Confirm the status of the new machine configuration on the hosts:
 
@@ -337,11 +258,9 @@ Procedure
       $ oc describe node | egrep "hostname|machineconfig"
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -352,8 +271,6 @@ Procedure
       machineconfiguration.openshift.io/reason:
       machineconfiguration.openshift.io/state: Done
       ```
-
-      </div>
 
   2.  Verify that the following statements are true:
 
@@ -378,19 +295,9 @@ Procedure
       ExecStart=/usr/local/bin/mtu-migration.sh
       ```
 
-</div>
-
 ### Finalizing the MTU migration
 
 Use the following procedure to finalize the MTU migration.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To finalize the MTU migration, enter the following command for the OVN-Kubernetes network plugin:
 
@@ -412,35 +319,15 @@ Procedure
 
     A successfully updated node has the following status: `UPDATED=true`, `UPDATING=false`, `DEGRADED=false`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the node in your cluster uses the MTU that you specified by entering the following command:
 
   ``` terminal
   $ oc describe network.config cluster
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Changing the MTU for the cluster network](../../../networking/advanced_networking/changing-cluster-network-mtu.xml#changing-cluster-network-mtu)
-
-</div>
 
 ## Creating subnets for AWS edge compute services
 
@@ -448,14 +335,9 @@ Before you configure a machine set for edge compute nodes in your OpenShift Cont
 
 You can use the provided CloudFormation template and create a CloudFormation stack. You can then use this stack to custom provision a subnet.
 
-> [!NOTE]
-> If you do not use the provided CloudFormation template to create your AWS infrastructure, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you do not use the provided CloudFormation template to create your AWS infrastructure, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
 
 </div>
 
@@ -464,16 +346,6 @@ Prerequisites
 - You added your AWS keys and region to your local AWS profile by running `aws configure`.
 
 - You have obtained the required information about your environment from your OpenShift Container Platform cluster, Outpost, and AWS account.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to the section of the documentation named "CloudFormation template for the VPC subnet", and copy the syntax from the template. Save the copied template syntax as a YAML file on your local system. This template describes the VPC that your cluster requires.
 
@@ -516,29 +388,15 @@ Procedure
 
     - `${OUTPOST_ARN}` is the Amazon Resource Name (ARN) for the Outpost.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
       ``` text
       arn:aws:cloudformation:us-east-1:123456789012:stack/<stack_name>/dbedae40-820e-11eb-2fd3-12a48460849f
       ```
-
-      </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Confirm that the template components exist by running the following command:
 
@@ -548,26 +406,16 @@ Verification
 
   After the `StackStatus` displays `CREATE_COMPLETE`, the output displays values for the following parameters:
 
-  |  |  |
-  |----|----|
-  | `PublicSubnetId` | The IDs of the public subnet created by the CloudFormation stack. |
+  |                   |                                                                    |
+  |-------------------|--------------------------------------------------------------------|
+  | `PublicSubnetId`  | The IDs of the public subnet created by the CloudFormation stack.  |
   | `PrivateSubnetId` | The IDs of the private subnet created by the CloudFormation stack. |
 
   Ensure that you provide these parameter values to the other CloudFormation templates that you run to create for your cluster.
 
-</div>
-
 ## CloudFormation template for the VPC subnet
 
 You can use the following CloudFormation template to deploy the Outpost subnet.
-
-<div class="example">
-
-<div class="title">
-
-CloudFormation template for VPC subnets
-
-</div>
 
 ``` yaml
 AWSTemplateFormatVersion: 2010-09-09
@@ -682,19 +530,9 @@ Outputs:
 
 - You must include the `kubernetes.io/cluster/unmanaged` tag in the private subnet configuration for AWS Outposts.
 
-</div>
-
 # Creating a compute machine set that deploys edge compute machines on an Outpost
 
 To create edge compute machines on AWS Outposts, you must create a new compute machine set with a compatible configuration.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have an AWS Outposts site.
 
@@ -704,27 +542,15 @@ Prerequisites
 
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  List the compute machine sets in your cluster by running the following command:
 
     ``` terminal
     $ oc get machinesets.machine.openshift.io -n openshift-machine-api
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -733,8 +559,6 @@ Procedure
     <original_machine_set_name_1>   1         1         1       1           55m
     <original_machine_set_name_2>   1         1         1       1           55m
     ```
-
-    </div>
 
 2.  Record the names of the existing compute machine sets.
 
@@ -758,11 +582,9 @@ Procedure
         -n openshift-machine-api -o yaml
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -792,8 +614,6 @@ Procedure
       # ...
       ```
 
-      </div>
-
       - The cluster infrastructure ID.
 
       - A default node label. For AWS Outposts, you use the `outposts` role.
@@ -802,11 +622,9 @@ Procedure
 
 4.  Configure the new compute machine set to create edge compute machines in the Outpost by editing the `<new_machine_set_name_1>.yaml` file:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example compute machine set for AWS Outposts
+    **Example compute machine set for AWS Outposts**
 
     </div>
 
@@ -872,8 +690,6 @@ Procedure
               effect: NoSchedule
     ```
 
-    </div>
-
     - Specifies the cluster infrastructure ID.
 
     - Specifies the name of the compute machine set. The name is composed of the cluster infrastructure ID, the `outposts` role name, and the Outpost availability zone.
@@ -898,27 +714,15 @@ Procedure
     $ oc create -f <new_machine_set_name_1>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - To verify that the compute machine set is created, list the compute machine sets in your cluster by running the following command:
 
   ``` terminal
   $ oc get machinesets.machine.openshift.io -n openshift-machine-api
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -929,8 +733,6 @@ Verification
   <original_machine_set_name_2>   1         1         1       1           55m
   ```
 
-  </div>
-
 - To list the machines that are managed by the new compute machine set, run the following command:
 
   ``` terminal
@@ -938,11 +740,9 @@ Verification
     -l machine.openshift.io/cluster-api-machineset=<new_machine_set_name_1>
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -952,27 +752,15 @@ Verification
   <machine_from_new_2>             Provisioning   m5.xlarge   us-east-1   us-east-1a   25s
   ```
 
-  </div>
-
 - To verify that a machine created by the new compute machine set has the correct configuration, examine the relevant fields in the CR for one of the new machines by running the following command:
 
   ``` terminal
   $ oc describe machine <machine_from_new_1> -n openshift-machine-api
   ```
 
-</div>
-
 # Creating user workloads in an Outpost
 
 After you extend an OpenShift Container Platform in an AWS VPC cluster into an Outpost, you can use edge compute nodes with the label `node-role.kubernetes.io/outposts` to create user workloads in the Outpost.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have extended an AWS VPC cluster into an Outpost.
 
@@ -982,23 +770,11 @@ Prerequisites
 
 - You have created a compute machine set that deploys edge compute machines compatible with the Outpost environment.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Configure a `Deployment` resource file for an application that you want to deploy to the edge compute node in the edge subnet.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `Deployment` manifest
+    **Example `Deployment` manifest**
 
     </div>
 
@@ -1068,8 +844,6 @@ Procedure
               claimName: <application_name>
     ```
 
-    </div>
-
     - Specify a name for your application.
 
     - Specify a namespace for your application. The application namespace can be the same as the application name.
@@ -1090,11 +864,9 @@ Procedure
 
 3.  Configure a `Service` object that exposes a pod from a targeted edge compute node to services that run inside your edge network.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `Service` manifest
+    **Example `Service` manifest**
 
     </div>
 
@@ -1114,8 +886,6 @@ Procedure
         app: <application_name>
     ```
 
-    </div>
-
     - Defines the `service` resource.
 
     - Specify the label type to apply to managed pods.
@@ -1125,8 +895,6 @@ Procedure
     ``` terminal
     $ oc create -f <application_service>.yaml
     ```
-
-</div>
 
 # Scheduling workloads on edge and cloud-based AWS compute resources
 
@@ -1142,14 +910,9 @@ AWS Outposts infrastructure cannot run AWS Classic Load Balancers, but Classic L
 
 Scheduling the workloads on edge compute nodes and cloud-based compute nodes can introduce latency. If you want to prevent a Classic Load Balancer in the VPC cluster from targeting Outpost edge compute nodes, you can apply labels to the cloud-based compute nodes and configure the Classic Load Balancer to only schedule on nodes with the applied labels.
 
-> [!NOTE]
-> If you do not need to prevent a Classic Load Balancer in the VPC cluster from targeting Outpost edge compute nodes, you do not need to complete these steps.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you do not need to prevent a Classic Load Balancer in the VPC cluster from targeting Outpost edge compute nodes, you do not need to complete these steps.
 
 </div>
 
@@ -1160,16 +923,6 @@ Prerequisites
 - You have installed the OpenShift CLI (`oc`).
 
 - You have created a user workload in the Outpost with tolerations that match the taints for your edge compute machines.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Optional: Verify that the edge compute nodes have the `location=outposts` label by running the following command and verifying that the output includes only the edge compute nodes in your Outpost:
 
@@ -1185,11 +938,9 @@ Procedure
 
     where `<key_name>=<value>` is the label you want to use to distinguish cloud-based compute nodes.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1199,19 +950,15 @@ Procedure
     node3.example.com labeled
     ```
 
-    </div>
-
 3.  Optional: Verify that the cloud-based compute nodes have the specified label by running the following command and confirming that the output includes all cloud-based compute nodes in your VPC cluster:
 
     ``` terminal
     $ oc get nodes -l <key_name>=<value>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1222,15 +969,11 @@ Procedure
     node3.example.com      Ready     worker    7h        v1.34.2
     ```
 
-    </div>
-
 4.  Configure the Classic Load Balancer service by adding the cloud-based subnet information to the `annotations` field of the `Service` manifest:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example service configuration
+    **Example service configuration**
 
     </div>
 
@@ -1256,8 +999,6 @@ Procedure
       type: LoadBalancer
     ```
 
-    </div>
-
     - Specify the subnet ID for the AWS VPC cluster.
 
     - Specify the key-value pair that matches the pair in the node label.
@@ -1268,15 +1009,7 @@ Procedure
     $ oc create -f <file_name>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify the status of the `service` resource to show the host of the provisioned Classic Load Balancer by running the following command:
 
@@ -1292,8 +1025,6 @@ Verification
 
 3.  In the AWS console, verify that only the labeled instances appear as the targeted instances for the load balancer.
 
-</div>
-
 ## Using the AWS Load Balancer Operator in an AWS VPC cluster extended into an Outpost
 
 To provision an AWS Application Load Balancer in an AWS VPC cluster extended into an Outpost, configure the AWS Load Balancer Operator. Note that the Operator cannot provision AWS Network Load Balancers because AWS Outposts does not support them.
@@ -1304,37 +1035,19 @@ An Application Load Balancer in the cloud can attach to cloud-based compute node
 
 You must annotate Ingress resources with the Outpost subnet or the VPC subnet, but not both.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have extended an AWS VPC cluster into an Outpost.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have installed the AWS Load Balancer Operator and created the AWS Load Balancer Controller.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Configure the `Ingress` resource to use a specified subnet:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example `Ingress` resource configuration
+  **Example `Ingress` resource configuration**
 
   </div>
 
@@ -1359,26 +1072,14 @@ Procedure
                     number: 80
   ```
 
-  </div>
-
   where:
 
   `<subnet_id>`
   Specifies the subnet to use. To use the Application Load Balancer in an Outpost, specify the Outpost subnet ID. To use the Application Load Balancer in the cloud, you must specify at least two subnets in different availability zones.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Creating the AWS Load Balancer Controller](../../../networking/networking_operators/aws_load_balancer_operator/install-aws-load-balancer-operator.xml#nw-creating-instance-aws-load-balancer-controller_aws-load-balancer-operator)
-
-</div>
 
 # Additional resources
 

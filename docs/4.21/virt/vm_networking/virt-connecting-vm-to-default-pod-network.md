@@ -1,7 +1,10 @@
 You can connect a virtual machine to the default internal pod network by configuring its network interface to use the `masquerade` binding mode.
 
-> [!NOTE]
-> Traffic passing through network interfaces to the default pod network is interrupted during live migration.
+<div class="note">
+
+Traffic passing through network interfaces to the default pod network is interrupted during live migration.
+
+</div>
 
 # Configuring masquerade mode from the CLI
 
@@ -9,27 +12,9 @@ You can use masquerade mode to hide a virtual machine’s outgoing traffic behin
 
 Enable masquerade mode and allow traffic to enter the virtual machine by editing your virtual machine configuration file.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - The virtual machine must be configured to use DHCP to acquire IPv4 addresses.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `interfaces` spec of your virtual machine configuration file:
 
@@ -58,16 +43,17 @@ Procedure
 
     - Optional: List the ports that you want to expose from the virtual machine, each specified by the `port` field. The `port` value must be a number between 0 and 65536. When the `ports` array is not used, all ports in the valid range are open to incoming traffic. In this example, incoming traffic is allowed on port `80`.
 
-      > [!NOTE]
-      > Ports 49152 and 49153 are reserved for use by the libvirt platform and all other incoming traffic to these ports is dropped.
+      <div class="note">
+
+      Ports 49152 and 49153 are reserved for use by the libvirt platform and all other incoming traffic to these ports is dropped.
+
+      </div>
 
 2.  Create the virtual machine:
 
     ``` terminal
     $ oc create -f <vm-name>.yaml
     ```
-
-</div>
 
 # Configuring masquerade mode with dual-stack (IPv4 and IPv6)
 
@@ -77,27 +63,9 @@ The `Network.pod.vmIPv6NetworkCIDR` field in the virtual machine instance config
 
 When the virtual machine is running, incoming and outgoing traffic for the virtual machine is routed to both the IPv4 address and the unique IPv6 address of the virt-launcher pod. The virt-launcher pod then routes the IPv4 traffic to the DHCP address of the virtual machine, and the IPv6 traffic to the statically set IPv6 address of the virtual machine.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The OpenShift Container Platform cluster must use the OVN-Kubernetes Container Network Interface (CNI) network plugin configured for dual-stack.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In a new virtual machine configuration, include an interface with `masquerade` and configure the IPv6 address and default gateway by using cloud-init.
 
@@ -145,19 +113,7 @@ Procedure
     $ oc create -f example-vm-ipv6.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - To verify that IPv6 has been configured, start the virtual machine and view the interface status of the virtual machine instance to ensure it has an IPv6 address:
-
-</div>
 
 ``` terminal
 $ oc get vmi <vmi-name> -o jsonpath="{.status.interfaces[*].ipAddresses}"
@@ -173,8 +129,11 @@ The VM automatically gets the MTU value of the cluster network, set by the clust
 
 - DHCP: If the guest DHCP client can read the MTU value from the DHCP server response.
 
-> [!NOTE]
-> For Windows VMs that do not have a VirtIO driver, you must set the MTU manually by using `netsh` or a similar tool. This is because the Windows DHCP client does not read the MTU value.
+<div class="note">
+
+For Windows VMs that do not have a VirtIO driver, you must set the MTU manually by using `netsh` or a similar tool. This is because the Windows DHCP client does not read the MTU value.
+
+</div>
 
 # Additional resources
 

@@ -4,14 +4,6 @@ Use the information in this section to understand and recover from issues you mi
 
 You can verify the existence and state of the `ControlPlaneMachineSet` custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Determine the state of the CR by running the following command:
 
   ``` terminal
@@ -25,51 +17,29 @@ Procedure
 
   - A result of `NotFound` indicates that there is no existing `ControlPlaneMachineSet` CR.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Next steps
+**Next steps**
 
 </div>
 
 To use the control plane machine set, you must ensure that a `ControlPlaneMachineSet` CR with the correct settings for your cluster exists.
 
-</div>
-
 - If your cluster has an existing CR, you must verify that the configuration in the CR is correct for your cluster.
 
 - If your cluster does not have an existing CR, you must create one with the correct configuration for your cluster.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Activating the control plane machine set custom resource](../../machine_management/control_plane_machine_management/cpmso-getting-started.xml#cpmso-activating_cpmso-getting-started)
 
 - [Creating a control plane machine set custom resource](../../machine_management/control_plane_machine_management/cpmso-getting-started.xml#cpmso-creating-cr_cpmso-getting-started)
-
-</div>
 
 # Adding a missing Azure internal load balancer
 
 The `internalLoadBalancer` parameter is required in both the `ControlPlaneMachineSet` and control plane `Machine` custom resources (CRs) for Azure. If this parameter is not preconfigured on your cluster, you must add it to both CRs.
 
 For more information about where this parameter is located in the Azure provider specification, see the sample Azure provider specification. The placement in the control plane `Machine` CR is similar.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List the control plane machines in your cluster by running the following command:
 
@@ -96,33 +66,13 @@ Procedure
 
 5.  Add the `internalLoadBalancer` parameter with the correct details for your cluster and save your changes.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - For clusters that use the default `RollingUpdate` update strategy, the Operator automatically propagates the changes to your control plane configuration.
 
 - For clusters that are configured to use the `OnDelete` update strategy, you must replace your control plane machines manually.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Sample Microsoft Azure provider specification](../../machine_management/control_plane_machine_management/cpmso_provider_configurations/cpmso-config-options-azure.xml#cpmso-yaml-provider-spec-azure_cpmso-config-options-azure)
-
-</div>
 
 # Recovering a degraded etcd Operator
 
@@ -131,14 +81,6 @@ Certain situations can cause the etcd Operator to become degraded.
 For example, while performing remediation, the machine health check might delete a control plane machine that is hosting etcd. If the etcd member is not reachable at that time, the etcd Operator becomes degraded.
 
 When the etcd Operator is degraded, manual intervention is required to force the Operator to remove the failed member and restore the cluster state.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List the control plane machines in your cluster by running the following command:
 
@@ -157,10 +99,13 @@ Procedure
 
     - The `PHASE` value is `Deleting` for more than ten minutes.
 
-    > [!IMPORTANT]
-    > Before continuing, ensure that your cluster has two healthy control plane machines. Performing the actions in this procedure on more than one control plane machine risks losing etcd quorum and can cause data loss.
-    >
-    > If you have lost the majority of your control plane hosts, leading to etcd quorum loss, then you must follow the disaster recovery procedure "Restoring to a previous cluster state" instead of this procedure.
+    <div class="important">
+
+    Before continuing, ensure that your cluster has two healthy control plane machines. Performing the actions in this procedure on more than one control plane machine risks losing etcd quorum and can cause data loss.
+
+    If you have lost the majority of your control plane hosts, leading to etcd quorum loss, then you must follow the disaster recovery procedure "Restoring to a previous cluster state" instead of this procedure.
+
+    </div>
 
 2.  Edit the machine CR for the failed control plane machine by running the following command:
 
@@ -172,19 +117,7 @@ Procedure
 
     The etcd Operator removes the failed machine from the cluster and can then safely add new etcd members.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Restoring to a previous cluster state](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
-
-</div>
 
 # Upgrading clusters that run on RHOSP
 
@@ -204,14 +137,6 @@ For some clusters that run on Red Hat OpenStack Platform (RHOSP) that you upgra
 
 To understand why this procedure is necessary, see [Solution \#7024383](https://access.redhat.com/solutions/7013893).
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  For all control plane machines, edit the provider spec for all control plane machines that match the environment. For example, to edit the machine `master-0`, enter the following command:
 
     ``` terminal
@@ -225,11 +150,9 @@ Procedure
 
 2.  In the provider spec, set the value of the property `rootVolume.availabilityZone` to the volume of the availability zone you want to use.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    An example RHOSP provider spec
+    **An example RHOSP provider spec**
 
     </div>
 
@@ -272,14 +195,15 @@ Procedure
           name: master-user-data
     ```
 
-    </div>
-
     - Set the zone name as this value.
 
-      > [!NOTE]
-      > If you edited or recreated machine resources after your initial cluster deployment, you might have to adapt these steps for your configuration.
-      >
-      > In your RHOSP cluster, find the availability zone of the root volumes for your machines and use that as the value.
+      <div class="note">
+
+      If you edited or recreated machine resources after your initial cluster deployment, you might have to adapt these steps for your configuration.
+
+      In your RHOSP cluster, find the availability zone of the root volumes for your machines and use that as the value.
+
+      </div>
 
 3.  Run the following command to retrieve information about the control plane machine set resource:
 
@@ -295,8 +219,6 @@ Procedure
 
 5.  For that resource, set the value of the `spec.state` property to `Active` to activate control plane machine sets for your cluster.
 
-</div>
-
 Your control plane is ready to be managed by the Cluster Control Plane Machine Set Operator.
 
 ## Configuring RHOSP clusters that have control plane machines with availability zones after an upgrade
@@ -311,14 +233,6 @@ For some clusters that run on Red Hat OpenStack Platform (RHOSP) that you upgra
 
 To understand why this procedure is necessary, see [Solution \#7013893](https://access.redhat.com/solutions/7013893).
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  For the `master-1` and `master-2` control plane machines, open the provider specs for editing. For example, to edit the first machine, enter the following command:
 
     ``` terminal
@@ -332,11 +246,9 @@ Procedure
 
 2.  For the `master-1` and `master-2` control plane machines, edit the value of the `serverGroupName` property in their provider specs to match that of the machine `master-0`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    An example RHOSP provider spec
+    **An example RHOSP provider spec**
 
     </div>
 
@@ -374,14 +286,15 @@ Procedure
           name: master-user-data
     ```
 
-    </div>
-
     - This value must match for machines `master-0`, `master-1`, and `master-3`.
 
-      > [!NOTE]
-      > If you edited or recreated machine resources after your initial cluster deployment, you might have to adapt these steps for your configuration.
-      >
-      > In your RHOSP cluster, find the server group that your control plane instances are in and use that as the value.
+      <div class="note">
+
+      If you edited or recreated machine resources after your initial cluster deployment, you might have to adapt these steps for your configuration.
+
+      In your RHOSP cluster, find the server group that your control plane instances are in and use that as the value.
+
+      </div>
 
 3.  Run the following command to retrieve information about the control plane machine set resource:
 
@@ -396,7 +309,5 @@ Procedure
     ```
 
 5.  For that resource, set the value of the `spec.state` property to `Active` to activate control plane machine sets for your cluster.
-
-</div>
 
 Your control plane is ready to be managed by the Cluster Control Plane Machine Set Operator.

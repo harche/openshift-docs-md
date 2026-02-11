@@ -1,7 +1,10 @@
-> [!NOTE]
-> Because Red Hat OpenShift Service Mesh releases on a different cadence from OpenShift Container Platform and because the Red Hat OpenShift Service Mesh Operator supports deploying multiple versions of the `ServiceMeshControlPlane`, the Service Mesh documentation does not maintain separate documentation sets for minor versions of the product. The current documentation set applies to the most recent version of Service Mesh unless version-specific limitations are called out in a particular topic or for a particular feature.
->
-> For additional information about the Red Hat OpenShift Service Mesh life cycle and supported platforms, refer to the [Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift#ossm).
+<div class="note">
+
+Because Red Hat OpenShift Service Mesh releases on a different cadence from OpenShift Container Platform and because the Red Hat OpenShift Service Mesh Operator supports deploying multiple versions of the `ServiceMeshControlPlane`, the Service Mesh documentation does not maintain separate documentation sets for minor versions of the product. The current documentation set applies to the most recent version of Service Mesh unless version-specific limitations are called out in a particular topic or for a particular feature.
+
+For additional information about the Red Hat OpenShift Service Mesh life cycle and supported platforms, refer to the [Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift#ossm).
+
+</div>
 
 # Introduction to Red Hat OpenShift Service Mesh
 
@@ -11,8 +14,11 @@ Microservice architectures split the work of enterprise applications into modula
 
 Service Mesh, which is based on the open source [Istio project](https://istio.io/), provides an easy way to create a network of deployed services that provides discovery, load balancing, service-to-service authentication, failure recovery, metrics, and monitoring. A service mesh also provides more complex operational functionality, including A/B testing, canary releases, access control, and end-to-end authentication.
 
-> [!NOTE]
-> Red Hat OpenShift Service Mesh 3 is generally available. For more information, see [Red Hat OpenShift Service Mesh 3.0](https://docs.redhat.com/en/documentation/red_hat_openshift_service_mesh/).
+<div class="note">
+
+Red Hat OpenShift Service Mesh 3 is generally available. For more information, see [Red Hat OpenShift Service Mesh 3.0](https://docs.redhat.com/en/documentation/red_hat_openshift_service_mesh/).
+
+</div>
 
 # Core features
 

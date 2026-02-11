@@ -14,35 +14,15 @@ For example, you have configured the following two BSLs:
 
 As you have already set the BSL created through the DPA as the default, you cannot set the independently created BSL again as the default. This means, at any given time, you can set only one BSL as the default BSL.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must install the OADP Operator.
 
 - You must create the secrets by using the credentials provided by the cloud provider.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Configure the `DataProtectionApplication` CR with more than one `BackupStorageLocation` CR. See the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example DPA
+    **Example DPA**
 
     </div>
 
@@ -83,8 +63,6 @@ Procedure
     #...
     ```
 
-    </div>
-
     where:
 
     `name: aws`
@@ -116,11 +94,9 @@ Procedure
 
 2.  Specify the BSL to be used in the backup CR. See the following example.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example backup CR
+    **Example backup CR**
 
     </div>
 
@@ -135,8 +111,6 @@ Procedure
       defaultVolumesToFsBackup: true
     ```
 
-    </div>
-
     where:
 
     `<namespace>`
@@ -145,35 +119,15 @@ Procedure
     `<backup_storage_location>`
     Specifies the storage location.
 
-</div>
-
 # Configuring two backup BSLs with different cloud credentials
 
 Configure two backup storage locations with different cloud credentials to back up applications to multiple storage targets. With this setup, you can distribute backups across different storage providers for redundancy.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You must install the OADP Operator.
 
 - You must configure two backup storage locations: AWS S3 and Multicloud Object Gateway (MCG).
 
 - You must have an application with a database deployed on a Red Hat OpenShift cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the first `Secret` for the AWS S3 storage provider with the default name by running the following command:
 
@@ -199,11 +153,9 @@ Procedure
 
 3.  Configure the DPA with the two BSLs as shown in the following example.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example DPA
+    **Example DPA**
 
     </div>
 
@@ -253,8 +205,6 @@ Procedure
           - aws
     ```
 
-    </div>
-
     where:
 
     `<region_name>`
@@ -298,11 +248,9 @@ Procedure
     $ oc get bsl
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -312,18 +260,17 @@ Procedure
     mcg    Available   5s               3m28s
     ```
 
-    </div>
-
 7.  Create a backup CR with the default BSL.
 
-    > [!NOTE]
-    > In the following example, the `storageLocation` field is not specified in the backup CR.
+    <div class="note">
 
-    <div class="formalpara">
+    In the following example, the `storageLocation` field is not specified in the backup CR.
 
-    <div class="title">
+    </div>
 
-    Example backup CR
+    <div class="formalpara-title">
+
+    **Example backup CR**
 
     </div>
 
@@ -338,8 +285,6 @@ Procedure
       - <mysql_namespace>
       defaultVolumesToFsBackup: true
     ```
-
-    </div>
 
     where:
 
@@ -370,11 +315,9 @@ Procedure
 
 10. Create a backup CR by using MCG as the BSL. In the following example, note that the second `storageLocation` value is specified at the time of backup CR creation.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example backup `CR`
+    **Example backup `CR`**
 
     </div>
 
@@ -390,8 +333,6 @@ Procedure
       storageLocation: mcg
       defaultVolumesToFsBackup: true
     ```
-
-    </div>
 
     where:
 
@@ -423,16 +364,4 @@ Procedure
     `<backup_name>`
     Specifies the name of the backup.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Creating profiles for different credentials](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.xml#oadp-aws-secrets-for-different-credentials_installing-oadp-aws)
-
-</div>

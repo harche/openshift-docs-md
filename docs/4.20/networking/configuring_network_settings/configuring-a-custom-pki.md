@@ -6,8 +6,11 @@ You can add your custom CA certificates to the cluster-wide truststore in one of
 
 - On a running cluster, by creating a `ConfigMap` object that contains your CA certificate and referencing it in the cluster `Proxy` object.
 
-> [!IMPORTANT]
-> The cluster Proxy object is the mechanism for managing the cluster-wide truststore. This guide focuses only on the task of adding a CA. If you also need to configure an egress proxy, refer to the "Configuring the cluster-wide proxy" chapter for detailed instructions.
+<div class="important">
+
+The cluster Proxy object is the mechanism for managing the cluster-wide truststore. This guide focuses only on the task of adding a CA. If you also need to configure an egress proxy, refer to the "Configuring the cluster-wide proxy" chapter for detailed instructions.
+
+</div>
 
 # Adding a custom CA during cluster installation
 
@@ -15,27 +18,9 @@ To add a custom Certificate Authority (CA) to your OpenShift Container Platform 
 
 The following procedure uses the `additionalTrustBundle` parameter. If you are also configuring an egress proxy, you can add this parameter to your `install-config.yaml` file along with your proxy configuration. For more information on the available proxy settings, see the "Configuring the cluster-wide proxy" chapter.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the `install-config.yaml` file for your cluster installation.
 
 - You have your custom CA certificate avalable in PEM-encoded format.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open your `install-config.yaml` file.
 
@@ -59,40 +44,23 @@ Procedure
 
 3.  Save the `install-config.yaml` file and continue with your cluster installation.
 
-</div>
-
 # Adding a custom CA to a running cluster
 
 To add a custom CA certificate to your running OpenShift Container Platform cluster, you can create a `ConfigMap` object with your certificate and reference it in the cluster `Proxy` object.
 
-> [!NOTE]
-> When you modify the cluster `Proxy` object, the Machine Config Operator (MCO) initiates a rolling reboot of all nodes to apply the change. This is expected behavior and does not require manual intervention.
+<div class="note">
 
-This procedure uses the `trustedCA` field in the `Proxy` object. If you also need to configure or modify egress proxy settings at the same time, see the "Configuring the cluster-wide proxy" chapter for detailed instructions.
-
-<div>
-
-<div class="title">
-
-Prerequisites
+When you modify the cluster `Proxy` object, the Machine Config Operator (MCO) initiates a rolling reboot of all nodes to apply the change. This is expected behavior and does not require manual intervention.
 
 </div>
+
+This procedure uses the `trustedCA` field in the `Proxy` object. If you also need to configure or modify egress proxy settings at the same time, see the "Configuring the cluster-wide proxy" chapter for detailed instructions.
 
 - You have cluster-admin privileges.
 
 - You have the OpenShift CLI (`oc`) installed.
 
 - You have your custom CA certificate available in PEM-encoded format.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `ConfigMap` object with your CA certificate.
 
@@ -140,33 +108,13 @@ Procedure
 
         After you run this command, the Machine Config Operator (MCO) detects the change and begins distributing the new trusted CA to all nodes in the cluster.
 
-</div>
-
 # Verifying the custom CA configuration
 
 To verify that your custom CA certificate has been successfully added to the OpenShift Container Platform cluster-wide trust bundle, you can view the contents of the trusted-ca-bundle `ConfigMap` object and check that your certificate is included.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have permissions to view `ConfigMap` objects in the openshift-config namespace.
 
 - You have the OpenShift CLI (`oc`) installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the following command to view the contents of the cluster-wide CA trust bundle:
 
@@ -198,14 +146,15 @@ Procedure
 
     If your certificate is present in the output, the cluster now trusts your custom PKI.
 
-</div>
-
 # Certificate injection using Operators
 
 In OpenShift Container Platform, certificate injection using Operators merges your custom Certificate Authorities (CAs) with system certificates and injects the merged bundle into Operators that request it. You can use this feature so your Operators trust custom certificates without requiring manual certificate bundle management.
 
-> [!IMPORTANT]
-> After adding a `config.openshift.io/inject-trusted-cabundle="true"` label to the config map, existing data in it is deleted. The Cluster Network Operator takes ownership of a config map and only accepts `ca-bundle` as data. You must use a separate config map to store `service-ca.crt` by using the `service.beta.openshift.io/inject-cabundle=true` annotation or a similar configuration. Adding a `config.openshift.io/inject-trusted-cabundle="true"` label and `service.beta.openshift.io/inject-cabundle=true` annotation on the same config map can cause issues.
+<div class="important">
+
+After adding a `config.openshift.io/inject-trusted-cabundle="true"` label to the config map, existing data in it is deleted. The Cluster Network Operator takes ownership of a config map and only accepts `ca-bundle` as data. You must use a separate config map to store `service-ca.crt` by using the `service.beta.openshift.io/inject-cabundle=true` annotation or a similar configuration. Adding a `config.openshift.io/inject-trusted-cabundle="true"` label and `service.beta.openshift.io/inject-cabundle=true` annotation on the same config map can cause issues.
+
+</div>
 
 Operators request this injection by creating an empty ConfigMap with the following label:
 
@@ -233,8 +182,11 @@ Specifies the empty ConfigMap name.
 
 The Operator mounts this ConfigMap into the container’s local trust store.
 
-> [!NOTE]
-> Adding a trusted CA certificate is only needed if the certificate is not included in the Red Hat Enterprise Linux CoreOS (RHCOS) trust bundle.
+<div class="note">
+
+Adding a trusted CA certificate is only needed if the certificate is not included in the Red Hat Enterprise Linux CoreOS (RHCOS) trust bundle.
+
+</div>
 
 Certificate injection is not limited to Operators. The Cluster Network Operator injects certificates across any namespace when an empty ConfigMap is created with the `config.openshift.io/inject-trusted-cabundle=true` label.
 

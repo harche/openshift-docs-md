@@ -38,11 +38,9 @@ Pod scheduling occurs after you have updated the configuration. Therefore, you m
 
 Refer to the default configuration in the following YAML:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Default configuration for connectivity source and target pods
+**Default configuration for connectivity source and target pods**
 
 </div>
 
@@ -71,8 +69,6 @@ spec:
           operator: Exists
 ```
 
-</div>
-
 - Specifies the network diagnostics configuration. If a value is not specified or an empty object is specified, and `spec.disableNetworkDiagnostics=true` is set in the `network.operator.openshift.io` custom resource named `cluster`, network diagnostics are disabled. If set, this value overrides `spec.disableNetworkDiagnostics=true`.
 
 - Specifies the diagnostics mode. The value can be the empty string, `All`, or `Disabled`. The empty string is equivalent to specifying `All`.
@@ -85,25 +81,7 @@ spec:
 
 As a cluster administrator, you can configure which nodes the connectivity check pods run by modifying the `network.config.openshift.io` object named `cluster`.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the connectivity check configuration by entering the following command:
 
@@ -115,29 +93,15 @@ Procedure
 
 3.  Save your changes and exit the text editor.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the source and target pods are running on the intended nodes by entering the following command:
-
-</div>
 
 ``` terminal
 $ oc get pods -n openshift-network-diagnostics -o wide
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -152,8 +116,6 @@ network-check-target-nslvj              1/1     Running   0          9h      10.
 network-check-target-z2sfx              1/1     Running   0          9h      10.129.0.4   ip-10-0-60-253.us-east-2.compute.internal   <none>           <none>
 ```
 
-</div>
-
 # PodNetworkConnectivityCheck object fields
 
 The `PodNetworkConnectivityCheck` object fields are described in the following tables.
@@ -166,14 +128,14 @@ The `PodNetworkConnectivityCheck` object fields are described in the following t
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>metadata.name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The name of the object in the following format: <code>&lt;source&gt;-to-&lt;target&gt;</code>. The destination described by <code>&lt;target&gt;</code> includes one of following strings:</p>
@@ -187,52 +149,52 @@ The `PodNetworkConnectivityCheck` object fields are described in the following t
 <li><p><code>openshift-apiserver-service-cluster</code></p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>metadata.namespace</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The namespace that the object is associated with. This value is always <code>openshift-network-diagnostics</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.sourcePod</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The name of the pod where the connection check originates, such as <code>network-check-source-596b4c6566-rgh92</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.targetEndpoint</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The target of the connection check, such as <code>api.devcluster.example.com:6443</code>.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.tlsClientCert</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Configuration for the TLS certificate to use.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.tlsClientCert.name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The name of the TLS certificate used, if any. The default value is an empty string.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>status</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>An object representing the condition of the connection test and logs of recent connection successes and failures.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>status.conditions</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>The latest status of the connection check and any previous statuses.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>status.failures</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Connection test logs from unsuccessful attempts.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>status.outages</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Connect test logs covering the time periods of any outages.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>status.successes</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Connection test logs from successful attempts.</p></td>
@@ -240,27 +202,29 @@ The `PodNetworkConnectivityCheck` object fields are described in the following t
 </tbody>
 </table>
 
+PodNetworkConnectivityCheck object fields
+
 The following table describes the fields for objects in the `status.conditions` array:
 
-| Field | Type | Description |
-|----|----|----|
+| Field                | Type     | Description                                                                            |
+|----------------------|----------|----------------------------------------------------------------------------------------|
 | `lastTransitionTime` | `string` | The time that the condition of the connection transitioned from one status to another. |
-| `message` | `string` | The details about last transition in a human readable format. |
-| `reason` | `string` | The last status of the transition in a machine readable format. |
-| `status` | `string` | The status of the condition. |
-| `type` | `string` | The type of the condition. |
+| `message`            | `string` | The details about last transition in a human readable format.                          |
+| `reason`             | `string` | The last status of the transition in a machine readable format.                        |
+| `status`             | `string` | The status of the condition.                                                           |
+| `type`               | `string` | The type of the condition.                                                             |
 
 status.conditions
 
 The following table describes the fields for objects in the `status.conditions` array:
 
-| Field | Type | Description |
-|----|----|----|
-| `end` | `string` | The timestamp from when the connection failure is resolved. |
-| `endLogs` | `array` | Connection log entries, including the log entry related to the successful end of the outage. |
-| `message` | `string` | A summary of outage details in a human readable format. |
-| `start` | `string` | The timestamp from when the connection failure is first detected. |
-| `startLogs` | `array` | Connection log entries, including the original failure. |
+| Field       | Type     | Description                                                                                  |
+|-------------|----------|----------------------------------------------------------------------------------------------|
+| `end`       | `string` | The timestamp from when the connection failure is resolved.                                  |
+| `endLogs`   | `array`  | Connection log entries, including the log entry related to the successful end of the outage. |
+| `message`   | `string` | A summary of outage details in a human readable format.                                      |
+| `start`     | `string` | The timestamp from when the connection failure is first detected.                            |
+| `startLogs` | `array`  | Connection log entries, including the original failure.                                      |
 
 status.outages
 
@@ -276,13 +240,13 @@ The fields for a connection log entry are described in the following table. The 
 
 - `status.outages[].endLogs[]`
 
-| Field | Type | Description |
-|----|----|----|
-| `latency` | `string` | Records the duration of the action. |
-| `message` | `string` | Provides the status in a human readable format. |
-| `reason` | `string` | Provides the reason for status in a machine readable format. The value is one of `TCPConnect`, `TCPConnectError`, `DNSResolve`, `DNSError`. |
-| `success` | `boolean` | Indicates if the log entry is a success or failure. |
-| `time` | `string` | The start time of connection check. |
+| Field     | Type      | Description                                                                                                                                 |
+|-----------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| `latency` | `string`  | Records the duration of the action.                                                                                                         |
+| `message` | `string`  | Provides the status in a human readable format.                                                                                             |
+| `reason`  | `string`  | Provides the reason for status in a machine readable format. The value is one of `TCPConnect`, `TCPConnectError`, `DNSResolve`, `DNSError`. |
+| `success` | `boolean` | Indicates if the log entry is a success or failure.                                                                                         |
+| `time`    | `string`  | The start time of connection check.                                                                                                         |
 
 Connection log object
 
@@ -290,27 +254,9 @@ Connection log object
 
 As a cluster administrator, you can verify the connectivity of an endpoint, such as an API server, load balancer, service, or pod, and verify that network diagnostics is enabled.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Confirm that network diagnostics are enable by entering the following command:
 
@@ -318,11 +264,9 @@ Procedure
     $ oc get network.config.openshift.io cluster -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -338,19 +282,15 @@ Procedure
           type: NetworkDiagnosticsAvailable
     ```
 
-    </div>
-
 2.  List the current `PodNetworkConnectivityCheck` objects by entering the following command:
 
     ``` terminal
     $ oc get podnetworkconnectivitycheck -n openshift-network-diagnostics
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -376,8 +316,6 @@ Procedure
     network-check-source-ci-ln-x5sv9rb-f76d1-4rzrp-worker-b-6xdmh-to-openshift-apiserver-service-cluster                                75m
     ```
 
-    </div>
-
 3.  View the connection test logs:
 
     1.  From the output of the previous command, identify the endpoint that you want to review the connectivity logs for.
@@ -391,11 +329,9 @@ Procedure
 
         where `<name>` specifies the name of the `PodNetworkConnectivityCheck` object.
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -543,7 +479,3 @@ Procedure
             success: true
             time: "2021-01-13T21:05:34Z"
         ```
-
-        </div>
-
-</div>

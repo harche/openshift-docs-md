@@ -12,8 +12,11 @@ To create CSI-provisioned persistent volumes (PVs) that mount to GCP PD storage 
 
   GCP PD CSI driver supports the C3 instance type for bare metal and N4 machine series. The C3 instance type and N4 machine series support the hyperdisk-balanced disks. For more information, see Section *C3 instance type for bare metal and N4 machine series*.
 
-> [!NOTE]
-> OpenShift Container Platform provides automatic migration for the GCE Persistent Disk in-tree volume plugin to its equivalent CSI driver. For more information, see [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration).
+<div class="note">
+
+OpenShift Container Platform provides automatic migration for the GCE Persistent Disk in-tree volume plugin to its equivalent CSI driver. For more information, see [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration).
+
+</div>
 
 # About CSI
 
@@ -36,7 +39,7 @@ The GCP PD CSI driver uses the `csi.storage.k8s.io/fstype` parameter key to supp
 <col style="width: 36%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Values</th>
 <th style="text-align: left;">Default</th>
@@ -44,20 +47,20 @@ The GCP PD CSI driver uses the `csi.storage.k8s.io/fstype` parameter key to supp
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>pd-ssd</code>, <code>pd-standard</code>, or <code>pd-balanced</code></p></td>
 <td style="text-align: left;"><p><code>pd-standard</code></p></td>
 <td style="text-align: left;"><p>Allows you to choose between standard PVs or solid-state-drive PVs.</p>
 <p>The driver does not validate the value, thus all the possible values are accepted.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>replication-type</code></p></td>
 <td style="text-align: left;"><p><code>none</code> or <code>regional-pd</code></p></td>
 <td style="text-align: left;"><p><code>none</code></p></td>
 <td style="text-align: left;"><p>Allows you to choose between zonal or regional PVs.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>disk-encryption-kms-key</code></p></td>
 <td style="text-align: left;"><p>Fully qualified resource identifier for the key to use to encrypt new disks.</p></td>
 <td style="text-align: left;"><p>Empty string</p></td>
@@ -65,6 +68,8 @@ The GCP PD CSI driver uses the `csi.storage.k8s.io/fstype` parameter key to supp
 </tr>
 </tbody>
 </table>
+
+CreateVolume Parameters
 
 # C3 instance type for bare metal and N4 machine series
 
@@ -80,10 +85,13 @@ The GCP PD CSI driver support for the C3 instance type for bare metal and N4 mac
 
 - The default storage class is standard-csi.
 
-  > [!IMPORTANT]
-  > You need to manually create a storage class.
-  >
-  > For information about creating the storage class, see Step 2 in Section *Setting up hyperdisk-balanced disks*.
+  <div class="important">
+
+  You need to manually create a storage class.
+
+  For information about creating the storage class, see Step 2 in Section *Setting up hyperdisk-balanced disks*.
+
+  </div>
 
 - Clusters with mixed virtual machines (VMs) that use different storage types, for example, N2 and N4, are not supported. This is due to hyperdisks-balanced disks not being usable on most legacy VMs. Similarly, regular persistent disks are not usable on N4/C3 VMs.
 
@@ -99,29 +107,15 @@ To set up storage pools, see [Setting up hyperdisk-balanced disks](../../storage
 
 ## Setting up hyperdisk-balanced disks
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the cluster with administrative privileges
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 Complete the following steps to set up hyperdisk-balanced disks:
-
-</div>
 
 1.  Create a GCP cluster with attached disks provisioned with hyperdisk-balanced disks.
 
@@ -131,11 +125,9 @@ Complete the following steps to set up hyperdisk-balanced disks:
 
         For your install-config.yaml file, use the following example file:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example install-config YAML file
+        **Example install-config YAML file**
 
         </div>
 
@@ -172,14 +164,15 @@ Complete the following steps to set up hyperdisk-balanced disks:
                 diskType: hyperdisk-balanced
         ```
 
-        </div>
-
         - Specifies the node type as n4-standard-4.
 
         - Specifies the node has the root disk backed by hyperdisk-balanced disk type. All nodes in the cluster should use the same disk type, either hyperdisks-balanced or pd-\*.
 
-          > [!NOTE]
-          > All nodes in the cluster must support hyperdisk-balanced volumes. Clusters with mixed nodes are not supported, for example N2 and N3 using hyperdisk-balanced disks.
+          <div class="note">
+
+          All nodes in the cluster must support hyperdisk-balanced volumes. Clusters with mixed nodes are not supported, for example N2 and N3 using hyperdisk-balanced disks.
+
+          </div>
 
     2.  After step 3 in *Incorporating the Cloud Credential Operator utility manifests* section, copy the following manifests into the manifests directory created by the installation program:
 
@@ -187,11 +180,9 @@ Complete the following steps to set up hyperdisk-balanced disks:
 
         - storageclass.yaml - creates a hyperdisk-specific storage class
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example cluster CSI driver YAML file
+          **Example cluster CSI driver YAML file**
 
           </div>
 
@@ -207,15 +198,11 @@ Complete the following steps to set up hyperdisk-balanced disks:
             storageClassState: Unmanaged
           ```
 
-          </div>
-
           - Specifies disabling creation of the default OpenShift Container Platform storage classes.
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example storage class YAML file
+          **Example storage class YAML file**
 
           </div>
 
@@ -244,8 +231,6 @@ Complete the following steps to set up hyperdisk-balanced disks:
           ...
           ```
 
-          </div>
-
           - Specify the name for your storage class. In this example, it is `hyperdisk-sc`.
 
           - `pd.csi.storage.gke.io` specifies GCP CSI provisioner.
@@ -262,11 +247,9 @@ Complete the following steps to set up hyperdisk-balanced disks:
 
 3.  Create a persistent volume claim (PVC) that uses the hyperdisk-specific storage class using the following example YAML file:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example PVC YAML file
+    **Example PVC YAML file**
 
     </div>
 
@@ -284,8 +267,6 @@ Complete the following steps to set up hyperdisk-balanced disks:
           storage: 2048Gi
     ```
 
-    </div>
-
     - PVC references the storage pool-specific storage class. In this example, `hyperdisk-sc`.
 
     - Target storage capacity of the hyperdisk-balanced volume. In this example, `2048Gi`.
@@ -296,11 +277,9 @@ Complete the following steps to set up hyperdisk-balanced disks:
 
     2.  Use the following example YAML file to create the deployment:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example deployment YAML file
+        **Example deployment YAML file**
 
         </div>
 
@@ -333,8 +312,6 @@ Complete the following steps to set up hyperdisk-balanced disks:
                   claimName: my-pvc
         ```
 
-        </div>
-
         - Specifies the machine family. In this example, it is `n4`.
 
         - Specifies the name of the PVC created in the preceding step. In this example, it is `my-pfc`.
@@ -345,11 +322,9 @@ Complete the following steps to set up hyperdisk-balanced disks:
         $ oc get deployment
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -357,8 +332,6 @@ Complete the following steps to set up hyperdisk-balanced disks:
         NAME       READY   UP-TO-DATE   AVAILABLE   AGE
         postgres   0/1     1            0           42s
         ```
-
-        </div>
 
         It might take a few minutes for hyperdisk instances to complete provisioning and display a READY status.
 
@@ -368,11 +341,9 @@ Complete the following steps to set up hyperdisk-balanced disks:
         $ oc get pvc my-pvc
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -381,19 +352,15 @@ Complete the following steps to set up hyperdisk-balanced disks:
         my-pvc        Bound    pvc-1ff52479-4c81-4481-aa1d-b21c8f8860c6   2Ti        RWO            hyperdisk-sc       <unset>                2m24s
         ```
 
-        </div>
-
     5.  Confirm the expected configuration of your hyperdisk-balanced disk:
 
         ``` terminal
         $ gcloud compute disks list
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -404,8 +371,6 @@ Complete the following steps to set up hyperdisk-balanced disks:
         c4a-rhel-vm                                 us-central1-a   zone            50       hyperdisk-balanced  READY
         ```
 
-        </div>
-
         - Hyperdisk-balanced disk.
 
     6.  If using storage pools, check that the volume is provisioned as specified in your storage class and PVC by running the following command:
@@ -414,11 +379,9 @@ Complete the following steps to set up hyperdisk-balanced disks:
         $ gcloud compute storage-pools list-disks pool-us-east4-c --zone=us-east4-c
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -426,8 +389,6 @@ Complete the following steps to set up hyperdisk-balanced disks:
         NAME                                      STATUS  PROVISIONED_IOPS  PROVISIONED_THROUGHPUT  SIZE_GB
         pvc-1ff52479-4c81-4481-aa1d-b21c8f8860c6  READY   3000              140                     2048
         ```
-
-        </div>
 
 ## Additional resources
 
@@ -439,33 +400,19 @@ When you create a `PersistentVolumeClaim` object, OpenShift Container Platform p
 
 For encryption, the newly attached PV that you create uses customer-managed encryption keys (CMEK) on a cluster by using a new or existing Google Cloud Key Management Service (KMS) key.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to a running OpenShift Container Platform cluster.
 
 - You have created a Cloud KMS key ring and key version.
 
-</div>
-
 For more information about CMEK and Cloud KMS resources, see [Using customer-managed encryption keys (CMEK)](https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek).
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To create a custom-encrypted PV, complete the following steps:
-
-</div>
 
 1.  Create a storage class with the Cloud KMS key. The following example enables dynamic provisioning of encrypted volumes:
 
@@ -484,8 +431,11 @@ To create a custom-encrypted PV, complete the following steps:
 
     - This field must be the resource identifier for the key that will be used to encrypt new disks. Values are case-sensitive. For more information about providing key ID values, see [Retrieving a resource’s ID](https://cloud.google.com/kms/docs/resource-hierarchy#retrieve_resource_id) and [Getting a Cloud KMS resource ID](https://cloud.google.com/kms/docs/getting-resource-ids).
 
-      > [!NOTE]
-      > You cannot add the `disk-encryption-kms-key` parameter to an existing storage class. However, you can delete the storage class and recreate it with the same name and a different set of parameters. If you do this, the provisioner of the existing class must be `pd.csi.storage.gke.io`.
+      <div class="note">
+
+      You cannot add the `disk-encryption-kms-key` parameter to an existing storage class. However, you can delete the storage class and recreate it with the same name and a different set of parameters. If you do this, the provisioner of the existing class must be `pd.csi.storage.gke.io`.
+
+      </div>
 
 2.  Deploy the storage class on your OpenShift Container Platform cluster using the `oc` command:
 
@@ -493,11 +443,9 @@ To create a custom-encrypted PV, complete the following steps:
     $ oc describe storageclass csi-gce-pd-cmek
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -513,8 +461,6 @@ To create a custom-encrypted PV, complete the following steps:
     VolumeBindingMode:     WaitForFirstConsumer
     Events:                none
     ```
-
-    </div>
 
 3.  Create a file named `pvc.yaml` that matches the name of your storage class object that you created in the previous step:
 
@@ -532,8 +478,11 @@ To create a custom-encrypted PV, complete the following steps:
           storage: 6Gi
     ```
 
-    > [!NOTE]
-    > If you marked the new storage class as default, you can omit the `storageClassName` field.
+    <div class="note">
+
+    If you marked the new storage class as default, you can omit the `storageClassName` field.
+
+    </div>
 
 4.  Apply the PVC on your cluster:
 
@@ -547,11 +496,9 @@ To create a custom-encrypted PV, complete the following steps:
     $ oc get pvc
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -560,10 +507,11 @@ To create a custom-encrypted PV, complete the following steps:
     podpvc    Bound     pvc-e36abf50-84f3-11e8-8538-42010a800002   10Gi       RWO            csi-gce-pd-cmek  9s
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > If your storage class has the `volumeBindingMode` field set to `WaitForFirstConsumer`, you must create a pod to use the PVC before you can verify it.
+    If your storage class has the `volumeBindingMode` field set to `WaitForFirstConsumer`, you must create a pod to use the PVC before you can verify it.
+
+    </div>
 
 Your CMEK-protected PV is now ready to use with your OpenShift Container Platform cluster.
 

@@ -8,25 +8,7 @@ You can configure a different overhead value by editing the `HCO` object. You ca
 
 Change the amount of persistent volume claim (PVC) space that the OpenShift Virtualization reserves for file system overhead by editing the `spec.filesystemOverhead` attribute of the `HCO` object.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open the `HCO` object for editing by running the following command:
 
@@ -51,16 +33,6 @@ Procedure
 
 3.  Save and exit the editor to update the `HCO` object.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - View the `CDIConfig` status and verify your changes by running one of the following commands:
 
   To generally verify changes to `CDIConfig`:
@@ -74,5 +46,3 @@ Verification
   ``` terminal
   $ oc get cdiconfig -o jsonpath='{.items..status.filesystemOverhead}'
   ```
-
-</div>

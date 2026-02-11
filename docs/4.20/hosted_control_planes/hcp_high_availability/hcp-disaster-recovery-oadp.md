@@ -34,31 +34,13 @@ To perform disaster recovery for a hosted cluster, you can use OpenShift API for
 
 To prepare AWS to use OADP, see "Configuring the OpenShift API for Data Protection with Multicloud Object Gateway".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring the OpenShift API for Data Protection with Multicloud Object Gateway](../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.xml#installing-oadp-aws)
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
+<!-- -->
 
 - Backing up the data plane workload
 
 - Backing up the control plane workload
-
-</div>
 
 # Preparing bare metal to use OADP
 
@@ -66,59 +48,23 @@ To perform disaster recovery for a hosted cluster, you can use OpenShift API for
 
 To prepare bare metal to use OADP, see "Configuring the OpenShift API for Data Protection with AWS S3 compatible storage".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring the OpenShift API for Data Protection with AWS S3 compatible storage](../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-mcg.xml#installing-oadp-mcg)
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
+<!-- -->
 
 - Backing up the data plane workload
 
 - Backing up the control plane workload
 
-</div>
-
 # Backing up the data plane workload
 
 If the data plane workload is not important, you can skip this procedure. To back up the data plane workload by using the OADP Operator, see "Backing up applications".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Backing up applications](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/backing-up-applications.xml#backing-up-applications)
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
+<!-- -->
 
 - Restoring a hosted cluster by using OADP
-
-</div>
 
 # Backing up the control plane workload
 
@@ -129,14 +75,6 @@ You can back up the control plane workload by creating the `Backup` custom resou
 You can back up the control plane workload by creating the `Backup` custom resource (CR).
 
 To monitor and observe the backup process, see "Observing the backup and restore process".
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Pause the reconciliation of the `HostedCluster` resource by running the following command:
 
@@ -197,14 +135,6 @@ Procedure
 
 8.  Create a YAML file that defines the `Backup` CR:
 
-    <div class="example">
-
-    <div class="title">
-
-    Example `backup-control-plane.yaml` file
-
-    </div>
-
     ``` yaml
     apiVersion: velero.io/v1
     kind: Backup
@@ -250,8 +180,6 @@ Procedure
       defaultVolumesToFsBackup: true
     ```
 
-    </div>
-
     - Replace `backup_resource_name` with the name of your `Backup` resource.
 
     - Selects specific namespaces to back up objects from them. You must include your hosted cluster namespace and the hosted control plane namespace.
@@ -266,24 +194,17 @@ Procedure
 
     - Sets the `fs-backup` backing up method for persistent volumes (PVs) as default. This setting is useful when you use a combination of Container Storage Interface (CSI) volume snapshots and the `fs-backup` method.
 
-      > [!NOTE]
-      > If you want to use CSI volume snapshots, you must add the `backup.velero.io/backup-volumes-excludes=<pv_name>` annotation to your PVs.
+      <div class="note">
+
+      If you want to use CSI volume snapshots, you must add the `backup.velero.io/backup-volumes-excludes=<pv_name>` annotation to your PVs.
+
+      </div>
 
 9.  Apply the `Backup` CR by running the following command:
 
     ``` terminal
     $ oc apply -f backup-control-plane.yaml
     ```
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Verify if the value of the `status.phase` is `Completed` by running the following command:
 
@@ -292,33 +213,15 @@ Verification
     -o jsonpath='{.status.phase}'
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
+<!-- -->
 
 - Restoring a hosted cluster by using OADP
-
-</div>
 
 ## Backing up the control plane workload on a bare-metal platform
 
 You can back up the control plane workload by creating the `Backup` custom resource (CR).
 
 To monitor and observe the backup process, see "Observing the backup and restore process".
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Pause the reconciliation of the `HostedCluster` resource by running the following command:
 
@@ -380,14 +283,6 @@ Procedure
 
 9.  Create a YAML file that defines the `Backup` CR:
 
-    <div class="example">
-
-    <div class="title">
-
-    Example `backup-control-plane.yaml` file
-
-    </div>
-
     ``` yaml
     apiVersion: velero.io/v1
     kind: Backup
@@ -436,8 +331,6 @@ Procedure
       defaultVolumesToFsBackup: true
     ```
 
-    </div>
-
     - Replace `backup_resource_name` with the name of your `Backup` resource.
 
     - Selects specific namespaces to back up objects from them. You must include your hosted cluster namespace and the hosted control plane namespace.
@@ -452,24 +345,17 @@ Procedure
 
     - Sets the `fs-backup` backing up method for persistent volumes (PVs) as default. This setting is useful when you use a combination of Container Storage Interface (CSI) volume snapshots and the `fs-backup` method.
 
-      > [!NOTE]
-      > If you want to use CSI volume snapshots, you must add the `backup.velero.io/backup-volumes-excludes=<pv_name>` annotation to your PVs.
+      <div class="note">
+
+      If you want to use CSI volume snapshots, you must add the `backup.velero.io/backup-volumes-excludes=<pv_name>` annotation to your PVs.
+
+      </div>
 
 10. Apply the `Backup` CR by running the following command:
 
     ``` terminal
     $ oc apply -f backup-control-plane.yaml
     ```
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Verify if the value of the `status.phase` is `Completed` by running the following command:
 
@@ -478,19 +364,9 @@ Verification
     -o jsonpath='{.status.phase}'
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
+<!-- -->
 
 - Restore a hosted cluster by using OADP.
-
-</div>
 
 # Restoring a hosted cluster by using OADP
 
@@ -504,14 +380,9 @@ You can restore the hosted cluster by creating the `Restore` custom resource (CR
 
 - If you are using a *replace* update, you need some spare nodes for InfraEnv to deploy the worker nodes.
 
-> [!IMPORTANT]
-> After you back up your hosted cluster, you must destroy it to initiate the restoring process. To initiate node provisioning, you must back up workloads in the data plane before deleting the hosted cluster.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+After you back up your hosted cluster, you must destroy it to initiate the restoring process. To initiate node provisioning, you must back up workloads in the data plane before deleting the hosted cluster.
 
 </div>
 
@@ -519,17 +390,7 @@ Prerequisites
 
 - You completed the steps in [Removing remaining resources after removing a cluster](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#removing-a-cluster-from-management-in-special-cases).
 
-</div>
-
 To monitor and observe the backup process, see "Observing the backup and restore process".
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Verify that no pods and persistent volume claims (PVCs) are present in the hosted control plane namespace by running the following command:
 
@@ -537,11 +398,9 @@ Procedure
     $ oc get pod pvc -n <hosted_control_plane_namespace>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Expected output
+    **Expected output**
 
     </div>
 
@@ -549,15 +408,11 @@ Procedure
     No resources found
     ```
 
-    </div>
-
 2.  Create a YAML file that defines the `Restore` CR:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `restore-hosted-cluster.yaml` file
+    **Example `restore-hosted-cluster.yaml` file**
 
     </div>
 
@@ -580,8 +435,6 @@ Procedure
       - resticrepositories.velero.io
     ```
 
-    </div>
-
     - Replace `<restore_resource_name>` with the name of your `Restore` resource.
 
     - Replace `<backup_resource_name>` with the name of your `Backup` resource.
@@ -590,8 +443,11 @@ Procedure
 
     - Ensures that the existing objects are overwritten with the backed up content.
 
-      > [!IMPORTANT]
-      > You must create the `infraenv` resource in a separate namespace. Do not delete the `infraenv` resource during the restore process. The `infraenv` resource is mandatory for the new nodes to be reprovisioned.
+      <div class="important">
+
+      You must create the `infraenv` resource in a separate namespace. Do not delete the `infraenv` resource during the restore process. The `infraenv` resource is mandatory for the new nodes to be reprovisioned.
+
+      </div>
 
 3.  Apply the `Restore` CR by running the following command:
 
@@ -653,8 +509,6 @@ Procedure
       --overwrite=true --all
     ```
 
-</div>
-
 ## Restoring a hosted cluster into a new management cluster by using OADP
 
 You can restore the hosted cluster into a new management cluster by creating the `Restore` custom resource (CR).
@@ -663,13 +517,7 @@ You can restore the hosted cluster into a new management cluster by creating the
 
 - If you are using a replace update, you need some spare nodes for the `InfraEnv` resource to deploy the worker nodes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - You configured the new management cluster to use OpenShift API for Data Protection (OADP). The new management cluster must have the same Data Protection Application (DPA) as the management cluster that you backed up from so that the `Restore` CR can access the backup storage.
 
@@ -679,28 +527,19 @@ Prerequisites
 
   - The hosted cluster must resolve to the IP of the new management cluster.
 
-</div>
-
 To monitor and observe the backup process, see "Observing the backup and restore process".
 
-> [!IMPORTANT]
-> Complete the following steps on the new management cluster that you are restoring the hosted cluster to, not on the management cluster that you created the backup from.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Procedure
+Complete the following steps on the new management cluster that you are restoring the hosted cluster to, not on the management cluster that you created the backup from.
 
 </div>
 
 1.  Create a YAML file that defines the `Restore` CR:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `restore-hosted-cluster.yaml` file
+    **Example `restore-hosted-cluster.yaml` file**
 
     </div>
 
@@ -734,8 +573,6 @@ Procedure
       - pv
       - pvc
     ```
-
-    </div>
 
     - Replace `<restore_resource_name>` with the name of your `Restore` resource.
 
@@ -875,11 +712,9 @@ Procedure
           get nodepool -n <hosted_cluster_namespace>
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -887,8 +722,6 @@ Procedure
         NAME       CLUSTER    DESIRED NODES   CURRENT NODES   AUTOSCALING   AUTOREPAIR   VERSION   UPDATINGVERSION   UPDATINGCONFIG   MESSAGE
         hosted-0   hosted-0   3               3               False         False        4.17.11   False             False
         ```
-
-        </div>
 
     5.  Optional: To ensure that no conflicts exist and that the new management cluster has continued functionality, remove the `HostedCluster` resources from the backup management cluster by completing the following steps:
 
@@ -965,33 +798,13 @@ Procedure
               -n <hosted_cluster_namespace> <hosted_cluster_name>
             ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Removing a cluster by using the console](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13/html/clusters/cluster_mce_overview#remove-a-cluster-by-using-the-console)
 
 - [Removing remaining resources after removing a cluster](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13/html/clusters/cluster_mce_overview#removing-a-cluster-from-management-in-special-cases)
 
-</div>
-
 # Observing the backup and restore process
 
 When using OpenShift API for Data Protection (OADP) to backup and restore a hosted cluster, you can monitor and observe the process.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Observe the backup process by running the following command:
 
@@ -1017,19 +830,9 @@ Procedure
     $ watch "echo BackupRepositories:;echo;oc get backuprepositories.velero.io -A;echo; echo BackupStorageLocations: ;echo; oc get backupstoragelocations.velero.io -A;echo;echo DataUploads: ;echo;oc get datauploads.velero.io -A;echo;echo DataDownloads: ;echo;oc get datadownloads.velero.io -n openshift-adp; echo;echo VolumeSnapshotLocations: ;echo;oc get volumesnapshotlocations.velero.io -A;echo;echo Backups:;echo;oc get backup -A; echo;echo Restores:;echo;oc get restore -A"
     ```
 
-</div>
-
 # Using the velero CLI to describe the Backup and Restore resources
 
 When using OpenShift API for Data Protection, you can get more details of the `Backup` and `Restore` resources by using the `velero` command-line interface (CLI).
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an alias to use the `velero` CLI from a container by running the following command:
 
@@ -1052,5 +855,3 @@ Procedure
     ```
 
     - Replace `<backup_resource_name>` with the name of your `Backup` resource.
-
-</div>

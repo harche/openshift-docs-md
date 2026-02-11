@@ -30,14 +30,6 @@ With this in place, if only two infrastructure nodes are available and one is re
 
 The following procedure demonstrates how to reboot a node by using pod anti-affinity.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Edit the node specification to configure pod anti-affinity:
 
     ``` yaml
@@ -84,8 +76,6 @@ Procedure
 
 3.  Perform a graceful restart of the node.
 
-</div>
-
 # Understanding how to reboot nodes running routers
 
 Review the following information to learn how to reboot a node that hosts a router pod.
@@ -104,20 +94,15 @@ You can perform a graceful restart of a node, where all workloads are moved to o
 
 Before rebooting a node, it is recommended to backup etcd data to avoid any data loss on the node.
 
-> [!NOTE]
-> For single-node OpenShift clusters that require users to perform the `oc login` command rather than having the certificates in `kubeconfig` file to manage the cluster, the `oc adm` commands might not be available after cordoning and draining the node. This is because the `openshift-oauth-apiserver` pod is not running due to the cordon. You can use SSH to access the nodes as indicated in the following procedure.
->
-> In a single-node OpenShift cluster, pods cannot be rescheduled when cordoning and draining. However, doing so gives the pods, especially your workload pods, time to properly stop and release associated resources.
+<div class="note">
 
-The following procedure demonstrates how to perform a graceful restart of a node.
+For single-node OpenShift clusters that require users to perform the `oc login` command rather than having the certificates in `kubeconfig` file to manage the cluster, the `oc adm` commands might not be available after cordoning and draining the node. This is because the `openshift-oauth-apiserver` pod is not running due to the cordon. You can use SSH to access the nodes as indicated in the following procedure.
 
-<div>
-
-<div class="title">
-
-Procedure
+In a single-node OpenShift cluster, pods cannot be rescheduled when cordoning and draining. However, doing so gives the pods, especially your workload pods, time to properly stop and release associated resources.
 
 </div>
+
+The following procedure demonstrates how to perform a graceful restart of a node.
 
 1.  Mark the node as unschedulable:
 
@@ -133,19 +118,15 @@ Procedure
 
     You might receive errors that pods associated with custom pod disruption budgets (PDB) cannot be evicted.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example error
+    **Example error**
 
     </div>
 
     ``` terminal
     error when evicting pods/"rails-postgresql-example-1-72v2w" -n "rails" (will retry after 5s): Cannot evict pod as it would violate the pod's disruption budget.
     ```
-
-    </div>
 
     In this case, run the drain command again, adding the `disable-eviction` flag, which bypasses the PDB checks:
 
@@ -173,16 +154,19 @@ Procedure
 
     In a moment, the node enters the `NotReady` state.
 
-    > [!NOTE]
-    > With some single-node OpenShift clusters, the `oc` commands might not be available after you cordon and drain the node because the `openshift-oauth-apiserver` pod is not running. You can use SSH to connect to the node and perform the reboot.
-    >
-    > ``` terminal
-    > $ ssh core@<master-node>.<cluster_name>.<base_domain>
-    > ```
-    >
-    > ``` terminal
-    > $ sudo systemctl reboot
-    > ```
+    <div class="note">
+
+    With some single-node OpenShift clusters, the `oc` commands might not be available after you cordon and drain the node because the `openshift-oauth-apiserver` pod is not running. You can use SSH to connect to the node and perform the reboot.
+
+    ``` terminal
+    $ ssh core@<master-node>.<cluster_name>.<base_domain>
+    ```
+
+    ``` terminal
+    $ sudo systemctl reboot
+    ```
+
+    </div>
 
 6.  After the reboot is complete, mark the node as schedulable by running the following command:
 
@@ -190,16 +174,19 @@ Procedure
     $ oc adm uncordon <node1>
     ```
 
-    > [!NOTE]
-    > With some single-node OpenShift clusters, the `oc` commands might not be available after you cordon and drain the node because the `openshift-oauth-apiserver` pod is not running. You can use SSH to connect to the node and uncordon it.
-    >
-    > ``` terminal
-    > $ ssh core@<target_node>
-    > ```
-    >
-    > ``` terminal
-    > $ sudo oc adm uncordon <node> --kubeconfig /etc/kubernetes/static-pod-resources/kube-apiserver-certs/secrets/node-kubeconfigs/localhost.kubeconfig
-    > ```
+    <div class="note">
+
+    With some single-node OpenShift clusters, the `oc` commands might not be available after you cordon and drain the node because the `openshift-oauth-apiserver` pod is not running. You can use SSH to connect to the node and uncordon it.
+
+    ``` terminal
+    $ ssh core@<target_node>
+    ```
+
+    ``` terminal
+    $ sudo oc adm uncordon <node> --kubeconfig /etc/kubernetes/static-pod-resources/kube-apiserver-certs/secrets/node-kubeconfigs/localhost.kubeconfig
+    ```
+
+    </div>
 
 7.  Verify that the node is ready:
 
@@ -207,11 +194,9 @@ Procedure
     $ oc get node <node1>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -219,10 +204,6 @@ Procedure
     NAME    STATUS  ROLES    AGE     VERSION
     <node1> Ready   worker   6d22h   v1.18.3+b0068a8
     ```
-
-    </div>
-
-</div>
 
 # Additional resources
 

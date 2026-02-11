@@ -26,28 +26,13 @@ You can configure OAuth for the following supported identity providers:
 
 Adding any identity provider in the OAuth configuration removes the default `kubeadmin` user provider.
 
-> [!NOTE]
-> When you configure identity providers, you must configure at least one `NodePool` replica in your hosted cluster in advance. Traffic for DNS resolution is sent through the worker nodes. You do not need to configure the `NodePool` replicas in advance for the `htpasswd` and `request-header` identity providers.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+When you configure identity providers, you must configure at least one `NodePool` replica in your hosted cluster in advance. Traffic for DNS resolution is sent through the worker nodes. You do not need to configure the `NodePool` replicas in advance for the `htpasswd` and `request-header` identity providers.
 
 </div>
 
 - You created your hosted cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `HostedCluster` custom resource (CR) on the hosting cluster by running the following command:
 
@@ -106,8 +91,6 @@ Procedure
 
 3.  Save the file to apply the changes.
 
-</div>
-
 # Configuring the OAuth server for a hosted cluster by using the web console
 
 You can configure the internal OAuth server for your hosted cluster by using the OpenShift Container Platform web console.
@@ -134,30 +117,15 @@ You can configure OAuth for the following supported identity providers:
 
 Adding any identity provider in the OAuth configuration removes the default `kubeadmin` user provider.
 
-> [!NOTE]
-> When you configure identity providers, you must configure at least one `NodePool` replica in your hosted cluster in advance. Traffic for DNS resolution is sent through the worker nodes. You do not need to configure the `NodePool` replicas in advance for the `htpasswd` and `request-header` identity providers.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+When you configure identity providers, you must configure at least one `NodePool` replica in your hosted cluster in advance. Traffic for DNS resolution is sent through the worker nodes. You do not need to configure the `NodePool` replicas in advance for the `htpasswd` and `request-header` identity providers.
 
 </div>
 
 - You logged in as a user with `cluster-admin` privileges.
 
 - You created your hosted cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Home** → **API Explorer**.
 
@@ -211,50 +179,23 @@ Procedure
 
 7.  Click **Save**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - To know more about supported identity providers, see ["Understanding identity provider configuration"](../authentication/understanding-identity-provider.xml#understanding-identity-provider) in *Authentication and authorization*.
-
-</div>
 
 # Assigning components IAM roles by using the CCO in a hosted cluster on AWS
 
 You can assign components IAM roles that provide short-term, limited-privilege security credentials by using the Cloud Credential Operator (CCO) in hosted clusters on Amazon Web Services (AWS). By default, the CCO runs in a hosted control plane.
 
-> [!NOTE]
-> The CCO supports a manual mode only for hosted clusters on AWS. By default, hosted clusters are configured in a manual mode. The management cluster might use modes other than manual.
+<div class="note">
+
+The CCO supports a manual mode only for hosted clusters on AWS. By default, hosted clusters are configured in a manual mode. The management cluster might use modes other than manual.
+
+</div>
 
 # Verifying the CCO installation in a hosted cluster on AWS
 
 You can verify that the Cloud Credential Operator (CCO) is running correctly in your hosted control plane.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You configured the hosted cluster on Amazon Web Services (AWS).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Verify that the CCO is configured in a manual mode in your hosted cluster by running the following command:
 
@@ -264,19 +205,15 @@ Procedure
       -o=jsonpath={.spec.credentialsMode}
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Expected output
+    **Expected output**
 
     </div>
 
     ``` terminal
     Manual
     ```
-
-    </div>
 
 2.  Verify that the value for the `serviceAccountIssuer` resource is not empty by running the following command:
 
@@ -285,11 +222,9 @@ Procedure
       -o jsonpath --template '{.spec.serviceAccountIssuer }'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -297,24 +232,15 @@ Procedure
     https://aos-hypershift-ci-oidc-29999.s3.us-east-2.amazonaws.com/hypershift-ci-29999
     ```
 
-    </div>
-
-</div>
-
 # Enabling Operators to support CCO-based workflows with AWS STS
 
 As an Operator author designing your project to run on Operator Lifecycle Manager (OLM), you can enable your Operator to authenticate against AWS on STS-enabled OpenShift Container Platform clusters by customizing your project to support the Cloud Credential Operator (CCO).
 
 With this method, the Operator is responsible for and requires RBAC permissions for creating the `CredentialsRequest` object and reading the resulting `Secret` object.
 
-> [!NOTE]
-> By default, pods related to the Operator deployment mount a `serviceAccountToken` volume so that the service account token can be referenced in the resulting `Secret` object.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+By default, pods related to the Operator deployment mount a `serviceAccountToken` volume so that the service account token can be referenced in the resulting `Secret` object.
 
 </div>
 
@@ -324,27 +250,9 @@ Prerequisites
 
 - OLM-based Operator project
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Update your Operator project’s `ClusterServiceVersion` (CSV) object:
 
     1.  Ensure your Operator has RBAC permission to create `CredentialsRequests` objects:
-
-        <div class="example">
-
-        <div class="title">
-
-        Example `clusterPermissions` list
-
-        </div>
 
         ``` yaml
         # ...
@@ -365,8 +273,6 @@ Procedure
                 - update
                 - watch
         ```
-
-        </div>
 
     2.  Add the following annotation to claim support for this method of CCO-based workflow with AWS STS:
 
@@ -389,14 +295,6 @@ Procedure
         ```
 
     2.  Ensure you have a `CredentialsRequest` object ready to be patched and applied. For example:
-
-        <div class="example">
-
-        <div class="title">
-
-        Example `CredentialsRequest` object creation
-
-        </div>
 
         ``` go
         import (
@@ -445,17 +343,7 @@ Procedure
         }
         ```
 
-        </div>
-
         Alternatively, if you are starting from a `CredentialsRequest` object in YAML form (for example, as part of your Operator project code), you can handle it differently:
-
-        <div class="example">
-
-        <div class="title">
-
-        Example `CredentialsRequest` object creation in YAML form
-
-        </div>
 
         ``` go
         // CredentialsRequest is a struct that represents a request for credentials
@@ -515,20 +403,13 @@ Procedure
         }
         ```
 
-        </div>
+        <div class="note">
 
-        > [!NOTE]
-        > Adding a `CredentialsRequest` object to the Operator bundle is not currently supported.
+        Adding a `CredentialsRequest` object to the Operator bundle is not currently supported.
+
+        </div>
 
     3.  Add the role ARN and web identity token path to the credentials request and apply it during Operator initialization:
-
-        <div class="example">
-
-        <div class="title">
-
-        Example applying `CredentialsRequest` object during Operator initialization
-
-        </div>
 
         ``` go
         // apply CredentialsRequest on install
@@ -544,17 +425,7 @@ Procedure
         }
         ```
 
-        </div>
-
     4.  Ensure your Operator can wait for a `Secret` object to show up from the CCO, as shown in the following example, which is called along with the other items you are reconciling in your Operator:
-
-        <div class="example">
-
-        <div class="title">
-
-        Example wait for `Secret` object
-
-        </div>
 
         ``` go
         // WaitForSecret is a function that takes a Kubernetes client, a namespace, and a v1 "k8s.io/api/core/v1" name as arguments
@@ -596,17 +467,7 @@ Procedure
 
         - The `timeout` value is based on an estimate of how fast the CCO might detect an added `CredentialsRequest` object and generate a `Secret` object. You might consider lowering the time or creating custom feedback for cluster administrators that could be wondering why the Operator is not yet accessing the cloud resources.
 
-        </div>
-
     5.  Set up the AWS configuration by reading the secret created by the CCO from the credentials request and creating the AWS config file containing the data from that secret:
-
-        <div class="example">
-
-        <div class="title">
-
-        Example AWS configuration creation
-
-        </div>
 
         ``` go
         func SharedCredentialsFileFromSecret(secret *corev1.Secret) (string, error) {
@@ -630,22 +491,15 @@ Procedure
         }
         ```
 
-        </div>
+        <div class="important">
 
-        > [!IMPORTANT]
-        > The secret is assumed to exist, but your Operator code should wait and retry when using this secret to give time to the CCO to create the secret.
-        >
-        > Additionally, the wait period should eventually time out and warn users that the OpenShift Container Platform cluster version, and therefore the CCO, might be an earlier version that does not support the `CredentialsRequest` object workflow with STS detection. In such cases, instruct users that they must add a secret by using another method.
+        The secret is assumed to exist, but your Operator code should wait and retry when using this secret to give time to the CCO to create the secret.
+
+        Additionally, the wait period should eventually time out and warn users that the OpenShift Container Platform cluster version, and therefore the CCO, might be an earlier version that does not support the `CredentialsRequest` object workflow with STS detection. In such cases, instruct users that they must add a secret by using another method.
+
+        </div>
 
     6.  Configure the AWS SDK session, for example:
-
-        <div class="example">
-
-        <div class="title">
-
-        Example AWS SDK session configuration
-
-        </div>
 
         ``` go
         sharedCredentialsFile, err := SharedCredentialsFileFromSecret(secret)
@@ -658,18 +512,4 @@ Procedure
         }
         ```
 
-        </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Cluster Operators reference page for the Cloud Credential Operator](../operators/operator-reference.xml#cloud-credential-operator_operator-reference)
-
-</div>

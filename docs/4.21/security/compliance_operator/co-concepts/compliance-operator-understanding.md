@@ -1,7 +1,10 @@
 The Compliance Operator lets OpenShift Container Platform administrators describe the required compliance state of a cluster and provides them with an overview of gaps and ways to remediate them. The Compliance Operator assesses compliance of both the Kubernetes API resources of OpenShift Container Platform, as well as the nodes running the cluster. The Compliance Operator uses OpenSCAP, a NIST-certified tool, to scan and enforce security policies provided by the content.
 
-> [!IMPORTANT]
-> The Compliance Operator is available for Red Hat Enterprise Linux CoreOS (RHCOS) deployments only.
+<div class="important">
+
+The Compliance Operator is available for Red Hat Enterprise Linux CoreOS (RHCOS) deployments only.
+
+</div>
 
 # Compliance Operator profiles
 
@@ -13,11 +16,9 @@ There are several profiles available as part of the Compliance Operator installa
   $ oc get profile.compliance -n openshift-compliance
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -63,8 +64,6 @@ There are several profiles available as part of the Compliance Operator installa
   rhcos4-stig-v2r1           3h49m   V2R1
   ```
 
-  </div>
-
   These profiles represent different compliance benchmarks. Each profile has the product name that it applies to added as a prefix to the profile’s name. `ocp4-e8` applies the Essential 8 benchmark to the OpenShift Container Platform product, while `rhcos4-e8` applies the Essential 8 benchmark to the Red Hat Enterprise Linux CoreOS (RHCOS) product.
 
 - Run the following command to view the details of the `rhcos4-e8` profile:
@@ -72,14 +71,6 @@ There are several profiles available as part of the Compliance Operator installa
   ``` terminal
   $ oc get -n openshift-compliance -oyaml profiles.compliance rhcos4-e8
   ```
-
-  <div class="example">
-
-  <div class="title">
-
-  Example output
-
-  </div>
 
   ``` yaml
   apiVersion: compliance.openshift.io/v1alpha1
@@ -164,21 +155,11 @@ There are several profiles available as part of the Compliance Operator installa
   title: Australian Cyber Security Centre (ACSC) Essential Eight
   ```
 
-  </div>
-
 - Run the following command to view the details of the `rhcos4-audit-rules-login-events` rule:
 
   ``` terminal
   $ oc get -n openshift-compliance -oyaml rules rhcos4-audit-rules-login-events
   ```
-
-  <div class="example">
-
-  <div class="title">
-
-  Example output
-
-  </div>
 
   ``` yaml
   apiVersion: compliance.openshift.io/v1alpha1
@@ -228,8 +209,6 @@ There are several profiles available as part of the Compliance Operator installa
     attacker attempting to remove evidence of an intrusion.
   ```
 
-  </div>
-
 ## Compliance Operator profile types
 
 Compliance Operator rules are organized into profiles. Profiles can target the Platform or Nodes for OpenShift Container Platform, and some benchmarks include `rhcos4` Node profiles.
@@ -240,10 +219,16 @@ Platform profiles evaluate your OpenShift Container Platform cluster components.
 Node
 Node profiles evaluate the OpenShift or RHCOS configuration of each host. You can use two Node profiles: `ocp4` Node profiles and `rhcos4` Node profiles. The `ocp4` Node profiles evaluate the OpenShift configuration of each host. For example, they can confirm whether `kubeconfig` files have the correct permissions to meet a compliance standard. The `rhcos4` Node profiles evaluate the Red Hat Enterprise Linux CoreOS (RHCOS) configuration of each host. For example, they can confirm whether the SSHD service is configured to disable password logins.
 
-> [!IMPORTANT]
-> For benchmarks that have Node and Platform profiles, such as PCI-DSS, you must run both profiles in your OpenShift Container Platform environment.
->
-> For benchmarks that have `ocp4` Platform, `ocp4` Node, and `rhcos4` Node profiles, such as FedRAMP High, you must run all three profiles in your OpenShift Container Platform environment.
+<div class="important">
 
-> [!NOTE]
-> In a cluster with many Nodes, both `ocp4` Node and `rhcos4` Node scans might take a long time to complete.
+For benchmarks that have Node and Platform profiles, such as PCI-DSS, you must run both profiles in your OpenShift Container Platform environment.
+
+For benchmarks that have `ocp4` Platform, `ocp4` Node, and `rhcos4` Node profiles, such as FedRAMP High, you must run all three profiles in your OpenShift Container Platform environment.
+
+</div>
+
+<div class="note">
+
+In a cluster with many Nodes, both `ocp4` Node and `rhcos4` Node scans might take a long time to complete.
+
+</div>

@@ -16,17 +16,9 @@ The results of the Red Hat Lightspeed analysis are available in the Red Hat Li
 
 - Share results with other stakeholders.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Using the Deployment Validation Operator in your Red Hat Lightspeed workflow](https://docs.redhat.com/en/documentation/red_hat_lightspeed/1-latest/html-single/monitoring_your_openshift_cluster_health_with_red_hat_lightspeed_advisor/index#using-the-deployment-validation-operator)
-
-</div>
 
 # Understanding Red Hat Lightspeed advisor service recommendations
 
@@ -50,29 +42,11 @@ This section describes how to display the Red Hat Lightspeed report in **Red H
 
 Note that Red Hat Lightspeed repeatedly analyzes your cluster and shows the latest results. These results can change, for example, if you fix an issue or a new issue has been detected.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Your cluster is registered on [OpenShift Cluster Manager](https://console.redhat.com/openshift).
 
 - Remote health reporting is enabled, which is the default.
 
 - You are logged in to [OpenShift Cluster Manager](https://console.redhat.com/openshift).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Advisor** → **Recommendations** on [OpenShift Cluster Manager](https://console.redhat.com/openshift).
 
@@ -88,19 +62,9 @@ Procedure
 
     Depending on the issue, the details can also contain a link to more information from Red Hat about the issue.
 
-</div>
-
 # Displaying all Red Hat Lightspeed advisor service recommendations
 
 The Recommendations view, by default, only displays the recommendations that are detected on your clusters. However, you can view all of the recommendations in the advisor service’s archive.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Remote health reporting is enabled, which is the default.
 
@@ -108,23 +72,11 @@ Prerequisites
 
 - You are logged in to [OpenShift Cluster Manager](https://console.redhat.com/openshift).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Navigate to **Advisor** → **Recommendations** on [OpenShift Cluster Manager](https://console.redhat.com/openshift).
 
 2.  Click the **X** icons next to the **Clusters Impacted** and **Status** filters.
 
     You can now browse through all of the potential recommendations for your cluster.
-
-</div>
 
 # Advisor recommendation filters
 
@@ -158,25 +110,13 @@ As an OpenShift Container Platform cluster manager, you can filter the recommend
 
 The following procedure demonstrates how to set and remove **Category** filters; however, the procedure is applicable to any of the filter types and respective values.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Prerequisites
+**Prerequisites**
 
 </div>
 
 You are logged in to the [OpenShift Cluster Manager](https://console.redhat.com/openshift) in the Hybrid Cloud Console.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to [**OpenShift** \> **Advisor** \> **Recommendations**](https://console.redhat.com/openshift/insights/advisor/recommendations?).
 
@@ -188,31 +128,11 @@ Procedure
 
     Only recommendations from the selected categories are shown in the list.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - After applying filters, you can view the updated recommendations list. The applied filters are added next to the default filters.
-
-</div>
 
 ## Removing filters from Red Hat Lightspeed advisor service recommendations
 
 You can apply multiple filters to the list of recommendations. When ready, you can remove them individually or completely reset them.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Removing filters individually
 
@@ -222,20 +142,13 @@ Procedure
 
   - Click **Reset filters** to remove only the filters that you applied, leaving the default filters in place.
 
-</div>
-
 # Disabling Red Hat Lightspeed advisor service recommendations
 
 You can disable specific recommendations that affect your clusters, so that they no longer appear in your reports. It is possible to disable a recommendation for a single cluster or all of your clusters.
 
-> [!NOTE]
-> Disabling a recommendation for all of your clusters also applies to any future clusters.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Disabling a recommendation for all of your clusters also applies to any future clusters.
 
 </div>
 
@@ -244,16 +157,6 @@ Prerequisites
 - Your cluster is registered on [OpenShift Cluster Manager](https://console.redhat.com/openshift).
 
 - You are logged in to [OpenShift Cluster Manager](https://console.redhat.com/openshift).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Advisor** → **Recommendations** on [OpenShift Cluster Manager](https://console.redhat.com/openshift).
 
@@ -277,35 +180,15 @@ Procedure
 
       4.  Enter a justification note and click **Save**.
 
-</div>
-
 # Enabling a previously disabled Red Hat Lightspeed advisor service recommendation
 
 When a recommendation is disabled for all clusters, you no longer see the recommendation in the Red Hat Lightspeed advisor service. You can change this behavior.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Remote health reporting is enabled, which is the default.
 
 - Your cluster is registered on [OpenShift Cluster Manager](https://console.redhat.com/openshift).
 
 - You are logged in to [OpenShift Cluster Manager](https://console.redhat.com/openshift).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Advisor** → **Recommendations** on [OpenShift Cluster Manager](https://console.redhat.com/openshift).
 
@@ -320,8 +203,6 @@ Procedure
 3.  Locate the recommendation to enable.
 
 4.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=), and then click **Enable recommendation**.
-
-</div>
 
 # About Red Hat Lightspeed advisor service recommendations for workloads
 
@@ -341,34 +222,14 @@ You can use the Red Hat Lightspeed advisor service to view and manage informati
 
 Red Hat Lightspeed repeatedly analyzes your cluster and you can display the status of identified potential issues of your cluster in the OpenShift Container Platform web console. This status shows the number of issues in the different categories and, for further details, links to the reports in [OpenShift Cluster Manager](https://console.redhat.com/openshift).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Your cluster is registered in [OpenShift Cluster Manager](https://console.redhat.com/openshift).
 
 - Remote health reporting is enabled, which is the default.
 
 - You are logged in to the OpenShift Container Platform web console.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Navigate to **Home** → **Overview** in the OpenShift Container Platform web console.
 
 2.  Click **Red Hat Lightspeed** on the **Status** card.
 
     The pop-up window lists potential issues grouped by risk. Click the individual categories or **View all recommendations in Red Hat Lightspeed Advisor** to display more details.
-
-</div>

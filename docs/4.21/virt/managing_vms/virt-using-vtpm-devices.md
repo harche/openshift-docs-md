@@ -1,7 +1,10 @@
 Add a virtual Trusted Platform Module (vTPM) device to a new or existing virtual machine by editing the `VirtualMachine` (VM) or `VirtualMachineInstance` (VMI) manifest.
 
-> [!IMPORTANT]
-> With OpenShift Virtualization 4.18 and newer, you can [export virtual machines](../../virt/managing_vms/virt-exporting-vms.xml#virt-exporting-vms) (VMs) with attached vTPM devices, [create snapshots of these VMs](../../virt/backup_restore/virt-backup-restore-snapshots.xml#creating-snapshots_virt-backup-restore-snapshots), and [restore VMs from these snapshots](../../virt/backup_restore/virt-backup-restore-snapshots.xml#restoring-vms-from-snapshots_virt-backup-restore-snapshots). However, cloning a VM with a vTPM device attached to it or creating a new VM from its snapshot is not supported.
+<div class="important">
+
+With OpenShift Virtualization 4.18 and newer, you can [export virtual machines](../../virt/managing_vms/virt-exporting-vms.xml#virt-exporting-vms) (VMs) with attached vTPM devices, [create snapshots of these VMs](../../virt/backup_restore/virt-backup-restore-snapshots.xml#creating-snapshots_virt-backup-restore-snapshots), and [restore VMs from these snapshots](../../virt/backup_restore/virt-backup-restore-snapshots.xml#restoring-vms-from-snapshots_virt-backup-restore-snapshots). However, cloning a VM with a vTPM device attached to it or creating a new VM from its snapshot is not supported.
+
+</div>
 
 # About vTPM devices
 
@@ -11,20 +14,23 @@ A vTPM device allows VMs created from a Windows 11 image to function without a p
 
 OpenShift Virtualization supports persisting vTPM device state by using Persistent Volume Claims (PVCs) for VMs. If you do not specify the storage class for this PVC, OpenShift Virtualization uses the default storage class for virtualization workloads. If the default storage class for virtualization workloads is not set, OpenShift Virtualization uses the default storage class for the cluster.
 
-> [!NOTE]
-> The storage class that is marked as default for virtualization workloads has the annotation `storageclass.kubevirt.io/is-default-virt-class` set to "true". You can find this storage class by running the following command:
->
-> ``` terminal
-> $ oc get sc -o jsonpath='{range .items[?(.metadata.annotations.storageclass\.kubevirt\.io/is-default-virt-class=="true")]}{.metadata.name}{"\n"}{end}'
-> ```
->
-> Similarly, the default storage class for the cluster has the annotation `storageclass.kubernetes.io/is-default-class` set to "true". To find this storage class, run the following command:
->
-> ``` terminal
-> $ oc get sc -o jsonpath='{range .items[?(.metadata.annotations.storageclass\.kubernetes\.io/is-default-class=="true")]}{.metadata.name}{"\n"}{end}'
-> ```
->
-> To ensure consistent behavior, configure only one storage class as the default for virtualization workloads and for the cluster respectively.
+<div class="note">
+
+The storage class that is marked as default for virtualization workloads has the annotation `storageclass.kubevirt.io/is-default-virt-class` set to "true". You can find this storage class by running the following command:
+
+``` terminal
+$ oc get sc -o jsonpath='{range .items[?(.metadata.annotations.storageclass\.kubevirt\.io/is-default-virt-class=="true")]}{.metadata.name}{"\n"}{end}'
+```
+
+Similarly, the default storage class for the cluster has the annotation `storageclass.kubernetes.io/is-default-class` set to "true". To find this storage class, run the following command:
+
+``` terminal
+$ oc get sc -o jsonpath='{range .items[?(.metadata.annotations.storageclass\.kubernetes\.io/is-default-class=="true")]}{.metadata.name}{"\n"}{end}'
+```
+
+To ensure consistent behavior, configure only one storage class as the default for virtualization workloads and for the cluster respectively.
+
+</div>
 
 It is recommended that you specify the storage class explicitly by setting the `vmStateStorageClass` attribute in the `HyperConverged` custom resource (CR):
 
@@ -44,28 +50,13 @@ If you do not enable vTPM, then the VM does not recognize a TPM device, even if 
 
 Adding a virtual Trusted Platform Module (vTPM) device to a virtual machine (VM) allows you to run a VM created from a Windows 11 image without a physical TPM device. A vTPM device also stores secrets for that VM.
 
-> [!IMPORTANT]
-> When you add a virtual Trusted Platform Module (vTPM) device to a Windows VM, it is important to make the vTPM device persistent. The BitLocker Drive is encrypted successfully and the encryption system check passes even if the vTPM device is not persistent. If the vTPM device is not persistent, it is discarded on shutdown.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+When you add a virtual Trusted Platform Module (vTPM) device to a Windows VM, it is important to make the vTPM device persistent. The BitLocker Drive is encrypted successfully and the encryption system check passes even if the vTPM device is not persistent. If the vTPM device is not persistent, it is discarded on shutdown.
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the following command to update the VM configuration:
 
@@ -97,5 +88,3 @@ Procedure
 3.  To apply your changes, save and exit the editor.
 
 4.  Optional: If you edited a running virtual machine, you must restart it for the changes to take effect.
-
-</div>

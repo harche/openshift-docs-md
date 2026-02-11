@@ -20,26 +20,21 @@ If the Cloud Credential Operator (CCO) for your OpenShift Container Platform clu
 
 To rotate the key, you delete the existing key on your cluster, which causes the Kubernetes API server to create a new key. To reduce authentication failures during this process, you must immediately add the new public key to the existing issuer file. After the cluster is using the new key for authentication, you can remove any remaining keys.
 
-> [!IMPORTANT]
-> The process to rotate OIDC bound service account signer keys is disruptive and takes a significant amount of time. Some steps are time-sensitive. Before proceeding, observe the following considerations:
->
-> - Read the following steps and ensure that you understand and accept the time requirement. The exact time requirement varies depending on the individual cluster, but it is likely to require at least one hour.
->
-> - To reduce the risk of authentication failures, ensure that you understand and prepare for the time-sensitive steps.
->
-> - During this process, you must refresh all service accounts and restart all pods on the cluster. These actions are disruptive to workloads. To mitigate this impact, you can temporarily halt these services and then redeploy them when the cluster is ready.
+<div class="important">
 
-<div>
+The process to rotate OIDC bound service account signer keys is disruptive and takes a significant amount of time. Some steps are time-sensitive. Before proceeding, observe the following considerations:
 
-<div class="title">
+- Read the following steps and ensure that you understand and accept the time requirement. The exact time requirement varies depending on the individual cluster, but it is likely to require at least one hour.
 
-Prerequisites
+- To reduce the risk of authentication failures, ensure that you understand and prepare for the time-sensitive steps.
+
+- During this process, you must refresh all service accounts and restart all pods on the cluster. These actions are disruptive to workloads. To mitigate this impact, you can temporarily halt these services and then redeploy them when the cluster is ready.
 
 </div>
 
 - You have access to the OpenShift CLI (`oc`) as a user with the `cluster-admin` role.
 
-</div>
+<!-- -->
 
 - You have created an AWS account for the `ccoctl` utility to use with the following permissions:
 
@@ -61,14 +56,6 @@ Prerequisites
   $ oc adm wait-for-stable-cluster --minimum-stable-period=5s
   ```
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Configure the following environment variables:
 
     ``` text
@@ -78,8 +65,11 @@ Procedure
 
     - This value should match the name of the cluster that was specified in the `metadata.name` field of the `install-config.yaml` file during installation.
 
-      > [!NOTE]
-      > Your cluster might differ from this example, and the resource names might not be derived identically from the cluster name. Ensure that you specify the correct corresponding resource names for your cluster.
+      <div class="note">
+
+      Your cluster might differ from this example, and the resource names might not be derived identically from the cluster name. Ensure that you specify the correct corresponding resource names for your cluster.
+
+      </div>
 
       - For AWS clusters that store the OIDC configuration in a public S3 bucket, configure the following environment variable:
 
@@ -95,19 +85,15 @@ Procedure
             $ basename $(oc get authentication cluster -o jsonpath={'.spec.serviceAccountIssuer'} )
             ```
 
-            <div class="formalpara">
+            <div class="formalpara-title">
 
-            <div class="title">
-
-            Example output
+            **Example output**
 
             </div>
 
             ``` text
             <subdomain>.cloudfront.net
             ```
-
-            </div>
 
             where `<subdomain>` is an alphanumeric string.
 
@@ -117,11 +103,9 @@ Procedure
             $ aws cloudfront list-distributions --query "DistributionList.Items[].{DomainName: DomainName, OriginDomainName: Origins.Items[0].DomainName}[?contains(DomainName, '<subdomain>.cloudfront.net')]"
             ```
 
-            <div class="formalpara">
+            <div class="formalpara-title">
 
-            <div class="title">
-
-            Example output
+            **Example output**
 
             </div>
 
@@ -133,8 +117,6 @@ Procedure
                 }
             ]
             ```
-
-            </div>
 
             where `<s3_bucket>` is the private S3 bucket name for your cluster.
 
@@ -154,8 +136,11 @@ Procedure
 
 3.  To cause the Kubernetes API server to create a new bound service account signing key, you delete the next bound service account signing key.
 
-    > [!IMPORTANT]
-    > After you complete this step, the Kubernetes API server starts to roll out a new key. To reduce the risk of authentication failures, complete the remaining steps as quickly as possible. The remaining steps might be disruptive to workloads.
+    <div class="important">
+
+    After you complete this step, the Kubernetes API server starts to roll out a new key. To reduce the risk of authentication failures, complete the remaining steps as quickly as possible. The remaining steps might be disruptive to workloads.
+
+    </div>
 
     When you are ready, delete the next bound service account signing key by running the following command:
 
@@ -238,8 +223,11 @@ Procedure
 
 11. To ensure that all pods on the cluster use the new key, you must restart them.
 
-    > [!IMPORTANT]
-    > This step maintains uptime for services that are configured for high availability across multiple nodes, but might cause downtime for any services that are not.
+    <div class="important">
+
+    This step maintains uptime for services that are configured for high availability across multiple nodes, but might cause downtime for any services that are not.
+
+    </div>
 
     Restart all of the pods in the cluster by running the following command:
 
@@ -281,34 +269,27 @@ Procedure
       --body ${TEMPDIR}/jwks.new.json
     ```
 
-</div>
-
 ## Rotating Google Cloud OIDC bound service account signer keys
 
 If the Cloud Credential Operator (CCO) for your OpenShift Container Platform cluster on Google Cloud is configured to operate in manual mode with GCP Workload Identity, you can rotate the bound service account signer key.
 
 To rotate the key, you delete the existing key on your cluster, which causes the Kubernetes API server to create a new key. To reduce authentication failures during this process, you must immediately add the new public key to the existing issuer file. After the cluster is using the new key for authentication, you can remove any remaining keys.
 
-> [!IMPORTANT]
-> The process to rotate OIDC bound service account signer keys is disruptive and takes a significant amount of time. Some steps are time-sensitive. Before proceeding, observe the following considerations:
->
-> - Read the following steps and ensure that you understand and accept the time requirement. The exact time requirement varies depending on the individual cluster, but it is likely to require at least one hour.
->
-> - To reduce the risk of authentication failures, ensure that you understand and prepare for the time-sensitive steps.
->
-> - During this process, you must refresh all service accounts and restart all pods on the cluster. These actions are disruptive to workloads. To mitigate this impact, you can temporarily halt these services and then redeploy them when the cluster is ready.
+<div class="important">
 
-<div>
+The process to rotate OIDC bound service account signer keys is disruptive and takes a significant amount of time. Some steps are time-sensitive. Before proceeding, observe the following considerations:
 
-<div class="title">
+- Read the following steps and ensure that you understand and accept the time requirement. The exact time requirement varies depending on the individual cluster, but it is likely to require at least one hour.
 
-Prerequisites
+- To reduce the risk of authentication failures, ensure that you understand and prepare for the time-sensitive steps.
+
+- During this process, you must refresh all service accounts and restart all pods on the cluster. These actions are disruptive to workloads. To mitigate this impact, you can temporarily halt these services and then redeploy them when the cluster is ready.
 
 </div>
 
 - You have access to the OpenShift CLI (`oc`) as a user with the `cluster-admin` role.
 
-</div>
+<!-- -->
 
 - You have added one of the following authentication options to the Google Cloud account that the `ccoctl` utility uses:
 
@@ -328,14 +309,6 @@ Prerequisites
   $ oc adm wait-for-stable-cluster --minimum-stable-period=5s
   ```
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Configure the following environment variables:
 
     ``` text
@@ -343,8 +316,11 @@ Procedure
     GCP_BUCKET=$(echo ${CURRENT_ISSUER} | cut -d "/" -f4)
     ```
 
-    > [!NOTE]
-    > Your cluster might differ from this example, and the resource names might not be derived identically from the cluster name. Ensure that you specify the correct corresponding resource names for your cluster.
+    <div class="note">
+
+    Your cluster might differ from this example, and the resource names might not be derived identically from the cluster name. Ensure that you specify the correct corresponding resource names for your cluster.
+
+    </div>
 
 2.  Create a temporary directory to use and assign it an environment variable by running the following command:
 
@@ -354,8 +330,11 @@ Procedure
 
 3.  To cause the Kubernetes API server to create a new bound service account signing key, you delete the next bound service account signing key.
 
-    > [!IMPORTANT]
-    > After you complete this step, the Kubernetes API server starts to roll out a new key. To reduce the risk of authentication failures, complete the remaining steps as quickly as possible. The remaining steps might be disruptive to workloads.
+    <div class="important">
+
+    After you complete this step, the Kubernetes API server starts to roll out a new key. To reduce the risk of authentication failures, complete the remaining steps as quickly as possible. The remaining steps might be disruptive to workloads.
+
+    </div>
 
     When you are ready, delete the next bound service account signing key by running the following command:
 
@@ -431,8 +410,11 @@ Procedure
 
 11. To ensure that all pods on the cluster use the new key, you must restart them.
 
-    > [!IMPORTANT]
-    > This step maintains uptime for services that are configured for high availability across multiple nodes, but might cause downtime for any services that are not.
+    <div class="important">
+
+    This step maintains uptime for services that are configured for high availability across multiple nodes, but might cause downtime for any services that are not.
+
+    </div>
 
     Restart all of the pods in the cluster by running the following command:
 
@@ -470,34 +452,27 @@ Procedure
     $ gcloud storage cp ${TEMPDIR}/jwks.new.json gs://${GCP_BUCKET}/keys.json
     ```
 
-</div>
-
 ## Rotating Azure OIDC bound service account signer keys
 
 If the Cloud Credential Operator (CCO) for your OpenShift Container Platform cluster on Microsoft Azure is configured to operate in manual mode with Microsoft Entra Workload ID, you can rotate the bound service account signer key.
 
 To rotate the key, you delete the existing key on your cluster, which causes the Kubernetes API server to create a new key. To reduce authentication failures during this process, you must immediately add the new public key to the existing issuer file. After the cluster is using the new key for authentication, you can remove any remaining keys.
 
-> [!IMPORTANT]
-> The process to rotate OIDC bound service account signer keys is disruptive and takes a significant amount of time. Some steps are time-sensitive. Before proceeding, observe the following considerations:
->
-> - Read the following steps and ensure that you understand and accept the time requirement. The exact time requirement varies depending on the individual cluster, but it is likely to require at least one hour.
->
-> - To reduce the risk of authentication failures, ensure that you understand and prepare for the time-sensitive steps.
->
-> - During this process, you must refresh all service accounts and restart all pods on the cluster. These actions are disruptive to workloads. To mitigate this impact, you can temporarily halt these services and then redeploy them when the cluster is ready.
+<div class="important">
 
-<div>
+The process to rotate OIDC bound service account signer keys is disruptive and takes a significant amount of time. Some steps are time-sensitive. Before proceeding, observe the following considerations:
 
-<div class="title">
+- Read the following steps and ensure that you understand and accept the time requirement. The exact time requirement varies depending on the individual cluster, but it is likely to require at least one hour.
 
-Prerequisites
+- To reduce the risk of authentication failures, ensure that you understand and prepare for the time-sensitive steps.
+
+- During this process, you must refresh all service accounts and restart all pods on the cluster. These actions are disruptive to workloads. To mitigate this impact, you can temporarily halt these services and then redeploy them when the cluster is ready.
 
 </div>
 
 - You have access to the OpenShift CLI (`oc`) as a user with the `cluster-admin` role.
 
-</div>
+<!-- -->
 
 - You have created a global Azure account for the `ccoctl` utility to use with the following permissions:
 
@@ -521,14 +496,6 @@ Prerequisites
   $ oc adm wait-for-stable-cluster --minimum-stable-period=5s
   ```
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Configure the following environment variables:
 
     ``` text
@@ -537,8 +504,11 @@ Procedure
     AZURE_STORAGE_CONTAINER=$(echo ${CURRENT_ISSUER} | cut -d "/" -f4)
     ```
 
-    > [!NOTE]
-    > Your cluster might differ from this example, and the resource names might not be derived identically from the cluster name. Ensure that you specify the correct corresponding resource names for your cluster.
+    <div class="note">
+
+    Your cluster might differ from this example, and the resource names might not be derived identically from the cluster name. Ensure that you specify the correct corresponding resource names for your cluster.
+
+    </div>
 
 2.  Create a temporary directory to use and assign it an environment variable by running the following command:
 
@@ -548,8 +518,11 @@ Procedure
 
 3.  To cause the Kubernetes API server to create a new bound service account signing key, you delete the next bound service account signing key.
 
-    > [!IMPORTANT]
-    > After you complete this step, the Kubernetes API server starts to roll out a new key. To reduce the risk of authentication failures, complete the remaining steps as quickly as possible. The remaining steps might be disruptive to workloads.
+    <div class="important">
+
+    After you complete this step, the Kubernetes API server starts to roll out a new key. To reduce the risk of authentication failures, complete the remaining steps as quickly as possible. The remaining steps might be disruptive to workloads.
+
+    </div>
 
     When you are ready, delete the next bound service account signing key by running the following command:
 
@@ -637,8 +610,11 @@ Procedure
 
 11. To ensure that all pods on the cluster use the new key, you must restart them.
 
-    > [!IMPORTANT]
-    > This step maintains uptime for services that are configured for high availability across multiple nodes, but might cause downtime for any services that are not.
+    <div class="important">
+
+    This step maintains uptime for services that are configured for high availability across multiple nodes, but might cause downtime for any services that are not.
+
+    </div>
 
     Restart all of the pods in the cluster by running the following command:
 
@@ -681,33 +657,15 @@ Procedure
       -f ${TEMPDIR}/jwks.new.json
     ```
 
-</div>
-
 ## Rotating IBM Cloud credentials
 
 You can rotate API keys for your existing service IDs and update the corresponding secrets.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have configured the `ccoctl` utility.
 
 - You have existing service IDs in a live OpenShift Container Platform cluster installed.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Use the `ccoctl` utility to rotate your API keys for the service IDs and update the secrets by running the following command:
 
@@ -726,10 +684,11 @@ Procedure
 
   - The name of the OpenShift Container Platform cluster.
 
-    > [!NOTE]
-    > If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
+    <div class="note">
 
-</div>
+    If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
+
+    </div>
 
 # Rotating cloud provider credentials
 
@@ -741,14 +700,6 @@ If your cloud provider credentials are changed for any reason, you must manually
 
 The process for rotating cloud credentials depends on the mode that the CCO is configured to use. After you rotate credentials for a cluster that is using mint mode, you must manually remove the component credentials that were created by the removed credential.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Your cluster is installed on a platform that supports rotating cloud credentials manually with the CCO mode that you are using:
 
   - For mint mode, Amazon Web Services (AWS) and Google Cloud are supported.
@@ -758,16 +709,6 @@ Prerequisites
 - You have changed the credentials that are used to interface with your cloud provider.
 
 - The new credentials have sufficient permissions for the mode CCO is configured to use in your cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the **Administrator** perspective of the web console, navigate to **Workloads** → **Secrets**.
 
@@ -789,8 +730,11 @@ Procedure
 
 6.  If you are updating the credentials for a vSphere cluster that does not have the vSphere CSI Driver Operator enabled, you must force a rollout of the Kubernetes controller manager to apply the updated credentials.
 
-    > [!NOTE]
-    > If the vSphere CSI Driver Operator is enabled, this step is not required.
+    <div class="note">
+
+    If the vSphere CSI Driver Operator is enabled, this step is not required.
+
+    </div>
 
     To apply the updated vSphere credentials, log in to the OpenShift Container Platform CLI as a user with the `cluster-admin` role and run the following command:
 
@@ -823,11 +767,9 @@ Procedure
 
         - Google Cloud: `GCPProviderSpec`
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Partial example output for AWS
+        **Partial example output for AWS**
 
         </div>
 
@@ -842,8 +784,6 @@ Procedure
         }
         ```
 
-        </div>
-
     3.  Delete each of the referenced component secrets:
 
         ``` terminal
@@ -855,11 +795,9 @@ Procedure
 
         - Specify the namespace that contains the secret.
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example deletion of an AWS secret
+          **Example deletion of an AWS secret**
 
           </div>
 
@@ -867,43 +805,25 @@ Procedure
           $ oc delete secret ebs-cloud-credentials -n openshift-cluster-csi-drivers
           ```
 
-          </div>
-
           You do not need to manually delete the credentials from your provider console. Deleting the referenced component secrets will cause the CCO to delete the existing credentials from the platform and create new ones.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 To verify that the credentials have changed:
 
-</div>
-
 1.  In the **Administrator** perspective of the web console, navigate to **Workloads** → **Secrets**.
 
 2.  Verify that the contents of the **Value** field or fields have changed.
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [The Cloud Credential Operator in mint mode](../authentication/managing_cloud_provider_credentials/cco-mode-mint.xml#cco-mode-mint)
 
 - [The Cloud Credential Operator in passthrough mode](../authentication/managing_cloud_provider_credentials/cco-mode-passthrough.html#cco-mode-passthrough)
 
 - [vSphere CSI Driver Operator](../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#persistent-storage-csi-vsphere)
-
-</div>
 
 # Removing cloud provider credentials
 
@@ -915,28 +835,13 @@ For clusters that use the Cloud Credential Operator (CCO) in mint mode, the admi
 
 After installing an OpenShift Container Platform cluster with the CCO in mint mode, you can remove the administrator-level credential secret from the `kube-system` namespace in the cluster. The CCO only requires the administrator-level credential during changes that require reconciling new or modified `CredentialsRequest` custom resources, such as minor cluster version updates.
 
-> [!NOTE]
-> Before performing a minor version cluster update (for example, updating from OpenShift Container Platform 4.20 to 4.17), you must reinstate the credential secret with the administrator-level credential. If the credential is not present, the update might be blocked.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Before performing a minor version cluster update (for example, updating from OpenShift Container Platform 4.20 to 4.17), you must reinstate the credential secret with the administrator-level credential. If the credential is not present, the update might be blocked.
 
 </div>
 
 - Your cluster is installed on a platform that supports removing cloud credentials from the CCO. Supported platforms are AWS and Google Cloud.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the **Administrator** perspective of the web console, navigate to **Workloads** → **Secrets**.
 
@@ -949,19 +854,7 @@ Procedure
 
 3.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) in the same row as the secret and select **Delete Secret**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [The Cloud Credential Operator in mint mode](../authentication/managing_cloud_provider_credentials/cco-mode-mint.xml#cco-mode-mint)
-
-</div>
 
 # Enabling token-based authentication
 
@@ -971,30 +864,15 @@ After installing an OpenShift Container Platform cluster on Microsoft Azure or A
 
 To configure an existing cluster to create and manage cloud credentials from outside of the cluster, extract and prepare the Cloud Credential Operator utility (`ccoctl`) binary.
 
-> [!NOTE]
-> The `ccoctl` utility is a Linux binary that must run in a Linux environment.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The `ccoctl` utility is a Linux binary that must run in a Linux environment.
 
 </div>
 
 - You have access to an OpenShift Container Platform account with cluster administrator access.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Set a variable for the OpenShift Container Platform release image by running the following command:
 
@@ -1008,8 +886,11 @@ Procedure
     $ CCO_IMAGE=$(oc adm release info --image-for='cloud-credential-operator' $RELEASE_IMAGE -a ~/.pull-secret)
     ```
 
-    > [!NOTE]
-    > Ensure that the architecture of the `$RELEASE_IMAGE` matches the architecture of the environment in which you will use the `ccoctl` tool.
+    <div class="note">
+
+    Ensure that the architecture of the `$RELEASE_IMAGE` matches the architecture of the environment in which you will use the `ccoctl` tool.
+
+    </div>
 
 3.  Extract the `ccoctl` binary from the CCO container image within the OpenShift Container Platform release image by running the following command:
 
@@ -1025,8 +906,11 @@ Procedure
 
       - `rhel9`: Specify this value for hosts that use RHEL 9.
 
-    > [!NOTE]
-    > The `ccoctl` binary is created in the directory from where you executed the command and not in `/usr/bin/`. You must rename the directory or move the `ccoctl.<rhel_version>` binary to `ccoctl`.
+    <div class="note">
+
+    The `ccoctl` binary is created in the directory from where you executed the command and not in `/usr/bin/`. You must rename the directory or move the `ccoctl.<rhel_version>` binary to `ccoctl`.
+
+    </div>
 
 4.  Change the permissions to make `ccoctl` executable by running the following command:
 
@@ -1034,27 +918,15 @@ Procedure
     $ chmod 775 ccoctl
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - To verify that `ccoctl` is ready to use, display the help file. Use a relative file name when you run the command, for example:
 
   ``` terminal
   $ ./ccoctl
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -1078,28 +950,19 @@ Verification
   Use "ccoctl [command] --help" for more information about a command.
   ```
 
-  </div>
-
-</div>
-
 ## Enabling Microsoft Entra Workload ID on an existing cluster
 
 Enable Microsoft Entra Workload ID on an existing Microsoft Azure OpenShift Container Platform cluster. If you did not configure your cluster to use Microsoft Entra Workload ID during installation, you can enable this authentication method post-installation.
 
-> [!IMPORTANT]
-> The process to enable Workload ID on an existing cluster is disruptive and takes a significant amount of time. Before proceeding, observe the following considerations:
->
-> - Read the following steps and ensure that you understand and accept the time requirement. The exact time requirement varies depending on the individual cluster, but it is likely to require at least one hour.
->
-> - During this process, you must refresh all service accounts and restart all pods on the cluster. These actions are disruptive to workloads. To mitigate this impact, you can temporarily halt these services and then redeploy them when the cluster is ready.
->
-> - After starting this process, do not attempt to update the cluster until it is complete. If an update is triggered, the process to enable Workload ID on an existing cluster fails.
+<div class="important">
 
-<div>
+The process to enable Workload ID on an existing cluster is disruptive and takes a significant amount of time. Before proceeding, observe the following considerations:
 
-<div class="title">
+- Read the following steps and ensure that you understand and accept the time requirement. The exact time requirement varies depending on the individual cluster, but it is likely to require at least one hour.
 
-Prerequisites
+- During this process, you must refresh all service accounts and restart all pods on the cluster. These actions are disruptive to workloads. To mitigate this impact, you can temporarily halt these services and then redeploy them when the cluster is ready.
+
+- After starting this process, do not attempt to update the cluster until it is complete. If an update is triggered, the process to enable Workload ID on an existing cluster fails.
 
 </div>
 
@@ -1112,16 +975,6 @@ Prerequisites
 - You have extracted and prepared the Cloud Credential Operator utility (`ccoctl`) binary.
 
 - You have access to your Azure account by using the Azure CLI (`az`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an output directory for the manifests that the `ccoctl` utility generates. This procedure uses `./output_dir` as an example.
 
@@ -1162,11 +1015,9 @@ Procedure
     $ ll ./output_dir/manifests
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1175,8 +1026,6 @@ Procedure
     -rw-------. 1 cloud-user cloud-user 193 May 22 02:29 azure-ad-pod-identity-webhook-config.yaml
     -rw-------. 1 cloud-user cloud-user 165 May 22 02:29 cluster-authentication-02-config.yaml
     ```
-
-    </div>
 
     - The file `azure-ad-pod-identity-webhook-config.yaml` contains the Azure pod identity webhook configuration.
 
@@ -1244,8 +1093,11 @@ Procedure
       --registry-config ~/.pull-secret
     ```
 
-    > [!NOTE]
-    > This command might take a few moments to run.
+    <div class="note">
+
+    This command might take a few moments to run.
+
+    </div>
 
 12. Set an `AZURE_INSTALL_RG` variable with the Azure resource group name by running the following command:
 
@@ -1255,8 +1107,11 @@ Procedure
 
 13. Use the `ccoctl` utility to create managed identities for all `CredentialsRequest` objects by running the following command:
 
-    > [!NOTE]
-    > The following command does not show all available options. For a complete list of options, including those that might be necessary for your specific use case, run `$ ccoctl azure create-managed-identities --help`.
+    <div class="note">
+
+    The following command does not show all available options. For a complete list of options, including those that might be necessary for your specific use case, run `$ ccoctl azure create-managed-identities --help`.
+
+    </div>
 
     ``` terminal
     $ ccoctl azure create-managed-identities \
@@ -1330,26 +1185,19 @@ Procedure
     $ oc delete secret -n kube-system azure-credentials
     ```
 
-</div>
-
 ## Enabling AWS Security Token Service (STS) on an existing cluster
 
 Enable AWS Security Token Service (STS) on an existing OpenShift Container Platform cluster if you did not configure this authentication method during installation.
 
-> [!IMPORTANT]
-> The process to enable STS on an existing cluster is disruptive and takes a significant amount of time. Before proceeding, observe the following considerations:
->
-> - Read the following steps and ensure that you understand and accept the time requirement. The exact time requirement varies depending on the individual cluster, but it is likely to require at least one hour.
->
-> - During this process, you must refresh all service accounts and restart all pods on the cluster. These actions are disruptive to workloads. To mitigate this impact, you can temporarily halt these services and then redeploy them when the cluster is ready.
->
-> - Do not update the cluster until this process is complete.
+<div class="important">
 
-<div>
+The process to enable STS on an existing cluster is disruptive and takes a significant amount of time. Before proceeding, observe the following considerations:
 
-<div class="title">
+- Read the following steps and ensure that you understand and accept the time requirement. The exact time requirement varies depending on the individual cluster, but it is likely to require at least one hour.
 
-Prerequisites
+- During this process, you must refresh all service accounts and restart all pods on the cluster. These actions are disruptive to workloads. To mitigate this impact, you can temporarily halt these services and then redeploy them when the cluster is ready.
+
+- Do not update the cluster until this process is complete.
 
 </div>
 
@@ -1362,16 +1210,6 @@ Prerequisites
 - You have extracted and prepared the Cloud Credential Operator utility (`ccoctl`) binary.
 
 - You have access to your AWS account by using the AWS CLI (aws).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an output directory for `ccoctl` generated manifests.
 
@@ -1557,16 +1395,6 @@ Procedure
     $ oc delete secret -n kube-system aws-creds
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Microsoft Entra Workload ID](../authentication/managing_cloud_provider_credentials/cco-short-term-creds.xml#cco-short-term-creds-azure_cco-short-term-creds)
 
 - [Configuring an Azure cluster to use short-term credentials](../installing/installing_azure/ipi/installing-azure-customizations.xml#installing-azure-with-short-term-creds_installing-azure-customizations)
@@ -1575,19 +1403,9 @@ Additional resources
 
 - [Configuring an AWS cluster to use short-term credentials](../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-with-short-term-creds_installing-aws-customizations)
 
-</div>
-
 ## Verifying that a cluster uses short-term credentials
 
 You can verify that a cluster uses short-term security credentials for individual components by checking the Cloud Credential Operator (CCO) configuration and other values in the cluster.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You deployed an OpenShift Container Platform cluster using the Cloud Credential Operator utility (`ccoctl`) to implement short-term credentials.
 
@@ -1595,15 +1413,7 @@ Prerequisites
 
 - You are logged in as a user with `cluster-admin` privileges.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Verify that the CCO is configured to operate in manual mode by running the following command:
 
@@ -1614,19 +1424,15 @@ Procedure
 
   The following output confirms that the CCO is operating in manual mode:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
   ``` text
   Manual
   ```
-
-  </div>
 
 - Verify that the cluster does not have `root` credentials by running the following command:
 
@@ -1645,19 +1451,15 @@ Procedure
 
   An error confirms that the root secret is not present on the cluster.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output for an AWS cluster
+  **Example output for an AWS cluster**
 
   </div>
 
   ``` text
   Error from server (NotFound): secrets "aws-creds" not found
   ```
-
-  </div>
 
 - Verify that the components are using short-term security credentials for individual components by running the following command:
 
@@ -1686,11 +1488,9 @@ Procedure
     -n openshift-cloud-credential-operator
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -1699,10 +1499,6 @@ Procedure
   cloud-credential-operator-59cf744f78-r8pbq   2/2     Running   2          71m
   pod-identity-webhook-548f977b4c-859lz        1/1     Running   1          70m
   ```
-
-  </div>
-
-</div>
 
 # Additional resources
 

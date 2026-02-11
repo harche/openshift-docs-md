@@ -100,8 +100,11 @@ Before you start configuring your mesh federation, you should take some time to 
 
   - Security trust domains
 
-    > [!NOTE]
-    > Each mesh in the federation must have its own unique trust domain.
+    <div class="note">
+
+    Each mesh in the federation must have its own unique trust domain.
+
+    </div>
 
 - Which services from each mesh do you plan to export to the federated mesh? Each service can be exported individually, or you can specify labels or use wildcards.
 
@@ -183,11 +186,9 @@ Before a mesh can be federated, you must configure the `ServiceMeshControlPlane`
 
 In the following example, the administrator for the `red-mesh` is configuring the SMCP for federation with both the `green-mesh` and the `blue-mesh`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample SMCP for red-mesh
+**Sample SMCP for red-mesh**
 
 </div>
 
@@ -261,8 +262,6 @@ spec:
       domain: red-mesh.local
 ```
 
-</div>
-
 <table>
 <caption>ServiceMeshControlPlane federation configuration parameters</caption>
 <colgroup>
@@ -272,7 +271,7 @@ spec:
 <col style="width: 25%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Values</th>
@@ -280,7 +279,7 @@ spec:
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   cluster:
     name:</code></pre></td>
@@ -288,7 +287,7 @@ spec:
 <td style="text-align: left;"><p>String</p></td>
 <td style="text-align: left;"><p>N/A</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>spec:
   cluster:
     network:</code></pre></td>
@@ -298,6 +297,8 @@ spec:
 </tr>
 </tbody>
 </table>
+
+ServiceMeshControlPlane federation configuration parameters
 
 ## Understanding federation gateways
 
@@ -316,7 +317,7 @@ To avoid naming conflicts between meshes, you must create separate egress and in
 <col style="width: 25%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Values</th>
@@ -324,7 +325,7 @@ To avoid naming conflicts between meshes, you must create separate egress and in
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   gateways:
     additionalEgress:
@@ -333,7 +334,7 @@ To avoid naming conflicts between meshes, you must create separate egress and in
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>spec:
   gateways:
     additionalEgress:
@@ -343,7 +344,7 @@ To avoid naming conflicts between meshes, you must create separate egress and in
 <td style="text-align: left;"><p><code>true</code>/<code>false</code></p></td>
 <td style="text-align: left;"><p><code>true</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   gateways:
     additionalEgress:
@@ -353,7 +354,7 @@ To avoid naming conflicts between meshes, you must create separate egress and in
 <td style="text-align: left;"><p>Set to the value of <code>spec.cluster.network</code> in the SMCP for the mesh, otherwise use &lt;ServiceMeshPeer-name&gt;-network. For example, if the <code>ServiceMeshPeer</code> resource for that mesh is named <code>west</code>, then the network would be named <code>west-network</code>.</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>spec:
   gateways:
     additionalEgress:
@@ -366,7 +367,7 @@ To avoid naming conflicts between meshes, you must create separate egress and in
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   gateways:
     additionalEgress:
@@ -377,7 +378,7 @@ To avoid naming conflicts between meshes, you must create separate egress and in
 <td style="text-align: left;"><p>Port <code>15443</code> is required for sending TLS service requests to other meshes in the federation. Port <code>8188</code> is required for sending service discovery requests to other meshes in the federation.</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>spec:
   gateways:
     additionalIngress:</code></pre></td>
@@ -385,7 +386,7 @@ To avoid naming conflicts between meshes, you must create separate egress and in
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   gateways:
     additionalIgress:
@@ -395,7 +396,7 @@ To avoid naming conflicts between meshes, you must create separate egress and in
 <td style="text-align: left;"><p><code>true</code>/<code>false</code></p></td>
 <td style="text-align: left;"><p><code>true</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>spec:
   gateways:
     additionalIngress:
@@ -406,7 +407,7 @@ To avoid naming conflicts between meshes, you must create separate egress and in
 <td style="text-align: left;"><p><code>LoadBalancer</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   gateways:
     additionalIngress:
@@ -417,7 +418,7 @@ To avoid naming conflicts between meshes, you must create separate egress and in
 <td style="text-align: left;"><p><code>NodePort</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>spec:
   gateways:
     additionalIngress:
@@ -430,7 +431,7 @@ To avoid naming conflicts between meshes, you must create separate egress and in
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   gateways:
     additionalIngress:
@@ -441,7 +442,7 @@ To avoid naming conflicts between meshes, you must create separate egress and in
 <td style="text-align: left;"><p>Port <code>15443</code> is required for receiving TLS service requests to other meshes in the federation. Port <code>8188</code> is required for receiving service discovery requests to other meshes in the federation.</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>spec:
   gateways:
     additionalIngress:
@@ -456,13 +457,13 @@ To avoid naming conflicts between meshes, you must create separate egress and in
 </tbody>
 </table>
 
+Federation gateway parameters
+
 In the following example, the administrator is configuring the SMCP for federation with the `green-mesh` using a `NodePort` service.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample SMCP for NodePort
+**Sample SMCP for NodePort**
 
 </div>
 
@@ -492,8 +493,6 @@ spec:
             name: https-discovery
 ```
 
-</div>
-
 ## Understanding federation trust domain parameters
 
 Each mesh in the federation must have its own unique trust domain. This value is used when configuring mesh federation in the `ServiceMeshPeer` resource.
@@ -518,7 +517,7 @@ spec:
 <col style="width: 25%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Values</th>
@@ -526,7 +525,7 @@ spec:
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   security:
     trust:
@@ -538,17 +537,15 @@ spec:
 </tbody>
 </table>
 
-<div class="formalpara">
+Federation security parameters
 
-<div class="title">
+<div class="formalpara-title">
 
-Procedure from the Console
+**Procedure from the Console**
 
 </div>
 
 Follow this procedure to edit the `ServiceMeshControlPlane` with the OpenShift Container Platform web console. This example uses the `red-mesh` as an example.
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console as a user with the cluster-admin role.
 
@@ -566,17 +563,13 @@ Follow this procedure to edit the `ServiceMeshControlPlane` with the OpenShift C
 
 8.  Click **Save**.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure from the CLI
+**Procedure from the CLI**
 
 </div>
 
 Follow this procedure to create or edit the `ServiceMeshControlPlane` with the command line. This example uses the `red-mesh` as an example.
-
-</div>
 
 1.  Log in to the OpenShift Container Platform CLI as a user with the `cluster-admin` role. Enter the following command. Then, enter your username and password when prompted.
 
@@ -651,11 +644,9 @@ Configuration in the `ServiceMeshPeer` resource includes the following:
 
 In the following example, the administrator for the `red-mesh` is configuring federation with the `green-mesh`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example ServiceMeshPeer resource for red-mesh
+**Example ServiceMeshPeer resource for red-mesh**
 
 </div>
 
@@ -682,8 +673,6 @@ spec:
       name: green-mesh-ca-root-cert
 ```
 
-</div>
-
 <table>
 <caption>ServiceMeshPeer configuration parameters</caption>
 <colgroup>
@@ -692,47 +681,47 @@ spec:
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Values</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>metadata:
   name:</code></pre></td>
 <td style="text-align: left;"><p>Name of the peer mesh that this resource is configuring federation with.</p></td>
 <td style="text-align: left;"><p>String</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>metadata:
   namespace:</code></pre></td>
 <td style="text-align: left;"><p>System namespace for this mesh, that is, where the Service Mesh control plane is installed.</p></td>
 <td style="text-align: left;"><p>String</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   remote:
     addresses:</code></pre></td>
 <td style="text-align: left;"><p>List of public addresses of the peer meshes' ingress gateways that are servicing requests from this mesh.</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>spec:
   remote:
     discoveryPort:</code></pre></td>
 <td style="text-align: left;"><p>The port on which the addresses are handling discovery requests.</p></td>
 <td style="text-align: left;"><p>Defaults to 8188</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   remote:
     servicePort:</code></pre></td>
 <td style="text-align: left;"><p>The port on which the addresses are handling service requests.</p></td>
 <td style="text-align: left;"><p>Defaults to 15443</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>spec:
   gateways:
     ingress:
@@ -740,7 +729,7 @@ spec:
 <td style="text-align: left;"><p>Name of the ingress on this mesh that is servicing requests received from the peer mesh. For example, <code>ingress-green-mesh</code>.</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   gateways:
     egress:
@@ -748,21 +737,21 @@ spec:
 <td style="text-align: left;"><p>Name of the egress on this mesh that is servicing requests sent to the peer mesh. For example, <code>egress-green-mesh</code>.</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>spec:
   security:
     trustDomain:</code></pre></td>
 <td style="text-align: left;"><p>The trust domain used by the peer mesh.</p></td>
 <td style="text-align: left;"><p>&lt;peerMeshName&gt;.local</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   security:
     clientID:</code></pre></td>
 <td style="text-align: left;"><p>The client ID used by the peer mesh when calling into this mesh.</p></td>
 <td style="text-align: left;"><p>&lt;peerMeshTrustDomain&gt;/ns/&lt;peerMeshSystem&gt;/sa/&lt;peerMeshEgressGatewayName&gt;-service-account</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>spec:
   security:
     certificateChain:
@@ -774,15 +763,9 @@ spec:
 </tbody>
 </table>
 
+ServiceMeshPeer configuration parameters
+
 ## Creating a ServiceMeshPeer resource
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Two or more OpenShift Container Platform 4.6 or above clusters.
 
@@ -794,19 +777,13 @@ Prerequisites
 
 - An account with the `cluster-admin` role.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure from the CLI
+**Procedure from the CLI**
 
 </div>
 
 Follow this procedure to create a `ServiceMeshPeer` resource from the command line. This example shows the `red-mesh` creating a peer resource for the `green-mesh`.
-
-</div>
 
 1.  Log in to the OpenShift Container Platform CLI as a user with the `cluster-admin` role. Enter the following command. Then, enter your username and password when prompted.
 
@@ -822,11 +799,9 @@ Follow this procedure to create a `ServiceMeshPeer` resource from the command li
 
 3.  Create a `ServiceMeshPeer` file based the following example for the two meshes that you want to federate.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example ServiceMeshPeer resource for red-mesh to green-mesh
+    **Example ServiceMeshPeer resource for red-mesh to green-mesh**
 
     </div>
 
@@ -853,8 +828,6 @@ Follow this procedure to create a `ServiceMeshPeer` resource from the command li
           name: green-mesh-ca-root-cert
     ```
 
-    </div>
-
 4.  Run the following command to deploy the resource, where `red-mesh-system` is the system namespace and `servicemeshpeer.yaml` includes a full path to the file you edited:
 
     ``` terminal
@@ -867,11 +840,9 @@ Follow this procedure to create a `ServiceMeshPeer` resource from the command li
     $ oc -n red-mesh-system get servicemeshpeer green-mesh -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example ServiceMeshPeer connection between red-mesh and green-mesh
+    **Example ServiceMeshPeer connection between red-mesh and green-mesh**
 
     </div>
 
@@ -891,8 +862,6 @@ Follow this procedure to create a `ServiceMeshPeer` resource from the command li
             lastDisconnectStatus: 503 Service Unavailable
             lastFullSync: "2021-10-05T13:05:43Z"
     ```
-
-    </div>
 
     The `status.discoveryStatus.active.remotes` field shows that istiod in the peer mesh (in this example, the green mesh) is connected to istiod in the current mesh (in this example, the red mesh).
 
@@ -934,11 +903,9 @@ You use an `ExportedServiceSet` resource to declare the services from one mesh t
 
 The following example is for services that `red-mesh` is exporting to `green-mesh`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example ExportedServiceSet resource
+**Example ExportedServiceSet resource**
 
 </div>
 
@@ -972,8 +939,6 @@ spec:
           namespace: bookinfo
 ```
 
-</div>
-
 <table>
 <caption>ExportedServiceSet parameters</caption>
 <colgroup>
@@ -982,33 +947,33 @@ spec:
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Values</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>metadata:
   name:</code></pre></td>
 <td style="text-align: left;"><p>Name of the ServiceMeshPeer you are exposing this service to.</p></td>
 <td style="text-align: left;"><p>Must match the <code>name</code> value for the mesh in the <code>ServiceMeshPeer</code> resource.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>metadata:
   namespace:</code></pre></td>
 <td style="text-align: left;"><p>Name of the project/namespace containing this resource (should be the system namespace for the mesh) .</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   exportRules:
   - type:</code></pre></td>
 <td style="text-align: left;"><p>Type of rule that will govern the export for this service. The first matching rule found for the service will be used for the export.</p></td>
 <td style="text-align: left;"><p><code>NameSelector</code>, <code>LabelSelector</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>spec:
   exportRules:
   - type: NameSelector
@@ -1018,7 +983,7 @@ spec:
 <td style="text-align: left;"><p>To create a <code>NameSelector</code> rule, specify the <code>namespace</code> of the service and the <code>name</code> of the service as defined in the <code>Service</code> resource.</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   exportRules:
   - type: NameSelector
@@ -1029,7 +994,7 @@ spec:
 <td style="text-align: left;"><p>To create a <code>NameSelector</code> rule that uses an alias for the service, after specifying the <code>namespace</code> and <code>name</code> for the service, then specify the alias for the <code>namespace</code> and the alias to be used for <code>name</code> of the service.</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>spec:
   exportRules:
   - type: LabelSelector
@@ -1041,7 +1006,7 @@ spec:
 <td style="text-align: left;"><p>To create a <code>LabelSelector</code> rule, specify the <code>namespace</code> of the service and specify the <code>label</code> defined in the <code>Service</code> resource. In the example above, the label is <code>export-service</code>.</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   exportRules:
   - type: LabelSelector
@@ -1062,11 +1027,11 @@ spec:
 </tbody>
 </table>
 
-<div class="formalpara">
+ExportedServiceSet parameters
 
-<div class="title">
+<div class="formalpara-title">
 
-Export services with the name "ratings" from all namespaces in the red-mesh to blue-mesh.
+**Export services with the name "ratings" from all namespaces in the red-mesh to blue-mesh.**
 
 </div>
 
@@ -1084,13 +1049,9 @@ spec:
       name: ratings
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Export all services from the west-data-center namespace to green-mesh
+**Export all services from the west-data-center namespace to green-mesh**
 
 </div>
 
@@ -1108,22 +1069,15 @@ spec:
       name: "*"
 ```
 
-</div>
-
 ## Creating an ExportedServiceSet
 
 You create an `ExportedServiceSet` resource to explicitly declare the services that you want to be available to a mesh peer.
 
 Services are exported as `<export-name>.<export-namespace>.svc.<ServiceMeshPeer.name>-exports.local` and will automatically route to the target service. This is the name by which the exported service is known in the exporting mesh. When the ingress gateway receives a request destined for this name, it will be routed to the actual service being exported. For example, if a service named `ratings.red-mesh-bookinfo` is exported to `green-mesh` as `ratings.bookinfo`, the service will be exported under the name `ratings.bookinfo.svc.green-mesh-exports.local`, and traffic received by the ingress gateway for that hostname will be routed to the `ratings.red-mesh-bookinfo` service.
 
-> [!NOTE]
-> When you set the `importAsLocal` parameter to `true` to aggregate the remote endpoint with local services, you must use an alias for the service. When you set the parameter `false`, no alias is required.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+When you set the `importAsLocal` parameter to `true` to aggregate the remote endpoint with local services, you must use an alias for the service. When you set the parameter `false`, no alias is required.
 
 </div>
 
@@ -1131,22 +1085,19 @@ Prerequisites
 
 - An account with the `cluster-admin` role.
 
+<div class="note">
+
+You can configure services for export even if they do not exist yet. When a service that matches the value specified in the ExportedServiceSet is deployed, it will be automatically exported.
+
 </div>
 
-> [!NOTE]
-> You can configure services for export even if they do not exist yet. When a service that matches the value specified in the ExportedServiceSet is deployed, it will be automatically exported.
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure from the CLI
+**Procedure from the CLI**
 
 </div>
 
 Follow this procedure to create an `ExportedServiceSet` from the command line.
-
-</div>
 
 1.  Log in to the OpenShift Container Platform CLI as a user with the `cluster-admin` role. Enter the following command. Then, enter your username and password when prompted.
 
@@ -1162,11 +1113,9 @@ Follow this procedure to create an `ExportedServiceSet` from the command line.
 
 3.  Create an `ExportedServiceSet` file based on the following example where `red-mesh` is exporting services to `green-mesh`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example ExportedServiceSet resource from red-mesh to green-mesh
+    **Example ExportedServiceSet resource from red-mesh to green-mesh**
 
     </div>
 
@@ -1191,8 +1140,6 @@ Follow this procedure to create an `ExportedServiceSet` from the command line.
           name: reviews
     ```
 
-    </div>
-
 4.  Run the following command to upload and create the `ExportedServiceSet` resource in the red-mesh-system namespace.
 
     ``` terminal
@@ -1207,14 +1154,6 @@ Follow this procedure to create an `ExportedServiceSet` from the command line.
 
 5.  Create additional `ExportedServiceSets` as needed for each mesh peer in your federated mesh.
 
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Run the following command to validate the services the red-mesh exports to share with green-mesh:
 
   ``` terminal
@@ -1227,11 +1166,9 @@ Verification
   $ oc -n red-mesh-system get exportedserviceset green-mesh -o yaml
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example validating the services exported from the red mesh that are shared with the green mesh.
+  **Example validating the services exported from the red mesh that are shared with the green mesh.**
 
   </div>
 
@@ -1250,13 +1187,9 @@ Verification
           namespace: red-mesh-bookinfo
   ```
 
-  </div>
-
   The `status.exportedServices` array lists the services that are currently exported (these services matched the export rules in the `ExportedServiceSet object`). Each entry in the array indicates the name of the exported service and details about the local service that is exported.
 
   If a service that you expected to be exported is missing, confirm the Service object exists, its name or labels match the `exportRules` defined in the `ExportedServiceSet` object, and that the Service object’s namespace is configured as a member of the service mesh using the `ServiceMeshMemberRoll` or `ServiceMeshMember` object.
-
-</div>
 
 # Importing a service into a federated mesh
 
@@ -1280,11 +1213,9 @@ You use an `ImportedServiceSet` resource to select services for import. Only ser
 
 The following example is for the `green-mesh` importing a service that was exported by `red-mesh`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example ImportedServiceSet
+**Example ImportedServiceSet**
 
 </div>
 
@@ -1308,8 +1239,6 @@ spec:
         name: ratings
 ```
 
-</div>
-
 <table>
 <caption>ImportedServiceSet parameters</caption>
 <colgroup>
@@ -1318,33 +1247,33 @@ spec:
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Values</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>metadata:
   name:</code></pre></td>
 <td style="text-align: left;"><p>Name of the ServiceMeshPeer that exported the service to the federated mesh.</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>metadata:
   namespace:</code></pre></td>
 <td style="text-align: left;"><p>Name of the namespace containing the ServiceMeshPeer resource (the mesh system namespace).</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   importRules:
   - type:</code></pre></td>
 <td style="text-align: left;"><p>Type of rule that will govern the import for the service. The first matching rule found for the service will be used for the import.</p></td>
 <td style="text-align: left;"><p><code>NameSelector</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>spec:
   importRules:
   - type: NameSelector
@@ -1354,7 +1283,7 @@ spec:
 <td style="text-align: left;"><p>To create a <code>NameSelector</code> rule, specify the <code>namespace</code> and the <code>name</code> of the exported service.</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>spec:
   importRules:
   - type: NameSelector
@@ -1362,7 +1291,7 @@ spec:
 <td style="text-align: left;"><p>Set to <code>true</code> to aggregate remote endpoint with local services. When <code>true</code> services are imported as <code>&lt;name&gt;.&lt;namespace&gt;.svc.cluster.local</code>. When <code>true</code>, an alias is required. When <code>false</code>, no alias is required.</p></td>
 <td style="text-align: left;"><p><code>true</code>/<code>false</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>spec:
   importRules:
   - type: NameSelector
@@ -1378,11 +1307,11 @@ spec:
 </tbody>
 </table>
 
-<div class="formalpara">
+ImportedServiceSet parameters
 
-<div class="title">
+<div class="formalpara-title">
 
-Import the "bookinfo/ratings" service from the red-mesh into blue-mesh
+**Import the "bookinfo/ratings" service from the red-mesh into blue-mesh**
 
 </div>
 
@@ -1401,13 +1330,9 @@ spec:
       name: ratings
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Import all services from the red-mesh’s west-data-center namespace into the green-mesh. These services will be accessible as \<name\>.west-data-center.svc.red-mesh-imports.local
+**Import all services from the red-mesh’s west-data-center namespace into the green-mesh. These services will be accessible as \<name\>.west-data-center.svc.red-mesh-imports.local**
 
 </div>
 
@@ -1426,42 +1351,29 @@ spec:
       name: "*"
 ```
 
-</div>
-
 ## Creating an ImportedServiceSet
 
 You create an `ImportedServiceSet` resource to explicitly declare the services that you want to import into your mesh.
 
 Services are imported with the name `<exported-name>.<exported-namespace>.svc.<ServiceMeshPeer.name>.remote` which is a "hidden" service, visible only within the egress gateway namespace and is associated with the exported service’s hostname. The service will be available locally as `<export-name>.<export-namespace>.<domainSuffix>`, where `domainSuffix` is `svc.<ServiceMeshPeer.name>-imports.local` by default, unless `importAsLocal` is set to `true`, in which case `domainSuffix` is `svc.cluster.local`. If `importAsLocal` is set to `false`, the domain suffix in the import rule will be applied. You can treat the local import just like any other service in the mesh. It automatically routes through the egress gateway, where it is redirected to the exported service’s remote name.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The cluster and `ServiceMeshControlPlane` have been configured for mesh federation.
 
 - An account with the `cluster-admin` role.
 
+<div class="note">
+
+You can configure services for import even if they have not been exported yet. When a service that matches the value specified in the ImportedServiceSet is deployed and exported, it will be automatically imported.
+
 </div>
 
-> [!NOTE]
-> You can configure services for import even if they have not been exported yet. When a service that matches the value specified in the ImportedServiceSet is deployed and exported, it will be automatically imported.
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 Follow this procedure to create an `ImportedServiceSet` from the command line.
-
-</div>
 
 1.  Log in to the OpenShift Container Platform CLI as a user with the `cluster-admin` role. Enter the following command. Then, enter your username and password when prompted.
 
@@ -1477,11 +1389,9 @@ Follow this procedure to create an `ImportedServiceSet` from the command line.
 
 3.  Create an `ImportedServiceSet` file based on the following example where `green-mesh` is importing services previously exported by `red-mesh`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example ImportedServiceSet resource from red-mesh to green-mesh
+    **Example ImportedServiceSet resource from red-mesh to green-mesh**
 
     </div>
 
@@ -1503,8 +1413,6 @@ Follow this procedure to create an `ImportedServiceSet` from the command line.
             name: ratings
     ```
 
-    </div>
-
 4.  Run the following command to upload and create the `ImportedServiceSet` resource in the green-mesh-system namespace.
 
     ``` terminal
@@ -1519,33 +1427,21 @@ Follow this procedure to create an `ImportedServiceSet` from the command line.
 
 5.  Create additional `ImportedServiceSet` resources as needed for each mesh peer in your federated mesh.
 
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Run the following command to verify that the services were imported into `green-mesh`:
 
   ``` terminal
   $ oc get importedserviceset <PeerMeshImportedInto> -o yaml
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example verifying that the services exported from the red mesh have been imported into the green mesh using the status section of the `importedserviceset/red-mesh' object in the 'green-mesh-system` namespace
+  **Example verifying that the services exported from the red mesh have been imported into the green mesh using the status section of the `importedserviceset/red-mesh' object in the 'green-mesh-system` namespace**
 
   </div>
 
   ``` terminal
   $ oc -n green-mesh-system get importedserviceset/red-mesh -o yaml
   ```
-
-  </div>
 
   ``` yaml
   status:
@@ -1564,21 +1460,11 @@ Verification
 
   In the preceding example only the ratings service is imported, as indicated by the populated fields under `localService`. The reviews service is available for import, but is not currently imported because it does not match any `importRules` in the `ImportedServiceSet` object.
 
-</div>
-
 # Configuring a federated mesh for failover
 
 Failover is the ability to switch automatically and seamlessly to a reliable backup system, for example another server. In the case of a federated mesh, you can configure a service in one mesh to failover to a service in another mesh.
 
 You configure Federation for failover by setting the `importAsLocal` and `locality` settings in an `ImportedServiceSet` resource and then configuring a `DestinationRule` that configures failover for the service to the locality specified in the `ImportedServiceSet`.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Two or more OpenShift Container Platform 4.6 or above clusters already networked and federated.
 
@@ -1588,19 +1474,15 @@ Prerequisites
 
 - An account with the `cluster-admin` role.
 
-</div>
-
 ## Configuring an ImportedServiceSet for failover
 
 Locality-weighted load balancing allows administrators to control the distribution of traffic to endpoints based on the localities of where the traffic originates and where it will terminate. These localities are specified using arbitrary labels that designate a hierarchy of localities in {region}/{zone}/{sub-zone} form.
 
 In the examples in this section, the `green-mesh` is located in the `us-east` region, and the `red-mesh` is located in the `us-west` region.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `ImportedServiceSet` resource from red-mesh to green-mesh
+**Example `ImportedServiceSet` resource from red-mesh to green-mesh**
 
 </div>
 
@@ -1627,23 +1509,13 @@ spec:
     region: us-west
 ```
 
-</div>
-
-| Name | Description | Type |
-|----|----|----|
-| region: | Region within which imported services are located. | string |
+| Name     | Description                                                                                              | Type   |
+|----------|----------------------------------------------------------------------------------------------------------|--------|
+| region:  | Region within which imported services are located.                                                       | string |
 | subzone: | Subzone within which imported services are located. I Subzone is specified, Zone must also be specified. | string |
-| zone: | Zone within which imported services are located. If Zone is specified, Region must also be specified. | string |
+| zone:    | Zone within which imported services are located. If Zone is specified, Region must also be specified.    | string |
 
 `ImportedServiceLocality` fields table
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform CLI as a user with the `cluster-admin` role, enter the following command:
 
@@ -1683,8 +1555,6 @@ Procedure
 
     3.  Save your changes.
 
-</div>
-
 ## Configuring a DestinationRule for failover
 
 Create a `DestinationRule` resource that configures the following:
@@ -1692,14 +1562,6 @@ Create a `DestinationRule` resource that configures the following:
 - Outlier detection for the service. This is required in order for failover to function properly. In particular, it configures the sidecar proxies to know when endpoints for a service are unhealthy, eventually triggering a failover to the next locality.
 
 - Failover policy between regions. This ensures that failover beyond a region boundary will behave predictably.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform CLI as a user with the `cluster-admin` role. Enter the following command. Then, enter your username and password when prompted.
 
@@ -1721,11 +1583,9 @@ Procedure
 
 3.  Create a `DestinationRule` file based on the following example where if green-mesh is unavailable, the traffic should be routed from the green-mesh in the `us-east` region to the red-mesh in `us-west`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `DestinationRule`
+    **Example `DestinationRule`**
 
     </div>
 
@@ -1750,8 +1610,6 @@ Procedure
           baseEjectionTime: 1m
     ```
 
-    </div>
-
 4.  Deploy the `DestinationRule`, where `<DestinationRule>` includes the full path to your file, enter the following command:
 
     ``` terminal
@@ -1763,8 +1621,6 @@ Procedure
     ``` terminal
     $ oc create -n bookinfo -f green-mesh-us-west-DestinationRule.yaml
     ```
-
-</div>
 
 # Removing a service from the federated mesh
 

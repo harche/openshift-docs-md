@@ -35,15 +35,15 @@ To report a bug, you can create a Jira issue directly by filling out the form on
 
 You can monitor the health of your cluster and VMs by using the OpenShift Container Platform web console. The web console displays resource usage, alerts, events, and trends for your cluster and for OpenShift Virtualization components and resources.
 
-| Page | Description |
-|----|----|
-| **Overview** page | Cluster details, status, alerts, inventory, and resource usage |
-| **Virtualization** → **Overview** tab | OpenShift Virtualization resources, usage, alerts, and status |
-| **Virtualization** → **Top consumers** tab | Top consumers of CPU, memory, and storage |
-| **Virtualization** → **Migrations** tab | Progress of live migrations |
-| **Virtualization** → **VirtualMachines** tab | CPU, memory, and storage usage summary |
-| **Virtualization** → **VirtualMachines** → **VirtualMachine details** → **Metrics** tab | VM resource usage, storage, network, and migration |
-| **Virtualization** → **VirtualMachines** → **VirtualMachine details** → **Events** tab | List of VM events |
-| **Virtualization** → **VirtualMachines** → **VirtualMachine details** → **Diagnostics** tab | VM status conditions and volume snapshot status |
+| Page                                                                                        | Description                                                    |
+|---------------------------------------------------------------------------------------------|----------------------------------------------------------------|
+| **Overview** page                                                                           | Cluster details, status, alerts, inventory, and resource usage |
+| **Virtualization** → **Overview** tab                                                       | OpenShift Virtualization resources, usage, alerts, and status  |
+| **Virtualization** → **Top consumers** tab                                                  | Top consumers of CPU, memory, and storage                      |
+| **Virtualization** → **Migrations** tab                                                     | Progress of live migrations                                    |
+| **Virtualization** → **VirtualMachines** tab                                                | CPU, memory, and storage usage summary                         |
+| **Virtualization** → **VirtualMachines** → **VirtualMachine details** → **Metrics** tab     | VM resource usage, storage, network, and migration             |
+| **Virtualization** → **VirtualMachines** → **VirtualMachine details** → **Events** tab      | List of VM events                                              |
+| **Virtualization** → **VirtualMachines** → **VirtualMachine details** → **Diagnostics** tab | VM status conditions and volume snapshot status                |
 
 Web console pages for monitoring and troubleshooting

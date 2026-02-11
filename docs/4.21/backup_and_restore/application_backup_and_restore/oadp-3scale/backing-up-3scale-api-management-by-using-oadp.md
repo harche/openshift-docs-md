@@ -1,36 +1,16 @@
 You can back up Red Hat 3scale API Management components by backing up the 3scale operator, and databases such as MySQL and Redis.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You installed and configured Red Hat 3scale API Management. For more information, see [Installing 3scale API Management on OpenShift](https://docs.redhat.com/en/documentation/red_hat_3scale_api_management/2.15/html-single/installing_red_hat_3scale_api_management/index#install-threescale-on-openshift-guide) and [Red Hat 3scale API Management](https://docs.redhat.com/en/documentation/red_hat_3scale_api_management).
-
-</div>
 
 # Creating the Data Protection Application
 
 You can create a Data Protection Application (DPA) custom resource (CR) for Red Hat 3scale API Management.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a YAML file with the following configuration:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `dpa.yaml` file
+    **Example `dpa.yaml` file**
 
     </div>
 
@@ -69,8 +49,6 @@ Procedure
               name: cloud-credentials
     ```
 
-    </div>
-
     - Specify a bucket as the backup storage location. If the bucket is not a dedicated bucket for Velero backups, you must specify a prefix.
 
     - Specify a prefix for Velero backups, for example, velero, if the bucket is used for multiple purposes.
@@ -85,51 +63,19 @@ Procedure
     $ oc create -f dpa.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Installing the Data Protection Application](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.xml#oadp-installing-dpa_installing-oadp-aws)
-
-</div>
 
 # Backing up the 3scale API Management operator, secret, and APIManager
 
 You can back up the Red Hat 3scale API Management operator resources, and both the `Secret` and APIManager custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You created the Data Protection Application (DPA).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Back up your 3scale operator CRs, such as `operatorgroup`, `namespaces`, and `subscriptions`, by creating a YAML file with the following configuration:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `backup.yaml` file
+    **Example `backup.yaml` file**
 
     </div>
 
@@ -153,14 +99,15 @@ Procedure
       ttl: 720h0m0s
     ```
 
-    </div>
-
     - The value of the `metadata.name` parameter in the backup is the same value used in the `metadata.backupName` parameter used when restoring the 3scale operator.
 
     - Namespace where the 3scale operator is installed.
 
-      > [!NOTE]
-      > You can also back up and restore `ReplicationControllers`, `Deployment`, and `Pod` objects to ensure that all manually set environments are backed up and restored. This does not affect the flow of restoration.
+      <div class="note">
+
+      You can also back up and restore `ReplicationControllers`, `Deployment`, and `Pod` objects to ensure that all manually set environments are backed up and restored. This does not affect the flow of restoration.
+
+      </div>
 
 2.  Create a backup CR by running the following command:
 
@@ -168,11 +115,9 @@ Procedure
     $ oc create -f backup.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -180,15 +125,11 @@ Procedure
     backup.velero.io/operator-install-backup created
     ```
 
-    </div>
-
 3.  Back up the `Secret` CR by creating a YAML file with the following configuration:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `backup-secret.yaml` file
+    **Example `backup-secret.yaml` file**
 
     </div>
 
@@ -214,8 +155,6 @@ Procedure
       ttl: 720h0m0s
     ```
 
-    </div>
-
     - The value of the `metadata.name` parameter in the backup is the same value used in the `metadata.backupName` parameter used when restoring the `Secret`.
 
 4.  Create the `Secret` backup CR by running the following command:
@@ -224,11 +163,9 @@ Procedure
     $ oc create -f backup-secret.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -236,15 +173,11 @@ Procedure
     backup.velero.io/operator-resources-secrets created
     ```
 
-    </div>
-
 5.  Back up the APIManager CR by creating a YAML file with the following configuration:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example backup-apimanager.yaml file
+    **Example backup-apimanager.yaml file**
 
     </div>
 
@@ -270,8 +203,6 @@ Procedure
       - ts-dpa-1
     ```
 
-    </div>
-
     - The value of the `metadata.name` parameter in the backup is the same value used in the `metadata.backupName` parameter used when restoring the APIManager.
 
 6.  Create the APIManager CR by running the following command:
@@ -280,11 +211,9 @@ Procedure
     $ oc create -f backup-apimanager.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -292,53 +221,19 @@ Procedure
     backup.velero.io/operator-resources-apim created
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Creating a Backup CR](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-creating-backup-cr.xml#oadp-creating-backup-cr-doc)
-
-</div>
 
 # Backing up a MySQL database
 
 You can back up a MySQL database by creating and attaching a persistent volume claim (PVC) to include the dumped data in the specified path.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have backed up the Red Hat 3scale API Management operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file with the following configuration for adding an additional PVC:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `ts_pvc.yaml` file
+    **Example `ts_pvc.yaml` file**
 
     </div>
 
@@ -357,8 +252,6 @@ Procedure
       storageClassName: gp3-csi
       volumeMode: Filesystem
     ```
-
-    </div>
 
 2.  Create the additional PVC by running the following command:
 
@@ -395,11 +288,9 @@ Procedure
 
 4.  Create a YAML file with following configuration to back up the MySQL database:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `mysql.yaml` file
+    **Example `mysql.yaml` file**
 
     </div>
 
@@ -442,8 +333,6 @@ Procedure
       ttl: 720h0m0s
     ```
 
-    </div>
-
     - The value of the `metadata.name` parameter in the backup is the same value used in the `metadata.backupName` parameter used when restoring the MySQL database.
 
     - A directory where the data is backed up.
@@ -456,11 +345,9 @@ Procedure
     $ oc create -f mysql.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -468,29 +355,15 @@ Procedure
     backup.velero.io/mysql-backup created
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the MySQL backup is completed by running the following command:
 
   ``` terminal
   $ oc get backups.velero.io mysql-backup -o yaml
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -507,37 +380,15 @@ Verification
   version: 1
   ```
 
-  </div>
-
-</div>
-
 # Backing up the back-end Redis database
 
 You can back up the Redis database by adding the required annotations and by listing which resources to back up using the `includedResources` parameter.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You backed up the Red Hat 3scale API Management operator.
 
 - You backed up your MySQL database.
 
 - The Redis queues have been drained before performing the backup.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the annotations on the `backend-redis` deployment by running the following command:
 
@@ -557,11 +408,9 @@ Procedure
 
 2.  Create a YAML file with the following configuration to back up the Redis database:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `redis-backup.yaml` file
+    **Example `redis-backup.yaml` file**
 
     </div>
 
@@ -593,8 +442,6 @@ Procedure
       ttl: 720h0m0s
     ```
 
-    </div>
-
     - The value of the `metadata.name` parameter in the backup is the same value used in the `metadata.backupName` parameter used when restoring the restoring the Redis database.
 
 3.  Back up the Redis database by running the following command:
@@ -603,11 +450,9 @@ Procedure
     $ oc create -f redis-backup.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -615,29 +460,15 @@ Procedure
     backup.velero.io/redis-backup created
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the Redis backup is completed by running the following command:
 
   ``` terminal
   $ oc get backups.velero.io redis-backup -o yaml
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -653,7 +484,3 @@ Verification
   startTimestamp: "2025-04-17T13:25:16Z"
   version: 1
   ```
-
-  </div>
-
-</div>

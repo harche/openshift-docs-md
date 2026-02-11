@@ -10,18 +10,18 @@ The `build.config.openshift.io/cluster` resource offers the following configurat
 <col style="width: 72%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>Build</code></p></td>
 <td style="text-align: left;"><p>Holds cluster-wide information on how to handle builds. The canonical, and only valid name is <code>cluster</code>.</p>
 <p><code>spec</code>: Holds user-settable values for the build controller configuration.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>buildDefaults</code></p></td>
 <td style="text-align: left;"><p>Controls the default information for builds.</p>
 <p><code>defaultProxy</code>: Contains the default proxy settings for all build operations, including image pull or push and source download.</p>
@@ -32,18 +32,18 @@ The `build.config.openshift.io/cluster` resource offers the following configurat
 <p><code>imageLabels</code>: A list of labels that are applied to the resulting image. You can override a default label by providing a label with the same name in the <code>BuildConfig</code>.</p>
 <p><code>resources</code>: Defines resource requirements to execute the build.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ImageLabel</code></p></td>
 <td style="text-align: left;"><p><code>name</code>: Defines the name of the label. It must have non-zero length.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>buildOverrides</code></p></td>
 <td style="text-align: left;"><p>Controls override settings for builds.</p>
 <p><code>imageLabels</code>: A list of labels that are applied to the resulting image. If you provided a label in the <code>BuildConfig</code> with the same name as one in this table, your label will be overwritten.</p>
 <p><code>nodeSelector</code>: A selector which must be true for the build pod to fit on a node.</p>
 <p><code>tolerations</code>: A list of tolerations that overrides any existing tolerations set on a build pod.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>BuildList</code></p></td>
 <td style="text-align: left;"><p><code>items</code>: Standard object’s metadata.</p></td>
 </tr>
@@ -53,14 +53,6 @@ The `build.config.openshift.io/cluster` resource offers the following configurat
 # Configuring build settings
 
 You can configure build settings by editing the `build.config.openshift.io/cluster` resource.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Edit the `build.config.openshift.io/cluster` resource by entering the following command:
 
@@ -138,5 +130,3 @@ Procedure
   - `nodeSelector`: A selector which must be true for the build pod to fit on a node.
 
   - `tolerations`: A list of tolerations that overrides any existing tolerations set on a build pod.
-
-</div>

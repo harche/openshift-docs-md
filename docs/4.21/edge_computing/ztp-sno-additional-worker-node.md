@@ -1,22 +1,20 @@
 You can expand single-node OpenShift clusters with GitOps Zero Touch Provisioning (ZTP). When you add a worker node to single-node OpenShift clusters, the original single-node OpenShift cluster retains the control plane node role. Adding a worker node does not require any downtime for the existing single-node OpenShift cluster.
 
-> [!NOTE]
-> You can only expand a single-node OpenShift cluster with one additional worker node. It is not recommended to expand a single-node OpenShift cluster with more than one worker node.
+<div class="note">
+
+You can only expand a single-node OpenShift cluster with one additional worker node. It is not recommended to expand a single-node OpenShift cluster with more than one worker node.
+
+</div>
 
 If you require workload partitioning on the worker node, you must deploy and remediate the managed cluster policies on the hub cluster before installing the node. This way, the workload partitioning `MachineConfig` objects are rendered and associated with the `worker` machine config pool before the GitOps ZTP workflow applies the `MachineConfig` ignition file to the worker node.
 
 It is recommended that you first remediate the policies, and then install the worker node. If you create the workload partitioning manifests after installing the worker node, you must drain the node manually and delete all the pods managed by daemon sets. When the managing daemon sets create the new pods, the new pods undergo the workload partitioning process.
 
-> [!IMPORTANT]
-> Adding a worker node to single-node OpenShift clusters with GitOps ZTP is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div>
+Adding a worker node to single-node OpenShift clusters with GitOps ZTP is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
-
-Additional resources
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
@@ -25,8 +23,6 @@ Additional resources
 - For more information about worker nodes, see [Adding worker nodes to single-node OpenShift clusters](../nodes/nodes/nodes-sno-worker-nodes.xml#nodes-sno-worker-nodes).
 
 - For information about removing a worker node from an expanded single-node OpenShift cluster, see [Removing managed cluster nodes by using the command line interface](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.10/html/clusters/cluster_mce_overview#auto-remove-host-steps-cli).
-
-</div>
 
 # Applying profiles to the worker node with PolicyGenerator or PolicyGenTemplate resources
 
@@ -62,33 +58,21 @@ Configuring the DU profile on the worker node is considered an upgrade. To initi
 
 If the DU profile was deployed using the GitOps Zero Touch Provisioning (ZTP) plugin version 4.11 or earlier, the PTP and SR-IOV Operators might be configured to place the daemons only on nodes labeled as `master`. This configuration prevents the PTP and SR-IOV daemons from operating on the worker node. If the PTP and SR-IOV daemon node selectors are incorrectly configured on your system, you must change the daemons before proceeding with the worker DU profile configuration.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Check the daemon node selector settings of the PTP Operator on one of the spoke clusters:
 
     ``` terminal
     $ oc get ptpoperatorconfig/default -n openshift-ptp -ojsonpath='' | jq
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output for PTP Operator
+    **Example output for PTP Operator**
 
     </div>
 
     ``` json
     {"daemonNodeSelector":{"node-role.kubernetes.io/master":""}}
     ```
-
-    </div>
 
     - If the node selector is set to `master`, the spoke was deployed with the version of the GitOps ZTP plugin that requires changes.
 
@@ -99,19 +83,15 @@ Procedure
     openshift-sriov-network-operator -ojsonpath='' | jq
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output for SR-IOV Operator
+    **Example output for SR-IOV Operator**
 
     </div>
 
     ``` json
     {"configDaemonNodeSelector":{"node-role.kubernetes.io/worker":""},"disableDrain":false,"enableInjector":true,"enableOperatorWebhook":true}
     ```
-
-    </div>
 
     - If the node selector is set to `master`, the spoke was deployed with the version of the GitOps ZTP plugin that requires changes.
 
@@ -133,12 +113,13 @@ Procedure
               node-role.kubernetes.io/worker: ""
     ```
 
-    > [!IMPORTANT]
-    > Changing the `daemonNodeSelector` field causes temporary PTP synchronization loss and SR-IOV connectivity loss.
+    <div class="important">
+
+    Changing the `daemonNodeSelector` field causes temporary PTP synchronization loss and SR-IOV connectivity loss.
+
+    </div>
 
 4.  Commit the changes in Git, and then push to the Git repository being monitored by the GitOps ZTP ArgoCD application.
-
-</div>
 
 # PTP and SR-IOV node selector compatibility
 
@@ -147,14 +128,6 @@ The PTP configuration resources and SR-IOV network node policies use `node-role.
 # Using PolicyGenerator CRs to apply worker node policies to the worker node
 
 You can create policies for the additional worker node by using `PolicyGenerator` CRs.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the following `PolicyGenerator` CR:
 
@@ -266,19 +239,9 @@ Procedure
     EOF
     ```
 
-</div>
-
 # Using PolicyGenTemplate CRs to apply worker node policies to the worker node
 
 You can create policies for the additional worker node by using `PolicyGenTemplate` CRs.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the following `PolicyGenTemplate` CR:
 
@@ -398,19 +361,9 @@ Procedure
     EOF
     ```
 
-</div>
-
 # Adding an additional worker node single-node OpenShift clusters with GitOps ZTP
 
 You can add an additional worker node to existing single-node OpenShift clusters to increase available CPU resources in the cluster.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Install and configure RHACM 2.12 or later in an OpenShift Container Platform 4.11 or later bare-metal hub cluster
 
@@ -425,16 +378,6 @@ Prerequisites
 - Configure the Central Infrastructure Management as described in the RHACM documentation
 
 - Configure the DNS serving the cluster to resolve the internal API endpoint `api-int.<cluster_name>.<base_domain>`
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  If you deployed your cluster by using the `example-sno.yaml` `ClusterInstance` CR, add your new worker node to the `spec.nodes` list:
 
@@ -510,22 +453,19 @@ Procedure
 
     - `NMStateConfig`
 
-      > [!IMPORTANT]
-      > The `cpuset` field should not be configured for the worker node. Workload partitioning for the worker node is added through management policies after the node installation is complete.
+      <div class="important">
 
-</div>
+      The `cpuset` field should not be configured for the worker node. Workload partitioning for the worker node is added through management policies after the node installation is complete.
 
-<div class="formalpara">
+      </div>
 
-<div class="title">
+<div class="formalpara-title">
 
-Verification
+**Verification**
 
 </div>
 
 You can monitor the installation process in several ways.
-
-</div>
 
 - Check if the preprovisioning images are created by running the following command:
 
@@ -533,11 +473,9 @@ You can monitor the installation process in several ways.
   $ oc get ppimg -n example-sno
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -547,19 +485,15 @@ You can monitor the installation process in several ways.
   example-sno     example-node2   True    ImageCreated
   ```
 
-  </div>
-
 - Check the state of the bare-metal hosts:
 
   ``` terminal
   $ oc get bmh -n example-sno
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -568,8 +502,6 @@ You can monitor the installation process in several ways.
   example-sno     provisioned               true             69m
   example-node2   provisioning              true             4m50s
   ```
-
-  </div>
 
   - The `provisioning` state indicates that node booting from the installation media is in progress.
 
@@ -581,11 +513,9 @@ You can monitor the installation process in several ways.
       $ oc get agent -n example-sno --watch
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -603,8 +533,6 @@ You can monitor the installation process in several ways.
       14fd821b-a35d-9cba-7978-00ddf535ff37   example-sno   true       worker   Done
       ```
 
-      </div>
-
   2.  When the worker node installation is finished, the worker node certificates are approved automatically. At this point, the worker appears in the `ManagedClusterInfo` status. Run the following command to see the status:
 
       ``` terminal
@@ -612,11 +540,9 @@ You can monitor the installation process in several ways.
       jsonpath='{range .status.nodeList[*]}{"\t"}{"\t"}{"\n"}{end}'
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -624,5 +550,3 @@ You can monitor the installation process in several ways.
       example-sno  [{"status":"True","type":"Ready"}]  {"node-role.kubernetes.io/master":"","node-role.kubernetes.io/worker":""}
       example-node2   [{"status":"True","type":"Ready"}]  {"node-role.kubernetes.io/worker":""}
       ```
-
-      </div>

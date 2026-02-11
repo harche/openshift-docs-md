@@ -10,20 +10,23 @@ The `1x.pico` configuration defines a single Loki deployment with minimal resour
 
 Disk requests are similar across size configurations, allowing customers to test different sizes to determine the best fit for their deployment needs.
 
-> [!IMPORTANT]
-> It is not possible to change the number `1x` for the deployment size.
+<div class="important">
 
-|  | 1x.demo | 1x.pico \[6.1+ only\] | 1x.extra-small | 1x.small | 1x.medium |
-|----|----|----|----|----|----|
-| **Data transfer** | Demo use only | 50GB/day | 100GB/day | 500GB/day | 2TB/day |
-| **Queries per second (QPS)** | Demo use only | 1-25 QPS at 200ms | 1-25 QPS at 200ms | 25-50 QPS at 200ms | 25-75 QPS at 200ms |
-| **Replication factor** | None | 2 | 2 | 2 | 2 |
-| **Total CPU requests** | None | 7 vCPUs | 14 vCPUs | 34 vCPUs | 54 vCPUs |
-| **Total CPU requests if using the ruler** | None | 8 vCPUs | 16 vCPUs | 42 vCPUs | 70 vCPUs |
-| **Total memory requests** | None | 17Gi | 31Gi | 67Gi | 139Gi |
-| **Total memory requests if using the ruler** | None | 18Gi | 35Gi | 83Gi | 171Gi |
-| **Total disk requests** | 40Gi | 590Gi | 430Gi | 430Gi | 590Gi |
-| **Total disk requests if using the ruler** | 60Gi | 910Gi | 750Gi | 750Gi | 910Gi |
+It is not possible to change the number `1x` for the deployment size.
+
+</div>
+
+|                                              | 1x.demo       | 1x.pico \[6.1+ only\] | 1x.extra-small    | 1x.small           | 1x.medium          |
+|----------------------------------------------|---------------|-----------------------|-------------------|--------------------|--------------------|
+| **Data transfer**                            | Demo use only | 50GB/day              | 100GB/day         | 500GB/day          | 2TB/day            |
+| **Queries per second (QPS)**                 | Demo use only | 1-25 QPS at 200ms     | 1-25 QPS at 200ms | 25-50 QPS at 200ms | 25-75 QPS at 200ms |
+| **Replication factor**                       | None          | 2                     | 2                 | 2                  | 2                  |
+| **Total CPU requests**                       | None          | 7 vCPUs               | 14 vCPUs          | 34 vCPUs           | 54 vCPUs           |
+| **Total CPU requests if using the ruler**    | None          | 8 vCPUs               | 16 vCPUs          | 42 vCPUs           | 70 vCPUs           |
+| **Total memory requests**                    | None          | 17Gi                  | 31Gi              | 67Gi               | 139Gi              |
+| **Total memory requests if using the ruler** | None          | 18Gi                  | 35Gi              | 83Gi               | 171Gi              |
+| **Total disk requests**                      | 40Gi          | 590Gi                 | 430Gi             | 430Gi              | 590Gi              |
+| **Total disk requests if using the ruler**   | 60Gi          | 910Gi                 | 750Gi             | 750Gi              | 910Gi              |
 
 Loki sizing
 
@@ -45,16 +48,16 @@ Administrators can allow users to create and manage their own alerting and recor
 
 The following cluster roles for alerting and recording rules are available for LokiStack:
 
-| Rule name | Description |
-|----|----|
-| `alertingrules.loki.grafana.com-v1-admin` | Users with this role have administrative-level access to manage alerting rules. This cluster role grants permissions to create, read, update, delete, list, and watch `AlertingRule` resources within the `loki.grafana.com/v1` API group. |
-| `alertingrules.loki.grafana.com-v1-crdview` | Users with this role can view the definitions of Custom Resource Definitions (CRDs) related to `AlertingRule` resources within the `loki.grafana.com/v1` API group, but do not have permissions for modifying or managing these resources. |
-| `alertingrules.loki.grafana.com-v1-edit` | Users with this role have permission to create, update, and delete `AlertingRule` resources. |
-| `alertingrules.loki.grafana.com-v1-view` | Users with this role can read `AlertingRule` resources within the `loki.grafana.com/v1` API group. They can inspect configurations, labels, and annotations for existing alerting rules but cannot make any modifications to them. |
-| `recordingrules.loki.grafana.com-v1-admin` | Users with this role have administrative-level access to manage recording rules. This cluster role grants permissions to create, read, update, delete, list, and watch `RecordingRule` resources within the `loki.grafana.com/v1` API group. |
-| `recordingrules.loki.grafana.com-v1-crdview` | Users with this role can view the definitions of Custom Resource Definitions (CRDs) related to `RecordingRule` resources within the `loki.grafana.com/v1` API group, but do not have permissions for modifying or managing these resources. |
-| `recordingrules.loki.grafana.com-v1-edit` | Users with this role have permission to create, update, and delete `RecordingRule` resources. |
-| `recordingrules.loki.grafana.com-v1-view` | Users with this role can read `RecordingRule` resources within the `loki.grafana.com/v1` API group. They can inspect configurations, labels, and annotations for existing alerting rules but cannot make any modifications to them. |
+| Rule name                                    | Description                                                                                                                                                                                                                                  |
+|----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `alertingrules.loki.grafana.com-v1-admin`    | Users with this role have administrative-level access to manage alerting rules. This cluster role grants permissions to create, read, update, delete, list, and watch `AlertingRule` resources within the `loki.grafana.com/v1` API group.   |
+| `alertingrules.loki.grafana.com-v1-crdview`  | Users with this role can view the definitions of Custom Resource Definitions (CRDs) related to `AlertingRule` resources within the `loki.grafana.com/v1` API group, but do not have permissions for modifying or managing these resources.   |
+| `alertingrules.loki.grafana.com-v1-edit`     | Users with this role have permission to create, update, and delete `AlertingRule` resources.                                                                                                                                                 |
+| `alertingrules.loki.grafana.com-v1-view`     | Users with this role can read `AlertingRule` resources within the `loki.grafana.com/v1` API group. They can inspect configurations, labels, and annotations for existing alerting rules but cannot make any modifications to them.           |
+| `recordingrules.loki.grafana.com-v1-admin`   | Users with this role have administrative-level access to manage recording rules. This cluster role grants permissions to create, read, update, delete, list, and watch `RecordingRule` resources within the `loki.grafana.com/v1` API group. |
+| `recordingrules.loki.grafana.com-v1-crdview` | Users with this role can view the definitions of Custom Resource Definitions (CRDs) related to `RecordingRule` resources within the `loki.grafana.com/v1` API group, but do not have permissions for modifying or managing these resources.  |
+| `recordingrules.loki.grafana.com-v1-edit`    | Users with this role have permission to create, update, and delete `RecordingRule` resources.                                                                                                                                                |
+| `recordingrules.loki.grafana.com-v1-view`    | Users with this role can read `RecordingRule` resources within the `loki.grafana.com/v1` API group. They can inspect configurations, labels, and annotations for existing alerting rules but cannot make any modifications to them.          |
 
 ## Examples
 
@@ -64,11 +67,9 @@ Cluster roles can be cluster or namespace scoped, depending on which type of rol
 
 The following example command gives the specified user create, read, update and delete (CRUD) permissions for alerting rules in a specific namespace in the cluster:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example cluster role binding command for alerting rule CRUD permissions in a specific namespace
+**Example cluster role binding command for alerting rule CRUD permissions in a specific namespace**
 
 </div>
 
@@ -76,23 +77,17 @@ Example cluster role binding command for alerting rule CRUD permissions in a spe
 $ oc adm policy add-role-to-user alertingrules.loki.grafana.com-v1-admin -n <namespace> <username>
 ```
 
-</div>
-
 The following command gives the specified user administrator permissions for alerting rules in all namespaces:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example cluster role binding command for administrator permissions
+**Example cluster role binding command for administrator permissions**
 
 </div>
 
 ``` terminal
 $ oc adm policy add-cluster-role-to-user alertingrules.loki.grafana.com-v1-admin <username>
 ```
-
-</div>
 
 # Creating a log-based alerting rule with Loki
 
@@ -116,21 +111,11 @@ The `AlertingRule` CR contains a set of specifications and webhook validation de
 
 AlertingRule definitions
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create an `AlertingRule` custom resource (CR):
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example infrastructure `AlertingRule` CR
+    **Example infrastructure `AlertingRule` CR**
 
     </div>
 
@@ -161,8 +146,6 @@ Procedure
                   description: High Loki Operator Reconciliation Errors
     ```
 
-    </div>
-
     - The namespace where this `AlertingRule` CR is created must have a label matching the LokiStack `spec.rules.namespaceSelector` definition.
 
     - The `labels` block must match the LokiStack `spec.rules.selector` definition.
@@ -177,11 +160,9 @@ Procedure
 
     - This field is mandatory.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example application `AlertingRule` CR
+      **Example application `AlertingRule` CR**
 
       </div>
 
@@ -209,8 +190,6 @@ Procedure
                     description:
       ```
 
-      </div>
-
     - The namespace where this `AlertingRule` CR is created must have a label matching the LokiStack `spec.rules.namespaceSelector` definition.
 
     - The `labels` block must match the LokiStack `spec.rules.selector` definition.
@@ -229,8 +208,6 @@ Procedure
     $ oc apply -f <filename>.yaml
     ```
 
-</div>
-
 # Configuring Loki to tolerate memberlist creation failure
 
 In an OpenShift Container Platform cluster, administrators generally use a non-private IP network range. As a result, the LokiStack memberlist configuration fails because, by default, it only uses private IP networks.
@@ -241,11 +218,9 @@ As an administrator, you can select the pod network for the memberlist configura
 $ oc patch LokiStack logging-loki -n openshift-logging  --type=merge -p '{"spec": {"hashRing":{"memberlist":{"instanceAddrType":"podIP"},"type":"memberlist"}}}'
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example LokiStack to include `podIP`
+**Example LokiStack to include `podIP`**
 
 </div>
 
@@ -264,23 +239,19 @@ spec:
 # ...
 ```
 
-</div>
-
 # Enabling stream-based retention with Loki
 
 You can configure retention policies based on log streams. Rules for these may be set globally, per-tenant, or both. If you configure both, tenant rules apply before global rules.
 
-> [!IMPORTANT]
-> If there is no retention period defined on the s3 bucket or in the LokiStack custom resource (CR), then the logs are not pruned and they stay in the s3 bucket forever, which might fill up the s3 storage.
+<div class="important">
 
-> [!NOTE]
-> Schema v13 is recommended.
+If there is no retention period defined on the s3 bucket or in the LokiStack custom resource (CR), then the logs are not pruned and they stay in the s3 bucket forever, which might fill up the s3 storage.
 
-<div>
+</div>
 
-<div class="title">
+<div class="note">
 
-Procedure
+Schema v13 is recommended.
 
 </div>
 
@@ -288,11 +259,9 @@ Procedure
 
     - Enable stream-based retention globally as shown in the following example:
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example global stream-based retention for AWS
+      **Example global stream-based retention for AWS**
 
       </div>
 
@@ -329,8 +298,6 @@ Procedure
           mode: openshift-logging
       ```
 
-      </div>
-
       - Sets retention policy for all log streams. **Note: This field does not impact the retention period for stored logs in object storage.**
 
       - Retention is enabled in the cluster when this block is added to the CR.
@@ -339,11 +306,9 @@ Procedure
 
     - Enable stream-based retention per-tenant basis as shown in the following example:
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example per-tenant stream-based retention for AWS
+      **Example per-tenant stream-based retention for AWS**
 
       </div>
 
@@ -386,8 +351,6 @@ Procedure
           mode: openshift-logging
       ```
 
-      </div>
-
       - Sets retention policy by tenant. Valid tenant types are `application`, `audit`, and `infrastructure`.
 
       - Contains the [LogQL query](https://grafana.com/docs/loki/latest/logql/query_examples/#query-examples) used to define the log stream.
@@ -398,10 +361,11 @@ Procedure
     $ oc apply -f <filename>.yaml
     ```
 
-    > [!NOTE]
-    > This is not for managing the retention for stored logs. Global retention periods for stored logs to a supported maximum of 30 days is configured with your object storage.
+    <div class="note">
 
-</div>
+    This is not for managing the retention for stored logs. Global retention periods for stored logs to a supported maximum of 30 days is configured with your object storage.
+
+    </div>
 
 # Loki pod placement
 
@@ -409,11 +373,9 @@ You can control which nodes the Loki pods run on, and prevent other workloads fr
 
 You can apply tolerations to the log store pods with the LokiStack custom resource (CR) and apply taints to a node with the node specification. A taint on a node is a `key:value` pair that instructs the node to repel all pods that do not allow the taint. Using a specific `key:value` pair that is not on other pods ensures that only the log store pods can run on that node.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example LokiStack with node selectors
+**Example LokiStack with node selectors**
 
 </div>
 
@@ -452,18 +414,14 @@ spec:
         node-role.kubernetes.io/infra: ""
 # ...
 ```
-
-</div>
 
 - Specifies the component pod type that applies to the node selector.
 
 - Specifies the pods that are moved to nodes containing the defined label.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example LokiStack CR with node selectors and tolerations
+**Example LokiStack CR with node selectors and tolerations**
 
 </div>
 
@@ -558,8 +516,6 @@ spec:
         value: reserved
 # ...
 ```
-
-</div>
 
 To configure the `nodeSelector` and `tolerations` fields of the LokiStack (CR), you can use the `oc explain` command to view the description and fields for a particular resource:
 
@@ -567,11 +523,9 @@ To configure the `nodeSelector` and `tolerations` fields of the LokiStack (CR), 
 $ oc explain lokistack.spec.template
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -594,19 +548,15 @@ FIELDS:
 ...
 ```
 
-</div>
-
 For more detailed information, you can add a specific field:
 
 ``` terminal
 $ oc explain lokistack.spec.template.compactor
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -626,8 +576,6 @@ FIELDS:
 ...
 ```
 
-</div>
-
 # Enhanced reliability and performance
 
 Use the following configurations to ensure reliability and efficiency of Loki in production.
@@ -636,25 +584,15 @@ Use the following configurations to ensure reliability and efficiency of Loki in
 
 Workload identity federation enables authentication to cloud-based log stores using short-lived tokens.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Use one of the following options to enable authentication:
 
   - If you use the OpenShift Container Platform web console to install the Loki Operator, clusters that use short-lived tokens are automatically detected. You are prompted to create roles and supply the data required for the Loki Operator to create a `CredentialsRequest` object, which populates a secret.
 
   - If you use the OpenShift CLI (`oc`) to install the Loki Operator, you must manually create a `Subscription` object using the appropriate template for your storage provider, as shown in the following examples. This authentication strategy is only supported for the storage providers indicated.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example Azure sample subscription
+    **Example Azure sample subscription**
 
     </div>
 
@@ -682,13 +620,9 @@ Procedure
             value: <your_region>
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example AWS sample subscription
+    **Example AWS sample subscription**
 
     </div>
 
@@ -710,10 +644,6 @@ Procedure
           value: <role_ARN>
     ```
 
-    </div>
-
-</div>
-
 # Configuring Loki to tolerate node failure
 
 The Loki Operator supports setting pod anti-affinity rules to request that pods of the same component are scheduled on different available nodes in the cluster.
@@ -726,11 +656,9 @@ The Operator sets default, preferred `podAntiAffinity` rules for all Loki compon
 
 You can override the preferred `podAntiAffinity` settings for Loki components by configuring required settings in the `requiredDuringSchedulingIgnoredDuringExecution` field:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example user settings for the ingester component
+**Example user settings for the ingester component**
 
 </div>
 
@@ -754,8 +682,6 @@ spec:
 # ...
 ```
 
-</div>
-
 - The stanza to define a required rule.
 
 - The key-value pair (label) that must be matched to apply the rule.
@@ -774,11 +700,9 @@ The Loki Operator offers support for zone-aware data replication through pod top
 
 To ensure proper replication, you need to have at least as many availability zones as the replication factor specifies. While it is possible to have more availability zones than the replication factor, having fewer zones can lead to write failures. Each zone should host an equal number of instances for optimal operation.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example LokiStack CR with zone replication enabled
+**Example LokiStack CR with zone replication enabled**
 
 </div>
 
@@ -797,8 +721,6 @@ spec:
       topologyKey: topology.kubernetes.io/zone
 ```
 
-</div>
-
 - Deprecated field, values entered are overwritten by `replication.factor`.
 
 - This value is automatically set when deployment size is selected at setup.
@@ -813,14 +735,9 @@ In OpenShift Container Platform a zone failure happens when specific availabilit
 
 Loki pods are part of a [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/), and they come with Persistent Volume Claims (PVCs) provisioned by a `StorageClass` object. Each Loki pod and its PVCs reside in the same zone. When a zone failure occurs in a cluster, the StatefulSet controller automatically attempts to recover the affected pods in the failed zone.
 
-> [!WARNING]
-> The following procedure will delete the PVCs in the failed zone, and all data contained therein. To avoid complete data loss the replication factor field of the `LokiStack` CR should always be set to a value greater than 1 to ensure that Loki is replicating.
+<div class="warning">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The following procedure will delete the PVCs in the failed zone, and all data contained therein. To avoid complete data loss the replication factor field of the `LokiStack` CR should always be set to a value greater than 1 to ensure that Loki is replicating.
 
 </div>
 
@@ -828,17 +745,7 @@ Prerequisites
 
 - Zone failure detected by the control plane, and nodes in the failed zone are marked by cloud provider integration.
 
-</div>
-
 The StatefulSet controller automatically attempts to reschedule pods in a failed zone. Because the associated PVCs are also in the failed zone, automatic rescheduling to a different zone does not work. You must manually delete the PVCs in the failed zone to allow successful re-creation of the stateful Loki Pod and its provisioned PVC in the new zone.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List the pods in `Pending` status by running the following command:
 
@@ -846,11 +753,9 @@ Procedure
     $ oc get pods --field-selector status.phase==Pending -n openshift-logging
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `oc get pods` output
+    **Example `oc get pods` output**
 
     </div>
 
@@ -861,8 +766,6 @@ Procedure
     logging-loki-ruler-1           0/1     Pending   0          16m
     ```
 
-    </div>
-
     - These pods are in `Pending` status because their corresponding PVCs are in the failed zone.
 
 2.  List the PVCs in `Pending` status by running the following command:
@@ -871,11 +774,9 @@ Procedure
     $ oc get pvc -o=json -n openshift-logging | jq '.items[] | select(.status.phase == "Pending") | .metadata.name' -r
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `oc get pvc` output
+    **Example `oc get pvc` output**
 
     </div>
 
@@ -886,8 +787,6 @@ Procedure
     storage-logging-loki-ruler-1
     wal-logging-loki-ruler-1
     ```
-
-    </div>
 
 3.  Delete the PVC(s) for a pod by running the following command:
 
@@ -902,8 +801,6 @@ Procedure
     ```
 
     Once these objects have been successfully deleted, they should automatically be rescheduled in an available zone.
-
-</div>
 
 ## Troubleshooting PVC in a terminating state
 
@@ -923,14 +820,9 @@ These errors can occur during normal operation. For example, when adding the log
 
 In cases where the rate limit errors continue to occur, you can fix the issue by modifying the `LokiStack` custom resource (CR).
 
-> [!IMPORTANT]
-> The `LokiStack` CR is not available on Grafana-hosted Loki. This topic does not apply to Grafana-hosted Loki servers.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Conditions
+The `LokiStack` CR is not available on Grafana-hosted Loki. This topic does not apply to Grafana-hosted Loki servers.
 
 </div>
 
@@ -953,11 +845,9 @@ Conditions
   429 Too Many Requests Ingestion rate limit exceeded
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example Vector error message
+  **Example Vector error message**
 
   </div>
 
@@ -965,15 +855,11 @@ Conditions
   2023-08-25T16:08:49.301780Z  WARN sink{component_kind="sink" component_id=default_loki_infra component_type=loki component_name=default_loki_infra}: vector::sinks::util::retries: Retrying after error. error=Server responded with an error: 429 Too Many Requests internal_log_rate_limit=true
   ```
 
-  </div>
-
   The error is also visible on the receiving end. For example, in the LokiStack ingester pod:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example Loki ingester error message
+  **Example Loki ingester error message**
 
   </div>
 
@@ -981,17 +867,7 @@ Conditions
   level=warn ts=2023-08-30T14:57:34.155592243Z caller=grpc_logging.go:43 duration=1.434942ms method=/logproto.Pusher/Push err="rpc error: code = Code(429) desc = entry with timestamp 2023-08-30 14:57:32.012778399 +0000 UTC ignored, reason: 'Per stream rate limit exceeded (limit: 3MB/sec) while attempting to ingest for stream
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Update the `ingestionBurstSize` and `ingestionRate` fields in the `LokiStack` CR:
 
@@ -1013,5 +889,3 @@ Procedure
   - The `ingestionBurstSize` field defines the maximum local rate-limited sample size per distributor replica in MB. This value is a hard limit. Set this value to at least the maximum logs size expected in a single push request. Single requests that are larger than the `ingestionBurstSize` value are not permitted.
 
   - The `ingestionRate` field is a soft limit on the maximum amount of ingested samples per second in MB. Rate limit errors occur if the rate of logs exceeds the limit, but the collector retries sending the logs. As long as the total average is lower than the limit, the system recovers and errors are resolved without user intervention.
-
-</div>

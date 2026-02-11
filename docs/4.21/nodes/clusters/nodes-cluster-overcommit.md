@@ -1,7 +1,10 @@
 OpenShift Container Platform administrators can control the level of overcommit and manage container density on developer containers by using the ClusterResourceOverride Operator.
 
-> [!NOTE]
-> In OpenShift Container Platform, you must enable cluster-level overcommit. Node overcommitment is enabled by default.
+<div class="note">
+
+In OpenShift Container Platform, you must enable cluster-level overcommit. Node overcommitment is enabled by default.
+
+</div>
 
 In an *overcommitted* state, the sum of the container compute resource requestsand limits exceeds the resources available on the system. For example, you might want to use overcommitment in development environments where a trade-off of guaranteed performance for capacity is acceptable.
 
@@ -23,8 +26,11 @@ Scheduling is based on resources requested, where quota and hard limits refer to
 
 You can use the Cluster Resource Override Operator to control the level of overcommit and manage container density across all the nodes in your cluster. The Operator, which is an admission webhook, controls how nodes in specific projects can exceed defined memory and CPU limits.
 
-> [!IMPORTANT]
-> The Cluster Resource Override Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
+<div class="important">
+
+The Cluster Resource Override Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
+
+</div>
 
 The Operator modifies the ratio between the requests and limits that are set on developer containers. In conjunction with a per-project limit range that specifies limits and defaults, you can achieve the desired level of overcommit.
 
@@ -60,8 +66,11 @@ If a container CPU limit has been specified or defaulted, the CPU request is ove
 `spec.podResourceOverride.spec.limitCPUToMemoryPercent`
 If a container memory limit has been specified or defaulted, the CPU limit is overridden to a percentage of the memory limit, if specified. Scaling 1Gi of RAM at 100 percent is equal to 1 CPU core. This is processed before overriding the CPU request (if configured). The default is 200.
 
-> [!NOTE]
-> The Cluster Resource Override Operator overrides have no effect if limits have not been set on containers. Create a `LimitRange` object with default limits per individual project or configure limits in `Pod` specs for the overrides to apply.
+<div class="note">
+
+The Cluster Resource Override Operator overrides have no effect if limits have not been set on containers. Create a `LimitRange` object with default limits per individual project or configure limits in `Pod` specs for the overrides to apply.
+
+</div>
 
 When configured, you can enable overrides on a per-project basis by applying the following label to the `Namespace` object for each project where you want the overrides to apply. For example, you can configure override so that infrastructure components are not subject to the overrides.
 
@@ -137,25 +146,7 @@ You can use the OpenShift Container Platform web console to install the Cluster 
 
 By default, the installation process creates a Cluster Resource Override Operator pod on a worker node in the `clusterresourceoverride-operator` namespace. You can move this pod to another node, such as an infrastructure node, as needed. Infrastructure nodes are not counted toward the total number of subscriptions that are required to run the environment. For more information, see "Moving the Cluster Resource Override Operator pods".
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The Cluster Resource Override Operator has no effect if limits have not been set on containers. You must specify default limits for a project using a `LimitRange` object or configure limits in `Pod` specs for the overrides to apply.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Home** → **Projects**
 
@@ -256,33 +247,13 @@ Procedure
         `status.mutatingWebhookConfigurationRef`
         Specifies the `ClusterResourceOverride` admission webhook.
 
-</div>
-
 ## Installing the Cluster Resource Override Operator using the CLI
 
 You can use the OpenShift CLI to install the Cluster Resource Override Operator to help you control overcommit in your cluster.
 
 By default, the installation process creates a Cluster Resource Override Operator pod on a worker node in the `clusterresourceoverride-operator` namespace. You can move this pod to another node, such as an infrastructure node, as needed. Infrastructure nodes are not counted toward the total number of subscriptions that are required to run the environment. For more information, see "Moving the Cluster Resource Override Operator pods".
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The Cluster Resource Override Operator has no effect if limits have not been set on containers. You must specify default limits for a project using a `LimitRange` object or configure limits in `Pod` specs for the overrides to apply.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a namespace for the Cluster Resource Override Operator:
 
@@ -420,11 +391,9 @@ Procedure
 
     The `mutatingWebhookConfigurationRef` section displays when the webhook is called.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -461,14 +430,10 @@ Procedure
     # ...
     ```
 
-    </div>
-
     where:
 
     `status.mutatingWebhookConfigurationRef`
     Specifies the `ClusterResourceOverride` admission webhook.
-
-</div>
 
 ## Configuring cluster-level overcommit
 
@@ -478,25 +443,7 @@ The Cluster Resource Override Operator requires a `ClusterResourceOverride` cust
 
 By default, the installation process creates two Cluster Resource Override pods on the control plane nodes in the `clusterresourceoverride-operator` namespace. You can move these pods to other nodes, such as infrastructure nodes, as needed. Infrastructure nodes are not counted toward the total number of subscriptions that are required to run the environment. For more information, see "Moving the Cluster Resource Override Operator pods".
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The Cluster Resource Override Operator has no effect if limits have not been set on containers. You must specify default limits for a project using a `LimitRange` object or configure limits in `Pod` specs for the overrides to apply.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `ClusterResourceOverride` CR:
 
@@ -545,8 +492,6 @@ Procedure
     `metadata.labels.clusterresourceoverrides.admission.autoscaling.openshift.io/enabled: "true"`
     Specifies that you want to use the Cluster Resource Override Operator with this project.
 
-</div>
-
 ## Moving the Cluster Resource Override Operator pods
 
 By default, the Cluster Resource Override Operator installation process creates an Operator pod and two Cluster Resource Override pods on nodes in the `clusterresourceoverride-operator` namespace. You can move these pods to other nodes, such as infrastructure nodes, as needed.
@@ -555,11 +500,9 @@ You can create and use infrastructure nodes to host only infrastructure componen
 
 The following examples shows the Cluster Resource Override pods are deployed to control plane nodes and the Cluster Resource Override Operator pod is deployed to a worker node.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example Cluster Resource Override pods
+**Example Cluster Resource Override pods**
 
 </div>
 
@@ -570,13 +513,9 @@ clusterresourceoverride-786b8c898c-vn2lf            1/1     Running   0         
 clusterresourceoverride-operator-6b8b8b656b-lvr62   1/1     Running   0          56m   10.131.0.33   ip-10-0-2-39.us-west-2.compute.internal     <none>           <none>
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example node list
+**Example node list**
 
 </div>
 
@@ -592,16 +531,6 @@ ip-10-0-24-233.us-west-2.compute.internal   Ready    infra                  55m 
 ip-10-0-88-109.us-west-2.compute.internal   Ready    worker                 24m   v1.34.2
 ip-10-0-67-453.us-west-2.compute.internal   Ready    infra                  55m   v1.34.2
 ```
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Move the Cluster Resource Override Operator pod by adding a node selector to the `Subscription` custom resource (CR) for the Cluster Resource Override Operator.
 
@@ -632,32 +561,35 @@ Procedure
         `spec.config.nodeSelector`
         Specifies the role of the node where you want to deploy the Cluster Resource Override Operator pod.
 
-        > [!NOTE]
-        > If the infra node uses taints, you need to add a toleration to the `Subscription` CR.
-        >
-        > For example:
-        >
-        > ``` terminal
-        > apiVersion: operators.coreos.com/v1alpha1
-        > kind: Subscription
-        > metadata:
-        >   name: clusterresourceoverride
-        >   namespace: clusterresourceoverride-operator
-        > # ...
-        > spec:
-        >   config:
-        >     nodeSelector:
-        >       node-role.kubernetes.io/infra: ""
-        >     tolerations:
-        >     - key: "node-role.kubernetes.io/infra"
-        >       operator: "Exists"
-        >       effect: "NoSchedule"
-        > ```
-        >
-        > where:
-        >
-        > `spec.config.tolerations`
-        > Specifies a toleration for a taint on the infra node.
+        <div class="note">
+
+        If the infra node uses taints, you need to add a toleration to the `Subscription` CR.
+
+        For example:
+
+        ``` terminal
+        apiVersion: operators.coreos.com/v1alpha1
+        kind: Subscription
+        metadata:
+          name: clusterresourceoverride
+          namespace: clusterresourceoverride-operator
+        # ...
+        spec:
+          config:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+            - key: "node-role.kubernetes.io/infra"
+              operator: "Exists"
+              effect: "NoSchedule"
+        ```
+
+        where:
+
+        `spec.config.tolerations`
+        Specifies a toleration for a taint on the infra node.
+
+        </div>
 
 2.  Move the Cluster Resource Override pods by adding a node selector to the `ClusterResourceOverride` custom resource (CR):
 
@@ -696,50 +628,43 @@ Procedure
         `spec.deploymentOverrides.nodeSelector`
         Specifies the role of the node where you want to deploy the Cluster Resource Override pods. This parameter is optional.
 
-        > [!NOTE]
-        > If the infra node uses taints, you need to add a toleration to the `ClusterResourceOverride` CR.
-        >
-        > For example:
-        >
-        > ``` terminal
-        > apiVersion: operator.autoscaling.openshift.io/v1
-        > kind: ClusterResourceOverride
-        > metadata:
-        >   name: cluster
-        > # ...
-        > spec:
-        >   podResourceOverride:
-        >     spec:
-        >       memoryRequestToLimitPercent: 50
-        >       cpuRequestToLimitPercent: 25
-        >       limitCPUToMemoryPercent: 200
-        >   deploymentOverrides:
-        >     replicas: 3
-        >     nodeSelector:
-        >       node-role.kubernetes.io/worker: ""
-        >     tolerations:
-        >     - key: "key"
-        >       operator: "Equal"
-        >       value: "value"
-        >       effect: "NoSchedule"
-        > ```
-        >
-        > where:
-        >
-        > \+
-        >
-        > `spec.config.tolerations`
-        > Specifies a toleration for a taint on the infra node.
+        <div class="note">
 
-</div>
+        If the infra node uses taints, you need to add a toleration to the `ClusterResourceOverride` CR.
 
-<div>
+        For example:
 
-<div class="title">
+        ``` terminal
+        apiVersion: operator.autoscaling.openshift.io/v1
+        kind: ClusterResourceOverride
+        metadata:
+          name: cluster
+        # ...
+        spec:
+          podResourceOverride:
+            spec:
+              memoryRequestToLimitPercent: 50
+              cpuRequestToLimitPercent: 25
+              limitCPUToMemoryPercent: 200
+          deploymentOverrides:
+            replicas: 3
+            nodeSelector:
+              node-role.kubernetes.io/worker: ""
+            tolerations:
+            - key: "key"
+              operator: "Equal"
+              value: "value"
+              effect: "NoSchedule"
+        ```
 
-Verification
+        where:
 
-</div>
+        \+
+
+        `spec.config.tolerations`
+        Specifies a toleration for a taint on the infra node.
+
+        </div>
 
 - You can verify that the pods have moved by using the following command:
 
@@ -749,11 +674,9 @@ Verification
 
   The Cluster Resource Override pods are now deployed to the infra nodes.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -763,10 +686,6 @@ Verification
   clusterresourceoverride-786b8c898c-vn2lf            1/1     Running   0          26s   10.128.0.80   ip-10-0-24-233.us-west-2.compute.internal   <none>           <none>
   clusterresourceoverride-operator-6b8b8b656b-lvr62   1/1     Running   0          56m   10.129.0.71   ip-10-0-67-453.us-west-2.compute.internal   <none>           <none>
   ```
-
-  </div>
-
-</div>
 
 # Node-level overcommit
 
@@ -792,11 +711,11 @@ In an overcommitted environment, the pods on the node might attempt to use more 
 
 A pod is designated as one of three QoS classes with decreasing order of priority:
 
-| Priority | Class Name | Description |
-|----|----|----|
-| 1 (highest) | **Guaranteed** | If limits and optionally requests are set (not equal to 0) for all resources and they are equal, then the pod is classified as **Guaranteed**. |
-| 2 | **Burstable** | If requests and optionally limits are set (not equal to 0) for all resources, and they are not equal, then the pod is classified as **Burstable**. |
-| 3 (lowest) | **BestEffort** | If requests and limits are not set for any of the resources, then the pod is classified as **BestEffort**. |
+| Priority    | Class Name     | Description                                                                                                                                        |
+|-------------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1 (highest) | **Guaranteed** | If limits and optionally requests are set (not equal to 0) for all resources and they are equal, then the pod is classified as **Guaranteed**.     |
+| 2           | **Burstable**  | If requests and optionally limits are set (not equal to 0) for all resources, and they are not equal, then the pod is classified as **Burstable**. |
+| 3 (lowest)  | **BestEffort** | If requests and limits are not set for any of the resources, then the pod is classified as **BestEffort**.                                         |
 
 Quality of Service classes
 
@@ -830,8 +749,11 @@ For example, if two guaranteed pods have reached their memory limit, each contai
 
 Failing to disable swap causes nodes to not recognize that they are experiencing **MemoryPressure**, resulting in pods not receiving the memory they made in their scheduling request. As a result, additional pods are placed on the node to further increase memory pressure, ultimately increasing your risk of experiencing a system out of memory (OOM) event.
 
-> [!IMPORTANT]
-> If swap is enabled, any out-of-resource handling eviction thresholds for available memory will not work as expected. Out-of-resource handling allows pods to be evicted from a node when it is under memory pressure, and rescheduled on an alternative node that has no such pressure.
+<div class="important">
+
+If swap is enabled, any out-of-resource handling eviction thresholds for available memory will not work as expected. Out-of-resource handling allows pods to be evicted from a node when it is under memory pressure, and rescheduled on an alternative node that has no such pressure.
+
+</div>
 
 ## Understanding nodes overcommitment
 
@@ -849,11 +771,9 @@ You can view the current setting by running the following commands on your nodes
 $ sysctl -a |grep commit
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -863,17 +783,13 @@ vm.overcommit_memory = 0
 #...
 ```
 
-</div>
-
 ``` terminal
 $ sysctl -a |grep panic
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -883,10 +799,11 @@ vm.panic_on_oom = 0
 #...
 ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The previous commands should already be set on nodes, so no further action is required.
+The previous commands should already be set on nodes, so no further action is required.
+
+</div>
 
 You can also perform the following configurations for each node:
 
@@ -910,33 +827,15 @@ If you disable CPU limit enforcement, it is important to understand the impact o
 
 - If a container has both a CPU request and limit, the CPU request is enforced by CFS shares in the Linux kernel, and the CPU limit has no impact on the node.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - You have the label associated with the static `MachineConfigPool` CRD for the type of node you want to configure.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a custom resource (CR) for your configuration change.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample configuration for a disabling CPU limits
+    **Sample configuration for a disabling CPU limits**
 
     </div>
 
@@ -952,8 +851,6 @@ Procedure
       kubeletConfig:
         cpuCfsQuota: false
     ```
-
-    </div>
 
     where:
 
@@ -972,16 +869,17 @@ Procedure
     $ oc create -f <file_name>.yaml
     ```
 
-</div>
-
 ## Reserving resources for system processes
 
 You can explicitly reserve resources for non-pod processes by allocating node resources through specifying resources available for scheduling.
 
 To provide more reliable scheduling and minimize node resource overcommitment, each node can reserve a portion of its resources for use by the system daemons that are required to run on your node for your cluster to function.
 
-> [!NOTE]
-> It is recommended that you reserve resources for incompressible resources such as memory.
+<div class="note">
+
+It is recommended that you reserve resources for incompressible resources such as memory.
+
+</div>
 
 For more details, see Allocating Resources for Nodes in the *Additional resources* section.
 
@@ -989,21 +887,11 @@ For more details, see Allocating Resources for Nodes in the *Additional resource
 
 When overcommitment is enabled on a node, you can disable overcommitment on that node. Disabling overcommit can help ensure predictability, stability, and high performance in your cluster.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Run the following command on a node to disable overcommitment on that node:
 
   ``` terminal
   $ sysctl -w vm.overcommit_memory=0
   ```
-
-</div>
 
 # Project-level limits
 
@@ -1016,14 +904,6 @@ Alternatively, you can disable overcommitment for specific projects.
 ## Disabling overcommitment for a project
 
 If overcommitment is enabled on a project, you can disable overcommitment for that projects. This allows infrastructure components to be configured independently of overcommitment.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create or edit the namespace object file.
 
@@ -1042,8 +922,6 @@ Procedure
 
     `metadata.annotations.quota.openshift.io/cluster-resource-override-enabled.false`
     Specifies that overcommit is disabled for this namespace.
-
-</div>
 
 # Additional resources
 

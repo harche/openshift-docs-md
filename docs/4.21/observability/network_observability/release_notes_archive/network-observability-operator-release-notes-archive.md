@@ -190,10 +190,13 @@ For more information, see:
 
 ## OVN-Kubernetes networking events tracking
 
-> [!IMPORTANT]
-> OVN-Kubernetes networking events tracking is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+OVN-Kubernetes networking events tracking is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 You can now use network event tracking in network observability to gain insight into OVN-Kubernetes events, including network policies, admin network policies, and egress firewalls.
 
@@ -331,10 +334,13 @@ For more information, see:
 
 - You can install and use the Network Observability Operator in an OpenShift Container Platform cluster running in FIPS mode.
 
-  > [!IMPORTANT]
-  > To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Switching RHEL to FIPS mode](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening).
-  >
-  > When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
+  <div class="important">
+
+  To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Switching RHEL to FIPS mode](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening).
+
+  When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
+
+  </div>
 
 ## eBPF agent enhancements
 
@@ -529,8 +535,11 @@ Experience improved performances of the eBPF agent, in terms of CPU and memory, 
 
 - Loki storage demand decreases significantly now that duplicated flows are removed. Instead of having multiple, individual duplicated flows per network interface, there is one de-duplicated flow with a list of related network interfaces.
 
-> [!IMPORTANT]
-> With the duplicated flows update, the **Interface** and **Interface Direction** fields in the **Network Traffic** table are renamed to **Interfaces** and **Interface Directions**, so any bookmarked **Quick filter** queries using these fields need to be updated to `interfaces` and `ifdirections`.
+<div class="important">
+
+With the duplicated flows update, the **Interface** and **Interface Direction** fields in the **Network Traffic** table are renamed to **Interfaces** and **Interface Directions**, so any bookmarked **Quick filter** queries using these fields need to be updated to `interfaces` and `ifdirections`.
+
+</div>
 
 For more information, see:
 
@@ -640,8 +649,11 @@ The 1.5 release of the Network Observability Operator adds improvements and new 
 
 - The `spec.agent.ebpf.kafkaBatchSize` default is changed from `10MB` to `1MB` to enhance eBPF performance when using Kafka.
 
-  > [!IMPORTANT]
-  > When upgrading from an existing installation, this new value is not set automatically in the configuration. If you monitor a performance regression with the eBPF Agent memory consumption after upgrading, you might consider reducing the `kafkaBatchSize` to the new value.
+  <div class="important">
+
+  When upgrading from an existing installation, this new value is not set automatically in the configuration. If you monitor a performance regression with the eBPF Agent memory consumption after upgrading, you might consider reducing the `kafkaBatchSize` to the new value.
+
+  </div>
 
 ## Web console enhancements:
 

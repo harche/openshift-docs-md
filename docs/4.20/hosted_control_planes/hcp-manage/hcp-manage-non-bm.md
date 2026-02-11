@@ -4,17 +4,13 @@ After you deploy hosted control planes on non-bare-metal agent machines, you can
 
 You can access the hosted cluster by either getting the `kubeconfig` file and `kubeadmin` credential directly from resources, or by using the `hcp` command-line interface to generate a `kubeconfig` file.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Prerequisites
+**Prerequisites**
 
 </div>
 
 To access the hosted cluster by getting the `kubeconfig` file and credentials directly from resources, you must be familiar with the access secrets for hosted clusters. The *hosted cluster (hosting)* namespace contains hosted cluster resources and the access secrets. The *hosted control plane* namespace is where the hosted control plane runs.
-
-</div>
 
 The secret name formats are as follows:
 
@@ -29,14 +25,6 @@ $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get nodes
 ```
 
 The `kubeadmin` password secret is also Base64-encoded. You can decode it and use the password to log in to the API server or console of the hosted cluster.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To access the hosted cluster by using the `hcp` CLI to generate the `kubeconfig` file, take the following steps:
 
@@ -53,8 +41,6 @@ Procedure
       $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get nodes
       ```
 
-</div>
-
 # Scaling the NodePool object for a hosted cluster
 
 You can scale up the `NodePool` object by adding nodes to your hosted cluster. When you scale a node pool, consider the following information:
@@ -62,14 +48,6 @@ You can scale up the `NodePool` object by adding nodes to your hosted cluster. W
 - When you scale a replica by the node pool, a machine is created. For every machine, the Cluster API provider finds and installs an Agent that meets the requirements that are specified in the node pool specification. You can monitor the installation of an Agent by checking its status and conditions.
 
 - When you scale down a node pool, Agents are unbound from the corresponding cluster. Before you can reuse the Agents, you must restart them by using the Discovery image.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Scale the `NodePool` object to two nodes:
 
@@ -97,11 +75,9 @@ Procedure
     $ oc -n <hosted_control_plane_namespace> get agent
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -112,8 +88,6 @@ Procedure
     da503cf1-a347-44f2-875c-4960ddb04091   hypercluster1   true       auto-assign
     ```
 
-    </div>
-
 3.  Enter the following command:
 
     ``` terminal
@@ -121,11 +95,9 @@ Procedure
       -o jsonpath='{range .items[*]}BMH: {@.metadata.labels.agent-install\.openshift\.io/bmh} Agent: {@.metadata.name} State: {@.status.debugInfo.state}{"\n"}{end}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -134,8 +106,6 @@ Procedure
     BMH: ocp-worker-0 Agent: d9198891-39f4-4930-a679-65fb142b108b State: known-unbound
     BMH: ocp-worker-1 Agent: da503cf1-a347-44f2-875c-4960ddb04091 State: insufficient
     ```
-
-    </div>
 
 4.  Obtain the kubeconfig for your new hosted cluster by entering the extract command:
 
@@ -151,11 +121,9 @@ Procedure
     $ oc --kubeconfig kubeconfig-<hosted_cluster_name> get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -165,8 +133,6 @@ Procedure
     ocp-worker-2   Ready    worker   6m3s    v1.24.0+3882f8f
     ```
 
-    </div>
-
     Cluster Operators start to reconcile by adding workloads to the nodes.
 
 6.  Enter the following command to verify that two machines were created when you scaled up the `NodePool` object:
@@ -175,11 +141,9 @@ Procedure
     $ oc -n <hosted_control_plane_namespace> get machines
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -189,8 +153,6 @@ Procedure
     hypercluster1-c96b6f675-tl42p   hypercluster1-b2qhl   ocp-worker-2   agent://4dac1ab2-7dd5-4894-a220-6a3473b67ee6   Running   15m   4.x.z
     ```
 
-    </div>
-
     The `clusterversion` reconcile process eventually reaches a point where only Ingress and Console cluster operators are missing.
 
 7.  Enter the following command:
@@ -199,11 +161,9 @@ Procedure
     $ oc --kubeconfig kubeconfig-<hosted_cluster_name> get clusterversion,co
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -217,22 +177,13 @@ Procedure
     clusteroperator.config.openshift.io/dns                                          4.12z     True        False         False      9m16s
     ```
 
-    </div>
-
-</div>
-
 ## Adding node pools
 
 You can create node pools for a hosted cluster by specifying a name, number of replicas, and any additional information, such as an agent label selector.
 
-> [!NOTE]
-> Only a single agent namespace is supported for each hosted cluster. As a result, when you add a node pool to a hosted cluster, the node pool must be either from a single `InfraEnv` resource or from an `InfraEnv` resource that is in the same agent namespace.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+Only a single agent namespace is supported for each hosted cluster. As a result, when you add a node pool to a hosted cluster, the node pool must be either from a single `InfraEnv` resource or from an `InfraEnv` resource that is in the same agent namespace.
 
 </div>
 
@@ -266,11 +217,9 @@ Procedure
     $ oc extract -n <hosted_control_plane_namespace> secret/admin-kubeconfig --to=./hostedcluster-secrets --confirm
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -278,23 +227,11 @@ Procedure
     hostedcluster-secrets/kubeconfig
     ```
 
-    </div>
-
 4.  After some time, you can check the status of the node pool by entering the following command:
 
     ``` terminal
     $ oc --kubeconfig ./hostedcluster-secrets get nodes
     ```
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Verify that the number of available node pools match the number of expected node pools by entering this command:
 
@@ -302,19 +239,9 @@ Verification
   $ oc get nodepools --namespace clusters
   ```
 
-</div>
-
 ## Enabling node auto-scaling for the hosted cluster
 
 When you need more capacity in your hosted cluster and spare agents are available, you can enable auto-scaling to install new worker nodes.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To enable auto-scaling, enter the following command:
 
@@ -324,8 +251,11 @@ Procedure
       -p '[{"op": "remove", "path": "/spec/replicas"},{"op":"add", "path": "/spec/autoScaling", "value": { "max": 5, "min": 2 }}]'
     ```
 
-    > [!NOTE]
-    > In the example, the minimum number of nodes is 2, and the maximum is 5. The maximum number of nodes that you can add might be bound by your platform. For example, if you use the Agent platform, the maximum number of nodes is bound by the number of available agents.
+    <div class="note">
+
+    In the example, the minimum number of nodes is 2, and the maximum is 5. The maximum number of nodes that you can add might be bound by your platform. For example, if you use the Agent platform, the maximum number of nodes is bound by the number of available agents.
+
+    </div>
 
 2.  Create a workload that requires a new node.
 
@@ -377,17 +307,13 @@ Procedure
       --to=./hostedcluster-secrets --confirm
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
         hostedcluster-secrets/kubeconfig
-
-    </div>
 
 4.  You can check if new nodes are in the `Ready` status by entering the following command:
 
@@ -408,22 +334,15 @@ Procedure
     $ oc --kubeconfig ./hostedcluster-secrets get nodes
     ```
 
-    > [!NOTE]
-    > For IBM Z® agents, if you are using an OSA network device in Processor Resource/Systems Manager (PR/SM) mode, auto scaling is not supported. You must delete the old agent manually and scale up the node pool because the new agent joins during the scale down process.
+    <div class="note">
 
-</div>
+    For IBM Z® agents, if you are using an OSA network device in Processor Resource/Systems Manager (PR/SM) mode, auto scaling is not supported. You must delete the old agent manually and scale up the node pool because the new agent joins during the scale down process.
+
+    </div>
 
 ## Disabling node auto-scaling for the hosted cluster
 
 To disable node auto-scaling, complete the following procedure.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Enter the following command to disable node auto-scaling for the hosted cluster:
 
@@ -435,35 +354,21 @@ Procedure
 
   The command removes `"spec.autoScaling"` from the YAML file, adds `"spec.replicas"`, and sets `"spec.replicas"` to the integer value that you specify.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Scaling down the data plane to zero](../../hosted_control_planes/hcp-troubleshooting.xml#scale-down-data-plane_hcp-troubleshooting)
-
-</div>
 
 # Handling ingress in a hosted cluster on non-bare-metal agent machines
 
 Every OpenShift Container Platform cluster has a default application Ingress Controller that typically has an external DNS record associated with it. For example, if you create a hosted cluster named `example` with the base domain `krnl.es`, you can expect the wildcard domain `*.apps.example.krnl.es` to be routable.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To set up a load balancer and wildcard DNS record for the `*.apps` domain, perform the following actions on your guest cluster:
-
-</div>
 
 1.  Deploy MetalLB by creating a YAML file that contains the configuration for the MetalLB Operator:
 
@@ -615,11 +520,9 @@ To set up a load balancer and wildcard DNS record for the `*.apps` domain, perfo
         $ curl -kI https://console-openshift-console.apps.example.krnl.es
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -627,19 +530,15 @@ To set up a load balancer and wildcard DNS record for the `*.apps` domain, perfo
         HTTP/1.1 200 OK
         ```
 
-        </div>
-
     5.  Check the `clusterversion` and `clusteroperator` values to verify that everything is running. Enter the following command:
 
         ``` terminal
         $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get clusterversion,co
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -652,21 +551,9 @@ To set up a load balancer and wildcard DNS record for the `*.apps` domain, perfo
         clusteroperator.config.openshift.io/ingress                                      4.x.y     True        False         False      53m
         ```
 
-        </div>
-
         Replace `<4.x.y>` with the supported OpenShift Container Platform version that you want to use, for example, `4.20.0-multi`.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [About MetalLB and the MetalLB Operator](../../networking/networking_operators/metallb-operator/about-metallb.xml#about-metallb_about-metallb)
-
-</div>
 
 # Enabling machine health checks on non-bare-metal agent machines
 
@@ -680,17 +567,13 @@ Consider the following limitations before enabling machine health checks:
 
 After you enable machine health checks for the managed cluster nodes, the `MachineHealthCheck` object is created in your hosted cluster.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To enable machine health checks in your hosted cluster, modify the `NodePool` resource. Complete the following steps:
-
-</div>
 
 1.  Verify that the `spec.nodeDrainTimeout` value in your `NodePool` resource is greater than `0s`. Replace `<hosted_cluster_namespace>` with the name of your hosted cluster namespace and `<nodepool_name>` with the node pool name. Run the following command:
 
@@ -698,19 +581,15 @@ To enable machine health checks in your hosted cluster, modify the `NodePool` re
     $ oc get nodepool -n <hosted_cluster_namespace> <nodepool_name> -o yaml | grep nodeDrainTimeout
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     nodeDrainTimeout: 30s
     ```
-
-    </div>
 
 2.  If the `spec.nodeDrainTimeout` value is not greater than `0s`, modify the value by running the following command:
 
@@ -734,14 +613,6 @@ To enable machine health checks in your hosted cluster, modify the `NodePool` re
 
 To disable machine health checks for the managed cluster nodes, modify the `NodePool` resource.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Disable machine health checks by setting the `spec.management.autoRepair` field to `false` in the `NodePool` resource. Run the following command:
 
     ``` terminal
@@ -754,16 +625,4 @@ Procedure
     $ oc get nodepool -n <hosted_cluster_namespace> <nodepool_name> -o yaml | grep autoRepair
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Deploying machine health checks](../../machine_management/deploying-machine-health-checks.xml#deploying-machine-health-checks)
-
-</div>

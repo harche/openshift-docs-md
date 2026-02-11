@@ -1,17 +1,26 @@
 Nodes can be placed into maintenance mode by using the `oc adm` utility or `NodeMaintenance` custom resources (CRs).
 
-> [!NOTE]
-> The `node-maintenance-operator` (NMO) is no longer shipped with OpenShift Virtualization. It is deployed as a standalone Operator from the software catalog in the OpenShift Container Platform web console or by using the OpenShift CLI (`oc`).
->
-> For more information on remediation, fencing, and maintaining nodes, see the [Workload Availability for Red Hat OpenShift](https://access.redhat.com/documentation/en-us/workload_availability_for_red_hat_openshift/23.2/html-single/remediation_fencing_and_maintenance/index#about-remediation-fencing-maintenance) documentation.
+<div class="note">
 
-> [!IMPORTANT]
-> Virtual machines (VMs) must have a persistent volume claim (PVC) with a shared `ReadWriteMany` (RWX) access mode to be live migrated.
+The `node-maintenance-operator` (NMO) is no longer shipped with OpenShift Virtualization. It is deployed as a standalone Operator from the software catalog in the OpenShift Container Platform web console or by using the OpenShift CLI (`oc`).
+
+For more information on remediation, fencing, and maintaining nodes, see the [Workload Availability for Red Hat OpenShift](https://access.redhat.com/documentation/en-us/workload_availability_for_red_hat_openshift/23.2/html-single/remediation_fencing_and_maintenance/index#about-remediation-fencing-maintenance) documentation.
+
+</div>
+
+<div class="important">
+
+Virtual machines (VMs) must have a persistent volume claim (PVC) with a shared `ReadWriteMany` (RWX) access mode to be live migrated.
+
+</div>
 
 The Node Maintenance Operator watches for new or deleted `NodeMaintenance` CRs. When a new `NodeMaintenance` CR is detected, no new workloads are scheduled and the node is cordoned off from the rest of the cluster. All pods that can be evicted are evicted from the node. When a `NodeMaintenance` CR is deleted, the node that is referenced in the CR is made available for new workloads.
 
-> [!NOTE]
-> Using a `NodeMaintenance` CR for node maintenance tasks achieves the same results as the `oc adm cordon` and `oc adm drain` commands using standard OpenShift Container Platform custom resource processing.
+<div class="note">
+
+Using a `NodeMaintenance` CR for node maintenance tasks achieves the same results as the `oc adm cordon` and `oc adm drain` commands using standard OpenShift Container Platform custom resource processing.
+
+</div>
 
 # Eviction strategies
 
@@ -24,21 +33,24 @@ The VM `LiveMigrate` eviction strategy ensures that a virtual machine instance (
 
 You can configure eviction strategies for virtual machines (VMs) by using the OpenShift Container Platform web console or the [command line](../../virt/live_migration/virt-configuring-live-migration.xml#virt-configuring-a-live-migration-policy_virt-configuring-live-migration).
 
-> [!IMPORTANT]
-> The default eviction strategy is `LiveMigrate`. A non-migratable VM with a `LiveMigrate` eviction strategy might prevent nodes from draining or block an infrastructure upgrade because the VM is not evicted from the node. This situation causes a migration to remain in a `Pending` or `Scheduling` state unless you shut down the VM manually.
->
-> You must set the eviction strategy of non-migratable VMs to `LiveMigrateIfPossible`, which does not block an upgrade, or to `None`, for VMs that should not be migrated.
+<div class="important">
+
+The default eviction strategy is `LiveMigrate`. A non-migratable VM with a `LiveMigrate` eviction strategy might prevent nodes from draining or block an infrastructure upgrade because the VM is not evicted from the node. This situation causes a migration to remain in a `Pending` or `Scheduling` state unless you shut down the VM manually.
+
+You must set the eviction strategy of non-migratable VMs to `LiveMigrateIfPossible`, which does not block an upgrade, or to `None`, for VMs that should not be migrated.
+
+</div>
 
 <!-- -->
 
 Cluster eviction strategy
 You can configure an eviction strategy for the cluster to prioritize workload continuity or infrastructure upgrade.
 
-| Eviction strategy | Description | Interrupts workflow | Blocks upgrades |
-|----|----|----|----|
-| `LiveMigrate` <sup>1</sup> | Prioritizes workload continuity over upgrades. | No | Yes <sup>2</sup> |
-| `LiveMigrateIfPossible` | Prioritizes upgrades over workload continuity to ensure that the environment is updated. | Yes | No |
-| `None` <sup>3</sup> | Shuts down VMs with no eviction strategy. | Yes | No |
+| Eviction strategy          | Description                                                                              | Interrupts workflow | Blocks upgrades  |
+|----------------------------|------------------------------------------------------------------------------------------|---------------------|------------------|
+| `LiveMigrate` <sup>1</sup> | Prioritizes workload continuity over upgrades.                                           | No                  | Yes <sup>2</sup> |
+| `LiveMigrateIfPossible`    | Prioritizes upgrades over workload continuity to ensure that the environment is updated. | Yes                 | No               |
+| `None` <sup>3</sup>        | Shuts down VMs with no eviction strategy.                                                | Yes                 | No               |
 
 Cluster eviction strategies
 
@@ -52,30 +64,15 @@ Cluster eviction strategies
 
 You can configure an eviction strategy for a virtual machine (VM) by using the command line.
 
-> [!IMPORTANT]
-> The default eviction strategy is `LiveMigrate`. A non-migratable VM with a `LiveMigrate` eviction strategy might prevent nodes from draining or block an infrastructure upgrade because the VM is not evicted from the node. This situation causes a migration to remain in a `Pending` or `Scheduling` state unless you shut down the VM manually.
->
-> You must set the eviction strategy of non-migratable VMs to `LiveMigrateIfPossible`, which does not block an upgrade, or to `None`, for VMs that should not be migrated.
+<div class="important">
 
-<div>
+The default eviction strategy is `LiveMigrate`. A non-migratable VM with a `LiveMigrate` eviction strategy might prevent nodes from draining or block an infrastructure upgrade because the VM is not evicted from the node. This situation causes a migration to remain in a `Pending` or `Scheduling` state unless you shut down the VM manually.
 
-<div class="title">
-
-Prerequisites
+You must set the eviction strategy of non-migratable VMs to `LiveMigrateIfPossible`, which does not block an upgrade, or to `None`, for VMs that should not be migrated.
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `VirtualMachine` resource by running the following command:
 
@@ -105,31 +102,11 @@ Procedure
     $ virtctl restart <vm_name> -n <namespace>
     ```
 
-</div>
-
 ## Configuring a cluster eviction strategy by using the CLI
 
 You can configure an eviction strategy for a cluster by using the command line.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `hyperconverged` resource by running the following command:
 
@@ -150,8 +127,6 @@ Procedure
       evictionStrategy: LiveMigrate
     # ...
     ```
-
-</div>
 
 # Run strategies
 
@@ -186,32 +161,19 @@ The following table describes a VM’s transition between states. The first colu
 
 Run strategy before and after `virtctl` commands
 
-> [!NOTE]
-> If a node in a cluster installed by using installer-provisioned infrastructure fails the machine health check and is unavailable, VMs with `runStrategy: Always` or `runStrategy: RerunOnFailure` are rescheduled on a new node.
+<div class="note">
+
+If a node in a cluster installed by using installer-provisioned infrastructure fails the machine health check and is unavailable, VMs with `runStrategy: Always` or `runStrategy: RerunOnFailure` are rescheduled on a new node.
+
+</div>
 
 ## Configuring a VM run strategy by using the CLI
 
 You can configure a run strategy for a virtual machine (VM) by using the command line.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Edit the `VirtualMachine` resource by running the following command:
 
@@ -228,8 +190,6 @@ Procedure
     runStrategy: Always
   # ...
   ```
-
-</div>
 
 # Maintaining bare metal nodes
 

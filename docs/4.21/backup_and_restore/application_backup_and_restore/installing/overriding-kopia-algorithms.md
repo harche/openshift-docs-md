@@ -10,40 +10,25 @@ You can use an OpenShift API for Data Protection (OADP) option to override the d
 
 - `KOPIA_SPLITTER_ALGORITHM`
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - You have installed the OADP Operator.
 
 - You have created the secret by using the credentials provided by the cloud provider.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The configuration of the Kopia algorithms for splitting, hashing, and encryption in the Data Protection Application (DPA) apply only during the initial Kopia repository creation, and cannot be changed later.
->
-> To use different Kopia algorithms, ensure that the object storage does not contain any previous Kopia repositories of backups. Configure a new object storage in the Backup Storage Location (BSL) or specify a unique prefix for the object storage in the BSL configuration.
+The configuration of the Kopia algorithms for splitting, hashing, and encryption in the Data Protection Application (DPA) apply only during the initial Kopia repository creation, and cannot be changed later.
 
-<div>
-
-<div class="title">
-
-Procedure
+To use different Kopia algorithms, ensure that the object storage does not contain any previous Kopia repositories of backups. Configure a new object storage in the Backup Storage Location (BSL) or specify a unique prefix for the object storage in the BSL configuration.
 
 </div>
 
 - Configure the DPA with the environment variables for hashing, encryption, and splitter as shown in the following example.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example DPA
+  **Example DPA**
 
   </div>
 
@@ -71,8 +56,6 @@ Procedure
             value: <splitter_algorithm_name>
   ```
 
-  </div>
-
   - Enable the `nodeAgent`.
 
   - Specify the `uploaderType` as `kopia`.
@@ -85,19 +68,9 @@ Procedure
 
   - Specify a splitter algorithm. For example, `DYNAMIC-8M-RABINKARP`.
 
-</div>
-
 # Use case for overriding Kopia hashing, encryption, and splitter algorithms
 
 The use case example demonstrates taking a backup of an application by using Kopia environment variables for hashing, encryption, and splitter. You store the backup in an AWS S3 bucket. You then verify the environment variables by connecting to the Kopia repository.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OADP Operator.
 
@@ -108,16 +81,6 @@ Prerequisites
 - You have installed the Kopia client.
 
 - You have an application with persistent volumes running in a separate namespace.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Configure the Data Protection Application (DPA) as shown in the following example:
 
@@ -194,11 +157,9 @@ Procedure
 
 4.  Create a backup CR as shown in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example backup CR
+    **Example backup CR**
 
     </div>
 
@@ -213,8 +174,6 @@ Procedure
       - <application_namespace>
       defaultVolumesToFsBackup: true
     ```
-
-    </div>
 
     - Specify the namespace for the application installed in the cluster.
 
@@ -234,15 +193,7 @@ Procedure
 
     - Specify the name of the backup.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Connect to the Kopia repository by running the following command:
 
@@ -265,8 +216,11 @@ Verification
 
     - Specify the AWS S3 storage provider secret access key.
 
-      > [!NOTE]
-      > If you are using a storage provider other than AWS S3, you will need to add `--endpoint`, the bucket endpoint URL parameter, to the command.
+      <div class="note">
+
+      If you are using a storage provider other than AWS S3, you will need to add `--endpoint`, the bucket endpoint URL parameter, to the command.
+
+      </div>
 
 2.  Verify that Kopia uses the environment variables that are configured in the DPA for the backup by running the following command:
 
@@ -274,11 +228,9 @@ Verification
     $ kopia repository status
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -307,21 +259,9 @@ Verification
     # ...
     ```
 
-    </div>
-
-</div>
-
 # Benchmarking Kopia hashing, encryption, and splitter algorithms
 
 You can run Kopia commands to benchmark the hashing, encryption, and splitter algorithms. Based on the benchmarking results, you can select the most suitable algorithm for your workload. In this procedure, you run the Kopia benchmarking commands from a pod on the cluster. The benchmarking results can vary depending on CPU speed, available RAM, disk speed, current I/O load, and so on.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OADP Operator.
 
@@ -329,28 +269,19 @@ Prerequisites
 
 - You have run a backup of the application with Container Storage Interface (CSI) snapshots.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The configuration of the Kopia algorithms for splitting, hashing, and encryption in the Data Protection Application (DPA) apply only during the initial Kopia repository creation, and cannot be changed later.
->
-> To use different Kopia algorithms, ensure that the object storage does not contain any previous Kopia repositories of backups. Configure a new object storage in the Backup Storage Location (BSL) or specify a unique prefix for the object storage in the BSL configuration.
+The configuration of the Kopia algorithms for splitting, hashing, and encryption in the Data Protection Application (DPA) apply only during the initial Kopia repository creation, and cannot be changed later.
 
-<div>
-
-<div class="title">
-
-Procedure
+To use different Kopia algorithms, ensure that the object storage does not contain any previous Kopia repositories of backups. Configure a new object storage in the Backup Storage Location (BSL) or specify a unique prefix for the object storage in the BSL configuration.
 
 </div>
 
 1.  Configure the `must-gather` pod as shown in the following example. Make sure you are using the `oadp-mustgather` image for OADP version 1.3 and later.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example pod configuration
+    **Example pod configuration**
 
     </div>
 
@@ -369,10 +300,11 @@ Procedure
         args: ["infinity"]
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > The Kopia client is available in the `oadp-mustgather` image.
+    The Kopia client is available in the `oadp-mustgather` image.
+
+    </div>
 
 2.  Create the pod by running the following command:
 
@@ -388,19 +320,15 @@ Procedure
     $ oc describe pod/oadp-mustgather-pod | grep scc
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     openshift.io/scc: anyuid
     ```
-
-    </div>
 
 4.  Connect to the pod via SSH by running the following command:
 
@@ -432,8 +360,11 @@ Procedure
 
     - Specify the bucket endpoint. You do not need to specify the bucket endpoint, if you are using AWS S3 as the storage provider.
 
-      > [!NOTE]
-      > This is an example command. The command can vary based on the object storage provider.
+      <div class="note">
+
+      This is an example command. The command can vary based on the object storage provider.
+
+      </div>
 
 6.  To benchmark the hashing algorithm, run the following command:
 
@@ -441,11 +372,9 @@ Procedure
     sh-5.1# kopia benchmark hashing
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -478,19 +407,15 @@ Procedure
     Fastest option for this machine is: --block-hash=BLAKE3-256
     ```
 
-    </div>
-
 7.  To benchmark the encryption algorithm, run the following command:
 
     ``` terminal
     sh-5.1# kopia benchmark encryption
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -505,19 +430,15 @@ Procedure
     Fastest option for this machine is: --encryption=AES256-GCM-HMAC-SHA256
     ```
 
-    </div>
-
 8.  To benchmark the splitter algorithm, run the following command:
 
     ``` terminal
     sh-5.1# kopia benchmark splitter
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -535,7 +456,3 @@ Procedure
       # ...
      22. DYNAMIC-128K-RABINKARP    164.4 MB/s   count:3160 min:9667 10th:80098 25th:106626 50th:162269 75th:250655 90th:262144 max:262144
     ```
-
-    </div>
-
-</div>

@@ -18,10 +18,13 @@ For more information, see Microsoft’s documentation on [Host and container ver
 
 Also, it is recommended that you set the `spec.os.name.windows` parameter in your workload pods. The Windows Machine Config Operator (WMCO) uses this field to authoritatively identify the pod operating system for validation and is used to enforce Windows-specific pod security context constraints (SCCs). Currently, this parameter has no effect on pod scheduling. For more information about this parameter, see the [Kubernetes Pods documentation](https://kubernetes.io/docs/concepts/workloads/pods/#pod-os).
 
-> [!IMPORTANT]
-> The container base image must be the same Windows OS version and build number that is running on the node where the conainer is to be scheduled.
->
-> Also, if you upgrade the Windows nodes from one version to another, for example going from 20H2 to 2022, you must upgrade your container base image to match the new version. For more information, see [Windows container version compatibility](https://learn.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/version-compatibility?tabs=windows-server-2022%2Cwindows-11-21H2).
+<div class="important">
+
+The container base image must be the same Windows OS version and build number that is running on the node where the conainer is to be scheduled.
+
+Also, if you upgrade the Windows nodes from one version to another, for example going from 20H2 to 2022, you must upgrade your container base image to match the new version. For more information, see [Windows container version compatibility](https://learn.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/version-compatibility?tabs=windows-server-2022%2Cwindows-11-21H2).
+
+</div>
 
 ## Additional resources
 
@@ -34,14 +37,6 @@ Also, it is recommended that you set the `spec.os.name.windows` parameter in you
 # Creating a RuntimeClass object to encapsulate scheduling mechanisms
 
 Using a `RuntimeClass` object simplifies the use of scheduling mechanisms like taints and tolerations; you deploy a runtime class that encapsulates your taints and tolerations and then apply it to your pods to schedule them to the appropriate node. Creating a runtime class is also necessary in clusters that support multiple operating system variants.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `RuntimeClass` object YAML file. For example, `runtime-class.yaml`:
 
@@ -103,20 +98,19 @@ Procedure
 
     - Specify the runtime class to manage the scheduling of your pod.
 
-</div>
-
 # Sample Windows container workload deployment
 
 You can deploy Windows container workloads to your cluster once you have a Windows compute node available.
 
-> [!NOTE]
-> This sample deployment is provided for reference only.
+<div class="note">
 
-<div class="formalpara">
+This sample deployment is provided for reference only.
 
-<div class="title">
+</div>
 
-Example `Service` object
+<div class="formalpara-title">
+
+**Example `Service` object**
 
 </div>
 
@@ -137,13 +131,9 @@ spec:
   type: LoadBalancer
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example `Deployment` object
+**Example `Deployment` object**
 
 </div>
 
@@ -182,8 +172,6 @@ spec:
       runtimeClassName: windows2019
 ```
 
-</div>
-
 - Specify the container image to use: `mcr.microsoft.com/powershell:<tag>` or `mcr.microsoft.com/windows/servercore:<tag>`. The container image must match the Windows version running on the node.
 
   - For Windows 2019, use the `ltsc2019` tag.
@@ -204,8 +192,11 @@ Red Hat OpenShift support for Windows Containers installs [CSI Proxy](https://g
 
 To use persistent storage with Windows workloads, you must deploy a specific Windows CSI driver daemon set, as described in your storage provider’s documentation. By default, the WMCO does not automatically create the Windows CSI driver daemon set. See the list of [production drivers](https://kubernetes-csi.github.io/docs/drivers.html#production-drivers) in the Kubernetes CSI Developer Documentation.
 
-> [!NOTE]
-> Red Hat does not provide support for the third-party production drivers listed in the Kubernetes CSI Developer Documentation.
+<div class="note">
+
+Red Hat does not provide support for the third-party production drivers listed in the Kubernetes CSI Developer Documentation.
+
+</div>
 
 # Scaling a compute machine set manually
 
@@ -213,27 +204,9 @@ To add or remove an instance of a machine in a compute machine set, you can manu
 
 This guidance is relevant to fully automated, installer-provisioned infrastructure installations. Customized, user-provisioned infrastructure installations do not have compute machine sets.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install an OpenShift Container Platform cluster and the `oc` command line.
 
 - Log in to `oc` as a user with `cluster-admin` permission.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  View the compute machine sets that are in the cluster by running the following command:
 
@@ -267,40 +240,34 @@ Procedure
     $ oc edit machinesets.machine.openshift.io <machineset> -n openshift-machine-api
     ```
 
-    > [!TIP]
-    > You can alternatively apply the following YAML to scale the compute machine set:
-    >
-    > ``` yaml
-    > apiVersion: machine.openshift.io/v1beta1
-    > kind: MachineSet
-    > metadata:
-    >   name: <machineset>
-    >   namespace: openshift-machine-api
-    > spec:
-    >   replicas: 2
-    > ```
+    <div class="tip">
+
+    You can alternatively apply the following YAML to scale the compute machine set:
+
+    ``` yaml
+    apiVersion: machine.openshift.io/v1beta1
+    kind: MachineSet
+    metadata:
+      name: <machineset>
+      namespace: openshift-machine-api
+    spec:
+      replicas: 2
+    ```
+
+    </div>
 
     You can scale the compute machine set up or down. It takes several minutes for the new machines to be available.
 
-    > [!IMPORTANT]
-    > By default, the machine controller tries to drain the node that is backed by the machine until it succeeds. In some situations, such as with a misconfigured pod disruption budget, the drain operation might not be able to succeed. If the drain operation fails, the machine controller cannot proceed removing the machine.
-    >
-    > You can skip draining the node by annotating `machine.openshift.io/exclude-node-draining` in a specific machine.
+    <div class="important">
 
-</div>
+    By default, the machine controller tries to drain the node that is backed by the machine until it succeeds. In some situations, such as with a misconfigured pod disruption budget, the drain operation might not be able to succeed. If the drain operation fails, the machine controller cannot proceed removing the machine.
 
-<div>
+    You can skip draining the node by annotating `machine.openshift.io/exclude-node-draining` in a specific machine.
 
-<div class="title">
-
-Verification
-
-</div>
+    </div>
 
 - Verify the deletion of the intended machine by running the following command:
 
   ``` terminal
   $ oc get machines.machine.openshift.io
   ```
-
-</div>

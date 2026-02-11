@@ -1,7 +1,10 @@
 OpenShift Virtualization can activate kernel samepage merging (KSM) when nodes are overloaded. KSM deduplicates identical data found in the memory pages of virtual machines (VMs). If you have very similar VMs, KSM can make it possible to schedule more VMs on a single node.
 
-> [!IMPORTANT]
-> You must only use KSM with trusted workloads.
+<div class="important">
+
+You must only use KSM with trusted workloads.
+
+</div>
 
 # Prerequisites
 
@@ -24,8 +27,11 @@ You can configure the KSM activation feature by editing the `spec.configuration.
 
 - You can allow OpenShift Virtualization to enable KSM on only a subset of nodes by adding node selection syntax to the `ksmConfiguration.nodeLabelSelector` field.
 
-> [!NOTE]
-> Even if the KSM activation feature is disabled in OpenShift Virtualization, an administrator can still enable KSM on nodes that support it.
+<div class="note">
+
+Even if the KSM activation feature is disabled in OpenShift Virtualization, an administrator can still enable KSM on nodes that support it.
+
+</div>
 
 ## KSM node labels
 
@@ -43,14 +49,6 @@ These labels are not applied to nodes that do not support KSM.
 
 You can allow OpenShift Virtualization to activate kernel samepage merging (KSM) on all nodes in your cluster by using the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  From the side menu, click **Virtualization** → **Overview**.
 
 2.  Select the **Settings** tab.
@@ -65,31 +63,11 @@ Procedure
 
     - Set **Kernel Samepage Merging (KSM)** to off.
 
-</div>
-
 # Configuring KSM activation by using the CLI
 
 You can enable or disable OpenShift Virtualization’s kernel samepage merging (KSM) activation feature by editing the `HyperConverged` custom resource (CR). Use this method if you want OpenShift Virtualization to activate KSM on only a subset of nodes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -146,8 +124,6 @@ Procedure
       ```
 
 3.  Save the file.
-
-</div>
 
 # Additional resources
 

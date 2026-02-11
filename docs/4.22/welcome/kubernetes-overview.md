@@ -23,20 +23,20 @@ You can perform the following actions by using Kubernetes:
 
 # Kubernetes components
 
-| Component | Purpose |
-|----|----|
-| `kube-proxy` | Runs on every node in the cluster and maintains the network traffic between the Kubernetes resources. |
-| `kube-controller-manager` | Governs the state of the cluster. |
-| `kube-scheduler` | Allocates pods to nodes. |
-| `etcd` | Stores cluster data. |
-| `kube-apiserver` | Validates and configures data for the API objects. |
-| `kubelet` | Runs on nodes and reads the container manifests. Ensures that the defined containers have started and are running. |
-| `kubectl` | Allows you to define how you want to run workloads. Use the `kubectl` command to interact with the `kube-apiserver`. |
-| Node | Node is a physical machine or a VM in a Kubernetes cluster. The control plane manages every node and schedules pods across the nodes in the Kubernetes cluster. |
-| container runtime | container runtime runs containers on a host operating system. You must install a container runtime on each node so that pods can run on the node. |
-| Persistent storage | Stores the data even after the device is shut down. Kubernetes uses persistent volumes to store the application data. |
-| `container-registry` | Stores and accesses the container images. |
-| Pod | The pod is the smallest logical unit in Kubernetes. A pod contains one or more containers to run in a worker node. |
+| Component                 | Purpose                                                                                                                                                         |
+|---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `kube-proxy`              | Runs on every node in the cluster and maintains the network traffic between the Kubernetes resources.                                                           |
+| `kube-controller-manager` | Governs the state of the cluster.                                                                                                                               |
+| `kube-scheduler`          | Allocates pods to nodes.                                                                                                                                        |
+| `etcd`                    | Stores cluster data.                                                                                                                                            |
+| `kube-apiserver`          | Validates and configures data for the API objects.                                                                                                              |
+| `kubelet`                 | Runs on nodes and reads the container manifests. Ensures that the defined containers have started and are running.                                              |
+| `kubectl`                 | Allows you to define how you want to run workloads. Use the `kubectl` command to interact with the `kube-apiserver`.                                            |
+| Node                      | Node is a physical machine or a VM in a Kubernetes cluster. The control plane manages every node and schedules pods across the nodes in the Kubernetes cluster. |
+| container runtime         | container runtime runs containers on a host operating system. You must install a container runtime on each node so that pods can run on the node.               |
+| Persistent storage        | Stores the data even after the device is shut down. Kubernetes uses persistent volumes to store the application data.                                           |
+| `container-registry`      | Stores and accesses the container images.                                                                                                                       |
+| Pod                       | The pod is the smallest logical unit in Kubernetes. A pod contains one or more containers to run in a worker node.                                              |
 
 Kubernetes components
 
@@ -49,11 +49,11 @@ A custom resource is an extension of the Kubernetes API. You can customize Kuber
 <figcaption>Kubernetes cluster overview</figcaption>
 </figure>
 
-| Resource | Purpose |
-|----|----|
-| Service | Kubernetes uses services to expose a running application on a set of pods. |
-| `ReplicaSets` | Kubernetes uses the `ReplicaSets` to maintain the constant pod number. |
-| Deployment | A resource object that maintains the life cycle of an application. |
+| Resource      | Purpose                                                                    |
+|---------------|----------------------------------------------------------------------------|
+| Service       | Kubernetes uses services to expose a running application on a set of pods. |
+| `ReplicaSets` | Kubernetes uses the `ReplicaSets` to maintain the constant pod number.     |
+| Deployment    | A resource object that maintains the life cycle of an application.         |
 
 Kubernetes Resources
 

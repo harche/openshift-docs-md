@@ -14,9 +14,9 @@ As a result, OLM must never create the following scenarios:
 
 This is made possible with two types of data:
 
-|  |  |
-|----|----|
-| Properties | Typed metadata about the Operator that constitutes the public interface for it in the dependency resolver. Examples include the group/version/kind (GVK) of the APIs provided by the Operator and the semantic version (semver) of the Operator. |
+|                             |                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Properties                  | Typed metadata about the Operator that constitutes the public interface for it in the dependency resolver. Examples include the group/version/kind (GVK) of the APIs provided by the Operator and the semantic version (semver) of the Operator.                                                                                                                                                                                                 |
 | Constraints or dependencies | An Operator’s requirements that should be satisfied by other Operators that might or might not have already been installed on the target cluster. These act as queries or filters over all available Operators and constrain the selection during dependency resolution and installation. Examples include requiring a specific API to be available on the cluster or expecting a particular Operator with a particular version to be installed. |
 
 OLM converts these properties and constraints into a system of Boolean formulas and passes them to a SAT solver, a program that establishes Boolean satisfiability, which does the work of determining what Operators should be installed.
@@ -33,11 +33,9 @@ A single property for each provided API from the cluster service version (CSV)
 
 Additional properties can also be directly declared by an Operator author by including a `properties.yaml` file in the `metadata/` directory of the Operator bundle.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example arbitrary property
+**Example arbitrary property**
 
 </div>
 
@@ -48,19 +46,15 @@ properties:
     version: "1.16.0"
 ```
 
-</div>
-
 ## Arbitrary properties
 
 Operator authors can declare arbitrary properties in a `properties.yaml` file in the `metadata/` directory of the Operator bundle. These properties are translated into a map data structure that is used as an input to the Operator Lifecycle Manager (OLM) resolver at runtime.
 
 These properties are opaque to the resolver as it does not understand the properties, but it can evaluate the generic constraints against those properties to determine if the constraints can be satisfied given the properties list.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example arbitrary properties
+**Example arbitrary properties**
 
 </div>
 
@@ -80,21 +74,9 @@ properties:
         kind: myresource
 ```
 
-</div>
-
 This structure can be used to construct a Common Expression Language (CEL) expression for generic constraints.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Common Expression Language (CEL) constraints](../../../operators/understanding/olm/olm-understanding-dependency-resolution.xml#olm-cel_olm-understanding-dependency-resolution)
-
-</div>
 
 # Operator dependencies
 
@@ -113,11 +95,9 @@ This type declares generic constraints on arbitrary Operator properties.
 
 In the following example, dependencies are specified for a Prometheus Operator and etcd CRDs:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `dependencies.yaml` file
+**Example `dependencies.yaml` file**
 
 </div>
 
@@ -133,8 +113,6 @@ dependencies:
       kind: EtcdCluster
       version: v1beta2
 ```
-
-</div>
 
 # Generic constraints
 
@@ -158,11 +136,9 @@ Conjunction, disjunction, and negation constraints, respectively, containing one
 
 The `cel` constraint type supports [Common Expression Language (CEL)](https://github.com/google/cel-go) as the expression language. The `cel` struct has a `rule` field which contains the CEL expression string that is evaluated against Operator properties at runtime to determine if the Operator satisfies the constraint.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `cel` constraint
+**Example `cel` constraint**
 
 </div>
 
@@ -174,15 +150,11 @@ value:
     rule: 'properties.exists(p, p.type == "certified")'
 ```
 
-</div>
-
 The CEL syntax supports a wide range of logical operators, such as `AND` and `OR`. As a result, a single CEL expression can have multiple rules for multiple conditions that are linked together by these logical operators. These rules are evaluated against a dataset of multiple different properties from a bundle or any given source, and the output is solved into a single bundle or Operator that satisfies all of those rules within a single constraint.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `cel` constraint with multiple rules
+**Example `cel` constraint with multiple rules**
 
 </div>
 
@@ -194,19 +166,15 @@ value:
     rule: 'properties.exists(p, p.type == "certified") && properties.exists(p, p.type == "stable")'
 ```
 
-</div>
-
 ## Compound constraints (all, any, not)
 
 Compound constraint types are evaluated following their logical definitions.
 
 The following is an example of a conjunctive constraint (`all`) of two packages and one GVK. That is, they must all be satisfied by installed bundles:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `all` constraint
+**Example `all` constraint**
 
 </div>
 
@@ -230,15 +198,11 @@ properties:
           kind: Green
 ```
 
-</div>
-
 The following is an example of a disjunctive constraint (`any`) of three versions of the same GVK. That is, at least one must be satisfied by installed bundles:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `any` constraint
+**Example `any` constraint**
 
 </div>
 
@@ -265,15 +229,11 @@ properties:
           kind: Blue
 ```
 
-</div>
-
 The following is an example of a negation constraint (`not`) of one version of a GVK. That is, this GVK cannot be provided by any bundle in the result set:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `not` constraint
+**Example `not` constraint**
 
 </div>
 
@@ -298,8 +258,6 @@ properties:
             kind: greens
 ```
 
-</div>
-
 The negation semantics might appear unclear in the `not` constraint context. To clarify, the negation is really instructing the resolver to remove any possible solution that includes a particular GVK, package at a version, or satisfies some child compound constraint from the result set.
 
 As a corollary, the `not` compound constraint should only be used within `all` or `any` constraints, because negating without first selecting a possible set of dependencies does not make sense.
@@ -310,11 +268,9 @@ A nested compound constraint, one that contains at least one child compound cons
 
 The following is an example of a disjunction of conjunctions, where one, the other, or both can satisfy the constraint:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example nested compound constraint
+**Example nested compound constraint**
 
 </div>
 
@@ -347,10 +303,11 @@ properties:
               kind: Blue
 ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The maximum raw size of an `olm.constraint` type is 64KB to limit resource exhaustion attacks.
+The maximum raw size of an `olm.constraint` type is 64KB to limit resource exhaustion attacks.
+
+</div>
 
 # Dependency preferences
 
@@ -360,11 +317,9 @@ There can be many options that equally satisfy a dependency of an Operator. The 
 
 On OpenShift Container Platform clusters, OLM reads catalog sources to know which Operators are available for installation.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `CatalogSource` object
+**Example `CatalogSource` object**
 
 </div>
 
@@ -383,12 +338,13 @@ spec:
   priority: 100
 ```
 
-</div>
-
 - Specify the value of `legacy` or `restricted`. If the field is not set, the default value is `legacy`. In a future OpenShift Container Platform release, it is planned that the default value will be `restricted`.
 
-  > [!NOTE]
-  > If your catalog cannot run with `restricted` permissions, it is recommended that you manually set this field to `legacy`.
+  <div class="note">
+
+  If your catalog cannot run with `restricted` permissions, it is recommended that you manually set this field to `legacy`.
+
+  </div>
 
 A `CatalogSource` object has a `priority` field, which is used by the resolver to know how to prefer options for a dependency.
 
@@ -467,22 +423,15 @@ Whenever possible, do not set a maximum version. Alternatively, set a very wide 
 
 Unlike with conventional package managers, Operator authors explicitly encode that updates are safe through channels in OLM. If an update is available for an existing subscription, it is assumed that the Operator author is indicating that it can update from the previous version. Setting a maximum version for a dependency overrides the update stream of the author by unnecessarily truncating it at a particular upper bound.
 
-> [!NOTE]
-> Cluster administrators cannot override dependencies set by an Operator author.
+<div class="note">
+
+Cluster administrators cannot override dependencies set by an Operator author.
+
+</div>
 
 However, maximum versions can and should be set if there are known incompatibilities that must be avoided. Specific versions can be omitted with the version range syntax, for example `> 1.0.0 !1.2.1`.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - Kubernetes documentation: [Changing the API](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api_changes.md#readme)
-
-</div>
 
 # Dependency caveats
 

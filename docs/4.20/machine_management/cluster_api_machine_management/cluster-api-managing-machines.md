@@ -1,35 +1,20 @@
-> [!IMPORTANT]
-> Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 # Modifying a Cluster API machine template
 
 You can update the machine template resource for your cluster by modifying the YAML manifest file and applying it with the OpenShift CLI (`oc`).
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have deployed an OpenShift Container Platform cluster that uses the Cluster API.
 
 - You have access to the cluster using an account with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List the machine template resource for your cluster by running the following command:
 
@@ -48,11 +33,9 @@ Procedure
       | VMware vSphere                  | `VSphereMachineTemplate`   |
       | Bare metal                      | `Metal3MachineTemplate`    |
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -60,8 +43,6 @@ Procedure
     NAME              AGE
     <template_name>   77m
     ```
-
-    </div>
 
 2.  Write the machine template resource for your cluster to a file that you can edit by running the following command:
 
@@ -79,8 +60,11 @@ Procedure
 
     - You must use a value for the `metadata.name` parameter that differs from any existing values.
 
-      > [!IMPORTANT]
-      > For any Cluster API compute machine sets that reference this template, you must update the `spec.template.spec.infrastructureRef.name` parameter to match the `metadata.name` value in the new machine template resource.
+      <div class="important">
+
+      For any Cluster API compute machine sets that reference this template, you must update the `spec.template.spec.infrastructureRef.name` parameter to match the `metadata.name` value in the new machine template resource.
+
+      </div>
 
 5.  Apply the machine template CR by running the following command:
 
@@ -90,27 +74,9 @@ Procedure
 
     - Use the edited YAML file with a new name.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - For any Cluster API compute machine sets that reference this template, update the `spec.template.spec.infrastructureRef.name` parameter to match the `metadata.name` value in the new machine template resource. For more information, see "Modifying a compute machine set by using the CLI."
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Sample YAML for a Cluster API machine template resource on Amazon Web Services](../../machine_management/cluster_api_machine_management/cluster_api_provider_configurations/cluster-api-config-options-aws.xml#capi-yaml-machine-template-aws_cluster-api-config-options-aws)
 
@@ -124,47 +90,33 @@ Additional resources
 
 - [Modifying a compute machine set by using the CLI](../../machine_management/cluster_api_machine_management/cluster-api-managing-machines.xml#machineset-modifying_cluster-api-managing-machines)
 
-</div>
-
 # Modifying a compute machine set by using the CLI
 
 You can modify the configuration of a compute machine set, and then propagate the changes to the machines in your cluster by using the CLI.
 
 By updating the compute machine set configuration, you can enable features or change the properties of the machines it creates. When you modify a compute machine set, your changes only apply to compute machines that are created after you save the updated `MachineSet` custom resource (CR). The changes do not affect existing machines.
 
-> [!NOTE]
-> Changes made in the underlying cloud provider are not reflected in the `Machine` or `MachineSet` CRs. To adjust instance configuration in cluster-managed infrastructure, use the cluster-side resources.
+<div class="note">
+
+Changes made in the underlying cloud provider are not reflected in the `Machine` or `MachineSet` CRs. To adjust instance configuration in cluster-managed infrastructure, use the cluster-side resources.
+
+</div>
 
 You can replace the existing machines with new ones that reflect the updated configuration by scaling the compute machine set to create twice the number of replicas and then scaling it down to the original number of replicas.
 
 If you need to scale a compute machine set without making other changes, you do not need to delete the machines.
 
-> [!NOTE]
-> By default, the OpenShift Container Platform router pods are deployed on compute machines. Because the router is required to access some cluster resources, including the web console, do not scale the compute machine set to `0` unless you first relocate the router pods.
+<div class="note">
 
-The output examples in this procedure use the values for an AWS cluster.
-
-<div>
-
-<div class="title">
-
-Prerequisites
+By default, the OpenShift Container Platform router pods are deployed on compute machines. Because the router is required to access some cluster resources, including the web console, do not scale the compute machine set to `0` unless you first relocate the router pods.
 
 </div>
+
+The output examples in this procedure use the values for an AWS cluster.
 
 - Your OpenShift Container Platform cluster uses the Cluster API.
 
 - You are logged in to the cluster as an administrator by using the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List the compute machine sets in your cluster by running the following command:
 
@@ -172,11 +124,9 @@ Procedure
     $ oc get machinesets.cluster.x-k8s.io -n openshift-cluster-api
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -185,8 +135,6 @@ Procedure
     <compute_machine_set_name_1>  <cluster_name>      1          1       1           26m
     <compute_machine_set_name_2>  <cluster_name>      1          1       1           26m
     ```
-
-    </div>
 
 2.  Edit a compute machine set by running the following command:
 
@@ -220,11 +168,9 @@ Procedure
       -l cluster.x-k8s.io/set-name=<machine_set_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output for an AWS cluster
+    **Example output for an AWS cluster**
 
     </div>
 
@@ -233,8 +179,6 @@ Procedure
     <machine_name_original_1>   <cluster_name>   <original_1_ip>.<region>.compute.internal   aws:///us-east-2a/i-04e7b2cbd61fd2075   Running         4h
     <machine_name_original_2>   <cluster_name>   <original_2_ip>.<region>.compute.internal   aws:///us-east-2a/i-04e7b2cbd61fd2075   Running         4h
     ```
-
-    </div>
 
 6.  For each machine that is managed by the updated compute machine set, set the `delete` annotation by running the following command:
 
@@ -262,11 +206,9 @@ Procedure
       -l cluster.x-k8s.io/set-name=<machine_set_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output for an AWS cluster
+    **Example output for an AWS cluster**
 
     </div>
 
@@ -277,8 +219,6 @@ Procedure
     <machine_name_updated_1>    <cluster_name>   <updated_1_ip>.<region>.compute.internal    aws:///us-east-2a/i-04e7b2cbd61fd2075   Provisioned     55s
     <machine_name_updated_2>    <cluster_name>   <updated_2_ip>.<region>.compute.internal    aws:///us-east-2a/i-04e7b2cbd61fd2075   Provisioning    55s
     ```
-
-    </div>
 
     When the new machines are in the `Running` phase, you can scale the compute machine set to the original number of replicas.
 
@@ -291,16 +231,6 @@ Procedure
     ```
 
     - The original example value of `2`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - To verify that a machine created by the updated machine set has the correct configuration, examine the relevant fields in the CR for one of the new machines by running the following command:
 
@@ -317,11 +247,9 @@ Verification
     cluster.x-k8s.io/set-name=<machine_set_name>
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output while deletion is in progress for an AWS cluster
+  **Example output while deletion is in progress for an AWS cluster**
 
   </div>
 
@@ -333,13 +261,9 @@ Verification
   <machine_name_updated_2>    <cluster_name>   <updated_2_ip>.<region>.compute.internal    aws:///us-east-2a/i-04e7b2cbd61fd2075   Running    18m
   ```
 
-  </div>
+  <div class="formalpara-title">
 
-  <div class="formalpara">
-
-  <div class="title">
-
-  Example output when deletion is complete for an AWS cluster
+  **Example output when deletion is complete for an AWS cluster**
 
   </div>
 
@@ -349,17 +273,7 @@ Verification
   <machine_name_updated_2>    <cluster_name>   <updated_2_ip>.<region>.compute.internal    aws:///us-east-2a/i-04e7b2cbd61fd2075   Running    18m
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Sample YAML for a Cluster API compute machine set resource on Amazon Web Services](../../machine_management/cluster_api_machine_management/cluster_api_provider_configurations/cluster-api-config-options-aws.xml#capi-yaml-machine-set-aws_cluster-api-config-options-aws)
 
@@ -370,5 +284,3 @@ Additional resources
 - [Sample YAML for a Cluster API compute machine set resource on RHOSP](../../machine_management/cluster_api_machine_management/cluster_api_provider_configurations/cluster-api-config-options-rhosp.xml#capi-yaml-machine-set-rhosp_cluster-api-config-options-rhosp)
 
 - [Sample YAML for a Cluster API compute machine set resource on VMware vSphere](../../machine_management/cluster_api_machine_management/cluster_api_provider_configurations/cluster-api-config-options-vsphere.xml#capi-yaml-machine-set-vsphere_cluster-api-config-options-vsphere)
-
-</div>

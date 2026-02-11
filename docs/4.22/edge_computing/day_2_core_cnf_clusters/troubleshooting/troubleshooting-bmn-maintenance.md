@@ -4,8 +4,11 @@ You can connect to a node for general troubleshooting. However, in some cases, y
 
 You can connect to bare-metal cluster nodes for general maintenance tasks.
 
-> [!NOTE]
-> Configuring the cluster node from the host operating system is not recommended or supported.
+<div class="note">
+
+Configuring the cluster node from the host operating system is not recommended or supported.
+
+</div>
 
 To troubleshoot your nodes, you can do the following tasks:
 
@@ -15,14 +18,9 @@ To troubleshoot your nodes, you can do the following tasks:
 
 - Use SSH to connect to a node
 
-> [!IMPORTANT]
-> Use SSH only if you cannot connect to the node with the `oc debug` command.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Procedure
+Use SSH only if you cannot connect to the node with the `oc debug` command.
 
 </div>
 
@@ -44,11 +42,9 @@ Procedure
     # chroot /host
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Output
+    **Output**
 
     </div>
 
@@ -56,27 +52,15 @@ Procedure
     You are now logged in as root on the node
     ```
 
-    </div>
-
 4.  Optional: Use SSH to connect to the node by running the following command:
 
     ``` terminal
     $ ssh core@<node_name>
     ```
 
-</div>
-
 # Moving applications to pods within the cluster
 
 For scheduled hardware maintenance, you need to consider how to move your application pods to other nodes within the cluster without affecting the pod workload.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Mark the node as unschedulable by running the following command:
 
@@ -84,24 +68,15 @@ Procedure
   $ oc adm cordon <node_name>
   ```
 
-</div>
-
 When the node is unschedulable, no pods can be scheduled on the node. For more information, see "Working with nodes".
 
-> [!NOTE]
-> When moving CNF applications, you might need to verify ahead of time that there are enough additional worker nodes in the cluster due to anti-affinity and pod disruption budget.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Additional resources
+When moving CNF applications, you might need to verify ahead of time that there are enough additional worker nodes in the cluster due to anti-affinity and pod disruption budget.
 
 </div>
 
 - [Working with nodes](../../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working_nodes-nodes-working)
-
-</div>
 
 # DIMM memory replacement
 
@@ -121,21 +96,14 @@ If you do not have disk redundancy configured on your node through hardware or s
 
 For more information, see "OpenShift Container Platform storage overview" in *Storage*.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [OpenShift Container Platform storage overview](../../../storage/index.xml#storage-overview_storage-overview)
-
-</div>
 
 # Cluster network card replacement
 
 When you replace a network card, the MAC address changes. The MAC address can be part of the DHCP or SR-IOV Operator configuration, router configuration, firewall rules, or cloud-native application configuration. Before you bring back a node online after replacing a network card, you must verify that these configurations are up-to-date.
 
-> [!IMPORTANT]
-> If you do not have specific procedures for MAC address changes within the network, contact your network administrator or network hardware vendor.
+<div class="important">
+
+If you do not have specific procedures for MAC address changes within the network, contact your network administrator or network hardware vendor.
+
+</div>

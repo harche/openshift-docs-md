@@ -4,27 +4,11 @@ If a cluster-wide egress proxy is configured in OpenShift Container Platform, Op
 
 The egress proxy can be configured in the `ExternalSecretsConfig` or the `ExternalSecretsManager` custom resource (CR). The Operator and the operand make use of the OpenShift Container Platform supported certificate authority (CA) bundle for the proxy validations.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have created the `ExternalSecretsConfig` custom CR.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To set the proxy in the `ExternalSecretsConfig` resource, perform the following steps:
 
@@ -80,8 +64,6 @@ Procedure
             httpsProxy: <https_proxy>
             noProxy: <no_proxy>
       ```
-
-</div>
 
 where:
 

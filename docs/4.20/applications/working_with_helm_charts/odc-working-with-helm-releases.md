@@ -8,37 +8,23 @@ You can use the **Developer** perspective in the web console to update, rollback
 
 You can upgrade a Helm release to upgrade to a new chart version or update your release configuration.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  In the **Topology** view, select the Helm release to see the side panel.
 
 2.  Click **Actions** → **Upgrade Helm Release**.
 
 3.  In the **Upgrade Helm Release** page, select the **Chart Version** you want to upgrade to, and then click **Upgrade** to create another Helm release. The **Helm Releases** page displays the two revisions.
 
-</div>
-
 # Rolling back a Helm release
 
 If a release fails, you can rollback the Helm release to a previous version.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To rollback a release using the **Helm** view:
-
-</div>
 
 1.  In the **Developer** perspective, navigate to the **Helm** view to see the **Helm Releases** in the namespace.
 
@@ -59,16 +45,6 @@ To rollback a release using the **Helm** view:
 
 # Deleting a Helm release
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  In the **Topology** view, right-click the Helm release and select **Delete Helm Release**.
 
 2.  In the confirmation prompt, enter the name of the chart and click **Delete**.
-
-</div>

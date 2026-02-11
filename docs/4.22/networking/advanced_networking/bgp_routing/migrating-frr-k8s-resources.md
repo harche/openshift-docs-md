@@ -4,31 +4,17 @@ All user-created FRR-K8s custom resources (CRs) in the `metallb-system` namespac
 
 You can migrate the FRR-K8s `FRRConfiguration` custom resources from the `metallb-system` namespace to the `openshift-frr-k8s` namespace.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster as a user with the `cluster-admin` role.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 When upgrading from an earlier version of OpenShift Container Platform with the Metal LB Operator deployed, you must manually migrate your custom `FRRConfiguration` configurations from the `metallb-system` namespace to the `openshift-frr-k8s` namespace. To move these CRs, enter the following commands:
-
-</div>
 
 1.  To create the `openshift-frr-k8s` namespace, enter the following command:
 
@@ -55,20 +41,10 @@ When upgrading from an earlier version of OpenShift Container Platform with the 
     $ bash migrate.sh
     ```
 
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - To confirm that the migration succeeded, run the following command:
 
   ``` terminal
   $ oc get frrconfigurations.frrk8s.metallb.io -n openshift-frr-k8s
   ```
-
-</div>
 
 After the migration is complete, you can remove the `FRRConfiguration` custom resources from the `metallb-system` namespace.

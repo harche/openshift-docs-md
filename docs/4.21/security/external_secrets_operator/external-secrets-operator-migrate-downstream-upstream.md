@@ -7,37 +7,25 @@ The following migration versions have been fully tested.
 | 0.11.0           | OLM                 | v1.0.0 GA          |
 | 0.19.0           | Helm                | v1.0.0 GA          |
 
-> [!NOTE]
-> The migration does not support rollbacks.
+<div class="note">
 
-> [!NOTE]
-> External Secrets Operator for Red Hat OpenShift is based on the upstream version 0.19.0. Do not try to migrate from a higher version of the External Secrets Operator.
+The migration does not support rollbacks.
+
+</div>
+
+<div class="note">
+
+External Secrets Operator for Red Hat OpenShift is based on the upstream version 0.19.0. Do not try to migrate from a higher version of the External Secrets Operator.
+
+</div>
 
 # Deleting the community External Secrets Operator
 
 Delete the configuration resource for the community Operator so that the legacy application is fully removed. This action prevents conflicts before installing the External Secrets Operator for Red Hat OpenShift.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must be logged in as a user with the `cluster-admin` role.
 
 - You must have the `oc` command-line tool installed and configured.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Find your community Operator’s `namespace` by running the following command:
 
@@ -58,15 +46,7 @@ Procedure
     $ oc delete operatorconfig <config_name> -n <operator_namespace>
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  To verify that the `operatorconfig` CR is deleted, run the following command:
 
@@ -88,8 +68,6 @@ Verification
 
     The commands must return no results.
 
-</div>
-
 # Uninstalling the community External Secrets Operator
 
 Uninstall the community External Secrets Operator to prevent conflicts or accidental recreation after you migrate to External Secrets Operator for Red Hat OpenShift.
@@ -100,27 +78,9 @@ You must uninstall the community External Secrets Operator to prevent it from be
 
 Remove the community External Secrets Operator that was installed using Helm. This helps you free up resources and maintain a clean environment for your cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must be logged in as a user with the `cluster-admin` role.
 
 - You must have deleted the `operatorconfig` custom resource (CR).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Install the External Secrets Operator for Red Hat OpenShift. The `external-secrets-operator` namespace must be null.
 
@@ -130,36 +90,19 @@ Procedure
     $ oc helm delete <release_name> -n <operator_namespace>
     ```
 
-    > [!NOTE]
-    > Using `helm delete` might delete all Custom Resource Definitions (CRDs) and CRs. It is recommended to installl the downstream Operator first if the namespace `external-secrets-operator` is empty.
+    <div class="note">
 
-</div>
+    Using `helm delete` might delete all Custom Resource Definitions (CRDs) and CRs. It is recommended to installl the downstream Operator first if the namespace `external-secrets-operator` is empty.
+
+    </div>
 
 ## Uninstalling an Operator Lifecylce Manager installed community External Secrets Operator
 
 Remove the community External Secrets Operator that was installed by an Operator Lifecycle Manager (OLM) subscription. This helps you free up resources and maintain a clean environment for your cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must be logged in as a user with the `cluster-admin` role.
 
 - You must have deleted the `operatorconfig` CR.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Find the subscription name by running the following command:
 
@@ -179,41 +122,21 @@ Procedure
     $ oc delete csv <csv_name> -n <operator_namespace>
     ```
 
-</div>
-
 ## Uninstalling a raw manifest installed community External Secrets Operator
 
 Remove the community External Secrets Operator that was installed by raw manifests. This helps you free up resources and maintain a clean environment for your cluster.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You must be logged in as a user with the `cluster-admin` role.
 
 - You must have deleted the `operatorconfig` CR.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To remove the communiity External Secrets Operator that was installed by raw manifests, run the following command:
 
   ``` terminal
   $ oc delete -f /path/to/your/old/manifests.yaml -n <operator_namespace>
   ```
-
-</div>
 
 # Installing the External Secrets Operator for Red Hat OpenShift
 
@@ -223,29 +146,11 @@ Install the External Secrets Operator for Red Hat OpenShift after cleaning up th
 
 Create the `ExternalSecretsConfig` resource to install and configure the core `external-secrets` component. This setup helps ensure that features like Bitwarden and cert-manager support are correctly enabled.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - External Secrets Operator for Red Hat OpenShift is installed.
 
 - cert-manager Operator for Red Hat OpenShift is installed.
 
 - You have access to the cluster with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an `externalsecretsconfig` file by defining a YAML file with the following content:
 
@@ -274,19 +179,13 @@ Procedure
     $ oc create -f externalsecretsconfig.yaml
     ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 Verify that all custom resources (CRs) are present and that the APIs are using `v1` instead of `v1beta1`. There CRs are retained and automatically converted by the new Operator.
-
-</div>
 
 1.  To verify that the `external-secrets` pods are in a `running` state, run the following command:
 

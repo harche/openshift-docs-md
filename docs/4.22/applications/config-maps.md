@@ -10,11 +10,9 @@ The `ConfigMap` object provides mechanisms to inject containers with configurati
 
 The `ConfigMap` object holds key-value pairs of configuration data that can be consumed in pods or used to store configuration data for system components such as controllers. For example:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-`ConfigMap` Object Definition
+**`ConfigMap` Object Definition**
 
 </div>
 
@@ -36,14 +34,15 @@ binaryData:
   bar: L3Jvb3QvMTAw
 ```
 
-</div>
-
 - Contains the configuration data.
 
 - Points to a file that contains non-UTF8 data, for example, a binary Java keystore file. Enter the file data in Base 64.
 
-> [!NOTE]
-> You can use the `binaryData` field when you create a config map from a binary file, such as an image.
+<div class="note">
+
+You can use the `binaryData` field when you create a config map from a binary file, such as an image.
+
+</div>
 
 Configuration data can be consumed in pods in a variety of ways. A config map can be used to:
 
@@ -71,17 +70,7 @@ They can only be referenced by pods in the same project.
 
 This includes any pods created by using the CLI, or indirectly from a replication controller. It does not include pods created by using the OpenShift Container Platform node’s `--manifest-url` flag, its `--config` flag, or its REST API because these are not common ways to create pods.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Creating and using config maps](../nodes/pods/nodes-pods-configmaps.xml)
-
-</div>
 
 # Use cases: Consuming config maps in pods
 
@@ -93,11 +82,9 @@ You can use config maps to populate individual environment variables in containe
 
 As an example, consider the following config map:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-`ConfigMap` with two environment variables
+**`ConfigMap` with two environment variables**
 
 </div>
 
@@ -112,19 +99,15 @@ data:
   special.type: charm
 ```
 
-</div>
-
 - Name of the config map.
 
 - The project in which the config map resides. Config maps can only be referenced by pods in the same project.
 
 - Environment variables to inject.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-`ConfigMap` with one environment variable
+**`ConfigMap` with one environment variable**
 
 </div>
 
@@ -138,27 +121,17 @@ data:
   log_level: INFO
 ```
 
-</div>
-
 - Name of the config map.
 
 - Environment variable to inject.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - You can consume the keys of this `ConfigMap` in a pod using `configMapKeyRef` sections.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Sample `Pod` specification configured to inject specific environment variables
+  **Sample `Pod` specification configured to inject specific environment variables**
 
   </div>
 
@@ -198,8 +171,6 @@ Procedure
     restartPolicy: Never
   ```
 
-  </div>
-
   - Stanza to pull the specified environment variables from a `ConfigMap`.
 
   - Name of a pod environment variable that you are injecting a key’s value into.
@@ -219,10 +190,11 @@ Procedure
         SPECIAL_LEVEL_KEY=very
         log_level=INFO
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> `SPECIAL_TYPE_KEY=charm` is not listed in the example output because `optional: true` is set.
+`SPECIAL_TYPE_KEY=charm` is not listed in the example output because `optional: true` is set.
+
+</div>
 
 ## Setting command-line arguments for container commands with config maps
 
@@ -241,21 +213,11 @@ data:
   special.type: charm
 ```
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - To inject values into a command in a container, you must consume the keys you want to use as environment variables. Then you can refer to them in a container’s command using the `$(VAR_NAME)` syntax.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Sample pod specification configured to inject specific environment variables
+  **Sample pod specification configured to inject specific environment variables**
 
   </div>
 
@@ -291,25 +253,19 @@ Procedure
     restartPolicy: Never
   ```
 
-  </div>
-
   - Inject the values into a command in a container using the keys you want to use as environment variables.
 
     When this pod is run, the output from the echo command run in the test-container container is as follows:
 
         very charm
 
-</div>
-
 ## Injecting content into a volume by using config maps
 
 You can inject content into a volume by using config maps.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `ConfigMap` custom resource (CR)
+**Example `ConfigMap` custom resource (CR)**
 
 </div>
 
@@ -324,19 +280,13 @@ data:
   special.type: charm
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 You have a couple different options for injecting content into a volume by using config maps.
-
-</div>
 
 - The most basic way to inject content into a volume by using a config map is to populate the volume with files where the key is the file name and the content of the file is the value of the key:
 

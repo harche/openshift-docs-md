@@ -10,47 +10,33 @@ You can set metadata for multiple entries simultaneously or individually as need
 
 # Configuring LokiStack for OTLP data ingestion
 
-> [!IMPORTANT]
-> The OpenTelemetry Protocol (OTLP) output log forwarder is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+The OpenTelemetry Protocol (OTLP) output log forwarder is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 To configure a `LokiStack` custom resource (CR) for OTLP ingestion, follow these steps:
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Ensure that your Loki setup supports structured metadata, introduced in schema version 13 to enable OTLP log ingestion.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Set the schema version:
 
     - When creating a new `LokiStack` CR, set `version: v13` in the storage schema configuration.
 
-      > [!NOTE]
-      > For existing configurations, add a new schema entry with `version: v13` and an `effectiveDate` in the future. For more information on updating schema versions, see [Upgrading Schemas](https://grafana.com/docs/loki/latest/configure/storage/#upgrading-schemas) (Grafana documentation).
+      <div class="note">
+
+      For existing configurations, add a new schema entry with `version: v13` and an `effectiveDate` in the future. For more information on updating schema versions, see [Upgrading Schemas](https://grafana.com/docs/loki/latest/configure/storage/#upgrading-schemas) (Grafana documentation).
+
+      </div>
 
 2.  Configure the storage schema as follows:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example configure storage schema
+    **Example configure storage schema**
 
     </div>
 
@@ -63,11 +49,7 @@ Procedure
           effectiveDate: 2024-10-25
     ```
 
-    </div>
-
     Once the `effectiveDate` has passed, the v13 schema takes effect, enabling your `LokiStack` to store structured metadata.
-
-</div>
 
 # Attribute mapping
 
@@ -79,15 +61,21 @@ For typical setups, these default mappings are sufficient. However, you might ne
 
 - Adjusting attribute detail levels: If the default attribute set is more detailed than necessary, you can reduce it to essential attributes only. This can avoid excessive data storage and streamline the logging process.
 
-> [!IMPORTANT]
-> Attributes that are not mapped to either stream labels or structured metadata are not stored in Loki.
+<div class="important">
+
+Attributes that are not mapped to either stream labels or structured metadata are not stored in Loki.
+
+</div>
 
 ## Custom attribute mapping for OpenShift
 
 When using the Loki Operator in `openshift-logging` mode, attribute mapping follow OpenShift default values, but you can configure custom mappings to adjust default values. In the `openshift-logging` mode, you can configure custom attribute mappings globally for all tenants or for individual tenants as needed. When you define custom mappings, they are appended to the OpenShift default values. If you do not need default labels, you can disable them in the tenant configuration.
 
-> [!NOTE]
-> A major difference between the Loki Operator and Loki lies in inheritance handling. Loki copies only `default_resource_attributes_as_index_labels` to tenants by default, while the Loki Operator applies the entire global configuration to each tenant in the `openshift-logging` mode.
+<div class="note">
+
+A major difference between the Loki Operator and Loki lies in inheritance handling. Loki copies only `default_resource_attributes_as_index_labels` to tenants by default, while the Loki Operator applies the entire global configuration to each tenant in the `openshift-logging` mode.
+
+</div>
 
 Within `LokiStack`, attribute mapping configuration is managed through the `limits` setting. See the following example `LokiStack` configuration:
 
@@ -106,8 +94,11 @@ spec:
 
 - OTLP attribute configuration for the `application` tenant within `openshift-logging` mode.
 
-> [!NOTE]
-> Both global and per-tenant OTLP configurations can map attributes to stream labels or structured metadata. At least one stream label is required to save a log entry to Loki storage, so ensure this configuration meets that requirement.
+<div class="note">
+
+Both global and per-tenant OTLP configurations can map attributes to stream labels or structured metadata. At least one stream label is required to save a log entry to Loki storage, so ensure this configuration meets that requirement.
+
+</div>
 
 Stream labels derive only from resource-level attributes, which the `LokiStack` resource structure reflects:
 
@@ -144,11 +135,17 @@ spec:
           - name: "http.route"
 ```
 
-> [!TIP]
-> Use regular expressions by setting `regex: true` for attributes names when mapping similar attributes in Loki.
+<div class="tip">
 
-> [!IMPORTANT]
-> Avoid using regular expressions for stream labels, as this can increase data volume.
+Use regular expressions by setting `regex: true` for attributes names when mapping similar attributes in Loki.
+
+</div>
+
+<div class="important">
+
+Avoid using regular expressions for stream labels, as this can increase data volume.
+
+</div>
 
 ## Customizing OpenShift defaults
 
@@ -172,8 +169,11 @@ spec:
 
 - Set `disableRecommendedAttributes: true` to remove recommended attributes, which limits default attributes to the **required attributes**.
 
-> [!NOTE]
-> This option is beneficial if the default attributes causes performance or storage issues. This setting might negatively impact query performance, as it removes default stream labels. You should pair this option with a custom attribute configuration to retain attributes essential for queries.
+<div class="note">
+
+This option is beneficial if the default attributes causes performance or storage issues. This setting might negatively impact query performance, as it removes default stream labels. You should pair this option with a custom attribute configuration to retain attributes essential for queries.
+
+</div>
 
 # Additional resources
 

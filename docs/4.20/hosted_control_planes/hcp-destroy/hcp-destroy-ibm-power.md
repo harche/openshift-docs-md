@@ -4,14 +4,6 @@ You can destroy a hosted cluster on IBM Power by using the command-line interfac
 
 To destroy a hosted cluster on IBM Power, you can use the hcp command-line interface (CLI).
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Delete the hosted cluster by running the following command:
 
   ``` terminal
@@ -26,5 +18,3 @@ Procedure
   - Replace `<hosted_cluster_namespace>` with the name of your hosted cluster namespace.
 
   - Specifies the duration to destroy the hosted cluster completely, for example, `20m0s`.
-
-</div>

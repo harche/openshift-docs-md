@@ -11,13 +11,13 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` |  |
-| `status` | `object` |  |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             |                                                                                                                                                                                                                                                                                                      |
+| `status`     | `object`                                                                             |                                                                                                                                                                                                                                                                                                      |
 
 ## .spec
 
@@ -33,36 +33,36 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>logLevel</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>logLevel is an intent based logging for an overall component. It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands.</p>
 <p>Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>managementState</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>managementState indicates whether and how the operator should manage the component</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>observedConfig</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>observedConfig holds a sparse config that controller has observed from the cluster state. It exists in spec because it is an input to the level for the operator</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>operatorLogLevel</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>operatorLogLevel is an intent based logging for the operator itself. It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves.</p>
 <p>Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>unsupportedConfigOverrides</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>unsupportedConfigOverrides overrides the final configuration that was computed by the operator. Red Hat does not support the use of this field. Misuse of this field could lead to unexpected behavior or conflict with other configuration options. Seek guidance from the Red Hat support before using this field. Use of this property blocks cluster upgrades, it must be removed before upgrading your cluster.</p></td>
@@ -77,16 +77,16 @@ Description
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `conditions` | `array` | conditions is a list of conditions and their status |
-| `conditions[]` | `object` | OperatorCondition is just the standard condition fields. |
-| `generations` | `array` | generations are used to determine when an item needs to be reconciled or has changed in a way that needs a reaction. |
-| `generations[]` | `object` | GenerationStatus keeps track of the generation for a given resource so that decisions about forced updates can be made. |
-| `latestAvailableRevision` | `integer` | latestAvailableRevision is the deploymentID of the most recent deployment |
-| `observedGeneration` | `integer` | observedGeneration is the last generation change you’ve dealt with |
-| `readyReplicas` | `integer` | readyReplicas indicates how many replicas are ready and at the desired state |
-| `version` | `string` | version is the level this availability applies to |
+| Property                  | Type      | Description                                                                                                             |
+|---------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------|
+| `conditions`              | `array`   | conditions is a list of conditions and their status                                                                     |
+| `conditions[]`            | `object`  | OperatorCondition is just the standard condition fields.                                                                |
+| `generations`             | `array`   | generations are used to determine when an item needs to be reconciled or has changed in a way that needs a reaction.    |
+| `generations[]`           | `object`  | GenerationStatus keeps track of the generation for a given resource so that decisions about forced updates can be made. |
+| `latestAvailableRevision` | `integer` | latestAvailableRevision is the deploymentID of the most recent deployment                                               |
+| `observedGeneration`      | `integer` | observedGeneration is the last generation change you’ve dealt with                                                      |
+| `readyReplicas`           | `integer` | readyReplicas indicates how many replicas are ready and at the desired state                                            |
+| `version`                 | `string`  | version is the level this availability applies to                                                                       |
 
 ## .status.conditions
 
@@ -111,13 +111,13 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
+| Property             | Type     | Description                                                                                                                                                                                                                          |
+|----------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `lastTransitionTime` | `string` | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable. |
-| `message` | `string` |  |
-| `reason` | `string` |  |
-| `status` | `string` | status of the condition, one of True, False, Unknown. |
-| `type` | `string` | type of condition in CamelCase or in foo.example.com/CamelCase. |
+| `message`            | `string` |                                                                                                                                                                                                                                      |
+| `reason`             | `string` |                                                                                                                                                                                                                                      |
+| `status`             | `string` | status of the condition, one of True, False, Unknown.                                                                                                                                                                                |
+| `type`               | `string` | type of condition in CamelCase or in foo.example.com/CamelCase.                                                                                                                                                                      |
 
 ## .status.generations
 
@@ -144,14 +144,14 @@ Required
 
 - `resource`
 
-| Property | Type | Description |
-|----|----|----|
-| `group` | `string` | group is the group of the thing you’re tracking |
-| `hash` | `string` | hash is an optional field set for resources without generation that are content sensitive like secrets and configmaps |
-| `lastGeneration` | `integer` | lastGeneration is the last generation of the workload controller involved |
-| `name` | `string` | name is the name of the thing you’re tracking |
-| `namespace` | `string` | namespace is where the thing you’re tracking is |
-| `resource` | `string` | resource is the resource type of the thing you’re tracking |
+| Property         | Type      | Description                                                                                                           |
+|------------------|-----------|-----------------------------------------------------------------------------------------------------------------------|
+| `group`          | `string`  | group is the group of the thing you’re tracking                                                                       |
+| `hash`           | `string`  | hash is an optional field set for resources without generation that are content sensitive like secrets and configmaps |
+| `lastGeneration` | `integer` | lastGeneration is the last generation of the workload controller involved                                             |
+| `name`           | `string`  | name is the name of the thing you’re tracking                                                                         |
+| `namespace`      | `string`  | namespace is where the thing you’re tracking is                                                                       |
+| `resource`       | `string`  | resource is the resource type of the thing you’re tracking                                                            |
 
 # API endpoints
 
@@ -191,10 +191,10 @@ HTTP method
 Description
 delete collection of OpenShiftControllerManager
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -204,10 +204,10 @@ HTTP method
 Description
 list objects of kind OpenShiftControllerManager
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`OpenShiftControllerManagerList`](../objects/index.xml#io-openshift-operator-v1-OpenShiftControllerManagerList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                            |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`OpenShiftControllerManagerList`](../objects/index.xml#io-openshift-operator-v1-OpenShiftControllerManagerList) schema |
+| 401 - Unauthorized | Empty                                                                                                                   |
 
 HTTP responses
 
@@ -217,25 +217,25 @@ HTTP method
 Description
 create an OpenShiftControllerManager
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                                                | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
-| 201 - Created | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
-| 202 - Accepted | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                        |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
+| 201 - Created      | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
+| 202 - Accepted     | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                               |
 
 HTTP responses
 
@@ -253,17 +253,17 @@ HTTP method
 Description
 delete an OpenShiftControllerManager
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -273,10 +273,10 @@ HTTP method
 Description
 read the specified OpenShiftControllerManager
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                        |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                               |
 
 HTTP responses
 
@@ -286,17 +286,17 @@ HTTP method
 Description
 partially update the specified OpenShiftControllerManager
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                        |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                               |
 
 HTTP responses
 
@@ -306,24 +306,24 @@ HTTP method
 Description
 replace the specified OpenShiftControllerManager
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                                                | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
-| 201 - Created | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                        |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
+| 201 - Created      | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                               |
 
 HTTP responses
 
@@ -341,10 +341,10 @@ HTTP method
 Description
 read status of the specified OpenShiftControllerManager
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                        |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                               |
 
 HTTP responses
 
@@ -354,17 +354,17 @@ HTTP method
 Description
 partially update status of the specified OpenShiftControllerManager
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                        |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                               |
 
 HTTP responses
 
@@ -374,23 +374,23 @@ HTTP method
 Description
 replace status of the specified OpenShiftControllerManager
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                                                | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
-| 201 - Created | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                        |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
+| 201 - Created      | [`OpenShiftControllerManager`](../operator_apis/openshiftcontrollermanager-operator-openshift-io-v1.xml#openshiftcontrollermanager-operator-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                               |
 
 HTTP responses

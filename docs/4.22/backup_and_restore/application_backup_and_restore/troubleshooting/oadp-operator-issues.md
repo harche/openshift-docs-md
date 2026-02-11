@@ -8,14 +8,6 @@ In such a case, the Operator is said to have *failed silently* because it incorr
 
 To fix this issue, retrieve a list of backup storage locations (BSLs) and check the manifest of each BSL for credential issues.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Retrieve a list of BSLs by using either the OpenShift or Velero command-line interface (CLI):
 
     1.  Retrieve a list of BSLs by using the OpenShift CLI (`oc`):
@@ -36,11 +28,9 @@ Procedure
     $ oc get backupstoragelocations.velero.io -n <namespace> -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example result
+    **Example result**
 
     </div>
 
@@ -86,7 +76,3 @@ Procedure
     metadata:
       resourceVersion: ""
     ```
-
-    </div>
-
-</div>

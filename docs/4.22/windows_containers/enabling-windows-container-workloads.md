@@ -1,7 +1,10 @@
 Before adding Windows workloads to your cluster, you must install the Windows Machine Config Operator (WMCO), which is available in the OpenShift Container Platform software catalog. The WMCO orchestrates the process of deploying and managing Windows workloads on a cluster.
 
-> [!NOTE]
-> Dual NIC is not supported on WMCO-managed Windows instances.
+<div class="note">
+
+Dual NIC is not supported on WMCO-managed Windows instances.
+
+</div>
 
 # Prerequisites
 
@@ -19,42 +22,33 @@ Before adding Windows workloads to your cluster, you must install the Windows Ma
 
 - You are running an OpenShift Container Platform cluster version 4.6.8 or later.
 
-> [!NOTE]
-> Windows instances deployed by the WMCO are configured with the containerd container runtime. Because WMCO installs and manages the runtime, it is recommended that you do not manually install containerd on nodes.
+<div class="note">
+
+Windows instances deployed by the WMCO are configured with the containerd container runtime. Because WMCO installs and manages the runtime, it is recommended that you do not manually install containerd on nodes.
+
+</div>
 
 For the comprehensive prerequisites for the Windows Machine Config Operator, see "Windows Machine Config Operator prerequisites".
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Windows Machine Config Operator prerequisites](../windows_containers/wmco_rn/windows-containers-release-notes-prereqs.xml#windows-containers-release-notes-prereqs)
-
-</div>
 
 # Installing the Windows Machine Config Operator
 
 You can install the Windows Machine Config Operator using either the web console or OpenShift CLI (`oc`).
 
-> [!NOTE]
-> Due to a limitation within the Windows operating system, `clusterNetwork` CIDR addresses of class E, such as `240.0.0.0`, are not compatible with Windows nodes.
+<div class="note">
+
+Due to a limitation within the Windows operating system, `clusterNetwork` CIDR addresses of class E, such as `240.0.0.0`, are not compatible with Windows nodes.
+
+</div>
 
 ## Installing the Windows Machine Config Operator using the web console
 
 You can use the OpenShift Container Platform web console to install the Windows Machine Config Operator (WMCO).
 
-> [!NOTE]
-> Dual NIC is not supported on WMCO-managed Windows instances.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+Dual NIC is not supported on WMCO-managed Windows instances.
 
 </div>
 
@@ -82,25 +76,21 @@ Procedure
 
 5.  Click **Install**. The WMCO is now listed on the **Installed Operators** page.
 
-    > [!NOTE]
-    > The WMCO is installed automatically into the namespace you defined, like `openshift-windows-machine-config-operator`.
+    <div class="note">
+
+    The WMCO is installed automatically into the namespace you defined, like `openshift-windows-machine-config-operator`.
+
+    </div>
 
 6.  Verify that the **Status** shows **Succeeded** to confirm successful installation of the WMCO.
-
-</div>
 
 ## Installing the Windows Machine Config Operator using the CLI
 
 You can use the OpenShift CLI (`oc`) to install the Windows Machine Config Operator (WMCO).
 
-> [!NOTE]
-> Dual NIC is not supported on WMCO-managed Windows instances.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+Dual NIC is not supported on WMCO-managed Windows instances.
 
 </div>
 
@@ -206,11 +196,9 @@ Procedure
     $ oc get csv -n openshift-windows-machine-config-operator
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -219,21 +207,9 @@ Procedure
     windows-machine-config-operator.2.0.0   Windows Machine Config Operator   2.0.0                Succeeded
     ```
 
-    </div>
-
-</div>
-
 # Configuring a secret for the Windows Machine Config Operator
 
 To run the Windows Machine Config Operator (WMCO), you must create a secret in the WMCO namespace containing a private key. This is required to allow the WMCO to communicate with the Windows virtual machine (VM).
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You installed the Windows Machine Config Operator (WMCO) using Operator Lifecycle Manager (OLM).
 
@@ -253,15 +229,7 @@ Prerequisites
   `<ssh_key_path>`
   Specifies the path to the SSH public key.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Define the secret required to access the Windows VMs:
 
@@ -270,7 +238,7 @@ Procedure
       -n openshift-windows-machine-config-operator
   ```
 
-</div>
+<!-- -->
 
 - You must create the private key in the WMCO namespace, like `openshift-windows-machine-config-operator`.
 
@@ -279,14 +247,6 @@ It is recommended to use a different private key than the one used when installi
 # Configuring debug-level logging for the Windows Machine Config Operator
 
 By default, the Windows Machine Config Operator (WMCO) is configured to use the `info` log level. You can change the log level to `debug` by editing the WMCO `Subscription` object.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `windows-machine-config-operator` subscription in the `windows-machine-config-operator` namespace by using the following command:
 
@@ -315,8 +275,6 @@ Procedure
 
     - Specifies the `debug` level of verbosity for log messages.
 
-</div>
-
 You can revert to the default `info` log level by removing the `name` and `value` parameters that you added.
 
 # Using Windows containers in a proxy-enabled cluster
@@ -325,24 +283,17 @@ The Windows Machine Config Operator (WMCO) can consume and use a cluster-wide eg
 
 This allows you to add Windows nodes and run workloads in a proxy-enabled cluster, allowing your Windows nodes to pull images from registries that are secured behind your proxy server or to make requests to off-cluster services and services that use a custom public key infrastructure.
 
-> [!NOTE]
-> The cluster-wide proxy affects system components only, not user workloads.
+<div class="note">
+
+The cluster-wide proxy affects system components only, not user workloads.
+
+</div>
 
 In proxy-enabled clusters, the WMCO is aware of the `NO_PROXY`, `HTTP_PROXY`, and `HTTPS_PROXY` values that are set for the cluster. The WMCO periodically checks whether the proxy environment variables have changed. If there is a discrepancy, the WMCO reconciles and updates the proxy environment variables on the Windows instances.
 
 Windows workloads created on Windows nodes in proxy-enabled clusters do not inherit proxy settings from the node by default, the same as with Linux nodes. Also, by default PowerShell sessions do not inherit proxy settings on Windows nodes in proxy-enabled clusters.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring the cluster-wide proxy](../networking/configuring_network_settings/enable-cluster-wide-proxy.xml#enable-cluster-wide-proxy).
-
-</div>
 
 # Using Windows containers with a mirror registry
 
@@ -386,17 +337,9 @@ When using an IDMS or ITMS object to mirror container images on Windows nodes, t
 
   For this reason, specify container images using a digest by an IDMS object instead of an ITMS object. Using a digest can prevent the wrong container image from being used, by ensuring that the image the container specifies and the image being pulled have the same digest.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [About disconnected installation mirroring](../disconnected/index.xml#installing-mirroring-disconnected-about)
-
-</div>
 
 ## Understanding image registry repository mirroring
 
@@ -450,35 +393,23 @@ Note the following actions and how they affect node drain behavior:
 
 The Windows Machine Config Operator (WMCO) watches for changes to the IDMS and ITMS resources and generates a set of `hosts.toml` containerd configuration files, one file for each source registry, with those changes. The WMCO then updates any existing Windows nodes to use the new registry configuration.
 
-> [!NOTE]
-> The IDMS and ITMS objects must be created before you can add Windows nodes using a mirrored registry.
+<div class="note">
+
+The IDMS and ITMS objects must be created before you can add Windows nodes using a mirrored registry.
+
+</div>
 
 ## Configuring image registry repository mirroring
 
 You can create postinstallation mirror configuration custom resources (CR) to redirect image pull requests from a source image registry to a mirrored image registry.
 
-> [!IMPORTANT]
-> Windows images mirrored through `ImageDigestMirrorSet` and `ImageTagMirrorSet` objects have specific naming requirements as described in "Using Windows containers with a mirror registry".
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Windows images mirrored through `ImageDigestMirrorSet` and `ImageTagMirrorSet` objects have specific naming requirements as described in "Using Windows containers with a mirror registry".
 
 </div>
 
 - Access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Configure mirrored repositories, by either:
 
@@ -498,14 +429,17 @@ Procedure
 
       In this example, you have a container image registry named `example.io` and image repository named `example`. You want to copy the `ubi9/ubi-minimal` image from `registry.access.redhat.com` to `example.io`. After you create the mirrored registry, you can configure your OpenShift Container Platform cluster to redirect requests made to the source repository to the mirrored repository.
 
-    > [!IMPORTANT]
-    > You must mirror the `mcr.microsoft.com/oss/kubernetes/pause:3.9` image. For example, you could use the following `skopeo` command to mirror the image:
-    >
-    > ``` terminal
-    > $ skopeo copy \
-    > docker://mcr.microsoft.com/oss/kubernetes/pause:3.9\
-    > docker://example.io/oss/kubernetes/pause:3.9
-    > ```
+    <div class="important">
+
+    You must mirror the `mcr.microsoft.com/oss/kubernetes/pause:3.9` image. For example, you could use the following `skopeo` command to mirror the image:
+
+    ``` terminal
+    $ skopeo copy \
+    docker://mcr.microsoft.com/oss/kubernetes/pause:3.9\
+    docker://example.io/oss/kubernetes/pause:3.9
+    ```
+
+    </div>
 
 2.  Log in to your OpenShift Container Platform cluster.
 
@@ -547,11 +481,9 @@ Procedure
         $ oc get node
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -565,19 +497,15 @@ Procedure
         ip-10-0-154-10.ec2.internal    Ready                      master   11m  v1.34.2
         ```
 
-        </div>
-
     2.  Start the debugging process to access the node:
 
         ``` terminal
         $ oc debug node/ip-10-0-147-35.ec2.internal
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -585,8 +513,6 @@ Procedure
         Starting pod/ip-10-0-147-35ec2internal-debug ...
         To use host binaries, run `chroot /host`
         ```
-
-        </div>
 
     3.  Change your root directory to `/host`:
 
@@ -600,11 +526,9 @@ Procedure
         $ tree $config_path
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -618,15 +542,11 @@ Procedure
             └── hosts.toml:
         ```
 
-        </div>
-
         The following output represents a `hosts.toml` containerd configuration file where the previous example IDMS object was applied.
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example host.toml files
+        **Example host.toml files**
 
         </div>
 
@@ -653,27 +573,19 @@ Procedure
          capabilities = ["pull", "resolve"] # resolve tags
         ```
 
-        </div>
-
     5.  Pull an image to the node from the source and check if it is resolved by the mirror.
 
         ``` terminal
         sh-4.2# podman pull --log-level=debug registry.access.redhat.com/ubi9/ubi-minimal@sha256:5cf...
         ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Troubleshooting
+**Troubleshooting**
 
 </div>
 
 If the repository mirroring procedure does not work as described, use the following information about how repository mirroring works to help troubleshoot the problem:
-
-</div>
 
 - The first working mirror is used to supply the pulled image.
 
@@ -681,17 +593,9 @@ If the repository mirroring procedure does not work as described, use the follow
 
 - From the system context, the `Insecure` flags are used as fallback.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Using Windows containers with a mirror registry](../windows_containers/enabling-windows-container-workloads.xml#wmco-disconnected-cluster_enabling-windows-container-workloads)
-
-</div>
 
 # Rebooting a node gracefully
 
@@ -701,20 +605,15 @@ The Windows Machine Config Operator (WMCO) minimizes node reboots whenever possi
 
 Before rebooting a node, it is recommended to backup etcd data to avoid any data loss on the node.
 
-> [!NOTE]
-> For single-node OpenShift clusters that require users to perform the `oc login` command rather than having the certificates in `kubeconfig` file to manage the cluster, the `oc adm` commands might not be available after cordoning and draining the node. This is because the `openshift-oauth-apiserver` pod is not running due to the cordon. You can use SSH to access the nodes as indicated in the following procedure.
->
-> In a single-node OpenShift cluster, pods cannot be rescheduled when cordoning and draining. However, doing so gives the pods, especially your workload pods, time to properly stop and release associated resources.
+<div class="note">
 
-The following procedure demonstrates how to perform a graceful restart of a node.
+For single-node OpenShift clusters that require users to perform the `oc login` command rather than having the certificates in `kubeconfig` file to manage the cluster, the `oc adm` commands might not be available after cordoning and draining the node. This is because the `openshift-oauth-apiserver` pod is not running due to the cordon. You can use SSH to access the nodes as indicated in the following procedure.
 
-<div>
-
-<div class="title">
-
-Procedure
+In a single-node OpenShift cluster, pods cannot be rescheduled when cordoning and draining. However, doing so gives the pods, especially your workload pods, time to properly stop and release associated resources.
 
 </div>
+
+The following procedure demonstrates how to perform a graceful restart of a node.
 
 1.  Mark the node as unschedulable:
 
@@ -730,19 +629,15 @@ Procedure
 
     You might receive errors that pods associated with custom pod disruption budgets (PDB) cannot be evicted.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example error
+    **Example error**
 
     </div>
 
     ``` terminal
     error when evicting pods/"rails-postgresql-example-1-72v2w" -n "rails" (will retry after 5s): Cannot evict pod as it would violate the pod's disruption budget.
     ```
-
-    </div>
 
     In this case, run the drain command again, adding the `disable-eviction` flag, which bypasses the PDB checks:
 
@@ -797,11 +692,9 @@ Procedure
     $ oc get node <node1>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -810,23 +703,9 @@ Procedure
     <node1> Ready   worker   6d22h   v1.18.3+b0068a8
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Rebooting a OpenShift Container Platform node gracefully](../nodes/nodes/nodes-nodes-rebooting.xml#nodes-nodes-rebooting-gracefully_nodes-nodes-rebooting)
 
 - [Backing up etcd data](../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd)
-
-</div>
 
 # Additional resources
 

@@ -1,19 +1,14 @@
 You can clone virtual machines (VMs) or create new VMs from snapshots.
 
-> [!IMPORTANT]
-> Cloning a VM with a vTPM device attached to it or creating a new VM from its snapshot is not supported.
+<div class="important">
+
+Cloning a VM with a vTPM device attached to it or creating a new VM from its snapshot is not supported.
+
+</div>
 
 # Cloning a VM by using the web console
 
 You can clone an existing VM by using the web console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
 
@@ -31,19 +26,9 @@ Procedure
 
 7.  Click **Clone**.
 
-</div>
-
 # Creating a VM from an existing snapshot by using the web console
 
 You can create a new VM by copying an existing snapshot.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
 
@@ -60,8 +45,6 @@ Procedure
 7.  (Optional) Select the **Start this VirtualMachine after creation** checkbox to start the new virtual machine.
 
 8.  Click **Create**.
-
-</div>
 
 # Additional resources
 

@@ -8,19 +8,25 @@ You must specify the minimum required machines or hosts for your cluster so that
 
 The smallest OpenShift Container Platform clusters require the following hosts:
 
-> [!IMPORTANT]
-> For a cluster that contains user-provisioned infrastructure, you must deploy all of the required machines.
+<div class="important">
 
-| Hosts | Description |
-|----|----|
-| One temporary bootstrap machine | The cluster requires the bootstrap machine to deploy the OpenShift Container Platform cluster on the three control plane machines. You can remove the bootstrap machine after you install the cluster. |
-| Three control plane machines | The control plane machines run the Kubernetes and OpenShift Container Platform services that form the control plane. |
-| At least two compute machines, which are also known as worker machines. | The workloads requested by OpenShift Container Platform users run on the compute machines. |
+For a cluster that contains user-provisioned infrastructure, you must deploy all of the required machines.
+
+</div>
+
+| Hosts                                                                   | Description                                                                                                                                                                                            |
+|-------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| One temporary bootstrap machine                                         | The cluster requires the bootstrap machine to deploy the OpenShift Container Platform cluster on the three control plane machines. You can remove the bootstrap machine after you install the cluster. |
+| Three control plane machines                                            | The control plane machines run the Kubernetes and OpenShift Container Platform services that form the control plane.                                                                                   |
+| At least two compute machines, which are also known as worker machines. | The workloads requested by OpenShift Container Platform users run on the compute machines.                                                                                                             |
 
 Minimum required hosts
 
-> [!IMPORTANT]
-> To maintain high availability of your cluster, use separate physical hosts for these cluster machines.
+<div class="important">
+
+To maintain high availability of your cluster, use separate physical hosts for these cluster machines.
+
+</div>
 
 The bootstrap and control plane machines must use Red Hat Enterprise Linux CoreOS (RHCOS) as the operating system. However, the compute machines can choose between Red Hat Enterprise Linux CoreOS (RHCOS), Red Hat Enterprise Linux (RHEL) 8.6 and later.
 
@@ -30,11 +36,11 @@ Note that RHCOS is based on Red Hat Enterprise Linux (RHEL) 9.2 and inherits al
 
 Each created cluster must meet minimum requirements so that the cluster runs as expected.
 
-| Machine | Operating System | vCPU <sup>\[1\]</sup> | Virtual RAM | Storage | Input/Output Per Second (IOPS)<sup>\[2\]</sup> |
-|----|----|----|----|----|----|
-| Bootstrap | RHCOS | 4 | 16 GB | 100 GB | 300 |
-| Control plane | RHCOS | 4 | 16 GB | 100 GB | 300 |
-| Compute | RHCOS | 2 | 8 GB | 100 GB | 300 |
+| Machine       | Operating System | vCPU <sup>\[1\]</sup> | Virtual RAM | Storage | Input/Output Per Second (IOPS)<sup>\[2\]</sup> |
+|---------------|------------------|-----------------------|-------------|---------|------------------------------------------------|
+| Bootstrap     | RHCOS            | 4                     | 16 GB       | 100 GB  | 300                                            |
+| Control plane | RHCOS            | 4                     | 16 GB       | 100 GB  | 300                                            |
+| Compute       | RHCOS            | 2                     | 8 GB        | 100 GB  | 300                                            |
 
 Minimum resource requirements
 
@@ -44,70 +50,49 @@ Minimum resource requirements
 
 3.  As with all user-provisioned installations, if you choose to use RHEL compute machines in your cluster, you take responsibility for all operating system life cycle management and maintenance, including performing system updates, applying patches, and completing all other required tasks. Use of RHEL 7 compute machines is deprecated and has been removed in OpenShift Container Platform 4.10 and later.
 
-> [!NOTE]
-> For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.6, which updates the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
->
-> - x86-64 architecture requires x86-64-v2 ISA
->
-> - ARM64 architecture requires ARMv8.0-A ISA
->
-> - IBM Power architecture requires Power 9 ISA
->
-> - s390x architecture requires z14 ISA
->
-> For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures) (RHEL documentation).
+<div class="note">
+
+For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.6, which updates the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
+
+- x86-64 architecture requires x86-64-v2 ISA
+
+- ARM64 architecture requires ARMv8.0-A ISA
+
+- IBM Power architecture requires Power 9 ISA
+
+- s390x architecture requires z14 ISA
+
+For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures) (RHEL documentation).
+
+</div>
 
 If an instance type for your platform meets the minimum requirements for cluster machines, it is supported to use in OpenShift Container Platform.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Optimizing storage](../../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage)
-
-</div>
 
 ## Tested instance types for AWS
 
 The following Amazon Web Services (AWS) instance types have been tested with OpenShift Container Platform.
 
-> [!NOTE]
-> Use the machine types included in the following charts for your AWS instances. If you use an instance type that is not listed in the chart, ensure that the instance size you use matches the minimum resource requirements that are listed in the section named "Minimum resource requirements for cluster installation".
+<div class="note">
 
-<div class="example">
-
-<div class="title">
-
-Machine types based on 64-bit x86 architecture
+Use the machine types included in the following charts for your AWS instances. If you use an instance type that is not listed in the chart, ensure that the instance size you use matches the minimum resource requirements that are listed in the section named "Minimum resource requirements for cluster installation".
 
 </div>
 
 <https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/aws/tested_instance_types_x86_64.md>
 
-</div>
-
 ## Tested instance types for AWS on 64-bit ARM infrastructures
 
 The following Amazon Web Services (AWS) 64-bit ARM instance types have been tested with OpenShift Container Platform.
 
-> [!NOTE]
-> Use the machine types included in the following charts for your AWS ARM instances. If you use an instance type that is not listed in the chart, ensure that the instance size you use matches the minimum resource requirements that are listed in "Minimum resource requirements for cluster installation".
+<div class="note">
 
-<div class="example">
-
-<div class="title">
-
-Machine types based on 64-bit ARM architecture
+Use the machine types included in the following charts for your AWS ARM instances. If you use an instance type that is not listed in the chart, ensure that the instance size you use matches the minimum resource requirements that are listed in "Minimum resource requirements for cluster installation".
 
 </div>
 
 <https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/aws/tested_instance_types_aarch64.md>
-
-</div>
 
 # Certificate signing requests management
 
@@ -183,17 +168,13 @@ As part of the installation process, you can configure an HTTP or HTTPS proxy wi
 
 When configuring the proxy in the `install-config.yaml` file, add these endpoints to the `noProxy` field. With this option, the proxy prevents the cluster from accessing the internet directly. However, network traffic remains private between your VPC and the required AWS services.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Required VPC components
+**Required VPC components**
 
 </div>
 
 You must provide a suitable VPC and subnets that allow communication to your machines.
-
-</div>
 
 <table>
 <colgroup>
@@ -203,14 +184,14 @@ You must provide a suitable VPC and subnets that allow communication to your mac
 <col style="width: 20%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Component</th>
 <th style="text-align: left;">AWS type</th>
 <th colspan="2" style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>VPC</p></td>
 <td style="text-align: left;"><ul>
 <li><p><code>AWS::EC2::VPC</code></p></li>
@@ -218,7 +199,7 @@ You must provide a suitable VPC and subnets that allow communication to your mac
 </ul></td>
 <td colspan="2" style="text-align: left;"><p>You must provide a public VPC for the cluster to use. The VPC uses an endpoint that references the route tables for each subnet to improve communication with the registry that is hosted in S3.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Public subnets</p></td>
 <td style="text-align: left;"><ul>
 <li><p><code>AWS::EC2::Subnet</code></p></li>
@@ -226,7 +207,7 @@ You must provide a suitable VPC and subnets that allow communication to your mac
 </ul></td>
 <td colspan="2" style="text-align: left;"><p>Your VPC must have public subnets for between 1 and 3 availability zones and associate them with appropriate Ingress rules.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Internet gateway</p></td>
 <td style="text-align: left;"><ul>
 <li><p><code>AWS::EC2::InternetGateway</code></p></li>
@@ -239,39 +220,51 @@ You must provide a suitable VPC and subnets that allow communication to your mac
 </ul></td>
 <td colspan="2" style="text-align: left;"><p>You must have a public internet gateway, with public routes, attached to the VPC. In the provided templates, each public subnet has a NAT gateway with an EIP address. These NAT gateways allow cluster resources, like private subnet instances, to reach the internet and are not required for some restricted network or proxy scenarios.</p></td>
 </tr>
-<tr>
-<td rowspan="7" style="text-align: left;"><p>Network access control</p></td>
-<td rowspan="7" style="text-align: left;"><ul>
+<tr class="even">
+<td style="text-align: left;"><p>Network access control</p></td>
+<td style="text-align: left;"><ul>
 <li><p><code>AWS::EC2::NetworkAcl</code></p></li>
 <li><p><code>AWS::EC2::NetworkAclEntry</code></p></li>
 </ul></td>
 <td colspan="2" style="text-align: left;"><p>You must allow the VPC to access the following ports:</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><strong>Port</strong></p></td>
 <td style="text-align: left;"><p><strong>Reason</strong></p></td>
+<td></td>
+<td></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>80</code></p></td>
 <td style="text-align: left;"><p>Inbound HTTP traffic</p></td>
+<td></td>
+<td></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>443</code></p></td>
 <td style="text-align: left;"><p>Inbound HTTPS traffic</p></td>
+<td></td>
+<td></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>22</code></p></td>
 <td style="text-align: left;"><p>Inbound SSH traffic</p></td>
+<td></td>
+<td></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>1024</code> - <code>65535</code></p></td>
 <td style="text-align: left;"><p>Inbound ephemeral traffic</p></td>
+<td></td>
+<td></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>0</code> - <code>65535</code></p></td>
 <td style="text-align: left;"><p>Outbound ephemeral traffic</p></td>
+<td></td>
+<td></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Private subnets</p></td>
 <td style="text-align: left;"><ul>
 <li><p><code>AWS::EC2::Subnet</code></p></li>
@@ -283,247 +276,130 @@ You must provide a suitable VPC and subnets that allow communication to your mac
 </tbody>
 </table>
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Required DNS and load balancing components
+**Required DNS and load balancing components**
 
 </div>
 
 Your DNS and load balancer configuration needs to use a public hosted zone and can use a private hosted zone similar to the one that the installation program uses if it provisions the cluster’s infrastructure. You must create a DNS entry that resolves to your load balancer. An entry for `api.<cluster_name>.<domain>` must point to the external load balancer, and an entry for `api-int.<cluster_name>.<domain>` must point to the internal load balancer.
 
-</div>
-
 The cluster also requires load balancers and listeners for port 6443, which are required for the Kubernetes API and its extensions, and port 22623, which are required for the Ignition config files for new machines. The targets will be the control plane nodes. Port 6443 must be accessible to both clients external to the cluster and nodes within the cluster. Port 22623 must be accessible to nodes within the cluster.
 
-| Component | AWS type | Description |
-|----|----|----|
-| DNS | `AWS::Route53::HostedZone` | The hosted zone for your internal DNS. |
-| Public load balancer | `AWS::ElasticLoadBalancingV2::LoadBalancer` | The load balancer for your public subnets. |
-| External API server record | `AWS::Route53::RecordSetGroup` | Alias records for the external API server. |
-| External listener | `AWS::ElasticLoadBalancingV2::Listener` | A listener on port 6443 for the external load balancer. |
-| External target group | `AWS::ElasticLoadBalancingV2::TargetGroup` | The target group for the external load balancer. |
-| Private load balancer | `AWS::ElasticLoadBalancingV2::LoadBalancer` | The load balancer for your private subnets. |
-| Internal API server record | `AWS::Route53::RecordSetGroup` | Alias records for the internal API server. |
-| Internal listener | `AWS::ElasticLoadBalancingV2::Listener` | A listener on port 22623 for the internal load balancer. |
-| Internal target group | `AWS::ElasticLoadBalancingV2::TargetGroup` | The target group for the internal load balancer. |
-| Internal listener | `AWS::ElasticLoadBalancingV2::Listener` | A listener on port 6443 for the internal load balancer. |
-| Internal target group | `AWS::ElasticLoadBalancingV2::TargetGroup` | The target group for the internal load balancer. |
+| Component                  | AWS type                                    | Description                                              |
+|----------------------------|---------------------------------------------|----------------------------------------------------------|
+| DNS                        | `AWS::Route53::HostedZone`                  | The hosted zone for your internal DNS.                   |
+| Public load balancer       | `AWS::ElasticLoadBalancingV2::LoadBalancer` | The load balancer for your public subnets.               |
+| External API server record | `AWS::Route53::RecordSetGroup`              | Alias records for the external API server.               |
+| External listener          | `AWS::ElasticLoadBalancingV2::Listener`     | A listener on port 6443 for the external load balancer.  |
+| External target group      | `AWS::ElasticLoadBalancingV2::TargetGroup`  | The target group for the external load balancer.         |
+| Private load balancer      | `AWS::ElasticLoadBalancingV2::LoadBalancer` | The load balancer for your private subnets.              |
+| Internal API server record | `AWS::Route53::RecordSetGroup`              | Alias records for the internal API server.               |
+| Internal listener          | `AWS::ElasticLoadBalancingV2::Listener`     | A listener on port 22623 for the internal load balancer. |
+| Internal target group      | `AWS::ElasticLoadBalancingV2::TargetGroup`  | The target group for the internal load balancer.         |
+| Internal listener          | `AWS::ElasticLoadBalancingV2::Listener`     | A listener on port 6443 for the internal load balancer.  |
+| Internal target group      | `AWS::ElasticLoadBalancingV2::TargetGroup`  | The target group for the internal load balancer.         |
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Security groups
+**Security groups**
 
 </div>
 
 The control plane and worker machines require access to the following ports:
 
-</div>
+| Group                    | Type                      | IP Protocol | Port range |
+|--------------------------|---------------------------|-------------|------------|
+| `MasterSecurityGroup`    | `AWS::EC2::SecurityGroup` | `icmp`      | `0`        |
+| `tcp`                    | `22`                      |             |            |
+| `tcp`                    | `6443`                    |             |            |
+| `tcp`                    | `22623`                   |             |            |
+| `WorkerSecurityGroup`    | `AWS::EC2::SecurityGroup` | `icmp`      | `0`        |
+| `tcp`                    | `22`                      |             |            |
+| `BootstrapSecurityGroup` | `AWS::EC2::SecurityGroup` | `tcp`       | `22`       |
+| `tcp`                    | `19531`                   |             |            |
 
-<table>
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Group</th>
-<th style="text-align: left;">Type</th>
-<th style="text-align: left;">IP Protocol</th>
-<th style="text-align: left;">Port range</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td rowspan="4" style="text-align: left;"><p><code>MasterSecurityGroup</code></p></td>
-<td rowspan="4" style="text-align: left;"><p><code>AWS::EC2::SecurityGroup</code></p></td>
-<td style="text-align: left;"><p><code>icmp</code></p></td>
-<td style="text-align: left;"><p><code>0</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>tcp</code></p></td>
-<td style="text-align: left;"><p><code>22</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>tcp</code></p></td>
-<td style="text-align: left;"><p><code>6443</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>tcp</code></p></td>
-<td style="text-align: left;"><p><code>22623</code></p></td>
-</tr>
-<tr>
-<td rowspan="2" style="text-align: left;"><p><code>WorkerSecurityGroup</code></p></td>
-<td rowspan="2" style="text-align: left;"><p><code>AWS::EC2::SecurityGroup</code></p></td>
-<td style="text-align: left;"><p><code>icmp</code></p></td>
-<td style="text-align: left;"><p><code>0</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>tcp</code></p></td>
-<td style="text-align: left;"><p><code>22</code></p></td>
-</tr>
-<tr>
-<td rowspan="2" style="text-align: left;"><p><code>BootstrapSecurityGroup</code></p></td>
-<td rowspan="2" style="text-align: left;"><p><code>AWS::EC2::SecurityGroup</code></p></td>
-<td style="text-align: left;"><p><code>tcp</code></p></td>
-<td style="text-align: left;"><p><code>22</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>tcp</code></p></td>
-<td style="text-align: left;"><p><code>19531</code></p></td>
-</tr>
-</tbody>
-</table>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Control plane Ingress
+**Control plane Ingress**
 
 </div>
 
 The control plane machines require the following Ingress groups. Each Ingress group is a `AWS::EC2::SecurityGroupIngress` resource.
 
-</div>
+| Ingress group                           | Description                                                 | IP protocol | Port range        |
+|-----------------------------------------|-------------------------------------------------------------|-------------|-------------------|
+| `MasterIngressEtcd`                     | etcd                                                        | `tcp`       | `2379`- `2380`    |
+| `MasterIngressVxlan`                    | Vxlan packets                                               | `udp`       | `6081`            |
+| `MasterIngressWorkerVxlan`              | Vxlan packets                                               | `udp`       | `6081`            |
+| `MasterIngressInternal`                 | Internal cluster communication and Kubernetes proxy metrics | `tcp`       | `9000` - `9999`   |
+| `MasterIngressWorkerInternal`           | Internal cluster communication                              | `tcp`       | `9000` - `9999`   |
+| `MasterIngressKube`                     | Kubernetes kubelet, scheduler and controller manager        | `tcp`       | `10250` - `10259` |
+| `MasterIngressWorkerKube`               | Kubernetes kubelet, scheduler and controller manager        | `tcp`       | `10250` - `10259` |
+| `MasterIngressIngressServices`          | Kubernetes Ingress services                                 | `tcp`       | `30000` - `32767` |
+| `MasterIngressWorkerIngressServices`    | Kubernetes Ingress services                                 | `tcp`       | `30000` - `32767` |
+| `MasterIngressGeneve`                   | Geneve packets                                              | `udp`       | `6081`            |
+| `MasterIngressWorkerGeneve`             | Geneve packets                                              | `udp`       | `6081`            |
+| `MasterIngressIpsecIke`                 | IPsec IKE packets                                           | `udp`       | `500`             |
+| `MasterIngressWorkerIpsecIke`           | IPsec IKE packets                                           | `udp`       | `500`             |
+| `MasterIngressIpsecNat`                 | IPsec NAT-T packets                                         | `udp`       | `4500`            |
+| `MasterIngressWorkerIpsecNat`           | IPsec NAT-T packets                                         | `udp`       | `4500`            |
+| `MasterIngressIpsecEsp`                 | IPsec ESP packets                                           | `50`        | `All`             |
+| `MasterIngressWorkerIpsecEsp`           | IPsec ESP packets                                           | `50`        | `All`             |
+| `MasterIngressInternalUDP`              | Internal cluster communication                              | `udp`       | `9000` - `9999`   |
+| `MasterIngressWorkerInternalUDP`        | Internal cluster communication                              | `udp`       | `9000` - `9999`   |
+| `MasterIngressIngressServicesUDP`       | Kubernetes Ingress services                                 | `udp`       | `30000` - `32767` |
+| `MasterIngressWorkerIngressServicesUDP` | Kubernetes Ingress services                                 | `udp`       | `30000` - `32767` |
 
-| Ingress group | Description | IP protocol | Port range |
-|----|----|----|----|
-| `MasterIngressEtcd` | etcd | `tcp` | `2379`- `2380` |
-| `MasterIngressVxlan` | Vxlan packets | `udp` | `6081` |
-| `MasterIngressWorkerVxlan` | Vxlan packets | `udp` | `6081` |
-| `MasterIngressInternal` | Internal cluster communication and Kubernetes proxy metrics | `tcp` | `9000` - `9999` |
-| `MasterIngressWorkerInternal` | Internal cluster communication | `tcp` | `9000` - `9999` |
-| `MasterIngressKube` | Kubernetes kubelet, scheduler and controller manager | `tcp` | `10250` - `10259` |
-| `MasterIngressWorkerKube` | Kubernetes kubelet, scheduler and controller manager | `tcp` | `10250` - `10259` |
-| `MasterIngressIngressServices` | Kubernetes Ingress services | `tcp` | `30000` - `32767` |
-| `MasterIngressWorkerIngressServices` | Kubernetes Ingress services | `tcp` | `30000` - `32767` |
-| `MasterIngressGeneve` | Geneve packets | `udp` | `6081` |
-| `MasterIngressWorkerGeneve` | Geneve packets | `udp` | `6081` |
-| `MasterIngressIpsecIke` | IPsec IKE packets | `udp` | `500` |
-| `MasterIngressWorkerIpsecIke` | IPsec IKE packets | `udp` | `500` |
-| `MasterIngressIpsecNat` | IPsec NAT-T packets | `udp` | `4500` |
-| `MasterIngressWorkerIpsecNat` | IPsec NAT-T packets | `udp` | `4500` |
-| `MasterIngressIpsecEsp` | IPsec ESP packets | `50` | `All` |
-| `MasterIngressWorkerIpsecEsp` | IPsec ESP packets | `50` | `All` |
-| `MasterIngressInternalUDP` | Internal cluster communication | `udp` | `9000` - `9999` |
-| `MasterIngressWorkerInternalUDP` | Internal cluster communication | `udp` | `9000` - `9999` |
-| `MasterIngressIngressServicesUDP` | Kubernetes Ingress services | `udp` | `30000` - `32767` |
-| `MasterIngressWorkerIngressServicesUDP` | Kubernetes Ingress services | `udp` | `30000` - `32767` |
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Worker Ingress
+**Worker Ingress**
 
 </div>
 
 The worker machines require the following Ingress groups. Each Ingress group is a `AWS::EC2::SecurityGroupIngress` resource.
 
-</div>
+| Ingress group                           | Description                                           | IP protocol | Port range        |
+|-----------------------------------------|-------------------------------------------------------|-------------|-------------------|
+| `WorkerIngressVxlan`                    | Vxlan packets                                         | `udp`       | `6081`            |
+| `WorkerIngressWorkerVxlan`              | Vxlan packets                                         | `udp`       | `6081`            |
+| `WorkerIngressInternal`                 | Internal cluster communication                        | `tcp`       | `9000` - `9999`   |
+| `WorkerIngressWorkerInternal`           | Internal cluster communication                        | `tcp`       | `9000` - `9999`   |
+| `WorkerIngressKube`                     | Kubernetes kubelet, scheduler, and controller manager | `tcp`       | `10250`           |
+| `WorkerIngressWorkerKube`               | Kubernetes kubelet, scheduler, and controller manager | `tcp`       | `10250`           |
+| `WorkerIngressIngressServices`          | Kubernetes Ingress services                           | `tcp`       | `30000` - `32767` |
+| `WorkerIngressWorkerIngressServices`    | Kubernetes Ingress services                           | `tcp`       | `30000` - `32767` |
+| `WorkerIngressGeneve`                   | Geneve packets                                        | `udp`       | `6081`            |
+| `WorkerIngressMasterGeneve`             | Geneve packets                                        | `udp`       | `6081`            |
+| `WorkerIngressIpsecIke`                 | IPsec IKE packets                                     | `udp`       | `500`             |
+| `WorkerIngressMasterIpsecIke`           | IPsec IKE packets                                     | `udp`       | `500`             |
+| `WorkerIngressIpsecNat`                 | IPsec NAT-T packets                                   | `udp`       | `4500`            |
+| `WorkerIngressMasterIpsecNat`           | IPsec NAT-T packets                                   | `udp`       | `4500`            |
+| `WorkerIngressIpsecEsp`                 | IPsec ESP packets                                     | `50`        | `All`             |
+| `WorkerIngressMasterIpsecEsp`           | IPsec ESP packets                                     | `50`        | `All`             |
+| `WorkerIngressInternalUDP`              | Internal cluster communication                        | `udp`       | `9000` - `9999`   |
+| `WorkerIngressMasterInternalUDP`        | Internal cluster communication                        | `udp`       | `9000` - `9999`   |
+| `WorkerIngressIngressServicesUDP`       | Kubernetes Ingress services                           | `udp`       | `30000` - `32767` |
+| `WorkerIngressMasterIngressServicesUDP` | Kubernetes Ingress services                           | `udp`       | `30000` - `32767` |
 
-| Ingress group | Description | IP protocol | Port range |
-|----|----|----|----|
-| `WorkerIngressVxlan` | Vxlan packets | `udp` | `6081` |
-| `WorkerIngressWorkerVxlan` | Vxlan packets | `udp` | `6081` |
-| `WorkerIngressInternal` | Internal cluster communication | `tcp` | `9000` - `9999` |
-| `WorkerIngressWorkerInternal` | Internal cluster communication | `tcp` | `9000` - `9999` |
-| `WorkerIngressKube` | Kubernetes kubelet, scheduler, and controller manager | `tcp` | `10250` |
-| `WorkerIngressWorkerKube` | Kubernetes kubelet, scheduler, and controller manager | `tcp` | `10250` |
-| `WorkerIngressIngressServices` | Kubernetes Ingress services | `tcp` | `30000` - `32767` |
-| `WorkerIngressWorkerIngressServices` | Kubernetes Ingress services | `tcp` | `30000` - `32767` |
-| `WorkerIngressGeneve` | Geneve packets | `udp` | `6081` |
-| `WorkerIngressMasterGeneve` | Geneve packets | `udp` | `6081` |
-| `WorkerIngressIpsecIke` | IPsec IKE packets | `udp` | `500` |
-| `WorkerIngressMasterIpsecIke` | IPsec IKE packets | `udp` | `500` |
-| `WorkerIngressIpsecNat` | IPsec NAT-T packets | `udp` | `4500` |
-| `WorkerIngressMasterIpsecNat` | IPsec NAT-T packets | `udp` | `4500` |
-| `WorkerIngressIpsecEsp` | IPsec ESP packets | `50` | `All` |
-| `WorkerIngressMasterIpsecEsp` | IPsec ESP packets | `50` | `All` |
-| `WorkerIngressInternalUDP` | Internal cluster communication | `udp` | `9000` - `9999` |
-| `WorkerIngressMasterInternalUDP` | Internal cluster communication | `udp` | `9000` - `9999` |
-| `WorkerIngressIngressServicesUDP` | Kubernetes Ingress services | `udp` | `30000` - `32767` |
-| `WorkerIngressMasterIngressServicesUDP` | Kubernetes Ingress services | `udp` | `30000` - `32767` |
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Roles and instance profiles
+**Roles and instance profiles**
 
 </div>
 
 You must grant the machines permissions in AWS. The provided CloudFormation templates grant the machines `Allow` permissions for the following `AWS::IAM::Role` objects and provide a `AWS::IAM::InstanceProfile` for each set of roles. If you do not use the templates, you can grant the machines the following broad permissions or the following individual permissions.
 
-</div>
-
-<table>
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Role</th>
-<th style="text-align: left;">Effect</th>
-<th style="text-align: left;">Action</th>
-<th style="text-align: left;">Resource</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td rowspan="4" style="text-align: left;"><p>Master</p></td>
-<td style="text-align: left;"><p><code>Allow</code></p></td>
-<td style="text-align: left;"><p><code>ec2:*</code></p></td>
-<td style="text-align: left;"><p><code>*</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>Allow</code></p></td>
-<td style="text-align: left;"><p><code>elasticloadbalancing:*</code></p></td>
-<td style="text-align: left;"><p><code>*</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>Allow</code></p></td>
-<td style="text-align: left;"><p><code>iam:PassRole</code></p></td>
-<td style="text-align: left;"><p><code>*</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>Allow</code></p></td>
-<td style="text-align: left;"><p><code>s3:GetObject</code></p></td>
-<td style="text-align: left;"><p><code>*</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Worker</p></td>
-<td style="text-align: left;"><p><code>Allow</code></p></td>
-<td style="text-align: left;"><p><code>ec2:Describe*</code></p></td>
-<td style="text-align: left;"><p><code>*</code></p></td>
-</tr>
-<tr>
-<td rowspan="3" style="text-align: left;"><p>Bootstrap</p></td>
-<td style="text-align: left;"><p><code>Allow</code></p></td>
-<td style="text-align: left;"><p><code>ec2:Describe*</code></p></td>
-<td style="text-align: left;"><p><code>*</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>Allow</code></p></td>
-<td style="text-align: left;"><p><code>ec2:AttachVolume</code></p></td>
-<td style="text-align: left;"><p><code>*</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>Allow</code></p></td>
-<td style="text-align: left;"><p><code>ec2:DetachVolume</code></p></td>
-<td style="text-align: left;"><p><code>*</code></p></td>
-</tr>
-</tbody>
-</table>
+| Role      | Effect                   | Action          | Resource |
+|-----------|--------------------------|-----------------|----------|
+| Master    | `Allow`                  | `ec2:*`         | `*`      |
+| `Allow`   | `elasticloadbalancing:*` | `*`             |          |
+| `Allow`   | `iam:PassRole`           | `*`             |          |
+| `Allow`   | `s3:GetObject`           | `*`             |          |
+| Worker    | `Allow`                  | `ec2:Describe*` | `*`      |
+| Bootstrap | `Allow`                  | `ec2:Describe*` | `*`      |
+| `Allow`   | `ec2:AttachVolume`       | `*`             |          |
+| `Allow`   | `ec2:DetachVolume`       | `*`             |          |
 
 ## Cluster machines
 
@@ -539,18 +415,13 @@ You need `AWS::EC2::Instance` objects for the following machines:
 
 To deploy all components of an OpenShift Container Platform cluster, you must grant the all the required permissions to the IAM user that you create in Amazon Web Services (AWS).
 
-> [!NOTE]
-> Your IAM user must have the permission `tag:GetResources` in the region `us-east-1` to delete the base cluster resources. As part of the AWS API requirement, the OpenShift Container Platform installation program performs various actions in this region.
+<div class="note">
 
-When you attach the `AdministratorAccess` policy to the IAM user that you create in Amazon Web Services (AWS), you grant that user all of the required permissions. To deploy all components of an OpenShift Container Platform cluster, the IAM user requires the following permissions:
-
-<div class="example">
-
-<div class="title">
-
-Required EC2 permissions for installation
+Your IAM user must have the permission `tag:GetResources` in the region `us-east-1` to delete the base cluster resources. As part of the AWS API requirement, the OpenShift Container Platform installation program performs various actions in this region.
 
 </div>
+
+When you attach the `AdministratorAccess` policy to the IAM user that you create in Amazon Web Services (AWS), you grant that user all of the required permissions. To deploy all components of an OpenShift Container Platform cluster, the IAM user requires the following permissions:
 
 - `ec2:AttachNetworkInterface`
 
@@ -650,15 +521,7 @@ Required EC2 permissions for installation
 
 - `ec2:TerminateInstances`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions for creating network resources during installation
-
-</div>
+<!-- -->
 
 - `ec2:AllocateAddress`
 
@@ -690,16 +553,9 @@ Required permissions for creating network resources during installation
 
 - `ec2:ModifyVpcAttribute`
 
-> [!NOTE]
-> If you use an existing Virtual Private Cloud (VPC), your account does not require these permissions for creating network resources.
+<div class="note">
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required Elastic Load Balancing permissions (ELB) for installation
+If you use an existing Virtual Private Cloud (VPC), your account does not require these permissions for creating network resources.
 
 </div>
 
@@ -753,16 +609,9 @@ Required Elastic Load Balancing permissions (ELB) for installation
 
 - `elasticloadbalancing:SetSecurityGroups`
 
-> [!IMPORTANT]
-> OpenShift Container Platform uses both the ELB and ELBv2 API services to provision load balancers. The permission list shows permissions required by both services. A known issue exists in the AWS web console where both services use the same `elasticloadbalancing` action prefix but do not recognize the same actions. You can ignore the warnings about the service not recognizing certain `elasticloadbalancing` actions.
+<div class="important">
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required IAM permissions for installation
+OpenShift Container Platform uses both the ELB and ELBv2 API services to provision load balancers. The permission list shows permissions required by both services. A known issue exists in the AWS web console where both services use the same `elasticloadbalancing` action prefix but do not recognize the same actions. You can ignore the warnings about the service not recognizing certain `elasticloadbalancing` actions.
 
 </div>
 
@@ -806,23 +655,9 @@ Required IAM permissions for installation
 
 <div class="note">
 
-<div class="title">
-
-</div>
-
 - If you specify an existing IAM role in the `install-config.yaml` file, the following IAM permissions are not required: `iam:CreateRole`,`iam:DeleteRole`, `iam:DeleteRolePolicy`, and `iam:PutRolePolicy`.
 
 - If you have not created a load balancer in your AWS account, the IAM user also requires the `iam:CreateServiceLinkedRole` permission.
-
-</div>
-
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required Route 53 permissions for installation
 
 </div>
 
@@ -848,15 +683,7 @@ Required Route 53 permissions for installation
 
 - `route53:UpdateHostedZoneComment`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required Amazon Simple Storage Service (S3) permissions for installation
-
-</div>
+<!-- -->
 
 - `s3:CreateBucket`
 
@@ -900,15 +727,7 @@ Required Amazon Simple Storage Service (S3) permissions for installation
 
 - `s3:PutEncryptionConfiguration`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-S3 permissions that cluster Operators require
-
-</div>
+<!-- -->
 
 - `s3:DeleteObject`
 
@@ -926,15 +745,7 @@ S3 permissions that cluster Operators require
 
 - `s3:PutObjectTagging`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions to delete base cluster resources
-
-</div>
+<!-- -->
 
 - `autoscaling:DescribeAutoScalingGroups`
 
@@ -968,15 +779,7 @@ Required permissions to delete base cluster resources
 
 - `tag:GetResources`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions to delete network resources
-
-</div>
+<!-- -->
 
 - `ec2:DeleteDhcpOptions`
 
@@ -1002,16 +805,9 @@ Required permissions to delete network resources
 
 - `ec2:ReplaceRouteTableAssociation`
 
-> [!NOTE]
-> If you use an existing VPC, your account does not require these permissions to delete network resources. Instead, your account only requires the `tag:UntagResources` permission to delete network resources.
+<div class="note">
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Optional permissions for installing a cluster with a custom Key Management Service (KMS) key
+If you use an existing VPC, your account does not require these permissions to delete network resources. Instead, your account only requires the `tag:UntagResources` permission to delete network resources.
 
 </div>
 
@@ -1031,42 +827,19 @@ Optional permissions for installing a cluster with a custom Key Management Servi
 
 - `kms:RevokeGrant`
 
-> [!NOTE]
-> If you provide an Amazon Machine Image (AMI) that is encrypted with a customer-managed key, you must provide the `kms:ReEncrypt*` permissions in addition to these permissions.
+<div class="note">
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions to delete a cluster with shared instance roles
+If you provide an Amazon Machine Image (AMI) that is encrypted with a customer-managed key, you must provide the `kms:ReEncrypt*` permissions in addition to these permissions.
 
 </div>
 
 - `iam:UntagRole`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions to delete a cluster with shared instance profiles
-
-</div>
+<!-- -->
 
 - `tag:UntagResources`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Additional IAM and S3 permissions that are required to create manifests
-
-</div>
+<!-- -->
 
 - `iam:GetUserPolicy`
 
@@ -1088,76 +861,34 @@ Additional IAM and S3 permissions that are required to create manifests
 
 - `s3:PutLifecycleConfiguration`
 
-> [!NOTE]
-> If you are managing your cloud provider credentials with mint mode, the IAM user also requires the `iam:CreateAccessKey` and `iam:CreateUser` permissions.
+<div class="note">
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Optional permissions for instance and quota checks for installation
+If you are managing your cloud provider credentials with mint mode, the IAM user also requires the `iam:CreateAccessKey` and `iam:CreateUser` permissions.
 
 </div>
 
 - `servicequotas:ListAWSDefaultServiceQuotas`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Optional permissions for the cluster owner account when installing a cluster on a shared VPC
-
-</div>
+<!-- -->
 
 - `sts:AssumeRole`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions for enabling Bring your own public IPv4 addresses (BYOIP) feature for installation
-
-</div>
+<!-- -->
 
 - `ec2:DescribePublicIpv4Pools`
 
 - `ec2:DisassociateAddress`
 
-</div>
-
 # Obtaining an AWS Marketplace image
 
 If you are deploying an OpenShift Container Platform cluster using an AWS Marketplace image, you must first subscribe through AWS. Subscribing to the offer provides you with the AMI ID that the installation program uses to deploy compute nodes.
 
-> [!NOTE]
-> You should only modify the RHCOS image for compute machines to use an AWS Marketplace image. Control plane machines and infrastructure nodes do not require an OpenShift Container Platform subscription and use the public RHCOS default image by default, which does not incur subscription costs on your AWS bill. Therefore, you should not modify the cluster default boot image or the control plane boot images. Applying the AWS Marketplace image to them will incur additional licensing costs that cannot be recovered.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You should only modify the RHCOS image for compute machines to use an AWS Marketplace image. Control plane machines and infrastructure nodes do not require an OpenShift Container Platform subscription and use the public RHCOS default image by default, which does not incur subscription costs on your AWS bill. Therefore, you should not modify the cluster default boot image or the control plane boot images. Applying the AWS Marketplace image to them will incur additional licensing costs that cannot be recovered.
 
 </div>
 
 - You have an AWS account to purchase the offer. This account does not have to be the same account that is used to install the cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845).
-
-</div>

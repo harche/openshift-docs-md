@@ -4,10 +4,13 @@ To use image streams with both OpenShift Container Platform native resources and
 
 When using Kubernetes resources, you must reference image streams located within the same project by specifying a single segment value, such as `ruby:2.5`, which identifies the image stream name and its tag. This ensures the resource correctly targets the local image stream within its scope.
 
-> [!IMPORTANT]
-> Do not run workloads in or share access to default projects. Default projects are reserved for running core cluster components.
->
-> The following default projects are considered highly privileged: `default`, `kube-public`, `kube-system`, `openshift`, `openshift-infra`, `openshift-node`, and other system-created projects that have the `openshift.io/run-level` label set to `0` or `1`. Functionality that relies on admission plugins, such as pod security admission, security context constraints, cluster resource quotas, and image reference resolution, does not work in highly privileged projects.
+<div class="important">
+
+Do not run workloads in or share access to default projects. Default projects are reserved for running core cluster components.
+
+The following default projects are considered highly privileged: `default`, `kube-public`, `kube-system`, `openshift`, `openshift-infra`, `openshift-node`, and other system-created projects that have the `openshift.io/run-level` label set to `0` or `1`. Functionality that relies on admission plugins, such as pod security admission, security context constraints, cluster resource quotas, and image reference resolution, does not work in highly privileged projects.
+
+</div>
 
 There are two ways to enable image streams with Kubernetes resources:
 
@@ -17,14 +20,6 @@ There are two ways to enable image streams with Kubernetes resources:
 
 You can use `oc set image-lookup` to enable image stream resolution on a specific resource or image stream resolution on an image stream.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To allow all resources to reference the image stream named `mysql`, enter the following command:
 
     ``` terminal
@@ -33,11 +28,9 @@ Procedure
 
     This sets the `Imagestream.spec.lookupPolicy.local` field to true.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Imagestream with image lookup enabled
+    **Imagestream with image lookup enabled**
 
     </div>
 
@@ -53,8 +46,6 @@ Procedure
       lookupPolicy:
         local: true
     ```
-
-    </div>
 
     When enabled, the behavior is enabled for all tags within the image stream.
 
@@ -74,11 +65,9 @@ Procedure
 
     This sets the `alpha.image.policy.openshift.io/resolve-names` annotation on the deployment.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Deployment with image lookup enabled
+    **Deployment with image lookup enabled**
 
     </div>
 
@@ -101,12 +90,8 @@ Procedure
             name: mysql
     ```
 
-    </div>
-
 4.  Optional: To disable image lookup, pass `--enabled=false`:
 
     ``` terminal
     $ oc set image-lookup deploy/mysql --enabled=false
     ```
-
-</div>

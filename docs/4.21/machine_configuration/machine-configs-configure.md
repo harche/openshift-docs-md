@@ -6,25 +6,23 @@ OpenShift Container Platform supports [Ignition specification version 3.5](https
 
 There might be situations where the configuration on a node does not fully match what the currently-applied machine config specifies. This state is called *configuration drift*. The Machine Config Daemon (MCD) regularly checks the nodes for configuration drift. If the MCD detects configuration drift, the MCO marks the node `degraded` until an administrator corrects the node configuration. A degraded node is online and operational, but, it cannot be updated. For more information on configuration drift, see [Understanding configuration drift detection](../machine_configuration/index.xml#machine-config-drift-detection_machine-config-overview).
 
-> [!TIP]
-> Use the following "Configuring chrony time service" procedure as a model for how to go about adding other configuration files to OpenShift Container Platform nodes.
+<div class="tip">
+
+Use the following "Configuring chrony time service" procedure as a model for how to go about adding other configuration files to OpenShift Container Platform nodes.
+
+</div>
 
 # Configuring chrony time service
 
 You can set the time server and related settings used by the chrony time service (`chronyd`) by modifying the contents of the `chrony.conf` file and passing those contents to your nodes as a machine config.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a Butane config including the contents of the `chrony.conf` file. For example, to configure chrony on worker nodes, create a `99-worker-chrony.bu` file.
 
-    > [!NOTE]
-    > The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+    <div class="note">
+
+    The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+
+    </div>
 
     ``` yaml
     variant: openshift
@@ -53,8 +51,11 @@ Procedure
 
     - Specify any valid, reachable time source, such as the one provided by your DHCP server.
 
-    > [!NOTE]
-    > For all-machine to all-machine communication, the Network Time Protocol (NTP) on UDP is port `123`. If an external NTP time server is configured, you must open UDP port `123`.
+    <div class="note">
+
+    For all-machine to all-machine communication, the Network Time Protocol (NTP) on UDP is port `123`. If an external NTP time server is configured, you must open UDP port `123`.
+
+    </div>
 
     Alternatively, you can specify any of the following NTP servers: `1.rhel.pool.ntp.org`, `2.rhel.pool.ntp.org`, or `3.rhel.pool.ntp.org`. When you use NTP with your DHCP server, you must set the `sourcedir /run/chrony-dhcp` parameter in the `chrony.conf` file.
 
@@ -74,33 +75,13 @@ Procedure
       $ oc apply -f ./99-worker-chrony.yaml
       ```
 
-</div>
-
 # Disabling the chrony time service
 
 You can disable the chrony time service (`chronyd`) for nodes with a specific role by using a `MachineConfig` custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `MachineConfig` CR that disables `chronyd` for the specified node role.
 
@@ -157,16 +138,17 @@ Procedure
         $ oc create -f disable-chronyd.yaml
         ```
 
-</div>
-
 # Adding kernel arguments to nodes
 
 In some special cases, you can add kernel arguments to a set of nodes in your cluster to customize the kernel behavior to meet specific needs you might have.
 
 You should add kernel arguments with caution and a clear understanding of the implications of the arguments you set.
 
-> [!WARNING]
-> Improper use of kernel arguments can result in your systems becoming unbootable.
+<div class="warning">
+
+Improper use of kernel arguments can result in your systems becoming unbootable.
+
+</div>
 
 Examples of kernel arguments you could set include:
 
@@ -174,8 +156,11 @@ Examples of kernel arguments you could set include:
 
 - **enforcing=0**: Configures Security Enhanced Linux (SELinux) to run in permissive mode. In permissive mode, the system acts as if SELinux is enforcing the loaded security policy, including labeling objects and emitting access denial entries in the logs, but it does not actually deny any operations. While not supported for production systems, permissive mode can be helpful for debugging.
 
-  > [!WARNING]
-  > Disabling SELinux on RHCOS in production is not supported. After SELinux has been disabled on a node, it must be re-provisioned before re-inclusion in a production cluster.
+  <div class="warning">
+
+  Disabling SELinux on RHCOS in production is not supported. After SELinux has been disabled on a node, it must be re-provisioned before re-inclusion in a production cluster.
+
+  </div>
 
 See [Kernel.org kernel parameters](https://www.kernel.org/doc/Documentation/admin-guide/kernel-parameters.txt) for a list and descriptions of kernel arguments.
 
@@ -187,27 +172,11 @@ In the following procedure, you create a `MachineConfig` object that identifies:
 
 - A label that indicates where in the list of machine configs the change is applied.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - You have `cluster-admin` privileges.
 
 - Your cluster is running.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List existing `MachineConfig` objects for your OpenShift Container Platform cluster to determine how to label your machine config:
 
@@ -215,11 +184,9 @@ Procedure
     $ oc get MachineConfig
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -238,8 +205,6 @@ Procedure
     rendered-master-23e785de7587df95a4b517e0647e5ab7   52dd3ba6a9a527fc3ab42afac8d12b693534c8c9   3.5.0             33m
     rendered-worker-5d596d9293ca3ea80c896a1191735bb1   52dd3ba6a9a527fc3ab42afac8d12b693534c8c9   3.5.0             33m
     ```
-
-    </div>
 
 2.  Create a `MachineConfig` object file that identifies the kernel argument (for example, `05-worker-kernelarg-selinuxpermissive.yaml`)
 
@@ -278,11 +243,9 @@ Procedure
     $ oc get MachineConfig
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -303,19 +266,15 @@ Procedure
     rendered-worker-5d596d9293ca3ea80c896a1191735bb1   52dd3ba6a9a527fc3ab42afac8d12b693534c8c9   3.5.0             33m
     ```
 
-    </div>
-
 5.  Check the nodes:
 
     ``` terminal
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -329,8 +288,6 @@ Procedure
     ip-10-0-153-150.ec2.internal   Ready                      master   34m   v1.34.2
     ```
 
-    </div>
-
     You can see that scheduling on each worker node is disabled as the change is being applied.
 
 6.  Check that the kernel argument worked by going to one of the worker nodes and listing the kernel command-line arguments (in `/proc/cmdline` on the host):
@@ -339,11 +296,9 @@ Procedure
     $ oc debug node/ip-10-0-141-105.ec2.internal
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -359,30 +314,27 @@ Procedure
     sh-4.2# exit
     ```
 
-    </div>
-
     You should see the `enforcing=0` argument added to the other kernel arguments.
-
-</div>
 
 # Enabling multipathing with kernel arguments on RHCOS
 
-> [!IMPORTANT]
-> Enabling multipathing during installation is supported and recommended for nodes provisioned in OpenShift Container Platform. In setups where any I/O to non-optimized paths results in I/O system errors, you must enable multipathing at installation time. For more information about enabling multipathing during installation time, see "Enabling multipathing post installation" in the *Installing on bare metal* documentation.
+<div class="important">
+
+Enabling multipathing during installation is supported and recommended for nodes provisioned in OpenShift Container Platform. In setups where any I/O to non-optimized paths results in I/O system errors, you must enable multipathing at installation time. For more information about enabling multipathing during installation time, see "Enabling multipathing post installation" in the *Installing on bare metal* documentation.
+
+</div>
 
 Red Hat Enterprise Linux CoreOS (RHCOS) supports multipathing on the primary disk, allowing stronger resilience to hardware failure to achieve higher host availability. Postinstallation support is available by activating multipathing via the machine config.
 
-> [!IMPORTANT]
-> On IBM Z® and IBM® LinuxONE, you can enable multipathing only if you configured your cluster for it during installation. For more information, see "Installing RHCOS and starting the OpenShift Container Platform bootstrap process" in *Installing a cluster with z/VM on IBM Z® and IBM® LinuxONE*.
+<div class="important">
 
-> [!IMPORTANT]
-> When an OpenShift Container Platform cluster is installed or configured as a postinstallation activity on a single VIOS host with "vSCSI" storage on IBM Power® with multipath configured, the CoreOS nodes with multipath enabled fail to boot. This behavior is expected, as only one path is available to the node.
+On IBM Z® and IBM® LinuxONE, you can enable multipathing only if you configured your cluster for it during installation. For more information, see "Installing RHCOS and starting the OpenShift Container Platform bootstrap process" in *Installing a cluster with z/VM on IBM Z® and IBM® LinuxONE*.
 
-<div>
+</div>
 
-<div class="title">
+<div class="important">
 
-Prerequisites
+When an OpenShift Container Platform cluster is installed or configured as a postinstallation activity on a single VIOS host with "vSCSI" storage on IBM Power® with multipath configured, the CoreOS nodes with multipath enabled fail to boot. This behavior is expected, as only one path is available to the node.
 
 </div>
 
@@ -391,16 +343,6 @@ Prerequisites
 - You are logged in to the cluster as a user with administrative privileges.
 
 - You have confirmed that the disk is enabled for multipathing. Multipathing is only supported on hosts that are connected to a SAN via an HBA adapter.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To enable multipathing postinstallation on control plane nodes:
 
@@ -448,11 +390,9 @@ Procedure
     $ oc get MachineConfig
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -473,19 +413,15 @@ Procedure
     rendered-worker-5d596d9293ca3ea80c896a1191735bb1   52dd3ba6a9a527fc3ab42afac8d12b693534c8c9   3.5.0             33m
     ```
 
-    </div>
-
 5.  Check the nodes:
 
     ``` terminal
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -499,8 +435,6 @@ Procedure
     ip-10-0-153-150.ec2.internal   Ready                      master   34m   v1.34.2
     ```
 
-    </div>
-
     You can see that scheduling on each worker node is disabled as the change is being applied.
 
 6.  Check that the kernel argument worked by going to one of the worker nodes and listing the kernel command-line arguments (in `/proc/cmdline` on the host):
@@ -509,11 +443,9 @@ Procedure
     $ oc debug node/ip-10-0-141-105.ec2.internal
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -529,11 +461,7 @@ Procedure
     sh-4.2# exit
     ```
 
-    </div>
-
     You should see the added kernel arguments.
-
-</div>
 
 # Adding a real-time kernel to nodes
 
@@ -551,27 +479,11 @@ Although making the change is as simple as changing a machine config `kernelType
 
 - The following procedure is also supported for use with Google Cloud.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - Have a running OpenShift Container Platform cluster (version 4.4 or later).
 
 - Log in to the cluster as a user with administrative privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a machine config for the real-time kernel: Create a YAML file (for example, `99-worker-realtime.yaml`) that contains a `MachineConfig` object for the `realtime` kernel type. This example tells the cluster to use a real-time kernel for all worker nodes:
 
@@ -600,11 +512,9 @@ Procedure
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -615,17 +525,13 @@ Procedure
     ip-10-0-169-2.us-east-2.compute.internal    Ready   worker   102m  v1.34.2
     ```
 
-    </div>
-
     ``` terminal
     $ oc debug node/ip-10-0-143-147.us-east-2.compute.internal
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -638,8 +544,6 @@ Procedure
             Wed Nov 27 18:29:55 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
     ```
 
-    </div>
-
     The kernel name contains `rt` and text “PREEMPT RT” indicates that this is a real-time kernel.
 
 4.  To go back to the regular kernel, delete the `MachineConfig` object:
@@ -648,40 +552,23 @@ Procedure
     $ oc delete -f 99-worker-realtime.yaml
     ```
 
-</div>
-
 # Configuring journald settings
 
 If you need to configure settings for the `journald` service on OpenShift Container Platform nodes, you can do that by modifying the appropriate configuration file and passing the file to the appropriate pool of nodes as a machine config.
 
 This procedure describes how to modify `journald` rate limiting settings in the `/etc/systemd/journald.conf` file and apply them to worker nodes. See the `journald.conf` man page for information on how to use that file.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Have a running OpenShift Container Platform cluster.
 
 - Log in to the cluster as a user with administrative privileges.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a Butane config file, `40-worker-custom-journald.bu`, that includes an `/etc/systemd/journald.conf` file with the required settings.
 
-    > [!NOTE]
-    > The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+    <div class="note">
+
+    The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+
+    </div>
 
     ``` yaml
     variant: openshift
@@ -723,11 +610,9 @@ Procedure
     $ oc get machineconfigpool
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -737,19 +622,15 @@ Procedure
     worker rendered-worker-d8 False   True     False    3            1                 1                   0                    34m
     ```
 
-    </div>
-
 5.  To check that the change was applied, you can log in to a worker node:
 
     ``` terminal
     $ oc get node | grep worker
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -757,17 +638,13 @@ Procedure
     ip-10-0-0-1.us-east-2.compute.internal   Ready    worker   39m   v0.0.0-master+$Format:%h$
     ```
 
-    </div>
-
     ``` terminal
     $ oc debug node/ip-10-0-0-1.us-east-2.compute.internal
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -784,10 +661,6 @@ Procedure
     MaxRetentionSec=30s
     sh-4.4# exit
     ```
-
-    </div>
-
-</div>
 
 # Adding extensions to RHCOS
 
@@ -811,27 +684,9 @@ Currently, the following extensions are available:
 
 The following procedure describes how to use a machine config to add one or more extensions to your RHCOS nodes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Have a running OpenShift Container Platform cluster (version 4.6 or later).
 
 - Log in to the cluster as a user with administrative privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a machine config for extensions: Create a YAML file (for example, `80-extensions.yaml`) that contains a `MachineConfig` `extensions` object. This example tells the cluster to add the `usbguard` extension.
 
@@ -866,11 +721,9 @@ Procedure
     $ oc get machineconfig 80-worker-extensions
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -879,19 +732,15 @@ Procedure
     80-worker-extensions                       3.5.0           57s
     ```
 
-    </div>
-
 4.  Check that the new machine config is now applied and that the nodes are not in a degraded state. It may take a few minutes. The worker pool will show the updates in progress, as each machine successfully has the new machine config applied:
 
     ``` terminal
     $ oc get machineconfigpool
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -901,19 +750,15 @@ Procedure
     worker rendered-worker-d8 False   True     False    3            1                 1                   0                    34m
     ```
 
-    </div>
-
 5.  Check the extensions. To check that the extension was applied, run:
 
     ``` terminal
     $ oc get node | grep worker
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -922,17 +767,13 @@ Procedure
     ip-10-0-169-2.us-east-2.compute.internal    Ready   worker   102m  v1.34.2
     ```
 
-    </div>
-
     ``` terminal
     $ oc debug node/ip-10-0-169-2.us-east-2.compute.internal
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -944,32 +785,21 @@ Procedure
     usbguard-0.7.4-4.el8.x86_64.rpm
     ```
 
-    </div>
-
-</div>
-
 # Loading custom firmware blobs in the machine config manifest
 
 Because the default location for firmware blobs in `/usr/lib` is read-only, you can locate a custom firmware blob by updating the search path. This enables you to load local firmware blobs in the machine config manifest when the blobs are not managed by RHCOS.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a Butane config file, `98-worker-firmware-blob.bu`, that updates the search path so that it is root-owned and writable to local storage. The following example places the custom blob file from your local workstation onto nodes under `/var/lib/firmware`.
 
-    > [!NOTE]
-    > The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+    <div class="note">
 
-    <div class="formalpara">
+    The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
 
-    <div class="title">
+    </div>
 
-    Butane config file for custom firmware blob
+    <div class="formalpara-title">
+
+    **Butane config file for custom firmware blob**
 
     </div>
 
@@ -990,8 +820,6 @@ Procedure
       kernel_arguments:
         - 'firmware_class.path=/var/lib/firmware'
     ```
-
-    </div>
 
     - Sets the path on the node where the firmware package is copied to.
 
@@ -1021,8 +849,6 @@ Procedure
 
 4.  Save the Butane config in case you need to update the `MachineConfig` object in the future.
 
-</div>
-
 # Changing the core user password for node access
 
 By default, Red Hat Enterprise Linux CoreOS (RHCOS) creates a user named `core` on the nodes in your cluster. You can use the `core` user to access the node through a cloud provider serial console or a bare metal baseboard controller manager (BMC). This can be helpful, for example, if a node is down and you cannot access that node by using SSH or the `oc debug node` command. However, by default, there is no password for this user, so you cannot log in without creating one.
@@ -1030,10 +856,6 @@ By default, Red Hat Enterprise Linux CoreOS (RHCOS) creates a user named `core`
 You can create a password for the `core` user by using a machine config. The Machine Config Operator (MCO) assigns the password and injects the password into the `/etc/shadow` file, allowing you to log in with the `core` user. The MCO does not examine the password hash. As such, the MCO cannot report if there is a problem with the password.
 
 <div class="note">
-
-<div class="title">
-
-</div>
 
 - The password works only through a cloud provider serial console or a BMC. It does not work with SSH.
 
@@ -1043,33 +865,21 @@ You can create a password for the `core` user by using a machine config. The Mac
 
 You can change the password, if needed, by editing the machine config you used to create the password. Also, you can remove the password by deleting the machine config. Deleting the machine config does not remove the user account.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Using a tool that is supported by your operating system, create a hashed password. For example, create a hashed password using `mkpasswd` by running the following command:
 
     ``` terminal
     $ mkpasswd -m SHA-512 testpass
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     $ $6$CBZwA6s6AVFOtiZe$aUKDWpthhJEyR3nnhM02NM1sKCpHn9XN.NPrJNQ3HYewioaorpwL3mKGLxvW0AOb4pJxqoqP4nFX77y0p00.8.
     ```
-
-    </div>
 
 2.  Create a machine config file that contains the `core` username and the hashed password:
 
@@ -1106,15 +916,7 @@ Procedure
         master   rendered-master-d686a3ffc8fdec47280afec446fce8dd   True      False      False      3              3                   3                     0                      64m
         worker   rendered-worker-4605605a5b1f9de1d061e9d350f251e5   False     True       False      3              0                   0                     0                      64m
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  After the nodes return to the `UPDATED=True` state, start a debug session for a node by running the following command:
 
@@ -1130,11 +932,9 @@ Verification
 
 3.  Check the contents of the `/etc/shadow` file:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1144,11 +944,7 @@ Verification
     ...
     ```
 
-    </div>
-
     The hashed password is assigned to the `core` user.
-
-</div>
 
 # Overriding storage or partition setup
 
@@ -1158,40 +954,31 @@ If you specified storage and partition configuration upon cluster installation b
 
 You cannot change these components directly. By default, the Machine Config Operator (MCO) reviews changes in `MachineConfig` objects for specific fields and blocks some changes for security reasons. However, you can override this restriction for disk partition schema, file systems, and RAID configurations by adding the `irreconcilableValidationOverrides` parameter to the `MachineConfiguration` object. Then, you can create a new machine config to make the necessary changes for new nodes.
 
-> [!NOTE]
-> Configuration changes made through this process apply to new nodes only.
+<div class="note">
+
+Configuration changes made through this process apply to new nodes only.
+
+</div>
 
 For example, you might want to override your default storage configuration to add new hardware that uses a different storage partitioning schema or storage file system to your cluster. In this case, you can modify the storage configuration for any new nodes in your cluster.
 
 Or, if you used Ignition to modify the storage configuration as a post-installation task, your cluster might be reporting an `irreconcilableChanges` status in the `MachineConfigNode` object status fields. This messaging can alert you to these differences, so that you can determine if you want new hardware with the new configurations.
 
-> [!IMPORTANT]
-> Overriding irreconcilable fields is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div>
+Overriding irreconcilable fields is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
 - You enabled the required Technology Preview features for your cluster by adding the `TechPreviewNoUpgrade` feature set to the `FeatureGate` CR named `cluster`. For information about enabling Feature Gates, see *Enabling features using feature gates*.
 
-  > [!WARNING]
-  > Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. This feature set allows you to enable these Technology Preview features on test clusters, where you can fully test them. Do not enable this feature set on production clusters.
+  <div class="warning">
 
-</div>
+  Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. This feature set allows you to enable these Technology Preview features on test clusters, where you can fully test them. Do not enable this feature set on production clusters.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  Edit the `MachineConfiguration` object by using the following command:
 
@@ -1285,8 +1072,6 @@ Procedure
     ```
 
     When you create a new node from a machine set with the associated label, the new configurations are applied to the node.
-
-</div>
 
 # Additional resources
 

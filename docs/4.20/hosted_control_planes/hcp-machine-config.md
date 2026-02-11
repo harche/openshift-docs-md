@@ -1,24 +1,22 @@
 In a standalone OpenShift Container Platform cluster, a machine config pool manages a set of nodes. You can handle a machine configuration by using the `MachineConfigPool` custom resource (CR).
 
-> [!TIP]
-> You can reference any `machineconfiguration.openshift.io` resources in the `nodepool.spec.config` field of the `NodePool` CR.
+<div class="tip">
+
+You can reference any `machineconfiguration.openshift.io` resources in the `nodepool.spec.config` field of the `NodePool` CR.
+
+</div>
 
 In hosted control planes, the `MachineConfigPool` CR does not exist. A node pool contains a set of compute nodes. You can handle a machine configuration by using node pools. You can manage your workloads in your hosted cluster by using the cluster autoscaler.
 
-> [!NOTE]
-> In OpenShift Container Platform 4.18 or later, the default container runtime for worker nodes is changed from runC to crun.
+<div class="note">
+
+In OpenShift Container Platform 4.18 or later, the default container runtime for worker nodes is changed from runC to crun.
+
+</div>
 
 # Configuring node pools for hosted control planes
 
 On hosted control planes, you can configure node pools by creating a `MachineConfig` object inside of a config map in the management cluster.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To create a `MachineConfig` object inside of a config map in the management cluster, enter the following information:
 
@@ -73,27 +71,15 @@ Procedure
 
     - Replace `<configmap_name>` with the name of your config map.
 
-</div>
-
 # Referencing the kubelet configuration in node pools
 
 To reference your kubelet configuration in node pools, you add the kubelet configuration in a config map and then apply the config map in the `NodePool` resource.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Add the kubelet configuration inside of a config map in the management cluster by entering the following information:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `ConfigMap` object with the kubelet configuration
+    **Example `ConfigMap` object with the kubelet configuration**
 
     </div>
 
@@ -117,8 +103,6 @@ Procedure
               effect: "NoExecute"
     ```
 
-    </div>
-
     - Replace `<configmap_name>` with the name of your config map.
 
     - Replace `<kubeletconfig_name>` with the name of the `KubeletConfig` resource.
@@ -131,11 +115,9 @@ Procedure
 
     - Replace `<nodepool_name>` with the name of your node pool.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example `NodePool` resource configuration
+      **Example `NodePool` resource configuration**
 
       </div>
 
@@ -153,23 +135,11 @@ Procedure
       # ...
       ```
 
-      </div>
-
     - Replace `<configmap_name>` with the name of your config map.
-
-</div>
 
 # Configuring node tuning in a hosted cluster
 
 To set node-level tuning on the nodes in your hosted cluster, you can use the Node Tuning Operator. In hosted control planes, you can configure node tuning by creating config maps that contain `Tuned` objects and referencing those config maps in your node pools.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a config map that contains a valid tuned manifest, and reference the manifest in a node pool. In the following example, a `Tuned` manifest defines a profile that sets `vm.dirty_ratio` to 55 on nodes that contain the `tuned-1-node-label` node label with any value. Save the following `ConfigMap` manifest in a file named `tuned-1.yaml`:
 
@@ -200,8 +170,11 @@ Procedure
                 profile: tuned-1-profile
     ```
 
-    > [!NOTE]
-    > If you do not add any labels to an entry in the `spec.recommend` section of the Tuned spec, node-pool-based matching is assumed, so the highest priority profile in the `spec.recommend` section is applied to nodes in the pool. Although you can achieve more fine-grained node-label-based matching by setting a label value in the Tuned `.spec.recommend.match` section, node labels will not persist during an upgrade unless you set the `.spec.management.upgradeType` value of the node pool to `InPlace`.
+    <div class="note">
+
+    If you do not add any labels to an entry in the `spec.recommend` section of the Tuned spec, node-pool-based matching is assumed, so the highest priority profile in the `spec.recommend` section is applied to nodes in the pool. Although you can achieve more fine-grained node-label-based matching by setting a label value in the Tuned `.spec.recommend.match` section, node labels will not persist during an upgrade unless you set the `.spec.management.upgradeType` value of the node pool to `InPlace`.
+
+    </div>
 
 2.  Create the `ConfigMap` object in the management cluster:
 
@@ -227,22 +200,19 @@ Procedure
         ...
     ```
 
-    > [!NOTE]
-    > You can reference the same config map in multiple node pools. In hosted control planes, the Node Tuning Operator appends a hash of the node pool name and namespace to the name of the Tuned CRs to distinguish them. Outside of this case, do not create multiple TuneD profiles of the same name in different Tuned CRs for the same hosted cluster.
+    <div class="note">
 
-</div>
+    You can reference the same config map in multiple node pools. In hosted control planes, the Node Tuning Operator appends a hash of the node pool name and namespace to the name of the Tuned CRs to distinguish them. Outside of this case, do not create multiple TuneD profiles of the same name in different Tuned CRs for the same hosted cluster.
 
-<div class="formalpara">
+    </div>
 
-<div class="title">
+<div class="formalpara-title">
 
-Verification
+**Verification**
 
 </div>
 
 Now that you have created the `ConfigMap` object that contains a `Tuned` manifest and referenced it in a `NodePool`, the Node Tuning Operator syncs the `Tuned` objects into the hosted cluster. You can verify which `Tuned` objects are defined and which TuneD profiles are applied to each node.
-
-</div>
 
 1.  List the `Tuned` objects in the hosted cluster:
 
@@ -251,11 +221,9 @@ Now that you have created the `ConfigMap` object that contains a `Tuned` manifes
       -n openshift-cluster-node-tuning-operator
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -266,8 +234,6 @@ Now that you have created the `ConfigMap` object that contains a `Tuned` manifes
     tuned-1    65s
     ```
 
-    </div>
-
 2.  List the `Profile` objects in the hosted cluster:
 
     ``` terminal
@@ -275,11 +241,9 @@ Now that you have created the `ConfigMap` object that contains a `Tuned` manifes
       -n openshift-cluster-node-tuning-operator
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -289,10 +253,11 @@ Now that you have created the `ConfigMap` object that contains a `Tuned` manifes
     nodepool-1-worker-2            tuned-1-profile  True      False      7m14s
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > If no custom profiles are created, the `openshift-node` profile is applied by default.
+    If no custom profiles are created, the `openshift-node` profile is applied by default.
+
+    </div>
 
 3.  To confirm that the tuning was applied correctly, start a debug shell on a node and check the sysctl values:
 
@@ -301,11 +266,9 @@ Now that you have created the `ConfigMap` object that contains a `Tuned` manifes
       debug node/nodepool-1-worker-1 -- chroot /host sysctl vm.dirty_ratio
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -313,31 +276,17 @@ Now that you have created the `ConfigMap` object that contains a `Tuned` manifes
     vm.dirty_ratio = 55
     ```
 
-    </div>
-
 # Deploying the SR-IOV Operator for hosted control planes
 
 After you configure and deploy your hosting service cluster, you can create a subscription to the SR-IOV Operator on a hosted cluster. The SR-IOV pod runs on worker machines rather than the control plane.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Prerequisites
+**Prerequisites**
 
 </div>
 
 You must configure and deploy the hosted cluster on AWS.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a namespace and an Operator group:
 
@@ -375,15 +324,7 @@ Procedure
       sourceNamespace: openshift-marketplace
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  To verify that the SR-IOV Operator is ready, run the following command and view the resulting output:
 
@@ -391,11 +332,9 @@ Verification
     $ oc get csv -n openshift-sriov-network-operator
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -404,35 +343,21 @@ Verification
     sriov-network-operator.4.17.0-202211021237   SR-IOV Network Operator   4.17.0-202211021237   sriov-network-operator.4.17.0-202210290517   Succeeded
     ```
 
-    </div>
-
 2.  To verify that the SR-IOV pods are deployed, run the following command:
 
     ``` terminal
     $ oc get pods -n openshift-sriov-network-operator
     ```
 
-</div>
-
 # Configuring the NTP server for hosted clusters
 
 You can configure the Network Time Protocol (NTP) server for your hosted clusters by using Butane.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a Butane config file, `99-worker-chrony.bu`, that includes the contents of the `chrony.conf` file. For more information about Butane, see "Creating machine configs with Butane".
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `99-worker-chrony.bu` configuration
+    **Example `99-worker-chrony.bu` configuration**
 
     </div>
 
@@ -459,14 +384,15 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - Specify an octal value mode for the `mode` field in the machine config file. After creating the file and applying the changes, the `mode` field is converted to a decimal value.
 
     - Specify any valid, reachable time source, such as the one provided by your Dynamic Host Configuration Protocol (DHCP) server.
 
-      > [!NOTE]
-      > For machine-to-machine communication, the NTP on the User Datagram Protocol (UDP) port is `123`. If you configured an external NTP time server, you must open UDP port `123`.
+      <div class="note">
+
+      For machine-to-machine communication, the NTP on the User Datagram Protocol (UDP) port is `123`. If you configured an external NTP time server, you must open UDP port `123`.
+
+      </div>
 
 2.  Use Butane to generate a `MachineConfig` object file, `99-worker-chrony.yaml`, that contains a configuration that Butane sends to the nodes. Run the following command:
 
@@ -474,11 +400,9 @@ Procedure
     $ butane 99-worker-chrony.bu -o 99-worker-chrony.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `99-worker-chrony.yaml` configuration
+    **Example `99-worker-chrony.yaml` configuration**
 
     </div>
 
@@ -503,15 +427,11 @@ Procedure
               path: /example/path
     ```
 
-    </div>
-
 3.  Add the contents of the `99-worker-chrony.yaml` file inside of a config map in the management cluster:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example config map
+    **Example config map**
 
     </div>
 
@@ -543,8 +463,6 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - Replace `<namespace>` with the name of your namespace where you created the node pool, such as `clusters`.
 
 4.  Apply the config map to your node pool by running the following command:
@@ -553,11 +471,9 @@ Procedure
     $ oc edit nodepool <nodepool_name> --namespace <hosted_cluster_namespace>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `NodePool` configuration
+    **Example `NodePool` configuration**
 
     </div>
 
@@ -575,17 +491,13 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - Replace `<configmap_name>` with the name of your config map.
 
 5.  Add the list of your NTP servers in the `infra-env.yaml` file, which defines the `InfraEnv` custom resource (CR):
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `infra-env.yaml` file
+    **Example `infra-env.yaml` file**
 
     </div>
 
@@ -601,8 +513,6 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - Replace `<ntp_server>` with the name of your NTP server. For more details about creating a host inventory and the `InfraEnv` CR, see "Creating a host inventory".
 
 6.  Apply the `InfraEnv` CR by running the following command:
@@ -610,16 +520,6 @@ Procedure
     ``` terminal
     $ oc apply -f infra-env.yaml
     ```
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Check the following fields to know the status of your host inventory:
 
@@ -635,48 +535,23 @@ Verification
     $ oc describe infraenv <infraenv_resource_name> -n <infraenv_namespace>
     ```
 
-    > [!NOTE]
-    > If you modify the `InfraEnv` CR, confirm that the `InfraEnv` CR has created a new Discovery Image by looking at the `createdTime` field. If you already booted hosts, boot them again with the latest Discovery Image.
+    <div class="note">
 
-</div>
+    If you modify the `InfraEnv` CR, confirm that the `InfraEnv` CR has created a new Discovery Image by looking at the `createdTime` field. If you already booted hosts, boot them again with the latest Discovery Image.
 
-<div>
+    </div>
 
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Creating machine configs with Butane](../installing/install_config/installing-customizing.xml#installation-special-config-butane_installing-customizing)
 
 - [Creating a host inventory](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.14/html-single/clusters/index#create-host-inventory-cli-steps)
 
-</div>
-
 # Scaling up and down workloads in a hosted cluster
 
 To scale up and down the workloads in your hosted cluster, you can use the `ScaleUpAndScaleDown` behavior. The compute nodes scale up when you add workloads and scale down when you delete workloads.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have created the `HostedCluster` and `NodePool` resources.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Enable cluster autoscaling for your hosted cluster by setting the scaling behavior to `ScaleUpAndScaleDown`. Run the following command:
 
@@ -704,47 +579,17 @@ Procedure
       --type=merge --patch='{"spec": {"autoScaling": {"max": 3, "min": 1}}}'
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - To verify that all compute nodes are in the `Ready` status, run the following command:
 
   ``` terminal
   $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get nodes
   ```
 
-</div>
-
 # Scaling up workloads in a hosted cluster
 
 To scale up the workloads in your hosted cluster, you can use the `ScaleUpOnly` behavior.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have created the `HostedCluster` and `NodePool` resources.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Enable cluster autoscaling for your hosted cluster by setting the scaling behavior to `ScaleUpOnly`. Run the following command:
 
@@ -765,15 +610,7 @@ Procedure
       --type=merge --patch='{"spec": {"autoScaling": {"max": 3, "min": 1}}}'
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that all compute nodes are in the `Ready` status by running the following command:
 
@@ -787,31 +624,11 @@ Verification
     $ oc --kubeconfig nested.config get nodes -l 'hypershift.openshift.io/nodePool=<node_pool_name>'
     ```
 
-</div>
-
 # Setting the priority expander in a hosted cluster
 
 You can define the priority for your node pools and create high priority machines before low priority machines by using the priority expander in your hosted cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have created the `HostedCluster` and `NodePool` resources.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To define the priority for your node pools, create a config map named `priority-expander-configmap.yaml` in your hosted cluster. Node pools with low numbers receive high priority. See the following example configuration:
 
@@ -869,47 +686,17 @@ Procedure
       --type=merge --patch='{"spec": {"autoScaling": {"max": 3, "min": 1}}}'
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - After you apply new workloads, verify that the compute nodes associated with the priority node pool are scaled up first. Run the following command to check the status of the compute node:
 
   ``` terminal
   $ oc --kubeconfig nested.config get nodes -l 'hypershift.openshift.io/nodePool=<node_pool_name>'
   ```
 
-</div>
-
 # Balancing ignored labels in a hosted cluster
 
 After you scale up your node pools, you can use `balancingIgnoredLabels` to evenly distribute the machines across node pools.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have created the `HostedCluster` and `NodePool` resources.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Add the `node.group.balancing.ignored` label to each of the relevant node pool by using the same label value. Run the following command:
 
@@ -977,20 +764,8 @@ Procedure
       --patch='{"spec": {"autoscaling": {"balancingIgnoredLabels": ["node.group.balancing.ignored"]}}}'
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the number of nodes provisioned by each node pool is evenly distributed. For example, if you created three node pools with the same label value, the node counts might be 3, 2, and 3. Run the following command:
 
   ``` terminal
   $ oc --kubeconfig nested.config get nodes -l 'hypershift.openshift.io/nodePool=<node_pool_name>'
   ```
-
-</div>

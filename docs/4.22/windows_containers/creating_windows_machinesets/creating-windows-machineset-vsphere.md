@@ -20,12 +20,15 @@ A fundamental unit that describes the host for a node. A machine has a `provider
 Machine sets
 `MachineSet` resources are groups of compute machines. Compute machine sets are to compute machines as replica sets are to pods. If you need more compute machines or must scale them down, you change the `replicas` field on the `MachineSet` resource to meet your compute need.
 
-> [!WARNING]
-> Control plane machines cannot be managed by compute machine sets.
->
-> Control plane machine sets provide management capabilities for supported control plane machines that are similar to what compute machine sets provide for compute machines.
->
-> For more information, see “Managing control plane machines".
+<div class="warning">
+
+Control plane machines cannot be managed by compute machine sets.
+
+Control plane machine sets provide management capabilities for supported control plane machines that are similar to what compute machine sets provide for compute machines.
+
+For more information, see “Managing control plane machines".
+
+</div>
 
 The following custom resources add more capabilities to your cluster:
 
@@ -56,14 +59,6 @@ You must prepare your vSphere environment for Windows container workloads by cre
 
 Create a vSphere Windows virtual machine (VM) golden image.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have created a private/public key pair, which is used to configure key-based authentication in the OpenSSH server. The private key must be configured in the Windows Machine Config Operator (WMCO) namespace so that the WMCO can communicate with the Windows VM.
 
   If you created the key pair on a Red Hat Enterprise Linux (RHEL) system, before you can use the public key on a Windows system, make sure the public key is saved using ASCII encoding. For example, the following PowerShell command copies a public key, encoding it for the ASCII character set:
@@ -82,16 +77,9 @@ Prerequisites
 
   See the "Configuring a secret for the Windows Machine Config Operator" section for more details.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> You must use [Microsoft PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell) commands in several cases when creating your Windows VM. PowerShell commands in this guide are distinguished by the `PS C:\>` prefix.
-
-<div>
-
-<div class="title">
-
-Procedure
+You must use [Microsoft PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell) commands in several cases when creating your Windows VM. PowerShell commands in this guide are distinguished by the `PS C:\>` prefix.
 
 </div>
 
@@ -99,8 +87,11 @@ Procedure
 
 2.  Create a new VM in the vSphere client using the VM golden image with a compatible Windows Server version. For more information about compatible versions, see the "Windows Machine Config Operator prerequisites" section of the "Red Hat OpenShift support for Windows Containers release notes."
 
-    > [!IMPORTANT]
-    > The virtual hardware version for your VM must meet the infrastructure requirements for OpenShift Container Platform. For more information, see the "VMware vSphere infrastructure requirements" section in the OpenShift Container Platform documentation. Also, you can refer to VMware’s documentation on [virtual machine hardware versions](https://kb.vmware.com/s/article/1003746).
+    <div class="important">
+
+    The virtual hardware version for your VM must meet the infrastructure requirements for OpenShift Container Platform. For more information, see the "VMware vSphere infrastructure requirements" section in the OpenShift Container Platform documentation. Also, you can refer to VMware’s documentation on [virtual machine hardware versions](https://kb.vmware.com/s/article/1003746).
+
+    </div>
 
 3.  Install and configure VMware Tools version 11.0.6 or greater on the Windows VM. See the [VMware Tools documentation](https://docs.vmware.com/en/VMware-Tools/index.html) for more information.
 
@@ -132,8 +123,11 @@ Procedure
 
 6.  Set up SSH access for an administrative user. See Microsoft’s documentation on the [Administrative user](https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_keymanagement#administrative-user) to do this.
 
-    > [!IMPORTANT]
-    > The public key used in the instructions must correspond to the private key you create later in the WMCO namespace that holds your secret. See the "Configuring a secret for the Windows Machine Config Operator" section for more details.
+    <div class="important">
+
+    The public key used in the instructions must correspond to the private key you create later in the WMCO namespace that holds your secret. See the "Configuring a secret for the Windows Machine Config Operator" section for more details.
+
+    </div>
 
 7.  You must create a new firewall rule in the Windows VM that allows incoming connections for container logs. Run the following PowerShell command to create the firewall rule on TCP port 10250:
 
@@ -151,18 +145,13 @@ Procedure
 
     - Specify the path to your `unattend.xml` file.
 
-      > [!NOTE]
-      > There is a limit on how many times you can run the `sysprep` command on a Windows image. Consult Microsoft’s [documentation](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep--generalize--a-windows-installation#limits-on-how-many-times-you-can-run-sysprep) for more information.
+      <div class="note">
 
-      An example `unattend.xml` is provided, which maintains all the changes needed for the WMCO. You must modify this example; it cannot be used directly.
-
-      <div class="example">
-
-      <div class="title">
-
-      Example `unattend.xml`
+      There is a limit on how many times you can run the `sysprep` command on a Windows image. Consult Microsoft’s [documentation](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep--generalize--a-windows-installation#limits-on-how-many-times-you-can-run-sysprep) for more information.
 
       </div>
+
+      An example `unattend.xml` is provided, which maintains all the changes needed for the WMCO. You must modify this example; it cannot be used directly.
 
       ``` xml
       <?xml version="1.0" encoding="UTF-8"?>
@@ -222,13 +211,9 @@ Procedure
 
       - Replace the `MyPassword` placeholder with the password for the Administrator account. This prevents the built-in Administrator account from having a blank password by default. Follow Microsoft’s [best practices for choosing a password](https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/password-must-meet-complexity-requirements).
 
-      </div>
-
       After the Sysprep tool has completed, the Windows VM will power off. You must not use or power on this VM anymore.
 
 10. Convert the Windows VM to [a template in vCenter](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-5B3737CC-28DB-4334-BD18-6E12011CDC9F.html).
-
-</div>
 
 ### Additional resources
 
@@ -240,32 +225,17 @@ Procedure
 
 The Windows Machine Config Operator (WMCO) downloads the Ignition config files from the internal API server endpoint. You must enable communication with the internal API server so that your Windows virtual machine (VM) can download the Ignition config files, and the kubelet on the configured VM can only communicate with the internal API server.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed a cluster on vSphere.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Add a new DNS entry for `api-int.<cluster_name>.<base_domain>` that points to the external API server URL `api.<cluster_name>.<base_domain>`. This can be a CNAME or an additional A record.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The external API endpoint was already created as part of the initial cluster installation on vSphere.
+The external API endpoint was already created as part of the initial cluster installation on vSphere.
+
+</div>
 
 # Sample YAML for a Windows MachineSet object on vSphere
 
@@ -336,15 +306,21 @@ spec:
 
 - Specify the size of the vSphere Virtual Machine Disk (VMDK).
 
-  > [!NOTE]
-  > This parameter does not set the size of the Windows partition. You can resize the Windows partition by using the `unattend.xml` file or by creating the vSphere Windows virtual machine (VM) golden image with the required disk size.
+  <div class="note">
+
+  This parameter does not set the size of the Windows partition. You can resize the Windows partition by using the `unattend.xml` file or by creating the vSphere Windows virtual machine (VM) golden image with the required disk size.
+
+  </div>
 
 - Specify the vSphere VM network to deploy the compute machine set to. This VM network must be where other Linux compute machines reside in the cluster.
 
 - Specify the full path of the Windows vSphere VM template to use, such as `golden-images/windows-server-template`. The name must be unique.
 
-  > [!IMPORTANT]
-  > Do not specify the original VM template. The VM template must remain off and must be cloned for new Windows machines. Starting the VM template configures the VM template as a VM on the platform, which prevents it from being used as a template that compute machine sets can apply configurations to.
+  <div class="important">
+
+  Do not specify the original VM template. The VM template must remain off and must be cloned for new Windows machines. Starting the VM template configures the VM template as a VM on the platform, which prevents it from being used as a template that compute machine sets can apply configurations to.
+
+  </div>
 
 - The `windows-user-data` is created by the WMCO when the first Windows machine is configured. After that, the `windows-user-data` is available for all subsequent compute machine sets to consume.
 
@@ -362,14 +338,6 @@ spec:
 
 In addition to the compute machine sets created by the installation program, you can create your own to dynamically manage the machine compute resources for specific workloads of your choice.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Deploy an OpenShift Container Platform cluster.
 
 - Install the OpenShift CLI (`oc`).
@@ -377,16 +345,6 @@ Prerequisites
 - Log in to `oc` as a user with `cluster-admin` permission.
 
 - In disconnected environments, the image specified in the `MachineSet` custom resource (CR) must have the [OpenSSH server v0.0.1.0 installed](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse?tabs=powershell#install-openssh-for-windows).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a new YAML file that contains the compute machine set custom resource (CR) sample and is named `<file_name>.yaml`.
 
@@ -400,11 +358,9 @@ Procedure
         $ oc get machinesets -n openshift-machine-api
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -418,8 +374,6 @@ Procedure
         agl030519-vplxk-worker-us-east-1f   0         0                             55m
         ```
 
-        </div>
-
     2.  To view values of a specific compute machine set custom resource (CR), run the following command:
 
         ``` terminal
@@ -427,11 +381,9 @@ Procedure
           -n openshift-machine-api -o yaml
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -461,14 +413,15 @@ Procedure
                 ...
         ```
 
-        </div>
-
         - The cluster infrastructure ID.
 
         - A default node label.
 
-          > [!NOTE]
-          > For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
+          <div class="note">
+
+          For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
+
+          </div>
 
         - The values in the `<providerSpec>` section of the compute machine set CR are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
 
@@ -478,27 +431,15 @@ Procedure
     $ oc create -f <file_name>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - View the list of compute machine sets by running the following command:
 
   ``` terminal
   $ oc get machineset -n openshift-machine-api
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -513,11 +454,7 @@ Verification
   agl030519-vplxk-worker-us-east-1f          0         0                             55m
   ```
 
-  </div>
-
   When the new compute machine set is available, the `DESIRED` and `CURRENT` values match. If the compute machine set is not available, wait a few minutes and run the command again.
-
-</div>
 
 # Additional resources
 

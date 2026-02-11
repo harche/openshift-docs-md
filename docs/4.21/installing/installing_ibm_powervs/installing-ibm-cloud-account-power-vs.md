@@ -70,32 +70,17 @@ How you configure DNS resolution depends on the type of OpenShift Container Plat
 
 The installation program uses IBM Cloud® Internet Services (CIS) to configure cluster DNS resolution and provide name lookup for a public cluster.
 
-> [!NOTE]
-> This offering does not support IPv6, so dual stack or IPv6 environments are not possible.
+<div class="note">
 
-You must create a domain zone in CIS in the same account as your cluster. You must also ensure the zone is authoritative for the domain. You can do this using a root domain or subdomain.
-
-<div>
-
-<div class="title">
-
-Prerequisites
+This offering does not support IPv6, so dual stack or IPv6 environments are not possible.
 
 </div>
+
+You must create a domain zone in CIS in the same account as your cluster. You must also ensure the zone is authoritative for the domain. You can do this using a root domain or subdomain.
 
 - You have installed the [IBM Cloud® CLI](https://www.ibm.com/cloud/cli).
 
 - You have an existing domain and registrar. For more information, see the IBM® [documentation](https://cloud.ibm.com/docs/dns?topic=dns-getting-started).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a CIS instance to use with your cluster:
 
@@ -119,8 +104,11 @@ Procedure
 
         - At a minimum, you require a `Standard Next` plan for CIS to manage the cluster subdomain and its DNS records.
 
-          > [!NOTE]
-          > After you have configured your registrar or DNS provider, it can take up to 24 hours for the changes to take effect.
+          <div class="note">
+
+          After you have configured your registrar or DNS provider, it can take up to 24 hours for the changes to take effect.
+
+          </div>
 
 2.  Connect an existing domain to your CIS instance:
 
@@ -140,14 +128,15 @@ Procedure
 
         - The fully qualified domain name. You can use either the root domain or subdomain value as the domain name, depending on which you plan to configure.
 
-          > [!NOTE]
-          > A root domain uses the form `openshiftcorp.com`. A subdomain uses the form `clusters.openshiftcorp.com`.
+          <div class="note">
+
+          A root domain uses the form `openshiftcorp.com`. A subdomain uses the form `clusters.openshiftcorp.com`.
+
+          </div>
 
 3.  Open the [CIS web console](https://cloud.ibm.com/catalog/services/internet-services), navigate to the **Overview** page, and note your CIS name servers. These name servers will be used in the next step.
 
 4.  Configure the name servers for your domains or subdomains at the domain’s registrar or DNS provider. For more information, see the IBM Cloud® [documentation](https://cloud.ibm.com/docs/cis?topic=cis-getting-started#configure-your-name-servers-with-the-registrar-or-existing-dns-provider).
-
-</div>
 
 # IBM Cloud IAM Policies and API Key
 
@@ -157,28 +146,28 @@ For an IBM Cloud® IAM overview, see the IBM Cloud® [documentation](https://clo
 
 ## Pre-requisite permissions
 
-| Role | Access |
-|----|----|
-| Viewer, Operator, Editor, Administrator, Reader, Writer, Manager | Internet Services service in \<resource_group\> resource group |
-| Viewer, Operator, Editor, Administrator, User API key creator, Service ID creator | IAM Identity Service service |
-| Viewer, Operator, Administrator, Editor, Reader, Writer, Manager, Console Administrator | VPC Infrastructure Services service in \<resource_group\> resource group |
-| Viewer | Resource Group: Access to view the resource group itself. The resource type should equal `Resource group`, with a value of \<your_resource_group_name\>. |
+| Role                                                                                    | Access                                                                                                                                                   |
+|-----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Viewer, Operator, Editor, Administrator, Reader, Writer, Manager                        | Internet Services service in \<resource_group\> resource group                                                                                           |
+| Viewer, Operator, Editor, Administrator, User API key creator, Service ID creator       | IAM Identity Service service                                                                                                                             |
+| Viewer, Operator, Administrator, Editor, Reader, Writer, Manager, Console Administrator | VPC Infrastructure Services service in \<resource_group\> resource group                                                                                 |
+| Viewer                                                                                  | Resource Group: Access to view the resource group itself. The resource type should equal `Resource group`, with a value of \<your_resource_group_name\>. |
 
 Pre-requisite permissions
 
 ## Cluster-creation permissions
 
-| Role | Access |
-|----|----|
-| Viewer | \<resource_group\> (Resource Group Created for Your Team) |
-| Viewer, Operator, Editor, Reader, Writer, Manager | All Identity and IAM enabled services in Default resource group |
-| Viewer, Reader | Internet Services service |
-| Viewer, Operator, Reader, Writer, Manager, Content Reader, Object Reader, Object Writer, Editor | Cloud Object Storage service |
-| Viewer | Default resource group: The resource type should equal `Resource group`, with a value of `Default`. If your account administrator changed your account’s default resource group to something other than Default, use that value instead. |
-| Viewer, Operator, Editor, Reader, Manager | Workspace for IBM Power® Virtual Server service in \<resource_group\> resource group |
-| Viewer, Operator, Editor, Reader, Writer, Manager, Administrator | Internet Services service in \<resource_group\> resource group: CIS functional scope string equals reliability |
-| Viewer, Operator, Editor | Transit Gateway service |
-| Viewer, Operator, Editor, Administrator, Reader, Writer, Manager, Console Administrator | VPC Infrastructure Services service \<resource_group\> resource group |
+| Role                                                                                            | Access                                                                                                                                                                                                                                   |
+|-------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Viewer                                                                                          | \<resource_group\> (Resource Group Created for Your Team)                                                                                                                                                                                |
+| Viewer, Operator, Editor, Reader, Writer, Manager                                               | All Identity and IAM enabled services in Default resource group                                                                                                                                                                          |
+| Viewer, Reader                                                                                  | Internet Services service                                                                                                                                                                                                                |
+| Viewer, Operator, Reader, Writer, Manager, Content Reader, Object Reader, Object Writer, Editor | Cloud Object Storage service                                                                                                                                                                                                             |
+| Viewer                                                                                          | Default resource group: The resource type should equal `Resource group`, with a value of `Default`. If your account administrator changed your account’s default resource group to something other than Default, use that value instead. |
+| Viewer, Operator, Editor, Reader, Manager                                                       | Workspace for IBM Power® Virtual Server service in \<resource_group\> resource group                                                                                                                                                     |
+| Viewer, Operator, Editor, Reader, Writer, Manager, Administrator                                | Internet Services service in \<resource_group\> resource group: CIS functional scope string equals reliability                                                                                                                           |
+| Viewer, Operator, Editor                                                                        | Transit Gateway service                                                                                                                                                                                                                  |
+| Viewer, Operator, Editor, Administrator, Reader, Writer, Manager, Console Administrator         | VPC Infrastructure Services service \<resource_group\> resource group                                                                                                                                                                    |
 
 Cluster-creation permissions
 
@@ -192,40 +181,25 @@ In IBM Cloud® IAM, access policies can be attached to different subjects:
 
 - User
 
-> [!NOTE]
-> The recommended method is to define IAM access policies in an [access group](https://cloud.ibm.com/docs/account?topic=account-groups). This helps organize all the access required for OpenShift Container Platform and enables you to onboard users and service IDs to this group. You can also assign access to [users and service IDs](https://cloud.ibm.com/docs/account?topic=account-assign-access-resources) directly, if desired.
+<div class="note">
+
+The recommended method is to define IAM access policies in an [access group](https://cloud.ibm.com/docs/account?topic=account-groups). This helps organize all the access required for OpenShift Container Platform and enables you to onboard users and service IDs to this group. You can also assign access to [users and service IDs](https://cloud.ibm.com/docs/account?topic=account-assign-access-resources) directly, if desired.
+
+</div>
 
 ## Creating an API key
 
 You must create a user API key or a service ID API key for your IBM Cloud® account.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have assigned the required access policies to your IBM Cloud® account.
 
 - You have attached you IAM access policies to an access group, or other appropriate resource.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Create an API key, depending on how you defined your IAM access policies.
 
   For example, if you assigned your access policies to a user, you must create a [user API key](https://cloud.ibm.com/docs/account?topic=account-userapikey). If you assigned your access policies to a service ID, you must create a [service ID API key](https://cloud.ibm.com/docs/account?topic=account-serviceidapikeys). If your access policies are assigned to an access group, you can use either API key type. For more information on IBM Cloud® API keys, see [Understanding API keys](https://cloud.ibm.com/docs/account?topic=account-manapikey&interface=ui).
-
-</div>
 
 # Supported IBM Power Virtual Server regions and zones
 
@@ -291,8 +265,11 @@ You can deploy an OpenShift Container Platform cluster to the following regions:
 
 You might optionally specify the IBM Cloud® region in which the installation program creates any VPC components.
 
-> [!NOTE]
-> If you do not specify the region, the installation program selects the region closest to IBM Power Virtual Server zone you are deploying to.
+<div class="note">
+
+If you do not specify the region, the installation program selects the region closest to IBM Power Virtual Server zone you are deploying to.
+
+</div>
 
 IBM Cloud® supports the following regions:
 

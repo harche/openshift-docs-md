@@ -10,5 +10,8 @@ To apply the run-once duration override from the Run Once Duration Override Oper
 
 If both the run-once pod and the Run Once Duration Override Operator have their `activeDeadlineSeconds` value set, the lower of the two values is used.
 
-> [!NOTE]
-> You cannot install the Run Once Duration Override Operator on clusters managed by the HyperShift Operator.
+<div class="note">
+
+You cannot install the Run Once Duration Override Operator on clusters managed by the HyperShift Operator.
+
+</div>

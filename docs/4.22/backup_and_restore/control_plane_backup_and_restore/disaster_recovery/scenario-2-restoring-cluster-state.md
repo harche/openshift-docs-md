@@ -10,10 +10,13 @@ You can use an etcd backup to restore your cluster to a previous state. This can
 
 - An administrator has deleted something critical and must restore to recover the cluster.
 
-> [!WARNING]
-> Restoring to a previous cluster state is a destructive and destablizing action to take on a running cluster. This should only be used as a last resort.
->
-> If you are able to retrieve data using the Kubernetes API server, then etcd is available and you should not restore using an etcd backup.
+<div class="warning">
+
+Restoring to a previous cluster state is a destructive and destablizing action to take on a running cluster. This should only be used as a last resort.
+
+If you are able to retrieve data using the Kubernetes API server, then etcd is available and you should not restore using an etcd backup.
+
+</div>
 
 Restoring etcd effectively takes a cluster back in time and all clients will experience a conflicting, parallel history. This can impact the behavior of watching components like kubelets, Kubernetes controller managers, persistent volume controllers, and OpenShift Container Platform Operators, including the network Operator.
 
@@ -25,14 +28,9 @@ In extreme cases, the cluster can lose track of persistent volumes, delete criti
 
 You can use a saved etcd backup to restore a previous cluster state on a single node.
 
-> [!IMPORTANT]
-> When you restore your cluster, you must use an etcd backup that was taken from the same z-stream release. For example, an OpenShift Container Platform 4.17.2 cluster must use an etcd backup that was taken from 4.17.2.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+When you restore your cluster, you must use an etcd backup that was taken from the same z-stream release. For example, an OpenShift Container Platform 4.17.2 cluster must use an etcd backup that was taken from 4.17.2.
 
 </div>
 
@@ -41,16 +39,6 @@ Prerequisites
 - You have SSH access to control plane hosts.
 
 - A backup directory containing both the etcd snapshot and the resources for the static pods, which were from the same backup. The file names in the directory must be in the following formats: `snapshot_<datetimestamp>.db` and `static_kuberesources_<datetimestamp>.tar.gz`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Use SSH to connect to the single node and copy the etcd backup to the `/home/core` directory by running the following command:
 
@@ -72,10 +60,11 @@ Procedure
     $ oc adm wait-for-stable-cluster
     ```
 
-    > [!NOTE]
-    > It can take up to 15 minutes for the control plane to recover.
+    <div class="note">
 
-</div>
+    It can take up to 15 minutes for the control plane to recover.
+
+    </div>
 
 # Restoring to a previous cluster state for more than one node
 
@@ -83,17 +72,15 @@ You can use a saved etcd backup to restore a previous cluster state or restore a
 
 For high availability (HA) clusters, a three-node HA cluster requires you to shut down etcd on two hosts to avoid a cluster split. On four-node and five-node HA clusters, you must shut down three hosts. Quorum requires a simple majority of nodes. The minimum number of nodes required for quorum on a three-node HA cluster is two. On four-node and five-node HA clusters, the minimum number of nodes required for quorum is three. If you start a new cluster from backup on your recovery host, the other etcd members might still be able to form quorum and continue service.
 
-> [!NOTE]
-> If your cluster uses a control plane machine set, see "Recovering a degraded etcd Operator" in "Troubleshooting the control plane machine set" for an etcd recovery procedure. For OpenShift Container Platform on a single node, see "Restoring to a previous cluster state for a single node".
+<div class="note">
 
-> [!IMPORTANT]
-> When you restore your cluster, you must use an etcd backup that was taken from the same z-stream release. For example, an OpenShift Container Platform 4.17.2 cluster must use an etcd backup that was taken from 4.17.2.
+If your cluster uses a control plane machine set, see "Recovering a degraded etcd Operator" in "Troubleshooting the control plane machine set" for an etcd recovery procedure. For OpenShift Container Platform on a single node, see "Restoring to a previous cluster state for a single node".
 
-<div>
+</div>
 
-<div class="title">
+<div class="important">
 
-Prerequisites
+When you restore your cluster, you must use an etcd backup that was taken from the same z-stream release. For example, an OpenShift Container Platform 4.17.2 cluster must use an etcd backup that was taken from 4.17.2.
 
 </div>
 
@@ -107,16 +94,9 @@ Prerequisites
 
 - Nodes must be accessible or bootable.
 
-</div>
+<div class="important">
 
-> [!IMPORTANT]
-> For non-recovery control plane nodes, it is not required to establish SSH connectivity or to stop the static pods. You can delete and re-create other non-recovery, control plane machines, one by one.
-
-<div>
-
-<div class="title">
-
-Procedure
+For non-recovery control plane nodes, it is not required to establish SSH connectivity or to stop the static pods. You can delete and re-create other non-recovery, control plane machines, one by one.
 
 </div>
 
@@ -126,8 +106,11 @@ Procedure
 
     `kube-apiserver` becomes inaccessible after the restore process starts, so you cannot access the control plane nodes. For this reason, it is recommended to establish SSH connectivity to each control plane host in a separate terminal.
 
-    > [!IMPORTANT]
-    > If you do not complete this step, you will not be able to access the control plane hosts to complete the restore procedure, and you will be unable to recover your cluster from this state.
+    <div class="important">
+
+    If you do not complete this step, you will not be able to access the control plane hosts to complete the restore procedure, and you will be unable to recover your cluster from this state.
+
+    </div>
 
 3.  Using SSH, connect to each control plane node and run the following command to disable etcd:
 
@@ -159,8 +142,11 @@ Procedure
     $ oc adm wait-for-stable-cluster
     ```
 
-    > [!NOTE]
-    > It can take up to 15 minutes for the control plane to recover.
+    <div class="note">
+
+    It can take up to 15 minutes for the control plane to recover.
+
+    </div>
 
 9.  Once recovered, enable the quorum guard by running the following command:
 
@@ -168,42 +154,29 @@ Procedure
     $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": null}}'
     ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Troubleshooting
+**Troubleshooting**
 
 </div>
 
 If you see no progress rolling out the etcd static pods, you can force redeployment from the `cluster-etcd-operator` by running the following command:
 
-</div>
-
 ``` terminal
 $ oc patch etcd cluster -p='{"spec": {"forceRedeploymentReason": "recovery-'"$(date --rfc-3339=ns )"'"}}' --type=merge
 ```
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Recovering a degraded etcd Operator](../../../machine_management/control_plane_machine_management/cpmso-troubleshooting.xml#cpmso-ts-etcd-degraded_cpmso-troubleshooting)
-
-</div>
 
 # Issues and workarounds for restoring a persistent storage state
 
 If your OpenShift Container Platform cluster uses persistent storage of any form, a state of the cluster is typically stored outside etcd. When you restore from an etcd backup, the status of the workloads in OpenShift Container Platform is also restored. However, if the etcd snapshot is old, the status might be invalid or outdated.
 
-> [!IMPORTANT]
-> The contents of persistent volumes (PVs) are never part of the etcd snapshot. When you restore an OpenShift Container Platform cluster from an etcd snapshot, non-critical workloads might gain access to critical data, or vice-versa.
+<div class="important">
+
+The contents of persistent volumes (PVs) are never part of the etcd snapshot. When you restore an OpenShift Container Platform cluster from an etcd snapshot, non-critical workloads might gain access to critical data, or vice-versa.
+
+</div>
 
 The following are some example scenarios that produce an out-of-date status:
 

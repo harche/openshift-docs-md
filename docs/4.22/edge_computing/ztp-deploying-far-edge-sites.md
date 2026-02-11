@@ -1,23 +1,16 @@
 You can provision OpenShift Container Platform clusters at scale with Red Hat Advanced Cluster Management (RHACM) using the assisted service and the GitOps plugin policy generator with core-reduction technology enabled. The GitOps Zero Touch Provisioning (ZTP) pipeline performs the cluster installations. GitOps ZTP can be used in a disconnected environment.
 
-> [!IMPORTANT]
-> Using `PolicyGenTemplate` CRs to manage and deploy policies to managed clusters will be deprecated in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
->
-> For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/governance/index#integrate-policy-generator) documentation.
+<div class="important">
 
-<div>
+Using `PolicyGenTemplate` CRs to manage and deploy policies to managed clusters will be deprecated in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
 
-<div class="title">
-
-Additional resources
+For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/governance/index#integrate-policy-generator) documentation.
 
 </div>
 
 - [Configuring managed cluster policies by using PolicyGenerator resources](../edge_computing/policygenerator_for_ztp/ztp-configuring-managed-clusters-policygenerator.xml#ztp-configuring-managed-clusters-policygenerator)
 
 - [Comparing RHACM PolicyGenerator and PolicyGenTemplate resource patching](../edge_computing/policygenerator_for_ztp/ztp-configuring-managed-clusters-policygenerator.xml#ztp-comparing-pgt-and-rhacm-pg-patching-strategies_ztp-configuring-managed-clusters-policygenerator)
-
-</div>
 
 # GitOps ZTP and Topology Aware Lifecycle Manager
 
@@ -46,13 +39,19 @@ The automatic creation of an enabled `ClusterGroupUpgrade` ensures that initial 
 Waves
 Each policy generated from a `PolicyGenerator` or `PolicyGentemplate` CR includes a `ztp-deploy-wave` annotation. This annotation is based on the same annotation from each CR which is included in that policy. The wave annotation is used to order the policies in the auto-generated `ClusterGroupUpgrade` CR. The wave annotation is not used other than for the auto-generated `ClusterGroupUpgrade` CR.
 
-> [!NOTE]
-> All CRs in the same policy must have the same setting for the `ztp-deploy-wave` annotation. The default value of this annotation for each CR can be overridden in the `PolicyGenerator` or `PolicyGentemplate`. The wave annotation in the source CR is used for determining and setting the policy wave annotation. This annotation is removed from each built CR which is included in the generated policy at runtime.
+<div class="note">
+
+All CRs in the same policy must have the same setting for the `ztp-deploy-wave` annotation. The default value of this annotation for each CR can be overridden in the `PolicyGenerator` or `PolicyGentemplate`. The wave annotation in the source CR is used for determining and setting the policy wave annotation. This annotation is removed from each built CR which is included in the generated policy at runtime.
+
+</div>
 
 The TALM applies the configuration policies in the order specified by the wave annotations. The TALM waits for each policy to be compliant before moving to the next policy. It is important to ensure that the wave annotation for each CR takes into account any prerequisites for those CRs to be applied to the cluster. For example, an Operator must be installed before or concurrently with the configuration for the Operator. Similarly, the `CatalogSource` for an Operator must be installed in a wave before or concurrently with the Operator Subscription. The default wave value for each CR takes these prerequisites into account.
 
-> [!NOTE]
-> Multiple CRs and policies can share the same wave number. Having fewer policies can result in faster deployments and lower CPU usage. It is a best practice to group many CRs into relatively few waves.
+<div class="note">
+
+Multiple CRs and policies can share the same wave number. Having fewer policies can result in faster deployments and lower CPU usage. It is a best practice to group many CRs into relatively few waves.
+
+</div>
 
 To check the default wave value in each source CR, run the following command against the `out/source-crs` directory that is extracted from the `ztp-site-generate` container image:
 
@@ -102,21 +101,19 @@ After you apply the managed site custom resources (CRs) on the hub cluster, the 
 
 The Discovery image ISO process is complete when the `Agent` CR for the managed cluster is created on the hub cluster.
 
-> [!IMPORTANT]
-> The target bare-metal host must meet the networking, firmware, and hardware requirements listed in [Recommended single-node OpenShift cluster configuration for vDU application workloads](../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#sno-configure-for-vdu).
+<div class="important">
+
+The target bare-metal host must meet the networking, firmware, and hardware requirements listed in [Recommended single-node OpenShift cluster configuration for vDU application workloads](../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#sno-configure-for-vdu).
+
+</div>
 
 # Creating the managed bare-metal host secrets
 
 Add the required `Secret` custom resources (CRs) for the managed bare-metal host to the hub cluster. You need a secret for the GitOps Zero Touch Provisioning (ZTP) pipeline to access the Baseboard Management Controller (BMC) and a secret for the assisted installer service to pull cluster installation images from the registry.
 
-> [!NOTE]
-> The secrets are referenced from the `ClusterInstance` CR by name. The namespace must match the `ClusterInstance` namespace.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+The secrets are referenced from the `ClusterInstance` CR by name. The namespace must match the `ClusterInstance` namespace.
 
 </div>
 
@@ -155,22 +152,15 @@ Procedure
 
 2.  Add the relative path to `example-sno-secret.yaml` to the `kustomization.yaml` file that you use to install the cluster.
 
-</div>
-
 # Configuring Discovery ISO kernel arguments for installations using GitOps ZTP
 
 The GitOps Zero Touch Provisioning (ZTP) workflow uses the Discovery ISO as part of the OpenShift Container Platform installation process on managed bare-metal hosts. You can edit the `InfraEnv` resource to specify kernel arguments for the Discovery ISO. This is useful for cluster installations with specific environmental requirements.
 
 For example, configure the `rd.net.timeout.carrier` kernel argument for the Discovery ISO to facilitate static networking for the cluster or to receive a DHCP address before downloading the root file system during installation.
 
-> [!NOTE]
-> In OpenShift Container Platform 4.17, you can only add kernel arguments. You can not replace or delete kernel arguments.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+In OpenShift Container Platform 4.17, you can only add kernel arguments. You can not replace or delete kernel arguments.
 
 </div>
 
@@ -178,22 +168,15 @@ Prerequisites
 
 - You have logged in to the hub cluster as a user with cluster-admin privileges.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the `InfraEnv` CR and edit the `spec.kernelArguments` specification to configure kernel arguments.
 
     1.  Save the following YAML in an `InfraEnv-example.yaml` file:
 
-        > [!NOTE]
-        > The `InfraEnv` CR in this example uses template syntax such as `{{ .Cluster.ClusterName }}` that is populated based on values in the `ClusterInstance` CR. The `ClusterInstance` CR automatically populates values for these templates during deployment. Do not edit the templates manually.
+        <div class="note">
+
+        The `InfraEnv` CR in this example uses template syntax such as `{{ .Cluster.ClusterName }}` that is populated based on values in the `ClusterInstance` CR. The `ClusterInstance` CR automatically populates values for these templates during deployment. Do not edit the templates manually.
+
+        </div>
 
         ``` yaml
         apiVersion: agent-install.openshift.io/v1beta1
@@ -281,19 +264,13 @@ Procedure
 
     When the Argo CD pipeline syncs the changes, the SiteConfig Operator uses the custom `InfraEnv-example` CR from the generated `ConfigMap` to configure the infrastructure environment, including the custom kernel arguments.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 To verify that the kernel arguments are applied, after the Discovery image verifies that OpenShift Container Platform is ready for installation, you can SSH to the target host before the installation process begins. At that point, you can view the kernel arguments for the Discovery ISO in the `/proc/cmdline` file.
-
-</div>
 
 1.  Begin an SSH session with the target host:
 
@@ -311,14 +288,9 @@ To verify that the kernel arguments are applied, after the Discovery image verif
 
 Use the following procedure to create a `ClusterInstance` custom resource (CR) and related files and initiate the GitOps Zero Touch Provisioning (ZTP) cluster deployment.
 
-> [!NOTE]
-> You require Red Hat Advanced Cluster Management (RHACM) version 2.12 or later to install the SiteConfig Operator and use the `ClusterInstance` CR.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You require Red Hat Advanced Cluster Management (RHACM) version 2.12 or later to install the SiteConfig Operator and use the `ClusterInstance` CR.
 
 </div>
 
@@ -332,8 +304,11 @@ Prerequisites
 
 - You created a Git repository where you manage your custom site configuration data. The repository must be accessible from the hub cluster and you must configure it as a source repository for the ArgoCD application. See "Preparing the GitOps ZTP site configuration repository" for more information.
 
-  > [!NOTE]
-  > When you create the source repository, ensure that you patch the ArgoCD application with the `argocd/deployment/argocd-openshift-gitops-patch.json` patch-file that you extract from the `ztp-site-generate` container. See "Configuring the hub cluster with ArgoCD".
+  <div class="note">
+
+  When you create the source repository, ensure that you patch the ArgoCD application with the `argocd/deployment/argocd-openshift-gitops-patch.json` patch-file that you extract from the `ztp-site-generate` container. See "Configuring the hub cluster with ArgoCD".
+
+  </div>
 
 - To be ready for provisioning managed clusters, you require the following for each bare-metal host:
 
@@ -342,16 +317,6 @@ Prerequisites
 
   Baseboard Management Controller (BMC) details
   GitOps ZTP uses BMC username and password details to connect to the BMC during cluster installation. The GitOps ZTP plugin manages the `ManagedCluster` CRs on the hub cluster based on the `ClusterInstance` CR in your site Git repo. You create individual `BMCSecret` CRs for each host manually.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the required managed cluster secrets on the hub cluster. These resources must be in a namespace with a name matching the cluster name. For example, in `out/argocd/example/clusterinstance/example-sno.yaml`, the cluster name and namespace is `example-sno`.
 
@@ -369,8 +334,11 @@ Procedure
 
 2.  Create pull secret and BMC `Secret` CRs for the managed cluster. The pull secret must contain all the credentials necessary for installing OpenShift Container Platform and all required Operators. See "Creating the managed bare-metal host secrets" for more information.
 
-    > [!NOTE]
-    > The secrets are referenced from the `ClusterInstance` custom resource (CR) by name. The namespace must match the `ClusterInstance` namespace.
+    <div class="note">
+
+    The secrets are referenced from the `ClusterInstance` custom resource (CR) by name. The namespace must match the `ClusterInstance` namespace.
+
+    </div>
 
 3.  Create a `ClusterInstance` CR for your cluster in your local clone of the Git repository:
 
@@ -384,11 +352,9 @@ Procedure
 
     2.  Change the cluster and host details in the example file to match the type of cluster you want. For example:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example single-node OpenShift ClusterInstance CR
+        **Example single-node OpenShift ClusterInstance CR**
 
         </div>
 
@@ -547,24 +513,31 @@ Procedure
                   namespace: open-cluster-management
         ```
 
+        <div class="note">
+
+        For more information about BMC addressing, see the "Additional resources" section. The `installConfigOverrides` and `ignitionConfigOverride` fields are expanded in the example for ease of readability.
+
         </div>
 
-        > [!NOTE]
-        > For more information about BMC addressing, see the "Additional resources" section. The `installConfigOverrides` and `ignitionConfigOverride` fields are expanded in the example for ease of readability.
+        <div class="note">
 
-        > [!NOTE]
-        > To override the default `BareMetalHost` CR for a node, create a custom node template in a `ConfigMap` and reference it in the node-level `spec.nodes.templateRefs` field in the `ClusterInstance` CR. Ensure that you set the `argocd.argoproj.io/sync-wave: "3"` annotation in your override `BareMetalHost` CR.
+        To override the default `BareMetalHost` CR for a node, create a custom node template in a `ConfigMap` and reference it in the node-level `spec.nodes.templateRefs` field in the `ClusterInstance` CR. Ensure that you set the `argocd.argoproj.io/sync-wave: "3"` annotation in your override `BareMetalHost` CR.
+
+        </div>
 
     3.  You can inspect the default set of extra-manifest `MachineConfig` CRs in `out/argocd/extra-manifest`. It is automatically applied to the cluster when it is installed.
 
     4.  Optional: To provision additional install-time manifests on the provisioned cluster, package your extra manifest CRs in a `ConfigMap` and reference it in the `extraManifestsRefs` field of the `ClusterInstance` CR. For more information, see "Customizing extra installation manifests in the GitOps ZTP pipeline".
 
-        > [!IMPORTANT]
-        > For optimal cluster performance, enable crun for master and worker nodes in single-node OpenShift, single-node OpenShift with additional worker nodes, three-node OpenShift, and standard clusters.
-        >
-        > Enable crun in a `ContainerRuntimeConfig` CR as an additional Day 0 install-time manifest to avoid the cluster having to reboot.
-        >
-        > The `enable-crun-master.yaml` and `enable-crun-worker.yaml` CR files are in the `out/source-crs/optional-extra-manifest/` folder that you can extract from the `ztp-site-generate` container.
+        <div class="important">
+
+        For optimal cluster performance, enable crun for master and worker nodes in single-node OpenShift, single-node OpenShift with additional worker nodes, three-node OpenShift, and standard clusters.
+
+        Enable crun in a `ContainerRuntimeConfig` CR as an additional Day 0 install-time manifest to avoid the cluster having to reboot.
+
+        The `enable-crun-master.yaml` and `enable-crun-worker.yaml` CR files are in the `out/source-crs/optional-extra-manifest/` folder that you can extract from the `ztp-site-generate` container.
+
+        </div>
 
 4.  Add the `ClusterInstance` CR to the `kustomization.yaml` file in the `generators` section, similar to the example shown in `out/argocd/example/clusterinstance/kustomization.yaml`.
 
@@ -572,29 +545,15 @@ Procedure
 
     The ArgoCD pipeline detects the changes and begins the managed cluster deployment.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the custom roles and labels are applied after the node is deployed:
 
   ``` terminal
   $ oc describe node example-node.example.com
   ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -614,34 +573,19 @@ Labels: beta.kubernetes.io/arch=amd64
         node.openshift.io/os_id=rhcos
 ```
 
-</div>
-
 - The custom label is applied to the node.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Single-node OpenShift ClusterInstance CR installation reference](../edge_computing/ztp-deploying-far-edge-sites.xml#ztp-clusterinstance-config-reference_ztp-deploying-far-edge-sites)
-
-</div>
 
 ## Configuring IPsec encryption for single-node OpenShift clusters using GitOps ZTP and ClusterInstance resources
 
 You can enable IPsec encryption in managed single-node OpenShift clusters that you install using GitOps ZTP and Red Hat Advanced Cluster Management (RHACM). You can encrypt traffic between the managed cluster and IPsec endpoints external to the managed cluster. All network traffic between nodes on the OVN-Kubernetes cluster network is encrypted with IPsec in Transport mode.
 
-> [!IMPORTANT]
-> You can also configure IPsec encryption for single-node OpenShift clusters with an additional worker node by following this procedure. It is recommended to use the `MachineConfig` custom resource (CR) to configure IPsec encryption for single-node OpenShift clusters and single-node OpenShift clusters with an additional worker node because of their low resource availability.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You can also configure IPsec encryption for single-node OpenShift clusters with an additional worker node by following this procedure. It is recommended to use the `MachineConfig` custom resource (CR) to configure IPsec encryption for single-node OpenShift clusters and single-node OpenShift clusters with an additional worker node because of their low resource availability.
 
 </div>
 
@@ -658,16 +602,6 @@ Prerequisites
 - You have installed the `butane` utility version 0.20.0 or later.
 
 - You have a PKCS#12 certificate for the IPsec endpoint and a CA cert in PEM format.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Extract the latest version of the `ztp-site-generate` container source and merge it with your repository where you manage your custom site configuration data.
 
@@ -713,11 +647,9 @@ Procedure
 
     If the PKCS#12 certificate is protected with a password, set the `-W` argument.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -738,8 +670,6 @@ Procedure
                          ├── ipsec-endpoint-config.yml
                          └── README.md
     ```
-
-    </div>
 
     - The `ipsec/build.sh` script generates the Butane and endpoint configuration CRs.
 
@@ -798,8 +728,11 @@ Procedure
 
     - Reference to the `ConfigMap` containing the IPsec manifests.
 
-      > [!NOTE]
-      > If you have other extra manifests, you can either include them in the same `ConfigMap` or create multiple `ConfigMap` resources and reference each of those in the `extraManifestsRefs` field.
+      <div class="note">
+
+      If you have other extra manifests, you can either include them in the same `ConfigMap` or create multiple `ConfigMap` resources and reference each of those in the `extraManifestsRefs` field.
+
+      </div>
 
 9.  Commit the `ClusterInstance` CR, IPsec manifest files, and `kustomization.yaml` changes in your Git repository and push the changes to provision the managed cluster and configure IPsec encryption.
 
@@ -807,27 +740,13 @@ Procedure
 
     During cluster provisioning, the SiteConfig Operator applies the CRs contained in the referenced `ConfigMap` resources as extra manifests.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 For information about verifying the IPsec encryption, see "Verifying the IPsec encryption".
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Verifying the IPsec encryption](../edge_computing/ztp-deploying-far-edge-sites.xml#ztp-verifying-ipsec_ztp-deploying-far-edge-sites)
 
@@ -837,19 +756,9 @@ Additional resources
 
 - [Installing managed clusters with RHACM and ClusterInstance resources](../edge_computing/ztp-deploying-far-edge-sites.xml#ztp-deploying-far-edge-sites)
 
-</div>
-
 ## Configuring IPsec encryption for multi-node clusters using GitOps ZTP and ClusterInstance resources
 
 You can enable IPsec encryption in managed multi-node clusters that you install using GitOps ZTP and Red Hat Advanced Cluster Management (RHACM). You can encrypt traffic between the managed cluster and IPsec endpoints external to the managed cluster. All network traffic between nodes on the OVN-Kubernetes cluster network is encrypted with IPsec in Transport mode.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -867,25 +776,13 @@ Prerequisites
 
 - You have installed the NMState Operator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Extract the latest version of the `ztp-site-generate` container source and merge it with your repository where you manage your custom site configuration data.
 
 2.  Configure the `optional-extra-manifest/ipsec/ipsec-config-policy.yaml` file with the required values that configure IPsec in the cluster.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    `ConfigurationPolicy` object for creating an IPsec configuration
+    **`ConfigurationPolicy` object for creating an IPsec configuration**
 
     </div>
 
@@ -934,8 +831,6 @@ Procedure
                     type: tunnel
     ```
 
-    </div>
-
     - The value of this field must match with the name of the certificate used on the remote system.
 
     - Replace `<external_host>` with the external host IP address or DNS hostname.
@@ -958,11 +853,9 @@ Procedure
 
     If the PKCS#12 certificate is protected with a password, set the `-W` argument.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -984,19 +877,15 @@ Procedure
                          └── README.md
     ```
 
-    </div>
-
     - The `ipsec/import-certs.sh` script generates the Butane and endpoint configuration CRs.
 
     - Add the `ca.pem` and `left_server.p12` certificate files that are relevant to your network.
 
 6.  Create an `ipsec-manifests/` folder in the repository where you manage your custom site configuration data and add the `enable-ipsec.yaml` and `99-ipsec-*` YAML files to the directory.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example site configuration directory
+    **Example site configuration directory**
 
     </div>
 
@@ -1010,8 +899,6 @@ Procedure
       │   └── 99-ipsec-worker-import-certs.yaml
       └── kustomization.yaml
     ```
-
-    </div>
 
 7.  Create a `kustomization.yaml` file that uses `configMapGenerator` to package your IPsec manifests into a `ConfigMap`:
 
@@ -1053,8 +940,11 @@ Procedure
 
     - Reference to the `ConfigMap` containing the IPsec certificate import manifests.
 
-      > [!NOTE]
-      > If you have other extra manifests, you can either include them in the same `ConfigMap` or create multiple `ConfigMap` resources and reference them all in `extraManifestsRefs`.
+      <div class="note">
+
+      If you have other extra manifests, you can either include them in the same `ConfigMap` or create multiple `ConfigMap` resources and reference them all in `extraManifestsRefs`.
+
+      </div>
 
 9.  Include the `ipsec-config-policy.yaml` config policy file in the `source-crs` directory in GitOps and reference the file in one of the `PolicyGenerator` CRs.
 
@@ -1064,27 +954,13 @@ Procedure
 
     During cluster provisioning, the SiteConfig Operator applies the CRs contained in the referenced `ConfigMap` resources as extra manifests. The IPsec configuration policy is applied as a Day 2 operation after the cluster is provisioned.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 For information about verifying the IPsec encryption, see "Verifying the IPsec encryption".
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Verifying the IPsec encryption](../edge_computing/ztp-deploying-far-edge-sites.xml#ztp-verifying-ipsec_ztp-deploying-far-edge-sites)
 
@@ -1094,35 +970,15 @@ Additional resources
 
 - [Installing managed clusters with RHACM and ClusterInstance resources](../edge_computing/ztp-deploying-far-edge-sites.xml#ztp-deploying-far-edge-sites)
 
-</div>
-
 ## Verifying the IPsec encryption
 
 You can verify that the IPsec encryption is successfully applied in a managed OpenShift Container Platform cluster.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in to the hub cluster as a user with `cluster-admin` privileges.
 
 - You have configured the IPsec encryption.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Start a debug pod for the managed cluster by running the following command:
 
@@ -1136,11 +992,9 @@ Procedure
     sh-5.1# ip xfrm policy
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1159,19 +1013,15 @@ Procedure
         proto esp reqid 16393 mode tunnel
     ```
 
-    </div>
-
 3.  Check that the IPsec tunnel is up and connected by running the following command:
 
     ``` terminal
     sh-5.1# ip xfrm state
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1196,19 +1046,15 @@ Procedure
        00000000 00000000 00000000 00000000
     ```
 
-    </div>
-
 4.  Ping a known IP in the external host subnet by running the following command: For example, ping an IP address in the `rightsubnet` range that you set in the `ipsec/ipsec-endpoint-config.yaml` file:
 
     ``` terminal
     sh-5.1# ping 172.16.110.8
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1218,21 +1064,9 @@ Procedure
     64 bytes from 172.16.110.8: icmp_seq=2 ttl=64 time=155 ms
     ```
 
-    </div>
-
-</div>
-
 ## ClusterInstance CR installation reference
 
 For a detailed API reference for the `ClusterInstance` custom resource, see [ClusterInstance API](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/apis/index#clusterinstance-api) in the Red Hat Advanced Cluster Management (RHACM) documentation.
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Customizing extra installation manifests in the GitOps ZTP pipeline](../edge_computing/ztp-advanced-install-ztp.xml#ztp-customizing-the-install-extra-manifests_ztp-advanced-install-ztp)
 
@@ -1247,8 +1081,6 @@ Additional resources
 - [BMC addressing](../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#bmc-addressing_ipi-install-installation-workflow)
 
 - [About root device hints](../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#root-device-hints_preparing-to-install-with-agent-based-installer)
-
-</div>
 
 # Managing host firmware settings with GitOps ZTP
 
@@ -1272,29 +1104,11 @@ Test host firmware configurations in a controlled lab environment before deployi
 Manage firmware profiles in source control
 Manage host firmware profiles in Git repositories to track changes, ensure consistency, and facilitate collaboration with vendors.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Recommended firmware configuration for vDU cluster hosts](../edge_computing/ztp-vdu-validating-cluster-tuning.xml#ztp-du-firmware-config-reference_vdu-config-ref)
-
-</div>
 
 ## Retrieving the host firmware schema for a managed cluster
 
 You can discover the host firmware schema for managed clusters. The host firmware schema for bare-metal hosts is populated with information that the Ironic API returns. The API returns information about host firmware interfaces, including firmware setting types, allowable values, ranges, and flags.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -1302,15 +1116,7 @@ Prerequisites
 
 - You have provisioned a cluster that is managed by RHACM.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Discover the host firmware schema for the managed cluster. Run the following command:
 
@@ -1318,11 +1124,9 @@ Procedure
   $ oc get firmwareschema -n <managed_cluster_namespace> -o yaml
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -1354,21 +1158,9 @@ Procedure
         # ...
   ```
 
-  </div>
-
-</div>
-
 ## Retrieving the host firmware settings for a managed cluster
 
 You can retrieve the host firmware settings for managed clusters. This is useful when you have deployed changes to the host firmware and you want to monitor the changes and ensure that they are applied successfully.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -1376,27 +1168,15 @@ Prerequisites
 
 - You have provisioned a cluster that is managed by RHACM.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Retrieve the host firmware settings for the managed cluster. Run the following command:
 
     ``` terminal
     $ oc get hostfirmwaresettings -n <cluster_namespace> <node_name> -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1446,8 +1226,6 @@ Procedure
           # ...
     ```
 
-    </div>
-
     - Indicates that a change in the host firmware settings has been detected
 
     - Indicates that the host has an invalid firmware setting
@@ -1460,11 +1238,9 @@ Procedure
     $ oc get hfs -n <managed_cluster_namespace> <managed_cluster_name> -o jsonpath='{.status.conditions[?(@.type=="ChangeDetected")].status}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1472,29 +1248,21 @@ Procedure
     True
     ```
 
-    </div>
-
 3.  Optional: Check for invalid firmware settings in the cluster host. Run the following command:
 
     ``` terminal
     $ oc get hfs -n <managed_cluster_namespace> <managed_cluster_name> -o jsonpath='{.status.conditions[?(@.type=="Valid")].status}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     False
     ```
-
-    </div>
-
-</div>
 
 ## Deploying user-defined firmware to cluster hosts with GitOps ZTP
 
@@ -1504,14 +1272,9 @@ You can deploy user-defined firmware settings to cluster hosts by creating custo
 
 - Individual hosts in the cluster
 
-> [!IMPORTANT]
-> You can configure host hardware profiles to be applied in a hierarchy. Node-level profiles override cluster-wide settings.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You can configure host hardware profiles to be applied in a hierarchy. Node-level profiles override cluster-wide settings.
 
 </div>
 
@@ -1523,23 +1286,11 @@ Prerequisites
 
 - You created a Git repository where you manage your custom site configuration data. The repository must be accessible from the hub cluster and be defined as a source repository for the Argo CD application.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the `HostFirmwareSettings` CR that contains the firmware settings you want to apply. For example, create the following YAML file:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    host-firmware-settings.yaml
+    **host-firmware-settings.yaml**
 
     </div>
 
@@ -1555,8 +1306,6 @@ Procedure
         LogicalProc: "Enabled"
         ProcVirtualization: "Enabled"
     ```
-
-    </div>
 
 2.  Save the `HostFirmwareSettings` CR file relative to the `kustomization.yaml` file that you use to provision the cluster. For example:
 
@@ -1632,25 +1381,21 @@ Procedure
 
     - Applies the firmware profile only to the `node1.example.com` host.
 
-      > [!NOTE]
-      > Node-level `templateRefs` settings override cluster-level `templateRefs` settings.
+      <div class="note">
+
+      Node-level `templateRefs` settings override cluster-level `templateRefs` settings.
+
+      </div>
 
 6.  Commit the `ClusterInstance` CR, `ConfigMap`, and associated `kustomization.yaml` changes in your Git repository and push the changes.
 
     The Argo CD pipeline detects the changes and begins the managed cluster deployment.
 
-    > [!NOTE]
-    > Cluster deployment proceeds even if an invalid firmware setting is detected. To apply a correction using GitOps ZTP, re-deploy the cluster with the corrected hardware profile.
+    <div class="note">
 
-</div>
+    Cluster deployment proceeds even if an invalid firmware setting is detected. To apply a correction using GitOps ZTP, re-deploy the cluster with the corrected hardware profile.
 
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+    </div>
 
 - Check that the firmware settings have been applied in the managed cluster host. For example, run the following command:
 
@@ -1660,11 +1405,9 @@ Verification
 
   - where `<managed_cluster_namespace>` is the namespace of the managed cluster and `<managed_cluster_name>` is the name of the managed cluster.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1672,39 +1415,21 @@ Verification
     True
     ```
 
-    </div>
-
-</div>
-
 # Monitoring managed cluster installation progress
 
 The Argo CD pipeline syncs the `ClusterInstance` CR from the Git repository to the hub cluster. The SiteConfig Operator then processes the `ClusterInstance` CR and generates the required cluster configuration CRs. You can monitor the progress of the cluster installation from the RHACM dashboard or from the command line.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in to the hub cluster as a user with `cluster-admin` privileges.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 When the synchronization is complete, the installation generally proceeds as follows:
-
-</div>
 
 1.  The Assisted Service Operator installs OpenShift Container Platform on the cluster. You can monitor the progress of cluster installation from the RHACM dashboard or from the command line by running the following commands:
 
@@ -1730,27 +1455,9 @@ When the synchronization is complete, the installation generally proceeds as fol
 
 The ArgoCD pipeline uses the `ClusterInstance` and `PolicyGenerator` or `PolicyGentemplate` custom resources (CRs) to generate the cluster configuration CRs and Red Hat Advanced Cluster Management (RHACM) policies. Use the following steps to troubleshoot issues that might occur during this process.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in to the hub cluster as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Check that the installation CRs were created by using the following command:
 
@@ -1772,33 +1479,13 @@ Procedure
     $ oc get applications.argoproj.io -n openshift-gitops clusters -o yaml
     ```
 
-</div>
-
 # Troubleshooting GitOps ZTP virtual media booting on SuperMicro servers
 
 SuperMicro X11 servers do not support virtual media installations when the image is served using the `https` protocol. As a result, single-node OpenShift deployments for this environment fail to boot on the target node. To avoid this issue, log in to the hub cluster and disable Transport Layer Security (TLS) in the `Provisioning` resource. This ensures the image is not served with TLS even though the image address uses the `https` scheme.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in to the hub cluster as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Disable TLS in the `Provisioning` resource by running the following command:
 
@@ -1808,33 +1495,13 @@ Procedure
 
 2.  Continue the steps to deploy your single-node OpenShift cluster.
 
-</div>
-
 # Removing a managed cluster site from the GitOps ZTP pipeline
 
 You can remove a managed site and the associated installation and configuration policy CRs from the GitOps Zero Touch Provisioning (ZTP) pipeline.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in to the hub cluster as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Remove a site and the associated CRs by removing the associated `ClusterInstance` and `PolicyGenerator` or `PolicyGentemplate` files from the `kustomization.yaml` file.
 
@@ -1854,47 +1521,17 @@ Procedure
 
 4.  Optional: If you want to remove a site temporarily, for example when redeploying a site, you can leave the `ClusterInstance` and site-specific `PolicyGenerator` or `PolicyGentemplate` CRs in the Git repository.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Removing a cluster from management](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.9/html/clusters/cluster_mce_overview#remove-managed-cluster).
 
 - [Deprovisioning clusters](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/multicluster_engine_operator_with_red_hat_advanced_cluster_management/ibio-intro#deprovision-clusters)
-
-</div>
 
 # Removing obsolete content from the GitOps ZTP pipeline
 
 If a change to the `PolicyGenerator` or `PolicyGentemplate` configuration results in obsolete policies, for example, if you rename policies, use the following procedure to remove the obsolete policies.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in to the hub cluster as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Remove the affected `PolicyGenerator` or `PolicyGentemplate` files from the Git repository, commit and push to the remote repository.
 
@@ -1902,8 +1539,11 @@ Procedure
 
 3.  Add the updated `PolicyGenerator` or `PolicyGentemplate` files back to the Git repository, and then commit and push to the remote repository.
 
-    > [!NOTE]
-    > Removing GitOps Zero Touch Provisioning (ZTP) policies from the Git repository, and as a result also removing them from the hub cluster, does not affect the configuration of the managed cluster. The policy and CRs managed by that policy remains in place on the managed cluster.
+    <div class="note">
+
+    Removing GitOps Zero Touch Provisioning (ZTP) policies from the Git repository, and as a result also removing them from the hub cluster, does not affect the configuration of the managed cluster. The policy and CRs managed by that policy remains in place on the managed cluster.
+
+    </div>
 
 4.  Optional: As an alternative, after making changes to `PolicyGenerator` or `PolicyGentemplate` CRs that result in obsolete policies, you can remove these policies from the hub cluster manually. You can delete policies from the RHACM console using the **Governance** tab or by running the following command:
 
@@ -1911,33 +1551,13 @@ Procedure
     $ oc delete policy -n <namespace> <policy_name>
     ```
 
-</div>
-
 # Tearing down the GitOps ZTP pipeline
 
 You can remove the ArgoCD pipeline and all generated GitOps Zero Touch Provisioning (ZTP) artifacts.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in to the hub cluster as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Detach all clusters from Red Hat Advanced Cluster Management (RHACM) on the hub cluster.
 
@@ -1948,5 +1568,3 @@ Procedure
     ```
 
 3.  Commit and push your changes to the site repository.
-
-</div>

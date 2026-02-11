@@ -4,54 +4,35 @@ The Kubernetes persistent volume framework allows administrators to provision a 
 
 Persistent volumes are not bound to a single project or namespace, and you can share them across the OpenShift Container Platform cluster. Persistent volume claims are specific to a project or namespace, and can be requested by users for use in applications.
 
-> [!IMPORTANT]
-> High availability of storage in the infrastructure is left to the underlying storage provider.
+<div class="important">
 
-> [!IMPORTANT]
-> Azure File volumes use Server Message Block.
+High availability of storage in the infrastructure is left to the underlying storage provider.
 
-> [!IMPORTANT]
-> OpenShift Container Platform 4.13 and later provides automatic migration for the Azure File in-tree volume plugin to its equivalent CSI driver.
->
-> CSI automatic migration should be seamless. Migration does not change how you use all existing API objects, such as persistent volumes, persistent volume claims, and storage classes. For more information about migration, see [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration).
+</div>
 
-<div>
+<div class="important">
 
-<div class="title">
+Azure File volumes use Server Message Block.
 
-Additional resources
+</div>
+
+<div class="important">
+
+OpenShift Container Platform 4.13 and later provides automatic migration for the Azure File in-tree volume plugin to its equivalent CSI driver.
+
+CSI automatic migration should be seamless. Migration does not change how you use all existing API objects, such as persistent volumes, persistent volume claims, and storage classes. For more information about migration, see [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration).
 
 </div>
 
 - [Azure Files](https://azure.microsoft.com/en-us/services/storage/files/)
 
-</div>
-
 # Create the Azure File share persistent volume claim
 
 To create the persistent volume claim, you must first define a `Secret` object that contains the Azure account and key. This secret is used in the `PersistentVolume` definition, and will be referenced by the persistent volume claim for use in applications.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - An Azure File share exists.
 
 - The credentials to access this share, specifically the storage account and key, are available.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `Secret` object that contains the Azure File credentials:
 
@@ -116,31 +97,13 @@ Procedure
 
     - The name of the existing `PersistentVolume` object that references the Azure File share.
 
-</div>
-
 # Mount the Azure File share in a pod
 
 After the persistent volume claim has been created, it can be used inside by an application. The following example demonstrates mounting this share inside of a pod.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - A persistent volume claim exists that is mapped to the underlying Azure File share.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Create a pod that mounts the existing persistent volume claim:
 
@@ -166,5 +129,3 @@ Procedure
   - The path to mount the Azure File share inside the pod. Do not mount to the container root, `/`, or any path that is the same in the host and the container. This can corrupt your host system if the container is sufficiently privileged, such as the host `/dev/pts` files. It is safe to mount the host by using `/host`.
 
   - The name of the `PersistentVolumeClaim` object that has been previously created.
-
-</div>

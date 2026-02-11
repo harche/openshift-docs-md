@@ -6,14 +6,6 @@ You can configure the cluster-wide proxy in the AWS Load Balancer Operator. Afte
 
 Environment variables include `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY`. These variables are populated to the managed controller by the AWS Load Balancer Operator.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the config map to contain the certificate authority (CA) bundle in the `aws-load-balancer-operator` namespace by running the following command:
 
     ``` terminal
@@ -38,11 +30,9 @@ Procedure
     $ oc -n aws-load-balancer-operator exec deploy/aws-load-balancer-operator-controller-manager -c manager -- bash -c "ls -l /etc/pki/tls/certs/albo-tls-ca-bundle.crt; printenv TRUSTED_CA_CONFIGMAP_NAME"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -51,59 +41,25 @@ Procedure
     trusted-ca
     ```
 
-    </div>
-
 5.  Optional: Restart deployment of the AWS Load Balancer Operator every time the config map changes by running the following command:
 
     ``` terminal
     $ oc -n aws-load-balancer-operator rollout restart deployment/aws-load-balancer-operator-controller-manager
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Certificate injection using Operators](../../../networking/configuring_network_settings/configuring-a-custom-pki.xml#certificate-injection-using-operators_configuring-a-custom-pki)
-
-</div>
 
 # Adding TLS termination on the AWS Load Balancer
 
 To secure traffic for your domain, configure TLS termination on the AWS Load Balancer. This setup routes traffic to the pods of a service while ensuring that encrypted connections are decrypted at the load balancer level.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file that defines the `AWSLoadBalancerController` resource:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `add-tls-termination-albc.yaml` file
+    **Example `add-tls-termination-albc.yaml` file**
 
     </div>
 
@@ -118,8 +74,6 @@ Procedure
     # ...
     ```
 
-    </div>
-
     where:
 
     `spec.ingressClass`
@@ -127,11 +81,9 @@ Procedure
 
 2.  Create a YAML file that defines the `Ingress` resource:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `add-tls-termination-ingress.yaml` file
+    **Example `add-tls-termination-ingress.yaml` file**
 
     </div>
 
@@ -159,8 +111,6 @@ Procedure
     # ...
     ```
 
-    </div>
-
     where:
 
     `metadata.name`
@@ -181,31 +131,11 @@ Procedure
     `backend.service`
     Specifies the service for traffic routing.
 
-</div>
-
 # Creating multiple ingress resources through a single AWS Load Balancer
 
 To route traffic to different services within a single domain, configure multiple ingress resources on a single AWS Load Balancer. This setup allows each resource to provide different endpoints while sharing the same load balancing infrastructure.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an `IngressClassParams` resource YAML file, for example, `sample-single-lb-params.yaml`, as follows:
 
@@ -405,24 +335,12 @@ Procedure
     $ oc create -f sample-multiple-ingress.yaml
     ```
 
-</div>
-
 # AWS Load Balancer Operator logs
 
 To troubleshoot the AWS Load Balancer Operator, view the logs using the `oc logs` command. By viewing the logs, you can diagnose issues and monitor the activity of the Operator.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - View the logs of the AWS Load Balancer Operator by running the following command:
 
   ``` terminal
   $ oc logs -n aws-load-balancer-operator deployment/aws-load-balancer-operator-controller-manager -c manager
   ```
-
-</div>

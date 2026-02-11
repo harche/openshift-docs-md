@@ -1,35 +1,20 @@
 Install the JobSet Operator on OpenShift Container Platform to enable management of large-scale, coordinated computing workloads, giving your applications a unified API and failure recovery.
 
-> [!IMPORTANT]
-> The JobSet Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
+<div class="important">
+
+The JobSet Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
+
+</div>
 
 # Installing the JobSet Operator
 
 Install the JobSet Operator on OpenShift Container Platform using the web console to begin managing large-scale, coordinated computing workloads.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
 
 - You have installed the cert-manager Operator for Red Hat OpenShift.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -73,27 +58,15 @@ Procedure
 
     5.  Click **Create**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Check that the JobSet Operator and operand pods are running by entering the following command:
 
   ``` terminal
   $ oc get pod -n openshift-jobset-operator
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -102,7 +75,3 @@ Verification
   jobset-controller-manager-5595547fb-b4g2x   1/1     Running   0          48s
   jobset-operator-596cb848c6-q2dmp            1/1     Running   0          2m33s
   ```
-
-  </div>
-
-</div>

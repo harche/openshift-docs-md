@@ -4,20 +4,15 @@ The `restricted-v2` SCC applies to all newly created pods in 4.17. The default s
 
 Seccomp profiles are stored as JSON files on the disk.
 
-> [!IMPORTANT]
-> Seccomp profiles cannot be applied to privileged containers.
+<div class="important">
+
+Seccomp profiles cannot be applied to privileged containers.
+
+</div>
 
 # Verifying the default seccomp profile applied to a pod
 
 OpenShift Container Platform ships with a default seccomp profile that is referenced as `runtime/default`. In 4.17, newly created pods have the Security Context Constraint (SCC) set to `restricted-v2` and the default seccomp profile applies to the pod.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  You can verify the Security Context Constraint (SCC) and the default seccomp profile set on a pod by running the following commands:
 
@@ -33,11 +28,9 @@ Procedure
         $ oc get pods -n workshop
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -47,19 +40,15 @@ Procedure
         parksmap-1-deploy   0/1     Completed   0          2m22s
         ```
 
-        </div>
-
     2.  Inspect the pods:
 
         ``` terminal
         $ oc get pod parksmap-1-4xkwf -n workshop -o yaml
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -96,13 +85,9 @@ Procedure
             seccomp.security.alpha.kubernetes.io/pod: runtime/default
         ```
 
-        </div>
-
         - The `restricted-v2` SCC is added by default if your workload does not have access to a different SCC.
 
         - Newly created pods in 4.17 will have the seccomp profile configured to `runtime/default` as mandated by the SCC.
-
-</div>
 
 ## Upgraded cluster
 
@@ -110,8 +95,11 @@ In clusters upgraded to 4.17 all authenticated users have access to the `restric
 
 A workload admitted by the SCC `restricted` for example, on a OpenShift Container Platform v4.10 cluster when upgraded may get admitted by `restricted-v2`. This is because `restricted-v2` is the more restrictive SCC between `restricted` and `restricted-v2`.
 
-> [!NOTE]
-> The workload must be able to run with `retricted-v2`.
+<div class="note">
+
+The workload must be able to run with `retricted-v2`.
+
+</div>
 
 Conversely with a workload that requires `privilegeEscalation: true` this workload will continue to have the `restricted` SCC available for any authenticated user. This is because `restricted-v2` does not allow `privilegeEscalation`.
 
@@ -141,27 +129,11 @@ You can use the `MachineConfig` object to create profiles.
 
 Seccomp can restrict system calls (syscalls) within a container, limiting the access of your application.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have cluster admin permissions.
 
 - You have created a custom security context constraints (SCC). For more information, see *Additional resources*.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Create the `MachineConfig` object:
 
@@ -185,33 +157,13 @@ Procedure
           path: /var/lib/kubelet/seccomp/seccomp-nostat.json
   ```
 
-</div>
-
 ## Setting up the custom seccomp profile
-
-<div>
-
-<div class="title">
-
-Prerequisite
-
-</div>
 
 - You have cluster administrator permissions.
 
 - You have created a custom security context constraints (SCC). For more information, see "Additional resources".
 
 - You have created a custom seccomp profile.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Upload your custom seccomp profile to `/var/lib/kubelet/seccomp/<custom-name>.json` by using the Machine Config. See "Additional resources" for detailed steps.
 
@@ -224,37 +176,17 @@ Procedure
 
     - Provide the name of your custom seccomp profile.
 
-</div>
-
 ## Applying the custom seccomp profile to the workload
-
-<div>
-
-<div class="title">
-
-Prerequisite
-
-</div>
 
 - The cluster administrator has set up the custom seccomp profile. For more details, see "Setting up the custom seccomp profile".
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Apply the seccomp profile to the workload by setting the `securityContext.seccompProfile.type` field as following:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example
+  **Example**
 
   </div>
 
@@ -266,13 +198,9 @@ Procedure
         localhostProfile: <custom-name>.json
   ```
 
-  </div>
-
   - Provide the name of your custom seccomp profile.
 
     Alternatively, you can use the pod annotations `seccomp.security.alpha.kubernetes.io/pod: localhost/<custom-name>.json`. However, this method is deprecated in OpenShift Container Platform 4.17.
-
-</div>
 
 During deployment, the admission controller validates the following:
 
@@ -282,11 +210,17 @@ During deployment, the admission controller validates the following:
 
 If the SCC is allowed for the pod, the kubelet runs the pod with the specified seccomp profile.
 
-> [!IMPORTANT]
-> Ensure that the seccomp profile is deployed to all worker nodes.
+<div class="important">
 
-> [!NOTE]
-> The custom SCC must have the appropriate priority to be automatically assigned to the pod or meet other conditions required by the pod, such as allowing CAP_NET_ADMIN.
+Ensure that the seccomp profile is deployed to all worker nodes.
+
+</div>
+
+<div class="note">
+
+The custom SCC must have the appropriate priority to be automatically assigned to the pod or meet other conditions required by the pod, such as allowing CAP_NET_ADMIN.
+
+</div>
 
 # Additional resources
 

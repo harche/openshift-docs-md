@@ -10,17 +10,9 @@ Your cluster must meet the following requirements before you can run the latency
 
 - You have logged in to `registry.redhat.io` with your Customer Portal credentials by using the `podman login` command.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Scheduling a workload onto a worker with real-time capabilities](../scalability_and_performance/cnf-provisioning-low-latency-workloads.xml#cnf-scheduling-workload-onto-worker-with-real-time-capabilities_cnf-provisioning-low-latency)
-
-</div>
 
 # Measuring latency
 
@@ -52,74 +44,75 @@ The tests introduce the following environment variables:
 <col style="width: 75%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Environment variables</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>LATENCY_TEST_DELAY</code></p></td>
 <td style="text-align: left;"><p>Specifies the amount of time in seconds after which the test starts running. You can use the variable to allow the CPU manager reconcile loop to update the default CPU pool. The default value is 0.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>LATENCY_TEST_CPUS</code></p></td>
 <td style="text-align: left;"><p>Specifies the number of CPUs that the pod running the latency tests uses. If you do not set the variable, the default configuration includes all isolated CPUs.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>LATENCY_TEST_RUNTIME</code></p></td>
 <td style="text-align: left;"><p>Specifies the amount of time in seconds that the latency test must run. The default value is 300 seconds.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>To prevent the Ginkgo 2.0 test suite from timing out before the latency tests complete, set the <code>-ginkgo.timeout</code> flag to a value greater than <code>LATENCY_TEST_RUNTIME</code> + 2 minutes. If you also set a <code>LATENCY_TEST_DELAY</code> value then you must set <code>-ginkgo.timeout</code> to a value greater than <code>LATENCY_TEST_RUNTIME</code> + <code>LATENCY_TEST_DELAY</code> + 2 minutes. The default timeout value for the Ginkgo 2.0 test suite is 1 hour.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>HWLATDETECT_MAXIMUM_LATENCY</code></p></td>
 <td style="text-align: left;"><p>Specifies the maximum acceptable hardware latency in microseconds for the workload and operating system. If you do not set the value of <code>HWLATDETECT_MAXIMUM_LATENCY</code> or <code>MAXIMUM_LATENCY</code>, the tool compares the default expected threshold (20μs) and the actual maximum latency in the tool itself. Then, the test fails or succeeds accordingly.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>CYCLICTEST_MAXIMUM_LATENCY</code></p></td>
 <td style="text-align: left;"><p>Specifies the maximum latency in microseconds that all threads expect before waking up during the <code>cyclictest</code> run. If you do not set the value of <code>CYCLICTEST_MAXIMUM_LATENCY</code> or <code>MAXIMUM_LATENCY</code>, the tool skips the comparison of the expected and the actual maximum latency.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>OSLAT_MAXIMUM_LATENCY</code></p></td>
 <td style="text-align: left;"><p>Specifies the maximum acceptable latency in microseconds for the <code>oslat</code> test results. If you do not set the value of <code>OSLAT_MAXIMUM_LATENCY</code> or <code>MAXIMUM_LATENCY</code>, the tool skips the comparison of the expected and the actual maximum latency.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>MAXIMUM_LATENCY</code></p></td>
 <td style="text-align: left;"><p>Unified variable that specifies the maximum acceptable latency in microseconds. Applicable for all available latency tools.</p></td>
 </tr>
 </tbody>
 </table>
 
-> [!NOTE]
-> Variables that are specific to a latency tool take precedence over unified variables. For example, if `OSLAT_MAXIMUM_LATENCY` is set to 30 microseconds and `MAXIMUM_LATENCY` is set to 10 microseconds, the `oslat` test will run with maximum acceptable latency of 30 microseconds.
+Latency test environment variables
+
+<div class="note">
+
+Variables that are specific to a latency tool take precedence over unified variables. For example, if `OSLAT_MAXIMUM_LATENCY` is set to 30 microseconds and `MAXIMUM_LATENCY` is set to 10 microseconds, the `oslat` test will run with maximum acceptable latency of 30 microseconds.
+
+</div>
 
 # Running the latency tests
 
 Run the cluster latency tests to validate node tuning for your Cloud-native Network Functions (CNF) workload.
 
-> [!NOTE]
-> When executing `podman` commands as a non-root or non-privileged user, mounting paths can fail with `permission denied` errors. Depending on your local operating system and SELinux configuration, you might also experience issues running these commands from your home directory. To make the `podman` commands work, run the commands from a folder that is not your home/\<username\> directory, and append `:Z` to the volumes creation. For example, `-v $(pwd)/:/kubeconfig:Z`. This allows `podman` to do the proper SELinux relabeling.
+<div class="note">
 
-This procedure runs the three individual tests `hwlatdetect`, `cyclictest`, and `oslat`. For details on these individual tests, see their individual sections.
-
-<div>
-
-<div class="title">
-
-Procedure
+When executing `podman` commands as a non-root or non-privileged user, mounting paths can fail with `permission denied` errors. Depending on your local operating system and SELinux configuration, you might also experience issues running these commands from your home directory. To make the `podman` commands work, run the commands from a folder that is not your home/\<username\> directory, and append `:Z` to the volumes creation. For example, `-v $(pwd)/:/kubeconfig:Z`. This allows `podman` to do the proper SELinux relabeling.
 
 </div>
+
+This procedure runs the three individual tests `hwlatdetect`, `cyclictest`, and `oslat`. For details on these individual tests, see their individual sections.
 
 1.  Open a shell prompt in the directory containing the `kubeconfig` file.
 
     You provide the test image with a `kubeconfig` file in current directory and its related `$KUBECONFIG` environment variable, mounted through a volume. This allows the running container to use the `kubeconfig` file from inside the container.
 
-    > [!NOTE]
-    > In the following command, your local `kubeconfig` is mounted to kubeconfig/kubeconfig in the cnf-tests container, which allows access to the cluster.
+    <div class="note">
+
+    In the following command, your local `kubeconfig` is mounted to kubeconfig/kubeconfig in the cnf-tests container, which allows access to the cluster.
+
+    </div>
 
 2.  To run the latency tests, run the following command, substituting variable values as appropriate:
 
@@ -141,37 +134,25 @@ Procedure
 
 5.  Optional: Append `--ginkgo.timeout="24h"` flag to ensure the Ginkgo 2.0 test suite does not timeout before the latency tests complete.
 
-    > [!IMPORTANT]
-    > During testing shorter time periods, as shown, can be used to run the tests. However, for final verification and valid results, the test should run for at least 12 hours (43200 seconds).
+    <div class="important">
 
-</div>
+    During testing shorter time periods, as shown, can be used to run the tests. However, for final verification and valid results, the test should run for at least 12 hours (43200 seconds).
+
+    </div>
 
 ## Running hwlatdetect
 
 The `hwlatdetect` tool is available in the `rt-kernel` package with a regular subscription of Red Hat Enterprise Linux (RHEL) 9.x.
 
-> [!NOTE]
-> When executing `podman` commands as a non-root or non-privileged user, mounting paths can fail with `permission denied` errors. Depending on your local operating system and SELinux configuration, you might also experience issues running these commands from your home directory. To make the `podman` commands work, run the commands from a folder that is not your home/\<username\> directory, and append `:Z` to the volumes creation. For example, `-v $(pwd)/:/kubeconfig:Z`. This allows `podman` to do the proper SELinux relabeling.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+When executing `podman` commands as a non-root or non-privileged user, mounting paths can fail with `permission denied` errors. Depending on your local operating system and SELinux configuration, you might also experience issues running these commands from your home directory. To make the `podman` commands work, run the commands from a folder that is not your home/\<username\> directory, and append `:Z` to the volumes creation. For example, `-v $(pwd)/:/kubeconfig:Z`. This allows `podman` to do the proper SELinux relabeling.
 
 </div>
 
 - You have reviewed the prerequisites for running latency tests.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To run the `hwlatdetect` tests, run the following command, substituting variable values as appropriate:
 
@@ -186,14 +167,15 @@ Procedure
 
   If the results exceed the latency threshold, the test fails.
 
-  > [!IMPORTANT]
-  > During testing shorter time periods, as shown, can be used to run the tests. However, for final verification and valid results, the test should run for at least 12 hours (43200 seconds).
+  <div class="important">
 
-  <div class="formalpara">
+  During testing shorter time periods, as shown, can be used to run the tests. However, for final verification and valid results, the test should run for at least 12 hours (43200 seconds).
 
-  <div class="title">
+  </div>
 
-  Example failure output
+  <div class="formalpara-title">
+
+  **Example failure output**
 
   </div>
 
@@ -257,13 +239,9 @@ Procedure
   FAIL
   ```
 
-  </div>
-
   - You can configure the latency threshold by using the `MAXIMUM_LATENCY` or the `HWLATDETECT_MAXIMUM_LATENCY` environment variables.
 
   - The maximum latency value measured during the test.
-
-</div>
 
 **Example hwlatdetect test results**
 
@@ -273,11 +251,9 @@ You can capture the following types of results:
 
 - The combined set of the rough tests with the best results and configuration settings.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example of good results
+**Example of good results**
 
 </div>
 
@@ -297,15 +273,11 @@ Max Latency: Below threshold
 Samples recorded: 0
 ```
 
-</div>
-
 The `hwlatdetect` tool only provides output if the sample exceeds the specified threshold.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example of bad results
+**Example of bad results**
 
 </div>
 
@@ -330,8 +302,6 @@ ts: 1610543573.091550771, inner:34, outer:28
 ts: 1610543574.093555202, inner:116, outer:63
 ```
 
-</div>
-
 The output of `hwlatdetect` shows that multiple samples exceed the threshold. However, the same output can indicate different results based on the following factors:
 
 - The duration of the test
@@ -340,37 +310,27 @@ The output of `hwlatdetect` shows that multiple samples exceed the threshold. Ho
 
 - The host firmware settings
 
-> [!WARNING]
-> Before proceeding with the next latency test, ensure that the latency reported by `hwlatdetect` meets the required threshold. Fixing latencies introduced by hardware might require you to contact the system vendor support.
->
-> Not all latency spikes are hardware related. Ensure that you tune the host firmware to meet your workload requirements. For more information, see [Setting firmware parameters for system tuning](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_for_real_time/9/html-single/optimizing_rhel_9_for_real_time_for_low_latency_operation/index#setting-bios-parameters-for-system-tuning_optimizing-RHEL9-for-real-time-for-low-latency-operation).
+<div class="warning">
+
+Before proceeding with the next latency test, ensure that the latency reported by `hwlatdetect` meets the required threshold. Fixing latencies introduced by hardware might require you to contact the system vendor support.
+
+Not all latency spikes are hardware related. Ensure that you tune the host firmware to meet your workload requirements. For more information, see [Setting firmware parameters for system tuning](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_for_real_time/9/html-single/optimizing_rhel_9_for_real_time_for_low_latency_operation/index#setting-bios-parameters-for-system-tuning_optimizing-RHEL9-for-real-time-for-low-latency-operation).
+
+</div>
 
 ## Running cyclictest
 
 The `cyclictest` tool measures the real-time kernel scheduler latency on the specified CPUs.
 
-> [!NOTE]
-> When executing `podman` commands as a non-root or non-privileged user, mounting paths can fail with `permission denied` errors. Depending on your local operating system and SELinux configuration, you might also experience issues running these commands from your home directory. To make the `podman` commands work, run the commands from a folder that is not your home/\<username\> directory, and append `:Z` to the volumes creation. For example, `-v $(pwd)/:/kubeconfig:Z`. This allows `podman` to do the proper SELinux relabeling.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+When executing `podman` commands as a non-root or non-privileged user, mounting paths can fail with `permission denied` errors. Depending on your local operating system and SELinux configuration, you might also experience issues running these commands from your home directory. To make the `podman` commands work, run the commands from a folder that is not your home/\<username\> directory, and append `:Z` to the volumes creation. For example, `-v $(pwd)/:/kubeconfig:Z`. This allows `podman` to do the proper SELinux relabeling.
 
 </div>
 
 - You have reviewed the prerequisites for running latency tests.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To perform the `cyclictest`, run the following command, substituting variable values as appropriate:
 
@@ -385,14 +345,15 @@ Procedure
 
   If the results exceed the latency threshold, the test fails.
 
-  > [!IMPORTANT]
-  > During testing shorter time periods, as shown, can be used to run the tests. However, for final verification and valid results, the test should run for at least 12 hours (43200 seconds).
+  <div class="important">
 
-  <div class="formalpara">
+  During testing shorter time periods, as shown, can be used to run the tests. However, for final verification and valid results, the test should run for at least 12 hours (43200 seconds).
 
-  <div class="title">
+  </div>
 
-  Example failure output
+  <div class="formalpara-title">
+
+  **Example failure output**
 
   </div>
 
@@ -417,19 +378,13 @@ Procedure
   FAIL
   ```
 
-  </div>
-
-</div>
-
 **Example cyclictest results**
 
 The same output can indicate different results for different workloads. For example, spikes up to 18μs are acceptable for 4G DU workloads, but not for 5G DU workloads.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example of good results
+**Example of good results**
 
 </div>
 
@@ -464,13 +419,9 @@ More histogram entries ...
 # Thread 15:
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example of bad results
+**Example of bad results**
 
 </div>
 
@@ -505,34 +456,19 @@ More histogram entries ...
 # Thread 15: 110059 155917
 ```
 
-</div>
-
 ## Running oslat
 
 The `oslat` test simulates a CPU-intensive DPDK application and measures all the interruptions and disruptions to test how the cluster handles CPU heavy data processing.
 
-> [!NOTE]
-> When executing `podman` commands as a non-root or non-privileged user, mounting paths can fail with `permission denied` errors. Depending on your local operating system and SELinux configuration, you might also experience issues running these commands from your home directory. To make the `podman` commands work, run the commands from a folder that is not your home/\<username\> directory, and append `:Z` to the volumes creation. For example, `-v $(pwd)/:/kubeconfig:Z`. This allows `podman` to do the proper SELinux relabeling.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+When executing `podman` commands as a non-root or non-privileged user, mounting paths can fail with `permission denied` errors. Depending on your local operating system and SELinux configuration, you might also experience issues running these commands from your home directory. To make the `podman` commands work, run the commands from a folder that is not your home/\<username\> directory, and append `:Z` to the volumes creation. For example, `-v $(pwd)/:/kubeconfig:Z`. This allows `podman` to do the proper SELinux relabeling.
 
 </div>
 
 - You have reviewed the prerequisites for running latency tests.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To perform the `oslat` test, run the following command, substituting variable values as appropriate:
 
@@ -549,14 +485,15 @@ Procedure
 
   If the results exceed the latency threshold, the test fails.
 
-  > [!IMPORTANT]
-  > During testing shorter time periods, as shown, can be used to run the tests. However, for final verification and valid results, the test should run for at least 12 hours (43200 seconds).
+  <div class="important">
 
-  <div class="formalpara">
+  During testing shorter time periods, as shown, can be used to run the tests. However, for final verification and valid results, the test should run for at least 12 hours (43200 seconds).
 
-  <div class="title">
+  </div>
 
-  Example failure output
+  <div class="formalpara-title">
+
+  **Example failure output**
 
   </div>
 
@@ -593,37 +530,17 @@ Procedure
   FAIL
   ```
 
-  </div>
-
   - In this example, the measured latency is outside the maximum allowed value.
-
-</div>
 
 # Generating a latency test failure report
 
 Use the following procedures to generate a JUnit latency test output and test failure report.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in as a user with `cluster-admin` privileges.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Create a test failure report with information about the cluster state and resources for troubleshooting by passing the `--report` parameter with the path to where the report is dumped:
 
@@ -638,38 +555,23 @@ Procedure
   \<report_folder_path\>
   Is the path to the folder where the report is generated.
 
-</div>
-
 # Generating a JUnit latency test report
 
 Use the following procedures to generate a JUnit latency test output and test failure report.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in as a user with `cluster-admin` privileges.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Create a JUnit-compliant XML report by passing the `--junit` parameter together with the path to where the report is dumped:
 
-  > [!NOTE]
-  > You must create the `junit` folder before running this command.
+  <div class="note">
+
+  You must create the `junit` folder before running this command.
+
+  </div>
 
   ``` terminal
   $ podman run -v $(pwd)/:/kubeconfig:Z -v $(pwd)/junit:/junit \
@@ -682,20 +584,13 @@ Procedure
   `file_name`
   The name of the XML report file.
 
-</div>
-
 # Running latency tests on a single-node OpenShift cluster
 
 You can run latency tests on single-node OpenShift clusters.
 
-> [!NOTE]
-> When executing `podman` commands as a non-root or non-privileged user, mounting paths can fail with `permission denied` errors. To make the `podman` command work, append `:Z` to the volumes creation; for example, `-v $(pwd)/:/kubeconfig:Z`. This allows `podman` to do the proper SELinux relabeling.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+When executing `podman` commands as a non-root or non-privileged user, mounting paths can fail with `permission denied` errors. To make the `podman` command work, append `:Z` to the volumes creation; for example, `-v $(pwd)/:/kubeconfig:Z`. This allows `podman` to do the proper SELinux relabeling.
 
 </div>
 
@@ -705,15 +600,7 @@ Prerequisites
 
 - You have applied a cluster performance profile by using the Node Tuning Operator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To run the latency tests on a single-node OpenShift cluster, run the following command:
 
@@ -723,12 +610,13 @@ Procedure
   /usr/bin/test-run.sh --ginkgo.v --ginkgo.timeout="24h"
   ```
 
-  > [!NOTE]
-  > The default runtime for each test is 300 seconds. For valid latency test results, run the tests for at least 12 hours by updating the `LATENCY_TEST_RUNTIME` variable. To run the buckets latency validation step, you must specify a maximum latency. For details on maximum latency variables, see the table in the "Measuring latency" section.
+  <div class="note">
+
+  The default runtime for each test is 300 seconds. For valid latency test results, run the tests for at least 12 hours by updating the `LATENCY_TEST_RUNTIME` variable. To run the buckets latency validation step, you must specify a maximum latency. For details on maximum latency variables, see the table in the "Measuring latency" section.
+
+  </div>
 
   After running the test suite, all the dangling resources are cleaned up.
-
-</div>
 
 # Running latency tests in a disconnected cluster
 
@@ -791,14 +679,6 @@ You can run the latency tests using a custom test image and image registry using
 
 OpenShift Container Platform provides a built-in container image registry, which runs as a standard workload on the cluster.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Gain external access to the registry by exposing it with a route:
 
     ``` terminal
@@ -860,19 +740,9 @@ Procedure
     -e IMAGE_REGISTRY=image-registry.openshift-image-registry.svc:5000/cnftests cnf-tests-local:latest /usr/bin/test-run.sh --ginkgo.v --ginkgo.timeout="24h"
     ```
 
-</div>
-
 **Mirroring a different set of test images**
 
 You can optionally change the default upstream images that are mirrored for the latency tests.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  The `mirror` command tries to mirror the upstream images by default. This can be overridden by passing a file with the following format to the image:
 
@@ -894,33 +764,15 @@ Procedure
     |  oc image mirror -f -
     ```
 
-</div>
-
 # Troubleshooting errors with the cnf-tests container
 
 To run latency tests, the cluster must be accessible from within the `cnf-tests` container.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in as a user with `cluster-admin` privileges.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Verify that the cluster is accessible from inside the `cnf-tests` container by running the following command:
 
@@ -931,5 +783,3 @@ Procedure
   ```
 
   If this command does not work, an error related to spanning across DNS, MTU size, or firewall access might be occurring.
-
-</div>

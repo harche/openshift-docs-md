@@ -20,90 +20,57 @@ You can install the Tempo Operator by using the web console or the command line.
 
 You can install the Tempo Operator from the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to the OpenShift Container Platform web console as a cluster administrator with the `cluster-admin` role.
 
 - For Red Hat OpenShift Dedicated, you must be logged in using an account with the `dedicated-admin` role.
 
 - You have completed setting up the required object storage by a supported provider: [Red Hat OpenShift Data Foundation](https://www.redhat.com/en/technologies/cloud-computing/openshift-data-foundation), [MinIO](https://min.io/), [Amazon S3](https://aws.amazon.com/s3/), [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/), [Google Cloud Storage](https://cloud.google.com/storage/). For more information, see "Object storage setup".
 
-  > [!WARNING]
-  > Object storage is required and not included with the Distributed Tracing Platform. You must choose and set up object storage by a supported provider before installing the Distributed Tracing Platform.
+  <div class="warning">
 
-</div>
+  Object storage is required and not included with the Distributed Tracing Platform. You must choose and set up object storage by a supported provider before installing the Distributed Tracing Platform.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  In the web console, search for `Tempo Operator`.
 
-    > [!TIP]
-    > In OpenShift Container Platform 4.19 or earlier, go to **Operators** → **OperatorHub**.
-    >
-    > In OpenShift Container Platform 4.20 or later, go to **Ecosystem** → **Software Catalog**.
+    <div class="tip">
+
+    In OpenShift Container Platform 4.19 or earlier, go to **Operators** → **OperatorHub**.
+
+    In OpenShift Container Platform 4.20 or later, go to **Ecosystem** → **Software Catalog**.
+
+    </div>
 
 2.  Select the **Tempo Operator** that is **provided by Red Hat**.
 
-    > [!IMPORTANT]
-    > The following selections are the default presets for this Operator:
-    >
-    > - **Update channel** → **stable**
-    >
-    > - **Installation mode** → **All namespaces on the cluster**
-    >
-    > - **Installed Namespace** → **openshift-tempo-operator**
-    >
-    > - **Update approval** → **Automatic**
+    <div class="important">
+
+    The following selections are the default presets for this Operator:
+
+    - **Update channel** → **stable**
+
+    - **Installation mode** → **All namespaces on the cluster**
+
+    - **Installed Namespace** → **openshift-tempo-operator**
+
+    - **Update approval** → **Automatic**
+
+    </div>
 
 3.  Select the **Enable Operator recommended cluster monitoring on this Namespace** checkbox.
 
 4.  Select **Install** → **Install** → **View Operator**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - In the **Details** tab of the page of the installed Operator, under **ClusterServiceVersion details**, verify that the installation **Status** is **Succeeded**.
-
-</div>
 
 ## Installing the Tempo Operator by using the CLI
 
 You can install the Tempo Operator from the command line.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - An active OpenShift CLI (`oc`) session by a cluster administrator with the `cluster-admin` role.
 
   <div class="tip">
-
-  <div class="title">
-
-  </div>
 
   - Ensure that your OpenShift CLI (`oc`) version is up to date and matches your OpenShift Container Platform version.
 
@@ -117,18 +84,11 @@ Prerequisites
 
 - You have completed setting up the required object storage by a supported provider: [Red Hat OpenShift Data Foundation](https://www.redhat.com/en/technologies/cloud-computing/openshift-data-foundation), [MinIO](https://min.io/), [Amazon S3](https://aws.amazon.com/s3/), [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/), [Google Cloud Storage](https://cloud.google.com/storage/). For more information, see "Object storage setup".
 
-  > [!WARNING]
-  > Object storage is required and not included with the Distributed Tracing Platform. You must choose and set up object storage by a supported provider before installing the Distributed Tracing Platform.
+  <div class="warning">
 
-</div>
+  Object storage is required and not included with the Distributed Tracing Platform. You must choose and set up object storage by a supported provider before installing the Distributed Tracing Platform.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  Create a project for the Tempo Operator by running the following command:
 
@@ -176,45 +136,36 @@ Procedure
     EOF
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Check the Operator status by running the following command:
 
   ``` terminal
   $ oc get csv -n openshift-tempo-operator
   ```
 
-</div>
-
 # Object storage setup
 
 You can use the following configuration parameters when setting up a supported object storage.
 
-> [!IMPORTANT]
-> Using object storage requires setting up a supported object store and creating a secret for the object store credentials before deploying a `TempoStack` or `TempoMonolithic` instance.
+<div class="important">
 
-<table id="required_secret_parameters_distr-tracing-tempo-installing">
+Using object storage requires setting up a supported object store and creating a secret for the object store credentials before deploying a `TempoStack` or `TempoMonolithic` instance.
+
+</div>
+
+<table>
 <caption>Required secret parameters</caption>
 <colgroup>
 <col style="width: 25%" />
 <col style="width: 75%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Storage provider</th>
 <th style="text-align: left;">Secret parameters</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><strong><a href="https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/">Red Hat OpenShift Data Foundation</a></strong></p></td>
 <td style="text-align: left;"><p><code>name: tempostack-dev-odf # example</code></p>
 <p><code>bucket: &lt;bucket_name&gt; # requires an ObjectBucketClaim</code></p>
@@ -222,7 +173,7 @@ You can use the following configuration parameters when setting up a supported o
 <p><code>access_key_id: &lt;data_foundation_access_key_id&gt;</code></p>
 <p><code>access_key_secret: &lt;data_foundation_access_key_secret&gt;</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><strong>MinIO</strong></p></td>
 <td style="text-align: left;"><p>See <a href="https://operator.min.io/">MinIO Operator</a>.</p>
 <p><code>name: tempostack-dev-minio # example</code></p>
@@ -231,14 +182,14 @@ You can use the following configuration parameters when setting up a supported o
 <p><code>access_key_id: &lt;minio_access_key_id&gt;</code></p>
 <p><code>access_key_secret: &lt;minio_access_key_secret&gt;</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><strong>IBM Cloud Object Storage (COS)</strong></p></td>
 <td style="text-align: left;"><p><code>bucket: &lt;ibm_bucket_name&gt;</code></p>
 <p><code>endpoint: &lt;ibm_bucket_endpoint&gt;</code></p>
 <p><code>access_key_id: &lt;ibm_bucket_access_key&gt;</code></p>
 <p><code>access_key_secret: &lt;ibm_bucket_secret_key&gt;</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><strong>Amazon S3</strong></p></td>
 <td style="text-align: left;"><p><code>name: tempostack-dev-s3 # example</code></p>
 <p><code>bucket: &lt;s3_bucket_name&gt; # Amazon S3 documentation</code></p>
@@ -246,21 +197,21 @@ You can use the following configuration parameters when setting up a supported o
 <p><code>access_key_id: &lt;s3_access_key_id&gt;</code></p>
 <p><code>access_key_secret: &lt;s3_access_key_secret&gt;</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><strong>Amazon S3 with Security Token Service (STS)</strong></p></td>
 <td style="text-align: left;"><p><code>name: tempostack-dev-s3 # example</code></p>
 <p><code>bucket: &lt;s3_bucket_name&gt; # Amazon S3 documentation</code></p>
 <p><code>region: &lt;s3_region&gt;</code></p>
 <p><code>role_arn: &lt;s3_role_arn&gt;</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><strong>Microsoft Azure Blob Storage</strong></p></td>
 <td style="text-align: left;"><p><code>name: tempostack-dev-azure # example</code></p>
 <p><code>container: &lt;azure_blob_storage_container_name&gt; # Microsoft Azure documentation</code></p>
 <p><code>account_name: &lt;azure_blob_storage_account_name&gt;</code></p>
 <p><code>account_key: &lt;azure_blob_storage_account_key&gt;</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><strong>Google Cloud Storage on Google Cloud</strong></p></td>
 <td style="text-align: left;"><p><code>name: tempostack-dev-gcs # example</code></p>
 <p><code>bucketname: &lt;google_cloud_storage_bucket_name&gt; # requires a bucket created in a Google Cloud project</code></p>
@@ -269,20 +220,17 @@ You can use the following configuration parameters when setting up a supported o
 </tbody>
 </table>
 
+Required secret parameters
+
 ## Setting up the Amazon S3 storage with the Security Token Service
 
 You can set up the Amazon S3 storage with the Security Token Service (STS) and AWS Command Line Interface (AWS CLI). Optionally, you can also use the Cloud Credential Operator (CCO).
 
-> [!IMPORTANT]
-> Using the Distributed Tracing Platform with the Amazon S3 storage and STS is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div>
+Using the Distributed Tracing Platform with the Amazon S3 storage and STS is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
@@ -290,25 +238,13 @@ Prerequisites
 
 - If you intend to use the CCO, you have installed and configured the CCO in your cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create an AWS S3 bucket.
 
 2.  Create the following `trust.json` file for the AWS Identity and Access Management (AWS IAM) policy for the purpose of setting up a trust relationship between the AWS IAM role, which you will create in the next step, and the service account of either the `TempoStack` or `TempoMonolithic` instance:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    `trust.json`
+    **`trust.json`**
 
     </div>
 
@@ -335,18 +271,19 @@ Procedure
     }
     ```
 
-    </div>
-
     - The OpenID Connect (OIDC) provider that you have configured on the OpenShift Container Platform.
 
     - The namespace in which you intend to create either a `TempoStack` or `TempoMonolithic` instance. Replace `<tempo_custom_resource_name>` with the `metadata` name that you define in your `TempoStack` or `TempoMonolithic` custom resource.
 
-      > [!TIP]
-      > You can also get the value for the OIDC provider by running the following command:
-      >
-      > ``` terminal
-      > $ oc get authentication cluster -o json | jq -r '.spec.serviceAccountIssuer' | sed 's~http[s]*://~~g'
-      > ```
+      <div class="tip">
+
+      You can also get the value for the OIDC provider by running the following command:
+
+      ``` terminal
+      $ oc get authentication cluster -o json | jq -r '.spec.serviceAccountIssuer' | sed 's~http[s]*://~~g'
+      ```
+
+      </div>
 
 3.  Create an AWS IAM role by attaching the created `trust.json` policy file. You can do this by running the following command:
 
@@ -396,11 +333,9 @@ Procedure
 
 7.  When the object storage secret is created, update the relevant custom resource of the Distributed Tracing Platform instance as follows:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `TempoStack` custom resource
+    **Example `TempoStack` custom resource**
 
     </div>
 
@@ -420,17 +355,13 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - The secret that you created in the previous step.
 
     - If you are not using the CCO, omit this line. If you are using the CCO, add this parameter with the `token-cco` value.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example `TempoMonolithic` custom resource
+      **Example `TempoMonolithic` custom resource**
 
       </div>
 
@@ -451,21 +382,9 @@ Procedure
       # ...
       ```
 
-      </div>
-
     - The secret that you created in the previous step.
 
     - If you are not using the CCO, omit this line. If you are using the CCO, add this parameter with the `token-cco` value.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [AWS Identity and Access Management Documentation](https://docs.aws.amazon.com/iam/) (AWS documentation)
 
@@ -475,22 +394,15 @@ Additional resources
 
 - [Identify AWS resources with Amazon Resource Names (ARNs)](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference-arns.html) (AWS documentation)
 
-</div>
-
 ## Setting up the Azure storage with the Security Token Service
 
 You can set up the Azure storage with the Security Token Service (STS) by using the Azure Command Line Interface (Azure CLI).
 
-> [!IMPORTANT]
-> Using the Distributed Tracing Platform with the Azure storage and STS is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div>
+Using the Distributed Tracing Platform with the Azure storage and STS is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
@@ -499,16 +411,6 @@ Prerequisites
 - You have created an Azure storage account.
 
 - You have created an Azure blob storage container.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an Azure managed identity by running the following command:
 
@@ -550,10 +452,13 @@ Procedure
 
     - The expected audience, which is to be used for validating the issued tokens for the federated identity credential. This is commonly set to `api://AzureADTokenExchange`.
 
-      > [!TIP]
-      > You can get the URL of the OpenID Connect (OIDC) issuer for your cluster by running the following command:
-      >
-      >     $ oc get authentication cluster -o json | jq -r .spec.serviceAccountIssuer
+      <div class="tip">
+
+      You can get the URL of the OpenID Connect (OIDC) issuer for your cluster by running the following command:
+
+          $ oc get authentication cluster -o json | jq -r .spec.serviceAccountIssuer
+
+      </div>
 
 3.  Create a federated identity credential for the OpenShift Container Platform service account for use by the Query Frontend component of the Distributed Tracing Platform. You can do this by running the following command:
 
@@ -584,10 +489,13 @@ Procedure
 
     - The Azure service principal identity of the Azure managed identity that you created in step 1.
 
-      > [!TIP]
-      > You can get the `<assignee_name>` value by running the following command:
-      >
-      >     $ az ad sp list --all --filter "servicePrincipalType eq 'ManagedIdentity'" | jq -r --arg idName <identity_name> '.[] | select(.displayName == $idName) | .appId'`
+      <div class="tip">
+
+      You can get the `<assignee_name>` value by running the following command:
+
+          $ az ad sp list --all --filter "servicePrincipalType eq 'ManagedIdentity'" | jq -r --arg idName <identity_name> '.[] | select(.displayName == $idName) | .appId'`
+
+      </div>
 
 5.  Fetch the client ID of the Azure managed identity that you created in step 1:
 
@@ -626,11 +534,9 @@ Procedure
 
 7.  When the object storage secret is created, update the relevant custom resource of the Distributed Tracing Platform instance as follows:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `TempoStack` custom resource
+    **Example `TempoStack` custom resource**
 
     </div>
 
@@ -649,15 +555,11 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - The secret that you created in the previous step.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example `TempoMonolithic` custom resource
+      **Example `TempoMonolithic` custom resource**
 
       </div>
 
@@ -677,52 +579,23 @@ Procedure
       # ...
       ```
 
-      </div>
-
     - The secret that you created in the previous step.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Install the Azure CLI on Linux](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux) (Azure documentation)
-
-</div>
 
 ## Setting up the Google Cloud storage with the Security Token Service
 
 You can set up the Google Cloud Storage (GCS) with the Security Token Service (STS) by using the Google Cloud CLI.
 
-> [!IMPORTANT]
-> Using the Distributed Tracing Platform with the GCS and STS is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div>
+Using the Distributed Tracing Platform with the GCS and STS is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
 - You have installed the latest version of the Google Cloud CLI.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a GCS bucket on the Google Cloud.
 
@@ -817,11 +690,9 @@ Procedure
 
 9.  When the object storage secret is created, update the relevant custom resource of the Distributed Tracing Platform instance as follows:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `TempoStack` custom resource
+    **Example `TempoStack` custom resource**
 
     </div>
 
@@ -840,15 +711,11 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - The secret that you created in the previous step.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example `TempoMonolithic` custom resource
+      **Example `TempoMonolithic` custom resource**
 
       </div>
 
@@ -868,37 +735,15 @@ Procedure
       # ...
       ```
 
-      </div>
-
     - The secret that you created in the previous step.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Install the gcloud CLI](https://cloud.google.com/sdk/docs/install) (Google Cloud Documentation)
 
 - [Service accounts overview](https://cloud.google.com/iam/docs/service-account-overview) (Google Cloud Documentation)
 
-</div>
-
 ## Setting up IBM Cloud Object Storage
 
 You can set up IBM Cloud Object Storage by using the OpenShift CLI (`oc`).
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the latest version of OpenShift CLI (`oc`). For more information, see "Getting started with the OpenShift CLI" in *Configure: CLI tools*.
 
@@ -911,16 +756,6 @@ Prerequisites
   - You have ordered an IBM Cloud Object Storage plan.
 
   - You have created an instance of IBM Cloud Object Storage.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  On IBM Cloud, create an object store bucket.
 
@@ -973,16 +808,6 @@ Procedure
 
     - Name of the secret that contains the IBM Cloud Storage access and secret keys.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Getting started with the OpenShift CLI](../../cli_reference/openshift_cli/getting-started-cli.xml#cli-getting-started)
 
 - [Getting started with the IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-getting-started) (IBM Cloud Docs)
@@ -991,19 +816,20 @@ Additional resources
 
 - [Getting started with IBM Cloud Object Storage: Before you begin](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-getting-started-cloud-object-storage&q=credential&tags=cloud-object-storage&offset=10#getting-started) (IBM Cloud Docs)
 
-</div>
-
 # Configuring the permissions and tenants
 
 Before installing a `TempoStack` or `TempoMonolithic` instance, you must define one or more tenants and configure their read and write access. You can configure such an authorization setup by using a cluster role and cluster role binding for the Kubernetes Role-Based Access Control (RBAC). By default, no users are granted read or write permissions. For more information, see "Configuring the read permissions for tenants" and "Configuring the write permissions for tenants".
 
-> [!NOTE]
-> The OpenTelemetry Collector of the Red Hat build of OpenTelemetry can send trace data to a `TempoStack` or `TempoMonolithic` instance by using the service account with RBAC for writing the data.
+<div class="note">
 
-| Component | Tempo Gateway service | OpenShift OAuth | `TokenReview` API | `SubjectAccessReview` API |
-|----|----|----|----|----|
-| Authentication | X | X | X |  |
-| Authorization | X |  |  | X |
+The OpenTelemetry Collector of the Red Hat build of OpenTelemetry can send trace data to a `TempoStack` or `TempoMonolithic` instance by using the service account with RBAC for writing the data.
+
+</div>
+
+| Component      | Tempo Gateway service | OpenShift OAuth | `TokenReview` API | `SubjectAccessReview` API |
+|----------------|-----------------------|-----------------|-------------------|---------------------------|
+| Authentication | X                     | X               | X                 |                           |
+| Authorization  | X                     |                 |                   | X                         |
 
 Authentication and authorization
 
@@ -1011,35 +837,15 @@ Authentication and authorization
 
 You can configure the read permissions for tenants from the **Administrator** view of the web console or from the command line.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to the OpenShift Container Platform web console as a cluster administrator with the `cluster-admin` role.
 
 - For Red Hat OpenShift Dedicated, you must be logged in using an account with the `dedicated-admin` role.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Define the tenants by adding the `tenantName` and `tenantId` parameters with your values of choice to the `TempoStack` custom resource (CR):
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Tenant example in a `TempoStack` CR
+    **Tenant example in a `TempoStack` CR**
 
     </div>
 
@@ -1058,19 +864,15 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - A `tenantName` value of the user’s choice.
 
     - A `tenantId` value of the user’s choice.
 
 2.  Add the tenants to a cluster role with the read (`get`) permissions to read traces.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example RBAC configuration in a `ClusterRole` resource
+    **Example RBAC configuration in a `ClusterRole` resource**
 
     </div>
 
@@ -1091,19 +893,15 @@ Procedure
           - 'get'
     ```
 
-    </div>
-
     - Lists the tenants, `dev` and `prod` in this example, which are defined by using the `tenantName` parameter in the previous step.
 
     - Enables the read operation for the listed tenants.
 
 3.  Grant authenticated users the read permissions for trace data by defining a cluster role binding for the cluster role from the previous step.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example RBAC configuration in a `ClusterRoleBinding` resource
+    **Example RBAC configuration in a `ClusterRoleBinding` resource**
 
     </div>
 
@@ -1122,39 +920,17 @@ Procedure
         name: system:authenticated
     ```
 
-    </div>
-
     - Grants all authenticated users the read permissions for trace data.
-
-</div>
 
 ## Configuring the write permissions for tenants
 
 You can configure the write permissions for tenants from the **Administrator** view of the web console or from the command line.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You are logged in to the OpenShift Container Platform web console as a cluster administrator with the `cluster-admin` role.
 
 - For Red Hat OpenShift Dedicated, you must be logged in using an account with the `dedicated-admin` role.
 
 - You have installed the OpenTelemetry Collector and configured it to use an authorized service account with permissions. For more information, see "Creating the required RBAC resources automatically" in the Red Hat build of OpenTelemetry documentation.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a service account for use with OpenTelemetry Collector.
 
@@ -1168,11 +944,9 @@ Procedure
 
 2.  Add the tenants to a cluster role with the write (`create`) permissions to write traces.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example RBAC configuration in a `ClusterRole` resource
+    **Example RBAC configuration in a `ClusterRole` resource**
 
     </div>
 
@@ -1192,19 +966,15 @@ Procedure
           - 'create'
     ```
 
-    </div>
-
     - Lists the tenants.
 
     - Enables the write operation.
 
 3.  Grant the OpenTelemetry Collector the write permissions by defining a cluster role binding to attach the OpenTelemetry Collector service account.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example RBAC configuration in a `ClusterRoleBinding` resource
+    **Example RBAC configuration in a `ClusterRoleBinding` resource**
 
     </div>
 
@@ -1223,8 +993,6 @@ Procedure
         namespace: otel
     ```
 
-    </div>
-
     - The service account that you created in a previous step. The client uses it when exporting trace data.
 
 4.  Configure the `OpenTelemetryCollector` custom resource as follows:
@@ -1235,11 +1003,9 @@ Procedure
 
     - Enable TLS with a valid certificate authority file.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Sample OpenTelemetry CR configuration
+      **Sample OpenTelemetry CR configuration**
 
       </div>
 
@@ -1284,8 +1050,6 @@ Procedure
       # ...
       ```
 
-      </div>
-
       - Service account configured with write permissions.
 
       - Bearer Token extension to use service account token.
@@ -1302,19 +1066,7 @@ Procedure
 
       - The exporter you specified in `exporters` section of the CR.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Creating the required RBAC resources automatically](../../observability/otel/otel-installing.xml#install-otel)
-
-</div>
 
 # Installing a TempoStack instance
 
@@ -1324,44 +1076,27 @@ You can install a `TempoStack` instance by using the web console or command line
 
 You can install a `TempoStack` instance from the **Administrator** view of the web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to the OpenShift Container Platform web console as a cluster administrator with the `cluster-admin` role.
 
 - For Red Hat OpenShift Dedicated, you must be logged in using an account with the `dedicated-admin` role.
 
 - You have completed setting up the required object storage by a supported provider: [Red Hat OpenShift Data Foundation](https://www.redhat.com/en/technologies/cloud-computing/openshift-data-foundation), [MinIO](https://min.io/), [Amazon S3](https://aws.amazon.com/s3/), [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/), [Google Cloud Storage](https://cloud.google.com/storage/). For more information, see "Object storage setup".
 
-  > [!WARNING]
-  > Object storage is required and not included with the Distributed Tracing Platform. You must choose and set up object storage by a supported provider before installing the Distributed Tracing Platform.
+  <div class="warning">
+
+  Object storage is required and not included with the Distributed Tracing Platform. You must choose and set up object storage by a supported provider before installing the Distributed Tracing Platform.
+
+  </div>
 
 - You have defined one or more tenants and configured the read and write permissions. For more information, see "Configuring the read permissions for tenants" and "Configuring the write permissions for tenants".
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to **Home** → **Projects** → **Create Project** to create a permitted project of your choice for the `TempoStack` instance that you will create in a subsequent step. Project names beginning with the `openshift-` prefix are not permitted.
 
 2.  Go to **Workloads** → **Secrets** → **Create** → **From YAML** to create a secret for your object storage bucket in the project that you created for the `TempoStack` instance. For more information, see "Object storage setup".
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example secret for Amazon S3 and MinIO storage
+    **Example secret for Amazon S3 and MinIO storage**
 
     </div>
 
@@ -1378,12 +1113,13 @@ Procedure
     type: Opaque
     ```
 
-    </div>
-
 3.  Create a `TempoStack` instance.
 
-    > [!NOTE]
-    > You can create multiple `TempoStack` instances in separate projects on the same cluster.
+    <div class="note">
+
+    You can create multiple `TempoStack` instances in separate projects on the same cluster.
+
+    </div>
 
     1.  Go to **Ecosystem** → **Installed Operators**.
 
@@ -1391,11 +1127,9 @@ Procedure
 
     3.  In the **YAML view**, customize the `TempoStack` custom resource (CR):
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `TempoStack` CR for AWS S3 and MinIO storage and two tenants
+        **Example `TempoStack` CR for AWS S3 and MinIO storage and two tenants**
 
         </div>
 
@@ -1430,8 +1164,6 @@ Procedure
               jaegerQuery:
                 enabled: true
         ```
-
-        </div>
 
         - This CR creates a `TempoStack` deployment, which is configured to receive Jaeger Thrift over the HTTP and OpenTelemetry Protocol (OTLP).
 
@@ -1465,15 +1197,7 @@ Procedure
 
     4.  Select **Create**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Use the **Project:** dropdown list to select the project of the `TempoStack` instance.
 
@@ -1487,30 +1211,19 @@ Verification
 
     2.  In the **Location** column, open the URL to access the Tempo console.
 
-        > [!NOTE]
-        > The Tempo console initially shows no trace data following the Tempo console installation.
+        <div class="note">
 
-</div>
+        The Tempo console initially shows no trace data following the Tempo console installation.
+
+        </div>
 
 ## Installing a TempoStack instance by using the CLI
 
 You can install a `TempoStack` instance from the command line.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - An active OpenShift CLI (`oc`) session by a cluster administrator with the `cluster-admin` role.
 
   <div class="tip">
-
-  <div class="title">
-
-  </div>
 
   - Ensure that your OpenShift CLI (`oc`) version is up to date and matches your OpenShift Container Platform version.
 
@@ -1524,20 +1237,13 @@ Prerequisites
 
 - You have completed setting up the required object storage by a supported provider: [Red Hat OpenShift Data Foundation](https://www.redhat.com/en/technologies/cloud-computing/openshift-data-foundation), [MinIO](https://min.io/), [Amazon S3](https://aws.amazon.com/s3/), [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/), [Google Cloud Storage](https://cloud.google.com/storage/). For more information, see "Object storage setup".
 
-  > [!WARNING]
-  > Object storage is required and not included with the Distributed Tracing Platform. You must choose and set up object storage by a supported provider before installing the Distributed Tracing Platform.
+  <div class="warning">
+
+  Object storage is required and not included with the Distributed Tracing Platform. You must choose and set up object storage by a supported provider before installing the Distributed Tracing Platform.
+
+  </div>
 
 - You have defined one or more tenants and configured the read and write permissions. For more information, see "Configuring the read permissions for tenants" and "Configuring the write permissions for tenants".
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the following command to create a permitted project of your choice for the `TempoStack` instance that you will create in a subsequent step:
 
@@ -1562,11 +1268,9 @@ Procedure
 
     For more information, see "Object storage setup".
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example secret for Amazon S3 and MinIO storage
+    **Example secret for Amazon S3 and MinIO storage**
 
     </div>
 
@@ -1583,20 +1287,19 @@ Procedure
     type: Opaque
     ```
 
-    </div>
-
 3.  Create a `TempoStack` instance in the project that you created for it:
 
-    > [!NOTE]
-    > You can create multiple `TempoStack` instances in separate projects on the same cluster.
+    <div class="note">
+
+    You can create multiple `TempoStack` instances in separate projects on the same cluster.
+
+    </div>
 
     1.  Customize the `TempoStack` custom resource (CR):
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `TempoStack` CR for AWS S3 and MinIO storage and two tenants
+        **Example `TempoStack` CR for AWS S3 and MinIO storage and two tenants**
 
         </div>
 
@@ -1631,8 +1334,6 @@ Procedure
               jaegerQuery:
                 enabled: true
         ```
-
-        </div>
 
         - This CR creates a `TempoStack` deployment, which is configured to receive Jaeger Thrift over the HTTP and OpenTelemetry Protocol (OTLP).
 
@@ -1672,15 +1373,7 @@ Procedure
         EOF
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the `status` of all `TempoStack` `components` is `Running` and the `conditions` are `type: Ready` by running the following command:
 
@@ -1704,17 +1397,21 @@ Verification
 
     2.  Open `https://<route_from_previous_step>` in a web browser.
 
-        > [!NOTE]
-        > The Tempo console initially shows no trace data following the Tempo console installation.
+        <div class="note">
 
-</div>
+        The Tempo console initially shows no trace data following the Tempo console installation.
+
+        </div>
 
 # Installing a TempoMonolithic instance
 
-> [!IMPORTANT]
-> The `TempoMonolithic` instance is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+The `TempoMonolithic` instance is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 You can install a `TempoMonolithic` instance by using the web console or command line.
 
@@ -1724,25 +1421,23 @@ A `TempoMonolithic` instance supports storing traces in in-memory storage, a per
 
 Tempo deployment in monolithic mode is preferred for a small deployment, demonstration, and testing.
 
-> [!NOTE]
-> The monolithic deployment of Tempo does not scale horizontally. If you require horizontal scaling, use the `TempoStack` CR for a Tempo deployment in microservices mode.
+<div class="note">
+
+The monolithic deployment of Tempo does not scale horizontally. If you require horizontal scaling, use the `TempoStack` CR for a Tempo deployment in microservices mode.
+
+</div>
 
 ## Installing a TempoMonolithic instance by using the web console
 
-> [!IMPORTANT]
-> The `TempoMonolithic` instance is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-You can install a `TempoMonolithic` instance from the **Administrator** view of the web console.
+The `TempoMonolithic` instance is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div>
-
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
+
+You can install a `TempoMonolithic` instance from the **Administrator** view of the web console.
 
 - You are logged in to the OpenShift Container Platform web console as a cluster administrator with the `cluster-admin` role.
 
@@ -1750,54 +1445,46 @@ Prerequisites
 
 - You have defined one or more tenants and configured the read and write permissions. For more information, see "Configuring the read permissions for tenants" and "Configuring the write permissions for tenants".
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Go to **Home** → **Projects** → **Create Project** to create a permitted project of your choice for the `TempoMonolithic` instance that you will create in a subsequent step. Project names beginning with the `openshift-` prefix are not permitted.
 
 2.  Decide which type of supported storage to use for storing traces: in-memory storage, a persistent volume, or object storage.
 
-    > [!IMPORTANT]
-    > Object storage is not included with the Distributed Tracing Platform and requires setting up an object store by a supported provider: [Red Hat OpenShift Data Foundation](https://www.redhat.com/en/technologies/cloud-computing/openshift-data-foundation), [MinIO](https://min.io/), [Amazon S3](https://aws.amazon.com/s3/), [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/), or [Google Cloud Storage](https://cloud.google.com/storage/).
-    >
-    > Additionally, opting for object storage requires creating a secret for your object storage bucket in the project that you created for the `TempoMonolithic` instance. You can do this in **Workloads** → **Secrets** → **Create** → **From YAML**.
-    >
-    > For more information, see "Object storage setup".
-    >
-    > <div class="formalpara">
-    >
-    > <div class="title">
-    >
-    > Example secret for Amazon S3 and MinIO storage
-    >
-    > </div>
-    >
-    > ``` yaml
-    > apiVersion: v1
-    > kind: Secret
-    > metadata:
-    >   name: minio-test
-    > stringData:
-    >   endpoint: http://minio.minio.svc:9000
-    >   bucket: tempo
-    >   access_key_id: tempo
-    >   access_key_secret: <secret>
-    > type: Opaque
-    > ```
-    >
-    > </div>
+    <div class="important">
+
+    Object storage is not included with the Distributed Tracing Platform and requires setting up an object store by a supported provider: [Red Hat OpenShift Data Foundation](https://www.redhat.com/en/technologies/cloud-computing/openshift-data-foundation), [MinIO](https://min.io/), [Amazon S3](https://aws.amazon.com/s3/), [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/), or [Google Cloud Storage](https://cloud.google.com/storage/).
+
+    Additionally, opting for object storage requires creating a secret for your object storage bucket in the project that you created for the `TempoMonolithic` instance. You can do this in **Workloads** → **Secrets** → **Create** → **From YAML**.
+
+    For more information, see "Object storage setup".
+
+    <div class="formalpara-title">
+
+    **Example secret for Amazon S3 and MinIO storage**
+
+    </div>
+
+    ``` yaml
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: minio-test
+    stringData:
+      endpoint: http://minio.minio.svc:9000
+      bucket: tempo
+      access_key_id: tempo
+      access_key_secret: <secret>
+    type: Opaque
+    ```
+
+    </div>
 
 3.  Create a `TempoMonolithic` instance:
 
-    > [!NOTE]
-    > You can create multiple `TempoMonolithic` instances in separate projects on the same cluster.
+    <div class="note">
+
+    You can create multiple `TempoMonolithic` instances in separate projects on the same cluster.
+
+    </div>
 
     1.  Go to **Ecosystem** → **Installed Operators**.
 
@@ -1805,11 +1492,9 @@ Procedure
 
     3.  In the **YAML view**, customize the `TempoMonolithic` custom resource (CR).
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `TempoMonolithic` CR
+        **Example `TempoMonolithic` CR**
 
         </div>
 
@@ -1847,8 +1532,6 @@ Procedure
               - tenantName: prod
                 tenantId: "1610b0c3-c509-4592-a256-a1871353dbfb"
         ```
-
-        </div>
 
         - This CR creates a `TempoMonolithic` deployment with trace ingestion in the OTLP protocol.
 
@@ -1884,15 +1567,7 @@ Procedure
 
     4.  Select **Create**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Use the **Project:** dropdown list to select the project of the `TempoMonolithic` instance.
 
@@ -1904,8 +1579,11 @@ Verification
 
     1.  Go to **Networking** → **Routes** and <span class="keycombo">Ctrl+F</span> to search for `jaegerui`.
 
-        > [!NOTE]
-        > The Jaeger UI uses the `tempo-<metadata_name_of_TempoMonolithic_CR>-jaegerui` route.
+        <div class="note">
+
+        The Jaeger UI uses the `tempo-<metadata_name_of_TempoMonolithic_CR>-jaegerui` route.
+
+        </div>
 
     2.  In the **Location** column, open the URL to access the Jaeger UI.
 
@@ -1913,32 +1591,21 @@ Verification
 
     The Tempo API is available at the `tempo-<metadata_name_of_TempoMonolithic_CR>:3200` endpoint inside the cluster.
 
-</div>
-
 ## Installing a TempoMonolithic instance by using the CLI
 
-> [!IMPORTANT]
-> The `TempoMonolithic` instance is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-You can install a `TempoMonolithic` instance from the command line.
+The `TempoMonolithic` instance is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div>
-
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
+
+You can install a `TempoMonolithic` instance from the command line.
 
 - An active OpenShift CLI (`oc`) session by a cluster administrator with the `cluster-admin` role.
 
   <div class="tip">
-
-  <div class="title">
-
-  </div>
 
   - Ensure that your OpenShift CLI (`oc`) version is up to date and matches your OpenShift Container Platform version.
 
@@ -1951,16 +1618,6 @@ Prerequisites
   </div>
 
 - You have defined one or more tenants and configured the read and write permissions. For more information, see "Configuring the read permissions for tenants" and "Configuring the write permissions for tenants".
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the following command to create a permitted project of your choice for the `TempoMonolithic` instance that you will create in a subsequent step:
 
@@ -1977,54 +1634,54 @@ Procedure
 
 2.  Decide which type of supported storage to use for storing traces: in-memory storage, a persistent volume, or object storage.
 
-    > [!IMPORTANT]
-    > Object storage is not included with the Distributed Tracing Platform and requires setting up an object store by a supported provider: [Red Hat OpenShift Data Foundation](https://www.redhat.com/en/technologies/cloud-computing/openshift-data-foundation), [MinIO](https://min.io/), [Amazon S3](https://aws.amazon.com/s3/), [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/), or [Google Cloud Storage](https://cloud.google.com/storage/).
-    >
-    > Additionally, opting for object storage requires creating a secret for your object storage bucket in the project that you created for the `TempoMonolithic` instance. You can do this by running the following command:
-    >
-    > ``` terminal
-    > $ oc apply -f - << EOF
-    > <object_storage_secret>
-    > EOF
-    > ```
-    >
-    > For more information, see "Object storage setup".
-    >
-    > <div class="formalpara">
-    >
-    > <div class="title">
-    >
-    > Example secret for Amazon S3 and MinIO storage
-    >
-    > </div>
-    >
-    > ``` yaml
-    > apiVersion: v1
-    > kind: Secret
-    > metadata:
-    >   name: minio-test
-    > stringData:
-    >   endpoint: http://minio.minio.svc:9000
-    >   bucket: tempo
-    >   access_key_id: tempo
-    >   access_key_secret: <secret>
-    > type: Opaque
-    > ```
-    >
-    > </div>
+    <div class="important">
+
+    Object storage is not included with the Distributed Tracing Platform and requires setting up an object store by a supported provider: [Red Hat OpenShift Data Foundation](https://www.redhat.com/en/technologies/cloud-computing/openshift-data-foundation), [MinIO](https://min.io/), [Amazon S3](https://aws.amazon.com/s3/), [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/), or [Google Cloud Storage](https://cloud.google.com/storage/).
+
+    Additionally, opting for object storage requires creating a secret for your object storage bucket in the project that you created for the `TempoMonolithic` instance. You can do this by running the following command:
+
+    ``` terminal
+    $ oc apply -f - << EOF
+    <object_storage_secret>
+    EOF
+    ```
+
+    For more information, see "Object storage setup".
+
+    <div class="formalpara-title">
+
+    **Example secret for Amazon S3 and MinIO storage**
+
+    </div>
+
+    ``` yaml
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: minio-test
+    stringData:
+      endpoint: http://minio.minio.svc:9000
+      bucket: tempo
+      access_key_id: tempo
+      access_key_secret: <secret>
+    type: Opaque
+    ```
+
+    </div>
 
 3.  Create a `TempoMonolithic` instance in the project that you created for it.
 
-    > [!TIP]
-    > You can create multiple `TempoMonolithic` instances in separate projects on the same cluster.
+    <div class="tip">
+
+    You can create multiple `TempoMonolithic` instances in separate projects on the same cluster.
+
+    </div>
 
     1.  Customize the `TempoMonolithic` custom resource (CR).
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `TempoMonolithic` CR
+        **Example `TempoMonolithic` CR**
 
         </div>
 
@@ -2062,8 +1719,6 @@ Procedure
               - tenantName: prod
                 tenantId: "1610b0c3-c509-4592-a256-a1871353dbfb"
         ```
-
-        </div>
 
         - This CR creates a `TempoMonolithic` deployment with trace ingestion in the OTLP protocol.
 
@@ -2105,15 +1760,7 @@ Procedure
         EOF
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the `status` of all `TempoMonolithic` `components` is `Running` and the `conditions` are `type: Ready` by running the following command:
 
@@ -2140,8 +1787,6 @@ Verification
 4.  When the pod of the `TempoMonolithic` instance is ready, you can send traces to the `tempo-<metadata_name_of_tempomonolithic_cr>:4317` (OTLP/gRPC) and `tempo-<metadata_name_of_tempomonolithic_cr>:4318` (OTLP/HTTP) endpoints inside the cluster.
 
     The Tempo API is available at the `tempo-<metadata_name_of_tempomonolithic_cr>:3200` endpoint inside the cluster.
-
-</div>
 
 # Additional resources
 

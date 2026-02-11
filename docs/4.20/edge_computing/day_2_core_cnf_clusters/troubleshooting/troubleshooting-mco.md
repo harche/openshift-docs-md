@@ -10,22 +10,17 @@ The Machine Config Operator (MCO) manages and applies configuration and updates 
 
 You must consider these minor components and how the MCO can help you manage your clusters effectively.
 
-> [!IMPORTANT]
-> You must use the MCO to perform all changes on worker or control plane nodes. Do not manually make changes to RHCOS or node files.
+<div class="important">
+
+You must use the MCO to perform all changes on worker or control plane nodes. Do not manually make changes to RHCOS or node files.
+
+</div>
 
 # Applying several machine config files at the same time
 
 When you need to change the machine config for a group of nodes in the cluster, also known as machine config pools (MCPs), sometimes the changes must be applied with several different machine config files. The nodes need to restart for the machine config file to be applied. After each machine config file is applied to the cluster, all nodes restart that are affected by the machine config file.
 
 To prevent the nodes from restarting for each machine config file, you can apply all of the changes at the same time by pausing each MCP that is updated by the new machine config file.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Pause the affected MCP by running the following command:
 
@@ -38,7 +33,5 @@ Procedure
     ``` terminal
     $ oc patch mcp/<mcp_name> --type merge --patch '{"spec":{"paused":false}}'
     ```
-
-</div>
 
 This allows the nodes in your MCP to reboot into the new configurations.

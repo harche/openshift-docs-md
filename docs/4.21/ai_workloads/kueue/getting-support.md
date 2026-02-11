@@ -28,27 +28,9 @@ You can use the `oc adm must-gather` CLI command to collect the information abou
 
 Collected data is written into a new directory named `must-gather/` in the current working directory by default.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The Red Hat build of Kueue Operator is installed on your cluster.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to the directory where you want to store the `must-gather` data.
 
@@ -64,8 +46,6 @@ Procedure
 3.  Create a compressed file from the `must-gather` directory that was just created in your working directory. Make sure you provide the date and cluster ID for the unique `must-gather` data. For more information about how to find the cluster ID, see [How to find the cluster-id or name on OpenShift cluster](https://access.redhat.com/solutions/5280291).
 
 4.  Attach the compressed file to your support case on the [the **Customer Support** page](https://access.redhat.com/support/cases/#/case/list) of the Red Hat Customer Portal.
-
-</div>
 
 # Additional resources
 

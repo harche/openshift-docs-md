@@ -12,25 +12,7 @@ Additionally, you can select to [obfuscate](../../support/remote_health_monitori
 
 You must run a gather operation to create an Insights Operator archive.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to OpenShift Container Platform as `cluster-admin`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a file named `gather-job.yaml` using this template:
 
@@ -44,11 +26,9 @@ Procedure
     $ oc get -n openshift-insights deployment insights-operator -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -69,8 +49,6 @@ Procedure
             image: registry.ci.openshift.org/ocp/4.15-2023-10-12-212500@sha256:a0aa581400805ad0...
     # ...
     ```
-
-    </div>
 
     - Specifies your `insights-operator` image version.
 
@@ -107,11 +85,9 @@ Procedure
     $ oc describe -n openshift-insights job/insights-operator-job
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -125,8 +101,6 @@ Procedure
       Normal  SuccessfulCreate  7m18s  job-controller  Created pod: insights-operator-job-<your_job>
     ```
 
-    </div>
-
     where
     `insights-operator-job-<your_job>` is the name of the pod.
 
@@ -136,19 +110,15 @@ Procedure
     $ oc logs -n openshift-insights insights-operator-job-<your_job> insights-operator
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     I0407 11:55:38.192084       1 diskrecorder.go:34] Wrote 108 records to disk in 33ms
     ```
-
-    </div>
 
 7.  Save the created archive:
 
@@ -162,35 +132,15 @@ Procedure
     $ oc delete -n openshift-insights job insights-operator-job
     ```
 
-</div>
-
 # Uploading an Insights Operator archive
 
 You can manually upload an Insights Operator archive to [console.redhat.com](https://console.redhat.com) to diagnose potential issues.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You are logged in to OpenShift Container Platform as `cluster-admin`.
 
 - You have a workstation with unrestricted internet access.
 
 - You have created a copy of the Insights Operator archive.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Download the `dockerconfig.json` file:
 
@@ -220,11 +170,9 @@ Procedure
 
     If the operation is successful, the command returns a `"request_id"` and `"account_number"`:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -233,17 +181,7 @@ Procedure
     {"request_id":"393a7cf1093e434ea8dd4ab3eb28884c","upload":{"account_number":"6274079"}}%
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification steps
-
-</div>
+<!-- -->
 
 1.  Log in to <https://console.redhat.com/openshift>.
 
@@ -259,14 +197,15 @@ Verification steps
 
     - A list of issues that the Red Hat Lightspeed advisor service has detected, prioritized by risk (low, moderate, important, and critical).
 
-</div>
-
 # Enabling Insights Operator data obfuscation
 
 You can enable obfuscation to mask sensitive and identifiable IPv4 addresses and cluster base domains that the Insights Operator sends to [console.redhat.com](https://console.redhat.com).
 
-> [!WARNING]
-> Although this feature is available, Red Hat recommends keeping obfuscation disabled for a more effective support experience.
+<div class="warning">
+
+Although this feature is available, Red Hat recommends keeping obfuscation disabled for a more effective support experience.
+
+</div>
 
 Obfuscation assigns non-identifying values to cluster IPv4 addresses, and uses a translation table that is retained in memory to change IP addresses to their obfuscated versions throughout the Insights Operator archive before uploading the data to [console.redhat.com](https://console.redhat.com).
 
@@ -274,25 +213,7 @@ For cluster base domains, obfuscation changes the base domain to a hardcoded sub
 
 The following procedure enables obfuscation using the `support` secret in the `openshift-config` namespace.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to the OpenShift Container Platform web console as `cluster-admin`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Workloads** → **Secrets**.
 
@@ -314,15 +235,7 @@ Procedure
 
 10. To restart the `insights-operator` pod, click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=), and then click **Delete Pod**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Navigate to **Workloads** → **Secrets**.
 
@@ -330,20 +243,8 @@ Verification
 
 3.  Search for the **obfuscation-translation-table** secret using the **Search by name** field.
 
-</div>
-
 If the `obfuscation-translation-table` secret exists, then obfuscation is enabled and working.
 
 Alternatively, you can inspect `/insights-operator/gathers.json` in your Insights Operator archive for the value `"is_global_obfuscation_enabled": true`.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - For more information on how to download your Insights Operator archive, see [Showing data collected by the Insights Operator](../../support/remote_health_monitoring/showing-data-collected-by-remote-health-monitoring.xml#insights-operator-showing-data-collected-from-the-cluster_showing-data-collected-by-remote-health-monitoring).
-
-</div>

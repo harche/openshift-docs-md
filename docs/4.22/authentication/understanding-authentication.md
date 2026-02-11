@@ -8,11 +8,11 @@ A *user* in OpenShift Container Platform is an entity that can make requests to 
 
 Several types of users can exist:
 
-| User type | Description |
-|----|----|
-| `Regular users` | This is the way most interactive OpenShift Container Platform users are represented. Regular users are created automatically in the system upon first login or can be created via the API. Regular users are represented with the `User` object. Examples: `joe` `alice` |
-| `System users` | Many of these are created automatically when the infrastructure is defined, mainly for the purpose of enabling the infrastructure to interact with the API securely. They include a cluster administrator (with access to everything), a per-node user, users for use by routers and registries, and various others. Finally, there is an `anonymous` system user that is used by default for unauthenticated requests. Examples: `system:admin` `system:openshift-registry` `system:node:node1.example.com` |
-| `Service accounts` | These are special system users associated with projects; some are created automatically when the project is first created, while project administrators can create more for the purpose of defining access to the contents of each project. Service accounts are represented with the `ServiceAccount` object. Examples: `system:serviceaccount:default:deployer` `system:serviceaccount:foo:builder` |
+| User type          | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Regular users`    | This is the way most interactive OpenShift Container Platform users are represented. Regular users are created automatically in the system upon first login or can be created via the API. Regular users are represented with the `User` object. Examples: `joe` `alice`                                                                                                                                                                                                                                     |
+| `System users`     | Many of these are created automatically when the infrastructure is defined, mainly for the purpose of enabling the infrastructure to interact with the API securely. They include a cluster administrator (with access to everything), a per-node user, users for use by routers and registries, and various others. Finally, there is an `anonymous` system user that is used by default for unauthenticated requests. Examples: `system:admin` `system:openshift-registry` `system:node:node1.example.com` |
+| `Service accounts` | These are special system users associated with projects; some are created automatically when the project is first created, while project administrators can create more for the purpose of defining access to the contents of each project. Service accounts are represented with the `ServiceAccount` object. Examples: `system:serviceaccount:default:deployer` `system:serviceaccount:foo:builder`                                                                                                        |
 
 Each user must authenticate in some way to access OpenShift Container Platform. API requests with no authentication or invalid authentication are authenticated as requests by the `anonymous` system user. After authentication, policy determines what the user is authorized to do.
 
@@ -24,11 +24,11 @@ In addition to explicitly defined groups, there are also system groups, or *virt
 
 The following default virtual groups are most important:
 
-| Virtual group | Description |
-|----|----|
-| `system:authenticated` | Automatically associated with all authenticated users. |
+| Virtual group                | Description                                                                       |
+|------------------------------|-----------------------------------------------------------------------------------|
+| `system:authenticated`       | Automatically associated with all authenticated users.                            |
 | `system:authenticated:oauth` | Automatically associated with all users authenticated with an OAuth access token. |
-| `system:unauthenticated` | Automatically associated with all unauthenticated users. |
+| `system:unauthenticated`     | Automatically associated with all unauthenticated users.                          |
 
 # API authentication
 
@@ -64,10 +64,10 @@ It then determines what user that identity maps to, creates an access token for 
 
 Every request for an OAuth token must specify the OAuth client that will receive and use the token. The following OAuth clients are automatically created when starting the OpenShift Container Platform API:
 
-| OAuth client | Usage |
-|----|----|
-| `openshift-browser-client` | Requests tokens at `<namespace_route>/oauth/token/request` with a user-agent that can handle interactive logins. <sup>\[1\]</sup> |
-| `openshift-challenging-client` | Requests tokens with a user-agent that can handle `WWW-Authenticate` challenges. |
+| OAuth client                   | Usage                                                                                                                             |
+|--------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| `openshift-browser-client`     | Requests tokens at `<namespace_route>/oauth/token/request` with a user-agent that can handle interactive logins. <sup>\[1\]</sup> |
+| `openshift-challenging-client` | Requests tokens with a user-agent that can handle `WWW-Authenticate` challenges.                                                  |
 
 1.  `<namespace_route>` refers to the namespace route. This is found by running the following command:
 
@@ -79,10 +79,13 @@ All requests for OAuth tokens involve a request to `<namespace_route>/oauth/auth
 
 If an authenticating proxy is placed in front of the `<namespace_route>/oauth/authorize` endpoint, it sends unauthenticated, non-browser user-agents `WWW-Authenticate` challenges rather than displaying an interactive login page or redirecting to an interactive login flow.
 
-> [!NOTE]
-> To prevent cross-site request forgery (CSRF) attacks against browser clients, only send Basic authentication challenges with if a `X-CSRF-Token` header is on the request. Clients that expect to receive Basic `WWW-Authenticate` challenges must set this header to a non-empty value.
->
-> If the authenticating proxy cannot support `WWW-Authenticate` challenges, or if OpenShift Container Platform is configured to use an identity provider that does not support WWW-Authenticate challenges, you must use a browser to manually obtain a token from `<namespace_route>/oauth/token/request`.
+<div class="note">
+
+To prevent cross-site request forgery (CSRF) attacks against browser clients, only send Basic authentication challenges with if a `X-CSRF-Token` header is on the request. Clients that expect to receive Basic `WWW-Authenticate` challenges must set this header to a non-empty value.
+
+If the authenticating proxy cannot support `WWW-Authenticate` challenges, or if OpenShift Container Platform is configured to use an identity provider that does not support WWW-Authenticate challenges, you must use a browser to manually obtain a token from `<namespace_route>/oauth/token/request`.
+
+</div>
 
 ### API impersonation
 

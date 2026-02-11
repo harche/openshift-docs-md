@@ -28,8 +28,11 @@ Search the [Red Hat Ecosystem Catalog](https://catalog.redhat.com/software/conta
 
 - **UBI**: There are standard UBI images for RHEL 7, 8, and 9 (`ubi7/ubi`, `ubi8/ubi`, and `ubi9/ubi`), as well as minimal images based on those systems (`ubi7/ubi-minimal`, `ubi8/ubi-mimimal`, and ubi9/ubi-minimal). All of these images are preconfigured to point to free repositories of RHEL software that you can add to the container images you build, using standard `yum` and `dnf` commands.
 
-  > [!NOTE]
-  > Red Hat encourages people to use these images on other distributions, such as Fedora and Ubuntu.
+  <div class="note">
+
+  Red Hat encourages people to use these images on other distributions, such as Fedora and Ubuntu.
+
+  </div>
 
 - **Red Hat Software Collections**: Search the Red Hat Ecosystem Catalog for `rhscl/` to find images created to use as base images for specific types of applications. For example, there are Apache httpd (`rhscl/httpd-*`), Python (`rhscl/python-*`), Ruby (`rhscl/ruby-*`), Node.js (`rhscl/nodejs-*`) and Perl (`rhscl/perl-*`) rhscl images.
 
@@ -67,14 +70,14 @@ There are different types of image quality data, including package vulnerabiliti
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Acceptable values</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>qualityType</code></p></td>
 <td style="text-align: left;"><p>Metadata type</p></td>
 <td style="text-align: left;"><p><code>vulnerability</code><br />
@@ -82,7 +85,7 @@ There are different types of image quality data, including package vulnerabiliti
 <code>operations</code><br />
 <code>policy</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>providerId</code></p></td>
 <td style="text-align: left;"><p>Provider ID string</p></td>
 <td style="text-align: left;"><p><code>openscap</code><br />
@@ -94,6 +97,8 @@ There are different types of image quality data, including package vulnerabiliti
 </tbody>
 </table>
 
+Annotation key format
+
 ### Example annotation keys
 
     quality.images.openshift.io/vulnerability.blackduck: {}
@@ -103,26 +108,26 @@ There are different types of image quality data, including package vulnerabiliti
 
 The value of the image quality annotation is structured data that must adhere to the following format:
 
-| Field | Required? | Description | Type |
-|----|----|----|----|
-| `name` | Yes | Provider display name | String |
-| `timestamp` | Yes | Scan timestamp | String |
-| `description` | No | Short description | String |
-| `reference` | Yes | URL of information source or more details. Required so user may validate the data. | String |
-| `scannerVersion` | No | Scanner version | String |
-| `compliant` | No | Compliance pass or fail | Boolean |
-| `summary` | No | Summary of issues found | List (see table below) |
+| Field            | Required? | Description                                                                        | Type                   |
+|------------------|-----------|------------------------------------------------------------------------------------|------------------------|
+| `name`           | Yes       | Provider display name                                                              | String                 |
+| `timestamp`      | Yes       | Scan timestamp                                                                     | String                 |
+| `description`    | No        | Short description                                                                  | String                 |
+| `reference`      | Yes       | URL of information source or more details. Required so user may validate the data. | String                 |
+| `scannerVersion` | No        | Scanner version                                                                    | String                 |
+| `compliant`      | No        | Compliance pass or fail                                                            | Boolean                |
+| `summary`        | No        | Summary of issues found                                                            | List (see table below) |
 
 Annotation value format
 
 The `summary` field must adhere to the following format:
 
-| Field | Description | Type |
-|----|----|----|
-| `label` | Display label for component (for example, "critical," "important," "moderate," "low," or "health") | String |
-| `data` | Data for this component (for example, count of vulnerabilities found or score) | String |
+| Field           | Description                                                                                                              | Type    |
+|-----------------|--------------------------------------------------------------------------------------------------------------------------|---------|
+| `label`         | Display label for component (for example, "critical," "important," "moderate," "low," or "health")                       | String  |
+| `data`          | Data for this component (for example, count of vulnerabilities found or score)                                           | String  |
 | `severityIndex` | Component index allowing for ordering and assigning graphical representation. The value is range `0..3` where `0` = low. | Integer |
-| `reference` | URL of information source or more details. Optional. | String |
+| `reference`     | URL of information source or more details. Optional.                                                                     | String  |
 
 Summary field value format
 
@@ -130,11 +135,9 @@ Summary field value format
 
 This example shows an OpenSCAP annotation for an image with vulnerability summary data and a compliance boolean:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenSCAP annotation
+**OpenSCAP annotation**
 
 </div>
 
@@ -155,15 +158,11 @@ OpenSCAP annotation
 }
 ```
 
-</div>
-
 This example shows the [Container images section of the Red Hat Ecosystem Catalog](https://catalog.redhat.com/software/containers/explore) annotation for an image with health index data with an external URL for additional details:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Red Hat Ecosystem Catalog annotation
+**Red Hat Ecosystem Catalog annotation**
 
 </div>
 
@@ -180,8 +179,6 @@ Red Hat Ecosystem Catalog annotation
   ]
 }
 ```
-
-</div>
 
 ## Annotating image objects
 
@@ -223,11 +220,9 @@ In most cases, external tools such as vulnerability scanners develop a script or
 
 The following example call using `curl` overrides the value of the annotation. Be sure to replace the values for `<token>`, `<openshift_server>`, `<image_id>`, and `<image_annotation>`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Patch API call
+**Patch API call**
 
 </div>
 
@@ -239,15 +234,11 @@ $ curl -X PATCH \
   --data '{ <image_annotation> }'
 ```
 
-</div>
-
 The following is an example of `PATCH` payload data:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Patch call data
+**Patch call data**
 
 </div>
 
@@ -262,16 +253,4 @@ Patch call data
 }
 ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Image stream objects](../../openshift_images/index.xml#overview-of-images)
-
-</div>

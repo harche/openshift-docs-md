@@ -1,7 +1,10 @@
 The release notes for OpenShift API for Data Protection (OADP) describe new features and enhancements, deprecated features, product recommendations, known issues, and resolved issues.
 
-> [!NOTE]
-> For additional information about OADP, see [OpenShift API for Data Protection (OADP) FAQs](https://access.redhat.com/articles/5456281)
+<div class="note">
+
+For additional information about OADP, see [OpenShift API for Data Protection (OADP) FAQs](https://access.redhat.com/articles/5456281)
+
+</div>
 
 # OADP 1.5.4 release notes
 
@@ -215,47 +218,35 @@ The OpenShift API for Data Protection (OADP) 1.5.0 release notes lists resolved 
 
 ## New features
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OADP 1.5.0 introduces a new Self-Service feature
+**OADP 1.5.0 introduces a new Self-Service feature**
 
 </div>
 
 OADP 1.5.0 introduces a new feature named OADP Self-Service, enabling namespace admin users to back up and restore applications on the OpenShift Container Platform. In the earlier versions of OADP, you needed the cluster-admin role to perform OADP operations such as backing up and restoring an application, creating a backup storage location, and so on.
 
-</div>
-
 From OADP 1.5.0 onward, you do not need the cluster-admin role to perform the backup and restore operations. You can use OADP with the namespace admin role. The namespace admin role has administrator access only to the namespace the user is assigned to. You can use the Self-Service feature only after the cluster administrator installs the OADP Operator and provides the necessary permissions.
 
 [OADP-4001](https://issues.redhat.com/browse/OADP-4001)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Collecting logs with the `must-gather` tool has been improved with a Markdown summary
+**Collecting logs with the `must-gather` tool has been improved with a Markdown summary**
 
 </div>
 
 You can collect logs, and information about OpenShift API for Data Protection (OADP) custom resources by using the `must-gather` tool. The `must-gather` data must be attached to all customer cases. This tool generates a Markdown output file with the collected information, which is located in the `must-gather` logs clusters directory.
 
-</div>
-
 [OADP-5384](https://issues.redhat.com/browse/OADP-5384)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-`dataMoverPrepareTimeout` and `resourceTimeout` parameters are now added to `nodeAgent` within the DPA
+**`dataMoverPrepareTimeout` and `resourceTimeout` parameters are now added to `nodeAgent` within the DPA**
 
 </div>
 
 The `nodeAgent` field in Data Protection Application (DPA) now includes the following parameters:
-
-</div>
 
 - `dataMoverPrepareTimeout`: Defines the duration the `DataUpload` or `DataDownload` process will wait. The default value is 30 minutes.
 
@@ -263,31 +254,23 @@ The `nodeAgent` field in Data Protection Application (DPA) now includes the foll
 
 [OADP-3736](https://issues.redhat.com/browse/OADP-3736)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Use the `spec.configuration.nodeAgent` parameter in DPA for configuring `nodeAgent` daemon set
+**Use the `spec.configuration.nodeAgent` parameter in DPA for configuring `nodeAgent` daemon set**
 
 </div>
 
 Velero no longer uses the `node-agent-config` config map for configuring the `nodeAgent` daemon set. With this update, you must use the new `spec.configuration.nodeAgent` parameter in a Data Protection Application (DPA) for configuring the `nodeAgent` daemon set.
 
-</div>
-
 [OADP-5042](https://issues.redhat.com/browse/OADP-5042)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Configuring DPA with the backup repository configuration config map is now possible
+**Configuring DPA with the backup repository configuration config map is now possible**
 
 </div>
 
 With Velero 1.15 and later, you can now configure the total size of a cache per repository. This prevents pods from being removed due to running out of ephemeral storage. See the following new parameters added to the `NodeAgentConfig` field in DPA:
-
-</div>
 
 - `cacheLimitMB`: Sets the local data cache size limit in megabytes.
 
@@ -301,17 +284,13 @@ With Velero 1.15 and later, you can now configure the total size of a cache per 
 
 [OADP-5900](https://issues.redhat.com/browse/OADP-5900)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Enhancing the node-agent security
+**Enhancing the node-agent security**
 
 </div>
 
 With this update, the following changes are added:
-
-</div>
 
 - A new `configuration` option is now added to the `velero` field in DPA.
 
@@ -341,50 +320,41 @@ With this update, the following changes are added:
 
 [OADP-5031](https://issues.redhat.com/browse/OADP-5031)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Adds DPA support for parallel item backup
+**Adds DPA support for parallel item backup**
 
 </div>
 
 By default, only one thread processes an item block. Velero 1.16 supports a parallel item backup, where multiple items within a backup can be processed in parallel.
 
-</div>
-
 You can use the optional Velero server parameter `--item-block-worker-count` to run additional worker threads to process items in parallel. To enable this in OADP, set the `dpa.Spec.Configuration.Velero.ItemBlockWorkerCount` parameter to an integer value greater than zero.
 
-> [!NOTE]
-> Running multiple full backups in parallel is not yet supported.
+<div class="note">
+
+Running multiple full backups in parallel is not yet supported.
+
+</div>
 
 [OADP-5635](https://issues.redhat.com/browse/OADP-5635)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OADP logs are now available in the JSON format
+**OADP logs are now available in the JSON format**
 
 </div>
 
 With the of release OADP 1.5.0, the logs are now available in the JSON format. It helps to have pre-parsed data in their Elastic logs management system.
 
-</div>
-
 [OADP-3391](https://issues.redhat.com/browse/OADP-3391)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-The `oc get dpa` command now displays `RECONCILED` status
+**The `oc get dpa` command now displays `RECONCILED` status**
 
 </div>
 
 With this release, the `oc get dpa` command now displays `RECONCILED` status instead of displaying only `NAME` and `AGE` to improve user experience. For example:
-
-</div>
 
 ``` terminal
 $ oc get dpa -n openshift-adp
@@ -396,33 +366,25 @@ velero-sample   True         2m51s
 
 ## Resolved issues
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Containers now use `FallbackToLogsOnError` for `terminationMessagePolicy`
+**Containers now use `FallbackToLogsOnError` for `terminationMessagePolicy`**
 
 </div>
 
 With this release, the `terminationMessagePolicy` field can now set the `FallbackToLogsOnError` value for the OpenShift API for Data Protection (OADP) Operator containers such as `operator-manager`, `velero`, `node-agent`, and `non-admin-controller`.
 
-</div>
-
 This change ensures that if a container exits with an error and the termination message file is empty, OpenShift uses the last portion of the container logs output as the termination message.
 
 [OADP-5183](https://issues.redhat.com/browse/OADP-5183)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Namespace admin can now access the application after restore
+**Namespace admin can now access the application after restore**
 
 </div>
 
 Previously, the namespace admin could not execute an application after the restore operation with the following errors:
-
-</div>
 
 - `exec operation is not allowed because the pod’s security context exceeds your permissions`
 
@@ -434,17 +396,13 @@ With this update, this issue is now resolved and the namespace admin can access 
 
 [OADP-5611](https://issues.redhat.com/browse/OADP-5611)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Specifying status restoration at the individual resource instance level using the annotation is now possible
+**Specifying status restoration at the individual resource instance level using the annotation is now possible**
 
 </div>
 
 Previously, status restoration was only configured at the resource type using the `restoreStatus` field in the `Restore` custom resource (CR).
-
-</div>
 
 With this release, you can now specify the status restoration at the individual resource instance level using the following annotation:
 
@@ -456,31 +414,23 @@ metadata:
 
 [OADP-5968](https://issues.redhat.com/browse/OADP-5968)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Restore is now successful with `excludedClusterScopedResources`
+**Restore is now successful with `excludedClusterScopedResources`**
 
 </div>
 
 Previously, on performing the backup of an application with the `excludedClusterScopedResources` field set to `storageclasses`, `Namespace` parameter, the backup was successful but the restore partially failed. With this update, the restore is successful.
 
-</div>
-
 [OADP-5239](https://issues.redhat.com/browse/OADP-5239)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Backup is completed even if it gets restarted during the `waitingForPluginOperations` phase
+**Backup is completed even if it gets restarted during the `waitingForPluginOperations` phase**
 
 </div>
 
 Previously, a backup was marked as failed with the following error message:
-
-</div>
 
     failureReason: found a backup with status "InProgress" during the server starting,
     mark it as "Failed"
@@ -489,97 +439,73 @@ With this update, the backup is completed if it gets restarted during the `waiti
 
 [OADP-2941](https://issues.redhat.com/browse/OADP-2941)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Error messages are now more informative when the\` disableFsbackup\` parameter is set to `true` in DPA
+**Error messages are now more informative when the\` disableFsbackup\` parameter is set to `true` in DPA**
 
 </div>
 
 Previously, when the `spec.configuration.velero.disableFsBackup` field from a Data Protection Application (DPA) was set to `true`, the backup partially failed with an error, which was not informative.
 
-</div>
-
 This update makes error messages more useful for troubleshooting issues. For example, error messages indicating that `disableFsBackup: true` is the issue in a DPA or not having access to a DPA if it is for non-administrator users.
 
 [OADP-5952](https://issues.redhat.com/browse/OADP-5952)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Handles AWS STS credentials in the parseAWSSecret
+**Handles AWS STS credentials in the parseAWSSecret**
 
 </div>
 
 Previously, AWS credentials using STS authentication were not properly validated.
 
-</div>
-
 With this update, the `parseAWSSecret` function detects STS-specific fields, and updates the `ensureSecretDataExists` function to handle STS profiles correctly.
 
 [OADP-6105](https://issues.redhat.com/browse/OADP-6105)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-The `repositoryMaintenance` job affinity config is available to configure
+**The `repositoryMaintenance` job affinity config is available to configure**
 
 </div>
 
 Previously, the new configurations for repository maintenance job pod affinity was missing from a DPA specification.
 
-</div>
-
 With this update, the `repositoryMaintenance` job affinity config is now available to map a `BackupRepository` identifier to its configuration.
 
 [OADP-6134](https://issues.redhat.com/browse/OADP-6134)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-The `ValidationErrors` field fades away once the CR specification is correct
+**The `ValidationErrors` field fades away once the CR specification is correct**
 
 </div>
 
 Previously, when a schedule CR was created with a wrong `spec.schedule` value and the same was later patched with a correct value, the `ValidationErrors` field still existed. Consequently, the `ValidationErrors` field was displaying incorrect information even though the spec was correct.
 
-</div>
-
 With this update, the `ValidationErrors` field fades away once the CR specification is correct.
 
 [OADP-5419](https://issues.redhat.com/browse/OADP-5419)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-The `volumeSnapshotContents` custom resources are restored when the `includedNamesapces` field is used in `restoreSpec`
+**The `volumeSnapshotContents` custom resources are restored when the `includedNamesapces` field is used in `restoreSpec`**
 
 </div>
 
 Previously, when a restore operation was triggered with the `includedNamespace` field in a restore specification, restore operation was completed successfully but no `volumeSnapshotContents` custom resources (CR) were created and the PVCs were in a `Pending` status.
 
-</div>
-
 With this update, `volumeSnapshotContents` CR are restored even when the `includedNamesapces` field is used in `restoreSpec`. As a result, an application pod is in a `Running` state after restore.
 
 [OADP-5939](https://issues.redhat.com/browse/OADP-5939)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OADP operator successfully creates bucket on top of AWS
+**OADP operator successfully creates bucket on top of AWS**
 
 </div>
 
 Previously, the container was configured with the `readOnlyRootFilesystem: true` setting for security, but the code attempted to create temporary files in the `/tmp` directory using the `os.CreateTemp()` function. Consequently, while using the AWS STS authentication with the Cloud Credential Operator (CCO) flow, OADP failed to create temporary files that were required for AWS credential handling with the following error:
-
-</div>
 
 ``` terminal
 ERROR unable to determine if bucket exists. {"error": "open /tmp/aws-shared-credentials1211864681: read-only file system"}
@@ -603,17 +529,13 @@ For a complete list of all issues resolved in this release, see the list of [OAD
 
 ## Known issues
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Kopia does not delete all the artifacts after backup expiration
+**Kopia does not delete all the artifacts after backup expiration**
 
 </div>
 
 Even after deleting a backup, Kopia does not delete the volume artifacts from the `${bucket_name}/kopia/${namespace}` on the S3 location after the backup expired. Information related to the expired and removed data files remains in the metadata. To ensure that OpenShift API for Data Protection (OADP) functions properly, the data is not deleted, and it exists in the `/kopia/` directory, for example:
-
-</div>
 
 - `kopia.repository`: Main repository format information such as encryption, version, and other details.
 
@@ -629,33 +551,25 @@ For a complete list of all known issues in this release, see the list of [OADP 1
 
 ## Deprecated features
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-The `configuration.restic` specification field has been deprecated
+**The `configuration.restic` specification field has been deprecated**
 
 </div>
 
 With OpenShift API for Data Protection (OADP) 1.5.0, the `configuration.restic` specification field has been deprecated. Use the `nodeAgent` section with the `uploaderType` field for selecting `kopia` or `restic` as a `uploaderType`. Note that, Restic is deprecated in OpenShift API for Data Protection (OADP) 1.5.0.
 
-</div>
-
 [OADP-5158](https://issues.redhat.com/browse/OADP-5158)
 
 ## Technology Preview
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Support for HyperShift hosted OpenShift clusters is available as a Technology Preview
+**Support for HyperShift hosted OpenShift clusters is available as a Technology Preview**
 
 </div>
 
 OADP can support and facilitate application migrations within HyperShift hosted OpenShift clusters as a Technology Preview. It ensures a seamless backup and restore operation for applications in hosted clusters.
-
-</div>
 
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
@@ -663,8 +577,11 @@ For more information about the support scope of Red Hat Technology Preview feat
 
 # Upgrading OADP 1.4 to 1.5
 
-> [!NOTE]
-> Always upgrade to the next minor version. Do not skip versions. To update to a later version, upgrade only one channel at a time. For example, to upgrade from OADP 1.1 to 1.3, upgrade first to 1.2, and then to 1.3.
+<div class="note">
+
+Always upgrade to the next minor version. Do not skip versions. To update to a later version, upgrade only one channel at a time. For example, to upgrade from OADP 1.1 to 1.3, upgrade first to 1.2, and then to 1.3.
+
+</div>
 
 ## Changes from OADP 1.4 to 1.5
 
@@ -691,21 +608,11 @@ You can configure `restorePVC` in the DPA by using the `ignoreDelayBinding` fiel
 
 You must back up your current `DataProtectionApplication` (DPA) configuration.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Save your current DPA configuration by running the following command:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example command
+  **Example command**
 
   </div>
 
@@ -713,22 +620,13 @@ Procedure
   $ oc get dpa -n openshift-adp -o yaml > dpa.orig.backup
   ```
 
-  </div>
-
-</div>
-
 ## Upgrading the OADP Operator
 
 You can upgrade the OpenShift API for Data Protection (OADP) Operator using the following procedure.
 
-> [!NOTE]
-> Do not install OADP 1.5.0 on a OpenShift 4.18 cluster.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Do not install OADP 1.5.0 on a OpenShift 4.18 cluster.
 
 </div>
 
@@ -736,46 +634,27 @@ Prerequisites
 
 - You have backed up your data.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Upgrade OpenShift 4.18 to OpenShift 4.19.
 
-    > [!NOTE]
-    > OpenShift API for Data Protection (OADP) 1.4 is not supported on OpenShift 4.19.
+    <div class="note">
+
+    OpenShift API for Data Protection (OADP) 1.4 is not supported on OpenShift 4.19.
+
+    </div>
 
 2.  Change your subscription channel for the OADP Operator from `stable-1.4` to `stable`.
 
 3.  Wait for the Operator and containers to update and restart.
 
-</div>
-
 ## Converting DPA to the new version for OADP 1.5.0
 
 The OpenShift API for Data Protection (OADP) 1.4 is not supported on OpenShift 4.19. You can convert Data Protection Application (DPA) to the new OADP 1.5 version by using the new `spec.configuration.nodeAgent` field and its sub-fields.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To configure `nodeAgent` daemon set, use the `spec.configuration.nodeAgent` parameter in DPA. See the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `DataProtectionApplication` configuration
+    **Example `DataProtectionApplication` configuration**
 
     </div>
 
@@ -789,15 +668,11 @@ Procedure
     ...
     ```
 
-    </div>
-
 2.  To configure `nodeAgent` daemon set by using the `ConfigMap` resource named `node-agent-config`, see the following example configuration:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example config map
+    **Example config map**
 
     </div>
 
@@ -817,21 +692,9 @@ Procedure
     ...
     ```
 
-    </div>
-
-</div>
-
 ## Verifying the upgrade
 
 You can verify the OpenShift API for Data Protection (OADP) upgrade by using the following procedure.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Verify that the `DataProtectionApplication` (DPA) has been reconciled successfully:
 
@@ -839,21 +702,20 @@ Procedure
     $ oc get dpa dpa-sample -n openshift-adp
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
         NAME            RECONCILED   AGE
         dpa-sample      True         2m51s
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > The `RECONCILED` column must be `True`.
+    The `RECONCILED` column must be `True`.
+
+    </div>
 
 2.  Verify that the installation finished by viewing the OADP resources by running the following command:
 
@@ -861,11 +723,9 @@ Procedure
     $ oc get all -n openshift-adp
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -894,10 +754,11 @@ Procedure
         replicaset.apps/velero-8b5bc54fd                              0         0         0       3d17h
         replicaset.apps/velero-f5c9ffb66                              0         0         0       3d17h
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > The `node-agent` pods are created only while using `restic` or `kopia` in `DataProtectionApplication` (DPA). In OADP 1.4.0 and OADP 1.3.0 version, the `node-agent` pods are labeled as `restic`.
+    The `node-agent` pods are created only while using `restic` or `kopia` in `DataProtectionApplication` (DPA). In OADP 1.4.0 and OADP 1.3.0 version, the `node-agent` pods are labeled as `restic`.
+
+    </div>
 
 3.  Verify the backup storage location and confirm that the `PHASE` is `Available` by running the following command:
 
@@ -905,11 +766,9 @@ Procedure
     $ oc get backupstoragelocations.velero.io -n openshift-adp
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -917,7 +776,3 @@ Procedure
     NAME           PHASE       LAST VALIDATED   AGE     DEFAULT
     dpa-sample-1   Available   1s               3d16h   true
     ```
-
-    </div>
-
-</div>

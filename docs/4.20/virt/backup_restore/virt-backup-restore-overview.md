@@ -1,26 +1,32 @@
-> [!IMPORTANT]
-> Red Hat supports using OpenShift Virtualization 4.14 or later with OADP 1.3.x or later.
->
-> OADP versions earlier than 1.3.0 are not supported for back up and restore of OpenShift Virtualization.
+<div class="important">
+
+Red Hat supports using OpenShift Virtualization 4.14 or later with OADP 1.3.x or later.
+
+OADP versions earlier than 1.3.0 are not supported for back up and restore of OpenShift Virtualization.
+
+</div>
 
 Back up and restore virtual machines by using the [OpenShift API for Data Protection](../../backup_and_restore/index.xml#application-backup-restore-operations-overview).
 
 You can install the OpenShift API for Data Protection (OADP) with OpenShift Virtualization by installing the OADP Operator and configuring a backup location. You can then install the Data Protection Application.
 
-> [!NOTE]
-> OpenShift API for Data Protection with OpenShift Virtualization supports the following backup and restore storage options:
->
-> - Container Storage Interface (CSI) backups
->
-> - Container Storage Interface (CSI) backups with DataMover
->
-> The following storage options are excluded:
->
-> - File system backup and restore
->
-> - Volume snapshot backup and restore
->
-> For more information, see [Backing up applications with File System Backup: Kopia or Restic](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-applications-restic-doc.xml#oadp-backing-up-applications-restic-doc).
+<div class="note">
+
+OpenShift API for Data Protection with OpenShift Virtualization supports the following backup and restore storage options:
+
+- Container Storage Interface (CSI) backups
+
+- Container Storage Interface (CSI) backups with DataMover
+
+The following storage options are excluded:
+
+- File system backup and restore
+
+- Volume snapshot backup and restore
+
+For more information, see [Backing up applications with File System Backup: Kopia or Restic](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-applications-restic-doc.xml#oadp-backing-up-applications-restic-doc).
+
+</div>
 
 To install the OADP Operator in a restricted network environment, you must first disable the default software catalog sources and mirror the Operator catalog.
 
@@ -32,25 +38,7 @@ As a cluster administrator, you install OADP by installing the OADP Operator.
 
 The latest version of the OADP Operator installs [Velero 1.16](https://velero.io/docs/v1.16).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Install the OADP Operator according to the instructions for your storage provider.
 
@@ -58,24 +46,17 @@ Procedure
 
 3.  Back up virtual machines by creating a `Backup` custom resource (CR).
 
-    > [!WARNING]
-    > Red Hat support is limited to only the following options:
-    >
-    > - CSI backups
-    >
-    > - CSI backups with DataMover.
+    <div class="warning">
+
+    Red Hat support is limited to only the following options:
+
+    - CSI backups
+
+    - CSI backups with DataMover.
+
+    </div>
 
     You restore the `Backup` CR by creating a `Restore` CR.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [OADP plugins](../../backup_and_restore/application_backup_and_restore/oadp-features-plugins.xml#oadp-plugins_oadp-features-plugins)
 
@@ -85,19 +66,9 @@ Additional resources
 
 - [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks)
 
-</div>
-
 # Installing the Data Protection Application
 
 You install the Data Protection Application (DPA) by creating an instance of the `DataProtectionApplication` API.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You must install the OADP Operator.
 
@@ -107,18 +78,11 @@ Prerequisites
 
 - If the backup and snapshot locations use the same credentials, you must create a `Secret` with the default name, `cloud-credentials`.
 
-  > [!NOTE]
-  > If you do not want to specify backup or snapshot locations during the installation, you can create a default `Secret` with an empty `credentials-velero` file. If there is no default `Secret`, the installation will fail.
+  <div class="note">
 
-</div>
+  If you do not want to specify backup or snapshot locations during the installation, you can create a default `Secret` with an empty `credentials-velero` file. If there is no default `Secret`, the installation will fail.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  Click **Ecosystem** → **Installed Operators** and select the OADP Operator.
 
@@ -204,15 +168,7 @@ Procedure
 
 4.  Click **Create**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify the installation by viewing the OpenShift API for Data Protection (OADP) resources by running the following command:
 
@@ -264,5 +220,3 @@ Verification
     NAME           PHASE       LAST VALIDATED   AGE     DEFAULT
     dpa-sample-1   Available   1s               3d16h   true
     ```
-
-</div>

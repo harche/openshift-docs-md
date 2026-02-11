@@ -10,27 +10,9 @@ The steps for removing the Red Hat build of OpenTelemetry from an OpenShift Con
 
 You can remove an OpenTelemetry Collector instance in the **Administrator** view of the web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to the web console as a cluster administrator with the `cluster-admin` role.
 
 - For Red Hat OpenShift Dedicated, you must be logged in using an account with the `dedicated-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to **Ecosystem** → **Installed Operators** → **Red Hat build of OpenTelemetry Operator** → **OpenTelemetryInstrumentation** or **OpenTelemetryCollector**.
 
@@ -38,27 +20,13 @@ Procedure
 
 3.  Optional: Remove the Red Hat build of OpenTelemetry Operator.
 
-</div>
-
 # Removing an OpenTelemetry Collector instance by using the CLI
 
 You can remove an OpenTelemetry Collector instance on the command line.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - An active OpenShift CLI (`oc`) session by a cluster administrator with the `cluster-admin` role.
 
   <div class="tip">
-
-  <div class="title">
-
-  </div>
 
   - Ensure that your OpenShift CLI (`oc`) version is up to date and matches your OpenShift Container Platform version.
 
@@ -69,16 +37,6 @@ Prerequisites
     ```
 
   </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Get the name of the OpenTelemetry Collector instance by running the following command:
 
@@ -94,23 +52,11 @@ Procedure
 
 3.  Optional: Remove the Red Hat build of OpenTelemetry Operator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - To verify successful removal of the OpenTelemetry Collector instance, run `oc get deployments` again:
 
   ``` terminal
   $ oc get deployments -n <project_of_opentelemetry_instance>
   ```
-
-</div>
 
 # Additional resources
 

@@ -4,5 +4,8 @@ Agent-based installation is a subcommand of the OpenShift Container Platform ins
 
 For more information about installing a cluster using the Agent-based Installer, see [Preparing to install with the Agent-based Installer](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#preparing-to-install-with-agent-based-installer).
 
-> [!IMPORTANT]
-> Your vSphere account must include privileges for reading and creating the resources required to install an OpenShift Container Platform cluster. For more information about privileges, see [vCenter requirements](../../installing/installing_vsphere/upi/upi-vsphere-installation-reqs.xml#installation-vsphere-installer-infra-requirements_upi-vsphere-installation-reqs).
+<div class="important">
+
+Your vSphere account must include privileges for reading and creating the resources required to install an OpenShift Container Platform cluster. For more information about privileges, see [vCenter requirements](../../installing/installing_vsphere/upi/upi-vsphere-installation-reqs.xml#installation-vsphere-installer-infra-requirements_upi-vsphere-installation-reqs).
+
+</div>

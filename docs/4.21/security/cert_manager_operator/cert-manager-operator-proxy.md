@@ -6,27 +6,9 @@ You can inject any CA certificates that are required for proxying HTTPS connecti
 
 If your OpenShift Container Platform cluster has the cluster-wide proxy enabled, you can inject any CA certificates that are required for proxying HTTPS connections into the cert-manager Operator for Red Hat OpenShift.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have enabled the cluster-wide proxy for OpenShift Container Platform.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a config map in the `cert-manager` namespace by running the following command:
 
@@ -46,15 +28,7 @@ Procedure
     $ oc -n cert-manager-operator patch subscription openshift-cert-manager-operator --type='merge' -p '{"spec":{"config":{"env":[{"name":"TRUSTED_CA_CONFIGMAP_NAME","value":"trusted-ca"}]}}}'
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the deployments have finished rolling out by running the following command:
 
@@ -65,11 +39,9 @@ Verification
     oc rollout status deployment/cert-manager-cainjector -n cert-manager
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -80,19 +52,15 @@ Verification
     deployment "cert-manager-cainjector" successfully rolled out
     ```
 
-    </div>
-
 2.  Verify that the CA bundle was mounted as a volume by running the following command:
 
     ``` terminal
     $ oc get deployment cert-manager -n cert-manager -o=jsonpath={.spec.template.spec.'containers[0].volumeMounts'}
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -100,29 +68,21 @@ Verification
     [{"mountPath":"/etc/pki/tls/certs/cert-manager-tls-ca-bundle.crt","name":"trusted-ca","subPath":"ca-bundle.crt"}]
     ```
 
-    </div>
-
 3.  Verify that the source of the CA bundle is the `trusted-ca` config map by running the following command:
 
     ``` terminal
     $ oc get deployment cert-manager -n cert-manager -o=jsonpath={.spec.template.spec.volumes}
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     [{"configMap":{"defaultMode":420,"name":"trusted-ca"},"name":"trusted-ca"}]
     ```
-
-    </div>
-
-</div>
 
 # Additional resources
 

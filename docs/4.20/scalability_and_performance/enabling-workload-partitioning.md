@@ -10,8 +10,11 @@ When workload partitioning is enabled, the `management.workload.openshift.io/cor
 
 Workload partitioning ensures that CPU requests and limits specified in the pod’s configuration are respected. In OpenShift Container Platform 4.16 or later, accurate CPU usage limits are set for platform pods through CPU partitioning. As workload partitioning uses the custom resource type of `management.workload.openshift.io/cores`, the values for requests and limits are the same due to a requirement by Kubernetes for extended resources. However, the annotations modified by workload partitioning correctly reflect the desired limits.
 
-> [!NOTE]
-> Extended resources cannot be overcommitted, so request and limit must be equal if both are present in a container spec.
+<div class="note">
+
+Extended resources cannot be overcommitted, so request and limit must be equal if both are present in a container spec.
+
+</div>
 
 # Enabling workload partitioning
 
@@ -21,18 +24,13 @@ Consider additional post-installation Operators that use workload partitioning w
 
 Workload partitioning isolates user workloads from platform workloads using standard Kubernetes scheduling capabilities.
 
-> [!NOTE]
-> You can enable workload partitioning only during cluster installation. You cannot disable workload partitioning post-installation. However, you can change the CPU configuration for `reserved` and `isolated` CPUs post-installation.
+<div class="note">
 
-The procedure demonstrates enabling workload partitioning cluster-wide.
-
-<div>
-
-<div class="title">
-
-Procedure
+You can enable workload partitioning only during cluster installation. You cannot disable workload partitioning post-installation. However, you can change the CPU configuration for `reserved` and `isolated` CPUs post-installation.
 
 </div>
+
+The procedure demonstrates enabling workload partitioning cluster-wide.
 
 - In the `install-config.yaml` file, add the additional field `cpuPartitioningMode` and set it to `AllNodes`.
 
@@ -56,19 +54,15 @@ Procedure
 
   - `cpuPartitioningMode`: Specifies the cluster to set up for CPU partitioning at install time. The default value is `None`, which ensures that no CPU partitioning is enabled at install time.
 
-</div>
-
 # Performance profiles and workload partitioning
 
 To enable workload partitioning, apply a performance profile. This configuration specifies the isolated and reserved CPUs, ensuring that customer workloads run on dedicated cores without interruption from platform processes.
 
 An appropriately configured performance profile specifies the `isolated` and `reserved` CPUs. Create a performance profile by using the Performance Profile Creator (PPC) tool.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample performance profile configuration
+**Sample performance profile configuration**
 
 </div>
 
@@ -118,8 +112,6 @@ spec:
     perPodPowerManagement: false
 ```
 
-</div>
-
 <table style="width:90%;">
 <caption>PerformanceProfile CR options for single-node OpenShift clusters</caption>
 <colgroup>
@@ -127,13 +119,13 @@ spec:
 <col style="width: 45%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">PerformanceProfile CR field</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>metadata.name</code></p></td>
 <td style="text-align: left;"><p>Ensure that <code>name</code> matches the following fields set in related GitOps ZTP custom resources (CRs):</p>
 <ul>
@@ -141,24 +133,22 @@ spec:
 <li><p><code>name: 50-performance-${PerformanceProfile.metadata.name}</code> in <code>validatorCRs/informDuValidator.yaml</code></p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.additionalKernelArgs</code></p></td>
 <td style="text-align: left;"><p><code>"efi=runtime"</code> Configures UEFI secure boot for the cluster host.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.cpu.isolated</code></p></td>
 <td style="text-align: left;"><p>Set the isolated CPUs. Ensure all of the Hyper-Threading pairs match.</p>
 <div class="important">
-<div class="title">
-&#10;</div>
 <p>The reserved and isolated CPU pools must not overlap and together must span all available cores. CPU cores that are not accounted for cause an undefined behaviour in the system.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.cpu.reserved</code></p></td>
 <td style="text-align: left;"><p>Set the reserved CPUs. When workload partitioning is enabled, system processes, kernel threads, and system container threads are restricted to these CPUs. All CPUs that are not isolated should be reserved.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.hugepages.pages</code></p></td>
 <td style="text-align: left;"><ul>
 <li><p>Set the number of huge pages (<code>count</code>)</p></li>
@@ -166,25 +156,17 @@ spec:
 <li><p>Set <code>node</code> to the NUMA node where the <code>hugepages</code> are allocated (<code>node</code>)</p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.realTimeKernel</code></p></td>
 <td style="text-align: left;"><p>Set <code>enabled</code> to <code>true</code> to use the realtime kernel.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.workloadHints</code></p></td>
 <td style="text-align: left;"><p>Use <code>workloadHints</code> to define the set of top level flags for different type of workloads. The example configuration configures the cluster for low latency and high performance.</p></td>
 </tr>
 </tbody>
 </table>
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+PerformanceProfile CR options for single-node OpenShift clusters
 
 - [Recommended single-node OpenShift cluster configuration for vDU application workloads → Workload partitioning](../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#ztp-sno-du-enabling-workload-partitioning_sno-configure-for-vdu)
-
-</div>

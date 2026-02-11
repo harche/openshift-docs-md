@@ -6,11 +6,9 @@ Gang scheduling is important if you are working with expensive, limited resource
 
 As a cluster administrator, you can configure gang scheduling by modifying the `gangScheduling` spec in the `Kueue` custom resource (CR).
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `Kueue` CR with gang scheduling configured
+**Example `Kueue` CR with gang scheduling configured**
 
 </div>
 
@@ -31,8 +29,6 @@ spec:
         admission: Parallel
 # ...
 ```
-
-</div>
 
 - You can set the `policy` value to enable or disable gang scheduling. The possible values are `ByWorkload`, `None`, or empty (`""`).
 

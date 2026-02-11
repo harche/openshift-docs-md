@@ -28,53 +28,23 @@ During migration, the MTC preserves the following namespace annotations:
 
 - You must be logged in as a user with `cluster-admin` privileges on all clusters.
 
-<div>
-
-<div class="title">
-
-Direct image migration
-
-</div>
+<!-- -->
 
 - You must ensure that the secure OpenShift image registry of the source cluster is exposed.
 
 - You must create a route to the exposed registry.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Direct volume migration
-
-</div>
+<!-- -->
 
 - If your clusters use proxies, you must configure an Stunnel TCP proxy.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Clusters
-
-</div>
+<!-- -->
 
 - The source cluster must be upgraded to the latest MTC z-stream release.
 
 - The MTC version must be the same on all clusters.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Network
-
-</div>
+<!-- -->
 
 - The clusters have unrestricted network access to each other and to the replication repository.
 
@@ -90,15 +60,7 @@ Network
 
 - You must enable port `443` on the replication repository if you are using TLS.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Persistent volumes (PVs)
-
-</div>
+<!-- -->
 
 - The PVs must be valid.
 
@@ -114,8 +76,6 @@ Persistent volumes (PVs)
 
   - The PVs must have the same storage class.
 
-</div>
-
 # Migrating your applications by using the MTC web console
 
 You can configure clusters and a replication repository by using the MTC web console. Then, you can create and run a migration plan.
@@ -124,27 +84,9 @@ You can configure clusters and a replication repository by using the MTC web con
 
 You can launch the Migration Toolkit for Containers (MTC) web console in a browser.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The MTC web console must have network access to the OpenShift Container Platform web console.
 
 - The MTC web console must have network access to the OAuth authorization server.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform cluster on which you have installed MTC.
 
@@ -158,26 +100,19 @@ Procedure
 
 3.  Launch a browser and navigate to the MTC web console.
 
-    > [!NOTE]
-    > If you try to access the MTC web console immediately after installing the Migration Toolkit for Containers Operator, the console might not load because the Operator is still configuring the cluster. Wait a few minutes and retry.
+    <div class="note">
+
+    If you try to access the MTC web console immediately after installing the Migration Toolkit for Containers Operator, the console might not load because the Operator is still configuring the cluster. Wait a few minutes and retry.
+
+    </div>
 
 4.  If you are using self-signed CA certificates, you will be prompted to accept the CA certificate of the source cluster API server. The web page guides you through the process of accepting the remaining certificates.
 
 5.  Log in with your OpenShift Container Platform **username** and **password**.
 
-</div>
-
 ## Adding a cluster to the MTC web console
 
 You can add a cluster to the Migration Toolkit for Containers (MTC) web console.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Cross-origin resource sharing must be configured on the source cluster.
 
@@ -191,16 +126,6 @@ Prerequisites
 
 - If you are using direct image migration, you must expose a route to the image registry of the source cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Log in to the cluster.
 
 2.  Obtain the `migration-controller` service account token:
@@ -209,19 +134,15 @@ Procedure
     $ oc create token migration-controller -n openshift-migration
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJtaWciLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlY3JldC5uYW1lIjoibWlnLXRva2VuLWs4dDJyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6Im1pZyIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6ImE1YjFiYWMwLWMxYmYtMTFlOS05Y2NiLTAyOWRmODYwYjMwOCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDptaWc6bWlnIn0.xqeeAINK7UXpdRqAtOj70qhBJPeMwmgLomV9iFxr5RoqUgKchZRG2J2rkqmPm6vr7K-cm7ibD1IBpdQJCcVDuoHYsFgV4mp9vgOfn9osSDp2TGikwNz4Az95e81xnjVUmzh-NjDsEpw71DH92iHV_xt2sTwtzftS49LpPW2LjrV0evtNBP_t_RfskdArt5VSv25eORl7zScqfe1CiMkcVbf2UqACQjo3LbkpfN26HAioO2oH0ECPiRzT0Xyh-KwFutJLS9Xgghyw-LD9kPKcE_xbbJ9Y4Rqajh7WdPYuB0Jd9DPVrslmzK-F6cgHHYoZEv0SvLQi-PO0rpDrcjOEQQ
     ```
-
-    </div>
 
 3.  Log in to the MTC web console.
 
@@ -291,8 +212,6 @@ Procedure
 
     The cluster appears in the **Clusters** list.
 
-</div>
-
 ## Adding a replication repository to the MTC web console
 
 You can add an object storage as a replication repository to the Migration Toolkit for Containers (MTC) web console.
@@ -309,25 +228,9 @@ MTC supports the following storage providers:
 
 - Microsoft Azure Blob
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - You must configure the object storage as a replication repository.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the MTC web console, click **Replication repositories**.
 
@@ -377,19 +280,9 @@ Procedure
 
     The new repository appears in the **Replication repositories** list.
 
-</div>
-
 ## Creating a migration plan in the MTC web console
 
 You can create a migration plan in the Migration Toolkit for Containers (MTC) web console.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You must be logged in as a user with `cluster-admin` privileges on all clusters.
 
@@ -400,16 +293,6 @@ Prerequisites
 - If you want to use the *move* data copy method to migrate a persistent volume (PV), the source and target clusters must have uninterrupted network access to the remote volume.
 
 - If you want to use direct image migration, you must specify the exposed route to the image registry of the source cluster. This can be done by using the MTC web console or by updating the `MigCluster` custom resource manifest.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the MTC web console, click **Migration plans**.
 
@@ -427,8 +310,11 @@ Procedure
 
 7.  Optional: Click the edit icon beside a project to change the target namespace.
 
-    > [!WARNING]
-    > Migration Toolkit for Containers 1.8.6 and later versions do not support multiple migration plans for a single namespace.
+    <div class="warning">
+
+    Migration Toolkit for Containers 1.8.6 and later versions do not support multiple migration plans for a single namespace.
+
+    </div>
 
 8.  Click **Next**.
 
@@ -496,8 +382,6 @@ Procedure
 
     The migration plan is displayed in the **Migration plans** list.
 
-</div>
-
 ## Additional resources for persistent volume copy methods
 
 - [MTC file system copy method](../migration_toolkit_for_containers/about-mtc.xml#file-system-copy-method_about-mtc)
@@ -508,22 +392,21 @@ Procedure
 
 You can migrate applications and data with the migration plan you created in the Migration Toolkit for Containers (MTC) web console.
 
-> [!NOTE]
-> During migration, MTC sets the reclaim policy of migrated persistent volumes (PVs) to `Retain` on the target cluster.
->
-> The `Backup` custom resource contains a `PVOriginalReclaimPolicy` annotation that indicates the original reclaim policy. You can manually restore the reclaim policy of the migrated PVs.
+<div class="note">
 
-<div class="formalpara">
+During migration, MTC sets the reclaim policy of migrated persistent volumes (PVs) to `Retain` on the target cluster.
 
-<div class="title">
+The `Backup` custom resource contains a `PVOriginalReclaimPolicy` annotation that indicates the original reclaim policy. You can manually restore the reclaim policy of the migrated PVs.
 
-Prerequisites
+</div>
+
+<div class="formalpara-title">
+
+**Prerequisites**
 
 </div>
 
 The MTC web console must contain the following:
-
-</div>
 
 - Source cluster in a `Ready` state
 
@@ -532,14 +415,6 @@ The MTC web console must contain the following:
 - Replication repository
 
 - Valid migration plan
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the MTC web console and click **Migration plans**.
 
@@ -553,8 +428,11 @@ Procedure
 
     - **State** copies selected persistent volume claims (PVCs).
 
-      > [!IMPORTANT]
-      > Do not use state migration to migrate a namespace between clusters. Use stage or cutover migration instead.
+      <div class="important">
+
+      Do not use state migration to migrate a namespace between clusters. Use stage or cutover migration instead.
+
+      </div>
 
       - Select one or more PVCs in the **State migration** dialog and click **Migrate**.
 
@@ -569,5 +447,3 @@ Procedure
     4.  Click **Workloads** → **Pods** to verify that the pods are running in the migrated namespace.
 
     5.  Click **Storage** → **Persistent volumes** to verify that the migrated persistent volumes are correctly provisioned.
-
-</div>

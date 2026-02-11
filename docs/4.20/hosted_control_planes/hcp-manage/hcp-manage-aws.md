@@ -72,8 +72,11 @@ When your infrastructure is prerequired and unmanaged in a hosted cluster Amazon
 
   - One private link endpoint for private hosted clusters
 
-> [!NOTE]
-> For private link networking to work, the endpoint zone in the hosted cluster AWS account must match the zone of the instance that is resolved by the service endpoint in the management cluster AWS account. In AWS, the zone names are aliases, such as us-east-2b, which do not necessarily map to the same zone in different accounts. As a result, for private link to work, the management cluster must have subnets or workers in all zones of its region.
+<div class="note">
+
+For private link networking to work, the endpoint zone in the hosted cluster AWS account must match the zone of the instance that is resolved by the service endpoint in the management cluster AWS account. In AWS, the zone names are aliases, such as us-east-2b, which do not necessarily map to the same zone in different accounts. As a result, for private link to work, the management cluster must have subnets or workers in all zones of its region.
+
+</div>
 
 ## Infrastructure requirements for a management AWS account
 
@@ -747,14 +750,6 @@ You can transition your single-architecture 64-bit AMD hosted cluster to a multi
 
 A single-architecture hosted cluster can manage node pools of only one particular CPU architecture. However, a multi-architecture hosted cluster can manage node pools with different CPU architectures. On AWS, a multi-architecture hosted cluster can manage both 64-bit AMD and 64-bit ARM node pools.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed an OpenShift Container Platform management cluster for AWS on Red Hat Advanced Cluster Management (RHACM) with the multicluster engine for Kubernetes Operator.
 
 - You have an existing single-architecture hosted cluster that uses 64-bit AMD variant of the OpenShift Container Platform release payload.
@@ -771,16 +766,6 @@ Prerequisites
 
   - `skopeo`
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Review an existing OpenShift Container Platform release image of the single-architecture hosted cluster by running the following command:
 
     ``` terminal
@@ -790,19 +775,15 @@ Procedure
 
     - Replace `<hosted_cluster_name>` with your hosted cluster name.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
       ``` terminal
       quay.io/openshift-release-dev/ocp-release:<4.y.z>-x86_64
       ```
-
-      </div>
 
     - Replace `<4.y.z>` with the supported OpenShift Container Platform version that you use.
 
@@ -835,11 +816,9 @@ Procedure
         $ oc image info $IMAGE
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -850,8 +829,6 @@ Procedure
         linux/s390x   sha256:b1c1072dc639aaa2b50ec99b530012e3ceac19ddc28adcbcdc9643f2dfd14f34
         linux/arm64   sha256:7b046404572ac96202d82b6cb029b421dddd40e88c73bbf35f602ffc13017f21
         ```
-
-        </div>
 
 3.  Transition the hosted cluster from single-architecture to multi-architecture:
 
@@ -878,11 +855,9 @@ Procedure
     $ oc get hostedcontrolplane -n <hosted_control_plane_namespace> -oyaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -897,8 +872,6 @@ Procedure
     #...
     ```
 
-    </div>
-
 5.  Check that the status of the `HostedCluster` resource is `Progressing` by running the following command:
 
     ``` terminal
@@ -906,27 +879,15 @@ Procedure
       -n <hosted_cluster_namespace> -oyaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that a node pool is using the multi-architecture release image in your `HostedControlPlane` resource by running the following command:
 
   ``` terminal
   $ oc get hostedcontrolplane -n clusters-example -oyaml
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -947,38 +908,21 @@ Verification
         version: <4.x.y>
   ```
 
-  </div>
-
   - Replace `<4.y.z>` with the supported OpenShift Container Platform version that you use.
 
-  > [!NOTE]
-  > The multi-architecture OpenShift Container Platform release image is updated in your `HostedCluster`, `HostedControlPlane` resources, and hosted control plane pods. However, your existing node pools do not transition with the multi-architecture image automatically, because the release image transition is decoupled between the hosted cluster and node pools. You must create new node pools on your new multi-architecture hosted cluster.
+  <div class="note">
 
-</div>
+  The multi-architecture OpenShift Container Platform release image is updated in your `HostedCluster`, `HostedControlPlane` resources, and hosted control plane pods. However, your existing node pools do not transition with the multi-architecture image automatically, because the release image transition is decoupled between the hosted cluster and node pools. You must create new node pools on your new multi-architecture hosted cluster.
 
-<div>
+  </div>
 
-<div class="title">
-
-Next steps
-
-</div>
+<!-- -->
 
 - Creating node pools on the multi-architecture hosted cluster
-
-</div>
 
 # Creating node pools on the multi-architecture hosted cluster
 
 After transitioning your hosted cluster from single-architecture to multi-architecture, create node pools on compute machines based on 64-bit AMD and 64-bit ARM architectures.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create node pools based on 64-bit ARM architecture by entering the following command:
 
@@ -1012,27 +956,15 @@ Procedure
 
     - Replace `<node_count>` with integer for your node count, for example, `2`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that a node pool is using the multi-architecture release image by entering the following command:
 
   ``` terminal
   $ oc get nodepool/<nodepool_name> -oyaml
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output for 64-bit AMD node pools
+  **Example output for 64-bit AMD node pools**
 
   </div>
 
@@ -1045,15 +977,11 @@ Verification
       image: quay.io/openshift-release-dev/ocp-release:<4.x.y>-multi
   ```
 
-  </div>
-
   - Replace `<4.y.z>` with the supported OpenShift Container Platform version that you use.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output for 64-bit ARM node pools
+    **Example output for 64-bit ARM node pools**
 
     </div>
 
@@ -1065,10 +993,6 @@ Verification
       release:
         image: quay.io/openshift-release-dev/ocp-release:<4.x.y>-multi
     ```
-
-    </div>
-
-</div>
 
 # Adding or updating AWS tags for a hosted cluster
 
@@ -1086,30 +1010,15 @@ You might want to use tags for the following purposes:
 
 You can add or update tags for several different types of resources, including EFS access points, load balancer resources, Amazon EBS volumes, IAM users, and AWS S3.
 
-> [!IMPORTANT]
-> On network load balancers, tags cannot be added or updated. The AWS load balancer reconciles whatever tags are in the `HostedCluster` resource. If you try to add or update a tag, the load balancer overwrites the tag.
->
-> In addition, tags cannot be updated on the default security group resource that is created directly by hosted control planes.
+<div class="important">
 
-<div>
+On network load balancers, tags cannot be added or updated. The AWS load balancer reconciles whatever tags are in the `HostedCluster` resource. If you try to add or update a tag, the load balancer overwrites the tag.
 
-<div class="title">
-
-Prerequisites
+In addition, tags cannot be updated on the default security group resource that is created directly by hosted control planes.
 
 </div>
 
 - You must have cluster administrator permissions for your hosted cluster on AWS.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  If you want to add or update tags for EFS access points, complete steps 1 and 2. If you are adding or updating tags for other types of resources, complete only step 2.
 
@@ -1130,11 +1039,9 @@ Procedure
 
 2.  In the `HostedCluster` resource, enter information in the `resourceTags` fields, as shown in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `HostedCluster` resource
+    **Example `HostedCluster` resource**
 
     </div>
 
@@ -1170,28 +1077,19 @@ Procedure
         type: AWS
     ```
 
-    </div>
-
-</div>
-
 - Specify the tag that you want to add to your resource.
 
 # Configuring node pool capacity blocks on AWS
 
 After creating a hosted cluster, you can configure node pool capacity blocks for graphics processing unit (GPU) reservations on Amazon Web Services (AWS).
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create GPU reservations on AWS by running the following command:
 
-    > [!IMPORTANT]
-    > The zone of the GPU reservation must match your hosted cluster zone.
+    <div class="important">
+
+    The zone of the GPU reservation must match your hosted cluster zone.
+
+    </div>
 
     ``` terminal
     $ aws ec2 describe-capacity-block-offerings \
@@ -1295,15 +1193,7 @@ Procedure
     $ oc apply -f /tmp/np.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that your new node pool is created successfully by running the following command:
 
@@ -1311,11 +1201,9 @@ Verification
     $ oc get np -n clusters
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1324,19 +1212,15 @@ Verification
     clusters    cb-np   cb-np-hcp   1               1                False           False        4.20.0-0.nightly-2025-06-05-224220    False             False
     ```
 
-    </div>
-
 2.  Verify that your new compute nodes are created in the hosted cluster by running the following command:
 
     ``` terminal
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1346,21 +1230,9 @@ Verification
     ip-10-0-134-183.ec2.internal   Ready    worker   4h5m   v1.33.4
     ```
 
-    </div>
-
-</div>
-
 ## Destroying a hosted cluster after configuring node pool capacity blocks
 
 After you configured node pool capacity blocks, you can optionally destroy a hosted cluster and uninstall the HyperShift Operator.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To destroy a hosted cluster, run the following example command:
 
@@ -1377,5 +1249,3 @@ Procedure
     ``` terminal
     $ hcp install render --format=yaml | oc delete -f -
     ```
-
-</div>

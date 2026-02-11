@@ -6,14 +6,6 @@ In addition to using the OpenShift Container Platform monitoring stack, you can 
 
 The node-exporter agent is deployed on every virtual machine in the cluster from which you want to collect metrics. Configure the node-exporter agent as a service to expose internal metrics and processes that are associated with virtual machines.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`).
 
 - Log in to the cluster as a user with `cluster-admin` privileges.
@@ -21,16 +13,6 @@ Prerequisites
 - Create the `cluster-monitoring-config` `ConfigMap` object in the `openshift-monitoring` project.
 
 - Configure the `user-workload-monitoring-config` `ConfigMap` object in the `openshift-user-workload-monitoring` project by setting `enableUserWorkload` to `true`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `Service` YAML file. In the following example, the file is called `node-exporter-service.yaml`.
 
@@ -73,33 +55,13 @@ Procedure
     $ oc create -f node-exporter-service.yaml
     ```
 
-</div>
-
 # Configuring a virtual machine with the node exporter service
 
 Download the `node-exporter` file on to the virtual machine. Then, create a `systemd` service that runs the node-exporter service when the virtual machine boots.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The pods for the component are running in the `openshift-user-workload-monitoring` project.
 
 - Grant the `monitoring-edit` role to users who need to monitor this user-defined project.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log on to the virtual machine.
 
@@ -145,16 +107,6 @@ Procedure
     $ sudo systemctl start node_exporter.service
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the node-exporter agent is reporting metrics from the virtual machine.
 
   ``` terminal
@@ -169,35 +121,15 @@ Verification
   go_gc_duration_seconds{quantile="0.5"} 3.7913e-05
   ```
 
-</div>
-
 # Creating a custom monitoring label for virtual machines
 
 To enable queries to multiple virtual machines from a single service, you can add a custom label in the virtual machine’s YAML file.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
 
 - Access to the web console for stop and restart a virtual machine.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `template` spec of your virtual machine configuration file. In this example, the label `monitor` has the value `metrics`.
 
@@ -211,35 +143,15 @@ Procedure
 
 2.  Stop and restart the virtual machine to create a new pod with the label name given to the `monitor` label.
 
-</div>
-
 ## Querying the node-exporter service for metrics
 
 Metrics are exposed for virtual machines through an HTTP service endpoint under the `/metrics` canonical name. When you query for metrics, Prometheus directly scrapes the metrics from the metrics endpoint exposed by the virtual machines and presents these metrics for viewing.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster as a user with `cluster-admin` privileges or the `monitoring-edit` role.
 
 - You have enabled monitoring for the user-defined project by configuring the node-exporter service.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Obtain the HTTP service endpoint by specifying the namespace for the service:
 
@@ -305,35 +217,15 @@ Procedure
     node_disk_written_bytes_total{device="vdb"} 0
     ```
 
-</div>
-
 # Creating a ServiceMonitor resource for the node exporter service
 
 You can use a Prometheus client library and scrape metrics from the `/metrics` endpoint to access and view the metrics exposed by the node-exporter service. Use a `ServiceMonitor` custom resource definition (CRD) to monitor the node exporter service.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster as a user with `cluster-admin` privileges or the `monitoring-edit` role.
 
 - You have enabled monitoring for the user-defined project by configuring the node-exporter service.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file for the `ServiceMonitor` resource configuration. In this example, the service monitor matches any service with the label `metrics` and queries the `exmet` port every 30 seconds.
 
@@ -369,35 +261,15 @@ Procedure
     $ oc create -f node-exporter-metrics-monitor.yaml
     ```
 
-</div>
-
 ## Accessing the node exporter service outside the cluster
 
 You can access the node-exporter service outside the cluster and view the exposed metrics.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster as a user with `cluster-admin` privileges or the `monitoring-edit` role.
 
 - You have enabled monitoring for the user-defined project by configuring the node-exporter service.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Expose the node-exporter service.
 
@@ -433,8 +305,6 @@ Procedure
     go_gc_duration_seconds{quantile="0.75"} 4.9139e-05
     go_gc_duration_seconds{quantile="1"} 0.000189423
     ```
-
-</div>
 
 # Additional resources
 

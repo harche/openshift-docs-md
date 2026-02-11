@@ -10,8 +10,11 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
 - `TechPreviewNoUpgrade`. This feature set is a subset of the current Technology Preview features. This feature set allows you to enable these Technology Preview features on test clusters, where you can fully test them, while leaving the features disabled on production clusters.
 
-  > [!WARNING]
-  > Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. You should not enable this feature set on production clusters.
+  <div class="warning">
+
+  Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. You should not enable this feature set on production clusters.
+
+  </div>
 
   The following Technology Preview features are enabled by this feature set:
 
@@ -191,36 +194,19 @@ See the *Additional resources* sections for information on some of these feature
 
 You can enable feature sets for all nodes in the cluster by editing the `install-config.yaml` file before you deploy the cluster. This allows you to use non-default features in your cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have an `install-config.yaml` file.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Use the `featureSet` parameter to specify the name of the feature set you want to enable, such as `TechPreviewNoUpgrade`:
 
-    > [!WARNING]
-    > Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. You should not enable this feature set on production clusters.
+    <div class="warning">
 
-    <div class="formalpara">
+    Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. You should not enable this feature set on production clusters.
 
-    <div class="title">
+    </div>
 
-    Sample `install-config.yaml` file with an enabled feature set
+    <div class="formalpara-title">
+
+    **Sample `install-config.yaml` file with an enabled feature set**
 
     </div>
 
@@ -243,23 +229,15 @@ Procedure
     featureSet: TechPreviewNoUpgrade
     ```
 
-    </div>
-
 2.  Save the file and reference it when using the installation program to deploy the cluster.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 You can verify that the feature gates are enabled by looking at the `kubelet.conf` file on a node after the nodes return to the ready state.
-
-</div>
 
 1.  From the **Administrator** perspective in the web console, navigate to **Compute** → **Nodes**.
 
@@ -279,11 +257,9 @@ You can verify that the feature gates are enabled by looking at the `kubelet.con
     sh-4.2# cat /etc/kubernetes/kubelet.conf
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample output
+    **Sample output**
 
     </div>
 
@@ -295,24 +271,17 @@ You can verify that the feature gates are enabled by looking at the `kubelet.con
     # ...
     ```
 
-    </div>
-
     The features that are listed as `true` are enabled on your cluster.
 
-    > [!NOTE]
-    > The features listed vary depending upon the OpenShift Container Platform version.
+    <div class="note">
+
+    The features listed vary depending upon the OpenShift Container Platform version.
+
+    </div>
 
 # Enabling feature sets using the web console
 
 You can use the OpenShift Container Platform web console to enable feature sets for all of the nodes in a cluster by editing the `FeatureGate` custom resource (CR). Completing this task enables non-default features in your cluster.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform web console, switch to the **Administration** → **Custom Resource Definitions** page.
 
@@ -324,14 +293,15 @@ Procedure
 
 5.  Edit the **cluster** instance to add specific feature sets:
 
-    > [!WARNING]
-    > Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. You should not enable this feature set on production clusters.
+    <div class="warning">
 
-    <div class="formalpara">
+    Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. You should not enable this feature set on production clusters.
 
-    <div class="title">
+    </div>
 
-    Sample Feature Gate custom resource
+    <div class="formalpara-title">
+
+    **Sample Feature Gate custom resource**
 
     </div>
 
@@ -345,8 +315,6 @@ Procedure
       featureSet: TechPreviewNoUpgrade
     ```
 
-    </div>
-
     where:
 
     `metadata.name`
@@ -359,19 +327,13 @@ Procedure
 
     After you save the changes, new machine configs are created, the machine config pools are updated, and scheduling on each node is disabled while the change is being applied.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 You can verify that the feature gates are enabled by looking at the `kubelet.conf` file on a node after the nodes return to the ready state.
-
-</div>
 
 1.  From the **Administrator** perspective in the web console, navigate to **Compute** → **Nodes**.
 
@@ -391,11 +353,9 @@ You can verify that the feature gates are enabled by looking at the `kubelet.con
     sh-4.2# cat /etc/kubernetes/kubelet.conf
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample output
+    **Sample output**
 
     </div>
 
@@ -407,36 +367,21 @@ You can verify that the feature gates are enabled by looking at the `kubelet.con
     # ...
     ```
 
-    </div>
-
     The features that are listed as `true` are enabled on your cluster.
 
-    > [!NOTE]
-    > The features listed vary depending upon the OpenShift Container Platform version.
+    <div class="note">
+
+    The features listed vary depending upon the OpenShift Container Platform version.
+
+    </div>
 
 # Enabling feature sets using the CLI
 
 You can use the OpenShift CLI (`oc`) to enable feature sets for all of the nodes in a cluster by editing the `FeatureGate` custom resource (CR). Completing this task enables non-default features in your cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Edit the `FeatureGate` CR named `cluster`:
 
@@ -444,14 +389,15 @@ Procedure
   $ oc edit featuregate cluster
   ```
 
-  > [!WARNING]
-  > Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. You should not enable this feature set on production clusters.
+  <div class="warning">
 
-  <div class="formalpara">
+  Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. You should not enable this feature set on production clusters.
 
-  <div class="title">
+  </div>
 
-  Sample FeatureGate custom resource
+  <div class="formalpara-title">
+
+  **Sample FeatureGate custom resource**
 
   </div>
 
@@ -465,8 +411,6 @@ Procedure
     featureSet: TechPreviewNoUpgrade
   ```
 
-  </div>
-
   where:
 
   `metadata.name`
@@ -479,19 +423,13 @@ Procedure
 
   After you save the changes, new machine configs are created, the machine config pools are updated, and scheduling on each node is disabled while the change is being applied.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 You can verify that the feature gates are enabled by looking at the `kubelet.conf` file on a node after the nodes return to the ready state.
-
-</div>
 
 1.  From the **Administrator** perspective in the web console, navigate to **Compute** → **Nodes**.
 
@@ -511,11 +449,9 @@ You can verify that the feature gates are enabled by looking at the `kubelet.con
     sh-4.2# cat /etc/kubernetes/kubelet.conf
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample output
+    **Sample output**
 
     </div>
 
@@ -527,12 +463,13 @@ You can verify that the feature gates are enabled by looking at the `kubelet.con
     # ...
     ```
 
-    </div>
-
     The features that are listed as `true` are enabled on your cluster.
 
-    > [!NOTE]
-    > The features listed vary depending upon the OpenShift Container Platform version.
+    <div class="note">
+
+    The features listed vary depending upon the OpenShift Container Platform version.
+
+    </div>
 
 # Additional resources
 

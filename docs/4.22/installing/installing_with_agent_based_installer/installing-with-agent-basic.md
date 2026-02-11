@@ -18,14 +18,6 @@ The following procedures deploy a single-node OpenShift Container Platform in a 
 
 Use this procedure to download the Agent-based Installer and the CLI needed for your installation.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Log in to the Red Hat Hybrid Cloud Console using your login credentials.
 
 2.  Navigate to [Datacenter](https://console.redhat.com/openshift/create/datacenter).
@@ -40,19 +32,9 @@ Procedure
 
 7.  Click **Download command-line tools** and place the `openshift-install` binary in a directory that is on your `PATH`.
 
-</div>
-
 ## Creating the configuration inputs
 
 You must create the configuration files that are used by the installation program to create the agent image.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Place the `openshift-install` binary in a directory that is on your PATH.
 
@@ -117,8 +99,11 @@ Procedure
 
     - Specify your platform.
 
-      > [!NOTE]
-      > For bare metal platforms, host settings made in the platform section of the `install-config.yaml` file are used by default, unless they are overridden by configurations made in the `agent-config.yaml` file.
+      <div class="note">
+
+      For bare metal platforms, host settings made in the platform section of the `install-config.yaml` file are used by default, unless they are overridden by configurations made in the `agent-config.yaml` file.
+
+      </div>
 
     - Specify your pull secret.
 
@@ -129,10 +114,6 @@ Procedure
     - Provide the `imageContentSources` section according to the output of the command that you used to mirror the repository. You must specify this parameter if you are using a disconnected mirror registry.
 
       <div class="important">
-
-      <div class="title">
-
-      </div>
 
       - When using the `oc adm release mirror` command, use the output from the `imageContentSources` section.
 
@@ -156,19 +137,9 @@ Procedure
 
     - This IP address is used to determine which node performs the bootstrapping process as well as running the `assisted-service` component. You must provide the rendezvous IP address when you do not specify at least one host IP address in the `networkConfig` parameter. If this address is not provided, one IP address is selected from the provided host `networkConfig` parameter.
 
-</div>
-
 ## Creating and booting the agent image
 
 Use this procedure to boot the agent image on your machines.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the agent image by running the following command:
 
@@ -176,12 +147,13 @@ Procedure
     $ openshift-install --dir <install_directory> agent create image
     ```
 
-    > [!NOTE]
-    > Red Hat Enterprise Linux CoreOS (RHCOS) supports multipathing on the primary disk, allowing stronger resilience to hardware failure to achieve higher host availability. Multipathing is enabled by default in the agent ISO image, with a default `/etc/multipath.conf` configuration.
+    <div class="note">
+
+    Red Hat Enterprise Linux CoreOS (RHCOS) supports multipathing on the primary disk, allowing stronger resilience to hardware failure to achieve higher host availability. Multipathing is enabled by default in the agent ISO image, with a default `/etc/multipath.conf` configuration.
+
+    </div>
 
 2.  Boot the `agent.x86_64.iso`, `agent.aarch64.iso`, or `agent.s390x.iso` image on the bare metal machines.
-
-</div>
 
 ## Verifying that the current installation host can pull release images
 
@@ -191,14 +163,9 @@ If the primary pull check passes, you can quit the application to continue with 
 
 If there are host network configuration issues that might cause an installation to fail, you can use the console application to make adjustments to your network configurations.
 
-> [!IMPORTANT]
-> If the agent console application detects host network configuration issues, the installation workflow will be halted until the user manually stops the console application and signals the intention to proceed.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Procedure
+If the agent console application detects host network configuration issues, the installation workflow will be halted until the user manually stops the console application and signals the intention to proceed.
 
 </div>
 
@@ -206,10 +173,13 @@ Procedure
 
 2.  If the agent console application states that the installer connectivity checks have passed, wait for the prompt to time out to continue with the installation.
 
-    > [!NOTE]
-    > You can still choose to view or change network configuration settings even if the connectivity checks have passed.
-    >
-    > However, if you choose to interact with the agent console application rather than letting it time out, you must manually quit the TUI to proceed with the installation.
+    <div class="note">
+
+    You can still choose to view or change network configuration settings even if the connectivity checks have passed.
+
+    However, if you choose to interact with the agent console application rather than letting it time out, you must manually quit the TUI to proceed with the installation.
+
+    </div>
 
 3.  If the agent console application checks have failed, which is indicated by a red icon beside the `Release image URL` pull check, use the following steps to reconfigure the host’s network settings:
 
@@ -239,31 +209,11 @@ Procedure
 
     11. If the `Release image URL` pull check succeeds and displays a green icon beside the URL, select **Quit** to exit the agent console application and continue with the installation.
 
-</div>
-
 ## Tracking and verifying installation progress
 
 Use the following procedure to track installation progress and to verify a successful installation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have configured a DNS record for the Kubernetes API server.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Optional: To know when the bootstrap host (rendezvous host) reboots, run the following command:
 
@@ -276,11 +226,9 @@ Procedure
 
     - To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -290,8 +238,6 @@ Procedure
     INFO Bootstrap configMap status is complete
     INFO cluster bootstrap is complete
     ```
-
-    </div>
 
     The command succeeds when the Kubernetes API server signals that it has been bootstrapped on the control plane machines.
 
@@ -303,11 +249,9 @@ Procedure
 
     - For `<install_directory>` directory, specify the path to the directory where the agent ISO was generated.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -321,33 +265,11 @@ Procedure
     INFO Access the OpenShift web-console here: https://console-openshift-console.apps.sno-cluster.test.example.com
     ```
 
-    </div>
-
-</div>
-
 # Gathering log data from a failed Agent-based installation
 
 Use the following procedure to gather log data about a failed Agent-based installation to provide for a support case.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have configured a DNS record for the Kubernetes API server.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the following command and collect the output:
 
@@ -355,11 +277,9 @@ Procedure
     $ ./openshift-install --dir <installation_directory> agent wait-for bootstrap-complete --log-level=debug
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example error message
+    **Example error message**
 
     </div>
 
@@ -368,16 +288,17 @@ Procedure
     ERROR Bootstrap failed to complete: : bootstrap process timed out: context deadline exceeded
     ```
 
-    </div>
-
 2.  If the output from the previous command indicates a failure, or if the bootstrap is not progressing, run the following command to connect to the rendezvous host and collect the output:
 
     ``` terminal
     $ ssh core@<node-ip> agent-gather -O >agent-gather.tar.xz
     ```
 
-    > [!NOTE]
-    > Red Hat Support can diagnose most issues using the data gathered from the rendezvous host, but if some hosts are not able to register, gathering this data from every host might be helpful.
+    <div class="note">
+
+    Red Hat Support can diagnose most issues using the data gathered from the rendezvous host, but if some hosts are not able to register, gathering this data from every host might be helpful.
+
+    </div>
 
 3.  If the bootstrap completes and the cluster nodes reboot, run the following command and collect the output:
 
@@ -408,5 +329,3 @@ Procedure
 5.  Excluding the `/auth` subdirectory, attach the installation directory used during the deployment to your support case on the [Red Hat Customer Portal](https://access.redhat.com).
 
 6.  Attach all other data gathered from this procedure to your support case.
-
-</div>

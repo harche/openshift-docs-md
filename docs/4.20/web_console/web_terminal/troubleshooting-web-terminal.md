@@ -6,11 +6,9 @@ To avoid this issue, ensure that the network policies for namespaces that are us
 
 The following samples show `NetworkPolicy` objects for allowing ingress from the `openshift-console` and `openshift-operators` namespaces.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Allowing ingress from the `openshift-console` namespace
+**Allowing ingress from the `openshift-console` namespace**
 
 </div>
 
@@ -30,13 +28,9 @@ spec:
   - Ingress
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Allowing ingress from the `openshift-operators` namespace
+**Allowing ingress from the `openshift-operators` namespace**
 
 </div>
 
@@ -55,5 +49,3 @@ spec:
   policyTypes:
   - Ingress
 ```
-
-</div>

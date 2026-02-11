@@ -1,20 +1,26 @@
 You can configure and deploy a machine health check to automatically repair damaged machines in a machine pool.
 
-> [!IMPORTANT]
-> You can use the advanced machine management and scaling capabilities only in clusters where the Machine API is operational. Clusters with user-provisioned infrastructure require additional validation and configuration to use the Machine API.
->
-> Clusters with the infrastructure platform type `none` cannot use the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that supports the feature. This parameter cannot be changed after installation.
->
-> To view the platform type for your cluster, run the following command:
->
-> ``` terminal
-> $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
-> ```
+<div class="important">
+
+You can use the advanced machine management and scaling capabilities only in clusters where the Machine API is operational. Clusters with user-provisioned infrastructure require additional validation and configuration to use the Machine API.
+
+Clusters with the infrastructure platform type `none` cannot use the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that supports the feature. This parameter cannot be changed after installation.
+
+To view the platform type for your cluster, run the following command:
+
+``` terminal
+$ oc get infrastructure cluster -o jsonpath='{.status.platform}'
+```
+
+</div>
 
 # About machine health checks
 
-> [!NOTE]
-> You can only apply a machine health check to machines that are managed by compute machine sets or control plane machine sets.
+<div class="note">
+
+You can only apply a machine health check to machines that are managed by compute machine sets or control plane machine sets.
+
+</div>
 
 To monitor machine health, create a resource to define the configuration for a controller. Set a condition to check, such as staying in the `NotReady` status for five minutes or displaying a permanent condition in the node-problem-detector, and a label for the set of machines to monitor.
 
@@ -22,12 +28,15 @@ The controller that observes a `MachineHealthCheck` resource checks for the defi
 
 To limit disruptive impact of the machine deletion, the controller drains and deletes only one node at a time. If there are more unhealthy machines than the `maxUnhealthy` threshold allows for in the targeted pool of machines, remediation stops and therefore enables manual intervention.
 
-> [!NOTE]
-> Consider the timeouts carefully, accounting for workloads and requirements.
->
-> - Long timeouts can result in long periods of downtime for the workload on the unhealthy machine.
->
-> - Too short timeouts can result in a remediation loop. For example, the timeout for checking the `NotReady` status must be long enough to allow the machine to complete the startup process.
+<div class="note">
+
+Consider the timeouts carefully, accounting for workloads and requirements.
+
+- Long timeouts can result in long periods of downtime for the workload on the unhealthy machine.
+
+- Too short timeouts can result in a remediation loop. For example, the timeout for checking the `NotReady` status must be long enough to allow the machine to complete the startup process.
+
+</div>
 
 To stop the check, remove the resource.
 
@@ -43,21 +52,13 @@ There are limitations to consider before deploying a machine health check:
 
 - A machine is remediated immediately if the `Machine` resource phase is `Failed`.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [About listing all the nodes in a cluster](../nodes/nodes/nodes-nodes-viewing.xml#nodes-nodes-viewing-listing_nodes-nodes-viewing)
 
 - [Short-circuiting machine health check remediation](../machine_management/deploying-machine-health-checks.xml#machine-health-checks-short-circuiting_deploying-machine-health-checks)
 
 - [About the Control Plane Machine Set Operator](../machine_management/control_plane_machine_management/cpmso-about.xml#cpmso-about)
-
-</div>
 
 # Sample MachineHealthCheck resource
 
@@ -98,8 +99,11 @@ spec:
 
 - Specify the timeout duration that a machine health check must wait for a node to join the cluster before a machine is determined to be unhealthy.
 
-> [!NOTE]
-> The `matchLabels` are examples only; you must map your machine groups based on your specific needs.
+<div class="note">
+
+The `matchLabels` are examples only; you must map your machine groups based on your specific needs.
+
+</div>
 
 ## Short-circuiting machine health check remediation
 
@@ -107,17 +111,23 @@ Short-circuiting ensures that machine health checks remediate machines only when
 
 If the user defines a value for the `maxUnhealthy` field, before remediating any machines, the `MachineHealthCheck` compares the value of `maxUnhealthy` with the number of machines within its target pool that it has determined to be unhealthy. Remediation is not performed if the number of unhealthy machines exceeds the `maxUnhealthy` limit.
 
-> [!IMPORTANT]
-> If `maxUnhealthy` is not set, the value defaults to `100%` and the machines are remediated regardless of the state of the cluster.
+<div class="important">
+
+If `maxUnhealthy` is not set, the value defaults to `100%` and the machines are remediated regardless of the state of the cluster.
+
+</div>
 
 The appropriate `maxUnhealthy` value depends on the scale of the cluster you deploy and how many machines the `MachineHealthCheck` covers. For example, you can use the `maxUnhealthy` value to cover multiple compute machine sets across multiple availability zones so that if you lose an entire zone, your `maxUnhealthy` setting prevents further remediation within the cluster. In global Azure regions that do not have multiple availability zones, you can use availability sets to ensure high availability.
 
-> [!IMPORTANT]
-> If you configure a `MachineHealthCheck` resource for the control plane, set the value of `maxUnhealthy` to `1`.
->
-> This configuration ensures that the machine health check takes no action when multiple control plane machines appear to be unhealthy. Multiple unhealthy control plane machines can indicate that the etcd cluster is degraded or that a scaling operation to replace a failed machine is in progress.
->
-> If the etcd cluster is degraded, manual intervention might be required. If a scaling operation is in progress, the machine health check should allow it to finish.
+<div class="important">
+
+If you configure a `MachineHealthCheck` resource for the control plane, set the value of `maxUnhealthy` to `1`.
+
+This configuration ensures that the machine health check takes no action when multiple control plane machines appear to be unhealthy. Multiple unhealthy control plane machines can indicate that the etcd cluster is degraded or that a scaling operation to replace a failed machine is in progress.
+
+If the etcd cluster is degraded, manual intervention might be required. If a scaling operation is in progress, the machine health check should allow it to finish.
+
+</div>
 
 The `maxUnhealthy` field can be set as either an integer or percentage. There are different remediation implementations depending on the `maxUnhealthy` value.
 
@@ -145,35 +155,23 @@ If `maxUnhealthy` is set to `40%` and there are 6 machines being checked:
 
 - Remediation will not be performed if 3 or more nodes are unhealthy
 
-> [!NOTE]
-> The allowed number of machines is rounded down when the percentage of `maxUnhealthy` machines that are checked is not a whole number.
+<div class="note">
+
+The allowed number of machines is rounded down when the percentage of `maxUnhealthy` machines that are checked is not a whole number.
+
+</div>
 
 # Creating a machine health check resource
 
 You can create a `MachineHealthCheck` resource for machine sets in your cluster.
 
-> [!NOTE]
-> You can only apply a machine health check to machines that are managed by compute machine sets or control plane machine sets.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You can only apply a machine health check to machines that are managed by compute machine sets or control plane machine sets.
 
 </div>
 
 - Install the `oc` command-line interface.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `healthcheck.yml` file that contains the definition of your machine health check.
 
@@ -182,8 +180,6 @@ Procedure
     ``` terminal
     $ oc apply -f healthcheck.yml
     ```
-
-</div>
 
 You can configure and deploy a machine health check to detect and repair unhealthy bare metal nodes.
 
@@ -231,8 +227,11 @@ The remediation process operates as follows:
 
 6.  After the node is recreated, the bare metal machine controller restores the annotations and labels that existed on the unhealthy node before its deletion.
 
-> [!NOTE]
-> If the power operations did not complete, the bare metal machine controller triggers the reprovisioning of the unhealthy node unless this is a control plane node or a node that was provisioned externally.
+<div class="note">
+
+If the power operations did not complete, the bare metal machine controller triggers the reprovisioning of the unhealthy node unless this is a control plane node or a node that was provisioned externally.
+
+</div>
 
 ## Understanding the metal3-based remediation process
 
@@ -250,34 +249,19 @@ The remediation process operates as follows:
 
 6.  After the node is recreated, the metal3 remediation controller restores the annotations and labels that existed on the unhealthy node before its deletion.
 
-> [!NOTE]
-> If the power operations did not complete, the metal3 remediation controller triggers the reprovisioning of the unhealthy node unless this is a control plane node or a node that was provisioned externally.
+<div class="note">
 
-## Creating a MachineHealthCheck resource for bare metal
-
-<div>
-
-<div class="title">
-
-Prerequisites
+If the power operations did not complete, the metal3 remediation controller triggers the reprovisioning of the unhealthy node unless this is a control plane node or a node that was provisioned externally.
 
 </div>
+
+## Creating a MachineHealthCheck resource for bare metal
 
 - The OpenShift Container Platform is installed using installer-provisioned infrastructure (IPI).
 
 - Access to BMC credentials (or BMC access to each node).
 
 - Network access to the BMC interface of the unhealthy node.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `healthcheck.yaml` file that contains the definition of your machine health check.
 
@@ -287,13 +271,9 @@ Procedure
     $ oc apply -f healthcheck.yaml
     ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Sample `MachineHealthCheck` resource for bare metal, annotation-based remediation
+**Sample `MachineHealthCheck` resource for bare metal, annotation-based remediation**
 
 </div>
 
@@ -322,8 +302,6 @@ spec:
   nodeStartupTimeout: "10m"
 ```
 
-</div>
-
 - Specify the name of the machine health check to deploy.
 
 - For bare metal clusters, you must include the `machine.openshift.io/remediation-strategy: external-baremetal` annotation in the `annotations` section to enable power-cycle remediation. With this remediation strategy, unhealthy hosts are rebooted instead of removed from the cluster.
@@ -338,14 +316,15 @@ spec:
 
 - Specify the timeout duration that a machine health check must wait for a node to join the cluster before a machine is determined to be unhealthy.
 
-> [!NOTE]
-> The `matchLabels` are examples only; you must map your machine groups based on your specific needs.
+<div class="note">
 
-<div class="formalpara">
+The `matchLabels` are examples only; you must map your machine groups based on your specific needs.
 
-<div class="title">
+</div>
 
-Sample `MachineHealthCheck` resource for bare metal, metal3-based remediation
+<div class="formalpara-title">
+
+**Sample `MachineHealthCheck` resource for bare metal, metal3-based remediation**
 
 </div>
 
@@ -371,13 +350,9 @@ spec:
     timeout: "300s"
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Sample `Metal3RemediationTemplate` resource for bare metal, metal3-based remediation
+**Sample `Metal3RemediationTemplate` resource for bare metal, metal3-based remediation**
 
 </div>
 
@@ -396,10 +371,11 @@ spec:
         timeout: 5m0s
 ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The `matchLabels` are examples only; you must map your machine groups based on your specific needs. The `annotations` section does not apply to metal3-based remediation. Annotation-based remediation and metal3-based remediation are mutually exclusive.
+The `matchLabels` are examples only; you must map your machine groups based on your specific needs. The `annotations` section does not apply to metal3-based remediation. Annotation-based remediation and metal3-based remediation are mutually exclusive.
+
+</div>
 
 ## Troubleshooting issues with power-based remediation
 

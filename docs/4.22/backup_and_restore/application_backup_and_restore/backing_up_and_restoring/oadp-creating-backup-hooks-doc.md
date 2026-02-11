@@ -4,14 +4,6 @@ The commands can be configured to performed before any custom action processing 
 
 You create backup hooks to run commands in a container in a pod by editing the `Backup` custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Add a hook to the `spec.hooks` block of the `Backup` CR, as in the following example:
 
   ``` yaml
@@ -68,5 +60,3 @@ Procedure
   - Optional: How long to wait for the commands to run. The default is `30s`.
 
   - This block defines an array of hooks to run after the backup, with the same parameters as the pre-backup hooks.
-
-</div>

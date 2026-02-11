@@ -10,8 +10,11 @@ You can update your control plane machines to reflect changes in your underlying
 
 The following example YAML illustrates a valid configuration for an Red Hat OpenStack Platform (RHOSP) cluster.
 
-> [!NOTE]
-> When you create a control plane machine set for an existing cluster, the provider specification must match the `providerSpec` configuration in the control plane machine custom resource (CR) that the installation program creates.
+<div class="note">
+
+When you create a control plane machine set for an existing cluster, the provider specification must match the `providerSpec` configuration in the control plane machine custom resource (CR) that the installation program creates.
+
+</div>
 
 You can omit any field that has a value set in the failure domain section of the CR.
 
@@ -21,11 +24,9 @@ In the following example, the `<cluster_id>` string is the infrastructure ID. Th
 $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample OpenStack `providerSpec` values
+**Sample OpenStack `providerSpec` values**
 
 </div>
 
@@ -72,8 +73,6 @@ spec:
               name: master-user-data
 ```
 
-</div>
-
 where:
 
 `spec.template.spec.providerSpec.value.cloudsSecret.name`
@@ -94,11 +93,9 @@ To prevent downtime for your application due to the failure of a single Red Hat
 
 The control plane machine set concept of a failure domain is analogous to the existing RHOSP concept of an [availability zone](https://docs.openstack.org/nova/latest/admin/availability-zones.html). The `ControlPlaneMachineSet` CR spreads control plane machines across more than one failure domain when possible.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample OpenStack failure domain values
+**Sample OpenStack failure domain values**
 
 </div>
 
@@ -127,8 +124,6 @@ spec:
         platform: OpenStack
 # ...
 ```
-
-</div>
 
 where:
 

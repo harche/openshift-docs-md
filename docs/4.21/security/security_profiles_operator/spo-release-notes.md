@@ -92,13 +92,19 @@ The following advisory is available for the Security Profiles Operator 0.7.1:
 
 - Security Profiles Operator (SPO) now automatically selects the appropriate `selinuxd` image for RHEL 8- and 9-based RHCOS systems.
 
-  > [!IMPORTANT]
-  > Users that mirror images for disconnected environments must mirror both `selinuxd` images provided by the Security Profiles Operator.
+  <div class="important">
+
+  Users that mirror images for disconnected environments must mirror both `selinuxd` images provided by the Security Profiles Operator.
+
+  </div>
 
 - You can now enable memory optimization inside of an `spod` daemon. For more information, see [Enabling memory optimization in the spod daemon](../../security/security_profiles_operator/spo-advanced.xml#spo-memory-optimization_spo-advanced).
 
-  > [!NOTE]
-  > SPO memory optimization is not enabled by default.
+  <div class="note">
+
+  SPO memory optimization is not enabled by default.
+
+  </div>
 
 - The daemon resource requirements are now configurable. For more information, see [Customizing daemon resource requirements](../../security/security_profiles_operator/spo-advanced.xml#spo-daemon-requirements_spo-advanced).
 

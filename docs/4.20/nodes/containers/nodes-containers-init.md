@@ -42,14 +42,6 @@ See the [Kubernetes documentation](https://kubernetes.io/docs/concepts/workloads
 
 The following example outlines a simple pod which has two Init Containers. The first waits for `myservice` and the second waits for `mydb`. After both containers complete, the pod begins.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the pod for the Init Container:
 
     1.  Create a YAML file similar to the following:
@@ -103,11 +95,9 @@ Procedure
         $ oc get pods
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -115,8 +105,6 @@ Procedure
         NAME                          READY     STATUS              RESTARTS   AGE
         myapp-pod                     0/1       Init:0/2            0          5s
         ```
-
-        </div>
 
         The pod status, `Init:0/2`, indicates it is waiting for the two services.
 
@@ -148,11 +136,9 @@ Procedure
         $ oc get pods
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -160,8 +146,6 @@ Procedure
         NAME                          READY     STATUS              RESTARTS   AGE
         myapp-pod                     0/1       Init:1/2            0          5s
         ```
-
-        </div>
 
         The pod status, `Init:1/2`, indicates it is waiting for one service, in this case the `mydb` service.
 
@@ -193,11 +177,9 @@ Procedure
         $ oc get pods
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -206,8 +188,4 @@ Procedure
         myapp-pod                     1/1       Running             0          2m
         ```
 
-        </div>
-
         The pod status indicated that it is no longer waiting for the services and is running.
-
-</div>

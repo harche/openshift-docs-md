@@ -8,11 +8,9 @@ You can reschedule pods running on RHEL compute nodes to run on your RHCOS nodes
 
 For example, the following `Node` object has a label for its operating system information, in this case RHCOS:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample `Node` object with RHCOS label
+**Sample `Node` object with RHCOS label**
 
 </div>
 
@@ -38,19 +36,9 @@ metadata:
 #...
 ```
 
-</div>
-
 - The label identifying the operating system that runs on the node, to match the pod node selector.
 
 Any pods that you want to schedule to new RHCOS nodes must contain a matching label in its `nodeSelector` field. The following procedure describes how to add the label.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Deschedule the RHEL node currently running your existing pods by entering the following command:
 
@@ -62,11 +50,9 @@ Procedure
 
     - To add the node selector to existing and future pods, add the node selector to the controller object for the pods by entering the following command:
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example `Deployment` object with `rhcos` label
+      **Example `Deployment` object with `rhcos` label**
 
       </div>
 
@@ -74,17 +60,13 @@ Procedure
       $ oc patch dc <my-app> -p '{"spec":{"template":{"spec":{"nodeSelector":{"node.openshift.io/os_id":"rhcos"}}}}}'
       ```
 
-      </div>
-
       Any existing pods under your `Deployment` controlling object will be re-created on your RHCOS nodes.
 
     - To add the node selector to a specific, new pod, add the selector to the `Pod` object directly:
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example `Pod` object with `rhcos` label
+      **Example `Pod` object with `rhcos` label**
 
       </div>
 
@@ -100,23 +82,11 @@ Procedure
       #...
       ```
 
-      </div>
-
       The new pod will be created on RHCOS nodes, assuming the pod also has a controlling object.
-
-</div>
 
 # Identifying and removing RHEL worker nodes
 
 With the introduction of OpenShift Container Platform 4.19, package-based RHEL worker nodes are no longer supported. The following procedure describes how to identify RHEL nodes for cluster removal on bare-metal installations. You must complete the following steps to successfully update your cluster.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Identify nodes in your cluster that are running RHEL by entering the following command:
 
@@ -124,11 +94,9 @@ Procedure
     $ oc get -l node.openshift.io/os_id=rhel
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -139,13 +107,9 @@ Procedure
     rhel-node3.example.com      Ready     worker    7h        v1.33.4
     ```
 
-    </div>
-
 2.  [Continue with the node removal process](../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working-deleting-bare-metal_nodes-nodes-working). RHEL nodes are not managed by the Machine API and have no compute machine sets associated with them. You must unschedule and drain the node before you manually delete it from the cluster.
 
     For more information on this process, see [How to remove a worker node from Red Hat OpenShift Container Platform 4 UPI](https://access.redhat.com/solutions/4976801).
-
-</div>
 
 # Provisioning new RHCOS worker nodes
 

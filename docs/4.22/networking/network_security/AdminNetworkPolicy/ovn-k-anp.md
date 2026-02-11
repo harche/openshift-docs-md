@@ -16,14 +16,6 @@ An ANP allows administrators to specify the following:
 
 ## AdminNetworkPolicy example
 
-<div class="example">
-
-<div class="title">
-
-Example YAML file for an ANP
-
-</div>
-
 ``` yaml
 apiVersion: policy.networking.k8s.io/v1alpha1
 kind: AdminNetworkPolicy
@@ -73,19 +65,9 @@ spec:
 
 - ANPs have both ingress and egress rules. ANP rules for `spec.egress` field accepts values of `Pass`, `Deny`, and `Allow` for the `action` field.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Network Policy API Working Group](https://network-policy-api.sigs.k8s.io/)
-
-</div>
 
 ## AdminNetworkPolicy actions for rules
 
@@ -94,14 +76,6 @@ As an administrator, you can set `Allow`, `Deny`, or `Pass` as the `action` fiel
 ### AdminNetworkPolicy Allow example
 
 The following ANP that is defined at priority 9 ensures all ingress traffic is allowed from the `monitoring` namespace towards any tenant (all other namespaces) in the cluster.
-
-<div class="example">
-
-<div class="title">
-
-Example YAML file for a strong `Allow` ANP
-
-</div>
 
 ``` yaml
 apiVersion: policy.networking.k8s.io/v1alpha1
@@ -122,21 +96,11 @@ spec:
 # ...
 ```
 
-</div>
-
 This is an example of a strong `Allow` ANP because it is non-overridable by all the parties involved. No tenants can block themselves from being monitored using `NetworkPolicy` objects and the monitoring tenant also has no say in what it can or cannot monitor.
 
 ### AdminNetworkPolicy Deny example
 
 The following ANP that is defined at priority 5 ensures all ingress traffic from the `monitoring` namespace is blocked towards restricted tenants (namespaces that have labels `security: restricted`).
-
-<div class="example">
-
-<div class="title">
-
-Example YAML file for a strong `Deny` ANP
-
-</div>
 
 ``` yaml
 apiVersion: policy.networking.k8s.io/v1alpha1
@@ -159,8 +123,6 @@ spec:
 # ...
 ```
 
-</div>
-
 This is a strong `Deny` ANP that is non-overridable by all the parties involved. The restricted tenant owners cannot authorize themselves to allow monitoring traffic, and the infrastructure’s monitoring service cannot scrape anything from these sensitive namespaces.
 
 When combined with the strong `Allow` example, the `block-monitoring` ANP has a lower priority value giving it higher precedence, which ensures restricted tenants are never monitored.
@@ -168,14 +130,6 @@ When combined with the strong `Allow` example, the `block-monitoring` ANP has a 
 ### AdminNetworkPolicy Pass example
 
 The following ANP that is defined at priority 7 ensures all ingress traffic from the `monitoring` namespace towards internal infrastructure tenants (namespaces that have labels `security: internal`) are passed on to tier 2 of the ACLs and evaluated by the namespaces’ `NetworkPolicy` objects.
-
-<div class="example">
-
-<div class="title">
-
-Example YAML file for a strong `Pass` ANP
-
-</div>
 
 ``` yaml
 apiVersion: policy.networking.k8s.io/v1alpha1
@@ -197,7 +151,5 @@ spec:
           kubernetes.io/metadata.name: monitoring
 # ...
 ```
-
-</div>
 
 This example is a strong `Pass` action ANP because it delegates the decision to `NetworkPolicy` objects defined by tenant owners. This `pass-monitoring` ANP allows all tenant owners grouped at security level `internal` to choose if their metrics should be scraped by the infrastructures' monitoring service using namespace scoped `NetworkPolicy` objects.

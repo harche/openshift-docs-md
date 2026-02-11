@@ -8,8 +8,11 @@ To ensure that the file system on the volume contains no errors and, if errors a
 
 The simplest volume type is `emptyDir`, which is a temporary directory on a single machine. Administrators may also allow you to request a persistent volume that is automatically attached to your pods.
 
-> [!NOTE]
-> `emptyDir` volume storage may be restricted by a quota based on the pod’s FSGroup, if the FSGroup parameter is enabled by your cluster administrator.
+<div class="note">
+
+`emptyDir` volume storage may be restricted by a quota based on the pod’s FSGroup, if the FSGroup parameter is enabled by your cluster administrator.
+
+</div>
 
 # Working with volumes using the OpenShift Container Platform CLI
 
@@ -24,15 +27,15 @@ $ oc set volume <object_selection> <operation> <mandatory_parameters> <options>
 Object selection
 Specify one of the following for the `object_selection` parameter in the `oc set volume` command:
 
-| Syntax | Description | Example |
-|----|----|----|
-| `<object_type> <name>` | Selects `<name>` of type `<object_type>`. | `deploymentConfig registry` |
-| `<object_type>/<name>` | Selects `<name>` of type `<object_type>`. | `deploymentConfig/registry` |
+| Syntax                                               | Description                                                                      | Example                                         |
+|------------------------------------------------------|----------------------------------------------------------------------------------|-------------------------------------------------|
+| `<object_type> <name>`                               | Selects `<name>` of type `<object_type>`.                                        | `deploymentConfig registry`                     |
+| `<object_type>/<name>`                               | Selects `<name>` of type `<object_type>`.                                        | `deploymentConfig/registry`                     |
 | `<object_type>` `--selector=<object_label_selector>` | Selects resources of type `<object_type>` that matched the given label selector. | `deploymentConfig` `--selector="name=registry"` |
-| `<object_type> --all` | Selects all resources of type `<object_type>`. | `deploymentConfig --all` |
-| `-f` or `--filename=<file_name>` | File name, directory, or URL to file to use to edit the resource. | `-f registry-deployment-config.json` |
+| `<object_type> --all`                                | Selects all resources of type `<object_type>`.                                   | `deploymentConfig --all`                        |
+| `-f` or `--filename=<file_name>`                     | File name, directory, or URL to file to use to edit the resource.                | `-f registry-deployment-config.json`            |
 
-Object Selection {#vol-object-selection_nodes-containers-volumes}
+Object Selection
 
 Operation
 Specify `--add` or `--remove` for the `operation` parameter in the `oc set volume` command.
@@ -47,17 +50,13 @@ Any options are specific to the selected operation and are discussed in later se
 
 You can list volumes and volume mounts in pods or pod templates:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To list volumes:
-
-</div>
 
 ``` terminal
 $ oc set volume <object_type>/<name> [options]
@@ -65,10 +64,10 @@ $ oc set volume <object_type>/<name> [options]
 
 List volume supported options:
 
-| Option | Description | Default |
-|----|----|----|
-| `--name` | Name of the volume. |  |
-| `-c, --containers` | Select containers by name. It can also take wildcard `'*'` that matches any character. | `'*'` |
+| Option             | Description                                                                            | Default |
+|--------------------|----------------------------------------------------------------------------------------|---------|
+| `--name`           | Name of the volume.                                                                    |         |
+| `-c, --containers` | Select containers by name. It can also take wildcard `'*'` that matches any character. | `'*'`   |
 
 For example:
 
@@ -88,35 +87,31 @@ For example:
 
 You can add volumes and volume mounts to a pod.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To add a volume, a volume mount, or both to pod templates:
 
-</div>
-
 ``` terminal
 $ oc set volume <object_type>/<name> --add [options]
 ```
 
-| Option | Description | Default |
-|----|----|----|
-| `--name` | Name of the volume. | Automatically generated, if not specified. |
-| `-t, --type` | Name of the volume source. Supported values: `emptyDir`, `hostPath`, `secret`, `configmap`, `persistentVolumeClaim` or `projected`. | `emptyDir` |
-| `-c, --containers` | Select containers by name. It can also take wildcard `'*'` that matches any character. | `'*'` |
-| `-m, --mount-path` | Mount path inside the selected containers. Do not mount to the container root, `/`, or any path that is the same in the host and the container. This can corrupt your host system if the container is sufficiently privileged, such as the host `/dev/pts` files. It is safe to mount the host by using `/host`. |  |
-| `--path` | Host path. Mandatory parameter for `--type=hostPath`. Do not mount to the container root, `/`, or any path that is the same in the host and the container. This can corrupt your host system if the container is sufficiently privileged, such as the host `/dev/pts` files. It is safe to mount the host by using `/host`. |  |
-| `--secret-name` | Name of the secret. Mandatory parameter for `--type=secret`. |  |
-| `--configmap-name` | Name of the configmap. Mandatory parameter for `--type=configmap`. |  |
-| `--claim-name` | Name of the persistent volume claim. Mandatory parameter for `--type=persistentVolumeClaim`. |  |
-| `--source` | Details of volume source as a JSON string. Recommended if the desired volume source is not supported by `--type`. |  |
-| `-o, --output` | Display the modified objects instead of updating them on the server. Supported values: `json`, `yaml`. |  |
-| `--output-version` | Output the modified objects with the given version. | `api-version` |
+| Option             | Description                                                                                                                                                                                                                                                                                                                 | Default                                    |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
+| `--name`           | Name of the volume.                                                                                                                                                                                                                                                                                                         | Automatically generated, if not specified. |
+| `-t, --type`       | Name of the volume source. Supported values: `emptyDir`, `hostPath`, `secret`, `configmap`, `persistentVolumeClaim` or `projected`.                                                                                                                                                                                         | `emptyDir`                                 |
+| `-c, --containers` | Select containers by name. It can also take wildcard `'*'` that matches any character.                                                                                                                                                                                                                                      | `'*'`                                      |
+| `-m, --mount-path` | Mount path inside the selected containers. Do not mount to the container root, `/`, or any path that is the same in the host and the container. This can corrupt your host system if the container is sufficiently privileged, such as the host `/dev/pts` files. It is safe to mount the host by using `/host`.            |                                            |
+| `--path`           | Host path. Mandatory parameter for `--type=hostPath`. Do not mount to the container root, `/`, or any path that is the same in the host and the container. This can corrupt your host system if the container is sufficiently privileged, such as the host `/dev/pts` files. It is safe to mount the host by using `/host`. |                                            |
+| `--secret-name`    | Name of the secret. Mandatory parameter for `--type=secret`.                                                                                                                                                                                                                                                                |                                            |
+| `--configmap-name` | Name of the configmap. Mandatory parameter for `--type=configmap`.                                                                                                                                                                                                                                                          |                                            |
+| `--claim-name`     | Name of the persistent volume claim. Mandatory parameter for `--type=persistentVolumeClaim`.                                                                                                                                                                                                                                |                                            |
+| `--source`         | Details of volume source as a JSON string. Recommended if the desired volume source is not supported by `--type`.                                                                                                                                                                                                           |                                            |
+| `-o, --output`     | Display the modified objects instead of updating them on the server. Supported values: `json`, `yaml`.                                                                                                                                                                                                                      |                                            |
+| `--output-version` | Output the modified objects with the given version.                                                                                                                                                                                                                                                                         | `api-version`                              |
 
 Supported Options for Adding Volumes
 
@@ -128,47 +123,40 @@ For example:
   $ oc set volume dc/registry --add
   ```
 
-  > [!TIP]
-  > You can alternatively apply the following YAML to add the volume:
-  >
-  > <div class="example">
-  >
-  > <div class="title">
-  >
-  > Sample deployment config with an added volume
-  >
-  > </div>
-  >
-  > ``` yaml
-  > kind: DeploymentConfig
-  > apiVersion: apps.openshift.io/v1
-  > metadata:
-  >   name: registry
-  >   namespace: registry
-  > spec:
-  >   replicas: 3
-  >   selector:
-  >     app: httpd
-  >   template:
-  >     metadata:
-  >       labels:
-  >         app: httpd
-  >     spec:
-  >       volumes:
-  >         - name: volume-pppsw
-  >           emptyDir: {}
-  >       containers:
-  >         - name: httpd
-  >           image: >-
-  >             image-registry.openshift-image-registry.svc:5000/openshift/httpd:latest
-  >           ports:
-  >             - containerPort: 8080
-  >               protocol: TCP
-  > ```
-  >
-  > - Add the volume source **emptyDir**.
-  >
-  > </div>
+  <div class="tip">
+
+  You can alternatively apply the following YAML to add the volume:
+
+  ``` yaml
+  kind: DeploymentConfig
+  apiVersion: apps.openshift.io/v1
+  metadata:
+    name: registry
+    namespace: registry
+  spec:
+    replicas: 3
+    selector:
+      app: httpd
+    template:
+      metadata:
+        labels:
+          app: httpd
+      spec:
+        volumes:
+          - name: volume-pppsw
+            emptyDir: {}
+        containers:
+          - name: httpd
+            image: >-
+              image-registry.openshift-image-registry.svc:5000/openshift/httpd:latest
+            ports:
+              - containerPort: 8080
+                protocol: TCP
+  ```
+
+  - Add the volume source **emptyDir**.
+
+  </div>
 
 - To add volume **v1** with secret **secret1** for replication controller **r1** and mount inside the containers at ***/data***:
 
@@ -176,56 +164,49 @@ For example:
   $ oc set volume rc/r1 --add --name=v1 --type=secret --secret-name='secret1' --mount-path=/data
   ```
 
-  > [!TIP]
-  > You can alternatively apply the following YAML to add the volume:
-  >
-  > <div class="example">
-  >
-  > <div class="title">
-  >
-  > Sample replication controller with added volume and secret
-  >
-  > </div>
-  >
-  > ``` yaml
-  > kind: ReplicationController
-  > apiVersion: v1
-  > metadata:
-  >   name: example-1
-  >   namespace: example
-  > spec:
-  >   replicas: 0
-  >   selector:
-  >     app: httpd
-  >     deployment: example-1
-  >     deploymentconfig: example
-  >   template:
-  >     metadata:
-  >       creationTimestamp: null
-  >       labels:
-  >         app: httpd
-  >         deployment: example-1
-  >         deploymentconfig: example
-  >     spec:
-  >       volumes:
-  >         - name: v1
-  >           secret:
-  >             secretName: secret1
-  >             defaultMode: 420
-  >       containers:
-  >         - name: httpd
-  >           image: >-
-  >             image-registry.openshift-image-registry.svc:5000/openshift/httpd:latest
-  >           volumeMounts:
-  >             - name: v1
-  >               mountPath: /data
-  > ```
-  >
-  > - Add the volume and secret.
-  >
-  > - Add the container mount path.
-  >
-  > </div>
+  <div class="tip">
+
+  You can alternatively apply the following YAML to add the volume:
+
+  ``` yaml
+  kind: ReplicationController
+  apiVersion: v1
+  metadata:
+    name: example-1
+    namespace: example
+  spec:
+    replicas: 0
+    selector:
+      app: httpd
+      deployment: example-1
+      deploymentconfig: example
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: httpd
+          deployment: example-1
+          deploymentconfig: example
+      spec:
+        volumes:
+          - name: v1
+            secret:
+              secretName: secret1
+              defaultMode: 420
+        containers:
+          - name: httpd
+            image: >-
+              image-registry.openshift-image-registry.svc:5000/openshift/httpd:latest
+            volumeMounts:
+              - name: v1
+                mountPath: /data
+  ```
+
+  - Add the volume and secret.
+
+  - Add the container mount path.
+
+  </div>
 
 - To add existing persistent volume **v1** with claim name **pvc1** to deployment configuration ***dc.json*** on disk, mount the volume on container **c1** at ***/data***, and update the `DeploymentConfig` object on the server:
 
@@ -234,55 +215,48 @@ For example:
     --claim-name=pvc1 --mount-path=/data --containers=c1
   ```
 
-  > [!TIP]
-  > You can alternatively apply the following YAML to add the volume:
-  >
-  > <div class="example">
-  >
-  > <div class="title">
-  >
-  > Sample deployment config with persistent volume added
-  >
-  > </div>
-  >
-  > ``` yaml
-  > kind: DeploymentConfig
-  > apiVersion: apps.openshift.io/v1
-  > metadata:
-  >   name: example
-  >   namespace: example
-  > spec:
-  >   replicas: 3
-  >   selector:
-  >     app: httpd
-  >   template:
-  >     metadata:
-  >       labels:
-  >         app: httpd
-  >     spec:
-  >       volumes:
-  >         - name: volume-pppsw
-  >           emptyDir: {}
-  >         - name: v1
-  >           persistentVolumeClaim:
-  >             claimName: pvc1
-  >       containers:
-  >         - name: httpd
-  >           image: >-
-  >             image-registry.openshift-image-registry.svc:5000/openshift/httpd:latest
-  >           ports:
-  >             - containerPort: 8080
-  >               protocol: TCP
-  >           volumeMounts:
-  >             - name: v1
-  >               mountPath: /data
-  > ```
-  >
-  > - Add the persistent volume claim named \`pvc1.
-  >
-  > - Add the container mount path.
-  >
-  > </div>
+  <div class="tip">
+
+  You can alternatively apply the following YAML to add the volume:
+
+  ``` yaml
+  kind: DeploymentConfig
+  apiVersion: apps.openshift.io/v1
+  metadata:
+    name: example
+    namespace: example
+  spec:
+    replicas: 3
+    selector:
+      app: httpd
+    template:
+      metadata:
+        labels:
+          app: httpd
+      spec:
+        volumes:
+          - name: volume-pppsw
+            emptyDir: {}
+          - name: v1
+            persistentVolumeClaim:
+              claimName: pvc1
+        containers:
+          - name: httpd
+            image: >-
+              image-registry.openshift-image-registry.svc:5000/openshift/httpd:latest
+            ports:
+              - containerPort: 8080
+                protocol: TCP
+            volumeMounts:
+              - name: v1
+                mountPath: /data
+  ```
+
+  - Add the persistent volume claim named \`pvc1.
+
+  - Add the container mount path.
+
+  </div>
 
 - To add a volume **v1** based on Git repository **https://github.com/namespace1/project1** with revision **5125c45f9f563** for all replication controllers:
 
@@ -298,17 +272,13 @@ For example:
 
 You can modify the volumes and volume mounts in a pod.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 Updating existing volumes using the `--overwrite` option:
-
-</div>
 
 ``` terminal
 $ oc set volume <object_type>/<name> --add --overwrite [options]
@@ -322,55 +292,48 @@ For example:
   $ oc set volume rc/r1 --add --overwrite --name=v1 --type=persistentVolumeClaim --claim-name=pvc1
   ```
 
-  > [!TIP]
-  > You can alternatively apply the following YAML to replace the volume:
-  >
-  > <div class="example">
-  >
-  > <div class="title">
-  >
-  > Sample replication controller with persistent volume claim named `pvc1`
-  >
-  > </div>
-  >
-  > ``` yaml
-  > kind: ReplicationController
-  > apiVersion: v1
-  > metadata:
-  >   name: example-1
-  >   namespace: example
-  > spec:
-  >   replicas: 0
-  >   selector:
-  >     app: httpd
-  >     deployment: example-1
-  >     deploymentconfig: example
-  >   template:
-  >     metadata:
-  >       labels:
-  >         app: httpd
-  >         deployment: example-1
-  >         deploymentconfig: example
-  >     spec:
-  >       volumes:
-  >         - name: v1
-  >           persistentVolumeClaim:
-  >             claimName: pvc1
-  >       containers:
-  >         - name: httpd
-  >           image: >-
-  >             image-registry.openshift-image-registry.svc:5000/openshift/httpd:latest
-  >           ports:
-  >             - containerPort: 8080
-  >               protocol: TCP
-  >           volumeMounts:
-  >             - name: v1
-  >               mountPath: /data
-  > ```
-  >
-  > - Set persistent volume claim to `pvc1`.
-  >
-  > </div>
+  <div class="tip">
+
+  You can alternatively apply the following YAML to replace the volume:
+
+  ``` yaml
+  kind: ReplicationController
+  apiVersion: v1
+  metadata:
+    name: example-1
+    namespace: example
+  spec:
+    replicas: 0
+    selector:
+      app: httpd
+      deployment: example-1
+      deploymentconfig: example
+    template:
+      metadata:
+        labels:
+          app: httpd
+          deployment: example-1
+          deploymentconfig: example
+      spec:
+        volumes:
+          - name: v1
+            persistentVolumeClaim:
+              claimName: pvc1
+        containers:
+          - name: httpd
+            image: >-
+              image-registry.openshift-image-registry.svc:5000/openshift/httpd:latest
+            ports:
+              - containerPort: 8080
+                protocol: TCP
+            volumeMounts:
+              - name: v1
+                mountPath: /data
+  ```
+
+  - Set persistent volume claim to `pvc1`.
+
+  </div>
 
 - To change the `DeploymentConfig` object **d1** mount point to ***/opt*** for volume **v1**:
 
@@ -378,84 +341,73 @@ For example:
   $ oc set volume dc/d1 --add --overwrite --name=v1 --mount-path=/opt
   ```
 
-  > [!TIP]
-  > You can alternatively apply the following YAML to change the mount point:
-  >
-  > <div class="example">
-  >
-  > <div class="title">
-  >
-  > Sample deployment config with mount point set to `opt`.
-  >
-  > </div>
-  >
-  > ``` yaml
-  > kind: DeploymentConfig
-  > apiVersion: apps.openshift.io/v1
-  > metadata:
-  >   name: example
-  >   namespace: example
-  > spec:
-  >   replicas: 3
-  >   selector:
-  >     app: httpd
-  >   template:
-  >     metadata:
-  >       labels:
-  >         app: httpd
-  >     spec:
-  >       volumes:
-  >         - name: volume-pppsw
-  >           emptyDir: {}
-  >         - name: v2
-  >           persistentVolumeClaim:
-  >             claimName: pvc1
-  >         - name: v1
-  >           persistentVolumeClaim:
-  >             claimName: pvc1
-  >       containers:
-  >         - name: httpd
-  >           image: >-
-  >             image-registry.openshift-image-registry.svc:5000/openshift/httpd:latest
-  >           ports:
-  >             - containerPort: 8080
-  >               protocol: TCP
-  >           volumeMounts:
-  >             - name: v1
-  >               mountPath: /opt
-  > ```
-  >
-  > - Set the mount point to `/opt`.
-  >
-  > </div>
+  <div class="tip">
+
+  You can alternatively apply the following YAML to change the mount point:
+
+  ``` yaml
+  kind: DeploymentConfig
+  apiVersion: apps.openshift.io/v1
+  metadata:
+    name: example
+    namespace: example
+  spec:
+    replicas: 3
+    selector:
+      app: httpd
+    template:
+      metadata:
+        labels:
+          app: httpd
+      spec:
+        volumes:
+          - name: volume-pppsw
+            emptyDir: {}
+          - name: v2
+            persistentVolumeClaim:
+              claimName: pvc1
+          - name: v1
+            persistentVolumeClaim:
+              claimName: pvc1
+        containers:
+          - name: httpd
+            image: >-
+              image-registry.openshift-image-registry.svc:5000/openshift/httpd:latest
+            ports:
+              - containerPort: 8080
+                protocol: TCP
+            volumeMounts:
+              - name: v1
+                mountPath: /opt
+  ```
+
+  - Set the mount point to `/opt`.
+
+  </div>
 
 # Removing volumes and volume mounts from a pod
 
 You can remove a volume or volume mount from a pod.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To remove a volume from pod templates:
 
-</div>
-
 ``` terminal
 $ oc set volume <object_type>/<name> --remove [options]
 ```
 
-| Option | Description | Default |
-|----|----|----|
-| `--name` | Name of the volume. |  |
-| `-c, --containers` | Select containers by name. It can also take wildcard `'*'` that matches any character. | `'*'` |
-| `--confirm` | Indicate that you want to remove multiple volumes at once. |  |
-| `-o, --output` | Display the modified objects instead of updating them on the server. Supported values: `json`, `yaml`. |  |
-| `--output-version` | Output the modified objects with the given version. | `api-version` |
+| Option             | Description                                                                                            | Default       |
+|--------------------|--------------------------------------------------------------------------------------------------------|---------------|
+| `--name`           | Name of the volume.                                                                                    |               |
+| `-c, --containers` | Select containers by name. It can also take wildcard `'*'` that matches any character.                 | `'*'`         |
+| `--confirm`        | Indicate that you want to remove multiple volumes at once.                                             |               |
+| `-o, --output`     | Display the modified objects instead of updating them on the server. Supported values: `json`, `yaml`. |               |
+| `--output-version` | Output the modified objects with the given version.                                                    | `api-version` |
 
 Supported options for removing volumes
 
@@ -483,14 +435,9 @@ For example:
 
 You can configure a volume to share one volume for multiple uses in a single pod using the `volumeMounts.subPath` property to specify a `subPath` value inside a volume instead of the volume’s root.
 
-> [!NOTE]
-> You cannot add a `subPath` parameter to an existing scheduled pod.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+You cannot add a `subPath` parameter to an existing scheduled pod.
 
 </div>
 
@@ -500,11 +447,9 @@ Procedure
     $ oc rsh <pod>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -513,15 +458,11 @@ Procedure
     example_file1 example_file2 example_file3
     ```
 
-    </div>
-
 2.  Specify the `subPath`:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `Pod` spec with `subPath` parameter
+    **Example `Pod` spec with `subPath` parameter**
 
     </div>
 
@@ -562,10 +503,6 @@ Procedure
             claimName: my-site-data
     ```
 
-    </div>
-
     - Databases are stored in the `mysql` folder.
 
     - HTML content is stored in the `html` folder.
-
-</div>

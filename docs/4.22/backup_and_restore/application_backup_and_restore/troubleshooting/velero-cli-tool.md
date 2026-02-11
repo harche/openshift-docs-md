@@ -14,27 +14,11 @@ You can download and install the Velero CLI tool by following the instructions o
 
 - Windows by using Chocolatey
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - You have access to a Kubernetes cluster, v1.16 or later, with DNS and container networking enabled.
 
 - You have installed `kubectl` locally.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open a browser and navigate to ["Install the CLI" on the Velero website](https://velero.io/docs/v1.16/basic-install/#install-the-cli).
 
@@ -42,49 +26,31 @@ Procedure
 
 3.  Download the Velero version appropriate for your version of OADP and OpenShift Container Platform.
 
-</div>
-
 ## OADP-Velero-OpenShift Container Platform version relationship
 
 Review the version relationship between OADP, Velero, and OpenShift Container Platform to decide compatible version combinations. This helps you select the appropriate OADP version for your cluster environment.
 
-| OADP version | Velero version | OpenShift Container Platform version |
-|----|----|----|
-| 1.3.0 | [1.12](https://velero.io/docs/v1.12/) | 4.12-4.15 |
-| 1.3.1 | [1.12](https://velero.io/docs/v1.12/) | 4.12-4.15 |
-| 1.3.2 | [1.12](https://velero.io/docs/v1.12/) | 4.12-4.15 |
-| 1.3.3 | [1.12](https://velero.io/docs/v1.12/) | 4.12-4.15 |
-| 1.3.4 | [1.12](https://velero.io/docs/v1.12/) | 4.12-4.15 |
-| 1.3.5 | [1.12](https://velero.io/docs/v1.12/) | 4.12-4.15 |
-| 1.4.0 | [1.14](https://velero.io/docs/v1.14/) | 4.14-4.18 |
-| 1.4.1 | [1.14](https://velero.io/docs/v1.14/) | 4.14-4.18 |
-| 1.4.2 | [1.14](https://velero.io/docs/v1.14/) | 4.14-4.18 |
-| 1.4.3 | [1.14](https://velero.io/docs/v1.14/) | 4.14-4.18 |
-| 1.5.0 | [1.16](https://velero.io/docs/v1.16/) | 4.19 |
+| OADP version | Velero version                        | OpenShift Container Platform version |
+|--------------|---------------------------------------|--------------------------------------|
+| 1.3.0        | [1.12](https://velero.io/docs/v1.12/) | 4.12-4.15                            |
+| 1.3.1        | [1.12](https://velero.io/docs/v1.12/) | 4.12-4.15                            |
+| 1.3.2        | [1.12](https://velero.io/docs/v1.12/) | 4.12-4.15                            |
+| 1.3.3        | [1.12](https://velero.io/docs/v1.12/) | 4.12-4.15                            |
+| 1.3.4        | [1.12](https://velero.io/docs/v1.12/) | 4.12-4.15                            |
+| 1.3.5        | [1.12](https://velero.io/docs/v1.12/) | 4.12-4.15                            |
+| 1.4.0        | [1.14](https://velero.io/docs/v1.14/) | 4.14-4.18                            |
+| 1.4.1        | [1.14](https://velero.io/docs/v1.14/) | 4.14-4.18                            |
+| 1.4.2        | [1.14](https://velero.io/docs/v1.14/) | 4.14-4.18                            |
+| 1.4.3        | [1.14](https://velero.io/docs/v1.14/) | 4.14-4.18                            |
+| 1.5.0        | [1.16](https://velero.io/docs/v1.16/) | 4.19                                 |
 
 # Accessing the Velero binary in the Velero deployment in the cluster
 
 You can use a shell command to access the Velero binary in the Velero deployment in the cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Your `DataProtectionApplication` custom resource has a status of `Reconcile complete`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Set the needed alias by using the following command:
 
@@ -92,19 +58,9 @@ Procedure
   $ alias velero='oc -n openshift-adp exec deployment/velero -c velero -it -- ./velero'
   ```
 
-</div>
-
 # Debugging Velero resources with the OpenShift CLI tool
 
 You can debug a failed backup or restore by checking Velero custom resources (CRs) and the `Velero` pod log with the OpenShift CLI tool.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Retrieve a summary of warnings and errors associated with a `Backup` or `Restore` CR by using the following `oc describe` command:
 
@@ -120,14 +76,15 @@ Procedure
 
 - Specify the Velero log level in the `DataProtectionApplication` resource as shown in the following example.
 
-  > [!NOTE]
-  > This option is available starting from OADP 1.0.3.
+  <div class="note">
 
-  <div class="formalpara">
+  This option is available starting from OADP 1.0.3.
 
-  <div class="title">
+  </div>
 
-  Example Velero log level file
+  <div class="formalpara-title">
+
+  **Example Velero log level file**
 
   </div>
 
@@ -141,8 +98,6 @@ Procedure
       velero:
         logLevel: warning
   ```
-
-  </div>
 
   The following `logLevel` values are available:
 
@@ -162,19 +117,9 @@ Procedure
 
   Use the `info` `logLevel` value for most logs.
 
-</div>
-
 # Debugging Velero resources with the Velero CLI tool
 
 You can debug `Backup` and `Restore` custom resources (CRs) and retrieve logs with the Velero CLI tool. The Velero CLI tool provides more detailed information than the OpenShift CLI tool.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Use the `oc exec` command to run a Velero CLI command:
 
@@ -183,11 +128,9 @@ Procedure
     <backup_restore_cr> <command> <cr_name>
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example `oc exec` command
+  **Example `oc exec` command**
 
   </div>
 
@@ -195,8 +138,6 @@ Procedure
   $ oc -n openshift-adp exec deployment/velero -c velero -- ./velero \
     backup describe 0e44ae00-5dc3-11eb-9ca8-df7e5254778b-2d8ql
   ```
-
-  </div>
 
 - List all Velero CLI commands by using the following `velero --help` option:
 
@@ -212,11 +153,9 @@ Procedure
     <backup_restore_cr> logs <cr_name>
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example `velero logs` command
+  **Example `velero logs` command**
 
   </div>
 
@@ -225,8 +164,6 @@ Procedure
     restore logs ccc7c2d0-6017-11eb-afab-85d0007f5a19-x4lbf
   ```
 
-  </div>
-
 - Retrieve a summary of warnings and errors associated with a `Backup` or `Restore` CR by using the following `velero describe` command:
 
   ``` terminal
@@ -234,11 +171,9 @@ Procedure
     <backup_restore_cr> describe <cr_name>
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example `velero describe` command
+  **Example `velero describe` command**
 
   </div>
 
@@ -246,8 +181,6 @@ Procedure
   $ oc -n openshift-adp exec deployment/velero -c velero -- ./velero \
     backup describe 0e44ae00-5dc3-11eb-9ca8-df7e5254778b-2d8ql
   ```
-
-  </div>
 
   The following types of restore errors and warnings are shown in the output of a `velero describe` request:
 
@@ -266,5 +199,3 @@ Procedure
 - If there are `Velero` errors but no resource-specific errors in the output of a `describe` command, it is possible that the restore completed without any actual problems in restoring workloads. In this case, carefully validate post-restore applications.
 
   For example, if the output contains `PodVolumeRestore` or node agent-related errors, check the status of `PodVolumeRestores` and `DataDownloads`. If none of these are failed or still running, then volume data might have been fully restored.
-
-</div>

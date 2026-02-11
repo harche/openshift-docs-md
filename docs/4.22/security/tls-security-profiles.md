@@ -25,64 +25,58 @@ You can specify one of the following TLS security profiles for each component:
 <col style="width: 66%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Profile</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>Old</code></p></td>
 <td style="text-align: left;"><p>This profile is intended for use with legacy clients or libraries. The profile is based on the <a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Old_backward_compatibility">Old backward compatibility</a> recommended configuration.</p>
 <p>The <code>Old</code> profile requires a minimum TLS version of 1.0.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>For the Ingress Controller, the minimum TLS version is converted from 1.0 to 1.1.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>Intermediate</code></p></td>
 <td style="text-align: left;"><p>This profile is the default TLS security profile for the Ingress Controller, kubelet, and control plane. The profile is based on the <a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Intermediate_compatibility_.28recommended.29">Intermediate compatibility</a> recommended configuration.</p>
 <p>The <code>Intermediate</code> profile requires a minimum TLS version of 1.2.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>This profile is the recommended configuration for the majority of clients.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>Modern</code></p></td>
 <td style="text-align: left;"><p>This profile is intended for use with modern clients that have no need for backwards compatibility. This profile is based on the <a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Modern_compatibility">Modern compatibility</a> recommended configuration.</p>
 <p>The <code>Modern</code> profile requires a minimum TLS version of 1.3.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>Custom</code></p></td>
 <td style="text-align: left;"><p>This profile allows you to define the TLS version and ciphers to use.</p>
 <div class="warning">
-<div class="title">
-&#10;</div>
 <p>Use caution when using a <code>Custom</code> profile, because invalid configurations can cause problems.</p>
 </div></td>
 </tr>
 </tbody>
 </table>
 
-> [!NOTE]
-> When using one of the predefined profile types, the effective profile configuration is subject to change between releases. For example, given a specification to use the Intermediate profile deployed on release X.Y.Z, an upgrade to release X.Y.Z+1 might cause a new profile configuration to be applied, resulting in a rollout.
+TLS security profiles
+
+<div class="note">
+
+When using one of the predefined profile types, the effective profile configuration is subject to change between releases. For example, given a specification to use the Intermediate profile deployed on release X.Y.Z, an upgrade to release X.Y.Z+1 might cause a new profile configuration to be applied, resulting in a rollout.
+
+</div>
 
 # Viewing TLS security profile details
 
 You can view the minimum TLS version and ciphers for the predefined TLS security profiles for each of the following components: Ingress Controller, control plane, and kubelet.
 
-> [!IMPORTANT]
-> The effective configuration of minimum TLS version and list of ciphers for a profile might differ between components.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Procedure
+The effective configuration of minimum TLS version and list of ciphers for a profile might differ between components.
 
 </div>
 
@@ -100,11 +94,9 @@ Procedure
     $ oc explain apiserver.spec.tlsSecurityProfile.intermediate
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -124,8 +116,6 @@ Procedure
         DHE-RSA-AES256-GCM-SHA384 minTLSVersion: TLSv1.2
     ```
 
-    </div>
-
 - View all details for the `tlsSecurityProfile` field of a component:
 
   ``` terminal
@@ -140,11 +130,9 @@ Procedure
     $ oc explain ingresscontroller.spec.tlsSecurityProfile
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -189,25 +177,19 @@ Procedure
          ...
     ```
 
-    </div>
-
   - Lists ciphers and minimum version for the `intermediate` profile here.
 
   - Lists ciphers and minimum version for the `modern` profile here.
 
   - Lists ciphers and minimum version for the `old` profile here.
 
-</div>
-
 # Configuring the TLS security profile for the Ingress Controller
 
 To configure a TLS security profile for an Ingress Controller, edit the `IngressController` custom resource (CR) to specify a predefined or custom TLS security profile. If a TLS security profile is not configured, the default value is based on the TLS security profile set for the API server.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample `IngressController` CR that configures the `Old` TLS security profile
+**Sample `IngressController` CR that configures the `Old` TLS security profile**
 
 </div>
 
@@ -222,36 +204,19 @@ spec:
  ...
 ```
 
-</div>
-
 The TLS security profile defines the minimum TLS version and the TLS ciphers for TLS connections for Ingress Controllers.
 
 You can see the ciphers and the minimum TLS version of the configured TLS security profile in the `IngressController` custom resource (CR) under `Status.Tls Profile` and the configured TLS security profile under `Spec.Tls Security Profile`. For the `Custom` TLS security profile, the specific ciphers and minimum TLS version are listed under both parameters.
 
-> [!NOTE]
-> The HAProxy Ingress Controller image supports TLS `1.3` and the `Modern` profile.
->
-> The Ingress Operator also converts the TLS `1.0` of an `Old` or `Custom` profile to `1.1`.
+<div class="note">
 
-<div>
+The HAProxy Ingress Controller image supports TLS `1.3` and the `Modern` profile.
 
-<div class="title">
-
-Prerequisites
+The Ingress Operator also converts the TLS `1.0` of an `Old` or `Custom` profile to `1.1`.
 
 </div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `IngressController` CR in the `openshift-ingress-operator` project to configure the TLS security profile:
 
@@ -261,11 +226,9 @@ Procedure
 
 2.  Add the `spec.tlsSecurityProfile` field:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample `IngressController` CR for a `Custom` profile
+    **Sample `IngressController` CR for a `Custom` profile**
 
     </div>
 
@@ -286,8 +249,6 @@ Procedure
      ...
     ```
 
-    </div>
-
     - Specify the TLS security profile type (`Old`, `Intermediate`, or `Custom`). The default is `Intermediate`.
 
     - Specify the appropriate field for the selected type:
@@ -304,27 +265,15 @@ Procedure
 
 3.  Save the file to apply the changes.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the profile is set in the `IngressController` CR:
 
   ``` terminal
   $ oc describe IngressController default -n openshift-ingress-operator
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -350,10 +299,6 @@ Verification
    ...
   ```
 
-  </div>
-
-</div>
-
 # Configuring the TLS security profile for the control plane
 
 To configure a TLS security profile for the control plane, edit the `APIServer` custom resource (CR) to specify a predefined or custom TLS security profile. Setting the TLS security profile in the `APIServer` CR propagates the setting to the following control plane components:
@@ -378,14 +323,15 @@ To configure a TLS security profile for the control plane, edit the `APIServer` 
 
 If a TLS security profile is not configured, the default TLS security profile is `Intermediate`.
 
-> [!NOTE]
-> The default TLS security profile for the Ingress Controller is based on the TLS security profile set for the API server.
+<div class="note">
 
-<div class="formalpara">
+The default TLS security profile for the Ingress Controller is based on the TLS security profile set for the API server.
 
-<div class="title">
+</div>
 
-Sample `APIServer` CR that configures the `Old` TLS security profile
+<div class="formalpara-title">
+
+**Sample `APIServer` CR that configures the `Old` TLS security profile**
 
 </div>
 
@@ -400,31 +346,11 @@ spec:
  ...
 ```
 
-</div>
-
 The TLS security profile defines the minimum TLS version and the TLS ciphers required to communicate with the control plane components.
 
 You can see the configured TLS security profile in the `APIServer` custom resource (CR) under `Spec.Tls Security Profile`. For the `Custom` TLS security profile, the specific ciphers and minimum TLS version are listed.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the default `APIServer` CR to configure the TLS security profile:
 
@@ -434,11 +360,9 @@ Procedure
 
 2.  Add the `spec.tlsSecurityProfile` field:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample `APIServer` CR for a `Custom` profile
+    **Sample `APIServer` CR for a `Custom` profile**
 
     </div>
 
@@ -459,8 +383,6 @@ Procedure
           minTLSVersion: VersionTLS11
     ```
 
-    </div>
-
     - Specify the TLS security profile type (`Old`, `Intermediate`, or `Custom`). The default is `Intermediate`.
 
     - Specify the appropriate field for the selected type:
@@ -477,27 +399,15 @@ Procedure
 
 3.  Save the file to apply the changes.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the TLS security profile is set in the `APIServer` CR:
 
   ``` terminal
   $ oc describe apiserver cluster
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -523,19 +433,15 @@ Verification
    ...
   ```
 
-  </div>
-
 - Verify that the TLS security profile is set in the `etcd` CR:
 
   ``` terminal
   $ oc describe etcd cluster
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -562,19 +468,15 @@ Verification
    ...
   ```
 
-  </div>
-
 - Verify that the TLS security profile is set in the Machine Config Server pod:
 
   ``` terminal
   $ oc logs machine-config-server-5msdv -n openshift-machine-config-operator
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -584,10 +486,6 @@ Verification
   # ...
   ```
 
-  </div>
-
-</div>
-
 # Configuring the TLS security profile for the kubelet
 
 You can configure a TLS security profile for the kubelet when it is acting as an HTTP server by creating a `KubeletConfig` custom resource (CR) to specify a predefined or custom TLS security profile for specific nodes.
@@ -596,11 +494,9 @@ If a TLS security profile is not configured, the default TLS security profile, `
 
 The kubelet uses its HTTP/GRPC server to communicate with the Kubernetes API server, which sends commands to pods, gathers logs, and run exec commands on pods through the kubelet.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample `KubeletConfig` CR that configures the `Old` TLS security profile on worker nodes
+**Sample `KubeletConfig` CR that configures the `Old` TLS security profile on worker nodes**
 
 </div>
 
@@ -618,37 +514,15 @@ spec:
 # ...
 ```
 
-</div>
-
 You can see the ciphers and the minimum TLS version of the configured TLS security profile in the `kubelet.conf` file on a configured node.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You are logged in to OpenShift Container Platform as a user with the `cluster-admin` role.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a `KubeletConfig` CR to configure the TLS security profile:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample `KubeletConfig` CR for a `Custom` profile
+    **Sample `KubeletConfig` CR for a `Custom` profile**
 
     </div>
 
@@ -672,8 +546,6 @@ Procedure
           pools.operator.machineconfiguration.openshift.io/worker: ""
     #...
     ```
-
-    </div>
 
     where:
 
@@ -705,19 +577,13 @@ Procedure
 
     Depending on the number of worker nodes in the cluster, wait for the configured nodes to be rebooted one by one.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 To verify that the profile is set, perform the following steps after the nodes are in the `Ready` state:
-
-</div>
 
 1.  Start a debug session for a configured node:
 
@@ -737,11 +603,9 @@ To verify that the profile is set, perform the following steps after the nodes a
     sh-4.4# cat /etc/kubernetes/kubelet.conf
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -760,5 +624,3 @@ To verify that the profile is set, perform the following steps after the nodes a
       "tlsMinVersion": "VersionTLS12",
     #...
     ```
-
-    </div>

@@ -6,12 +6,15 @@ The Ingress Node Firewall Operator provides ingress firewall rules at a node lev
 
 You configure `rules` of the `IngressNodeFirewall` CR and apply them to clusters using the `nodeSelector` and setting values to "true".
 
-> [!IMPORTANT]
-> The Ingress Node Firewall Operator supports only stateless firewall rules.
->
-> Network interface controllers (NICs) that do not support native XDP drivers will run at a lower performance.
->
-> For OpenShift Container Platform 4.14 or later, you must run Ingress Node Firewall Operator on RHEL 9.0 or later.
+<div class="important">
+
+The Ingress Node Firewall Operator supports only stateless firewall rules.
+
+Network interface controllers (NICs) that do not support native XDP drivers will run at a lower performance.
+
+For OpenShift Container Platform 4.14 or later, you must run Ingress Node Firewall Operator on RHEL 9.0 or later.
+
+</div>
 
 # Installing the Ingress Node Firewall Operator
 
@@ -21,27 +24,9 @@ As a cluster administrator, you can install the Ingress Node Firewall Operator b
 
 As a cluster administrator, you can install the Operator using the CLI.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have an account with administrator privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To create the `openshift-ingress-node-firewall` namespace, enter the following command:
 
@@ -94,11 +79,9 @@ Procedure
     $ oc get ip -n openshift-ingress-node-firewall
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -107,19 +90,15 @@ Procedure
     install-5cvnz   ingress-node-firewall.4.17.0-202211122336   Automatic   true
     ```
 
-    </div>
-
 5.  To verify the version of the Operator, enter the following command:
 
     ``` terminal
     $ oc get csv -n openshift-ingress-node-firewall
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -128,35 +107,13 @@ Procedure
     ingress-node-firewall.4.17.0-202211122336   Ingress Node Firewall Operator   4.17.0-202211122336   ingress-node-firewall.4.17.0-202211102047   Succeeded
     ```
 
-    </div>
-
-</div>
-
 ## Installing the Ingress Node Firewall Operator using the web console
 
 As a cluster administrator, you can install the Operator using the web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have an account with administrator privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Install the Ingress Node Firewall Operator:
 
@@ -174,8 +131,11 @@ Procedure
 
     2.  Ensure that **Ingress Node Firewall Operator** is listed in the **openshift-ingress-node-firewall** project with a **Status** of **InstallSucceeded**.
 
-        > [!NOTE]
-        > During installation an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
+        <div class="note">
+
+        During installation an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
+
+        </div>
 
         If the Operator does not have a **Status** of **InstallSucceeded**, troubleshoot using the following steps:
 
@@ -189,36 +149,23 @@ Procedure
           $ oc annotate ns/openshift-ingress-node-firewall workload.openshift.io/allowed=management
           ```
 
-          > [!NOTE]
-          > For single-node OpenShift clusters, the `openshift-ingress-node-firewall` namespace requires the `workload.openshift.io/allowed=management` annotation.
+          <div class="note">
 
-</div>
+          For single-node OpenShift clusters, the `openshift-ingress-node-firewall` namespace requires the `workload.openshift.io/allowed=management` annotation.
+
+          </div>
 
 # Deploying Ingress Node Firewall Operator
 
-<div>
-
-<div class="title">
-
-Prerequisite
-
-</div>
-
 - The Ingress Node Firewall Operator is installed.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To deploy the Ingress Node Firewall Operator, create a `IngressNodeFirewallConfig` custom resource that will deploy the Operator’s daemon set. You can deploy one or multiple `IngressNodeFirewall` CRDs to nodes by applying firewall rules.
-
-</div>
 
 1.  Create the `IngressNodeFirewallConfig` inside the `openshift-ingress-node-firewall` namespace named `ingressnodefirewallconfig`.
 
@@ -240,24 +187,24 @@ The fields for the Ingress Node Firewall configuration object are described in t
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>metadata.name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The name of the CR object. The name of the firewall rules object must be <code>ingressnodefirewallconfig</code>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>metadata.namespace</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Namespace for the Ingress Firewall Operator CR object. The <code>IngressNodeFirewallConfig</code> CR must be created inside the <code>openshift-ingress-node-firewall</code> namespace.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.nodeSelector</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>A node selection constraint used to target nodes through specified node labels. For example:</p>
@@ -265,12 +212,10 @@ The fields for the Ingress Node Firewall configuration object are described in t
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">nodeSelector</span><span class="kw">:</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">node-role.kubernetes.io/worker</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;&quot;</span></span></code></pre></div>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>One label used in <code>nodeSelector</code> must match a label on the nodes in order for the daemon set to start. For example, if the node labels <code>node-role.kubernetes.io/worker</code> and <code>node-type.kubernetes.io/vm</code> are applied to a node, then at least one label must be set using <code>nodeSelector</code> for the daemon set to start.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.ebpfProgramManagerMode</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Specifies if the Node Ingress Firewall Operator uses the eBPF Manager Operator or not to manage eBPF programs. This capability is a Technology Preview feature.</p>
@@ -279,18 +224,21 @@ The fields for the Ingress Node Firewall configuration object are described in t
 </tbody>
 </table>
 
-> [!NOTE]
-> The Operator consumes the CR and creates an ingress node firewall daemon set on all the nodes that match the `nodeSelector`.
+Ingress Node Firewall Configuration object
+
+<div class="note">
+
+The Operator consumes the CR and creates an ingress node firewall daemon set on all the nodes that match the `nodeSelector`.
+
+</div>
 
 ## Ingress Node Firewall Operator example configuration
 
 A complete Ingress Node Firewall Configuration is specified in the following example:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example of how to create an Ingress Node Firewall Configuration object
+**Example of how to create an Ingress Node Firewall Configuration object**
 
 </div>
 
@@ -307,21 +255,22 @@ spec:
 EOF
 ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The Operator consumes the CR object and creates an ingress node firewall daemon set on all the nodes that match the `nodeSelector`.
+The Operator consumes the CR object and creates an ingress node firewall daemon set on all the nodes that match the `nodeSelector`.
+
+</div>
 
 ## Ingress Node Firewall rules object
 
 The fields for the Ingress Node Firewall rules object are described in the following table:
 
-| Field | Type | Description |
-|----|----|----|
-| `metadata.name` | `string` | The name of the CR object. |
-| `interfaces` | `array` | The fields for this object specify the interfaces to apply the firewall rules to. For example, `- en0` and `- en1`. |
-| `nodeSelector` | `array` | You can use `nodeSelector` to select the nodes to apply the firewall rules to. Set the value of your named `nodeselector` labels to `true` to apply the rule. |
-| `ingress` | `object` | `ingress` allows you to configure the rules that allow outside access to the services on your cluster. |
+| Field           | Type     | Description                                                                                                                                                   |
+|-----------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `metadata.name` | `string` | The name of the CR object.                                                                                                                                    |
+| `interfaces`    | `array`  | The fields for this object specify the interfaces to apply the firewall rules to. For example, `- en0` and `- en1`.                                           |
+| `nodeSelector`  | `array`  | You can use `nodeSelector` to select the nodes to apply the firewall rules to. Set the value of your named `nodeselector` labels to `true` to apply the rule. |
+| `ingress`       | `object` | `ingress` allows you to configure the rules that allow outside access to the services on your cluster.                                                        |
 
 Ingress Node Firewall rules object
 
@@ -337,47 +286,43 @@ The values for the `ingress` object are defined in the following table:
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>sourceCIDRs</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Allows you to set the CIDR block. You can configure multiple CIDRs from different address families.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>Different CIDRs allow you to use the same order rule. In the case that there are multiple <code>IngressNodeFirewall</code> objects for the same nodes and interfaces with overlapping CIDRs, the <code>order</code> field will specify which rule is applied first. Rules are applied in ascending order.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>rules</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Ingress firewall <code>rules.order</code> objects are ordered starting at <code>1</code> for each <code>source.CIDR</code> with up to 100 rules per CIDR. Lower order rules are executed first.</p>
 <p><code>rules.protocolConfig.protocol</code> supports the following protocols: TCP, UDP, SCTP, ICMP and ICMPv6. ICMP and ICMPv6 rules can match against ICMP and ICMPv6 types or codes. TCP, UDP, and SCTP rules can match against a single destination port or a range of ports using <code>&lt;start : end-1&gt;</code> format.</p>
 <p>Set <code>rules.action</code> to <code>allow</code> to apply the rule or <code>deny</code> to disallow the rule.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>Ingress firewall rules are verified using a verification webhook that blocks any invalid configuration. The verification webhook prevents you from blocking any critical cluster services such as the API server.</p>
 </div></td>
 </tr>
 </tbody>
 </table>
 
+`ingress` object
+
 ### Ingress Node Firewall rules object example
 
 A complete Ingress Node Firewall configuration is specified in the following example:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example Ingress Node Firewall configuration
+**Example Ingress Node Firewall configuration**
 
 </div>
 
@@ -419,8 +364,6 @@ spec:
       action: Deny
 ```
 
-</div>
-
 - A \<label_name\> and a \<label_value\> must exist on the node and must match the `nodeselector` label and value applied to the nodes you want the `ingressfirewallconfig` CR to run on. The \<label_value\> can be `true` or `false`. By using `nodeSelector` labels, you can target separate groups of nodes to apply different rules to using the `ingressfirewallconfig` CR.
 
 ### Zero trust Ingress Node Firewall rules object example
@@ -429,14 +372,15 @@ Zero trust Ingress Node Firewall rules can provide additional security to multi-
 
 A complete configuration of a zero trust Ingress Node Firewall rule set is specified in the following example:
 
-> [!IMPORTANT]
-> Users need to add all ports their application will use to their allowlist in the following case to ensure proper functionality.
+<div class="important">
 
-<div class="formalpara">
+Users need to add all ports their application will use to their allowlist in the following case to ensure proper functionality.
 
-<div class="title">
+</div>
 
-Example zero trust Ingress Node Firewall rules
+<div class="formalpara-title">
+
+**Example zero trust Ingress Node Firewall rules**
 
 </div>
 
@@ -465,8 +409,6 @@ spec:
      action: Deny
 ```
 
-</div>
-
 - Network-interface cluster
 
 - The \<label_name\> and \<label_value\> needs to match the `nodeSelector` label and value applied to the specific nodes with which you wish to apply the `ingressfirewallconfig` CR.
@@ -475,10 +417,13 @@ spec:
 
 - `action` set to `Deny`
 
-> [!IMPORTANT]
-> eBPF Manager Operator integration is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+eBPF Manager Operator integration is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 # Ingress Node Firewall Operator integration
 
@@ -498,14 +443,6 @@ The Ingress Node Firewall uses [eBPF](https://www.kernel.org/doc/html/latest/bpf
 
 As a cluster administrator, you can configure the Ingress Node Firewall Operator to use the eBPF Manager Operator for loading and managing these programs instead, adding additional security and observability functionality.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have an account with administrator privileges.
@@ -513,16 +450,6 @@ Prerequisites
 - You installed the Ingress Node Firewall Operator.
 
 - You have installed the eBPF Manager Operator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Apply the following labels to the `ingress-node-firewall-system` namespace:
 
@@ -534,11 +461,9 @@ Procedure
 
 2.  Edit the `IngressNodeFirewallConfig` object named `ingressnodefirewallconfig` and set the `ebpfProgramManagerMode` field:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Ingress Node Firewall Operator configuration object
+    **Ingress Node Firewall Operator configuration object**
 
     </div>
 
@@ -554,23 +479,11 @@ Procedure
       ebpfProgramManagerMode: <ebpf_mode>
     ```
 
-    </div>
-
     where:
 
     `<ebpf_mode>`: Specifies whether or not the Ingress Node Firewall Operator uses the eBPF Manager Operator to manage eBPF programs. Must be either `true` or `false`. If unset, eBPF Manager is not used.
 
-</div>
-
 # Viewing Ingress Node Firewall Operator rules
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the following command to view all current rules :
 
@@ -584,8 +497,6 @@ Procedure
     $ oc get <resource> <name> -o yaml
     ```
 
-</div>
-
 # Troubleshooting the Ingress Node Firewall Operator
 
 - Run the following command to list installed Ingress Node Firewall custom resource definitions (CRD):
@@ -594,11 +505,9 @@ Procedure
   $ oc get crds | grep ingressnodefirewall
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -609,19 +518,15 @@ Procedure
   ingressnodefirewalls.ingressnodefirewall.openshift.io             2022-08-25T10:03:00Z
   ```
 
-  </div>
-
 - Run the following command to view the state of the Ingress Node Firewall Operator:
 
   ``` terminal
   $ oc get pods -n openshift-ingress-node-firewall
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -630,8 +535,6 @@ Procedure
   ingress-node-firewall-controller-manager   2/2    Running        0         5d21h
   ingress-node-firewall-daemon-pqx56         3/3    Running        0         5d21h
   ```
-
-  </div>
 
   The following fields provide information about the status of the Operator: `READY`, `STATUS`, `AGE`, and `RESTARTS`. The `STATUS` field is `Running` when the Ingress Node Firewall Operator is deploying a daemon set to the assigned nodes.
 

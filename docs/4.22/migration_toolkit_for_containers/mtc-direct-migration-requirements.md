@@ -18,10 +18,6 @@ Direct Migration enables the migration of persistent volumes and internal images
 
   <div class="note">
 
-  <div class="title">
-
-  </div>
-
   - If the destination cluster is the same as the host cluster (where a migration controller exists), there is no need to configure the exposed registry route for that particular MTC cluster.
 
   - The `spec.exposedRegistryPath` is required only for Direct Image Migration and not Direct Volume Migration.
@@ -50,7 +46,7 @@ The `MigrationController` CR exposes the following variables to configure `rsync
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Variable</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Default value</th>
@@ -58,37 +54,37 @@ The `MigrationController` CR exposes the following variables to configure `rsync
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>rsync_opt_bwlimit</code></p></td>
 <td style="text-align: left;"><p>int</p></td>
 <td style="text-align: left;"><p>Not set</p></td>
 <td style="text-align: left;"><p>When set to a positive integer, <code>--bwlimit=&lt;int&gt;</code> option is added to Rsync command.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>rsync_opt_archive</code></p></td>
 <td style="text-align: left;"><p>bool</p></td>
 <td style="text-align: left;"><p><code>true</code></p></td>
 <td style="text-align: left;"><p>Sets the <code>--archive</code> option in the Rsync command.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>rsync_opt_partial</code></p></td>
 <td style="text-align: left;"><p>bool</p></td>
 <td style="text-align: left;"><p><code>true</code></p></td>
 <td style="text-align: left;"><p>Sets the <code>--partial</code> option in the Rsync command.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>rsync_opt_delete</code></p></td>
 <td style="text-align: left;"><p>bool</p></td>
 <td style="text-align: left;"><p><code>true</code></p></td>
 <td style="text-align: left;"><p>Sets the <code>--delete</code> option in the Rsync command.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>rsync_opt_hardlinks</code></p></td>
 <td style="text-align: left;"><p>bool</p></td>
 <td style="text-align: left;"><p><code>true</code></p></td>
 <td style="text-align: left;"><p>Sets the <code>--hard-links</code> option is the Rsync command.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>rsync_opt_info</code></p></td>
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p><code>COPY2</code></p>
@@ -100,7 +96,7 @@ The `MigrationController` CR exposes the following variables to configure `rsync
 <p><code>STATS2</code></p></td>
 <td style="text-align: left;"><p>Enables detailed logging in Rsync Pod.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>rsync_opt_extras</code></p></td>
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>Empty</p></td>
@@ -115,31 +111,34 @@ The `MigrationController` CR exposes the following variables to configure `rsync
 
 - Customizing the `rsync_opt_info` flag can adversely affect the progress reporting capabilities in MTC. However, removing progress reporting can have a performance advantage. This option should only be used when the performance of Rsync operation is observed to be unacceptable.
 
-> [!NOTE]
-> The default configuration used by DVM is tested in various environments. It is acceptable for most production use cases provided the clusters are healthy and performing well. These configuration variables should be used in case the default settings do not work and the Rsync operation fails.
+<div class="note">
+
+The default configuration used by DVM is tested in various environments. It is acceptable for most production use cases provided the clusters are healthy and performing well. These configuration variables should be used in case the default settings do not work and the Rsync operation fails.
+
+</div>
 
 ## Resource limit configurations for Rsync pods
 
 The `MigrationController` CR exposes following variables to configure resource usage requirements and limits on Rsync:
 
-| Variable | Type | Default | Description |
-|----|----|----|----|
-| `source_rsync_pod_cpu_limits` | string | `1` | Source rsync pod’s CPU limit |
-| `source_rsync_pod_memory_limits` | string | `1Gi` | Source rsync pod’s memory limit |
-| `source_rsync_pod_cpu_requests` | string | `400m` | Source rsync pod’s cpu requests |
-| `source_rsync_pod_memory_requests` | string | `1Gi` | Source rsync pod’s memory requests |
-| `target_rsync_pod_cpu_limits` | string | `1` | Target rsync pod’s cpu limit |
-| `target_rsync_pod_cpu_requests` | string | `400m` | Target rsync pod’s cpu requests |
-| `target_rsync_pod_memory_limits` | string | `1Gi` | Target rsync pod’s memory limit |
-| `target_rsync_pod_memory_requests` | string | `1Gi` | Target rsync pod’s memory requests |
+| Variable                           | Type   | Default | Description                        |
+|------------------------------------|--------|---------|------------------------------------|
+| `source_rsync_pod_cpu_limits`      | string | `1`     | Source rsync pod’s CPU limit       |
+| `source_rsync_pod_memory_limits`   | string | `1Gi`   | Source rsync pod’s memory limit    |
+| `source_rsync_pod_cpu_requests`    | string | `400m`  | Source rsync pod’s cpu requests    |
+| `source_rsync_pod_memory_requests` | string | `1Gi`   | Source rsync pod’s memory requests |
+| `target_rsync_pod_cpu_limits`      | string | `1`     | Target rsync pod’s cpu limit       |
+| `target_rsync_pod_cpu_requests`    | string | `400m`  | Target rsync pod’s cpu requests    |
+| `target_rsync_pod_memory_limits`   | string | `1Gi`   | Target rsync pod’s memory limit    |
+| `target_rsync_pod_memory_requests` | string | `1Gi`   | Target rsync pod’s memory requests |
 
 ### Supplemental group configuration for Rsync pods
 
 If Persistent Volume Claims (PVC) are using a shared storage, the access to storage can be configured by adding supplemental groups to Rsync pod definitions in order for the pods to allow access:
 
-| Variable | Type | Default | Description |
-|----|----|----|----|
-| `src_supplemental_groups` | string | Not Set | Comma separated list of supplemental groups for source Rsync pods |
+| Variable                     | Type   | Default | Description                                                       |
+|------------------------------|--------|---------|-------------------------------------------------------------------|
+| `src_supplemental_groups`    | string | Not Set | Comma separated list of supplemental groups for source Rsync pods |
 | `target_supplemental_groups` | string | Not Set | Comma separated list of supplemental groups for target Rsync Pods |
 
 For example, the `MigrationController` CR can be updated to set the previous values:
@@ -197,20 +196,23 @@ Globally, the `privileged` profile is enforced, and the `restricted` profile is 
 
 You can also configure the pod security admission settings at the namespace level.
 
-> [!IMPORTANT]
-> Do not run workloads in or share access to default projects. Default projects are reserved for running core cluster components.
->
-> The following default projects are considered highly privileged: `default`, `kube-public`, `kube-system`, `openshift`, `openshift-infra`, `openshift-node`, and other system-created projects that have the `openshift.io/run-level` label set to `0` or `1`. Functionality that relies on admission plugins, such as pod security admission, security context constraints, cluster resource quotas, and image reference resolution, does not work in highly privileged projects.
+<div class="important">
+
+Do not run workloads in or share access to default projects. Default projects are reserved for running core cluster components.
+
+The following default projects are considered highly privileged: `default`, `kube-public`, `kube-system`, `openshift`, `openshift-infra`, `openshift-node`, and other system-created projects that have the `openshift.io/run-level` label set to `0` or `1`. Functionality that relies on admission plugins, such as pod security admission, security context constraints, cluster resource quotas, and image reference resolution, does not work in highly privileged projects.
+
+</div>
 
 ##### Pod security admission modes
 
 You can configure the following pod security admission modes for a namespace:
 
-| Mode | Label | Description |
-|----|----|----|
+| Mode      | Label                                | Description                                                             |
+|-----------|--------------------------------------|-------------------------------------------------------------------------|
 | `enforce` | `pod-security.kubernetes.io/enforce` | Rejects a pod from admission if it does not comply with the set profile |
-| `audit` | `pod-security.kubernetes.io/audit` | Logs audit events if a pod does not comply with the set profile |
-| `warn` | `pod-security.kubernetes.io/warn` | Displays warnings if a pod does not comply with the set profile |
+| `audit`   | `pod-security.kubernetes.io/audit`   | Logs audit events if a pod does not comply with the set profile         |
+| `warn`    | `pod-security.kubernetes.io/warn`    | Displays warnings if a pod does not comply with the set profile         |
 
 Pod security admission modes
 
@@ -218,10 +220,10 @@ Pod security admission modes
 
 You can set each of the pod security admission modes to one of the following profiles:
 
-| Profile | Description |
-|----|----|
-| `privileged` | Least restrictive policy; allows for known privilege escalation |
-| `baseline` | Minimally restrictive policy; prevents known privilege escalations |
+| Profile      | Description                                                           |
+|--------------|-----------------------------------------------------------------------|
+| `privileged` | Least restrictive policy; allows for known privilege escalation       |
+| `baseline`   | Minimally restrictive policy; prevents known privilege escalations    |
 | `restricted` | Most restrictive policy; follows current pod hardening best practices |
 
 Pod security admission profiles
@@ -238,11 +240,9 @@ The following system namespaces are always set to the `privileged` pod security 
 
 You cannot change the pod security profile for these privileged namespaces.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example privileged namespace configuration
+**Example privileged namespace configuration**
 
 </div>
 
@@ -259,33 +259,13 @@ metadata:
 # ...
 ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Controlling pod security admission synchronization](../authentication/understanding-and-managing-pod-security-admission.xml#security-context-constraints-psa-opting_understanding-and-managing-pod-security-admission).
-
-</div>
 
 #### Configuring the MigrationController CR as root or non-root for all migrations
 
 By default, Rsync runs as non-root.
 
 On the destination cluster, you can configure the `MigrationController` CR to run Rsync as root.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Configure the `MigrationController` CR as follows:
 
@@ -302,8 +282,6 @@ Procedure
 
   This configuration will apply to all future migrations.
 
-</div>
-
 #### Configuring the MigMigration CR as root or non-root per migration
 
 On the destination cluster, you can configure the `MigMigration` CR to run Rsync as root or non-root, with the following non-root options:
@@ -311,14 +289,6 @@ On the destination cluster, you can configure the `MigMigration` CR to run Rsync
 - As a specific user ID (UID)
 
 - As a specific group ID (GID)
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To run Rsync as root, configure the `MigMigration` CR according to this example:
 
@@ -347,8 +317,6 @@ Procedure
       runAsGroup: 3
     ```
 
-</div>
-
 ## MigCluster Configuration
 
 For every `MigCluster` resource created in Migration Toolkit for Containers (MTC), a `ConfigMap` named `migration-cluster-config` is created in the Migration Operator’s namespace on the cluster which MigCluster resource represents.
@@ -357,18 +325,18 @@ The `migration-cluster-config` allows you to configure MigCluster specific valu
 
 You can configure every value in the `ConfigMap` using the variables exposed in the `MigrationController` CR:
 
-| Variable | Type | Required | Description |
-|----|----|----|----|
-| `migration_stage_image_fqin` | string | No | Image to use for Stage Pods (applicable only to IndirectVolumeMigration) |
-| `migration_registry_image_fqin` | string | No | Image to use for Migration Registry |
-| `rsync_endpoint_type` | string | No | Type of endpoint for data transfer (`Route`, `ClusterIP`, `NodePort`) |
-| `rsync_transfer_image_fqin` | string | No | Image to use for Rsync Pods (applicable only to DirectVolumeMigration) |
-| `migration_rsync_privileged` | bool | No | Whether to run Rsync Pods as privileged or not |
-| `migration_rsync_super_privileged` | bool | No | Whether to run Rsync Pods as super privileged containers (`spc_t` SELinux context) or not |
-| `cluster_subdomain` | string | No | Cluster’s subdomain |
-| `migration_registry_readiness_timeout` | int | No | Readiness timeout (in seconds) for Migration Registry Deployment |
-| `migration_registry_liveness_timeout` | int | No | Liveness timeout (in seconds) for Migration Registry Deployment |
-| `exposed_registry_validation_path` | string | No | Subpath to validate exposed registry in a MigCluster (for example /v2) |
+| Variable                               | Type   | Required | Description                                                                               |
+|----------------------------------------|--------|----------|-------------------------------------------------------------------------------------------|
+| `migration_stage_image_fqin`           | string | No       | Image to use for Stage Pods (applicable only to IndirectVolumeMigration)                  |
+| `migration_registry_image_fqin`        | string | No       | Image to use for Migration Registry                                                       |
+| `rsync_endpoint_type`                  | string | No       | Type of endpoint for data transfer (`Route`, `ClusterIP`, `NodePort`)                     |
+| `rsync_transfer_image_fqin`            | string | No       | Image to use for Rsync Pods (applicable only to DirectVolumeMigration)                    |
+| `migration_rsync_privileged`           | bool   | No       | Whether to run Rsync Pods as privileged or not                                            |
+| `migration_rsync_super_privileged`     | bool   | No       | Whether to run Rsync Pods as super privileged containers (`spc_t` SELinux context) or not |
+| `cluster_subdomain`                    | string | No       | Cluster’s subdomain                                                                       |
+| `migration_registry_readiness_timeout` | int    | No       | Readiness timeout (in seconds) for Migration Registry Deployment                          |
+| `migration_registry_liveness_timeout`  | int    | No       | Liveness timeout (in seconds) for Migration Registry Deployment                           |
+| `exposed_registry_validation_path`     | string | No       | Subpath to validate exposed registry in a MigCluster (for example /v2)                    |
 
 # Direct migration known issues
 
@@ -380,11 +348,9 @@ When attempting to migrate a namespace with Migration Toolkit for Containers (MT
 
 Search for an error of `Unable to attach or mount volumes for pod…​timed out waiting for the condition` in the kubelet logs from the node where the `rsync-server` for the Direct Volume Migration (DVM) runs.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example kubelet log
+**Example kubelet log**
 
 </div>
 
@@ -396,17 +362,13 @@ kubenswrapper[3879]: E0326 16:32:02.706363    3879 kubelet.go:1841] "Unable to a
 kubenswrapper[3879]: E0326 16:32:02.706496    3879 pod_workers.go:965] "Error syncing pod, skipping" err="unmounted volumes=[8db9d5b032dab17d4ea9495af12e085a], unattached volumes=[crane2-rsync-server-secret 8db9d5b032dab17d4ea9495af12e085a kube-api-access-dlbd2 crane2-stunnel-server-config crane2-stunnel-server-secret crane2-rsync-server-config]: timed out waiting for the condition" pod="caboodle-preprod/rsync-server" podUID=8905d88e-6531-4d65-9c2a-eff11dc7eb29
 ```
 
-</div>
-
 ### Resolving using the Skip SELinux relabel workaround
 
 To resolve this issue, set the `migration_rsync_super_privileged` parameter to `true` in both the source and destination `MigClusters` using the `MigrationController` custom resource (CR).
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example MigrationController CR
+**Example MigrationController CR**
 
 </div>
 
@@ -431,7 +393,5 @@ spec:
   restic_timeout: 1h
   version: 1.8.3
 ```
-
-</div>
 
 - The value of the `migration_rsync_super_privileged` parameter indicates whether or not to run Rsync Pods as *super privileged* containers (`spc_t selinux context`). Valid settings are `true` or `false`.

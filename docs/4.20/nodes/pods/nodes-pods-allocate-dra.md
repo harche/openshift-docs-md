@@ -1,9 +1,12 @@
 Attribute-Based GPU Allocation enables fine-tuned control over graphics processing unit (GPU) resource allocation in OpenShift Container Platform, allowing pods to request GPUs based on specific device attributes, including product name, GPU memory capacity, compute capability, vendor name and driver version. These attributes are exposed by a third-party Dynamic Resource Allocation (DRA) driver.
 
-> [!IMPORTANT]
-> Attribute-Based GPU Allocation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Attribute-Based GPU Allocation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 # About allocating GPUs to workloads
 
@@ -40,11 +43,9 @@ A device class is a category of devices that pods can claim and how to select sp
 
 The following example `DeviceClass` object selects any device that is managed by the `driver.example.com` device driver:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example device class object
+**Example device class object**
 
 </div>
 
@@ -60,8 +61,6 @@ spec:
         device.driver == "driver.example.com"
 ```
 
-</div>
-
 Resource slice
 The Dynamic Resource Allocation (DRA) driver on each node creates and manages *resource slices* in the cluster. A resource slice represents one or more GPU resources that are attached to nodes. When a resource claim is created and used in a pod, OpenShift Container Platform uses the resource slices to find nodes that have access to the requested resources. After finding an eligible resource slice for the resource claim, the OpenShift Container Platform scheduler updates the resource claim with the allocation details, allocates resources to the resource claim, and schedules the pod onto a node that can access the resources.
 
@@ -70,11 +69,9 @@ Cluster administrators and operators can create a *resource claim template* to r
 
 The following example resource claim template requests devices in the `example-device-class` device class.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example resource claim template object
+**Example resource claim template object**
 
 </div>
 
@@ -93,18 +90,14 @@ spec:
         deviceClassName: example-device-class
 ```
 
-</div>
-
 Resource claim
 Admins and operators can create a *resource claim* to request a GPU from a specific device class. A resource claim differs from a resource claim template by allowing you to share GPUs with multiple pods. Also, resource claims are not deleted when a requesting pod is terminated.
 
 The following example resource claim template uses CEL expressions to request specific devices in the `example-device-class` device class that are of a specific size.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example resource claim object
+**Example resource claim object**
 
 </div>
 
@@ -139,37 +132,17 @@ spec:
           expression: "device.attributes['driver.example.com'].profile == '3g.20gb'"
 ```
 
-</div>
-
 For more information on configuring resource claims, resource claim templates, see ["Dynamic Resource Allocation"](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) (Kubernetes documentation).
 
 For information on adding resource claims to pods, see "Adding resource claims to pods".
 
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - [Adding resource claims to pods](../../nodes/pods/nodes-pods-allocate-dra.xml#nodes-pods-allocate-dra-configure_nodes-pods-allocate-dra)
-
-</div>
 
 # Adding resource claims to pods
 
 Attribute-Based GPU Allocation uses resource claims and resource claim templates to allow you to request specific graphics processing units (GPU) for the containers in your pods. Resource claims can be used with multiple containers, but resource claim templates can be used with only one container. For more information, see "About configuring device allocation by using device attributes" in the *Additional Resources* section.
 
 The example in the following procedure creates a resource claim template to assign a specific GPU to `container0` and a resource claim to share a GPU between `container1` and `container2`.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - A Dynamic Resource Allocation (DRA) driver is installed. For more information on DRA, see ["Dynamic Resource Allocation"](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) (Kubernetes documentation).
 
@@ -179,11 +152,9 @@ Prerequisites
 
 - You enabled the required Technology Preview features for your cluster by editing the `FeatureGate` CR named `cluster`:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example `FeatureGate` CR
+  **Example `FeatureGate` CR**
 
   </div>
 
@@ -196,30 +167,19 @@ Prerequisites
     featureSet: TechPreviewNoUpgrade
   ```
 
-  </div>
-
   - Enables the required features.
 
-    > [!WARNING]
-    > Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. This feature set allows you to enable these Technology Preview features on test clusters, where you can fully test them. Do not enable this feature set on production clusters.
+    <div class="warning">
 
-</div>
+    Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. This feature set allows you to enable these Technology Preview features on test clusters, where you can fully test them. Do not enable this feature set on production clusters.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+    </div>
 
 1.  Create a pod by creating a YAML file similar to the following:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example pod that is requesting resources
+    **Example pod that is requesting resources**
 
     </div>
 
@@ -259,8 +219,6 @@ Procedure
         resourceClaimName: example-resource-claim
     ```
 
-    </div>
-
     - Specifies one or more resource claims to use with this container.
 
     - Specifies the resource claims that are required for the containers to start. Include an arbitrary name for the resource claim request and the resource claim and/or resource claim template.
@@ -271,18 +229,6 @@ Procedure
     $ oc create -f <file_name>.yaml
     ```
 
-</div>
-
 For more information on configuring pod resource requests, see ["Dynamic Resource Allocation"](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) (Kubernetes documentation).
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [About configuring device allocation by using device attributes](../../nodes/pods/nodes-pods-allocate-dra.xml#nodes-pods-allocate-dra-configure-about_nodes-pods-allocate-dra)
-
-</div>

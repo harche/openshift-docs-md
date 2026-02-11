@@ -4,32 +4,17 @@ You can also migrate your current cluster with single-architecture compute machi
 
 After creating a multi-architecture cluster, you can add nodes with different architectures to the cluster.
 
-> [!NOTE]
-> Secure booting is currently not supported on 64-bit ARM machines for Google Cloud
+<div class="note">
+
+Secure booting is currently not supported on 64-bit ARM machines for Google Cloud
+
+</div>
 
 # Verifying cluster compatibility
 
 Before you can start adding compute nodes of different architectures to your cluster, you must verify that your cluster is multi-architecture compatible.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift CLI (`oc`).
 
@@ -38,16 +23,6 @@ Procedure
     ``` terminal
     $ oc adm release info -o jsonpath="{ .metadata.metadata}"
     ```
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - If you see the following output, your cluster is using the multi-architecture payload:
 
@@ -68,10 +43,11 @@ Verification
   }
   ```
 
-  > [!IMPORTANT]
-  > To migrate your cluster so the cluster supports multi-architecture compute machines, follow the procedure in [Migrating to a cluster with multi-architecture compute machines](../../updating/updating_a_cluster/migrating-to-multi-payload.xml#migrating-to-multi-payload).
+  <div class="important">
 
-</div>
+  To migrate your cluster so the cluster supports multi-architecture compute machines, follow the procedure in [Migrating to a cluster with multi-architecture compute machines](../../updating/updating_a_cluster/migrating-to-multi-payload.xml#migrating-to-multi-payload).
+
+  </div>
 
 # Adding a multi-architecture compute machine set to your Google Cloud cluster
 
@@ -83,14 +59,9 @@ You can add multi-architecture compute machines to a multi-architecture cluster 
 
 - Adding 64-bit ARM compute machines to a cluster that uses 64-bit x86 control plane machines and already includes 64-bit x86 compute machines. In this case, 64-bit ARM is considered the secondary architecture.
 
-> [!NOTE]
-> Before adding a secondary architecture node to your cluster, it is recommended to install the Multiarch Tuning Operator, and deploy a `ClusterPodPlacementConfig` custom resource. For more information, see "Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator".
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Before adding a secondary architecture node to your cluster, it is recommended to install the Multiarch Tuning Operator, and deploy a `ClusterPodPlacementConfig` custom resource. For more information, see "Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator".
 
 </div>
 
@@ -98,25 +69,13 @@ Prerequisites
 
 - You used the installation program to create a 64-bit x86 or 64-bit ARM single-architecture Google Cloud cluster with the multi-architecture installer binary.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Log in to the OpenShift CLI (`oc`).
 
 2.  Create a YAML file, and add the configuration to create a compute machine set to control the 64-bit ARM or 64-bit x86 compute nodes in your cluster.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `MachineSet` object for a Google Cloud 64-bit ARM or 64-bit x86 compute node
+    **Example `MachineSet` object for a Google Cloud 64-bit ARM or 64-bit x86 compute node**
 
     </div>
 
@@ -183,8 +142,6 @@ Procedure
               zone: us-central1-a
     ```
 
-    </div>
-
     - Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. You can obtain the infrastructure ID by running the following command:
 
       ``` terminal
@@ -204,11 +161,9 @@ Procedure
         -r '.architectures.aarch64.images.gcp'
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -219,8 +174,6 @@ Procedure
           "name": "rhcos-415-92-202309142014-0-gcp-aarch64"
         }
       ```
-
-      </div>
 
       Use the `project` and `name` parameters from the output to create the path to image field in your machine set. The path to the image should follow the following format:
 
@@ -244,15 +197,7 @@ Procedure
 
     - Replace `<file_name>` with the name of the YAML file with compute machine set configuration. For example: `gcp-arm64-machine-set-0.yaml`, or `gcp-amd64-machine-set-0.yaml`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  View the list of compute machine sets by running the following command:
 
@@ -262,11 +207,9 @@ Verification
 
     The output must include the machine set that you created.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -275,26 +218,12 @@ Verification
     <infrastructure_id>-gcp-machine-set-0                   2        2      2          2  10m
     ```
 
-    </div>
-
 2.  You can check if the nodes are ready and schedulable by running the following command:
 
     ``` terminal
     $ oc get nodes
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Tested instance types for Google Cloud on 64-bit ARM infrastructures](../../installing/installing_gcp/installing-gcp-customizations.xml#installation-gcp-tested-machine-types-arm_installing-gcp-customizations)
 
 - [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator)
-
-</div>

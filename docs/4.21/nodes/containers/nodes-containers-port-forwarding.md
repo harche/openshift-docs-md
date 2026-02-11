@@ -14,11 +14,11 @@ The CLI listens on each local port specified by the user, forwarding using the p
 
 Ports may be specified using the following formats:
 
-|  |  |
-|----|----|
-| `5000` | The client listens on port 5000 locally and forwards to 5000 in the pod. |
-| `6000:5000` | The client listens on port 6000 locally and forwards to 5000 in the pod. |
-| `:5000` or `0:5000` | The client selects a free local port and forwards to 5000 in the pod. |
+|                     |                                                                          |
+|---------------------|--------------------------------------------------------------------------|
+| `5000`              | The client listens on port 5000 locally and forwards to 5000 in the pod. |
+| `6000:5000`         | The client listens on port 6000 locally and forwards to 5000 in the pod. |
+| `:5000` or `0:5000` | The client selects a free local port and forwards to 5000 in the pod.    |
 
 OpenShift Container Platform handles port-forward requests from clients. Upon receiving a request, OpenShift Container Platform upgrades the response and waits for the client to create port-forwarding streams. When OpenShift Container Platform receives a new stream, it copies data between the stream and the pod’s port.
 
@@ -28,17 +28,13 @@ Architecturally, there are options for forwarding to a pod’s port. The support
 
 You can use the CLI to port-forward one or more local ports to a pod.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 Use the following command to listen on the specified port in a pod:
-
-</div>
 
 ``` terminal
 $ oc port-forward <pod> [<local_port>:]<remote_port> [...[<local_port_n>:]<remote_port_n>]
@@ -52,11 +48,9 @@ For example:
   $ oc port-forward <pod> 5000 6000
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -67,19 +61,15 @@ For example:
   Forwarding from [::1]:6000 -> 6000
   ```
 
-  </div>
-
 - Use the following command to listen on port `8888` locally and forward to `5000` in the pod:
 
   ``` terminal
   $ oc port-forward <pod> 8888:5000
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -88,19 +78,15 @@ For example:
   Forwarding from [::1]:8888 -> 5000
   ```
 
-  </div>
-
 - Use the following command to listen on a free port locally and forward to `5000` in the pod:
 
   ``` terminal
   $ oc port-forward <pod> :5000
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -108,8 +94,6 @@ For example:
   Forwarding from 127.0.0.1:42390 -> 5000
   Forwarding from [::1]:42390 -> 5000
   ```
-
-  </div>
 
   Or:
 

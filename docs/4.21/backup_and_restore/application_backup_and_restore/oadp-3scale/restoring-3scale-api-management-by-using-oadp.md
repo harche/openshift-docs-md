@@ -2,14 +2,6 @@ You can restore Red Hat 3scale API Management components by restoring the backe
 
 After the data has been restored, you can scale up the 3scale operator and deployment.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You installed and configured Red Hat 3scale API Management. For more information, see [Installing 3scale API Management on OpenShift](https://docs.redhat.com/en/documentation/red_hat_3scale_api_management/2.15/html-single/installing_red_hat_3scale_api_management/index#install-threescale-on-openshift-guide) and [Red Hat 3scale API Management](https://docs.redhat.com/en/documentation/red_hat_3scale_api_management).
 
 - You backed up the 3scale operator, and databases such as MySQL and Redis.
@@ -18,19 +10,9 @@ Prerequisites
 
 - If you want to restore 3scale on a different cluster, ensure that the original backed-up cluster and the cluster you want to restore the operator on are using the same custom domain.
 
-</div>
-
 # Restoring the 3scale API Management operator, secrets, and APIManager
 
 You can restore the Red Hat 3scale API Management operator resources, and both the `Secret` and APIManager custom resources (CRs) by using the following procedure.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You backed up the 3scale operator.
 
@@ -40,27 +22,15 @@ Prerequisites
 
   If you are restoring the operator to a different cluster that you backed up from, install and configure OADP with `nodeAgent` enabled on the destination cluster. Ensure that the OADP configuration is same as it was on the source cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Delete the 3scale operator custom resource definitions (CRDs) along with the `threescale` namespace by running the following command:
 
     ``` terminal
     $ oc delete project threescale
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -68,15 +38,11 @@ Procedure
     "threescale" project deleted successfully
     ```
 
-    </div>
-
 2.  Create a YAML file with the following configuration to restore the 3scale operator:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `restore.yaml` file
+    **Example `restore.yaml` file**
 
     </div>
 
@@ -101,8 +67,6 @@ Procedure
       itemOperationTimeout: 4h0m0s
     ```
 
-    </div>
-
     - Restoring the 3scale operator’s backup
 
 3.  Restore the 3scale operator by running the following command:
@@ -111,19 +75,15 @@ Procedure
     $ oc create -f restore.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     restore.velerio.io/operator-installation-restore created
     ```
-
-    </div>
 
 4.  Manually create the `s3-credentials` `Secret` object by running the following command:
 
@@ -158,11 +118,9 @@ Procedure
     $ oc scale deployment threescale-operator-controller-manager-v2 --replicas=0 -n threescale
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -170,15 +128,11 @@ Procedure
     deployment.apps/threescale-operator-controller-manager-v2 scaled
     ```
 
-    </div>
-
 6.  Create a YAML file with the following configuration to restore the `Secret`:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `restore-secret.yaml` file
+    **Example `restore-secret.yaml` file**
 
     </div>
 
@@ -203,8 +157,6 @@ Procedure
       itemOperationTimeout: 4h0m0s
     ```
 
-    </div>
-
     - Restoring the `Secret` backup.
 
 7.  Restore the `Secret` by running the following command:
@@ -213,11 +165,9 @@ Procedure
     $ oc create -f restore-secrets.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -225,15 +175,11 @@ Procedure
     restore.velerio.io/operator-resources-secrets created
     ```
 
-    </div>
-
 8.  Create a YAML file with the following configuration to restore APIManager:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `restore-apimanager.yaml` file
+    **Example `restore-apimanager.yaml` file**
 
     </div>
 
@@ -258,8 +204,6 @@ Procedure
       itemOperationTimeout: 4h0m0s
     ```
 
-    </div>
-
     - Restoring the APIManager backup.
 
     - The resources that you do not want to restore.
@@ -270,11 +214,9 @@ Procedure
     $ oc create -f restore-apimanager.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -282,29 +224,21 @@ Procedure
     restore.velerio.io/operator-resources-apim created
     ```
 
-    </div>
-
 10. Scale up the 3scale operator by running the following command:
 
     ``` terminal
     $ oc scale deployment threescale-operator-controller-manager-v2 --replicas=1 -n threescale
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     deployment.apps/threescale-operator-controller-manager-v2 scaled
     ```
-
-    </div>
-
-</div>
 
 # Restoring a MySQL database
 
@@ -316,28 +250,13 @@ Restoring a MySQL database re-creates the following resources:
 
 - The MySQL dump, which the `example-claim` PVC contains.
 
-> [!WARNING]
-> Do not delete the default PV and PVC associated with the database. If you do, your backups are deleted.
+<div class="warning">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Do not delete the default PV and PVC associated with the database. If you do, your backups are deleted.
 
 </div>
 
 - You restored the `Secret` and APIManager custom resources (CRs).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Scale down the Red Hat 3scale API Management operator by running the following command:
 
@@ -345,11 +264,9 @@ Procedure
     $ oc scale deployment threescale-operator-controller-manager-v2 --replicas=0 -n threescale
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -357,19 +274,15 @@ Procedure
     deployment.apps/threescale-operator-controller-manager-v2 scaled
     ```
 
-    </div>
-
 2.  Create the following script to scale down the 3scale operator:
 
     ``` terminal
     $ vi ./scaledowndeployment.sh
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example script:
+    **Example script:**
 
     </div>
 
@@ -379,19 +292,15 @@ Procedure
     done
     ```
 
-    </div>
-
 3.  Scale down all the deployment 3scale components by running the following script:
 
     ``` terminal
     $ ./scaledowndeployment.sh
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -413,19 +322,15 @@ Procedure
     deployment.apps.openshift.io/zync-que scaled
     ```
 
-    </div>
-
 4.  Delete the `system-mysql` `Deployment` object by running the following command:
 
     ``` terminal
     $ oc delete deployment system-mysql -n threescale
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -434,15 +339,11 @@ Procedure
     deployment.apps.openshift.io "system-mysql" deleted
     ```
 
-    </div>
-
 5.  Create the following YAML file to restore the MySQL database:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `restore-mysql.yaml` file
+    **Example `restore-mysql.yaml` file**
 
     </div>
 
@@ -486,8 +387,6 @@ Procedure
       restorePVs: true
     ```
 
-    </div>
-
     - Restoring the MySQL backup.
 
     - A path where the data is restored from.
@@ -498,11 +397,9 @@ Procedure
     $ oc create -f restore-mysql.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -510,17 +407,7 @@ Procedure
     restore.velerio.io/restore-mysql created
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the `PodVolumeRestore` restore is completed by running the following command:
 
@@ -528,11 +415,9 @@ Verification
     $ oc get podvolumerestores.velero.io -n openshift-adp
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -542,19 +427,15 @@ Verification
     restore-mysql-z7x7l     threescale   system-mysql-2-kjkhl    kopia           example-claim           Completed   380415       380415      40m
     ```
 
-    </div>
-
 2.  Verify that the additional PVC has been restored by running the following command:
 
     ``` terminal
     $ oc get pvc -n threescale
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -567,35 +448,13 @@ Verification
     system-searchd          Bound    pvc-afbf606c-d4a8-4041-8ec6-54c5baf1a3b9   1Gi        RWO            gp3-csi        <unset>                 68m
     ```
 
-    </div>
-
-</div>
-
 # Restoring the back-end Redis database
 
 You can restore the back-end Redis database by deleting the deployment and specifying which resources you do not want to restore.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You restored the Red Hat 3scale API Management operator resources, `Secret`, and APIManager custom resources.
 
 - You restored the MySQL database.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Delete the `backend-redis` deployment by running the following command:
 
@@ -603,11 +462,9 @@ Procedure
     $ oc delete deployment backend-redis -n threescale
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -617,15 +474,11 @@ Procedure
     deployment.apps.openshift.io "backend-redis" deleted
     ```
 
-    </div>
-
 2.  Create a YAML file with the following configuration to restore the Redis database:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `restore-backend.yaml` file
+    **Example `restore-backend.yaml` file**
 
     </div>
 
@@ -651,8 +504,6 @@ Procedure
       restorePVs: true
     ```
 
-    </div>
-
     - Restoring the Redis backup.
 
 3.  Restore the Redis database by running the following command:
@@ -661,11 +512,9 @@ Procedure
     $ oc create -f restore-backend.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -673,29 +522,15 @@ Procedure
     restore.velerio.io/restore-backend created
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the `PodVolumeRestore` restore is completed by running the following command:
 
   ``` terminal
   $ oc get podvolumerestores.velero.io -n openshift-adp
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output:
+  **Example output:**
 
   </div>
 
@@ -704,21 +539,9 @@ Verification
   restore-backend-jmrwx   threescale   backend-redis-1-bsfmv   kopia           backend-redis-storage   Completed   76123        76123       21m
   ```
 
-  </div>
-
-</div>
-
 # Scaling up the 3scale API Management operator and deployment
 
 You can scale up the Red Hat 3scale API Management operator and any deployment that was manually scaled down. After a few minutes, 3scale installation should be fully functional, and its state should match the backed-up state.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You restored the 3scale operator resources, and both the `Secret` and APIManager custom resources (CRs).
 
@@ -726,27 +549,15 @@ Prerequisites
 
 - Ensure that there are no scaled up deployments or no extra pods running. There might be some `system-mysql` or `backend-redis` pods running detached from deployments after restoration, which can be removed after the restoration is successful.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Scale up the 3scale operator by running the following command:
 
     ``` terminal
     $ oc scale deployment threescale-operator-controller-manager-v2 --replicas=1 -n threescale
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -754,19 +565,15 @@ Procedure
     deployment.apps/threescale-operator-controller-manager-v2 scaled
     ```
 
-    </div>
-
 2.  Ensure that the 3scale pod is running to verify if the 3scale operator was deployed by running the following command:
 
     ``` terminal
     $ oc get pods -n threescale
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -775,19 +582,15 @@ Procedure
     threescale-operator-controller-manager-v2-79546bd8c-b4qbh   1/1          Running  0          2m5s
     ```
 
-    </div>
-
 3.  Create the following script to scale up the deployments:
 
     ``` terminal
     $ vi ./scaledeployment.sh
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example script file:
+    **Example script file:**
 
     </div>
 
@@ -797,19 +600,15 @@ Procedure
     done
     ```
 
-    </div>
-
 4.  Scale up the deployments by running the following script:
 
     ``` terminal
     $ ./scaledeployment.sh
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -831,19 +630,15 @@ Procedure
     deployment.apps.openshift.io/zync-que scaled
     ```
 
-    </div>
-
 5.  Get the `3scale-admin` route to log in to the 3scale UI by running the following command:
 
     ``` terminal
     $ oc get routes -n threescale
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -857,10 +652,6 @@ Procedure
     zync-3scale-provider-mjxlb   3scale.apps.custom-cluster-name.openshift.com                                 system-developer     http      edge/Redirect   None
     ```
 
-    </div>
-
     In this example, `3scale-admin.apps.custom-cluster-name.openshift.com` is the 3scale-admin URL.
 
 6.  Use the URL from this output to log in to the 3scale operator as an administrator. You can verify that the data, when you took backup, is available.
-
-</div>

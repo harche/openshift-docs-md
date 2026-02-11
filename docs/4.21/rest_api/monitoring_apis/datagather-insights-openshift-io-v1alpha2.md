@@ -11,13 +11,13 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | spec holds user settable values for configuration |
-| `status` | `object` | status holds observed values from the cluster. They may not be overridden. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | spec holds user settable values for configuration                                                                                                                                                                                                                                                    |
+| `status`     | `object`                                                                             | status holds observed values from the cluster. They may not be overridden.                                                                                                                                                                                                                           |
 
 ## .spec
 
@@ -27,11 +27,11 @@ spec holds user settable values for configuration
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property     | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+|--------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `dataPolicy` | `array (string)` | dataPolicy is an optional list of DataPolicyOptions that allows user to enable additional obfuscation of the Insights archive data. It may not exceed 2 items and must not contain duplicates. Valid values are ObfuscateNetworking and WorkloadNames. When set to ObfuscateNetworking the IP addresses and the cluster domain name are obfuscated. When set to WorkloadNames, the gathered data about cluster resources will not contain the workload names for your deployments. Resources UIDs will be used instead. When omitted no obfuscation is applied. |
-| `gatherers` | `object` | gatherers is an optional field that specifies the configuration of the gatherers. If omitted, all gatherers will be run. |
-| `storage` | `object` | storage is an optional field that allows user to define persistent storage for gathering jobs to store the Insights data archive. If omitted, the gathering job will use ephemeral storage. |
+| `gatherers`  | `object`         | gatherers is an optional field that specifies the configuration of the gatherers. If omitted, all gatherers will be run.                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `storage`    | `object`         | storage is an optional field that allows user to define persistent storage for gathering jobs to store the Insights data archive. If omitted, the gathering job will use ephemeral storage.                                                                                                                                                                                                                                                                                                                                                                     |
 
 ## .spec.gatherers
 
@@ -44,10 +44,10 @@ Type
 Required
 - `mode`
 
-| Property | Type | Description |
-|----|----|----|
+| Property | Type     | Description                                                                                                                                                                                                                                                |
+|----------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `custom` | `object` | custom provides gathering configuration. It is required when mode is Custom, and forbidden otherwise. Custom configuration allows user to disable only a subset of gatherers. Gatherers that are not explicitly disabled in custom configuration will run. |
-| `mode` | `string` | mode is a required field that specifies the mode for gatherers. Allowed values are All and Custom. When set to All, all gatherers wil run and gather data. When set to Custom, the custom configuration from the custom field will be applied. |
+| `mode`   | `string` | mode is a required field that specifies the mode for gatherers. Allowed values are All and Custom. When set to All, all gatherers wil run and gather data. When set to Custom, the custom configuration from the custom field will be applied.             |
 
 ## .spec.gatherers.custom
 
@@ -60,10 +60,10 @@ Type
 Required
 - `configs`
 
-| Property | Type | Description |
-|----|----|----|
-| `configs` | `array` | configs is a required list of gatherers configurations that can be used to enable or disable specific gatherers. It may not exceed 100 items and each gatherer can be present only once. It is possible to disable an entire set of gatherers while allowing a specific function within that set. The particular gatherers IDs can be found at <https://github.com/openshift/insights-operator/blob/master/docs/gathered-data.md>. Run the following command to get the names of last active gatherers: "oc get insightsoperators.operator.openshift.io cluster -o json \| jq '.status.gatherStatus.gatherers\[\].name'" |
-| `configs[]` | `object` | gathererConfig allows to configure specific gatherers |
+| Property    | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|-------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `configs`   | `array`  | configs is a required list of gatherers configurations that can be used to enable or disable specific gatherers. It may not exceed 100 items and each gatherer can be present only once. It is possible to disable an entire set of gatherers while allowing a specific function within that set. The particular gatherers IDs can be found at <https://github.com/openshift/insights-operator/blob/master/docs/gathered-data.md>. Run the following command to get the names of last active gatherers: "oc get insightsoperators.operator.openshift.io cluster -o json \| jq '.status.gatherStatus.gatherers\[\].name'" |
+| `configs[]` | `object` | gathererConfig allows to configure specific gatherers                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 
 ## .spec.gatherers.custom.configs
 
@@ -86,10 +86,10 @@ Required
 
 - `state`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name is the required name of a specific gatherer It may not exceed 256 characters. The format for a gatherer name is: {gatherer}/{function} where the function is optional. Gatherer consists of a lowercase letters only that may include underscores (*). Function consists of a lowercase letters only that may include underscores (*) and is separated from the gatherer by a forward slash (/). The particular gatherers can be found at <https://github.com/openshift/insights-operator/blob/master/docs/gathered-data.md>. Run the following command to get the names of last active gatherers: "oc get insightsoperators.operator.openshift.io cluster -o json \| jq '.status.gatherStatus.gatherers\[\].name'" |
-| `state` | `string` | state is a required field that allows you to configure specific gatherer. Valid values are "Enabled" and "Disabled". When set to Enabled the gatherer will run. When set to Disabled the gatherer will not run. |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|----------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | name is the required name of a specific gatherer It may not exceed 256 characters. The format for a gatherer name is: {gatherer}/{function} where the function is optional. Gatherer consists of a lowercase letters only that may include underscores (*). Function consists of a lowercase letters only that may include underscores (*) and is separated from the gatherer by a forward slash (/). The particular gatherers can be found at <https://github.com/openshift/insights-operator/blob/master/docs/gathered-data.md>. Run the following command to get the names of last active gatherers: "oc get insightsoperators.operator.openshift.io cluster -o json \| jq '.status.gatherStatus.gatherers\[\].name'" |
+| `state`  | `string` | state is a required field that allows you to configure specific gatherer. Valid values are "Enabled" and "Disabled". When set to Enabled the gatherer will run. When set to Disabled the gatherer will not run.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ## .spec.storage
 
@@ -102,10 +102,10 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `persistentVolume` | `object` | persistentVolume is an optional field that specifies the PersistentVolume that will be used to store the Insights data archive. The PersistentVolume must be created in the openshift-insights namespace. |
-| `type` | `string` | type is a required field that specifies the type of storage that will be used to store the Insights data archive. Valid values are "PersistentVolume" and "Ephemeral". When set to Ephemeral, the Insights data archive is stored in the ephemeral storage of the gathering job. When set to PersistentVolume, the Insights data archive is stored in the PersistentVolume that is defined by the PersistentVolume field. |
+| Property           | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                               |
+|--------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `persistentVolume` | `object` | persistentVolume is an optional field that specifies the PersistentVolume that will be used to store the Insights data archive. The PersistentVolume must be created in the openshift-insights namespace.                                                                                                                                                                                                                 |
+| `type`             | `string` | type is a required field that specifies the type of storage that will be used to store the Insights data archive. Valid values are "PersistentVolume" and "Ephemeral". When set to Ephemeral, the Insights data archive is stored in the ephemeral storage of the gathering job. When set to PersistentVolume, the Insights data archive is stored in the PersistentVolume that is defined by the PersistentVolume field. |
 
 ## .spec.storage.persistentVolume
 
@@ -118,9 +118,9 @@ Type
 Required
 - `claim`
 
-| Property | Type | Description |
-|----|----|----|
-| `claim` | `object` | claim is a required field that specifies the configuration of the PersistentVolumeClaim that will be used to store the Insights data archive. The PersistentVolumeClaim must be created in the openshift-insights namespace. |
+| Property    | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                         |
+|-------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `claim`     | `object` | claim is a required field that specifies the configuration of the PersistentVolumeClaim that will be used to store the Insights data archive. The PersistentVolumeClaim must be created in the openshift-insights namespace.                                                                                                                                                                        |
 | `mountPath` | `string` | mountPath is an optional field specifying the directory where the PVC will be mounted inside the Insights data gathering Pod. When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default mount path is /var/lib/insights-operator The path may not exceed 1024 characters and must not contain a colon. |
 
 ## .spec.storage.persistentVolume.claim
@@ -134,9 +134,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name is a string that follows the DNS1123 subdomain format. It must be at most 253 characters in length, and must consist only of lower case alphanumeric characters, '-' and '.', and must start and end with an alphanumeric character. |
+| Property | Type     | Description                                                                                                                                                                                                                               |
+|----------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | name is a string that follows the DNS1123 subdomain format. It must be at most 253 characters in length, and must consist only of lower case alphanumeric characters, '-' and '.', and must start and end with an alphanumeric character. |
 
 ## .status
 
@@ -153,14 +153,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>conditions</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>conditions is an optional field that provides details on the status of the gatherer job. It may not exceed 100 items and must not contain duplicates.</p>
@@ -172,47 +172,47 @@ Type
 <p>The RemoteConfigurationValid condition is used to represent whether the remote configuration is valid. When it has a status of Unknown and a reason of Unknown or NoValidationYet, the validity of the remote configuration is unknown—typically at startup. When it has a status of True and a reason of Succeeded, the configuration is valid. When it has a status of False and a reason of Invalid, the configuration is invalid.</p>
 <p>The Progressing condition is used to represent the phase of gathering When it has a status of False and the reason is DataGatherPending, the gathering has not started yet. When it has a status of True and reason is Gathering, the gathering is running. When it has a status of False and reason is GatheringSucceeded, the gathering succesfully finished. When it has a status of False and reason is GatheringFailed, the gathering failed.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>conditions[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Condition contains details for one aspect of the current state of this API Resource.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>finishTime</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>finishTime is the time when Insights data gathering finished.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>gatherers</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>gatherers is a list of active gatherers (and their statuses) in the last gathering.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>gatherers[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>gathererStatus represents information about a particular data gatherer.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>insightsReport</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>insightsReport provides general Insights analysis results. When omitted, this means no data gathering has taken place yet or the corresponding Insights analysis (identified by "insightsRequestID") is not available.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>insightsRequestID</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>insightsRequestID is an optional Insights request ID to track the status of the Insights analysis (in console.redhat.com processing pipeline) for the corresponding Insights data archive. It may not exceed 256 characters and is immutable once set.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>relatedObjects</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>relatedObjects is an optional list of resources which are useful when debugging or inspecting the data gathering Pod It may not exceed 100 items and must not contain duplicates.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>relatedObjects[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ObjectReference contains enough information to let you inspect or modify the referred object.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>startTime</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>startTime is the time when Insights data gathering started.</p></td>
@@ -261,14 +261,14 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastTransitionTime` | `string` | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable. |
-| `message` | `string` | message is a human readable message indicating details about the transition. This may be an empty string. |
-| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance. |
-| `reason` | `string` | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
-| `status` | `string` | status of the condition, one of True, False, Unknown. |
-| `type` | `string` | type of condition in CamelCase or in foo.example.com/CamelCase. |
+| Property             | Type      | Description                                                                                                                                                                                                                                                                                                                     |
+|----------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string`  | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable.                                                                                            |
+| `message`            | `string`  | message is a human readable message indicating details about the transition. This may be an empty string.                                                                                                                                                                                                                       |
+| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.                                   |
+| `reason`             | `string`  | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
+| `status`             | `string`  | status of the condition, one of True, False, Unknown.                                                                                                                                                                                                                                                                           |
+| `type`               | `string`  | type of condition in CamelCase or in foo.example.com/CamelCase.                                                                                                                                                                                                                                                                 |
 
 ## .status.gatherers
 
@@ -298,31 +298,31 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>conditions</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>conditions provide details on the status of each gatherer.</p>
 <p>The current condition type is DataGathered</p>
 <p>The DataGathered condition is used to represent whether or not the data was gathered by a gatherer specified by name. When it has a status of True and a reason of GatheredOK, the data has been successfully gathered as expected. When it has a status of False and a reason of NoData, no data was gathered—for example, when the resource is not present in the cluster. When it has a status of False and a reason of GatherError, an error occurred and no data was gathered. When it has a status of False and a reason of GatherPanic, a panic occurred during gathering and no data was collected. When it has a status of False and a reason of GatherWithErrorReason, data was partially gathered or gathered with an error message.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>conditions[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Condition contains details for one aspect of the current state of this API Resource.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>lastGatherSeconds</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>lastGatherSeconds is required field that represents the time spent gathering in seconds</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>name is the required name of the gatherer. It must contain at least 5 characters and may not exceed 256 characters.</p></td>
@@ -361,14 +361,14 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastTransitionTime` | `string` | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable. |
-| `message` | `string` | message is a human readable message indicating details about the transition. This may be an empty string. |
-| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance. |
-| `reason` | `string` | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
-| `status` | `string` | status of the condition, one of True, False, Unknown. |
-| `type` | `string` | type of condition in CamelCase or in foo.example.com/CamelCase. |
+| Property             | Type      | Description                                                                                                                                                                                                                                                                                                                     |
+|----------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string`  | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable.                                                                                            |
+| `message`            | `string`  | message is a human readable message indicating details about the transition. This may be an empty string.                                                                                                                                                                                                                       |
+| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.                                   |
+| `reason`             | `string`  | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
+| `status`             | `string`  | status of the condition, one of True, False, Unknown.                                                                                                                                                                                                                                                                           |
+| `type`               | `string`  | type of condition in CamelCase or in foo.example.com/CamelCase.                                                                                                                                                                                                                                                                 |
 
 ## .status.insightsReport
 
@@ -378,12 +378,12 @@ insightsReport provides general Insights analysis results. When omitted, this me
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property         | Type     | Description                                                                                                                                                                                                                                                                  |
+|------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `downloadedTime` | `string` | downloadedTime is an optional time when the last Insights report was downloaded. An empty value means that there has not been any Insights report downloaded yet and it usually appears in disconnected clusters (or clusters when the Insights data gathering is disabled). |
-| `healthChecks` | `array` | healthChecks provides basic information about active Insights health checks in a cluster. |
-| `healthChecks[]` | `object` | healthCheck represents an Insights health check attributes. |
-| `uri` | `string` | uri is optional field that provides the URL link from which the report was downloaded. The link must be a valid HTTPS URL and the maximum length is 2048 characters. |
+| `healthChecks`   | `array`  | healthChecks provides basic information about active Insights health checks in a cluster.                                                                                                                                                                                    |
+| `healthChecks[]` | `object` | healthCheck represents an Insights health check attributes.                                                                                                                                                                                                                  |
+| `uri`            | `string` | uri is optional field that provides the URL link from which the report was downloaded. The link must be a valid HTTPS URL and the maximum length is 2048 characters.                                                                                                         |
 
 ## .status.insightsReport.healthChecks
 
@@ -408,11 +408,11 @@ Required
 
 - `totalRisk`
 
-| Property | Type | Description |
-|----|----|----|
-| `advisorURI` | `string` | advisorURI is required field that provides the URL link to the Insights Advisor. The link must be a valid HTTPS URL and the maximum length is 2048 characters. |
-| `description` | `string` | description is required field that provides basic description of the healtcheck. It must contain at least 10 characters and may not exceed 2048 characters. |
-| `totalRisk` | `string` | totalRisk is the required field of the healthcheck. It is indicator of the total risk posed by the detected issue; combination of impact and likelihood. Allowed values are Low, Medium, Important and Critical. The value represents the severity of the issue. |
+| Property      | Type     | Description                                                                                                                                                                                                                                                      |
+|---------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `advisorURI`  | `string` | advisorURI is required field that provides the URL link to the Insights Advisor. The link must be a valid HTTPS URL and the maximum length is 2048 characters.                                                                                                   |
+| `description` | `string` | description is required field that provides basic description of the healtcheck. It must contain at least 10 characters and may not exceed 2048 characters.                                                                                                      |
+| `totalRisk`   | `string` | totalRisk is the required field of the healthcheck. It is indicator of the total risk posed by the detected issue; combination of impact and likelihood. Allowed values are Low, Medium, Important and Critical. The value represents the severity of the issue. |
 
 ## .status.relatedObjects
 
@@ -439,12 +439,12 @@ Required
 
 - `resource`
 
-| Property | Type | Description |
-|----|----|----|
-| `group` | `string` | group is required field that specifies the API Group of the Resource. Enter empty string for the core group. This value is empty or it should follow the DNS1123 subdomain format. It must be at most 253 characters in length, and must consist only of lower case alphanumeric characters, '-' and '.', and must start with an alphabetic character and end with an alphanumeric character. Example: "", "apps", "build.openshift.io", etc. |
-| `name` | `string` | name is required field that specifies the referent that follows the DNS1123 subdomain format. It must be at most 253 characters in length, and must consist only of lower case alphanumeric characters, '-' and '.', and must start with an alphabetic character and end with an alphanumeric character.. |
-| `namespace` | `string` | namespace if required field of the referent that follows the DNS1123 labels format. It must be at most 63 characters in length, and must must consist of only lowercase alphanumeric characters and hyphens, and must start with an alphabetic character and end with an alphanumeric character. |
-| `resource` | `string` | resource is required field of the type that is being referenced and follows the DNS1035 format. It is normally the plural form of the resource kind in lowercase. It must be at most 63 characters in length, and must must consist of only lowercase alphanumeric characters and hyphens, and must start with an alphabetic character and end with an alphanumeric character. Example: "deployments", "deploymentconfigs", "pods", etc. |
+| Property    | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `group`     | `string` | group is required field that specifies the API Group of the Resource. Enter empty string for the core group. This value is empty or it should follow the DNS1123 subdomain format. It must be at most 253 characters in length, and must consist only of lower case alphanumeric characters, '-' and '.', and must start with an alphabetic character and end with an alphanumeric character. Example: "", "apps", "build.openshift.io", etc. |
+| `name`      | `string` | name is required field that specifies the referent that follows the DNS1123 subdomain format. It must be at most 253 characters in length, and must consist only of lower case alphanumeric characters, '-' and '.', and must start with an alphabetic character and end with an alphanumeric character..                                                                                                                                     |
+| `namespace` | `string` | namespace if required field of the referent that follows the DNS1123 labels format. It must be at most 63 characters in length, and must must consist of only lowercase alphanumeric characters and hyphens, and must start with an alphabetic character and end with an alphanumeric character.                                                                                                                                              |
+| `resource`  | `string` | resource is required field of the type that is being referenced and follows the DNS1035 format. It is normally the plural form of the resource kind in lowercase. It must be at most 63 characters in length, and must must consist of only lowercase alphanumeric characters and hyphens, and must start with an alphabetic character and end with an alphanumeric character. Example: "deployments", "deploymentconfigs", "pods", etc.      |
 
 # API endpoints
 
@@ -484,10 +484,10 @@ HTTP method
 Description
 delete collection of DataGather
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -497,10 +497,10 @@ HTTP method
 Description
 list objects of kind DataGather
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`DataGatherList`](../objects/index.xml#io-openshift-insights-v1alpha2-DataGatherList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                  |
+|--------------------|-----------------------------------------------------------------------------------------------|
+| 200 - OK           | [`DataGatherList`](../objects/index.xml#io-openshift-insights-v1alpha2-DataGatherList) schema |
+| 401 - Unauthorized | Empty                                                                                         |
 
 HTTP responses
 
@@ -510,25 +510,25 @@ HTTP method
 Description
 create a DataGather
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |  |
+| Parameter | Type                                                                                                                              | Description |
+|-----------|-----------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
-| 201 - Created | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
-| 202 - Accepted | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                      |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
+| 201 - Created      | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
+| 202 - Accepted     | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
+| 401 - Unauthorized | Empty                                                                                                                             |
 
 HTTP responses
 
@@ -546,17 +546,17 @@ HTTP method
 Description
 delete a DataGather
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -566,10 +566,10 @@ HTTP method
 Description
 read the specified DataGather
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                      |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
+| 401 - Unauthorized | Empty                                                                                                                             |
 
 HTTP responses
 
@@ -579,17 +579,17 @@ HTTP method
 Description
 partially update the specified DataGather
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                      |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
+| 401 - Unauthorized | Empty                                                                                                                             |
 
 HTTP responses
 
@@ -599,24 +599,24 @@ HTTP method
 Description
 replace the specified DataGather
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |  |
+| Parameter | Type                                                                                                                              | Description |
+|-----------|-----------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
-| 201 - Created | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                      |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
+| 201 - Created      | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
+| 401 - Unauthorized | Empty                                                                                                                             |
 
 HTTP responses
 
@@ -634,10 +634,10 @@ HTTP method
 Description
 read status of the specified DataGather
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                      |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
+| 401 - Unauthorized | Empty                                                                                                                             |
 
 HTTP responses
 
@@ -647,17 +647,17 @@ HTTP method
 Description
 partially update status of the specified DataGather
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                      |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
+| 401 - Unauthorized | Empty                                                                                                                             |
 
 HTTP responses
 
@@ -667,23 +667,23 @@ HTTP method
 Description
 replace status of the specified DataGather
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |  |
+| Parameter | Type                                                                                                                              | Description |
+|-----------|-----------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
-| 201 - Created | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                      |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
+| 201 - Created      | [`DataGather`](../monitoring_apis/datagather-insights-openshift-io-v1alpha2.xml#datagather-insights-openshift-io-v1alpha2) schema |
+| 401 - Unauthorized | Empty                                                                                                                             |
 
 HTTP responses

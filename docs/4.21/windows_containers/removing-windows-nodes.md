@@ -4,14 +4,9 @@ You can remove a Windows node by deleting its host Windows machine.
 
 You can delete a specific machine.
 
-> [!IMPORTANT]
-> Do not delete a control plane machine unless your cluster uses a control plane machine set.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Do not delete a control plane machine unless your cluster uses a control plane machine set.
 
 </div>
 
@@ -20,16 +15,6 @@ Prerequisites
 - Install the OpenShift CLI (`oc`).
 
 - Log in to `oc` as a user with `cluster-admin` permission.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  View the machines that are in the cluster by running the following command:
 
@@ -47,11 +32,12 @@ Procedure
     $ oc delete machine <machine> -n openshift-machine-api
     ```
 
-    > [!IMPORTANT]
-    > By default, the machine controller tries to drain the node that is backed by the machine until it succeeds. In some situations, such as with a misconfigured pod disruption budget, the drain operation might not be able to succeed. If the drain operation fails, the machine controller cannot proceed removing the machine.
-    >
-    > You can skip draining the node by annotating `machine.openshift.io/exclude-node-draining` in a specific machine.
+    <div class="important">
+
+    By default, the machine controller tries to drain the node that is backed by the machine until it succeeds. In some situations, such as with a misconfigured pod disruption budget, the drain operation might not be able to succeed. If the drain operation fails, the machine controller cannot proceed removing the machine.
+
+    You can skip draining the node by annotating `machine.openshift.io/exclude-node-draining` in a specific machine.
+
+    </div>
 
     If the machine that you delete belongs to a machine set, a new machine is immediately created to satisfy the specified number of replicas.
-
-</div>

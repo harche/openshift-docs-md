@@ -12,14 +12,6 @@ See [Installing an OpenShift Container Platform cluster with the Agent-based Ins
 
 Use this procedure to download the Agent-based Installer and the CLI needed for your installation.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Log in to the Red Hat Hybrid Cloud Console using your login credentials.
 
 2.  Navigate to [Datacenter](https://console.redhat.com/openshift/create/datacenter).
@@ -34,20 +26,13 @@ Procedure
 
 7.  Click **Download command-line tools** and place the `openshift-install` binary in a directory that is on your `PATH`.
 
-</div>
-
 # Creating the preferred configuration inputs
 
 Use this procedure to create the preferred configuration inputs used to create the PXE files.
 
-> [!NOTE]
-> Configuring the `install-config.yaml` and `agent-config.yaml` files is the preferred method for using the Agent-based Installer. Using GitOps ZTP manifests is optional.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+Configuring the `install-config.yaml` and `agent-config.yaml` files is the preferred method for using the Agent-based Installer. Using GitOps ZTP manifests is optional.
 
 </div>
 
@@ -109,27 +94,31 @@ Procedure
 
     - Specify your platform.
 
-      > [!NOTE]
-      > For bare-metal platforms, host settings made in the platform section of the `install-config.yaml` file are used by default, unless they are overridden by configurations made in the `agent-config.yaml` file.
+      <div class="note">
+
+      For bare-metal platforms, host settings made in the platform section of the `install-config.yaml` file are used by default, unless they are overridden by configurations made in the `agent-config.yaml` file.
+
+      </div>
 
     - Specify your pull secret.
 
     - Specify your SSH public key.
 
-    > [!NOTE]
-    > If you set the platform to `vSphere`, `baremetal`, or `none`, you can configure IP address endpoints for cluster nodes in three ways:
-    >
-    > - IPv4
-    >
-    > - IPv6
-    >
-    > - IPv4 and IPv6 in parallel (dual-stack)
+    <div class="note">
 
-    <div class="formalpara">
+    If you set the platform to `vSphere`, `baremetal`, or `none`, you can configure IP address endpoints for cluster nodes in three ways:
 
-    <div class="title">
+    - IPv4
 
-    Example of dual-stack networking
+    - IPv6
+
+    - IPv4 and IPv6 in parallel (dual-stack)
+
+    </div>
+
+    <div class="formalpara-title">
+
+    **Example of dual-stack networking**
 
     </div>
 
@@ -157,10 +146,11 @@ Procedure
         - 2001:DB8::5
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > When you use a disconnected mirror registry, you must add the certificate file that you created previously for your mirror registry to the `additionalTrustBundle` field of the `install-config.yaml` file.
+    When you use a disconnected mirror registry, you must add the certificate file that you created previously for your mirror registry to the `additionalTrustBundle` field of the `install-config.yaml` file.
+
+    </div>
 
 5.  Create the `agent-config.yaml` file by running the following command:
 
@@ -211,8 +201,11 @@ Procedure
 
     - Enables provisioning of the Red Hat Enterprise Linux CoreOS (RHCOS) image to a particular device. The installation program examines the devices in the order it discovers them, and compares the discovered values with the hint values. It uses the first discovered device that matches the hint value.
 
-      > [!NOTE]
-      > This parameter is mandatory for FCP multipath configurations on IBM Z.
+      <div class="note">
+
+      This parameter is mandatory for FCP multipath configurations on IBM Z.
+
+      </div>
 
     - Optional: Configures the network interface of a host in NMState format.
 
@@ -229,16 +222,6 @@ Procedure
 
     Where `<asset_server_URL>` is the URL of the server you will upload the PXE assets to.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Deploying with dual-stack networking](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#modifying-install-config-for-dual-stack-network_ipi-install-installation-workflow).
 
 - [Configuring the install-config yaml file](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#configuring-the-install-config-file_ipi-install-installation-workflow).
@@ -251,19 +234,9 @@ Additional resources
 
 - [Optional: Creating additional manifest files](../../installing/installing_with_agent_based_installer/installing-with-agent-based-installer.xml#installing-ocp-agent-opt-manifests_installing-with-agent-based-installer)
 
-</div>
-
 # Creating the PXE assets
 
 Use the following procedure to create the assets and optional script to implement in your PXE infrastructure.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the PXE assets by running the following command:
 
@@ -273,11 +246,9 @@ Procedure
 
     The generated PXE assets and optional iPXE script can be found in the `boot-artifacts` directory.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example filesystem with PXE assets and optional iPXE script
+    **Example filesystem with PXE assets and optional iPXE script**
 
     </div>
 
@@ -289,20 +260,25 @@ Procedure
         └─ agent.x86_64-vmlinuz
     ```
 
+    <div class="important">
+
+    The contents of the `boot-artifacts` directory vary depending on the specified architecture.
+
     </div>
 
-    > [!IMPORTANT]
-    > The contents of the `boot-artifacts` directory vary depending on the specified architecture.
+    <div class="note">
 
-    > [!NOTE]
-    > Red Hat Enterprise Linux CoreOS (RHCOS) supports multipathing on the primary disk, allowing stronger resilience to hardware failure to achieve higher host availability. Multipathing is enabled by default in the agent ISO image, with a default `/etc/multipath.conf` configuration.
+    Red Hat Enterprise Linux CoreOS (RHCOS) supports multipathing on the primary disk, allowing stronger resilience to hardware failure to achieve higher host availability. Multipathing is enabled by default in the agent ISO image, with a default `/etc/multipath.conf` configuration.
+
+    </div>
 
 2.  Upload the PXE assets and optional script to your infrastructure where they will be accessible during the boot process.
 
-    > [!NOTE]
-    > If you generated an iPXE script, the location of the assets must match the `bootArtifactsBaseURL` you added to the `agent-config.yaml` file.
+    <div class="note">
 
-</div>
+    If you generated an iPXE script, the location of the assets must match the `bootArtifactsBaseURL` you added to the `agent-config.yaml` file.
+
+    </div>
 
 # Manually adding IBM Z agents
 
@@ -316,8 +292,11 @@ Depending on your IBM Z® environment, you can choose from the following options
 
 - Adding IBM Z® agents with Logical Partition (LPAR)
 
-> [!NOTE]
-> Currently, ISO boot support on IBM Z® (`s390x`) is available only for Red Hat Enterprise Linux (RHEL) KVM, which provides the flexibility to choose either PXE or ISO-based installation. For installations with z/VM and Logical Partition (LPAR), only PXE boot is supported.
+<div class="note">
+
+Currently, ISO boot support on IBM Z® (`s390x`) is available only for Red Hat Enterprise Linux (RHEL) KVM, which provides the flexibility to choose either PXE or ISO-based installation. For installations with z/VM and Logical Partition (LPAR), only PXE boot is supported.
+
+</div>
 
 ## Networking requirements for IBM Z
 
@@ -327,12 +306,12 @@ To persist these parameters during boot, the `ai.ip_cfg_override=1` parameter is
 
 The following table lists the network devices that are supported on each hypervisor for the network configuration override functionality:
 
-| Network device | z/VM | KVM | LPAR Classic | LPAR Dynamic Partition Manager (DPM) |
-|----|----|----|----|----|
-| Virtual Switch | Supported <sup>\[1\]</sup> | Not applicable <sup>\[2\]</sup> | Not applicable | Not applicable |
-| Direct attached Open Systems Adapter (OSA) | Supported | Not required <sup>\[3\]</sup> | Supported | Not required |
-| RDMA over Converged Ethernet (RoCE) | Not required | Not required | Not required | Not required |
-| HiperSockets | Supported | Not required | Supported | Not required |
+| Network device                             | z/VM                       | KVM                             | LPAR Classic   | LPAR Dynamic Partition Manager (DPM) |
+|--------------------------------------------|----------------------------|---------------------------------|----------------|--------------------------------------|
+| Virtual Switch                             | Supported <sup>\[1\]</sup> | Not applicable <sup>\[2\]</sup> | Not applicable | Not applicable                       |
+| Direct attached Open Systems Adapter (OSA) | Supported                  | Not required <sup>\[3\]</sup>   | Supported      | Not required                         |
+| RDMA over Converged Ethernet (RoCE)        | Not required               | Not required                    | Not required   | Not required                         |
+| HiperSockets                               | Supported                  | Not required                    | Supported      | Not required                         |
 
 1.  Supported: When the `ai.ip_cfg_override` parameter is required for the installation procedure.
 
@@ -344,14 +323,9 @@ The following table lists the network devices that are supported on each hypervi
 
 You can specify a static IP address on IBM Z machines that use Logical Partition (LPAR) and z/VM. This is useful when the network devices do not have a static MAC address assigned to them.
 
-> [!NOTE]
-> If you are using an OSA network device in Processor Resource/Systems Manager (PR/SM) mode, the lack of persistent MAC addresses can lead to a dynamic assignment of roles for nodes. This means that the roles of individual nodes are not fixed and can change, as the system is unable to reliably associate specific MAC addresses with designated node roles. If MAC addresses are not persistent for any of the interfaces, roles for the nodes are assigned randomly during Agent-based installation.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+If you are using an OSA network device in Processor Resource/Systems Manager (PR/SM) mode, the lack of persistent MAC addresses can lead to a dynamic assignment of roles for nodes. This means that the roles of individual nodes are not fixed and can change, as the system is unable to reliably associate specific MAC addresses with designated node roles. If MAC addresses are not persistent for any of the interfaces, roles for the nodes are assigned randomly during Agent-based installation.
 
 </div>
 
@@ -363,11 +337,9 @@ Procedure
 
   This parameter allows the file to add the network settings to the Red Hat Enterprise Linux CoreOS (RHCOS) installer.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example `.parm` file
+  **Example `.parm` file**
 
   </div>
 
@@ -385,56 +357,33 @@ Procedure
   random.trust_cpu=on
   ```
 
-  </div>
-
   - For the `coreos.live.rootfs_url` artifact, specify the matching `rootfs` artifact for the `kernel` and `initramfs` that you are booting. Only HTTP and HTTPS protocols are supported.
 
   - For installations on direct access storage devices (DASD) type disks, use `rd.` to specify the DASD where Red Hat Enterprise Linux CoreOS (RHCOS) is to be installed. For installations on Fibre Channel Protocol (FCP) disks, use `rd.zfcp=<adapter>,<wwpn>,<lun>` to specify the FCP disk where RHCOS is to be installed.
 
   - Specify values for `adapter`, `wwpn`, and `lun` as in the following example: `rd.zfcp=0.0.8002,0x500507630400d1e3,0x4000404600000000`.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The `override` parameter overrides the host’s network configuration settings.
+The `override` parameter overrides the host’s network configuration settings.
+
+</div>
 
 ## Adding IBM Z agents with z/VM
 
 Use the following procedure to manually add IBM Z® agents with z/VM. Only use this procedure for IBM Z® clusters with z/VM.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - A running file server with access to the guest Virtual Machines.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a parameter file for the z/VM guest:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example parameter file
+    **Example parameter file**
 
     </div>
 
     \+
-
-    </div>
 
     ``` text
     rd.neednet=1 \
@@ -463,14 +412,15 @@ Procedure
 
     - For installations on FCP-type disks, use `rd.zfcp=<adapter>,<wwpn>,<lun>` to specify the FCP disk where RHCOS is to be installed. Omit this entry for DASD-type disks.
 
-      > [!NOTE]
-      > For FCP multipath configurations, provide available multiple paths to the disk instead of a single path, and add `rd.multipath=default` to enable multipath during installation.
+      <div class="note">
 
-      <div class="formalpara">
+      For FCP multipath configurations, provide available multiple paths to the disk instead of a single path, and add `rd.multipath=default` to enable multipath during installation.
 
-      <div class="title">
+      </div>
 
-      Example
+      <div class="formalpara-title">
+
+      **Example**
 
       </div>
 
@@ -480,8 +430,6 @@ Procedure
       rd.multipath=default
       ```
 
-      </div>
-
     - To enable FIPS mode, specify `fips=1`. This entry is required in addition to setting the `fips` parameter to `true` in the `install-config.yaml` file.
 
     Leave all other parameters unchanged.
@@ -490,8 +438,11 @@ Procedure
 
     For more information, see [PUNCH](https://www.ibm.com/docs/en/zvm/latest?topic=commands-punch) (IBM Documentation).
 
-    > [!TIP]
-    > You can use the `CP PUNCH` command or, if you use Linux, the `vmur` command, to transfer files between two z/VM guest virtual machines.
+    <div class="tip">
+
+    You can use the `CP PUNCH` command or, if you use Linux, the `vmur` command, to transfer files between two z/VM guest virtual machines.
+
+    </div>
 
 3.  Log in to the conversational monitor system (CMS) on the bootstrap machine.
 
@@ -503,32 +454,15 @@ Procedure
 
     For more information, see [IPL](https://www.ibm.com/docs/en/zvm/latest?topic=commands-ipl) (IBM Documentation).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Installing a cluster with z/VM on IBM Z and IBM LinuxONE](../../installing/installing_ibm_z/upi/installing-ibm-z.xml#installing-ibm-z)
-
-</div>
 
 ## Adding IBM Z agents with RHEL KVM
 
 Use the following procedure to manually add IBM Z® agents with RHEL KVM. Only use this procedure for IBM Z® clusters with RHEL KVM.
 
-> [!NOTE]
-> The `nmstateconfig` parameter must be configured for the KVM boot.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+The `nmstateconfig` parameter must be configured for the KVM boot.
 
 </div>
 
@@ -565,11 +499,9 @@ Procedure
 
     To enable FIPS mode on IBM Z® clusters with RHEL KVM you must use PXE boot instead and run the `virt-install` command with the following parameters:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    PXE boot
+    **PXE boot**
 
     </div>
 
@@ -597,65 +529,37 @@ Procedure
        --osinfo detect=on,require=off
     ```
 
-    </div>
+    <div class="note">
 
-    > [!NOTE]
-    > For KVM-based installations using DASD devices on IBM Z, a partition (for example, `/dev/dasdb1`) must be created using the `fdasd` partitioning tool.
+    For KVM-based installations using DASD devices on IBM Z, a partition (for example, `/dev/dasdb1`) must be created using the `fdasd` partitioning tool.
+
+    </div>
 
     - For the `--location` parameter, specify the location of the kernel/initrd on the HTTP or HTTPS server.
 
     - To enable FIPS mode, specify `fips=1`. This entry is required in addition to setting the `fips` parameter to `true` in the `install-config.yaml` file.
 
-      > [!NOTE]
-      > Currently, only PXE boot is supported to enable FIPS mode on IBM Z®.
+      <div class="note">
 
-</div>
+      Currently, only PXE boot is supported to enable FIPS mode on IBM Z®.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+      </div>
 
 - [Installing a cluster with RHEL KVM on IBM Z and IBM LinuxONE](../../installing/installing_ibm_z/upi/installing-ibm-z-kvm.xml#installing-ibm-z-kvm)
-
-</div>
 
 ## Adding IBM Z agents in a Logical Partition (LPAR)
 
 Use the following procedure to manually add IBM Z® agents to your cluster that runs in an LPAR environment. Use this procedure only for IBM Z® clusters running in an LPAR.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have Python 3 installed.
 
 - A running file server with access to the Logical Partition (LPAR).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a boot parameter file for the agents.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example parameter file
+    **Example parameter file**
 
     </div>
 
@@ -674,22 +578,21 @@ Procedure
     random.trust_cpu=on rd.luks.options=discard
     ```
 
-    </div>
-
     - For the `coreos.live.rootfs_url` artifact, specify the matching `rootfs` artifact for the `kernel` and `initramfs` that you are starting. Only HTTP and HTTPS protocols are supported.
 
     - For the `ip` parameter, manually assign the IP address, as described in *Installing a cluster with z/VM on IBM Z and IBM LinuxONE*.
 
     - For installations on DASD-type disks, use `rd.dasd` to specify the DASD where Red Hat Enterprise Linux CoreOS (RHCOS) is to be installed. For installations on FCP-type disks, use `rd.zfcp=<adapter>,<wwpn>,<lun>` to specify the FCP disk where RHCOS is to be installed.
 
-      > [!NOTE]
-      > For FCP multipath configurations, provide available multiple paths to the disk instead of a single path, and add `rd.multipath=default` to enable multipath during installation.
+      <div class="note">
 
-      <div class="formalpara">
+      For FCP multipath configurations, provide available multiple paths to the disk instead of a single path, and add `rd.multipath=default` to enable multipath during installation.
 
-      <div class="title">
+      </div>
 
-      Example
+      <div class="formalpara-title">
+
+      **Example**
 
       </div>
 
@@ -699,18 +602,17 @@ Procedure
       rd.multipath=default
       ```
 
-      </div>
-
     - To enable FIPS mode, specify `fips=1`. This entry is required in addition to setting the `fips` parameter to `true` in the `install-config.yaml` file.
 
-      > [!NOTE]
-      > The `.ins` and `initrd.img.addrsize` files are automatically generated for `s390x` architecture as part of boot-artifacts from the installation program and are only used when booting in an LPAR environment.
+      <div class="note">
 
-      <div class="formalpara">
+      The `.ins` and `initrd.img.addrsize` files are automatically generated for `s390x` architecture as part of boot-artifacts from the installation program and are only used when booting in an LPAR environment.
 
-      <div class="title">
+      </div>
 
-      Example filesystem with LPAR boot
+      <div class="formalpara-title">
+
+      **Example filesystem with LPAR boot**
 
       </div>
 
@@ -723,8 +625,6 @@ Procedure
           └─ agent.s390x-rootfs.img
       ```
 
-      </div>
-
 2.  Rename the `boot-artifacts` file present in the `generic.ins` parameter file to match the names of the `boot-artifacts` file generated by the installation program.
 
 3.  Transfer the `initrd`, `kernel`, `generic.ins`, and `initrd.img.addrsize` parameter files to the file server. For more information, see [Booting Linux in LPAR mode](https://www.ibm.com/docs/en/linux-on-systems?topic=bl-booting-linux-in-lpar-mode) (IBM documentation).
@@ -733,16 +633,4 @@ Procedure
 
 5.  Repeat the procedure for all other machines in the cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Installing a cluster in an LPAR on IBM Z and IBM LinuxONE](../../installing/installing_ibm_z/upi/installing-ibm-z-lpar.xml#installing-ibm-z-lpar)
-
-</div>

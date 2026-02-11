@@ -2,8 +2,11 @@ To update the boot loader on RHCOS nodes using `bootupd`, you must either run th
 
 Unlike `grubby` or other boot loader tools, `bootupd` does not manage kernel space configuration such as passing kernel arguments. To configure kernel arguments, see [Adding kernel arguments to nodes](../../nodes/nodes/nodes-nodes-managing.xml#nodes-nodes-kernel-arguments_nodes-nodes-managing).
 
-> [!NOTE]
-> You can use `bootupd` to update the boot loader to protect against the BootHole vulnerability.
+<div class="note">
+
+You can use `bootupd` to update the boot loader to protect against the BootHole vulnerability.
+
+</div>
 
 # Updating the boot loader manually
 
@@ -15,11 +18,9 @@ You can manually inspect the status of the system and update the boot loader by 
     # bootupctl status
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output for `x86_64`
+    **Example output for `x86_64`**
 
     </div>
 
@@ -29,13 +30,9 @@ You can manually inspect the status of the system and update the boot loader by 
       Update: At latest version
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example output for `aarch64`
+    **Example output for `aarch64`**
 
     </div>
 
@@ -45,11 +42,9 @@ You can manually inspect the status of the system and update the boot loader by 
       Update: At latest version
     ```
 
-    </div>
-
 <!-- -->
 
-2.  OpenShift Container Platform clusters initially installed on version 4.4 and older require an explicit adoption phase.
+1.  OpenShift Container Platform clusters initially installed on version 4.4 and older require an explicit adoption phase.
 
     If the system status is `Adoptable`, perform the adoption:
 
@@ -57,11 +52,9 @@ You can manually inspect the status of the system and update the boot loader by 
     # bootupctl adopt-and-update
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -69,19 +62,15 @@ You can manually inspect the status of the system and update the boot loader by 
     Updated: grub2-efi-x64-1:2.04-31.el8_4.1.x86_64,shim-x64-15-8.el8_1.x86_64
     ```
 
-    </div>
-
-3.  If an update is available, apply the update so that the changes take effect on the next reboot:
+2.  If an update is available, apply the update so that the changes take effect on the next reboot:
 
     ``` terminal
     # bootupctl update
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -89,25 +78,27 @@ You can manually inspect the status of the system and update the boot loader by 
     Updated: grub2-efi-x64-1:2.04-31.el8_4.1.x86_64,shim-x64-15-8.el8_1.x86_64
     ```
 
-    </div>
-
 # Updating the bootloader automatically via a machine config
 
 Another way to automatically update the boot loader with `bootupd` is to create a systemd service unit that will update the boot loader as needed on every boot. This unit will run the `bootupctl update` command during the boot process and will be installed on the nodes via a machine config.
 
-> [!NOTE]
-> This configuration is not enabled by default as unexpected interruptions of the update operation may lead to unbootable nodes. If you enable this configuration, make sure to avoid interrupting nodes during the boot process while the bootloader update is in progress. The boot loader update operation generally completes quickly thus the risk is low.
+<div class="note">
+
+This configuration is not enabled by default as unexpected interruptions of the update operation may lead to unbootable nodes. If you enable this configuration, make sure to avoid interrupting nodes during the boot process while the bootloader update is in progress. The boot loader update operation generally completes quickly thus the risk is low.
+
+</div>
 
 1.  Create a Butane config file, `99-worker-bootupctl-update.bu`, including the contents of the `bootupctl-update.service` systemd unit.
 
-    > [!NOTE]
-    > The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+    <div class="note">
 
-    <div class="formalpara">
+    The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
 
-    <div class="title">
+    </div>
 
-    Example output
+    <div class="formalpara-title">
+
+    **Example output**
 
     </div>
 
@@ -133,8 +124,6 @@ Another way to automatically update the boot loader with `bootupd` is to create 
           [Install]
           WantedBy=multi-user.target
     ```
-
-    </div>
 
     - On control plane nodes, substitute `master` for `worker` in both of these locations.
 

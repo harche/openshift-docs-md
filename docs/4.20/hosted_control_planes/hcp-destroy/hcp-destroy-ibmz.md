@@ -4,14 +4,6 @@ You can destroy a hosted cluster on `x86` bare metal with IBM Z compute nodes an
 
 To destroy a hosted cluster and its managed cluster on `x86` bare metal with IBM Z® compute nodes, you can use the command-line interface (CLI).
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Scale the `NodePool` object to `0` nodes by running the following command:
 
     ``` terminal
@@ -23,13 +15,16 @@ Procedure
 
     If you want to re-attach compute nodes to the cluster, you can scale up the `NodePool` object with the number of compute nodes that you want. For z/VM and LPAR to reuse the agents, you must re-create them by using the `Discovery` image.
 
-    > [!IMPORTANT]
-    > If the compute nodes are not detached from the hosted cluster or are stuck in the `Notready` state, delete the compute nodes manually by running the following command:
-    >
-    > ``` terminal
-    > $ oc --kubeconfig <hosted_cluster_name>.kubeconfig delete \
-    >   node <compute_node_name>
-    > ```
+    <div class="important">
+
+    If the compute nodes are not detached from the hosted cluster or are stuck in the `Notready` state, delete the compute nodes manually by running the following command:
+
+    ``` terminal
+    $ oc --kubeconfig <hosted_cluster_name>.kubeconfig delete \
+      node <compute_node_name>
+    ```
+
+    </div>
 
     If you are using an OSA network device in Processor Resource/Systems Manager (PR/SM) mode, auto scaling is not supported. You must delete the old agent manually and scale up the node pool because the new agent joins during the scale down process.
 
@@ -47,8 +42,11 @@ Procedure
     $ oc -n <hosted_control_plane_namespace> delete agent <agent_name>
     ```
 
-    > [!NOTE]
-    > You can delete the virtual machines that you created as agents after you delete the agents from the cluster.
+    <div class="note">
+
+    You can delete the virtual machines that you created as agents after you delete the agents from the cluster.
+
+    </div>
 
 4.  Destroy the hosted cluster by running the following command:
 
@@ -56,5 +54,3 @@ Procedure
     $ hcp destroy cluster agent --name <hosted_cluster_name> \
       --namespace <hosted_cluster_namespace>
     ```
-
-</div>

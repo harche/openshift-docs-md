@@ -58,27 +58,9 @@ Instructions for pulling the `driver-toolkit` image from `registry.redhat.io` wi
 
 ## Finding the Driver Toolkit image URL in the payload
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You obtained the image [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret).
 
 - You installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Use the `oc adm` command to extract the image URL of the `driver-toolkit` corresponding to a certain release:
 
@@ -94,11 +76,9 @@ Procedure
       $ oc adm release info quay.io/openshift-release-dev/ocp-release:4.17.z-aarch64 --image-for=driver-toolkit
       ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -106,32 +86,23 @@ Procedure
     quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:b53883ca2bac5925857148c4a1abc300ced96c222498e3bc134fe7ce3a1dd404
     ```
 
-    </div>
-
 2.  Obtain this image using a valid pull secret, such as the pull secret required to install OpenShift Container Platform:
 
     ``` terminal
     $ podman pull --authfile=path/to/pullsecret.json quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:<SHA>
     ```
 
-</div>
-
 # Using the Driver Toolkit
 
 As an example, the Driver Toolkit can be used as the base image for building a very simple kernel module called `simple-kmod`.
 
-> [!NOTE]
-> The Driver Toolkit includes the necessary dependencies, `openssl`, `mokutil`, and `keyutils`, needed to sign a kernel module. However, in this example, the `simple-kmod` kernel module is not signed and therefore cannot be loaded on systems with `Secure Boot` enabled.
+<div class="note">
 
-## Build and run the simple-kmod driver container on a cluster
-
-<div>
-
-<div class="title">
-
-Prerequisites
+The Driver Toolkit includes the necessary dependencies, `openssl`, `mokutil`, and `keyutils`, needed to sign a kernel module. However, in this example, the `simple-kmod` kernel module is not signed and therefore cannot be loaded on systems with `Secure Boot` enabled.
 
 </div>
+
+## Build and run the simple-kmod driver container on a cluster
 
 - You have a running OpenShift Container Platform cluster.
 
@@ -141,19 +112,13 @@ Prerequisites
 
 - You are logged into the OpenShift CLI as a user with `cluster-admin` privileges.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 Create a namespace. For example:
-
-</div>
 
 ``` terminal
 $ oc new-project simple-kmod-demo
@@ -331,11 +296,9 @@ $ oc new-project simple-kmod-demo
         $ oc get pod -n simple-kmod-demo
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -347,19 +310,15 @@ $ oc new-project simple-kmod-demo
         simple-kmod-driver-container-p45cc   1/1     Running     0          40s
         ```
 
-        </div>
-
     2.  Execute the `lsmod` command in the driver container pod:
 
         ``` terminal
         $ oc exec -it pod/simple-kmod-driver-container-p45cc -- lsmod | grep simple
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -367,8 +326,6 @@ $ oc new-project simple-kmod-demo
         simple_procfs_kmod     16384  0
         simple_kmod            16384  0
         ```
-
-        </div>
 
 # Additional resources
 

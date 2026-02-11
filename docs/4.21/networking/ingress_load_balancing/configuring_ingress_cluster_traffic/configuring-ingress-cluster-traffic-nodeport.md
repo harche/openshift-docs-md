@@ -20,8 +20,11 @@ Use a `NodePort`-type `Service` resource to expose a service on a specific port 
 
 The port is specified in the `Service` resource’s `.spec.ports[*].nodePort` parameter
 
-> [!IMPORTANT]
-> Using a node port requires additional port resources.
+<div class="important">
+
+Using a node port requires additional port resources.
+
+</div>
 
 A `NodePort` exposes the service on a static port on the IP address of a node. A `NodePort` spans the `30000` to `32767` IP address ranges by default, which means a `NodePort` is unlikely to match the intended port of a service. For example, port `8080` might be exposed as port `31020` on the node.
 
@@ -35,25 +38,7 @@ If the project and service that you want to expose does not exist, create the pr
 
 If the project and service already exists, skip to the procedure on exposing the service to create a route.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`) and log in as a cluster administrator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a new project for your service by running the `oc new-project` command:
 
@@ -73,11 +58,9 @@ Procedure
     $ oc get svc -n <project_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -86,36 +69,17 @@ Procedure
     nodejs-ex   ClusterIP   172.30.197.157   <none>        8080/TCP   70s
     ```
 
+    <div class="note">
+
+    By default, the new service does not have an external IP address.
+
     </div>
-
-    > [!NOTE]
-    > By default, the new service does not have an external IP address.
-
-</div>
 
 # Exposing the service by creating a route
 
 To enable external access to your application that runs on OpenShift Container Platform, you can expose the service as a route by using the `oc expose` command.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You logged into OpenShift Container Platform.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the project where the service you want to expose is located:
 
@@ -129,11 +93,9 @@ Procedure
     $ oc edit svc <service_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -149,8 +111,6 @@ Procedure
       type: NodePort
     ```
 
-    </div>
-
     - `nodePort`: Optional parameter. Specifies the node port range for the application. By default, OpenShift Container Platform selects an available port in the `30000-32767` range.
 
     - `type`: Specifies the service type.
@@ -161,11 +121,9 @@ Procedure
     $ oc get svc -n myproject
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -175,23 +133,11 @@ Procedure
     nodejs-ex-ingress   NodePort    172.30.107.72    <none>        3306:31345/TCP   39s
     ```
 
-    </div>
-
 4.  Optional: To remove the service created automatically by the `oc new-app` command, enter the following command:
 
     ``` terminal
     $ oc delete svc nodejs-ex
     ```
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - To check that the service node port is updated with a port in the `30000-32767` range, enter the following command:
 
@@ -201,11 +147,9 @@ Verification
 
   In the following example output, the updated port is `30327`:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -213,10 +157,6 @@ Verification
   NAME    TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
   httpd   NodePort   172.xx.xx.xx    <none>        8443:30327/TCP   109s
   ```
-
-  </div>
-
-</div>
 
 # Additional resources
 

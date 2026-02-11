@@ -10,27 +10,9 @@ The steps for removing the Red Hat OpenShift Distributed Tracing Platform from 
 
 You can remove a TempoStack instance in the **Administrator** view of the web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to the OpenShift Container Platform web console as a cluster administrator with the `cluster-admin` role.
 
 - For Red Hat OpenShift Dedicated, you must be logged in using an account with the `dedicated-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to **Ecosystem** → **Installed Operators** → **Tempo Operator** → **TempoStack**.
 
@@ -38,27 +20,13 @@ Procedure
 
 3.  Optional: Remove the Tempo Operator.
 
-</div>
-
 # Removing by using the CLI
 
 You can remove a TempoStack instance on the command line.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - An active OpenShift CLI (`oc`) session by a cluster administrator with the `cluster-admin` role.
 
   <div class="tip">
-
-  <div class="title">
-
-  </div>
 
   - Ensure that your OpenShift CLI (`oc`) version is up to date and matches your OpenShift Container Platform version.
 
@@ -69,16 +37,6 @@ Prerequisites
     ```
 
   </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Get the name of the TempoStack instance by running the following command:
 
@@ -94,23 +52,13 @@ Procedure
 
 3.  Optional: Remove the Tempo Operator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Run the following command to verify that the TempoStack instance is not found in the output, which indicates its successful removal:
 
     ``` terminal
     $ oc get deployments -n <project_of_tempostack_instance>
     ```
-
-</div>
 
 # Additional resources
 

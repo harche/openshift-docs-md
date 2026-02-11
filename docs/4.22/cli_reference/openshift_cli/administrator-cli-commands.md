@@ -10,11 +10,9 @@ Run `oc adm -h` to list all administrator commands or run `oc <command> --help` 
 
 Output the inputs and dependencies of your builds
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -29,17 +27,13 @@ Example usage
   oc adm build-chain <image-stream> -n test --all
 ```
 
-</div>
-
 ## oc adm catalog mirror
 
 Mirror an operator-registry catalog
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -65,17 +59,13 @@ Example usage
   oc delete imagedigestmirrorset -l operators.openshift.org/catalog=true
 ```
 
-</div>
-
 ## oc adm certificate approve
 
 Approve a certificate signing request
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -84,17 +74,13 @@ Example usage
   oc adm certificate approve csr-sqgzp
 ```
 
-</div>
-
 ## oc adm certificate deny
 
 Deny a certificate signing request
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -103,17 +89,13 @@ Example usage
   oc adm certificate deny csr-sqgzp
 ```
 
-</div>
-
 ## oc adm copy-to-node
 
 Copy specified files to the node
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -122,17 +104,13 @@ Example usage
   oc adm copy-to-node --copy=new-bootstrap-kubeconfig=/etc/kubernetes/kubeconfig node/node-0
 ```
 
-</div>
-
 ## oc adm cordon
 
 Mark node as unschedulable
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -141,17 +119,13 @@ Example usage
   oc adm cordon foo
 ```
 
-</div>
-
 ## oc adm create-bootstrap-project-template
 
 Create a bootstrap project template
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -160,17 +134,13 @@ Example usage
   oc adm create-bootstrap-project-template -o yaml
 ```
 
-</div>
-
 ## oc adm create-error-template
 
 Create an error page template
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -179,17 +149,13 @@ Example usage
   oc adm create-error-template
 ```
 
-</div>
-
 ## oc adm create-login-template
 
 Create a login template
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -198,17 +164,13 @@ Example usage
   oc adm create-login-template
 ```
 
-</div>
-
 ## oc adm create-provider-selection-template
 
 Create a provider selection template
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -217,17 +179,13 @@ Example usage
   oc adm create-provider-selection-template
 ```
 
-</div>
-
 ## oc adm drain
 
 Drain node in preparation for maintenance
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -239,17 +197,13 @@ Example usage
   oc adm drain foo --grace-period=900
 ```
 
-</div>
-
 ## oc adm groups add-users
 
 Add users to a group
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -258,17 +212,13 @@ Example usage
   oc adm groups add-users my-group user1 user2
 ```
 
-</div>
-
 ## oc adm groups new
 
 Create a new group
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -283,17 +233,13 @@ Example usage
   oc adm groups new my-group user1 -o name
 ```
 
-</div>
-
 ## oc adm groups prune
 
 Remove old OpenShift groups referencing missing records from an external provider
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -311,17 +257,13 @@ Example usage
   oc adm groups prune groups/group_name groups/other_name --sync-config=/path/to/ldap-sync-config.yaml --confirm
 ```
 
-</div>
-
 ## oc adm groups remove-users
 
 Remove users from a group
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -330,17 +272,13 @@ Example usage
   oc adm groups remove-users my-group user1 user2
 ```
 
-</div>
-
 ## oc adm groups sync
 
 Sync OpenShift groups with records from an external provider
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -361,17 +299,13 @@ Example usage
   oc adm groups sync groups/group1 groups/group2 groups/group3 --sync-config=/path/to/sync-config.yaml --confirm
 ```
 
-</div>
-
 ## oc adm inspect
 
 Collect debugging data for a given resource
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -389,17 +323,13 @@ Example usage
   oc adm inspect clusteroperators,clusterversions
 ```
 
-</div>
-
 ## oc adm migrate icsp
 
 Update imagecontentsourcepolicy file(s) to imagedigestmirrorset file(s)
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -408,17 +338,13 @@ Example usage
   oc adm migrate icsp imagecontentsourcepolicy.yaml --dest-dir mydir
 ```
 
-</div>
-
 ## oc adm migrate template-instances
 
 Update template instances to point to the latest group-version-kinds
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -430,17 +356,13 @@ Example usage
   oc adm migrate template-instances --confirm
 ```
 
-</div>
-
 ## oc adm must-gather
 
 Launch a new instance of a pod for gathering debug information
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -464,17 +386,13 @@ Example usage
   oc adm must-gather --image=my/image:tag --source-dir=/pod/directory -- myspecial-command.sh
 ```
 
-</div>
-
 ## oc adm new-project
 
 Create a new project
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -483,17 +401,13 @@ Example usage
   oc adm new-project myproject --node-selector='type=user-node,region=east'
 ```
 
-</div>
-
 ## oc adm node-image create
 
 Create an ISO image for booting the nodes to be added to the target cluster
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -518,17 +432,13 @@ Example usage
   oc adm node-image create --mac-address=00:d8:e7:c7:4b:bb --root-device-hint=deviceName:/dev/sda
 ```
 
-</div>
-
 ## oc adm node-image monitor
 
 Monitor new nodes being added to an OpenShift cluster
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -541,17 +451,13 @@ Example usage
   oc adm node-image monitor --ip-addresses 192.168.111.83,192.168.111.84
 ```
 
-</div>
-
 ## oc adm node-logs
 
 Display and filter node logs
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -566,17 +472,13 @@ Example usage
   oc adm node-logs --role master --path=cron
 ```
 
-</div>
-
 ## oc adm ocp-certificates monitor-certificates
 
 Watch platform certificates
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -585,17 +487,13 @@ Example usage
   oc adm ocp-certificates monitor-certificates
 ```
 
-</div>
-
 ## oc adm ocp-certificates regenerate-leaf
 
 Regenerate client and serving certificates of an OpenShift cluster
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -604,17 +502,13 @@ Example usage
   oc adm ocp-certificates regenerate-leaf -n openshift-config-managed secret/kube-controller-manager-client-cert-key
 ```
 
-</div>
-
 ## oc adm ocp-certificates regenerate-machine-config-server-serving-cert
 
 Regenerate the machine config operator certificates in an OpenShift cluster
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -626,17 +520,13 @@ Example usage
   oc adm ocp-certificates update-ignition-ca-bundle-for-machine-config-server
 ```
 
-</div>
-
 ## oc adm ocp-certificates regenerate-top-level
 
 Regenerate the top level certificates in an OpenShift cluster
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -645,17 +535,13 @@ Example usage
   oc adm ocp-certificates regenerate-top-level -n openshift-kube-apiserver-operator secret/loadbalancer-serving-signer-key
 ```
 
-</div>
-
 ## oc adm ocp-certificates remove-old-trust
 
 Remove old CAs from ConfigMaps representing platform trust bundles in an OpenShift cluster
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -667,17 +553,13 @@ Example usage
   oc adm ocp-certificates remove-old-trust configmaps -A --all --created-before 2023-06-05T14:44:06Z
 ```
 
-</div>
-
 ## oc adm ocp-certificates update-ignition-ca-bundle-for-machine-config-server
 
 Update user-data secrets in an OpenShift cluster to use updated MCO certfs
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -689,17 +571,13 @@ Example usage
   oc adm ocp-certificates update-ignition-ca-bundle-for-machine-config-server
 ```
 
-</div>
-
 ## oc adm policy add-cluster-role-to-group
 
 Add a role to groups for all projects in the cluster
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -708,17 +586,13 @@ Example usage
   oc adm policy add-cluster-role-to-group cluster-admin cluster-admins
 ```
 
-</div>
-
 ## oc adm policy add-cluster-role-to-user
 
 Add a role to users for all projects in the cluster
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -727,17 +601,13 @@ Example usage
   oc adm policy add-cluster-role-to-user system:build-strategy-docker devuser
 ```
 
-</div>
-
 ## oc adm policy add-role-to-user
 
 Add a role to users or service accounts for the current project
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -749,17 +619,13 @@ Example usage
   oc adm policy add-role-to-user edit -z serviceaccount1
 ```
 
-</div>
-
 ## oc adm policy add-scc-to-group
 
 Add a security context constraint to groups
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -768,17 +634,13 @@ Example usage
   oc adm policy add-scc-to-group restricted group1 group2
 ```
 
-</div>
-
 ## oc adm policy add-scc-to-user
 
 Add a security context constraint to users or a service account
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -790,17 +652,13 @@ Example usage
   oc adm policy add-scc-to-user privileged -z serviceaccount1
 ```
 
-</div>
-
 ## oc adm policy remove-cluster-role-from-group
 
 Remove a role from groups for all projects in the cluster
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -809,17 +667,13 @@ Example usage
   oc adm policy remove-cluster-role-from-group cluster-admin cluster-admins
 ```
 
-</div>
-
 ## oc adm policy remove-cluster-role-from-user
 
 Remove a role from users for all projects in the cluster
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -828,17 +682,13 @@ Example usage
   oc adm policy remove-cluster-role-from-user system:build-strategy-docker devuser
 ```
 
-</div>
-
 ## oc adm policy scc-review
 
 Check which service account can create a pod
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -857,17 +707,13 @@ Example usage
   oc adm policy scc-review -f myresource_with_no_sa.yaml
 ```
 
-</div>
-
 ## oc adm policy scc-subject-review
 
 Check whether a user or a service account can create a pod
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -882,17 +728,13 @@ Example usage
   oc adm policy scc-subject-review -f myresourcewithsa.yaml
 ```
 
-</div>
-
 ## oc adm prune builds
 
 Remove old completed and failed builds
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -905,17 +747,13 @@ Example usage
   oc adm prune builds --orphans --confirm
 ```
 
-</div>
-
 ## oc adm prune deployments
 
 Remove old completed and failed deployment configs
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -927,17 +765,13 @@ Example usage
   oc adm prune deployments --keep-complete=1 --confirm
 ```
 
-</div>
-
 ## oc adm prune groups
 
 Remove old OpenShift groups referencing missing records from an external provider
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -955,17 +789,13 @@ Example usage
   oc adm prune groups groups/group_name groups/other_name --sync-config=/path/to/ldap-sync-config.yaml --confirm
 ```
 
-</div>
-
 ## oc adm prune images
 
 Remove unreferenced images
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -991,17 +821,13 @@ Example usage
   oc adm prune images --registry-url=registry.example.org --certificate-authority=/path/to/custom/ca.crt --confirm
 ```
 
-</div>
-
 ## oc adm prune renderedmachineconfigs
 
 Prunes rendered MachineConfigs in an OpenShift cluster
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1022,17 +848,13 @@ Example usage
   oc adm prune renderedmachineconfigs --count=10 --pool-name=worker --confirm
 ```
 
-</div>
-
 ## oc adm prune renderedmachineconfigs list
 
 Lists rendered MachineConfigs in an OpenShift cluster
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1044,17 +866,13 @@ Example usage
   oc adm prune renderedmachineconfigs list --in-use
 ```
 
-</div>
-
 ## oc adm reboot-machine-config-pool
 
 Initiate reboot of the specified MachineConfigPool
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1069,17 +887,13 @@ Example usage
   oc adm reboot-machine-config-pool mcp/master
 ```
 
-</div>
-
 ## oc adm release extract
 
 Extract the contents of an update payload to disk
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1095,17 +909,13 @@ Example usage
   oc adm release extract --git=DIR quay.io/openshift-release-dev/ocp-release:4.11.2 --filter-by-os=linux/s390x
 ```
 
-</div>
-
 ## oc adm release info
 
 Display information about a release
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1127,17 +937,13 @@ Example usage
   oc adm release info quay.io/openshift-release-dev/ocp-release:4.11.2 --filter-by-os=linux/s390x
 ```
 
-</div>
-
 ## oc adm release mirror
 
 Mirror a release to a different image registry location
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1162,17 +968,13 @@ Example usage
   --to=registry.example.com/your/repository --apply-release-image-signature
 ```
 
-</div>
-
 ## oc adm release new
 
 Create a new OpenShift release
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1192,17 +994,13 @@ Example usage
   oc adm release new --from-release registry.ci.openshift.org/origin/release:v4.11
 ```
 
-</div>
-
 ## oc adm restart-kubelet
 
 Restart kubelet on the specified nodes
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1220,17 +1018,13 @@ Example usage
   oc adm restart-kubelet nodes -l node-role.kubernetes.io/master --parallelism=100% --directive=RemoveKubeletKubeconfig
 ```
 
-</div>
-
 ## oc adm taint
 
 Update the taints on one or more nodes
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1252,17 +1046,13 @@ Example usage
   oc adm taint nodes foo bar:NoSchedule
 ```
 
-</div>
-
 ## oc adm top images
 
 Show usage statistics for images
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1271,17 +1061,13 @@ Example usage
   oc adm top images
 ```
 
-</div>
-
 ## oc adm top imagestreams
 
 Show usage statistics for image streams
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1290,17 +1076,13 @@ Example usage
   oc adm top imagestreams
 ```
 
-</div>
-
 ## oc adm top node
 
 Display resource (CPU/memory) usage of nodes
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1312,17 +1094,13 @@ Example usage
   oc adm top node NODE_NAME
 ```
 
-</div>
-
 ## oc adm top persistentvolumeclaims
 
 Experimental: Show usage statistics for bound persistentvolumeclaims
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1337,17 +1115,13 @@ Example usage
   oc adm top persistentvolumeclaims database-pvc app-pvc -n default
 ```
 
-</div>
-
 ## oc adm top pod
 
 Display resource (CPU/memory) usage of pods
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1365,17 +1139,13 @@ Example usage
   oc adm top pod -l name=myLabel
 ```
 
-</div>
-
 ## oc adm uncordon
 
 Mark node as schedulable
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1384,17 +1154,13 @@ Example usage
   oc adm uncordon foo
 ```
 
-</div>
-
 ## oc adm upgrade
 
 Upgrade a cluster or adjust the upgrade channel
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1406,17 +1172,13 @@ Example usage
   oc adm upgrade --to-latest=true
 ```
 
-</div>
-
 ## oc adm verify-image-signature
 
 Verify the image identity contained in the image signature
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1438,17 +1200,13 @@ Example usage
   oc adm verify-image-signature sha256:c841e9b64e4579bd56c794bdd7c36e1c257110fd2404bebbb8b613e4935228c4 --remove-all
 ```
 
-</div>
-
 ## oc adm wait-for-node-reboot
 
 Wait for nodes to reboot after running `oc adm reboot-machine-config-pool`
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1463,17 +1221,13 @@ Example usage
   oc adm wait-for-node-reboot nodes -l node-role.kubernetes.io/master --reboot-number=4
 ```
 
-</div>
-
 ## oc adm wait-for-stable-cluster
 
 Wait for the platform operators to become stable
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
@@ -1484,8 +1238,6 @@ Example usage
   # Consider operators to be stable if they report as such for 5 minutes straight
   oc adm wait-for-stable-cluster --minimum-stable-period 5m
 ```
-
-</div>
 
 # Additional resources
 

@@ -6,13 +6,13 @@ Type
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | `metadata` is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | FlowSchemaSpec describes how the FlowSchema’s specification looks like. |
-| `status` | `object` | FlowSchemaStatus represents the current state of a FlowSchema. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | `metadata` is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                              |
+| `spec`       | `object`                                                                             | FlowSchemaSpec describes how the FlowSchema’s specification looks like.                                                                                                                                                                                                                              |
+| `status`     | `object`                                                                             | FlowSchemaStatus represents the current state of a FlowSchema.                                                                                                                                                                                                                                       |
 
 ## .spec
 
@@ -25,13 +25,13 @@ Type
 Required
 - `priorityLevelConfiguration`
 
-| Property | Type | Description |
-|----|----|----|
-| `distinguisherMethod` | `object` | FlowDistinguisherMethod specifies the method of a flow distinguisher. |
-| `matchingPrecedence` | `integer` | `matchingPrecedence` is used to choose among the FlowSchemas that match a given request. The chosen FlowSchema is among those with the numerically lowest (which we take to be logically highest) MatchingPrecedence. Each MatchingPrecedence value must be ranged in \[1,10000\]. Note that if the precedence is not specified, it will be set to 1000 as default. |
-| `priorityLevelConfiguration` | `object` | PriorityLevelConfigurationReference contains information that points to the "request-priority" being used. |
-| `rules` | `array` | `rules` describes which requests will match this flow schema. This FlowSchema matches a request if and only if at least one member of rules matches the request. if it is an empty slice, there will be no requests matching the FlowSchema. |
-| `rules[]` | `object` | PolicyRulesWithSubjects prescribes a test that applies to a request to an apiserver. The test considers the subject making the request, the verb being requested, and the resource to be acted upon. This PolicyRulesWithSubjects matches a request if and only if both (a) at least one member of subjects matches the request and (b) at least one member of resourceRules or nonResourceRules matches the request. |
+| Property                     | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                           |
+|------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `distinguisherMethod`        | `object`  | FlowDistinguisherMethod specifies the method of a flow distinguisher.                                                                                                                                                                                                                                                                                                                                                 |
+| `matchingPrecedence`         | `integer` | `matchingPrecedence` is used to choose among the FlowSchemas that match a given request. The chosen FlowSchema is among those with the numerically lowest (which we take to be logically highest) MatchingPrecedence. Each MatchingPrecedence value must be ranged in \[1,10000\]. Note that if the precedence is not specified, it will be set to 1000 as default.                                                   |
+| `priorityLevelConfiguration` | `object`  | PriorityLevelConfigurationReference contains information that points to the "request-priority" being used.                                                                                                                                                                                                                                                                                                            |
+| `rules`                      | `array`   | `rules` describes which requests will match this flow schema. This FlowSchema matches a request if and only if at least one member of rules matches the request. if it is an empty slice, there will be no requests matching the FlowSchema.                                                                                                                                                                          |
+| `rules[]`                    | `object`  | PolicyRulesWithSubjects prescribes a test that applies to a request to an apiserver. The test considers the subject making the request, the verb being requested, and the resource to be acted upon. This PolicyRulesWithSubjects matches a request if and only if both (a) at least one member of subjects matches the request and (b) at least one member of resourceRules or nonResourceRules matches the request. |
 
 ## .spec.distinguisherMethod
 
@@ -44,9 +44,9 @@ Type
 Required
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `type` | `string` | `type` is the type of flow distinguisher method The supported types are "ByUser" and "ByNamespace". Required. |
+| Property | Type     | Description                                                                                                   |
+|----------|----------|---------------------------------------------------------------------------------------------------------------|
+| `type`   | `string` | `type` is the type of flow distinguisher method The supported types are "ByUser" and "ByNamespace". Required. |
 
 ## .spec.priorityLevelConfiguration
 
@@ -59,9 +59,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | `name` is the name of the priority level configuration being referenced Required. |
+| Property | Type     | Description                                                                       |
+|----------|----------|-----------------------------------------------------------------------------------|
+| `name`   | `string` | `name` is the name of the priority level configuration being referenced Required. |
 
 ## .spec.rules
 
@@ -82,14 +82,14 @@ Type
 Required
 - `subjects`
 
-| Property | Type | Description |
-|----|----|----|
-| `nonResourceRules` | `array` | `nonResourceRules` is a list of NonResourcePolicyRules that identify matching requests according to their verb and the target non-resource URL. |
-| `nonResourceRules[]` | `object` | NonResourcePolicyRule is a predicate that matches non-resource requests according to their verb and the target non-resource URL. A NonResourcePolicyRule matches a request if and only if both (a) at least one member of verbs matches the request and (b) at least one member of nonResourceURLs matches the request. |
-| `resourceRules` | `array` | `resourceRules` is a slice of ResourcePolicyRules that identify matching requests according to their verb and the target resource. At least one of `resourceRules` and `nonResourceRules` has to be non-empty. |
-| `resourceRules[]` | `object` | ResourcePolicyRule is a predicate that matches some resource requests, testing the request’s verb and the target resource. A ResourcePolicyRule matches a resource request if and only if: (a) at least one member of verbs matches the request, (b) at least one member of apiGroups matches the request, (c) at least one member of resources matches the request, and (d) either (d1) the request does not specify a namespace (i.e., `Namespace==""`) and clusterScope is true or (d2) the request specifies a namespace and least one member of namespaces matches the request’s namespace. |
-| `subjects` | `array` | subjects is the list of normal user, serviceaccount, or group that this rule cares about. There must be at least one member in this slice. A slice that includes both the system:authenticated and system:unauthenticated user groups matches every request. Required. |
-| `subjects[]` | `object` | Subject matches the originator of a request, as identified by the request authentication system. There are three ways of matching an originator; by user, group, or service account. |
+| Property             | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|----------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `nonResourceRules`   | `array`  | `nonResourceRules` is a list of NonResourcePolicyRules that identify matching requests according to their verb and the target non-resource URL.                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `nonResourceRules[]` | `object` | NonResourcePolicyRule is a predicate that matches non-resource requests according to their verb and the target non-resource URL. A NonResourcePolicyRule matches a request if and only if both (a) at least one member of verbs matches the request and (b) at least one member of nonResourceURLs matches the request.                                                                                                                                                                                                                                                                          |
+| `resourceRules`      | `array`  | `resourceRules` is a slice of ResourcePolicyRules that identify matching requests according to their verb and the target resource. At least one of `resourceRules` and `nonResourceRules` has to be non-empty.                                                                                                                                                                                                                                                                                                                                                                                   |
+| `resourceRules[]`    | `object` | ResourcePolicyRule is a predicate that matches some resource requests, testing the request’s verb and the target resource. A ResourcePolicyRule matches a resource request if and only if: (a) at least one member of verbs matches the request, (b) at least one member of apiGroups matches the request, (c) at least one member of resources matches the request, and (d) either (d1) the request does not specify a namespace (i.e., `Namespace==""`) and clusterScope is true or (d2) the request specifies a namespace and least one member of namespaces matches the request’s namespace. |
+| `subjects`           | `array`  | subjects is the list of normal user, serviceaccount, or group that this rule cares about. There must be at least one member in this slice. A slice that includes both the system:authenticated and system:unauthenticated user groups matches every request. Required.                                                                                                                                                                                                                                                                                                                           |
+| `subjects[]`         | `object` | Subject matches the originator of a request, as identified by the request authentication system. There are three ways of matching an originator; by user, group, or service account.                                                                                                                                                                                                                                                                                                                                                                                                             |
 
 ## .spec.rules\[\].nonResourceRules
 
@@ -112,10 +112,10 @@ Required
 
 - `nonResourceURLs`
 
-| Property | Type | Description |
-|----|----|----|
+| Property          | Type             | Description                                                                                                                                                                                                                                                                                                                                                                            |
+|-------------------|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `nonResourceURLs` | `array (string)` | `nonResourceURLs` is a set of url prefixes that a user should have access to and may not be empty. For example: - "/healthz" is legal - "/hea\*" is illegal - "/hea" is legal but matches nothing - "/hea/**" also matches nothing - "/healthz/**" matches all per-component health checks. "\*" matches all non-resource urls. if it is present, it must be the only entry. Required. |
-| `verbs` | `array (string)` | `verbs` is a list of matching verbs and may not be empty. "\*" matches all verbs. If it is present, it must be the only entry. Required. |
+| `verbs`           | `array (string)` | `verbs` is a list of matching verbs and may not be empty. "\*" matches all verbs. If it is present, it must be the only entry. Required.                                                                                                                                                                                                                                               |
 
 ## .spec.rules\[\].resourceRules
 
@@ -140,13 +140,13 @@ Required
 
 - `resources`
 
-| Property | Type | Description |
-|----|----|----|
-| `apiGroups` | `array (string)` | `apiGroups` is a list of matching API groups and may not be empty. "\*" matches all API groups and, if present, must be the only entry. Required. |
-| `clusterScope` | `boolean` | `clusterScope` indicates whether to match requests that do not specify a namespace (which happens either because the resource is not namespaced or the request targets all namespaces). If this field is omitted or false then the `namespaces` field must contain a non-empty list. |
-| `namespaces` | `array (string)` | `namespaces` is a list of target namespaces that restricts matches. A request that specifies a target namespace matches only if either (a) this list contains that target namespace or (b) this list contains "**". Note that "**" matches any specified namespace but does not match a request that *does not specify* a namespace (see the `clusterScope` field for that). This list may be empty, but only if `clusterScope` is true. |
-| `resources` | `array (string)` | `resources` is a list of matching resources (i.e., lowercase and plural) with, if desired, subresource. For example, \[ "services", "nodes/status" \]. This list may not be empty. "\*" matches all resources and, if present, must be the only entry. Required. |
-| `verbs` | `array (string)` | `verbs` is a list of matching verbs and may not be empty. "\*" matches all verbs and, if present, must be the only entry. Required. |
+| Property       | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|----------------|------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiGroups`    | `array (string)` | `apiGroups` is a list of matching API groups and may not be empty. "\*" matches all API groups and, if present, must be the only entry. Required.                                                                                                                                                                                                                                                                                        |
+| `clusterScope` | `boolean`        | `clusterScope` indicates whether to match requests that do not specify a namespace (which happens either because the resource is not namespaced or the request targets all namespaces). If this field is omitted or false then the `namespaces` field must contain a non-empty list.                                                                                                                                                     |
+| `namespaces`   | `array (string)` | `namespaces` is a list of target namespaces that restricts matches. A request that specifies a target namespace matches only if either (a) this list contains that target namespace or (b) this list contains "**". Note that "**" matches any specified namespace but does not match a request that *does not specify* a namespace (see the `clusterScope` field for that). This list may be empty, but only if `clusterScope` is true. |
+| `resources`    | `array (string)` | `resources` is a list of matching resources (i.e., lowercase and plural) with, if desired, subresource. For example, \[ "services", "nodes/status" \]. This list may not be empty. "\*" matches all resources and, if present, must be the only entry. Required.                                                                                                                                                                         |
+| `verbs`        | `array (string)` | `verbs` is a list of matching verbs and may not be empty. "\*" matches all verbs and, if present, must be the only entry. Required.                                                                                                                                                                                                                                                                                                      |
 
 ## .spec.rules\[\].subjects
 
@@ -167,12 +167,12 @@ Type
 Required
 - `kind`
 
-| Property | Type | Description |
-|----|----|----|
-| `group` | `object` | GroupSubject holds detailed information for group-kind subject. |
-| `kind` | `string` | `kind` indicates which one of the other fields is non-empty. Required |
+| Property         | Type     | Description                                                                        |
+|------------------|----------|------------------------------------------------------------------------------------|
+| `group`          | `object` | GroupSubject holds detailed information for group-kind subject.                    |
+| `kind`           | `string` | `kind` indicates which one of the other fields is non-empty. Required              |
 | `serviceAccount` | `object` | ServiceAccountSubject holds detailed information for service-account-kind subject. |
-| `user` | `object` | UserSubject holds detailed information for user-kind subject. |
+| `user`           | `object` | UserSubject holds detailed information for user-kind subject.                      |
 
 ## .spec.rules\[\].subjects\[\].group
 
@@ -185,9 +185,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name is the user group that matches, or "\*" to match all user groups. See <https://github.com/kubernetes/apiserver/blob/master/pkg/authentication/user/user.go> for some well-known group names. Required. |
+| Property | Type     | Description                                                                                                                                                                                                 |
+|----------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | name is the user group that matches, or "\*" to match all user groups. See <https://github.com/kubernetes/apiserver/blob/master/pkg/authentication/user/user.go> for some well-known group names. Required. |
 
 ## .spec.rules\[\].subjects\[\].serviceAccount
 
@@ -202,10 +202,10 @@ Required
 
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | `name` is the name of matching ServiceAccount objects, or "\*" to match regardless of name. Required. |
-| `namespace` | `string` | `namespace` is the namespace of matching ServiceAccount objects. Required. |
+| Property    | Type     | Description                                                                                           |
+|-------------|----------|-------------------------------------------------------------------------------------------------------|
+| `name`      | `string` | `name` is the name of matching ServiceAccount objects, or "\*" to match regardless of name. Required. |
+| `namespace` | `string` | `namespace` is the namespace of matching ServiceAccount objects. Required.                            |
 
 ## .spec.rules\[\].subjects\[\].user
 
@@ -218,9 +218,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | `name` is the username that matches, or "\*" to match all usernames. Required. |
+| Property | Type     | Description                                                                    |
+|----------|----------|--------------------------------------------------------------------------------|
+| `name`   | `string` | `name` is the username that matches, or "\*" to match all usernames. Required. |
 
 ## .status
 
@@ -230,10 +230,10 @@ FlowSchemaStatus represents the current state of a FlowSchema.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `conditions` | `array` | `conditions` is a list of the current states of FlowSchema. |
-| `conditions[]` | `object` | FlowSchemaCondition describes conditions for a FlowSchema. |
+| Property       | Type     | Description                                                 |
+|----------------|----------|-------------------------------------------------------------|
+| `conditions`   | `array`  | `conditions` is a list of the current states of FlowSchema. |
+| `conditions[]` | `object` | FlowSchemaCondition describes conditions for a FlowSchema.  |
 
 ## .status.conditions
 
@@ -251,13 +251,13 @@ FlowSchemaCondition describes conditions for a FlowSchema.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property             | Type                                                                     | Description                                                                                  |
+|----------------------|--------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
 | `lastTransitionTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | `lastTransitionTime` is the last time the condition transitioned from one status to another. |
-| `message` | `string` | `message` is a human-readable message indicating details about last transition. |
-| `reason` | `string` | `reason` is a unique, one-word, CamelCase reason for the condition’s last transition. |
-| `status` | `string` | `status` is the status of the condition. Can be True, False, Unknown. Required. |
-| `type` | `string` | `type` is the type of the condition. Required. |
+| `message`            | `string`                                                                 | `message` is a human-readable message indicating details about last transition.              |
+| `reason`             | `string`                                                                 | `reason` is a unique, one-word, CamelCase reason for the condition’s last transition.        |
+| `status`             | `string`                                                                 | `status` is the status of the condition. Can be True, False, Unknown. Required.              |
+| `type`               | `string`                                                                 | `type` is the type of the condition. Required.                                               |
 
 # API endpoints
 
@@ -305,16 +305,16 @@ HTTP method
 Description
 delete collection of FlowSchema
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -324,10 +324,10 @@ HTTP method
 Description
 list or watch objects of kind FlowSchema
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`FlowSchemaList`](../objects/index.xml#io-k8s-api-flowcontrol-v1-FlowSchemaList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                             |
+|--------------------|------------------------------------------------------------------------------------------|
+| 200 - OK           | [`FlowSchemaList`](../objects/index.xml#io-k8s-api-flowcontrol-v1-FlowSchemaList) schema |
+| 401 - Unauthorized | Empty                                                                                    |
 
 HTTP responses
 
@@ -337,25 +337,25 @@ HTTP method
 Description
 create a FlowSchema
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |  |
+| Parameter | Type                                                                                                                                        | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
-| 201 - Created | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
-| 202 - Accepted | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
+| 201 - Created      | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
+| 202 - Accepted     | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                       |
 
 HTTP responses
 
@@ -367,10 +367,10 @@ HTTP method
 Description
 watch individual changes to a list of FlowSchema. deprecated: use the 'watch' parameter with a list operation instead.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -388,17 +388,17 @@ HTTP method
 Description
 delete a FlowSchema
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -408,10 +408,10 @@ HTTP method
 Description
 read the specified FlowSchema
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                       |
 
 HTTP responses
 
@@ -421,18 +421,18 @@ HTTP method
 Description
 partially update the specified FlowSchema
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
-| 201 - Created | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
+| 201 - Created      | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                       |
 
 HTTP responses
 
@@ -442,24 +442,24 @@ HTTP method
 Description
 replace the specified FlowSchema
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |  |
+| Parameter | Type                                                                                                                                        | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
-| 201 - Created | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
+| 201 - Created      | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                       |
 
 HTTP responses
 
@@ -477,10 +477,10 @@ HTTP method
 Description
 watch changes to an object of kind FlowSchema. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -498,10 +498,10 @@ HTTP method
 Description
 read status of the specified FlowSchema
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                       |
 
 HTTP responses
 
@@ -511,18 +511,18 @@ HTTP method
 Description
 partially update status of the specified FlowSchema
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
-| 201 - Created | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
+| 201 - Created      | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                       |
 
 HTTP responses
 
@@ -532,23 +532,23 @@ HTTP method
 Description
 replace status of the specified FlowSchema
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |  |
+| Parameter | Type                                                                                                                                        | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
-| 201 - Created | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
+| 201 - Created      | [`FlowSchema`](../schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.xml#flowschema-flowcontrol-apiserver-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                       |
 
 HTTP responses

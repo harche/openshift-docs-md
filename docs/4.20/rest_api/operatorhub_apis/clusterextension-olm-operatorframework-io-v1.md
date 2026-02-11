@@ -6,13 +6,13 @@ Type
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | spec is an optional field that defines the desired state of the ClusterExtension. |
-| `status` | `object` | status is an optional field that defines the observed state of the ClusterExtension. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | spec is an optional field that defines the desired state of the ClusterExtension.                                                                                                                                                                                                                    |
+| `status`     | `object`                                                                             | status is an optional field that defines the observed state of the ClusterExtension.                                                                                                                                                                                                                 |
 
 ## .spec
 
@@ -36,31 +36,31 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>install</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>install is an optional field used to configure the installation options for the ClusterExtension such as the pre-flight check configuration.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>namespace</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>namespace is a reference to a Kubernetes namespace. This is the namespace in which the provided ServiceAccount must exist. It also designates the default namespace where namespace-scoped resources for the extension are applied to the cluster. Some extensions may contain namespace-scoped resources to be applied in other namespaces. This namespace must exist.</p>
 <p>namespace is required, immutable, and follows the DNS label standard as defined in [RFC 1123]. It must contain only lowercase alphanumeric characters or hyphens (-), start and end with an alphanumeric character, and be no longer than 63 characters</p>
 <p>[RFC 1123]: <a href="https://tools.ietf.org/html/rfc1123">https://tools.ietf.org/html/rfc1123</a></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>serviceAccount</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>serviceAccount is a reference to a ServiceAccount used to perform all interactions with the cluster that are required to manage the extension. The ServiceAccount must be configured with the necessary permissions to perform these interactions. The ServiceAccount must exist in the namespace referenced in the spec. serviceAccount is required.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>source</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>source is a required field which selects the installation source of content for this ClusterExtension. Selection is performed by setting the sourceType.</p>
@@ -86,14 +86,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>preflight</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>preflight is an optional field that can be used to configure the checks that are run before installation or upgrade of the content for the package specified in the packageName field.</p>
@@ -122,14 +122,14 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>crdUpgradeSafety</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>crdUpgradeSafety is used to configure the CRD Upgrade Safety pre-flight checks that run prior to upgrades of installed content.</p>
@@ -158,14 +158,14 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>enforcement</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>enforcement is a required field, used to configure the state of the CRD Upgrade Safety pre-flight check.</p>
@@ -194,14 +194,14 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>name is a required, immutable reference to the name of the ServiceAccount to be used for installation and management of the content for the package specified in the packageName field.</p>
@@ -238,19 +238,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>catalog</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>catalog is used to configure how information is sourced from a catalog. This field is required when sourceType is "Catalog", and forbidden otherwise.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>sourceType</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>sourceType is a required reference to the type of install source.</p>
@@ -278,14 +278,14 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>channels</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>channels is an optional reference to a set of channels belonging to the package specified in the packageName field.</p>
@@ -297,7 +297,7 @@ Required
 <p>Some examples of invalid values are: - -some-channel - some-channel- - thisisareallylongchannelnamethatisgreaterthanthemaximumlength - original_40 - --default-channel</p>
 <p>[RFC 1123]: <a href="https://tools.ietf.org/html/rfc1123">https://tools.ietf.org/html/rfc1123</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>packageName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>packageName is a reference to the name of the package to be installed and is used to filter the content from catalogs.</p>
@@ -306,13 +306,13 @@ Required
 <p>Some examples of invalid values are: - -some-package - some-package- - thisisareallylongpackagenamethatisgreaterthanthemaximumlength - some.package</p>
 <p>[RFC 1123]: <a href="https://tools.ietf.org/html/rfc1123">https://tools.ietf.org/html/rfc1123</a></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>selector</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>selector is an optional field that can be used to filter the set of ClusterCatalogs used in the bundle selection process.</p>
 <p>When unspecified, all ClusterCatalogs will be used in the bundle selection process.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>upgradeConstraintPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>upgradeConstraintPolicy is an optional field that controls whether the upgrade path(s) defined in the catalog are enforced for the package referenced in the packageName field.</p>
@@ -321,7 +321,7 @@ Required
 <p>When this field is set to "SelfCertified", the upgrade constraints specified by the package author are ignored. This allows for upgrades and downgrades to any version of the package. This is considered a dangerous operation as it can lead to unknown and potentially disastrous outcomes, such as data loss. It is assumed that users have independently verified changes when using this option.</p>
 <p>When this field is omitted, the default value is "CatalogProvided".</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>version</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>version is an optional semver constraint (a specific version or range of versions). When unspecified, the latest version available will be installed.</p>
@@ -354,11 +354,11 @@ When unspecified, all ClusterCatalogs will be used in the bundle selection proce
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.source.catalog.selector.matchExpressions
 
@@ -381,11 +381,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .status
 
@@ -402,14 +402,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>conditions</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>The set of condition types which apply to all spec.source variations are Installed and Progressing.</p>
@@ -417,12 +417,12 @@ Type
 <p>The Progressing condition represents whether or not the ClusterExtension is advancing towards a new state. When Progressing is True and the Reason is Succeeded, the ClusterExtension is making progress towards a new state. When Progressing is True and the Reason is Retrying, the ClusterExtension has encountered an error that could be resolved on subsequent reconciliation attempts. When Progressing is False and the Reason is Blocked, the ClusterExtension has encountered an error that requires manual intervention for recovery.</p>
 <p>When the ClusterExtension is sourced from a catalog, if may also communicate a deprecation condition. These are indications from a package owner to guide users away from a particular package, channel, or bundle. BundleDeprecated is set if the requested bundle version is marked deprecated in the catalog. ChannelDeprecated is set if the requested channel is marked deprecated in the catalog. PackageDeprecated is set if the requested package is marked deprecated in the catalog. Deprecated is a rollup condition that is present when any of the deprecated conditions are present.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>conditions[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Condition contains details for one aspect of the current state of this API Resource.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>install</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>install is a representation of the current installation status for this ClusterExtension.</p></td>
@@ -463,14 +463,14 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastTransitionTime` | `string` | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable. |
-| `message` | `string` | message is a human readable message indicating details about the transition. This may be an empty string. |
-| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance. |
-| `reason` | `string` | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
-| `status` | `string` | status of the condition, one of True, False, Unknown. |
-| `type` | `string` | type of condition in CamelCase or in foo.example.com/CamelCase. |
+| Property             | Type      | Description                                                                                                                                                                                                                                                                                                                     |
+|----------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string`  | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable.                                                                                            |
+| `message`            | `string`  | message is a human readable message indicating details about the transition. This may be an empty string.                                                                                                                                                                                                                       |
+| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.                                   |
+| `reason`             | `string`  | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
+| `status`             | `string`  | status of the condition, one of True, False, Unknown.                                                                                                                                                                                                                                                                           |
+| `type`               | `string`  | type of condition in CamelCase or in foo.example.com/CamelCase.                                                                                                                                                                                                                                                                 |
 
 ## .status.install
 
@@ -490,14 +490,14 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>bundle</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>bundle is a required field which represents the identifying attributes of a bundle.</p>
@@ -521,10 +521,10 @@ Required
 
 - `version`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name is required and follows the DNS subdomain standard as defined in \[RFC 1123\]. It must contain only lowercase alphanumeric characters, hyphens (-) or periods (.), start and end with an alphanumeric character, and be no longer than 253 characters. |
-| `version` | `string` | version is a required field and is a reference to the version that this bundle represents version follows the semantic versioning standard as defined in <https://semver.org/>. |
+| Property  | Type     | Description                                                                                                                                                                                                                                                 |
+|-----------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`    | `string` | name is required and follows the DNS subdomain standard as defined in \[RFC 1123\]. It must contain only lowercase alphanumeric characters, hyphens (-) or periods (.), start and end with an alphanumeric character, and be no longer than 253 characters. |
+| `version` | `string` | version is a required field and is a reference to the version that this bundle represents version follows the semantic versioning standard as defined in <https://semver.org/>.                                                                             |
 
 # API endpoints
 
@@ -564,10 +564,10 @@ HTTP method
 Description
 delete collection of ClusterExtension
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -577,10 +577,10 @@ HTTP method
 Description
 list objects of kind ClusterExtension
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ClusterExtensionList`](../objects/index.xml#io-operatorframework-olm-v1-ClusterExtensionList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                           |
+|--------------------|--------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ClusterExtensionList`](../objects/index.xml#io-operatorframework-olm-v1-ClusterExtensionList) schema |
+| 401 - Unauthorized | Empty                                                                                                  |
 
 HTTP responses
 
@@ -590,25 +590,25 @@ HTTP method
 Description
 create a ClusterExtension
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |  |
+| Parameter | Type                                                                                                                                           | Description |
+|-----------|------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
-| 201 - Created | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
-| 202 - Accepted | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
+| 201 - Created      | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
+| 202 - Accepted     | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                          |
 
 HTTP responses
 
@@ -626,17 +626,17 @@ HTTP method
 Description
 delete a ClusterExtension
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -646,10 +646,10 @@ HTTP method
 Description
 read the specified ClusterExtension
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                          |
 
 HTTP responses
 
@@ -659,17 +659,17 @@ HTTP method
 Description
 partially update the specified ClusterExtension
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                          |
 
 HTTP responses
 
@@ -679,24 +679,24 @@ HTTP method
 Description
 replace the specified ClusterExtension
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |  |
+| Parameter | Type                                                                                                                                           | Description |
+|-----------|------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
-| 201 - Created | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
+| 201 - Created      | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                          |
 
 HTTP responses
 
@@ -714,10 +714,10 @@ HTTP method
 Description
 read status of the specified ClusterExtension
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                          |
 
 HTTP responses
 
@@ -727,17 +727,17 @@ HTTP method
 Description
 partially update status of the specified ClusterExtension
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                          |
 
 HTTP responses
 
@@ -747,23 +747,23 @@ HTTP method
 Description
 replace status of the specified ClusterExtension
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |  |
+| Parameter | Type                                                                                                                                           | Description |
+|-----------|------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
-| 201 - Created | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                   |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
+| 201 - Created      | [`ClusterExtension`](../operatorhub_apis/clusterextension-olm-operatorframework-io-v1.xml#clusterextension-olm-operatorframework-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                          |
 
 HTTP responses

@@ -1,19 +1,12 @@
 Cluster administrators and Operator catalog maintainers can create and manage custom catalogs packaged using the [bundle format](../../operators/understanding/olm-packaging-format.xml#olm-bundle-format_olm-packaging-format) on Operator Lifecycle Manager (OLM) in OpenShift Container Platform.
 
-> [!IMPORTANT]
-> Kubernetes periodically deprecates certain APIs that are removed in subsequent releases. As a result, Operators are unable to use removed APIs starting with the version of OpenShift Container Platform that uses the Kubernetes version that removed the API.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Additional resources
+Kubernetes periodically deprecates certain APIs that are removed in subsequent releases. As a result, Operators are unable to use removed APIs starting with the version of OpenShift Container Platform that uses the Kubernetes version that removed the API.
 
 </div>
 
 - [Red Hat-provided Operator catalogs](../../operators/understanding/olm-rh-catalogs.xml#olm-rh-catalogs)
-
-</div>
 
 # Prerequisites
 
@@ -23,40 +16,25 @@ Additional resources
 
 *File-based catalogs* are the latest iteration of the catalog format in Operator Lifecycle Manager (OLM). It is a plain text-based (JSON or YAML) and declarative config evolution of the earlier SQLite database format, and it is fully backwards compatible.
 
-> [!IMPORTANT]
-> As of OpenShift Container Platform 4.11, the default Red Hat-provided Operator catalog releases in the file-based catalog format. The default Red Hat-provided Operator catalogs for OpenShift Container Platform 4.6 through 4.10 released in the deprecated SQLite database format.
->
-> The `opm` subcommands, flags, and functionality related to the SQLite database format are also deprecated and will be removed in a future release. The features are still supported and must be used for catalogs that use the deprecated SQLite database format.
->
-> Many of the `opm` subcommands and flags for working with the SQLite database format, such as `opm index prune`, do not work with the file-based catalog format. For more information about working with file-based catalogs, see [Operator Framework packaging format](../../operators/understanding/olm-packaging-format.xml#olm-file-based-catalogs_olm-packaging-format) and [Mirroring images for a disconnected installation using the oc-mirror plugin](../../disconnected/installing-mirroring-disconnected.xml#installing-mirroring-disconnected).
+<div class="important">
+
+As of OpenShift Container Platform 4.11, the default Red Hat-provided Operator catalog releases in the file-based catalog format. The default Red Hat-provided Operator catalogs for OpenShift Container Platform 4.6 through 4.10 released in the deprecated SQLite database format.
+
+The `opm` subcommands, flags, and functionality related to the SQLite database format are also deprecated and will be removed in a future release. The features are still supported and must be used for catalogs that use the deprecated SQLite database format.
+
+Many of the `opm` subcommands and flags for working with the SQLite database format, such as `opm index prune`, do not work with the file-based catalog format. For more information about working with file-based catalogs, see [Operator Framework packaging format](../../operators/understanding/olm-packaging-format.xml#olm-file-based-catalogs_olm-packaging-format) and [Mirroring images for a disconnected installation using the oc-mirror plugin](../../disconnected/installing-mirroring-disconnected.xml#installing-mirroring-disconnected).
+
+</div>
 
 ## Creating a file-based catalog image
 
 You can use the `opm` CLI to create a catalog image that uses the plain text *file-based catalog* format (JSON or YAML), which replaces the deprecated SQLite database format.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the `opm` CLI.
 
 - You have `podman` version 1.9.3+.
 
 - A bundle image is built and pushed to a registry that supports [Docker v2-2](https://docs.docker.com/registry/spec/manifest-v2-2/).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Initialize the catalog:
 
@@ -77,11 +55,9 @@ Procedure
 
         The Dockerfile must be in the same parent directory as the catalog directory that you created in the previous step:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example directory structure
+        **Example directory structure**
 
         </div>
 
@@ -90,8 +66,6 @@ Procedure
         ├── <catalog_dir>
         └── <catalog_dir>.Dockerfile
         ```
-
-        </div>
 
         - Parent directory
 
@@ -136,16 +110,17 @@ Procedure
 
     - Path to the catalog configuration file
 
-      > [!NOTE]
-      > Channels must contain at least one bundle.
+      <div class="note">
+
+      Channels must contain at least one bundle.
+
+      </div>
 
 3.  Add a channel entry for the bundle. For example, modify the following example to your specifications, and add it to your `<catalog_dir>/index.yaml` file:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example channel entry
+    **Example channel entry**
 
     </div>
 
@@ -157,8 +132,6 @@ Procedure
     entries:
       - name: <operator_name>.v0.1.0
     ```
-
-    </div>
 
     - Ensure that you include the period (`.`) after `<operator_name>` but before the `v` in the version. Otherwise, the entry fails to pass the `opm validate` command.
 
@@ -176,19 +149,15 @@ Procedure
         $ echo $?
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
         ``` terminal
         0
         ```
-
-        </div>
 
 5.  Build the catalog image by running the `podman build` command:
 
@@ -212,19 +181,7 @@ Procedure
         $ podman push <registry>/<namespace>/<catalog_image_name>:<tag>
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [`opm` CLI reference](../../cli_reference/opm/cli-opm-ref.xml#cli-opm-ref)
-
-</div>
 
 ## Updating or filtering a file-based catalog image
 
@@ -240,16 +197,11 @@ You can use the `opm` CLI to update or filter a catalog image that uses the file
 
 You can then rebuild the image as an updated version of the catalog.
 
-> [!NOTE]
-> Alternatively, if you already have a catalog image on a mirror registry, you can use the oc-mirror CLI plugin to automatically prune any removed images from an updated source version of that catalog image while mirroring it to the target registry.
->
-> For more information about the oc-mirror plugin and this use case, see the "Keeping your mirror registry content updated" section, and specifically the "Pruning images" subsection, of "Mirroring images for a disconnected installation using the oc-mirror plugin".
+<div class="note">
 
-<div>
+Alternatively, if you already have a catalog image on a mirror registry, you can use the oc-mirror CLI plugin to automatically prune any removed images from an updated source version of that catalog image while mirroring it to the target registry.
 
-<div class="title">
-
-Prerequisites
+For more information about the oc-mirror plugin and this use case, see the "Keeping your mirror registry content updated" section, and specifically the "Pruning images" subsection, of "Mirroring images for a disconnected installation using the oc-mirror plugin".
 
 </div>
 
@@ -265,16 +217,6 @@ Prerequisites
 
     If you do not have an initialized catalog directory, create the directory and generate the Dockerfile. For more information, see the "Initialize the catalog" step from the "Creating a file-based catalog image" procedure.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Extract the contents of the catalog image in YAML format to an `index.yaml` file in your catalog directory:
 
     ``` terminal
@@ -282,25 +224,23 @@ Procedure
         -o yaml > <catalog_dir>/index.yaml
     ```
 
-    > [!NOTE]
-    > Alternatively, you can use the `-o json` flag to output in JSON format.
+    <div class="note">
+
+    Alternatively, you can use the `-o json` flag to output in JSON format.
+
+    </div>
 
 2.  Modify the contents of the resulting `index.yaml` file to your specifications:
 
-    > [!IMPORTANT]
-    > After a bundle has been published in a catalog, assume that one of your users has installed it. Ensure that all previously published bundles in a catalog have an update path to the current or newer channel head to avoid stranding users that have that version installed.
+    <div class="important">
+
+    After a bundle has been published in a catalog, assume that one of your users has installed it. Ensure that all previously published bundles in a catalog have an update path to the current or newer channel head to avoid stranding users that have that version installed.
+
+    </div>
 
     - To add an Operator, follow the steps for creating package, bundle, and channel entries in the "Creating a file-based catalog image" procedure.
 
     - To remove an Operator, delete the set of `olm.package`, `olm.channel`, and `olm.bundle` blobs that relate to the package. The following example shows a set that must be deleted to remove the `example-operator` package from the catalog:
-
-      <div class="example">
-
-      <div class="title">
-
-      Example removed entries
-
-      </div>
 
       ``` yaml
       ---
@@ -361,8 +301,6 @@ Procedure
       ---
       ```
 
-      </div>
-
     - To add or update deprecation messages for an Operator, ensure there is a `deprecations.yaml` file in the same directory as the package’s `index.yaml` file. For information on the `deprecations.yaml` file format, see "olm.deprecations schema".
 
 3.  Save your changes.
@@ -387,15 +325,7 @@ Procedure
     $ podman push <registry>/<namespace>/<catalog_image_name>:<tag>
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  In the web console, navigate to the OperatorHub configuration resource in the **Administration** → **Cluster Settings** → **Configuration** page.
 
@@ -405,58 +335,31 @@ Verification
 
 3.  After the catalog source is in a **READY** state, navigate to the **Ecosystem** → **Software Catalog** page. Select **Operators** under the **Type** heading and check that the changes you made are reflected in the list of Operators.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Packaging format → Schemas → olm.deprecations schema](../../operators/understanding/olm-packaging-format.xml#olm-deprecations-schema_olm-packaging-format)
 
 - [Mirroring images for a disconnected installation using the oc-mirror plugin → Keeping your mirror registry content updated](../../disconnected/installing-mirroring-disconnected.xml#updating-mirror-registry-content)
 
 - [Adding a catalog source to a cluster](../../disconnected/using-olm.xml#olm-creating-catalog-from-index_olm-restricted-networks)
 
-</div>
-
 # SQLite-based catalogs
 
-> [!IMPORTANT]
-> The SQLite database format for Operator catalogs is a deprecated feature. Deprecated functionality is still included in OpenShift Container Platform and continues to be supported; however, it will be removed in a future release of this product and is not recommended for new deployments.
->
-> For the most recent list of major functionality that has been deprecated or removed within OpenShift Container Platform, refer to the *Deprecated and removed features* section of the OpenShift Container Platform release notes.
+<div class="important">
+
+The SQLite database format for Operator catalogs is a deprecated feature. Deprecated functionality is still included in OpenShift Container Platform and continues to be supported; however, it will be removed in a future release of this product and is not recommended for new deployments.
+
+For the most recent list of major functionality that has been deprecated or removed within OpenShift Container Platform, refer to the *Deprecated and removed features* section of the OpenShift Container Platform release notes.
+
+</div>
 
 ## Creating a SQLite-based index image
 
 You can create an index image based on the SQLite database format by using the `opm` CLI.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the `opm` CLI.
 
 - You have `podman` version 1.9.3+.
 
 - A bundle image is built and pushed to a registry that supports [Docker v2-2](https://docs.docker.com/registry/spec/manifest-v2-2/).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Start a new index:
 
@@ -487,21 +390,11 @@ Procedure
         $ podman push <registry>/<namespace>/<index_image_name>:<tag>
         ```
 
-</div>
-
 ## Updating a SQLite-based index image
 
 After configuring the software catalog to use a catalog source that references a custom index image, cluster administrators can keep the available Operators on their cluster up-to-date by adding bundle images to the index image.
 
 You can update an existing index image using the `opm index add` command.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the `opm` CLI.
 
@@ -510,16 +403,6 @@ Prerequisites
 - An index image is built and pushed to a registry.
 
 - You have an existing catalog source referencing the index image.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Update the existing index by adding bundle images:
 
@@ -562,11 +445,9 @@ Procedure
       `<updated_tag>`
       Specifies the image tag to apply to the updated index image, such as `4.17.1`.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example command
+      **Example command**
 
       </div>
 
@@ -577,8 +458,6 @@ Procedure
           --tag mirror.example.com/abc/abc-redhat-operator-index:4.17.1 \
           --pull-tool podman
       ```
-
-      </div>
 
 2.  Push the updated index image:
 
@@ -592,19 +471,9 @@ Procedure
     $ oc get packagemanifests -n openshift-marketplace
     ```
 
-</div>
-
 ## Filtering a SQLite-based index image
 
 An index image, based on the Operator bundle format, is a containerized snapshot of an Operator catalog. You can filter, or *prune*, an index of all but a specified list of packages, which creates a copy of the source index containing only the Operators that you want.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have `podman` version 1.9.3+.
 
@@ -613,16 +482,6 @@ Prerequisites
 - You have installed the `opm` CLI.
 
 - You have access to a registry that supports [Docker v2-2](https://docs.docker.com/registry/spec/manifest-v2-2/).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Authenticate with your target registry:
 
@@ -639,11 +498,9 @@ Procedure
             -it registry.redhat.io/redhat/redhat-operator-index:v4.17
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -655,8 +512,6 @@ Procedure
         INFO[0000] serving registry                              database=/database/index.db port=50051
         ```
 
-        </div>
-
     2.  In a separate terminal session, use the `grpcurl` command to get a list of the packages provided by the index:
 
         ``` terminal
@@ -665,11 +520,9 @@ Procedure
 
     3.  Inspect the `packages.out` file and identify which package names from this list you want to keep in your pruned index. For example:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example snippets of packages list
+        **Example snippets of packages list**
 
         </div>
 
@@ -689,8 +542,6 @@ Procedure
         }
         ...
         ```
-
-        </div>
 
     4.  In the terminal session where you executed the `podman run` command, press Ctrl and C to stop the container process.
 
@@ -720,8 +571,6 @@ Procedure
 
     where `<namespace>` is any existing namespace on the registry.
 
-</div>
-
 # Catalog sources and pod security admission
 
 *Pod security admission* was introduced in OpenShift Container Platform 4.11 to ensure pod security standards. Catalog sources built using the SQLite-based catalog format and a version of the `opm` CLI tool released before OpenShift Container Platform 4.11 cannot run under restricted pod security enforcement.
@@ -730,10 +579,13 @@ In OpenShift Container Platform 4.17, namespaces do not have restricted pod secu
 
 Default restricted enforcement for all namespaces is planned for inclusion in a future OpenShift Container Platform release. When restricted enforcement occurs, the security context of the pod specification for catalog source pods must match the restricted pod security standard. If your catalog source image requires a different pod security standard, the pod security admissions label for the namespace must be explicitly set.
 
-> [!NOTE]
-> If you do not want to run your SQLite-based catalog source pods as restricted, you do not need to update your catalog source in OpenShift Container Platform 4.17.
->
-> However, it is recommended that you take action now to ensure your catalog sources run under restricted pod security enforcement. If you do not take action to ensure your catalog sources run under restricted pod security enforcement, your catalog sources might not run in future OpenShift Container Platform releases.
+<div class="note">
+
+If you do not want to run your SQLite-based catalog source pods as restricted, you do not need to update your catalog source in OpenShift Container Platform 4.17.
+
+However, it is recommended that you take action now to ensure your catalog sources run under restricted pod security enforcement. If you do not take action to ensure your catalog sources run under restricted pod security enforcement, your catalog sources might not run in future OpenShift Container Platform releases.
+
+</div>
 
 As a catalog author, you can enable compatibility with restricted pod security enforcement by completing either of the following actions:
 
@@ -741,50 +593,25 @@ As a catalog author, you can enable compatibility with restricted pod security e
 
 - Update your catalog image with a version of the `opm` CLI tool released with OpenShift Container Platform 4.11 or later.
 
-> [!NOTE]
-> The SQLite database catalog format is deprecated, but still supported by Red Hat. In a future release, the SQLite database format will not be supported, and catalogs will need to migrate to the file-based catalog format. As of OpenShift Container Platform 4.11, the default Red Hat-provided Operator catalog is released in the file-based catalog format. File-based catalogs are compatible with restricted pod security enforcement.
+<div class="note">
+
+The SQLite database catalog format is deprecated, but still supported by Red Hat. In a future release, the SQLite database format will not be supported, and catalogs will need to migrate to the file-based catalog format. As of OpenShift Container Platform 4.11, the default Red Hat-provided Operator catalog is released in the file-based catalog format. File-based catalogs are compatible with restricted pod security enforcement.
+
+</div>
 
 If you do not want to update your SQLite database catalog image or migrate your catalog to the file-based catalog format, you can configure your catalog to run with elevated permissions.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Understanding and managing pod security admission](../../authentication/understanding-and-managing-pod-security-admission.xml#understanding-and-managing-pod-security-admission)
-
-</div>
 
 ## Migrating SQLite database catalogs to the file-based catalog format
 
 You can update your deprecated SQLite database format catalogs to the file-based catalog format.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have a SQLite database catalog source.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have the latest version of the `opm` CLI tool released with OpenShift Container Platform 4.17 on your workstation.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Migrate your SQLite database catalog to a file-based catalog by running the following command:
 
@@ -800,43 +627,15 @@ Procedure
       registry.redhat.io/openshift4/ose-operator-registry-rhel9:v4.17
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - The generated Dockerfile can be built, tagged, and pushed to your registry.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Adding a catalog source to a cluster](../../operators/admin/olm-managing-custom-catalogs.xml#olm-creating-catalog-from-index_olm-managing-custom-catalogs)
-
-</div>
 
 ## Rebuilding SQLite database catalog images
 
 You can rebuild your SQLite database catalog image with the latest version of the `opm` CLI tool that is released with your version of OpenShift Container Platform.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have a SQLite database catalog source.
 
@@ -844,15 +643,7 @@ Prerequisites
 
 - You have the latest version of the `opm` CLI tool released with OpenShift Container Platform 4.17 on your workstation.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Run the following command to rebuild your catalog with a more recent version of the `opm` CLI tool:
 
@@ -863,8 +654,6 @@ Procedure
     --bundles "" -t \<your_registry_image>
   ```
 
-</div>
-
 ## Configuring catalogs to run with elevated permissions
 
 If you do not want to update your SQLite database catalog image or migrate your catalog to the file-based catalog format, you can perform the following actions to ensure your catalog source runs when the default pod security enforcement changes to restricted:
@@ -873,14 +662,9 @@ If you do not want to update your SQLite database catalog image or migrate your 
 
 - Label the catalog source namespace for baseline or privileged pod security enforcement.
 
-> [!NOTE]
-> The SQLite database catalog format is deprecated, but still supported by Red Hat. In a future release, the SQLite database format will not be supported, and catalogs will need to migrate to the file-based catalog format. File-based catalogs are compatible with restricted pod security enforcement.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The SQLite database catalog format is deprecated, but still supported by Red Hat. In a future release, the SQLite database format will not be supported, and catalogs will need to migrate to the file-based catalog format. File-based catalogs are compatible with restricted pod security enforcement.
 
 </div>
 
@@ -890,23 +674,11 @@ Prerequisites
 
 - You have a target namespace that supports running pods with the elevated pod security admission standard of `baseline` or `privileged`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Edit the `CatalogSource` definition by setting the `spec.grpcPodConfig.securityContextConfig` label to `legacy`, as shown in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `CatalogSource` definition
+    **Example `CatalogSource` definition**
 
     </div>
 
@@ -923,18 +695,17 @@ Procedure
       image: my-image:latest
     ```
 
-    </div>
+    <div class="tip">
 
-    > [!TIP]
-    > In OpenShift Container Platform 4.17, the `spec.grpcPodConfig.securityContextConfig` field is set to `legacy` by default. In a future release of OpenShift Container Platform, it is planned that the default setting will change to `restricted`. If your catalog cannot run under restricted enforcement, it is recommended that you manually set this field to `legacy`.
+    In OpenShift Container Platform 4.17, the `spec.grpcPodConfig.securityContextConfig` field is set to `legacy` by default. In a future release of OpenShift Container Platform, it is planned that the default setting will change to `restricted`. If your catalog cannot run under restricted enforcement, it is recommended that you manually set this field to `legacy`.
+
+    </div>
 
 2.  Edit your `<namespace>.yaml` file to add elevated pod security admission standards to your catalog source namespace, as shown in the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `<namespace>.yaml` file
+    **Example `<namespace>.yaml` file**
 
     </div>
 
@@ -950,42 +721,23 @@ Procedure
       name: "<namespace_name>"
     ```
 
-    </div>
-
     - Turn off pod security label synchronization by adding the `security.openshift.io/scc.podSecurityLabelSync=false` label to the namespace.
 
     - Apply the pod security admission `pod-security.kubernetes.io/enforce` label. Set the label to `baseline` or `privileged`. Use the `baseline` pod security profile unless other workloads in the namespace require a `privileged` profile.
-
-</div>
 
 # Adding a catalog source to a cluster
 
 Adding a catalog source to an OpenShift Container Platform cluster enables the discovery and installation of Operators for users. Cluster administrators can create a `CatalogSource` object that references an index image. The software catalog uses catalog sources to populate the user interface.
 
-> [!TIP]
-> Alternatively, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
+<div class="tip">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Alternatively, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
 
 </div>
 
 - You built and pushed an index image to a registry.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `CatalogSource` object that references your index image.
 
@@ -1018,8 +770,11 @@ Procedure
 
         - Specify the value of `legacy` or `restricted`. If the field is not set, the default value is `legacy`. In a future OpenShift Container Platform release, it is planned that the default value will be `restricted`.
 
-          > [!NOTE]
-          > If your catalog cannot run with `restricted` permissions, it is recommended that you manually set this field to `legacy`.
+          <div class="note">
+
+          If your catalog cannot run with `restricted` permissions, it is recommended that you manually set this field to `legacy`.
+
+          </div>
 
         - Specify your index image. If you specify a tag after the image name, for example `:v4.17`, the catalog source pod uses an image pull policy of `Always`, meaning the pod always pulls the image prior to starting the container. If you specify a digest, for example `@sha256:<id>`, the image pull policy is `IfNotPresent`, meaning the pod pulls the image only if it does not already exist on the node.
 
@@ -1041,11 +796,9 @@ Procedure
         $ oc get pods -n openshift-marketplace
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1055,19 +808,15 @@ Procedure
         marketplace-operator-d9f549946-96sgr    1/1     Running   0         26h
         ```
 
-        </div>
-
     2.  Check the catalog source:
 
         ``` terminal
         $ oc get catalogsource -n openshift-marketplace
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1076,19 +825,15 @@ Procedure
         my-operator-catalog   My Operator Catalog   grpc            5s
         ```
 
-        </div>
-
     3.  Check the package manifest:
 
         ``` terminal
         $ oc get packagemanifest -n openshift-marketplace
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1097,27 +842,13 @@ Procedure
         jaeger-product                My Operator Catalog   93s
         ```
 
-        </div>
-
-</div>
-
 You can now install the Operators from the **Software Catalog** page on your OpenShift Container Platform web console.
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Operator Lifecycle Manager concepts and resources → Catalog source](../../operators/understanding/olm/olm-understanding-olm.xml#olm-catalogsource_olm-understanding-olm)
 
 - [Accessing images for Operators from private registries](../../operators/admin/olm-managing-custom-catalogs.xml#olm-accessing-images-private-registries_olm-managing-custom-catalogs)
 
 - [Image pull policy](../../openshift_images/managing_images/image-pull-policy.xml#image-pull-policy)
-
-</div>
 
 # Accessing images for Operators from private registries
 
@@ -1140,14 +871,6 @@ Instead, the authentication details can be added to the global cluster pull secr
 
 You can access images from Operator from private registries by creating a secret for your registry credentials and adding the secret for use with relevant catalogs.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have at least one of the following hosted in a private registry:
 
   - An index image or catalog image.
@@ -1158,16 +881,6 @@ Prerequisites
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a secret for each required private registry.
 
     1.  Log in to the private registry to create or update your registry credentials file:
@@ -1176,18 +889,19 @@ Procedure
         $ podman login <registry>:<port>
         ```
 
-        > [!NOTE]
-        > The file path of your registry credentials can be different depending on the container tool used to log in to the registry. For the `podman` CLI, the default location is `${XDG_RUNTIME_DIR}/containers/auth.json`. For the `docker` CLI, the default location is `/root/.docker/config.json`.
+        <div class="note">
+
+        The file path of your registry credentials can be different depending on the container tool used to log in to the registry. For the `podman` CLI, the default location is `${XDG_RUNTIME_DIR}/containers/auth.json`. For the `docker` CLI, the default location is `/root/.docker/config.json`.
+
+        </div>
 
     2.  It is recommended to include credentials for only one registry per secret, and manage credentials for multiple registries in separate secrets. Multiple secrets can be included in a `CatalogSource` object in later steps, and OpenShift Container Platform will merge the secrets into a single virtual credentials file for use during an image pull.
 
         A registry credentials file can, by default, store details for more than one registry or for multiple repositories in one registry. Verify the current contents of your file. For example:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        File storing credentials for multiple registries
+        **File storing credentials for multiple registries**
 
         </div>
 
@@ -1213,19 +927,15 @@ Procedure
         }
         ```
 
-        </div>
-
         Because this file is used to create secrets in later steps, ensure that you are storing details for only one registry per file. This can be accomplished by using either of the following methods:
 
         - Use the `podman logout <registry>` command to remove credentials for additional registries until only the one registry you want remains.
 
         - Edit your registry credentials file and separate the registry details to be stored in multiple files. For example:
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          File storing credentials for one registry
+          **File storing credentials for one registry**
 
           </div>
 
@@ -1239,13 +949,9 @@ Procedure
           }
           ```
 
-          </div>
+          <div class="formalpara-title">
 
-          <div class="formalpara">
-
-          <div class="title">
-
-          File storing credentials for another registry
+          **File storing credentials for another registry**
 
           </div>
 
@@ -1258,8 +964,6 @@ Procedure
                   }
           }
           ```
-
-          </div>
 
     3.  Create a secret in the `openshift-marketplace` namespace that contains the authentication credentials for a private registry:
 
@@ -1299,15 +1003,21 @@ Procedure
 
     - Specify the value of `legacy` or `restricted`. If the field is not set, the default value is `legacy`. In a future OpenShift Container Platform release, it is planned that the default value will be `restricted`.
 
-      > [!NOTE]
-      > If your catalog cannot run with `restricted` permissions, it is recommended that you manually set this field to `legacy`.
+      <div class="note">
+
+      If your catalog cannot run with `restricted` permissions, it is recommended that you manually set this field to `legacy`.
+
+      </div>
 
 3.  If any Operator or Operand images that are referenced by a subscribed Operator require access to a private registry, you can either provide access to all namespaces in the cluster, or individual target tenant namespaces.
 
     - To provide access to all namespaces in the cluster, add authentication details to the global cluster pull secret in the `openshift-config` namespace.
 
-      > [!WARNING]
-      > Cluster resources must adjust to the new global pull secret, which can temporarily limit the usability of the cluster.
+      <div class="warning">
+
+      Cluster resources must adjust to the new global pull secret, which can temporarily limit the usability of the cluster.
+
+      </div>
 
       1.  Extract the `.dockerconfigjson` file from the global pull secret:
 
@@ -1351,11 +1061,9 @@ Procedure
 
           - If the Operator was installed in an individual namespace, search that namespace. If the Operator was installed for all namespaces, search the `openshift-operators` namespace.
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example output
+          **Example output**
 
           </div>
 
@@ -1366,8 +1074,6 @@ Procedure
           deployer        2         6m1s
           etcd-operator   2         5m18s
           ```
-
-          </div>
 
           - Service account for an installed etcd Operator.
 
@@ -1380,35 +1086,15 @@ Procedure
               --for=pull
           ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - See [What is a secret?](../../cicd/builds/creating-build-inputs.xml#builds-secrets-overview_creating-build-inputs) for more information on the types of secrets, including those used for registry credentials.
 
 - See [Updating the global cluster pull secret](../../openshift_images/managing_images/using-image-pull-secrets.xml#images-update-global-pull-secret_using-image-pull-secrets) for more details on the impact of changing this secret.
 
 - See [Allowing pods to reference images from other secured registries](../../openshift_images/managing_images/using-image-pull-secrets.xml#images-allow-pods-to-reference-images-from-secure-registries_using-image-pull-secrets) for more details on linking pull secrets to service accounts per namespace.
 
-</div>
-
 # Disabling the default software catalog sources
 
 Operator catalogs that source content provided by Red Hat and community projects are configured for the software catalog by default during an OpenShift Container Platform installation. As a cluster administrator, you can disable the set of default catalogs.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Disable the sources for the default catalogs by adding `disableAllDefaultSources: true` to the `OperatorHub` object:
 
@@ -1417,34 +1103,17 @@ Procedure
       -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
   ```
 
-</div>
+<div class="tip">
 
-> [!TIP]
-> Alternatively, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
+Alternatively, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
+
+</div>
 
 # Removing custom catalogs
 
 As a cluster administrator, you can remove custom Operator catalogs that have been previously added to your cluster by deleting the related catalog source.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the **Administrator** perspective of the web console, navigate to **Administration** → **Cluster Settings**.
 
@@ -1453,5 +1122,3 @@ Procedure
 3.  Click the **Sources** tab.
 
 4.  Select the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) for the catalog that you want to remove, and then click **Delete CatalogSource**.
-
-</div>

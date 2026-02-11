@@ -4,29 +4,11 @@ You can remove the External Secrets Operator for Red Hat OpenShift from OpenShif
 
 You can uninstall the External Secrets Operator for Red Hat OpenShift by using the web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
 
 - The External Secrets Operator is installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -38,33 +20,13 @@ Procedure
 
     3.  In the confirmation dialog, click **Uninstall**.
 
-</div>
-
 # Removing External Secrets Operator for Red Hat OpenShift resources by using the web console
 
 To clean up your cluster after uninstalling the External Secrets Operator for Red Hat OpenShift, remove its associated resources. This deletes residual components, such as deployments and custom resource definitions.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -138,31 +100,11 @@ Procedure
 
     3.  In the confirmation dialog, enter `external-secrets-operator` in the field and click **Delete**.
 
-</div>
-
 # Removing External Secrets Operator for Red Hat OpenShift resources by using the CLI
 
 After you have uninstalled the External Secrets Operator for Red Hat OpenShift, you can optionally eliminate its associated resources from your cluster by using the command-line interface (CLI).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Delete the deployments of the `external-secrets` application components in the `external-secrets` namespace by running the following command:
 
@@ -181,5 +123,3 @@ Procedure
     ``` terminal
     $ oc delete project external-secrets-operator
     ```
-
-</div>

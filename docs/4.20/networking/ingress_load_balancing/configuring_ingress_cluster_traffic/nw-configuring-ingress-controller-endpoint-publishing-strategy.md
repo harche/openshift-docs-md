@@ -1,9 +1,12 @@
 To expose Ingress Controller endpoints to external systems and enable load balancer integrations in OpenShift Container Platform, configure the `endpointPublishingStrategy` parameter.
 
-> [!IMPORTANT]
-> On Red Hat OpenStack Platform (RHOSP), the `LoadBalancerService` endpoint publishing strategy is supported only if a cloud provider is configured to create health monitors. For RHOSP 16.2, this strategy is possible only if you use the Amphora Octavia provider.
->
-> For more information, see the "Setting RHOSP Cloud Controller Manager options" section of the RHOSP installation documentation.
+<div class="important">
+
+On Red Hat OpenStack Platform (RHOSP), the `LoadBalancerService` endpoint publishing strategy is supported only if a cloud provider is configured to create health monitors. For RHOSP 16.2, this strategy is possible only if you use the Amphora Octavia provider.
+
+For more information, see the "Setting RHOSP Cloud Controller Manager options" section of the RHOSP installation documentation.
+
+</div>
 
 # Ingress Controller endpoint publishing strategy
 
@@ -25,10 +28,13 @@ The preceding graphic shows the following concepts pertaining to OpenShift Conta
 
 - When the client connects to a node that is down, for example, by connecting the `10.0.128.4` IP address in the graphic, the node port directly connects the client to an available node that is running the service. In this scenario, no load balancing is required. As the image shows, the `10.0.128.4` address is down and another IP address must be used instead.
 
-> [!NOTE]
-> The Ingress Operator ignores any updates to `.spec.ports[].nodePort` fields of the service.
->
-> By default, ports are allocated automatically and you can access the port allocations for integrations. However, sometimes static port allocations are necessary to integrate with existing infrastructure which may not be easily reconfigured in response to dynamic ports. To achieve integrations with static node ports, you can update the managed service resource directly.
+<div class="note">
+
+The Ingress Operator ignores any updates to `.spec.ports[].nodePort` fields of the service.
+
+By default, ports are allocated automatically and you can access the port allocations for integrations. However, sometimes static port allocations are necessary to integrate with existing infrastructure which may not be easily reconfigured in response to dynamic ports. To achieve integrations with static node ports, you can update the managed service resource directly.
+
+</div>
 
 For more information, see the [Kubernetes Services documentation on `NodePort`](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport).
 
@@ -39,11 +45,9 @@ An Ingress Controller with the `HostNetwork` endpoint publishing strategy can ha
 
 The `HostNetwork` object has a `hostNetwork` field with the following default values for the optional binding ports: `httpPort: 80`, `httpsPort: 443`, and `statsPort: 1936`. By specifying different binding ports for your network, you can deploy multiple Ingress Controllers on the same node for the `HostNetwork` strategy.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example
+**Example**
 
 </div>
 
@@ -63,33 +67,15 @@ spec:
       statsPort: 1936
 ```
 
-</div>
-
 ## Configuring the Ingress Controller endpoint publishing scope to Internal
 
 To restrict cluster access to internal traffic and enhance network security in OpenShift Container Platform, change the Ingress Controller scope from `External` to `Internal`.
 
 When a cluster administrator installs a new cluster without specifying that the cluster is private, the default Ingress Controller is created with a `scope` set to `External`.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To change an `External`-scoped Ingress Controller to `Internal`, enter the following command:
 
@@ -97,15 +83,7 @@ Procedure
   $ oc -n openshift-ingress-operator patch ingresscontrollers/default --type=merge --patch='{"spec":{"endpointPublishingStrategy":{"type":"LoadBalancerService","loadBalancer":{"scope":"Internal"}}}}'
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - To check the status of the Ingress Controller, enter the following command:
 
@@ -121,8 +99,6 @@ Verification
 
     If you delete the service, the Ingress Operator recreates it as `Internal`.
 
-</div>
-
 ## Configuring the Ingress Controller endpoint publishing scope to External
 
 To expose cluster services to public networks or the internet in OpenShift Container Platform, configure the Ingress Controller endpoint publishing scope to `External`.
@@ -131,30 +107,17 @@ When a cluster administrator installs a new cluster without specifying that the 
 
 As an installation or post-installation task, a cluster administrator can configure the Ingress Controller to `Internal`. Additionally, a cluster administrator can change an `Internal` Ingress Controller to `External`.
 
-> [!IMPORTANT]
-> On some platforms, it is necessary to delete and recreate the service.
->
-> Changing the scope can cause disruption to Ingress traffic, potentially for several minutes. This applies to platforms where it is necessary to delete and recreate the service, because the procedure can cause OpenShift Container Platform to deprovision the existing service load balancer, provision a new one, and update DNS.
+<div class="important">
 
-<div>
+On some platforms, it is necessary to delete and recreate the service.
 
-<div class="title">
-
-Prerequisites
+Changing the scope can cause disruption to Ingress traffic, potentially for several minutes. This applies to platforms where it is necessary to delete and recreate the service, because the procedure can cause OpenShift Container Platform to deprovision the existing service load balancer, provision a new one, and update DNS.
 
 </div>
 
 - You installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To change an `Internal`-scoped Ingress Controller to `External`, enter the following command:
 
@@ -162,15 +125,7 @@ Procedure
   $ oc -n openshift-ingress-operator patch ingresscontrollers/private --type=merge --patch='{"spec":{"endpointPublishingStrategy":{"type":"LoadBalancerService","loadBalancer":{"scope":"External"}}}}'
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - To check the status of the Ingress Controller, enter the following command:
 
@@ -186,8 +141,6 @@ Verification
 
     If you delete the service, the Ingress Operator recreates it as `External`.
 
-</div>
-
 ## Adding a single NodePort service to an Ingress Controller
 
 To prevent port conflicts, instead of creating a `NodePort`-type `Service` for each project, create a custom Ingress Controller that can use the `NodePortService` endpoint publishing strategy.
@@ -202,13 +155,7 @@ Before you set a `NodePort`-type `Service` for each project, read the following 
 
 - You must append the port that is assigned to the `NodePort`-type `Service` in the route so that you can access application pods.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - You installed the OpenShift CLI (`oc`).
 
@@ -216,23 +163,11 @@ Prerequisites
 
 - You created a wildcard DNS record.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a custom resource (CR) file for the Ingress Controller:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example of a CR file that defines information for the `IngressController` object
+    **Example of a CR file that defines information for the `IngressController` object**
 
     </div>
 
@@ -258,8 +193,6 @@ Procedure
           type: NodePortService
     # ...
     ```
-
-    </div>
 
     where:
 
@@ -295,11 +228,9 @@ Procedure
     $ oc get svc -n openshift-ingress
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output that shows port `80:32432/TCP` for the `router-nodeport-custom-ic3` service
+    **Example output that shows port `80:32432/TCP` for the `router-nodeport-custom-ic3` service**
 
     </div>
 
@@ -308,8 +239,6 @@ Procedure
     router-internal-default      ClusterIP   172.30.195.74    <none>        80/TCP,443/TCP,1936/TCP                     223d
     router-nodeport-custom-ic3   NodePort    172.30.109.219   <none>        80:32432/TCP,443:31366/TCP,1936:30499/TCP   155m
     ```
-
-    </div>
 
 5.  To create a new project, enter the following command:
 
@@ -339,8 +268,11 @@ Procedure
     $ oc expose svc/<service_name> --hostname=<svc_name>-<project_name>.<custom_ic_domain_name>
     ```
 
-    > [!NOTE]
-    > You must specify the domain name of your custom Ingress Controller in the `--hostname` argument. If you do not do this, the Ingress Operator uses the default Ingress Controller to serve all the routes for your cluster.
+    <div class="note">
+
+    You must specify the domain name of your custom Ingress Controller in the `--hostname` argument. If you do not do this, the Ingress Operator uses the default Ingress Controller to serve all the routes for your cluster.
+
+    </div>
 
 9.  Check that the route has the `Admitted` status and that it includes metadata for the custom Ingress Controller:
 
@@ -348,11 +280,9 @@ Procedure
     $ oc get route/hello-openshift -o json | jq '.status.ingress'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -376,23 +306,13 @@ Procedure
     }
     ```
 
-    </div>
-
 10. Update the default `IngressController` CR to prevent the default Ingress Controller from managing the `NodePort`-type `Service`. The default Ingress Controller will continue to monitor all other cluster traffic.
 
     ``` terminal
     $ oc patch --type=merge -n openshift-ingress-operator ingresscontroller/default --patch '{"spec":{"namespaceSelector":{"matchExpressions":[{"key":"<key>","operator":"NotIn","values":["<value>]}]}}}'
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the DNS entry can route inside and outside of your cluster by entering the following command. The command outputs the IP address of the node that received the label from running the `oc label node` command earlier in the procedure.
 
@@ -408,21 +328,15 @@ Verification
 
     - `<custom_ic_domain_name>:<port>`: Where `<port>` is the node port from the `NodePort`-type `Service`. Based on example output from the `oc get svc -n openshift-ingress` command, the `80:32432/TCP` HTTP route means that `32432` is the node port.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Output example
+      **Output example**
 
       </div>
 
       ``` terminal
       Hello OpenShift!
       ```
-
-      </div>
-
-</div>
 
 # Additional resources
 

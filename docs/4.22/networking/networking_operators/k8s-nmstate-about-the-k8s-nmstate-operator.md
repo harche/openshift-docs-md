@@ -1,9 +1,12 @@
 The Kubernetes NMState Operator provides a Kubernetes API for performing state-driven network configuration across the OpenShift Container Platform cluster’s nodes with NMState. The Kubernetes NMState Operator provides users with functionality to configure various network interface types, DNS, and routing on cluster nodes. Additionally, the daemons on the cluster nodes periodically report on the state of each node’s network interfaces to the API server.
 
-> [!IMPORTANT]
-> Red Hat supports the Kubernetes NMState Operator in production environments on bare-metal, IBM Power®, IBM Z®, IBM® LinuxONE, VMware vSphere, and Red Hat OpenStack Platform (RHOSP) installations.
->
-> Red Hat support exists for using the Kubernetes NMState Operator on Microsoft Azure but in a limited capacity. Support is limited to configuring DNS servers on your system as a postinstallation task.
+<div class="important">
+
+Red Hat supports the Kubernetes NMState Operator in production environments on bare-metal, IBM Power®, IBM Z®, IBM® LinuxONE, VMware vSphere, and Red Hat OpenStack Platform (RHOSP) installations.
+
+Red Hat support exists for using the Kubernetes NMState Operator on Microsoft Azure but in a limited capacity. Support is limited to configuring DNS servers on your system as a postinstallation task.
+
+</div>
 
 Before you can use NMState with OpenShift Container Platform, you must install the Kubernetes NMState Operator. After you install the Kubernetes NMState Operator, you can complete the following tasks:
 
@@ -13,10 +16,13 @@ Before you can use NMState with OpenShift Container Platform, you must install t
 
 For more information on these tasks, see the *Additional resources* section.
 
-> [!NOTE]
-> The Kubernetes NMState Operator updates the network configuration of a secondary NIC. The Operator cannot update the network configuration of the primary NIC, or update the `br-ex` bridge on most on-premise networks.
->
-> On a bare-metal platform, using the Kubernetes NMState Operator to update the `br-ex` bridge network configuration is only supported if you set the `br-ex` bridge as the interface in a machine config manifest file. To update the `br-ex` bridge as a postinstallation task, you must set the `br-ex` bridge as the interface in the NMState configuration of the `NodeNetworkConfigurationPolicy` custom resource (CR) for your cluster. For more information, see [Creating a manifest object that includes a customized br-ex bridge](../../installing/installing_bare_metal/bare-metal-postinstallation-configuration.xml#creating-manifest-file-customized-br-ex-bridge_bare-metal-postinstallation-configuration) in *Postinstallation configuration*.
+<div class="note">
+
+The Kubernetes NMState Operator updates the network configuration of a secondary NIC. The Operator cannot update the network configuration of the primary NIC, or update the `br-ex` bridge on most on-premise networks.
+
+On a bare-metal platform, using the Kubernetes NMState Operator to update the `br-ex` bridge network configuration is only supported if you set the `br-ex` bridge as the interface in a machine config manifest file. To update the `br-ex` bridge as a postinstallation task, you must set the `br-ex` bridge as the interface in the NMState configuration of the `NodeNetworkConfigurationPolicy` custom resource (CR) for your cluster. For more information, see [Creating a manifest object that includes a customized br-ex bridge](../../installing/installing_bare_metal/bare-metal-postinstallation-configuration.xml#creating-manifest-file-customized-br-ex-bridge_bare-metal-postinstallation-configuration) in *Postinstallation configuration*.
+
+</div>
 
 OpenShift Container Platform uses [`nmstate`](https://nmstate.github.io/) to report on and configure the state of the node network. This makes it possible to modify the network policy configuration, such as by creating a Linux bridge on all nodes, by applying a single configuration manifest to the cluster.
 
@@ -31,8 +37,11 @@ Describes the requested network configuration on nodes. You update the node netw
 `NodeNetworkConfigurationEnactment`
 Reports the network policies enacted upon each node.
 
-> [!NOTE]
-> Do not make configuration changes to the `br-ex` bridge or its underlying interfaces as a postinstallation task.
+<div class="note">
+
+Do not make configuration changes to the `br-ex` bridge or its underlying interfaces as a postinstallation task.
+
+</div>
 
 # Installing the Kubernetes NMState Operator
 
@@ -42,25 +51,7 @@ You can install the Kubernetes NMState Operator by using the web console or the 
 
 You can install the Kubernetes NMState Operator by using the web console. After you install the Kubernetes NMState Operator, the Operator has deployed the NMState State Controller as a daemon set across all of the cluster nodes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Select **Ecosystem** → **Software Catalog**.
 
@@ -78,38 +69,21 @@ Procedure
 
 8.  In the **Name** field of the dialog box, ensure the name of the instance is `nmstate.`
 
-    > [!NOTE]
-    > The name restriction is a known issue. The instance is a singleton for the entire cluster.
+    <div class="note">
+
+    The name restriction is a known issue. The instance is a singleton for the entire cluster.
+
+    </div>
 
 9.  Accept the default settings and click **Create** to create the instance.
-
-</div>
 
 ## Installing the Kubernetes NMState Operator by using the CLI
 
 You can install the Kubernetes NMState Operator by using the OpenShift CLI (`oc)`. After it is installed, the Operator can deploy the NMState State Controller as a daemon set across all of the cluster nodes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You are logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `nmstate` Operator namespace:
 
@@ -202,15 +176,7 @@ Procedure
         $ oc wait --for=condition=Available nmstate/nmstate --timeout=600s
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that all pods for the NMState Operator have the `Running` status by entering the following command:
 
@@ -218,14 +184,15 @@ Verification
     $ oc get pod -n openshift-nmstate
     ```
 
-</div>
-
 ## Viewing metrics collected by the Kubernetes NMState Operator
 
 The Kubernetes NMState Operator, `kubernetes-nmstate-operator`, can collect metrics from the `kubernetes_nmstate_features_applied` component and expose them as ready-to-use metrics. As a use case for viewing metrics, consider a situation where you created a `NodeNetworkConfigurationPolicy` custom resource and you want to confirm that the policy is active.
 
-> [!NOTE]
-> The `kubernetes_nmstate_features_applied` metrics are not an API and might change between OpenShift Container Platform versions.
+<div class="note">
+
+The `kubernetes_nmstate_features_applied` metrics are not an API and might change between OpenShift Container Platform versions.
+
+</div>
 
 In the web console, the Metrics UI includes some predefined CPU, memory, bandwidth, and network packet queries for the selected project. You can run custom Prometheus Query Language (PromQL) queries for CPU, memory, bandwidth, network packet and application metrics for the project.
 
@@ -261,14 +228,6 @@ controller_runtime_reconcile_time_seconds_bucket{controller="nodenetworkconfigur
 kubernetes_nmstate_features_applied{name="dhcpv4-custom-hostname"} 1
 ```
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in to the web console as the administrator and installed the Kubernetes NMState Operator.
@@ -281,20 +240,13 @@ Prerequisites
 
 - You have created a `NodeNetworkConfigurationPolicy` manifest and applied it to your cluster.
 
-</div>
+<div class="important">
 
-> [!IMPORTANT]
-> Starting with OpenShift Container Platform 4.19, the perspectives in the web console have unified. The **Developer** perspective is no longer enabled by default.
->
-> All users can interact with all OpenShift Container Platform web console features. However, if you are not the cluster owner, you might need to request permission to access certain features from the cluster owner.
->
-> You can still enable the **Developer** perspective. On the **Getting Started** pane in the web console, you can take a tour of the console, find information on setting up your cluster, view a quick start for enabling the **Developer** perspective, and follow links to explore new features and capabilities.
+Starting with OpenShift Container Platform 4.19, the perspectives in the web console have unified. The **Developer** perspective is no longer enabled by default.
 
-<div>
+All users can interact with all OpenShift Container Platform web console features. However, if you are not the cluster owner, you might need to request permission to access certain features from the cluster owner.
 
-<div class="title">
-
-Procedure
+You can still enable the **Developer** perspective. On the **Getting Started** pane in the web console, you can take a tour of the console, find information on setting up your cluster, view a quick start for enabling the **Developer** perspective, and follow links to explore new features and capabilities.
 
 </div>
 
@@ -308,8 +260,11 @@ Procedure
 
     4.  To visualize the metrics on the plot, select a query from the **Select query** list or create a custom PromQL query based on the selected query by selecting **Show PromQL**.
 
-        > [!NOTE]
-        > You can only run one query at a time with the developer role.
+        <div class="note">
+
+        You can only run one query at a time with the developer role.
+
+        </div>
 
 2.  If you want to view the metrics in the OpenShift Container Platform web console as an administrator, complete the following tasks:
 
@@ -331,8 +286,6 @@ Procedure
 
     3.  To display the output for all the queries at a specific point in time, hold the mouse cursor on the plot at that point. The query output displays in a pop-up box.
 
-</div>
-
 # Uninstalling the Kubernetes NMState Operator
 
 You can use the Operator Lifecycle Manager (OLM) to uninstall the Kubernetes NMState Operator, but by design OLM does not delete any associated custom resource definitions (CRDs), custom resources (CRs), or API Services.
@@ -341,29 +294,11 @@ Before you uninstall the Kubernetes NMState Operator from the `Subcription` reso
 
 If you need to reinstall the Kubernetes NMState Operator, see "Installing the Kubernetes NMState Operator by using the CLI" or "Installing the Kubernetes NMState Operator by using the web console".
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have installed the `jq` CLI tool.
 
 - You are logged in as a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Unsubscribe the Kubernetes NMState Operator from the `Subcription` resource by running the following command:
 
@@ -377,11 +312,9 @@ Procedure
     $ oc get --namespace openshift-nmstate clusterserviceversion
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output that lists a CSV resource
+    **Example output that lists a CSV resource**
 
     </div>
 
@@ -389,8 +322,6 @@ Procedure
     NAME                                   DISPLAY                       VERSION   REPLACES     PHASE
     kubernetes-nmstate-operator.v4.21.0   Kubernetes NMState Operator   4.21.0                 Succeeded
     ```
-
-    </div>
 
 3.  Delete the CSV resource. After you delete the file, OLM deletes certain resources, such as `RBAC`, that it created for the Operator.
 
@@ -447,8 +378,6 @@ Procedure
     ``` terminal
     $ oc delete namespace openshift-nmstate
     ```
-
-</div>
 
 # Additional resources
 

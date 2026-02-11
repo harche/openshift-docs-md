@@ -13,13 +13,13 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | spec defines the desired quota |
-| `status` | `object` | status defines the actual enforced quota and its current usage |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | spec defines the desired quota                                                                                                                                                                                                                                                                       |
+| `status`     | `object`                                                                             | status defines the actual enforced quota and its current usage                                                                                                                                                                                                                                       |
 
 ## .spec
 
@@ -34,9 +34,9 @@ Required
 
 - `selector`
 
-| Property | Type | Description |
-|----|----|----|
-| `quota` | `object` | quota defines the desired quota |
+| Property   | Type     | Description                                                                                                                                                                                                                                |
+|------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `quota`    | `object` | quota defines the desired quota                                                                                                                                                                                                            |
 | `selector` | `object` | selector is the selector used to match projects. It should only select active projects on the scale of dozens (though it can select many more less active projects). These projects will contend on object creation through this resource. |
 
 ## .spec.quota
@@ -47,11 +47,11 @@ quota defines the desired quota
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `hard` | `integer-or-string` | hard is the set of desired hard limits for each named resource. More info: <https://kubernetes.io/docs/concepts/policy/resource-quotas/> |
-| `scopeSelector` | `object` | scopeSelector is also a collection of filters like scopes that must match each object tracked by a quota but expressed using ScopeSelectorOperator in combination with possible values. For a resource to match, both scopes AND scopeSelector (if specified in spec), must be matched. |
-| `scopes` | `array (string)` | A collection of filters that must match each object tracked by a quota. If not specified, the quota matches all objects. |
+| Property        | Type                | Description                                                                                                                                                                                                                                                                             |
+|-----------------|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `hard`          | `integer-or-string` | hard is the set of desired hard limits for each named resource. More info: <https://kubernetes.io/docs/concepts/policy/resource-quotas/>                                                                                                                                                |
+| `scopeSelector` | `object`            | scopeSelector is also a collection of filters like scopes that must match each object tracked by a quota but expressed using ScopeSelectorOperator in combination with possible values. For a resource to match, both scopes AND scopeSelector (if specified in spec), must be matched. |
+| `scopes`        | `array (string)`    | A collection of filters that must match each object tracked by a quota. If not specified, the quota matches all objects.                                                                                                                                                                |
 
 ## .spec.quota.scopeSelector
 
@@ -61,9 +61,9 @@ scopeSelector is also a collection of filters like scopes that must match each o
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | A list of scope selector requirements by scope of the resources. |
+| Property             | Type     | Description                                                                                                                                      |
+|----------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`  | A list of scope selector requirements by scope of the resources.                                                                                 |
 | `matchExpressions[]` | `object` | A scoped-resource selector requirement is a selector that contains values, a scope name, and an operator that relates the scope name and values. |
 
 ## .spec.quota.scopeSelector.matchExpressions
@@ -87,11 +87,11 @@ Required
 
 - `scopeName`
 
-| Property | Type | Description |
-|----|----|----|
-| `operator` | `string` | Represents a scope’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. |
-| `scopeName` | `string` | The name of the scope that the selector applies to. |
-| `values` | `array (string)` | An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property    | Type             | Description                                                                                                                                                                                                                      |
+|-------------|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `operator`  | `string`         | Represents a scope’s relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist.                                                                                                                       |
+| `scopeName` | `string`         | The name of the scope that the selector applies to.                                                                                                                                                                              |
+| `values`    | `array (string)` | An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.selector
 
@@ -101,10 +101,10 @@ selector is the selector used to match projects. It should only select active pr
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property      | Type                 | Description                                                  |
+|---------------|----------------------|--------------------------------------------------------------|
 | `annotations` | `undefined (string)` | AnnotationSelector is used to select projects by annotation. |
-| `labels` | \`\` | LabelSelector is used to select projects by label. |
+| `labels`      | \`\`                 | LabelSelector is used to select projects by label.           |
 
 ## .status
 
@@ -117,10 +117,10 @@ Type
 Required
 - `total`
 
-| Property | Type | Description |
-|----|----|----|
-| `namespaces` | \`\` | namespaces slices the usage by project. This division allows for quick resolution of deletion reconciliation inside of a single project without requiring a recalculation across all projects. This can be used to pull the deltas for a given project. |
-| `total` | `object` | total defines the actual enforced quota and its current usage across all projects |
+| Property     | Type     | Description                                                                                                                                                                                                                                             |
+|--------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `namespaces` | \`\`     | namespaces slices the usage by project. This division allows for quick resolution of deletion reconciliation inside of a single project without requiring a recalculation across all projects. This can be used to pull the deltas for a given project. |
+| `total`      | `object` | total defines the actual enforced quota and its current usage across all projects                                                                                                                                                                       |
 
 ## .status.total
 
@@ -130,10 +130,10 @@ total defines the actual enforced quota and its current usage across all project
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `hard` | `integer-or-string` | Hard is the set of enforced hard limits for each named resource. More info: <https://kubernetes.io/docs/concepts/policy/resource-quotas/> |
-| `used` | `integer-or-string` | Used is the current observed total usage of the resource in the namespace. |
+| Property | Type                | Description                                                                                                                               |
+|----------|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| `hard`   | `integer-or-string` | Hard is the set of enforced hard limits for each named resource. More info: <https://kubernetes.io/docs/concepts/policy/resource-quotas/> |
+| `used`   | `integer-or-string` | Used is the current observed total usage of the resource in the namespace.                                                                |
 
 # API endpoints
 
@@ -181,10 +181,10 @@ HTTP method
 Description
 delete collection of ClusterResourceQuota
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -194,10 +194,10 @@ HTTP method
 Description
 list objects of kind ClusterResourceQuota
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ClusterResourceQuotaList`](../objects/index.xml#io-openshift-quota-v1-ClusterResourceQuotaList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                             |
+|--------------------|----------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ClusterResourceQuotaList`](../objects/index.xml#io-openshift-quota-v1-ClusterResourceQuotaList) schema |
+| 401 - Unauthorized | Empty                                                                                                    |
 
 HTTP responses
 
@@ -207,25 +207,25 @@ HTTP method
 Description
 create a ClusterResourceQuota
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                                  | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
-| 201 - Created | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
-| 202 - Accepted | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                          |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
+| 201 - Created      | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
+| 202 - Accepted     | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                 |
 
 HTTP responses
 
@@ -237,10 +237,10 @@ HTTP method
 Description
 watch individual changes to a list of ClusterResourceQuota. deprecated: use the 'watch' parameter with a list operation instead.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -258,17 +258,17 @@ HTTP method
 Description
 delete a ClusterResourceQuota
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -278,10 +278,10 @@ HTTP method
 Description
 read the specified ClusterResourceQuota
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                          |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                 |
 
 HTTP responses
 
@@ -291,17 +291,17 @@ HTTP method
 Description
 partially update the specified ClusterResourceQuota
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                          |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                 |
 
 HTTP responses
 
@@ -311,24 +311,24 @@ HTTP method
 Description
 replace the specified ClusterResourceQuota
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                                  | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
-| 201 - Created | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                          |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
+| 201 - Created      | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                 |
 
 HTTP responses
 
@@ -346,10 +346,10 @@ HTTP method
 Description
 watch changes to an object of kind ClusterResourceQuota. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -367,10 +367,10 @@ HTTP method
 Description
 read status of the specified ClusterResourceQuota
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                          |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                 |
 
 HTTP responses
 
@@ -380,17 +380,17 @@ HTTP method
 Description
 partially update status of the specified ClusterResourceQuota
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                          |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                 |
 
 HTTP responses
 
@@ -400,23 +400,23 @@ HTTP method
 Description
 replace status of the specified ClusterResourceQuota
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                                  | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
-| 201 - Created | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                          |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
+| 201 - Created      | [`ClusterResourceQuota`](../schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.xml#clusterresourcequota-quota-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                 |
 
 HTTP responses

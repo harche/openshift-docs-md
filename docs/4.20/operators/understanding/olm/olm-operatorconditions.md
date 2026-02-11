@@ -6,8 +6,11 @@ As part of its role in managing the lifecycle of an Operator, Operator Lifecycle
 
 OLM provides a custom resource definition (CRD) called `OperatorCondition` that allows Operators to communicate conditions to OLM. There are a set of supported conditions that influence management of the Operator by OLM when present in the `Spec.Conditions` array of an `OperatorCondition` resource.
 
-> [!NOTE]
-> By default, the `Spec.Conditions` array is not present in an `OperatorCondition` object until it is either added by a user or as a result of custom Operator logic.
+<div class="note">
+
+By default, the `Spec.Conditions` array is not present in an `OperatorCondition` object until it is either added by a user or as a result of custom Operator logic.
+
+</div>
 
 # Supported conditions
 
@@ -21,14 +24,15 @@ The `Upgradeable` Operator condition prevents an existing cluster service versio
 
 - An Operator is performing a migration of custom resources (CRs) that must be completed before the Operator is ready to be upgraded.
 
-> [!IMPORTANT]
-> Setting the `Upgradeable` Operator condition to the `False` value does not avoid pod disruption. If you must ensure your pods are not disrupted, see "Using pod disruption budgets to specify the number of pods that must be up" and "Graceful termination" in the "Additional resources" section.
+<div class="important">
 
-<div class="formalpara">
+Setting the `Upgradeable` Operator condition to the `False` value does not avoid pod disruption. If you must ensure your pods are not disrupted, see "Using pod disruption budgets to specify the number of pods that must be up" and "Graceful termination" in the "Additional resources" section.
 
-<div class="title">
+</div>
 
-Example `Upgradeable` Operator condition
+<div class="formalpara-title">
+
+**Example `Upgradeable` Operator condition**
 
 </div>
 
@@ -46,8 +50,6 @@ spec:
     message: "The Operator is performing a migration."
     lastTransitionTime: "2020-08-24T23:15:55Z"
 ```
-
-</div>
 
 - Name of the condition.
 

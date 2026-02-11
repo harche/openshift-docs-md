@@ -34,14 +34,6 @@ You must have the following prerequisites to configure the management cluster:
 
 You can access the hosted cluster by using the `hcp` command-line interface (CLI) to generate the `kubeconfig` file.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Generate the `kubeconfig` file by entering the following command:
 
     ``` terminal
@@ -55,16 +47,6 @@ Procedure
     $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get nodes
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring Ansible Automation Platform jobs to run on hosted clusters](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#ansible-config-hosted-cluster)
 
 - [Advanced configuration](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#advanced-config-engine)
@@ -77,19 +59,9 @@ Additional resources
 
 - [Deploying the SR-IOV Operator for hosted control planes](../../networking/networking_operators/sr-iov-operator/configuring-sriov-operator.xml#sriov-operator-hosted-control-planes_configuring-sriov-operator)
 
-</div>
-
 # Creating the Amazon Web Services S3 bucket and S3 OIDC secret
 
 Before you can create and manage hosted clusters on Amazon Web Services (AWS), you must create the S3 bucket and S3 OIDC secret.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an S3 bucket that has public access to host OIDC discovery documents for your clusters by running the following commands:
 
@@ -132,8 +104,11 @@ Procedure
 
     - Replace `<bucket_name>` with the name of the S3 bucket you are creating.
 
-      > [!NOTE]
-      > If you are using a Mac computer, you must export the bucket name in order for the policy to work.
+      <div class="note">
+
+      If you are using a Mac computer, you must export the bucket name in order for the policy to work.
+
+      </div>
 
 2.  Create an OIDC S3 secret named `hypershift-operator-oidc-provider-s3-credentials` for the HyperShift Operator.
 
@@ -141,11 +116,11 @@ Procedure
 
 4.  See the following table to verify that the secret contains the following fields:
 
-    | Field name | Description |
-    |----|----|
-    | `bucket` | Contains an S3 bucket with public access to host OIDC discovery documents for your hosted clusters. |
+    | Field name    | Description                                                                                                                                                                              |
+    |---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | `bucket`      | Contains an S3 bucket with public access to host OIDC discovery documents for your hosted clusters.                                                                                      |
     | `credentials` | A reference to a file that contains the credentials of the `default` profile that can access the bucket. By default, HyperShift only uses the `default` profile to operate the `bucket`. |
-    | `region` | Specifies the region of the S3 bucket. |
+    | `region`      | Specifies the region of the S3 bucket.                                                                                                                                                   |
 
     Required fields for the AWS secret
 
@@ -159,27 +134,20 @@ Procedure
       -n local-cluster
     ```
 
-    > [!NOTE]
-    > Disaster recovery backup for the secret is not automatically enabled. To add the label that enables the `hypershift-operator-oidc-provider-s3-credentials` secret to be backed up for disaster recovery, run the following command:
-    >
-    > ``` terminal
-    > $ oc label secret hypershift-operator-oidc-provider-s3-credentials \
-    >   -n local-cluster cluster.open-cluster-management.io/backup=true
-    > ```
+    <div class="note">
 
-</div>
+    Disaster recovery backup for the secret is not automatically enabled. To add the label that enables the `hypershift-operator-oidc-provider-s3-credentials` secret to be backed up for disaster recovery, run the following command:
+
+    ``` terminal
+    $ oc label secret hypershift-operator-oidc-provider-s3-credentials \
+      -n local-cluster cluster.open-cluster-management.io/backup=true
+    ```
+
+    </div>
 
 # Creating a routable public zone for hosted clusters
 
 To access applications in your hosted clusters, you must configure the routable public zone. If the public zone exists, skip this step. Otherwise, the public zone affects the existing functions.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To create a routable public zone for DNS records, enter the following command:
 
@@ -191,19 +159,9 @@ Procedure
 
   - Replace `<basedomain>` with your base domain, for example, `www.example.com`.
 
-</div>
-
 # Creating an AWS IAM role and STS credentials
 
 Before creating a hosted cluster on Amazon Web Services (AWS), you must create an AWS IAM role and STS credentials.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Get the Amazon Resource Name (ARN) of your user by running the following command:
 
@@ -211,19 +169,15 @@ Procedure
     $ aws sts get-caller-identity --query "Arn" --output text
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     arn:aws:iam::1234567890:user/<aws_username>
     ```
-
-    </div>
 
     Use this output as the value for `<arn>` in the next step.
 
@@ -259,19 +213,15 @@ Procedure
 
     - Replace `<file_name>` with the name of the JSON file you created in the previous step.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
       ``` terminal
       arn:aws:iam::820196288204:role/myrole
       ```
-
-      </div>
 
 4.  Create a JSON file named `policy.json` that contains the following permission policies for your role:
 
@@ -428,11 +378,9 @@ Procedure
     $ aws sts get-session-token --output json > sts-creds.json
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `sts-creds.json` file
+    **Example `sts-creds.json` file**
 
     </div>
 
@@ -447,33 +395,19 @@ Procedure
     }
     ```
 
-    </div>
-
-</div>
-
 # Enabling AWS PrivateLink for hosted control planes
 
 To provision hosted control planes on the Amazon Web Services (AWS) with PrivateLink, enable AWS PrivateLink for hosted control planes.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an AWS credential secret for the HyperShift Operator and name it `hypershift-operator-private-link-credentials`. The secret must reside in the managed cluster namespace that is the namespace of the managed cluster being used as the management cluster. If you used `local-cluster`, create the secret in the `local-cluster` namespace.
 
 2.  See the following table to confirm that the secret contains the required fields:
 
-</div>
-
-| Field name | Description | Optional or required |
-|----|----|----|
-| `region` | Region for use with Private Link | Required |
-| `aws-access-key-id` | The credential access key id. | Required |
-| `aws-secret-access-key` | The credential access key secret. | Required |
+| Field name              | Description                       | Optional or required |
+|-------------------------|-----------------------------------|----------------------|
+| `region`                | Region for use with Private Link  | Required             |
+| `aws-access-key-id`     | The credential access key id.     | Required             |
+| `aws-secret-access-key` | The credential access key secret. | Required             |
 
 Required fields for the AWS secret
 
@@ -486,14 +420,17 @@ $ oc create secret generic <secret_name> \
   --from-literal=region=<region> -n local-cluster
 ```
 
-> [!NOTE]
-> Disaster recovery backup for the secret is not automatically enabled. Run the following command to add the label that enables the `hypershift-operator-private-link-credentials` secret to be backed up for disaster recovery:
->
-> ``` terminal
-> $ oc label secret hypershift-operator-private-link-credentials \
->   -n local-cluster \
->   cluster.open-cluster-management.io/backup=""
-> ```
+<div class="note">
+
+Disaster recovery backup for the secret is not automatically enabled. Run the following command to add the label that enables the `hypershift-operator-private-link-credentials` secret to be backed up for disaster recovery:
+
+``` terminal
+$ oc label secret hypershift-operator-private-link-credentials \
+  -n local-cluster \
+  cluster.open-cluster-management.io/backup=""
+```
+
+</div>
 
 # Enabling external DNS for hosted control planes on AWS
 
@@ -547,13 +484,13 @@ You can provision hosted control planes with external DNS or service-level DNS.
 
 2.  See the following table to verify that the secret has the required fields:
 
-    | Field name | Description | Optional or required |
-    |----|----|----|
-    | `provider` | The DNS provider that manages the service-level DNS zone. | Required |
-    | `domain-filter` | The service-level domain. | Required |
-    | `credentials` | The credential file that supports all external DNS types. | Optional when you use AWS keys |
-    | `aws-access-key-id` | The credential access key id. | Optional when you use the AWS DNS service |
-    | `aws-secret-access-key` | The credential access key secret. | Optional when you use the AWS DNS service |
+    | Field name              | Description                                               | Optional or required                      |
+    |-------------------------|-----------------------------------------------------------|-------------------------------------------|
+    | `provider`              | The DNS provider that manages the service-level DNS zone. | Required                                  |
+    | `domain-filter`         | The service-level domain.                                 | Required                                  |
+    | `credentials`           | The credential file that supports all external DNS types. | Optional when you use AWS keys            |
+    | `aws-access-key-id`     | The credential access key id.                             | Optional when you use the AWS DNS service |
+    | `aws-secret-access-key` | The credential access key secret.                         | Optional when you use the AWS DNS service |
 
     Required fields for the AWS secret
 
@@ -566,28 +503,23 @@ You can provision hosted control planes with external DNS or service-level DNS.
       --from-file=credentials=<path_to_aws_credentials_file> -n local-cluster
     ```
 
-    > [!NOTE]
-    > Disaster recovery backup for the secret is not automatically enabled. To back up the secret for disaster recovery, add the `hypershift-operator-external-dns-credentials` by entering the following command:
-    >
-    > ``` terminal
-    > $ oc label secret hypershift-operator-external-dns-credentials \
-    >   -n local-cluster \
-    >   cluster.open-cluster-management.io/backup=""
-    > ```
+    <div class="note">
+
+    Disaster recovery backup for the secret is not automatically enabled. To back up the secret for disaster recovery, add the `hypershift-operator-external-dns-credentials` by entering the following command:
+
+    ``` terminal
+    $ oc label secret hypershift-operator-external-dns-credentials \
+      -n local-cluster \
+      cluster.open-cluster-management.io/backup=""
+    ```
+
+    </div>
 
 ## Creating the public DNS hosted zone
 
 The External DNS Operator uses the public DNS hosted zone to create your public hosted cluster.
 
 You can create the public DNS hosted zone to use as the external DNS domain-filter. Complete the following steps in the AWS Route 53 management console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the Route 53 management console, click **Create hosted zone**.
 
@@ -605,19 +537,15 @@ Procedure
     $ dig +short test.user-dest-public.aws.kerberos.com
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     192.168.1.1
     ```
-
-    </div>
 
 7.  To create a hosted cluster that sets the hostname for the `LoadBalancer` and `Route` services, enter the following command:
 
@@ -629,11 +557,9 @@ Procedure
 
     - Replace `<public_hosted_zone>` with the public hosted zone that you created.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example `services` block for the hosted cluster
+      **Example `services` block for the hosted cluster**
 
       </div>
 
@@ -660,10 +586,6 @@ Procedure
           servicePublishingStrategy:
             type: Route
       ```
-
-      </div>
-
-</div>
 
 The Control Plane Operator creates the `Services` and `Routes` resources and annotates them with the `external-dns.alpha.kubernetes.io/hostname` annotation. For `Services` and `Routes`, the Control Plane Operator uses a value of the `hostname` parameter in the `servicePublishingStrategy` field for the service endpoints. To create the DNS records, you can use a mechanism, such as the `external-dns` deployment.
 
@@ -692,14 +614,6 @@ To create a hosted cluster by using the `PublicAndPrivate` or `Public` publishin
 
 You can deploy a hosted cluster, by using the `hcp` command-line interface (CLI).
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To access your management cluster, enter the following command:
 
     ``` terminal
@@ -712,11 +626,9 @@ Procedure
     $ oc get pod -n hypershift -lapp=external-dns
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -724,8 +636,6 @@ Procedure
     NAME                            READY   STATUS    RESTARTS   AGE
     external-dns-7c89788c69-rn8gp   1/1     Running   0          40s
     ```
-
-    </div>
 
 3.  To create a hosted cluster by using external DNS, enter the following command:
 
@@ -769,8 +679,6 @@ Procedure
 
     - Specify the path to your AWS STS credentials file, for example, `/home/user/sts-creds/sts-creds.json`.
 
-</div>
-
 ## Defining a custom DNS name
 
 As a cluster administrator, you can create a hosted cluster with an external API DNS name that differs from the internal endpoint that gets used for node bootstraps and control plane communication. You might want to define a different DNS name for the following reasons:
@@ -783,27 +691,11 @@ As a cluster administrator, you can create a hosted cluster with an external API
 
 You can define a DNS name either during your initial setup or during postinstallation operations, by entering a domain name in the `kubeAPIServerDNSName` parameter of a `HostedCluster` object.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have a valid TLS certificate that covers the DNS name that you set in the `kubeAPIServerDNSName` parameter.
 
 - You have a resolvable DNS name URI that can reach and point to the correct address.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - In the specification for the `HostedCluster` object, add the `kubeAPIServerDNSName` parameter and the address for the domain and specify which certificate to use, as shown in the following example:
 
@@ -824,16 +716,17 @@ Procedure
 
   - The value for the `kubeAPIServerDNSName` parameter must be a valid and addressable domain.
 
-</div>
-
 After you define the `kubeAPIServerDNSName` parameter and specify the certificate, the Control Plane Operator controllers create a `kubeconfig` file named `custom-admin-kubeconfig`, where the file gets stored in the `HostedControlPlane` namespace. The generation of certificates happen from the root CA, and the `HostedControlPlane` namespace manages their expiration and renewal.
 
 The Control Plane Operator reports a new `kubeconfig` file named `CustomKubeconfig` in the `HostedControlPlane` namespace. That file uses the defined new server in the `kubeAPIServerDNSName` parameter.
 
 A reference for the custom `kubeconfig` file exists in the `status` parameter as `CustomKubeconfig` of the `HostedCluster` object. The `CustomKubeConfig` parameter is optional, and you can add the parameter only if the `kubeAPIServerDNSName` parameter is not empty. After you set the `CustomKubeConfig` parameter, the parameter triggers the generation of a secret named `<hosted_cluster_name>-custom-admin-kubeconfig` in the `HostedCluster` namespace. You can use the secret to access the `HostedCluster` API server. If you remove the `CustomKubeConfig` parameter during postinstallation operations, deletion of all related secrets and status references occur.
 
-> [!NOTE]
-> Defining a custom DNS name does not directly impact the data plane, so no expected rollouts occur. The `HostedControlPlane` namespace receives the changes from the HyperShift Operator and deletes the corresponding parameters.
+<div class="note">
+
+Defining a custom DNS name does not directly impact the data plane, so no expected rollouts occur. The `HostedControlPlane` namespace receives the changes from the HyperShift Operator and deletes the corresponding parameters.
+
+</div>
 
 If you remove the `kubeAPIServerDNSName` parameter from the specification for the `HostedCluster` object, all newly generated secrets and the `CustomKubeconfig` reference are removed from the cluster and from the `status` parameter.
 
@@ -852,29 +745,11 @@ For compatible combinations of node pools and hosted clusters, see the following
 
 Compatible architectures for node pools and hosted clusters
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have set up the hosted control plane CLI, `hcp`.
 
 - You have enabled the `local-cluster` managed cluster as the management cluster.
 
 - You created an AWS Identity and Access Management (IAM) role and AWS Security Token Service (STS) credentials.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To create a hosted cluster on AWS, run the following command:
 
@@ -915,11 +790,9 @@ Procedure
 
 2.  If you included the `--render-into` flag in the previous command, edit the specified YAML file. Edit the `NodePool` specification in the YAML file to indicate whether the EC2 instance should run on shared or single-tenant hardware, similar to the following example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example YAML file
+    **Example YAML file**
 
     </div>
 
@@ -935,21 +808,11 @@ Procedure
             tenancy: "default"
     ```
 
-    </div>
-
     - Specify the name of the `NodePool` resource.
 
     - Specify a valid value for tenancy: `"default"`, `"dedicated"`, or `"host"`. Use `"default"` when node pool instances run on shared hardware. Use `"dedicated"` when each node pool instance runs on single-tenant hardware. Use `"host"` when node pool instances run on your pre-allocated dedicated hosts.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify the status of your hosted cluster to check that the value of `AVAILABLE` is `True`. Run the following command:
 
@@ -963,19 +826,7 @@ Verification
     $ oc get nodepools --namespace <hosted_cluster_namespace>
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Running hosted clusters on an ARM64 architecture](../../hosted_control_planes/hcp-deploy/hcp-deploy-aws.xml#hcp-enable-arm-amd_hcp-deploy-aws)
-
-</div>
 
 ## Accessing a hosted cluster on AWS
 
@@ -987,13 +838,7 @@ You must be familiar with the access secrets for hosted clusters. The hosted clu
 
 - `kubeadmin` password secret: `<hosted-cluster-namespace>-<name>-kubeadmin-password`. For example, `clusters-hypershift-demo-kubeadmin-password`.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - The `kubeconfig` secret contains a Base64-encoded `kubeconfig` field, which you can decode and save into a file to use with the following command:
 
@@ -1002,8 +847,6 @@ Procedure
   ```
 
   The `kubeadmin` password secret is also Base64-encoded. You can decode it and use the password to log in to the API server or console of the hosted cluster.
-
-</div>
 
 ## Accessing a hosted cluster on AWS by using the kubeadmin credentials
 
@@ -1017,14 +860,9 @@ The secret name formats are as follows:
 
 - The `kubeadmin` password secret: `<hosted_cluster_namespace>-<name>-kubeadmin-password`. For example, `clusters-hypershift-demo-kubeadmin-password`.
 
-> [!NOTE]
-> The `kubeadmin` password secret is Base64-encoded and the `kubeconfig` secret contains a Base64-encoded `kubeconfig` configuration. You must decode the Base64-encoded `kubeconfig` configuration and save it into a `<hosted_cluster_name>.kubeconfig` file.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+The `kubeadmin` password secret is Base64-encoded and the `kubeconfig` secret contains a Base64-encoded `kubeconfig` configuration. You must decode the Base64-encoded `kubeconfig` configuration and save it into a `<hosted_cluster_name>.kubeconfig` file.
 
 </div>
 
@@ -1036,19 +874,9 @@ Procedure
 
   You must decode the `kubeadmin` password secret to log in to the API server or the console of the hosted cluster.
 
-</div>
-
 ## Accessing a hosted cluster on AWS by using the hcp CLI
 
 You can access the hosted cluster by using the `hcp` command-line interface (CLI).
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Generate the `kubeconfig` file by entering the following command:
 
@@ -1063,21 +891,11 @@ Procedure
     $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get nodes
     ```
 
-</div>
-
 # Configuring a custom API server certificate in a hosted cluster
 
 To configure a custom certificate for the API server, specify the certificate details in the `spec.configuration.apiServer` section of your `HostedCluster` configuration.
 
 You can configure a custom certificate during either day-1 or day-2 operations. However, because the service publishing strategy is immutable after you set it during hosted cluster creation, you must know what the hostname is for the Kubernetes API server that you plan to configure.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You created a Kubernetes secret that contains your custom certificate in the management cluster. The secret contains the following keys:
 
@@ -1090,16 +908,6 @@ Prerequisites
 - The certificate must be valid for the external API endpoint.
 
 - The validity period of the certificate aligns with your cluster’s expected life cycle.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a secret with your custom certificate by entering the following command:
 
@@ -1134,47 +942,19 @@ Procedure
     $ oc apply -f <hosted_cluster_config>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Check the API server pods to ensure that the new certificate is mounted.
 
 - Test the connection to the API server by using the custom domain name.
 
 - Verify the certificate details in your browser or by using tools such as `openssl`.
 
-</div>
-
 # Creating a hosted cluster in multiple zones on AWS
 
 You can create a hosted cluster in multiple zones on Amazon Web Services (AWS) by using the `hcp` command-line interface (CLI).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You created an AWS Identity and Access Management (IAM) role and AWS Security Token Service (STS) credentials.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Create a hosted cluster in multiple zones on AWS by running the following command:
 
@@ -1205,8 +985,6 @@ Procedure
   - Specify availability zones within your AWS region, for example, `us-east-1a`, and `us-east-1b`.
 
   - Specify the path to your AWS STS credentials file, for example, `/home/user/sts-creds/sts-creds.json`.
-
-</div>
 
 For each specified zone, the following infrastructure is created:
 
@@ -1240,13 +1018,7 @@ You can provide the AWS credentials by using the either of the following ways:
 
 - The AWS cloud provider secret from multicluster engine Operator
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To create a hosted cluster on AWS by providing AWS STS credentials, enter the following command:
 
@@ -1275,8 +1047,6 @@ Procedure
 
   - Specify the Amazon Resource Name (ARN), for example, `arn:aws:iam::820196288204:role/myrole`.
 
-</div>
-
 # Running hosted clusters on an ARM64 architecture
 
 By default for hosted control planes on Amazon Web Services (AWS), you use an AMD64 hosted cluster. However, you can enable hosted control planes to run on an ARM64 hosted cluster.
@@ -1296,27 +1066,11 @@ You can run a hosted cluster on an ARM64 OpenShift Container Platform cluster fo
 
 If you do not use a multi-architecture release image, the compute nodes in the node pool are not created and reconciliation of the node pool stops until you either use a multi-architecture release image in the hosted cluster or update the `NodePool` custom resource based on the release image.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have an OpenShift Container Platform cluster with a 64-bit ARM infrastructure that is installed on AWS. For more information, see [Create an OpenShift Container Platform Cluster: AWS (ARM)](https://console.redhat.com/openshift/install/aws/arm).
 
 - You must create an AWS Identity and Access Management (IAM) role and AWS Security Token Service (STS) credentials. For more information, see "Creating an AWS IAM role and STS credentials".
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Create a hosted cluster on an ARM64 OpenShift Container Platform cluster by entering the following command:
 
@@ -1348,8 +1102,6 @@ Procedure
 
   - Specify the Amazon Resource Name (ARN), for example, `arn:aws:iam::820196288204:role/myrole`.
 
-</div>
-
 ## Creating an ARM or AMD NodePool object on AWS hosted clusters
 
 You can schedule application workloads that is the `NodePool` objects on 64-bit ARM and AMD from the same hosted control plane. You can define the `arch` field in the `NodePool` specification to set the required processor architecture for the `NodePool` object. The valid values for the `arch` field are as follows:
@@ -1358,25 +1110,11 @@ You can schedule application workloads that is the `NodePool` objects on 64-bit 
 
 - `amd64`
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - You must have a multi-architecture image for the `HostedCluster` custom resource to use. You can access [multi-architecture nightly images](https://multi.ocp.releases.ci.openshift.org/).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Add an ARM or AMD `NodePool` object to the hosted cluster on AWS by running the following command:
 
@@ -1396,19 +1134,9 @@ Procedure
 
   - Specify the architecture type, such as `arm64` or `amd64`. If you do not specify a value for the `--arch` flag, the `amd64` value is used by default.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Extracting the OpenShift Container Platform release image digest](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#configure-hosted-disconnected-digest-image)
-
-</div>
 
 # Creating a private hosted cluster on AWS
 
@@ -1418,29 +1146,13 @@ By default, hosted clusters are publicly accessible through public DNS and the d
 
 For private clusters on AWS, all communication with the hosted cluster occurs over AWS PrivateLink.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You enabled AWS PrivateLink. For more information, see "Enabling AWS PrivateLink".
 
 - You created an AWS Identity and Access Management (IAM) role and AWS Security Token Service (STS) credentials. For more information, see "Creating an AWS IAM role and STS credentials" and "Identity and Access Management (IAM) permissions".
 
 - You configured a [bastion instance on AWS](https://aws.amazon.com/solutions/implementations/linux-bastion).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Create a private hosted cluster on AWS by entering the following command:
 
@@ -1478,19 +1190,9 @@ Procedure
 
 - `*.apps.<hosted_cluster_name>.hypershift.local`
 
-</div>
-
 ## Accessing a private management cluster on AWS
 
 You can access your private management cluster by using the command-line interface (CLI).
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Find the private IPs of nodes by entering the following command:
 
@@ -1531,5 +1233,3 @@ Procedure
     ``` terminal
     $ oc get clusteroperators clusterversion
     ```
-
-</div>

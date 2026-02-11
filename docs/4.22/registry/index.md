@@ -56,50 +56,25 @@ The registry is typically used as a publication target for images built on the c
 
 Image data is stored in two locations. The actual image data is stored in a configurable storage location, such as cloud storage or a filesystem volume. The image metadata, which is exposed by the standard cluster APIs and is used to perform access control, is stored as standard API resources, specifically images and image streams.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Image Registry Operator in OpenShift Container Platform](../registry/configuring-registry-operator.xml#configuring-registry-operator)
-
-</div>
 
 # Automatically pruning images
 
 Images from the OpenShift image registry that are no longer required by the system because of age, status, or exceed limits being automatically pruned. As a cluster administrator, can configure or suspend the pruning Custom Resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to an OpenShift Container Platform cluster using an account with cluster administrator permissions.
 
 - Install the `oc` CLI.
 
-</div>
+<div class="important">
 
-> [!IMPORTANT]
-> The behavior of the Image Registry Operator for managing the pruner is independent to the `managementState` specified on the `ClusterOperator` object of the Image Registry Operator. If the Image Registry Operator is not in the `Managed` state, the image pruner can still be configured and managed by the Pruning Custom Resource.
->
-> However, the `managementState` of the Image Registry Operator alters the behavior of the deployed image pruner job:
->
-> - `Managed`: the `--prune-registry` flag for the image pruner is set to `true`.
->
-> - `Removed`: the `--prune-registry` flag for the image pruner is set to `false`, meaning it only prunes image metadata in etcd.
+The behavior of the Image Registry Operator for managing the pruner is independent to the `managementState` specified on the `ClusterOperator` object of the Image Registry Operator. If the Image Registry Operator is not in the `Managed` state, the image pruner can still be configured and managed by the Pruning Custom Resource.
 
-<div>
+However, the `managementState` of the Image Registry Operator alters the behavior of the deployed image pruner job:
 
-<div class="title">
+- `Managed`: the `--prune-registry` flag for the image pruner is set to `true`.
 
-Procedure
+- `Removed`: the `--prune-registry` flag for the image pruner is set to `false`, meaning it only prunes image metadata in etcd.
 
 </div>
 
@@ -170,8 +145,6 @@ Procedure
 
   - `Failed`: Indicates if the most recent pruning job failed.
 
-</div>
-
 # Creating containers by using images from third-party registries
 
 Some container image registries require access authorization. Podman is an open source tool for managing containers and container images and interacting with image registries. You can use Podman to authenticate your credentials, pull the registry image, and store local images in a local file system. The procedure provides a generic example of authenticating the registry with Podman.
@@ -179,14 +152,6 @@ Some container image registries require access authorization. Podman is an open 
 OpenShift Container Platform can communicate with registries to access private image repositories by using credentials supplied by the user. This allows OpenShift Container Platform to push and pull images to and from private repositories.
 
 OpenShift Container Platform can create containers by using images from third-party registries, but these registries unlikely offer the same image notification support as the integrated OpenShift image registry.In this situation, OpenShift Container Platform fetches tags from the remote registry upon image stream creation. To refresh the fetched tags, run `oc import-image <stream>`. When new images are detected, the previously described build and deployment reactions occur.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Use the [Red Hat Ecosystem Catalog](https://catalog.redhat.com/software/containers/explore) to search for specific container images from the Red Hat Repository and select the required image.
 
@@ -209,8 +174,6 @@ Procedure
     $ podman pull registry.redhat.io/<repository_name>
     ```
 
-</div>
-
 # Red Hat Quay registries
 
 If you need an enterprise-quality container image registry, Red Hat Quay is available both as a hosted service and as software that you can install in your own data center or cloud environment. Advanced features in Red Hat Quay include geo-replication, image scanning, and the ability to roll back images.
@@ -219,24 +182,17 @@ Visit the [Quay.io](https://quay.io) site to set up your own hosted Quay registr
 
 You can access your Red Hat Quay registry from OpenShift Container Platform, similar to any remote container image registry.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Red Hat Quay product documentation](https://access.redhat.com/documentation/en-us/red_hat_quay/)
-
-</div>
 
 # Authentication enabled Red Hat registry
 
 All container images available through the Container images section of the Red Hat Ecosystem Catalog are hosted on an image registry, `registry.redhat.io`. The registry, `registry.redhat.io`, requires authentication for access to images and hosted content on OpenShift Container Platform.
 
-> [!NOTE]
-> OpenShift Container Platform pulls images from `registry.redhat.io`, so you must configure your cluster to use it.
+<div class="note">
+
+OpenShift Container Platform pulls images from `registry.redhat.io`, so you must configure your cluster to use it.
+
+</div>
 
 The new registry uses standard OAuth mechanisms for authentication, with the following methods:
 
@@ -254,14 +210,6 @@ You must place your credentials in either of the following places:
 
 - **Your host**. Your credentials must exist on your host because Kubernetes uses the credentials from your host when it goes to pull images.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Registry service accounts](https://access.redhat.com/terms-based-registry/)
-
-</div>

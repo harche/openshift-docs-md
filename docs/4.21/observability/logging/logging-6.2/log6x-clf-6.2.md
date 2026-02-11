@@ -1,13 +1,5 @@
 The `ClusterLogForwarder` (CLF) allows users to configure forwarding of logs to various destinations. It provides a flexible way to select log messages from different sources, send them through a pipeline that can transform or filter them, and forward them to one or more outputs.
 
-<div>
-
-<div class="title">
-
-Key Functions of the ClusterLogForwarder
-
-</div>
-
 - Selects log messages using inputs
 
 - Forwards logs to external destinations using outputs
@@ -15,8 +7,6 @@ Key Functions of the ClusterLogForwarder
 - Filters, transforms, and drops log messages using filters
 
 - Defines log forwarding pipelines connecting inputs, filters and outputs
-
-</div>
 
 # Setting up log collection
 
@@ -46,47 +36,23 @@ $ oc adm policy add-cluster-role-to-user collect-audit-logs system:serviceaccoun
 
 ## Creating service accounts
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The Red Hat OpenShift Logging Operator is installed in the `openshift-logging` namespace.
 
 - You have administrator permissions.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a service account for the collector. If you want to write logs to storage that requires a token for authentication, you must include a token in the service account.
 
 2.  Bind the appropriate cluster roles to the service account:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example binding command
+    **Example binding command**
 
     </div>
 
     ``` terminal
     $ oc adm policy add-cluster-role-to-user <cluster_role_name> system:serviceaccount:<namespace_name>:<service_account_name>
     ```
-
-    </div>
-
-</div>
 
 ### Cluster Role Binding for your Service Account
 
@@ -203,11 +169,9 @@ rules:
 
 The write-infrastructure-logs-clusterrole.yaml file defines a ClusterRole that grants permission to create infrastructure logs in the Loki logging system.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample YAML
+**Sample YAML**
 
 </div>
 
@@ -226,8 +190,6 @@ rules:
     verbs:
       - create
 ```
-
-</div>
 
 - rules: Specifies the permissions this ClusterRole grants.
 
@@ -301,11 +263,9 @@ rules:
 
 To modify the log level in the collector, you can set the `observability.openshift.io/log-level` annotation to `trace`, `debug`, `info`, `warn`, `error`, and `off`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example log level annotation
+**Example log level annotation**
 
 </div>
 
@@ -318,8 +278,6 @@ metadata:
     observability.openshift.io/log-level: debug
 # ...
 ```
-
-</div>
 
 # Managing the Operator
 
@@ -415,26 +373,19 @@ Each output type has its own configuration fields.
 
 Cluster administrators can use the OpenTelemetry Protocol (OTLP) output to collect and forward logs to OTLP receivers. The OTLP output uses the specification defined by the [OpenTelemetry Observability framework](https://opentelemetry.io/docs/specs/otlp/) to send data over HTTP with JSON encoding.
 
-> [!IMPORTANT]
-> The OpenTelemetry Protocol (OTLP) output log forwarder is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div>
+The OpenTelemetry Protocol (OTLP) output log forwarder is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
-
-Procedure
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
 - Create or edit a `ClusterLogForwarder` custom resource (CR) to enable forwarding using OTLP by adding the following annotation:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example `ClusterLogForwarder` CR
+  **Example `ClusterLogForwarder` CR**
 
   </div>
 
@@ -469,16 +420,15 @@ Procedure
       - otlp
   ```
 
-  </div>
-
   - Use this annotation to enable the OpenTelemetry Protocol (OTLP) output, which is a Technology Preview feature.
 
   - This URL must be absolute and is a placeholder for the OTLP endpoint where logs are sent.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The OTLP output uses the OpenTelemetry data model, which is different from the ViaQ data model that is used by other output types. It adheres to the OTLP using [OpenTelemetry Semantic Conventions](https://opentelemetry.io/docs/specs/semconv/) defined by the OpenTelemetry Observability framework.
+The OTLP output uses the OpenTelemetry data model, which is different from the ViaQ data model that is used by other output types. It adheres to the OTLP using [OpenTelemetry Semantic Conventions](https://opentelemetry.io/docs/specs/semconv/) defined by the OpenTelemetry Observability framework.
+
+</div>
 
 ## Pipelines
 
@@ -505,16 +455,17 @@ Administrators can configure the following types of filters:
 
 Enables multi-line error detection of container logs.
 
-> [!WARNING]
-> Enabling this feature could have performance implications and may require additional computing resources or alternate logging solutions.
+<div class="warning">
+
+Enabling this feature could have performance implications and may require additional computing resources or alternate logging solutions.
+
+</div>
 
 Log parsers often incorrectly identify separate lines of the same exception as separate exceptions. This leads to extra log entries and an incomplete or inaccurate view of the traced information.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example java exception
+**Example java exception**
 
 </div>
 
@@ -525,15 +476,11 @@ java.lang.NullPointerException: Cannot invoke "String.toString()" because "<para
     at testjava.Main.main(Main.java:10)
 ```
 
-</div>
-
 - To enable logging to detect multi-line exceptions and reassemble them into a single log entry, ensure that the `ClusterLogForwarder` Custom Resource (CR) contains a `detectMultilineErrors` field under the `.spec.filters`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example ClusterLogForwarder CR
+**Example ClusterLogForwarder CR**
 
 </div>
 
@@ -559,8 +506,6 @@ spec:
         - <output-name>
 ```
 
-</div>
-
 ## Details
 
 When log messages appear as a consecutive sequence forming an exception stack trace, they are combined into a single, unified log record. The first log message’s content is replaced with the concatenated content of all the message fields in the sequence.
@@ -585,21 +530,11 @@ The collector supports the following languages:
 
 To enable forwarding logs over HTTP, specify `http` as the output type in the `ClusterLogForwarder` custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Create or edit the `ClusterLogForwarder` CR using the template below:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example ClusterLogForwarder CR
+  **Example ClusterLogForwarder CR**
 
   </div>
 
@@ -643,8 +578,6 @@ Procedure
       name: <service_account_name>
   ```
 
-  </div>
-
   - Additional headers to send with the log record.
 
   - Optional: URL of the HTTP/HTTPS proxy that should be used to forward logs over http or https from this output. This setting overrides any default proxy settings for the cluster or the node.
@@ -659,33 +592,13 @@ Procedure
 
   - The name of your service account.
 
-</div>
-
 # Forwarding logs using the syslog protocol
 
 You can use the syslog [RFC3164](https://tools.ietf.org/html/rfc3164) or [RFC5424](https://tools.ietf.org/html/rfc5424) protocol to send a copy of your logs to an external log aggregator that is configured to accept the protocol instead of, or in addition to, the default Elasticsearch log store. You are responsible for configuring the external log aggregator, such as a syslog server, to receive the logs from OpenShift Container Platform.
 
 To configure log forwarding using the syslog protocol, you must create a `ClusterLogForwarder` custom resource (CR) with one or more outputs to the syslog servers, and pipelines that use those outputs. The syslog output can use a UDP, TCP, or TLS connection.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must have a logging server that is configured to receive the logging data using the specified protocol or format.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create or edit a YAML file that defines the `ClusterLogForwarder` CR object:
 
@@ -759,8 +672,6 @@ Procedure
     $ oc create -f <filename>.yaml
     ```
 
-</div>
-
 ## Adding log source information to the message output
 
 You can add `namespace_name`, `pod_name`, and `container_name` elements to the `message` field of the record by adding the `enrichment` field to your `ClusterLogForwarder` custom resource (CR).
@@ -787,14 +698,15 @@ You can add `namespace_name`, `pod_name`, and `container_name` elements to the `
 # ...
 ```
 
-> [!NOTE]
-> This configuration is compatible with both RFC3164 and RFC5424.
+<div class="note">
 
-<div class="formalpara">
+This configuration is compatible with both RFC3164 and RFC5424.
 
-<div class="title">
+</div>
 
-Example syslog message output with `enrichment: None`
+<div class="formalpara-title">
+
+**Example syslog message output with `enrichment: None`**
 
 </div>
 
@@ -802,13 +714,9 @@ Example syslog message output with `enrichment: None`
  2025-03-03T11:48:01+00:00  example-worker-x  syslogsyslogserverd846bb9b: {...}
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example syslog message output with `enrichment: KubernetesMinimal`
+**Example syslog message output with `enrichment: KubernetesMinimal`**
 
 </div>
 
@@ -816,29 +724,17 @@ Example syslog message output with `enrichment: KubernetesMinimal`
 2025-03-03T11:48:01+00:00  example-worker-x  syslogsyslogserverd846bb9b: namespace_name=cakephp-project container_name=mysql pod_name=mysql-1-wr96h,message: {...}
 ```
 
-</div>
-
 # Configuring content filters to drop unwanted log records
 
 When the `drop` filter is configured, the log collector evaluates log streams according to the filters before forwarding. The collector drops unwanted log records that match the specified configuration.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Add a configuration for a filter to the `filters` spec in the `ClusterLogForwarder` CR.
 
     The following example shows how to configure the `ClusterLogForwarder` CR to drop log records based on regular expressions:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `ClusterLogForwarder` CR
+    **Example `ClusterLogForwarder` CR**
 
     </div>
 
@@ -864,8 +760,6 @@ Procedure
         filterRefs: ["<filter_name>"]
     # ...
     ```
-
-    </div>
 
     - Specifies the type of filter. The `drop` filter drops log records that match the filter configuration.
 
@@ -893,19 +787,13 @@ Procedure
     $ oc apply -f <filename>.yaml
     ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Additional examples
+**Additional examples**
 
 </div>
 
 The following additional example shows how you can configure the `drop` filter to only keep higher priority log records:
-
-</div>
 
 ``` yaml
 apiVersion: observability.openshift.io/v1
@@ -985,14 +873,15 @@ A list of integer status codes to omit. You can drop events based on the HTTP st
 
 The `ClusterLogForwarder` CR audit policy acts in addition to the OpenShift Container Platform audit policy. The `ClusterLogForwarder` CR audit filter changes what the log collector forwards and provides the ability to filter by verb, user, group, namespace, or resource. You can create multiple filters to send different summaries of the same audit stream to different places. For example, you can send a detailed stream to the local cluster log store and a less detailed stream to a remote site.
 
-> [!NOTE]
-> You must have a cluster role `collect-audit-logs` to collect the audit logs. The following example provided is intended to illustrate the range of rules possible in an audit policy and is not a recommended configuration.
+<div class="note">
 
-<div class="formalpara">
+You must have a cluster role `collect-audit-logs` to collect the audit logs. The following example provided is intended to illustrate the range of rules possible in an audit policy and is not a recommended configuration.
 
-<div class="title">
+</div>
 
-Example audit policy
+<div class="formalpara-title">
+
+**Example audit policy**
 
 </div>
 
@@ -1077,8 +966,6 @@ spec:
           - level: Metadata
 ```
 
-</div>
-
 - The log types that are collected. The value for this field can be `audit` for audit logs, `application` for application logs, `infrastructure` for infrastructure logs, or a named input that has been defined for your application.
 
 - The name of your audit policy.
@@ -1087,23 +974,13 @@ spec:
 
 You can include the application logs based on the label expressions or a matching label key and its values by using the `input` selector.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Add a configuration for a filter to the `input` spec in the `ClusterLogForwarder` CR.
 
     The following example shows how to configure the `ClusterLogForwarder` CR to include logs based on label expressions or matched label key/values:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `ClusterLogForwarder` CR
+    **Example `ClusterLogForwarder` CR**
 
     </div>
 
@@ -1132,8 +1009,6 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - Specifies the label key to match.
 
     - Specifies the operator. Valid values include: `In`, `NotIn`, `Exists`, and `DoesNotExist`.
@@ -1148,32 +1023,23 @@ Procedure
     $ oc apply -f <filename>.yaml
     ```
 
-</div>
-
 # Configuring content filters to prune log records
 
 When the `prune` filter is configured, the log collector evaluates log streams according to the filters before forwarding. The collector prunes log records by removing low value fields such as pod annotations.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Add a configuration for a filter to the `prune` spec in the `ClusterLogForwarder` CR.
 
     The following example shows how to configure the `ClusterLogForwarder` CR to prune log records based on field paths:
 
-    > [!IMPORTANT]
-    > If both are specified, records are pruned based on the `notIn` array first, which takes precedence over the `in` array. After records have been pruned by using the `notIn` array, they are then pruned by using the `in` array.
+    <div class="important">
 
-    <div class="formalpara">
+    If both are specified, records are pruned based on the `notIn` array first, which takes precedence over the `in` array. After records have been pruned by using the `notIn` array, they are then pruned by using the `in` array.
 
-    <div class="title">
+    </div>
 
-    Example `ClusterLogForwarder` CR
+    <div class="formalpara-title">
+
+    **Example `ClusterLogForwarder` CR**
 
     </div>
 
@@ -1197,8 +1063,6 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - Specify the type of filter. The `prune` filter prunes log records by configured fields.
 
     - Specify configuration options for applying the `prune` filter. The `in` and `notIn` fields are specified as arrays of dot-delimited field paths, which are paths to fields in log records. These paths can contain alpha-numeric characters and underscores (`a-zA-Z0-9_`), for example, `.kubernetes.namespace_name`. If segments contain characters outside of this range, the segment must be in quotes, for example, `.kubernetes.labels."foo.bar-bar/baz"`.
@@ -1209,8 +1073,11 @@ Procedure
 
     - Specify the pipeline that the `prune` filter is applied to.
 
-      > [!NOTE]
-      > The filters exempts the `log_type`, `.log_source`, and `.message` fields.
+      <div class="note">
+
+      The filters exempts the `log_type`, `.log_source`, and `.message` fields.
+
+      </div>
 
 2.  Apply the `ClusterLogForwarder` CR by running the following command:
 
@@ -1218,29 +1085,17 @@ Procedure
     $ oc apply -f <filename>.yaml
     ```
 
-</div>
-
 # Filtering the audit and infrastructure log inputs by source
 
 You can define the list of `audit` and `infrastructure` sources to collect the logs by using the `input` selector.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Add a configuration to define the `audit` and `infrastructure` sources in the `ClusterLogForwarder` CR.
 
     The following example shows how to configure the `ClusterLogForwarder` CR to define `audit` and `infrastructure` sources:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `ClusterLogForwarder` CR
+    **Example `ClusterLogForwarder` CR**
 
     </div>
 
@@ -1267,8 +1122,6 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - Specifies the list of infrastructure sources to collect. The valid sources include:
 
       - `node`: Journal log from the node
@@ -1291,29 +1144,17 @@ Procedure
     $ oc apply -f <filename>.yaml
     ```
 
-</div>
-
 # Filtering application logs at input by including or excluding the namespace or container name
 
 You can include or exclude the application logs based on the namespace and container name by using the `input` selector.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Add a configuration to include or exclude the namespace and container names in the `ClusterLogForwarder` CR.
 
     The following example shows how to configure the `ClusterLogForwarder` CR to include or exclude namespaces and container names:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `ClusterLogForwarder` CR
+    **Example `ClusterLogForwarder` CR**
 
     </div>
 
@@ -1337,8 +1178,6 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - Specifies that the logs are only collected from these namespaces.
 
     - Specifies that the logs are only collected from these containers.
@@ -1347,13 +1186,14 @@ Procedure
 
     - Specifies the set of containers to ignore when collecting the logs.
 
-      > [!NOTE]
-      > The `excludes` field takes precedence over the `includes` field.
+      <div class="note">
+
+      The `excludes` field takes precedence over the `includes` field.
+
+      </div>
 
 2.  Apply the `ClusterLogForwarder` CR by running the following command:
 
     ``` terminal
     $ oc apply -f <filename>.yaml
     ```
-
-</div>

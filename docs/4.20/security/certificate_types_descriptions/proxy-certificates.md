@@ -31,11 +31,9 @@ The `additionalTrustBundle` value of the installer configuration is used to spec
 $ cat install-config.yaml
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -52,8 +50,6 @@ additionalTrustBundle: |
 ...
 ```
 
-</div>
-
 # Location
 
 The user-provided trust bundle is represented as a config map. The config map is mounted into the file system of platform components that make egress HTTPS calls. Typically, Operators mount the config map to `/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem`, but this is not required by the proxy. A proxy can modify or inspect the HTTPS connection. In either case, the proxy must generate and sign a new certificate for the connection.
@@ -68,8 +64,11 @@ The user sets the expiration term of the user-provided trust bundle.
 
 The default expiration term is defined by the CA certificate itself. It is up to the CA administrator to configure this for the certificate before it can be used by OpenShift Container Platform or RHCOS.
 
-> [!NOTE]
-> Red Hat does not monitor for when CAs expire. However, due to the long life of CAs, this is generally not an issue. However, you might need to periodically update the trust bundle.
+<div class="note">
+
+Red Hat does not monitor for when CAs expire. However, due to the long life of CAs, this is generally not an issue. However, you might need to periodically update the trust bundle.
+
+</div>
 
 # Services
 
@@ -117,5 +116,8 @@ The trust store of machines must also support updating the trust store of nodes.
 
 There are no Operators that can auto-renew certificates on the RHCOS nodes.
 
-> [!NOTE]
-> Red Hat does not monitor for when CAs expire. However, due to the long life of CAs, this is generally not an issue. However, you might need to periodically update the trust bundle.
+<div class="note">
+
+Red Hat does not monitor for when CAs expire. However, due to the long life of CAs, this is generally not an issue. However, you might need to periodically update the trust bundle.
+
+</div>

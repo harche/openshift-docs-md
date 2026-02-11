@@ -1,7 +1,10 @@
 Ruby on Rails is a web framework written in Ruby. This guide covers using Rails 4 on OpenShift Container Platform.
 
-> [!WARNING]
-> Go through the whole tutorial to have an overview of all the steps necessary to run your application on the OpenShift Container Platform. If you experience a problem try reading through the entire tutorial and then going back to your issue. It can also be useful to review your previous steps to ensure that all the steps were run correctly.
+<div class="warning">
+
+Go through the whole tutorial to have an overview of all the steps necessary to run your application on the OpenShift Container Platform. If you experience a problem try reading through the entire tutorial and then going back to your issue. It can also be useful to review your previous steps to ensure that all the steps were run correctly.
+
+</div>
 
 # Prerequisites
 
@@ -18,14 +21,6 @@ Ruby on Rails is a web framework written in Ruby. This guide covers using Rails 
 # Setting up the database
 
 Rails applications are almost always used with a database. For local development use the PostgreSQL database.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Install the database:
 
@@ -55,19 +50,9 @@ Procedure
 
     Note that the user created has no password.
 
-</div>
-
 # Writing your application
 
 If you are starting your Rails application from scratch, you must install the Rails gem first. Then you can proceed with writing your application.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Install the Rails gem:
 
@@ -75,11 +60,9 @@ Procedure
     $ gem install rails
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -87,8 +70,6 @@ Procedure
     Successfully installed rails-4.3.0
     1 gem installed
     ```
-
-    </div>
 
 2.  After you install the Rails gem, create a new application with PostgreSQL as your database:
 
@@ -136,8 +117,6 @@ Procedure
 
     This creates `development` and `test` database in your PostgreSQL server.
 
-</div>
-
 ## Creating a welcome page
 
 Since Rails 4 no longer serves a static `public/index.html` page in production, you must create a new root page.
@@ -151,14 +130,6 @@ To have a custom welcome page must do following steps:
 - Create a route that serves applications root page with the created controller and view.
 
 Rails offers a generator that completes all necessary steps for you.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run Rails generator:
 
@@ -180,27 +151,15 @@ Procedure
 
     You should see your page by visiting <http://localhost:3000> in your browser. If you do not see the page, check the logs that are output to your server to debug.
 
-</div>
-
 ## Configuring application for OpenShift Container Platform
 
 To have your application communicate with the PostgreSQL database service running in OpenShift Container Platform you must edit the `default` section in your `config/database.yml` to use environment variables, which you must define later, upon the database service creation.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Edit the `default` section in your `config/database.yml` with pre-defined variables as follows:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Sample `config/database` YAML file
+  **Sample `config/database` YAML file**
 
   </div>
 
@@ -222,33 +181,11 @@ Procedure
     database: <%= ENV["POSTGRESQL_DATABASE"] %>
   ```
 
-  </div>
-
-</div>
-
 ## Storing your application in Git
 
 Building an application in OpenShift Container Platform usually requires that the source code be stored in a git repository, so you must install `git` if you do not already have it.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install git.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Make sure you are in your Rails application directory by running the `ls -1` command. The output of the command should look like:
 
@@ -256,11 +193,9 @@ Procedure
     $ ls -1
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -281,8 +216,6 @@ Procedure
     tmp
     vendor
     ```
-
-    </div>
 
 2.  Run the following commands in your Rails app directory to initialize and commit your code to git:
 
@@ -312,8 +245,6 @@ Procedure
     $ git push
     ```
 
-</div>
-
 # Deploying your application to OpenShift Container Platform
 
 You can deploy you application to OpenShift Container Platform.
@@ -328,21 +259,13 @@ Deploying your application in OpenShift Container Platform involves three steps:
 
 - Creating a route for your application.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To deploy your Ruby on Rails application, create a new project for the application:
 
   ``` terminal
   $ oc new-project rails-app --description="My Rails application" --display-name="Rails Application"
   ```
-
-</div>
 
 ## Creating the database service
 
@@ -364,14 +287,6 @@ Setting these variables ensures:
 
 - The user can access the specified database with the specified password.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the database service:
 
     ``` terminal
@@ -390,19 +305,9 @@ Procedure
     $ oc get pods --watch
     ```
 
-</div>
-
 ## Creating the frontend service
 
 To bring your application to OpenShift Container Platform, you must specify a repository in which your application lives.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the frontend service and specify database related environment variables that were setup when creating the database service:
 
@@ -420,11 +325,9 @@ Procedure
 
     You should see the following section:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -449,8 +352,6 @@ Procedure
 
     ],
     ```
-
-    </div>
 
 3.  Check the build process:
 
@@ -486,19 +387,9 @@ Procedure
 
     - By adding pre-deployment lifecycle hooks in your template.
 
-</div>
-
 ## Creating a route for your application
 
 You can expose a service to create a route for your application.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To expose a service by giving it an externally-reachable hostname like `www.example.com` use OpenShift Container Platform route. In your case you need to expose the frontend service by typing:
 
@@ -506,7 +397,8 @@ Procedure
   $ oc expose service rails-app --hostname=www.example.com
   ```
 
-</div>
+<div class="warning">
 
-> [!WARNING]
-> Ensure the hostname you specify resolves into the IP address of the router.
+Ensure the hostname you specify resolves into the IP address of the router.
+
+</div>

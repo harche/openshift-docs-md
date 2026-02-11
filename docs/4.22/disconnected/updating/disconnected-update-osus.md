@@ -26,19 +26,9 @@ If you want to keep update recommendations separate in different environments, y
 
 The following sections describe how to install an OSUS instance and configure it to provide update recommendations to a cluster.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [About the OpenShift Update Service](../../updating/understanding_updates/intro-to-updates.xml#update-service-about_understanding-openshift-updates)
 
 - [Understanding update channels and releases](../../updating/understanding_updates/understanding-update-channels-release.xml#understanding-update-channels-releases)
-
-</div>
 
 # Prerequisites
 
@@ -52,11 +42,9 @@ If the release images are contained in a registry whose HTTPS X.509 certificate 
 
 The OpenShift Update Service Operator needs the config map key name `updateservice-registry` in the registry CA cert.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Image registry CA config map example for the update service
+**Image registry CA config map example for the update service**
 
 </div>
 
@@ -76,8 +64,6 @@ data:
     -----END CERTIFICATE-----
 ```
 
-</div>
-
 - The OpenShift Update Service Operator requires the config map key name `updateservice-registry` in the registry CA cert.
 
 - If the registry has the port, such as `registry-with-port.example.com:5000`, `:` should be replaced with `..`.
@@ -88,25 +74,7 @@ To add new registries or update authentication for your OpenShift Container Plat
 
 Use this procedure when you need a separate registry to store images than the registry used during installation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Optional: To append a new pull secret to the existing pull secret:
 
@@ -162,11 +130,9 @@ Procedure
 
     The secret must contain a valid DockerConfigJSON format.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example pull secret
+    **Example pull secret**
 
     </div>
 
@@ -180,8 +146,6 @@ Procedure
     data:
       .dockerconfigjson: <base64-encoded-docker-config-json>
     ```
-
-    </div>
 
     This results in the following states of the each pull secret:
 
@@ -199,43 +163,29 @@ Procedure
 
     This triggers the automatic cleanup process across your nodes.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Transferring cluster ownership](https://docs.redhat.com/en/documentation/openshift_cluster_manager/1-latest/html-single/managing_clusters/index#transferring-cluster-ownership_downloading-and-updating-pull-secrets)
-
-</div>
 
 # Installing the OpenShift Update Service Operator
 
 To install the OpenShift Update Service, you must first install the OpenShift Update Service Operator by using the OpenShift Container Platform web console or CLI.
 
-> [!NOTE]
-> For clusters that are installed in disconnected environments, also known as disconnected clusters, Operator Lifecycle Manager by default cannot access the Red Hat-provided software catalog sources hosted on remote registries because those remote sources require full internet connectivity. For more information, see [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks).
+<div class="note">
+
+For clusters that are installed in disconnected environments, also known as disconnected clusters, Operator Lifecycle Manager by default cannot access the Red Hat-provided software catalog sources hosted on remote registries because those remote sources require full internet connectivity. For more information, see [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks).
+
+</div>
 
 ## Installing the OpenShift Update Service Operator by using the web console
 
 You can use the web console to install the OpenShift Update Service Operator.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  In the web console, click **Ecosystem** → **Software Catalog**.
 
-    > [!NOTE]
-    > Enter `Update Service` into the **Filter by keyword…​** field to find the Operator faster.
+    <div class="note">
+
+    Enter `Update Service` into the **Filter by keyword…​** field to find the Operator faster.
+
+    </div>
 
 2.  Choose **OpenShift Update Service** from the list of available Operators, and click **Install**.
 
@@ -259,19 +209,9 @@ Procedure
 
 4.  Ensure that **OpenShift Update Service** is listed in the correct namespace with a **Status** of **Succeeded**.
 
-</div>
-
 ## Installing the OpenShift Update Service Operator by using the CLI
 
 You can use the OpenShift CLI (`oc`) to install the OpenShift Update Service Operator.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a namespace for the OpenShift Update Service Operator:
 
@@ -331,11 +271,9 @@ Procedure
 
     3.  Create a `Subscription` object YAML file, for example, `update-service-subscription.yaml`:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example Subscription
+        **Example Subscription**
 
         </div>
 
@@ -352,8 +290,6 @@ Procedure
           sourceNamespace: "openshift-marketplace"
           name: "cincinnati-operator"
         ```
-
-        </div>
 
         - Specify the name of the catalog source that provides the Operator. For clusters that do not use a custom Operator Lifecycle Manager (OLM), specify `redhat-operators`. If your OpenShift Container Platform cluster is installed in a disconnected environment, specify the name of the `CatalogSource` object created when you configured Operator Lifecycle Manager (OLM).
 
@@ -377,11 +313,9 @@ Procedure
     $ oc -n openshift-update-service get clusterserviceversions
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -391,36 +325,17 @@ Procedure
     ...
     ```
 
-    </div>
-
     If the OpenShift Update Service Operator is listed, the installation was successful. The version number might be different than shown.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Installing Operators in your namespace](../../operators/user/olm-installing-operators-in-namespace.xml#olm-installing-operators-in-namespace).
-
-</div>
 
 # Creating the OpenShift Update Service graph data container image
 
 The OpenShift Update Service requires a graph data container image, from which the OpenShift Update Service retrieves information about channel membership and blocked update edges. Graph data is typically fetched directly from the update graph data repository. In environments where an internet connection is unavailable, loading this information from an init container is another way to make the graph data available to the OpenShift Update Service. The role of the init container is to provide a local copy of the graph data, and during pod initialization, the init container copies the data to a volume that is accessible by the service.
 
-> [!NOTE]
-> The oc-mirror OpenShift CLI (`oc`) plugin creates this graph data container image in addition to mirroring release images. If you used the oc-mirror plugin to mirror your release images, you can skip this procedure.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+The oc-mirror OpenShift CLI (`oc`) plugin creates this graph data container image in addition to mirroring release images. If you used the oc-mirror plugin to mirror your release images, you can skip this procedure.
 
 </div>
 
@@ -448,10 +363,11 @@ Procedure
     $ podman push registry.example.com/openshift/graph-data:latest
     ```
 
-    > [!NOTE]
-    > To push a graph data image to a registry in a disconnected environment, copy the graph data container image created in the previous step to a repository that is accessible to the OpenShift Update Service. Run `oc image mirror --help` for available options.
+    <div class="note">
 
-</div>
+    To push a graph data image to a registry in a disconnected environment, copy the graph data container image created in the previous step to a repository that is accessible to the OpenShift Update Service. Run `oc image mirror --help` for available options.
+
+    </div>
 
 # Creating an OpenShift Update Service application
 
@@ -461,29 +377,11 @@ You can create an OpenShift Update Service application by using the OpenShift Co
 
 You can use the OpenShift Container Platform web console to create an OpenShift Update Service application by using the OpenShift Update Service Operator.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The OpenShift Update Service Operator has been installed.
 
 - The OpenShift Update Service graph data container image has been created and pushed to a repository that is accessible to the OpenShift Update Service.
 
 - The current release and update target releases have been mirrored to a registry in the disconnected environment.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the web console, click **Ecosystem** → **Installed Operators**.
 
@@ -511,35 +409,15 @@ Procedure
 
     - Verify each application resource has a status of **Created**.
 
-</div>
-
 ## Creating an OpenShift Update Service application by using the CLI
 
 You can use the OpenShift CLI (`oc`) to create an OpenShift Update Service application.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - The OpenShift Update Service Operator has been installed.
 
 - The OpenShift Update Service graph data container image has been created and pushed to a repository that is accessible to the OpenShift Update Service.
 
 - The current release and update target releases have been mirrored to a registry in the disconnected environment.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Configure the OpenShift Update Service target namespace, for example, `openshift-update-service`:
 
@@ -600,22 +478,15 @@ Procedure
 
         This polls until the graph request succeeds; however, the resulting graph might be empty depending on which release images you have mirrored.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The policy engine route name must not be more than 63 characters based on RFC-1123. If you see `ReconcileCompleted` status as `false` with the reason `CreateRouteFailed` caused by `host must conform to DNS 1123 naming convention and must be no more than 63 characters`, try creating the Update Service with a shorter name.
+The policy engine route name must not be more than 63 characters based on RFC-1123. If you see `ReconcileCompleted` status as `false` with the reason `CreateRouteFailed` caused by `host must conform to DNS 1123 naming convention and must be no more than 63 characters`, try creating the Update Service with a shorter name.
+
+</div>
 
 # Configuring the Cluster Version Operator (CVO)
 
 After the OpenShift Update Service Operator has been installed and the OpenShift Update Service application has been created, the Cluster Version Operator (CVO) can be updated to pull graph data from the OpenShift Update Service installed in your environment.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - The OpenShift Update Service Operator has been installed.
 
@@ -624,16 +495,6 @@ Prerequisites
 - The current release and update target releases have been mirrored to a registry in the disconnected environment.
 
 - The OpenShift Update Service application has been created.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Set the OpenShift Update Service target namespace, for example, `openshift-update-service`:
 
@@ -665,10 +526,11 @@ Procedure
     $ oc patch clusterversion version -p $PATCH --type merge
     ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> See [Configuring the cluster-wide proxy](../../networking/configuring_network_settings/enable-cluster-wide-proxy.xml#enable-cluster-wide-proxy) to configure the CA to trust the update server.
+See [Configuring the cluster-wide proxy](../../networking/configuring_network_settings/enable-cluster-wide-proxy.xml#enable-cluster-wide-proxy) to configure the CA to trust the update server.
+
+</div>
 
 # Next steps
 
@@ -678,8 +540,11 @@ Before updating your cluster, confirm that the following conditions are met:
 
 - The release image signature config map for the new release is applied to your cluster.
 
-  > [!NOTE]
-  > The Cluster Version Operator (CVO) uses release image signatures to ensure that release images have not been modified, by verifying that the release image signatures match the expected result.
+  <div class="note">
+
+  The Cluster Version Operator (CVO) uses release image signatures to ensure that release images have not been modified, by verifying that the release image signatures match the expected result.
+
+  </div>
 
 - The current release and update target release images are mirrored to a registry in the disconnected environment.
 
@@ -687,8 +552,11 @@ Before updating your cluster, confirm that the following conditions are met:
 
 - A recent version of the OpenShift Update Service Operator is installed.
 
-  > [!NOTE]
-  > If you have not recently installed or updated the OpenShift Update Service Operator, there might be a more recent version available. See [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks) for more information about how to update your OLM catalog in a disconnected environment.
+  <div class="note">
+
+  If you have not recently installed or updated the OpenShift Update Service Operator, there might be a more recent version available. See [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks) for more information about how to update your OLM catalog in a disconnected environment.
+
+  </div>
 
 After you configure your cluster to use the installed OpenShift Update Service and local mirror registry, you can use any of the following update methods:
 

@@ -64,18 +64,8 @@ While it is possible to perform passive monitoring of unencrypted traffic betwee
 
 However, because other network policies in place at the installation site might require traffic encryption regardless of application, consider leaving this decision to the cluster administrator.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configuring automated unlocking of encrypted volumes using policy-based decryption](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/security_hardening/configuring-automated-unlocking-of-encrypted-volumes-using-policy-based-decryption_security-hardening) in the [RHEL 8 Security hardening](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/security_hardening/index) document
 
 - [Official Tang server container](https://catalog.redhat.com/software/containers/detail/5fbc405674aa0cc23b445f8f?container-tabs=overview&gti-tabs=registry-tokens)
 
 - [Encrypting and mirroring disks during installation](../../installing/install_config/installing-customizing.xml#installation-special-config-storage_installing-customizing)
-
-</div>

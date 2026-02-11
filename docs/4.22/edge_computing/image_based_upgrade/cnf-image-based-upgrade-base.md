@@ -8,34 +8,19 @@ When you deploy the Lifecycle Agent on a cluster, an `ImageBasedUpgrade` custom 
 
 After you created all the resources that you need during the upgrade, you can move on to the `Prep` stage. For more information, see the "Creating ConfigMap objects for the image-based upgrade with Lifecycle Agent" section.
 
-> [!NOTE]
-> In a disconnected environment, if the seed cluster’s release image registry is different from the target cluster’s release image registry, you must create an `ImageDigestMirrorSet` (IDMS) resource to configure alternative mirrored repository locations. For more information, see "Configuring image registry repository mirroring".
->
-> You can retrieve the release registry used in the seed image by running the following command:
->
-> ``` terminal
-> $ skopeo inspect docker://<imagename> | jq -r '.Labels."com.openshift.lifecycle-agent.seed_cluster_info" | fromjson | .release_registry'
-> ```
+<div class="note">
 
-<div>
+In a disconnected environment, if the seed cluster’s release image registry is different from the target cluster’s release image registry, you must create an `ImageDigestMirrorSet` (IDMS) resource to configure alternative mirrored repository locations. For more information, see "Configuring image registry repository mirroring".
 
-<div class="title">
+You can retrieve the release registry used in the seed image by running the following command:
 
-Prerequisites
+``` terminal
+$ skopeo inspect docker://<imagename> | jq -r '.Labels."com.openshift.lifecycle-agent.seed_cluster_info" | fromjson | .release_registry'
+```
 
 </div>
 
 - You have created resources to back up and restore your clusters.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Check that you have patched your `ImageBasedUpgrade` CR:
 
@@ -88,11 +73,9 @@ Procedure
 
     Validation warnings do not block the `Upgrade` stage but you must decide if it is safe to proceed with the upgrade. These warnings, for example missing CRDs, namespaces, or dry run failures, update the `status.conditions` for the `Prep` stage and `annotation` fields in the `ImageBasedUpgrade` CR with details about the warning.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example validation warning
+    **Example validation warning**
 
     </div>
 
@@ -104,21 +87,9 @@ Procedure
     # ...
     ```
 
-    </div>
-
     However, validation errors, such as adding `MachineConfig` or Operator manifests to extra manifests, cause the `Prep` stage to fail and block the `Upgrade` stage.
 
     When the validations pass, the cluster creates a new `ostree` stateroot, which involves pulling and unpacking the seed image, and running host-level commands. Finally, all the required images are precached on the target cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Check the status of the `ImageBasedUpgrade` CR by running the following command:
 
@@ -126,11 +97,9 @@ Verification
   $ oc get ibu -o yaml
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -160,23 +129,11 @@ Verification
     - Upgrade
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Creating ConfigMap objects for the image-based upgrade with Lifecycle Agent](../../edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-prep-resources.xml#cnf-image-based-upgrade-prep-resources)
 
 - [Configuring image registry repository mirroring](../../openshift_images/image-configuration.xml#images-configuration-registry-mirror-configuring_image-configuration)
-
-</div>
 
 # Moving to the Upgrade stage of the image-based upgrade with Lifecycle Agent
 
@@ -184,25 +141,7 @@ After you generate the seed image and complete the `Prep` stage, you can upgrade
 
 If the upgrade fails or stops, an automatic rollback is initiated. If you have an issue after the upgrade, you can initiate a manual rollback. For more information about manual rollback, see "Moving to the Rollback stage of the image-based upgrade with Lifecycle Agent".
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have completed the `Prep` stage.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To move to the `Upgrade` stage, change the value of the `stage` field to `Upgrade` in the `ImageBasedUpgrade` CR by running the following command:
 
@@ -216,11 +155,9 @@ Procedure
     $ oc get ibu -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -261,8 +198,6 @@ Procedure
       - Rollback
     ```
 
-    </div>
-
     The OADP Operator creates a backup of the data specified in the OADP `Backup` and `Restore` CRs and the target cluster reboots.
 
 3.  Monitor the status of the CR by running the following command:
@@ -277,22 +212,17 @@ Procedure
     $ oc patch imagebasedupgrades.lca.openshift.io upgrade -p='{"spec": {"stage": "Idle"}}' --type=merge
     ```
 
-    > [!IMPORTANT]
-    > You cannot roll back the changes once you move to the `Idle` stage after an upgrade.
+    <div class="important">
+
+    You cannot roll back the changes once you move to the `Idle` stage after an upgrade.
+
+    </div>
 
     The Lifecycle Agent deletes all resources created during the upgrade process.
 
 5.  You can remove the OADP Operator and its configuration files after a successful upgrade. For more information, see "Deleting Operators from a cluster".
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Check the status of the `ImageBasedUpgrade` CR by running the following command:
 
@@ -300,11 +230,9 @@ Verification
     $ oc get ibu -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -348,19 +276,15 @@ Verification
       - Rollback
     ```
 
-    </div>
-
 2.  Check the status of the cluster restoration by running the following command:
 
     ``` terminal
     $ oc get restores -n openshift-adp -o custom-columns=NAME:.metadata.name,Status:.status.phase,Reason:.status.failureReason
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -371,35 +295,19 @@ Verification
     localvolume      Completed   <none>
     ```
 
-    </div>
-
     - The `acm-klusterlet` is specific to RHACM environments only.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Moving to the Rollback stage of the image-based upgrade with Lifecycle Agent](../../edge_computing/image_based_upgrade/cnf-image-based-upgrade-base.xml#cnf-image-based-upgrade-rollback_cnf-non-gitops)
 
 - [Deleting Operators from a cluster](../../operators/admin/olm-deleting-operators-from-cluster.xml#olm-deleting-operators-from-cluster)
 
-</div>
-
 # Moving to the Rollback stage of the image-based upgrade with Lifecycle Agent
 
 An automatic rollback is initiated if the upgrade does not complete within the time frame specified in the `initMonitorTimeoutSeconds` field after rebooting.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example ImageBasedUpgrade CR
+**Example ImageBasedUpgrade CR**
 
 </div>
 
@@ -418,34 +326,17 @@ spec:
 # ...
 ```
 
-</div>
-
 - Optional: The time frame in seconds to roll back if the upgrade does not complete within that time frame after the first reboot. If not defined or set to `0`, the default value of `1800` seconds (30 minutes) is used.
 
 You can manually roll back the changes if you encounter unresolvable issues after an upgrade.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have logged into the hub cluster as a user with `cluster-admin` privileges.
 
 - You ensured that the control plane certificates on the original stateroot are valid. If the certificates expired, see "Recovering from expired control plane certificates".
 
-</div>
+<div class="warning">
 
-> [!WARNING]
-> If you choose to upgrade a recently installed single-node OpenShift cluster for example, for testing purposes, you have a limited rollback timeframe of 24 hours or less. You can verify the rollback time by checking the `rollbackAvailabilityExpiration` field of the `ImageBasedUpgrade` custom resource.
-
-<div>
-
-<div class="title">
-
-Procedure
+If you choose to upgrade a recently installed single-node OpenShift cluster for example, for testing purposes, you have a limited rollback timeframe of 24 hours or less. You can verify the rollback time by checking the `rollbackAvailabilityExpiration` field of the `ImageBasedUpgrade` custom resource.
 
 </div>
 
@@ -463,41 +354,27 @@ Procedure
     $ oc patch imagebasedupgrades.lca.openshift.io upgrade -p='{"spec": {"stage": "Idle"}}' --type=merge -n openshift-lifecycle-agent
     ```
 
-    > [!WARNING]
-    > If you move to the `Idle` stage after a rollback, the Lifecycle Agent cleans up resources that can be used to troubleshoot a failed upgrade.
+    <div class="warning">
 
-</div>
+    If you move to the `Idle` stage after a rollback, the Lifecycle Agent cleans up resources that can be used to troubleshoot a failed upgrade.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+    </div>
 
 - [Recovering from expired control plane certificates](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-3-expired-certs.xml#dr-scenario-3-recovering-expired-certs_dr-recovering-expired-certs)
-
-</div>
 
 # Troubleshooting image-based upgrades with Lifecycle Agent
 
 Perform troubleshooting steps on the managed clusters that are affected by an issue.
 
-> [!IMPORTANT]
-> If you are using the `ImageBasedGroupUpgrade` CR to upgrade your clusters, ensure that the `lcm.openshift.io/ibgu-<stage>-completed` or `lcm.openshift.io/ibgu-<stage>-failed` cluster labels are updated properly after performing troubleshooting or recovery steps on the managed clusters. This ensures that the TALM continues to manage the image-based upgrade for the cluster.
+<div class="important">
+
+If you are using the `ImageBasedGroupUpgrade` CR to upgrade your clusters, ensure that the `lcm.openshift.io/ibgu-<stage>-completed` or `lcm.openshift.io/ibgu-<stage>-failed` cluster labels are updated properly after performing troubleshooting or recovery steps on the managed clusters. This ensures that the TALM continues to manage the image-based upgrade for the cluster.
+
+</div>
 
 ## Collecting logs
 
 You can use the `oc adm must-gather` CLI to collect information for debugging and troubleshooting.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Collect data about the Operators by running the following command:
 
@@ -512,8 +389,6 @@ Procedure
   - Optional: Add this option if you need to gather more information from the OADP Operator.
 
   - Optional: Add this option if you need to gather more information from the SR-IOV Operator.
-
-</div>
 
 ## AbortFailed or FinalizeFailed error
 
@@ -530,11 +405,9 @@ During the finalize stage or when you stop the process at the `Prep` stage, Life
 
 If the Lifecycle Agent fails to perform the above steps, it transitions to the `AbortFailed` or `FinalizeFailed` states. The condition message and log show which steps failed.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example error message
+**Example error message**
 
 </div>
 
@@ -545,8 +418,6 @@ message: failed to delete all the backup CRs. Perform cleanup manually then add 
       status: "False"
       type: Idle
 ```
-
-</div>
 
 Resolution
 1.  Inspect the logs to determine why the failure occurred.
@@ -577,8 +448,11 @@ Resolution
 
 3.  After cleaning up all the deployments of the stateroot, wipe the stateroot directory by running the following commands:
 
-    > [!WARNING]
-    > Ensure that the booted deployment is not in this stateroot.
+    <div class="warning">
+
+    Ensure that the booted deployment is not in this stateroot.
+
+    </div>
 
     ``` terminal
     $ stateroot="<stateroot_to_delete>"
@@ -601,11 +475,9 @@ Resolution
     $ oc get backupstoragelocations.velero.io -n openshift-adp
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -613,8 +485,6 @@ Resolution
     NAME                          PHASE       LAST VALIDATED   AGE   DEFAULT
     dataprotectionapplication-1   Available   33s              8d    true
     ```
-
-    </div>
 
 2.  Remove all backup resources and then add the `lca.openshift.io/manual-cleanup-done` annotation to the `ImageBasedUpgrade` CR.
 
@@ -631,11 +501,9 @@ Your `Backup` CRs might be missing fields that are needed to restore your persis
 $ oc describe pod <your_app_name>
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output showing missing LVM Storage-related fields in Backup CR
+**Example output showing missing LVM Storage-related fields in Backup CR**
 
 </div>
 
@@ -648,16 +516,12 @@ Events:
   Warning  FailedMount       24s (x7 over 55s)  kubelet            MountVolume.SetUp failed for volume "pvc-1234" : rpc error: code = Unknown desc = VolumeID is not found
 ```
 
-</div>
-
 Resolution
 You must include `logicalvolumes.topolvm.io` in the application `Backup` CR. Without this resource, the application restores its persistent volume claims and persistent volume manifests correctly, however, the `logicalvolume` associated with this persistent volume is not restored properly after pivot.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example Backup CR
+**Example Backup CR**
 
 </div>
 
@@ -683,8 +547,6 @@ spec:
   - logicalvolumes.topolvm.io
 ```
 
-</div>
-
 - To restore the persistent volumes for your application, you must configure this section as shown.
 
 ### Missing LVM Storage-related fields in Restore CR
@@ -698,11 +560,9 @@ The expected resources for the applications are restored but the persistent volu
     $ oc get pv,pvc,logicalvolumes.topolvm.io -A
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output before pivot
+    **Example output before pivot**
 
     </div>
 
@@ -717,19 +577,15 @@ The expected resources for the applications are restored but the persistent volu
                 logicalvolume.topolvm.io/pvc-1234   4h45m
     ```
 
-    </div>
-
 2.  List the persistent volumes for you applications by running the following command after pivot:
 
     ``` terminal
     $ oc get pv,pvc,logicalvolumes.topolvm.io -A
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output after pivot
+    **Example output after pivot**
 
     </div>
 
@@ -744,16 +600,12 @@ The expected resources for the applications are restored but the persistent volu
                 logicalvolume.topolvm.io/pvc-1234   18s
     ```
 
-    </div>
-
 Resolution
 The reason for this issue is that the `logicalvolume` status is not preserved in the `Restore` CR. This status is important because it is required for Velero to reference the volumes that must be preserved after pivoting. You must include the following fields in the application `Restore` CR:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example Restore CR
+**Example Restore CR**
 
 </div>
 
@@ -775,8 +627,6 @@ spec:
     includedResources:
       - logicalvolumes
 ```
-
-</div>
 
 - To preserve the persistent volumes for your application, you must set `restorePVs` to `true`.
 

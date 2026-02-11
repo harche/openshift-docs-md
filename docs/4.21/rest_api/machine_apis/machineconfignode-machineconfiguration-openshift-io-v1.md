@@ -9,13 +9,13 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | spec describes the configuration of the machine config node. |
-| `status` | `object` | status describes the last observed state of this machine config node. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | spec describes the configuration of the machine config node.                                                                                                                                                                                                                                         |
+| `status`     | `object`                                                                             | status describes the last observed state of this machine config node.                                                                                                                                                                                                                                |
 
 ## .spec
 
@@ -32,12 +32,12 @@ Required
 
 - `pool`
 
-| Property | Type | Description |
-|----|----|----|
-| `configImage` | `object` | configImage is an optional field for configuring the OS image to be used for this node. This field will only exist if the node belongs to a pool opted into on-cluster image builds, and will override any MachineConfig referenced OSImageURL fields When omitted, Image Mode is not be enabled and the node will follow the standard update process of creating a rendered MachineConfig and updating to its specifications. When specified, Image Mode is enabled and will attempt to update the node to use the desired image. Following this, the node will follow the standard update process of creating a rendered MachineConfig and updating to its specifications. |
-| `configVersion` | `object` | configVersion holds the desired config version for the node targeted by this machine config node resource. The desired version represents the machine config the node will attempt to update to and gets set before the machine config operator validates the new machine config against the current machine config. |
-| `node` | `object` | node contains a reference to the node for this machine config node. |
-| `pool` | `object` | pool contains a reference to the machine config pool that this machine config node’s referenced node belongs to. |
+| Property        | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|-----------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `configImage`   | `object` | configImage is an optional field for configuring the OS image to be used for this node. This field will only exist if the node belongs to a pool opted into on-cluster image builds, and will override any MachineConfig referenced OSImageURL fields When omitted, Image Mode is not be enabled and the node will follow the standard update process of creating a rendered MachineConfig and updating to its specifications. When specified, Image Mode is enabled and will attempt to update the node to use the desired image. Following this, the node will follow the standard update process of creating a rendered MachineConfig and updating to its specifications. |
+| `configVersion` | `object` | configVersion holds the desired config version for the node targeted by this machine config node resource. The desired version represents the machine config the node will attempt to update to and gets set before the machine config operator validates the new machine config against the current machine config.                                                                                                                                                                                                                                                                                                                                                         |
+| `node`          | `object` | node contains a reference to the node for this machine config node.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `pool`          | `object` | pool contains a reference to the machine config pool that this machine config node’s referenced node belongs to.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 
 ## .spec.configImage
 
@@ -50,8 +50,8 @@ Type
 Required
 - `desiredImage`
 
-| Property | Type | Description |
-|----|----|----|
+| Property       | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|----------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `desiredImage` | `string` | desiredImage is a required field that configures the image that the node should be updated to use. It must be a fully qualified OCI image pull spec of the format host\[:port\]\[/namespace\]/name@sha256:, where the digest must be exactly 64 characters in length and consist only of lowercase hexadecimal characters, a-f and 0-9. desiredImage must not be an empty string and must not exceed 447 characters in length. |
 
 ## .spec.configVersion
@@ -65,8 +65,8 @@ Type
 Required
 - `desired`
 
-| Property | Type | Description |
-|----|----|----|
+| Property  | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-----------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `desired` | `string` | desired is the name of the machine config that the the node should be upgraded to. This value is set when the machine config pool generates a new version of its rendered configuration. When this value is changed, the machine config daemon starts the node upgrade process. This value gets set in the machine config node spec once the machine config has been targeted for upgrade and before it is validated. Must be a lowercase RFC-1123 subdomain name (<https://tools.ietf.org/html/rfc1123>) consisting of only lowercase alphanumeric characters, hyphens (-), and periods (.), and must start and end with an alphanumeric character, and be at most 253 characters in length. |
 
 ## .spec.node
@@ -80,9 +80,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name is the name of the object being referenced. For example, this can represent a machine config pool or node name. Must be a lowercase RFC-1123 subdomain name (<https://tools.ietf.org/html/rfc1123>) consisting of only lowercase alphanumeric characters, hyphens (-), and periods (.), and must start and end with an alphanumeric character, and be at most 253 characters in length. |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                  |
+|----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | name is the name of the object being referenced. For example, this can represent a machine config pool or node name. Must be a lowercase RFC-1123 subdomain name (<https://tools.ietf.org/html/rfc1123>) consisting of only lowercase alphanumeric characters, hyphens (-), and periods (.), and must start and end with an alphanumeric character, and be at most 253 characters in length. |
 
 ## .spec.pool
 
@@ -95,9 +95,9 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `name` | `string` | name is the name of the object being referenced. For example, this can represent a machine config pool or node name. Must be a lowercase RFC-1123 subdomain name (<https://tools.ietf.org/html/rfc1123>) consisting of only lowercase alphanumeric characters, hyphens (-), and periods (.), and must start and end with an alphanumeric character, and be at most 253 characters in length. |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                  |
+|----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | name is the name of the object being referenced. For example, this can represent a machine config pool or node name. Must be a lowercase RFC-1123 subdomain name (<https://tools.ietf.org/html/rfc1123>) consisting of only lowercase alphanumeric characters, hyphens (-), and periods (.), and must start and end with an alphanumeric character, and be at most 253 characters in length. |
 
 ## .status
 
@@ -107,18 +107,18 @@ status describes the last observed state of this machine config node.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `conditions` | `array` | conditions represent the observations of a machine config node’s current state. Valid types are: UpdatePrepared, UpdateExecuted, UpdatePostActionComplete, UpdateComplete, Updated, Resumed, Drained, AppliedFilesAndOS, Cordoned, Uncordoned, RebootedNode, NodeDegraded, PinnedImageSetsProgressing, and PinnedImageSetsDegraded. The following types are only available when the ImageModeStatusReporting feature gate is enabled: ImagePulledFromRegistry, AppliedOSImage, AppliedFiles |
-| `conditions[]` | `object` | Condition contains details for one aspect of the current state of this API Resource. |
-| `configImage` | `object` | configImage is an optional field for configuring the OS image to be used for this node. This field will only exist if the node belongs to a pool opted into on-cluster image builds, and will override any MachineConfig referenced OSImageURL fields. When omitted, this means that the Image Mode feature is not being used and the node will be up to date with the specific current rendered config version for the nodes MachinePool. When specified, the Image Mode feature is enabled and the contents of this field show the observed state of the node image. When Image Mode is enabled and a new MachineConfig is applied such that a new OS image build is not created, only the configVersion field will change. When Image Mode is enabled and a new MachineConfig is applied such that a new OS image build is created, then only the configImage field will change. It is also possible that both the configImage and configVersion change during the same update. |
-| `configVersion` | `object` | configVersion describes the current and desired machine config version for this node. |
-| `internalReleaseImage` | `object` | internalReleaseImage describes the status of the release payloads stored in the node. When specified, an internalReleaseImage custom resource exists on the cluster, and the specified images will be made available on the control plane nodes. This field will reflect the actual on-disk state of those release images. |
-| `irreconcilableChanges` | `array` | irreconcilableChanges is an optional field that contains the observed differences between this nodes configuration and the target rendered MachineConfig. This field will be set when there are changes to the target rendered MachineConfig that can only be applied to new nodes joining the cluster. Entries must be unique, keyed on the fieldPath field. Must not exceed 32 entries. |
-| `irreconcilableChanges[]` | `object` | IrreconcilableChangeDiff holds an individual diff between the initial install-time MachineConfig and the latest applied one caused by the presence of irreconcilable changes. |
-| `observedGeneration` | `integer` | observedGeneration represents the generation of the MachineConfigNode object observed by the Machine Config Operator’s controller. This field is updated when the controller observes a change to the desiredConfig in the configVersion of the machine config node spec. |
-| `pinnedImageSets` | `array` | pinnedImageSets describes the current and desired pinned image sets for this node. |
-| `pinnedImageSets[]` | `object` | MachineConfigNodeStatusPinnedImageSet holds information about the current, desired, and failed pinned image sets for the observed machine config node. |
+| Property                  | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+|---------------------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `conditions`              | `array`   | conditions represent the observations of a machine config node’s current state. Valid types are: UpdatePrepared, UpdateExecuted, UpdatePostActionComplete, UpdateComplete, Updated, Resumed, Drained, AppliedFilesAndOS, Cordoned, Uncordoned, RebootedNode, NodeDegraded, PinnedImageSetsProgressing, and PinnedImageSetsDegraded. The following types are only available when the ImageModeStatusReporting feature gate is enabled: ImagePulledFromRegistry, AppliedOSImage, AppliedFiles                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `conditions[]`            | `object`  | Condition contains details for one aspect of the current state of this API Resource.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `configImage`             | `object`  | configImage is an optional field for configuring the OS image to be used for this node. This field will only exist if the node belongs to a pool opted into on-cluster image builds, and will override any MachineConfig referenced OSImageURL fields. When omitted, this means that the Image Mode feature is not being used and the node will be up to date with the specific current rendered config version for the nodes MachinePool. When specified, the Image Mode feature is enabled and the contents of this field show the observed state of the node image. When Image Mode is enabled and a new MachineConfig is applied such that a new OS image build is not created, only the configVersion field will change. When Image Mode is enabled and a new MachineConfig is applied such that a new OS image build is created, then only the configImage field will change. It is also possible that both the configImage and configVersion change during the same update. |
+| `configVersion`           | `object`  | configVersion describes the current and desired machine config version for this node.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `internalReleaseImage`    | `object`  | internalReleaseImage describes the status of the release payloads stored in the node. When specified, an internalReleaseImage custom resource exists on the cluster, and the specified images will be made available on the control plane nodes. This field will reflect the actual on-disk state of those release images.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `irreconcilableChanges`   | `array`   | irreconcilableChanges is an optional field that contains the observed differences between this nodes configuration and the target rendered MachineConfig. This field will be set when there are changes to the target rendered MachineConfig that can only be applied to new nodes joining the cluster. Entries must be unique, keyed on the fieldPath field. Must not exceed 32 entries.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `irreconcilableChanges[]` | `object`  | IrreconcilableChangeDiff holds an individual diff between the initial install-time MachineConfig and the latest applied one caused by the presence of irreconcilable changes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `observedGeneration`      | `integer` | observedGeneration represents the generation of the MachineConfigNode object observed by the Machine Config Operator’s controller. This field is updated when the controller observes a change to the desiredConfig in the configVersion of the machine config node spec.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `pinnedImageSets`         | `array`   | pinnedImageSets describes the current and desired pinned image sets for this node.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `pinnedImageSets[]`       | `object`  | MachineConfigNodeStatusPinnedImageSet holds information about the current, desired, and failed pinned image sets for the observed machine config node.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 
 ## .status.conditions
 
@@ -147,14 +147,14 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastTransitionTime` | `string` | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable. |
-| `message` | `string` | message is a human readable message indicating details about the transition. This may be an empty string. |
-| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance. |
-| `reason` | `string` | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
-| `status` | `string` | status of the condition, one of True, False, Unknown. |
-| `type` | `string` | type of condition in CamelCase or in foo.example.com/CamelCase. |
+| Property             | Type      | Description                                                                                                                                                                                                                                                                                                                     |
+|----------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string`  | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable.                                                                                            |
+| `message`            | `string`  | message is a human readable message indicating details about the transition. This may be an empty string.                                                                                                                                                                                                                       |
+| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.                                   |
+| `reason`             | `string`  | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
+| `status`             | `string`  | status of the condition, one of True, False, Unknown.                                                                                                                                                                                                                                                                           |
+| `type`               | `string`  | type of condition in CamelCase or in foo.example.com/CamelCase.                                                                                                                                                                                                                                                                 |
 
 ## .status.configImage
 
@@ -164,9 +164,9 @@ configImage is an optional field for configuring the OS image to be used for thi
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `currentImage` | `string` | currentImage is an optional field that represents the current image that is applied to the node. When omitted, this means that no image updates have been applied to the node and it will be up to date with the specific current rendered config version. When specified, this means that the node is currently using this image. currentImage must be a fully qualified OCI image pull spec of the format host\[:port\]\[/namespace\]/name@sha256:, where the digest must be exactly 64 characters in length and consist only of lowercase hexadecimal characters, a-f and 0-9. currentImage must not be an empty string and must not exceed 447 characters in length. |
+| Property       | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+|----------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `currentImage` | `string` | currentImage is an optional field that represents the current image that is applied to the node. When omitted, this means that no image updates have been applied to the node and it will be up to date with the specific current rendered config version. When specified, this means that the node is currently using this image. currentImage must be a fully qualified OCI image pull spec of the format host\[:port\]\[/namespace\]/name@sha256:, where the digest must be exactly 64 characters in length and consist only of lowercase hexadecimal characters, a-f and 0-9. currentImage must not be an empty string and must not exceed 447 characters in length.                                                                                                                                                                                           |
 | `desiredImage` | `string` | desiredImage is an optional field that represents the currently observed state of image that the node should be updated to use. When not specified, this means that Image Mode has been disabled and the node will up to date with the specific current rendered config version. When specified, this means that Image Mode has been enabled and the node is actively progressing to update the node to this image. If currentImage and desiredImage match, the node has been successfully updated to use the desired image. desiredImage must be a fully qualified OCI image pull spec of the format host\[:port\]\[/namespace\]/name@sha256:, where the digest must be exactly 64 characters in length and consist only of lowercase hexadecimal characters, a-f and 0-9. desiredImage must not be an empty string and must not exceed 447 characters in length. |
 
 ## .status.configVersion
@@ -180,10 +180,10 @@ Type
 Required
 - `desired`
 
-| Property | Type | Description |
-|----|----|----|
+| Property  | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|-----------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `current` | `string` | current is the name of the machine config currently in use on the node. This value is updated once the machine config daemon has completed the update of the configuration for the node. This value should match the desired version unless an upgrade is in progress. Must be a lowercase RFC-1123 subdomain name (<https://tools.ietf.org/html/rfc1123>) consisting of only lowercase alphanumeric characters, hyphens (-), and periods (.), and must start and end with an alphanumeric character, and be at most 253 characters in length. |
-| `desired` | `string` | desired is the MachineConfig the node wants to upgrade to. This value gets set in the machine config node status once the machine config has been validated against the current machine config. Must be a lowercase RFC-1123 subdomain name (<https://tools.ietf.org/html/rfc1123>) consisting of only lowercase alphanumeric characters, hyphens (-), and periods (.), and must start and end with an alphanumeric character, and be at most 253 characters in length. |
+| `desired` | `string` | desired is the MachineConfig the node wants to upgrade to. This value gets set in the machine config node status once the machine config has been validated against the current machine config. Must be a lowercase RFC-1123 subdomain name (<https://tools.ietf.org/html/rfc1123>) consisting of only lowercase alphanumeric characters, hyphens (-), and periods (.), and must start and end with an alphanumeric character, and be at most 253 characters in length.                                                                        |
 
 ## .status.internalReleaseImage
 
@@ -196,10 +196,10 @@ Type
 Required
 - `releases`
 
-| Property | Type | Description |
-|----|----|----|
-| `releases` | `array` | releases is a list of the release bundles currently owned and managed by the cluster. A release bundle content could be safely pulled only when its Conditions field contains at least an Available entry set to "True" and Degraded to "False". Entries must be unique, keyed on the name field. releases must contain at least one entry and must not exceed 32 entries. |
-| `releases[]` | `object` | MachineConfigNodeStatusInternalReleaseImageRef is used to provide a more detailed reference for a release bundle. |
+| Property     | Type     | Description                                                                                                                                                                                                                                                                                                                                                                |
+|--------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `releases`   | `array`  | releases is a list of the release bundles currently owned and managed by the cluster. A release bundle content could be safely pulled only when its Conditions field contains at least an Available entry set to "True" and Degraded to "False". Entries must be unique, keyed on the name field. releases must contain at least one entry and must not exceed 32 entries. |
+| `releases[]` | `object` | MachineConfigNodeStatusInternalReleaseImageRef is used to provide a more detailed reference for a release bundle.                                                                                                                                                                                                                                                          |
 
 ## .status.internalReleaseImage.releases
 
@@ -227,30 +227,30 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>conditions</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>conditions represent the observations of an internal release image current state. Valid types are: Mounted, Installing, Available, Removing and Degraded.</p>
 <p>If Mounted is true, that means that a valid ISO has been mounted on the current node. If Installing is true, that means that a new release bundle is currently being copied on the current node, and not yet completed. If Available is true, it means that the release has been previously installed on the current node, and it can be used. If Removing is true, it means that a release deletion is in progress on the current node, and not yet completed. If Degraded is true, that means something has gone wrong in the current node.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>conditions[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Condition contains details for one aspect of the current state of this API Resource.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>image</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>image is an OCP release image referenced by digest. The format of the image pull spec is: host[:port][/namespace]/name@sha256:&lt;digest&gt;, where the digest must be 64 characters long, and consist only of lowercase hexadecimal characters, a-f and 0-9. The length of the whole spec must be between 1 to 447 characters. The field is optional, and it will be provided after a release will be successfully installed.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>name indicates the desired release bundle identifier. This field is required and must be between 1 and 64 characters long. The expected name format is ocp-release-bundle-&lt;version&gt;-&lt;arch|stream&gt;.</p></td>
@@ -287,14 +287,14 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastTransitionTime` | `string` | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable. |
-| `message` | `string` | message is a human readable message indicating details about the transition. This may be an empty string. |
-| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance. |
-| `reason` | `string` | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
-| `status` | `string` | status of the condition, one of True, False, Unknown. |
-| `type` | `string` | type of condition in CamelCase or in foo.example.com/CamelCase. |
+| Property             | Type      | Description                                                                                                                                                                                                                                                                                                                     |
+|----------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string`  | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable.                                                                                            |
+| `message`            | `string`  | message is a human readable message indicating details about the transition. This may be an empty string.                                                                                                                                                                                                                       |
+| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.                                   |
+| `reason`             | `string`  | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
+| `status`             | `string`  | status of the condition, one of True, False, Unknown.                                                                                                                                                                                                                                                                           |
+| `type`               | `string`  | type of condition in CamelCase or in foo.example.com/CamelCase.                                                                                                                                                                                                                                                                 |
 
 ## .status.irreconcilableChanges
 
@@ -317,9 +317,9 @@ Required
 
 - `fieldPath`
 
-| Property | Type | Description |
-|----|----|----|
-| `diff` | `string` | diff is a required field containing the difference between the nodes current configuration and the latest rendered MachineConfig for the field specified in fieldPath. Must not be an empty string and must not exceed 4096 characters in length. |
+| Property    | Type     | Description                                                                                                                                                                                                                                                                                                         |
+|-------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `diff`      | `string` | diff is a required field containing the difference between the nodes current configuration and the latest rendered MachineConfig for the field specified in fieldPath. Must not be an empty string and must not exceed 4096 characters in length.                                                                   |
 | `fieldPath` | `string` | fieldPath is a required reference to the path in the latest rendered MachineConfig that differs from this nodes configuration. Must not be empty and must not exceed 70 characters in length. Must begin with the prefix 'spec.' and only contain alphanumeric characters, square brackets ('\[\]'), or dots ('.'). |
 
 ## .status.pinnedImageSets
@@ -341,13 +341,13 @@ Type
 Required
 - `name`
 
-| Property | Type | Description |
-|----|----|----|
-| `currentGeneration` | `integer` | currentGeneration is the generation of the pinned image set that has most recently been successfully pulled and pinned on this node. |
-| `desiredGeneration` | `integer` | desiredGeneration is the generation of the pinned image set that is targeted to be pulled and pinned on this node. |
-| `lastFailedGeneration` | `integer` | lastFailedGeneration is the generation of the most recent pinned image set that failed to be pulled and pinned on this node. |
-| `lastFailedGenerationError` | `string` | lastFailedGenerationError is the error explaining why the desired images failed to be pulled and pinned. The error is an empty string if the image pull and pin is successful. |
-| `name` | `string` | name is the name of the pinned image set. Must be a lowercase RFC-1123 subdomain name (<https://tools.ietf.org/html/rfc1123>) consisting of only lowercase alphanumeric characters, hyphens (-), and periods (.), and must start and end with an alphanumeric character, and be at most 253 characters in length. |
+| Property                    | Type      | Description                                                                                                                                                                                                                                                                                                       |
+|-----------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `currentGeneration`         | `integer` | currentGeneration is the generation of the pinned image set that has most recently been successfully pulled and pinned on this node.                                                                                                                                                                              |
+| `desiredGeneration`         | `integer` | desiredGeneration is the generation of the pinned image set that is targeted to be pulled and pinned on this node.                                                                                                                                                                                                |
+| `lastFailedGeneration`      | `integer` | lastFailedGeneration is the generation of the most recent pinned image set that failed to be pulled and pinned on this node.                                                                                                                                                                                      |
+| `lastFailedGenerationError` | `string`  | lastFailedGenerationError is the error explaining why the desired images failed to be pulled and pinned. The error is an empty string if the image pull and pin is successful.                                                                                                                                    |
+| `name`                      | `string`  | name is the name of the pinned image set. Must be a lowercase RFC-1123 subdomain name (<https://tools.ietf.org/html/rfc1123>) consisting of only lowercase alphanumeric characters, hyphens (-), and periods (.), and must start and end with an alphanumeric character, and be at most 253 characters in length. |
 
 # API endpoints
 
@@ -387,10 +387,10 @@ HTTP method
 Description
 delete collection of MachineConfigNode
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -400,10 +400,10 @@ HTTP method
 Description
 list objects of kind MachineConfigNode
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`MachineConfigNodeList`](../objects/index.xml#io-openshift-machineconfiguration-v1-MachineConfigNodeList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                      |
+|--------------------|-------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`MachineConfigNodeList`](../objects/index.xml#io-openshift-machineconfiguration-v1-MachineConfigNodeList) schema |
+| 401 - Unauthorized | Empty                                                                                                             |
 
 HTTP responses
 
@@ -413,25 +413,25 @@ HTTP method
 Description
 create a MachineConfigNode
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                                            | Description |
+|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
-| 201 - Created | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
-| 202 - Accepted | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                    |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
+| 201 - Created      | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
+| 202 - Accepted     | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                           |
 
 HTTP responses
 
@@ -449,17 +449,17 @@ HTTP method
 Description
 delete a MachineConfigNode
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -469,10 +469,10 @@ HTTP method
 Description
 read the specified MachineConfigNode
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                    |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                           |
 
 HTTP responses
 
@@ -482,17 +482,17 @@ HTTP method
 Description
 partially update the specified MachineConfigNode
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                    |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                           |
 
 HTTP responses
 
@@ -502,24 +502,24 @@ HTTP method
 Description
 replace the specified MachineConfigNode
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                                            | Description |
+|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
-| 201 - Created | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                    |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
+| 201 - Created      | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                           |
 
 HTTP responses
 
@@ -537,10 +537,10 @@ HTTP method
 Description
 read status of the specified MachineConfigNode
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                    |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                           |
 
 HTTP responses
 
@@ -550,17 +550,17 @@ HTTP method
 Description
 partially update status of the specified MachineConfigNode
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                    |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                           |
 
 HTTP responses
 
@@ -570,23 +570,23 @@ HTTP method
 Description
 replace status of the specified MachineConfigNode
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                                            | Description |
+|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
-| 201 - Created | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                    |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
+| 201 - Created      | [`MachineConfigNode`](../machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.xml#machineconfignode-machineconfiguration-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                           |
 
 HTTP responses

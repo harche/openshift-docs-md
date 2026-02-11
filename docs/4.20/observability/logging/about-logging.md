@@ -6,5 +6,8 @@ You can use logging to perform the following tasks:
 
 - Visualize your log data in the OpenShift Container Platform web console.
 
-> [!NOTE]
-> Because logging releases on a different cadence from OpenShift Container Platform, the logging documentation is available as a separate documentation set at [Red Hat OpenShift Logging](https://docs.redhat.com/en/documentation/red_hat_openshift_logging/).
+<div class="note">
+
+Because logging releases on a different cadence from OpenShift Container Platform, the logging documentation is available as a separate documentation set at [Red Hat OpenShift Logging](https://docs.redhat.com/en/documentation/red_hat_openshift_logging/).
+
+</div>

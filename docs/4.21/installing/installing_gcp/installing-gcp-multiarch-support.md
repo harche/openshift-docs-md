@@ -1,7 +1,10 @@
 An OpenShift Container Platform cluster with multi-architecture compute machines supports compute machines with different architectures.
 
-> [!NOTE]
-> When you have nodes with multiple architectures in your cluster, the architecture of your image must be consistent with the architecture of the node. You must ensure that the pod is assigned to the node with the appropriate architecture and that it matches the image architecture. For more information on assigning pods to nodes, [Scheduling workloads on clusters with multi-architecture compute machines](../../post_installation_configuration/configuring-multi-arch-compute-machines/multi-architecture-compute-managing.xml#scheduling-workloads-on-clusters-with-multi-architecture-compute-machines).
+<div class="note">
+
+When you have nodes with multiple architectures in your cluster, the architecture of your image must be consistent with the architecture of the node. You must ensure that the pod is assigned to the node with the appropriate architecture and that it matches the image architecture. For more information on assigning pods to nodes, [Scheduling workloads on clusters with multi-architecture compute machines](../../post_installation_configuration/configuring-multi-arch-compute-machines/multi-architecture-compute-managing.xml#scheduling-workloads-on-clusters-with-multi-architecture-compute-machines).
+
+</div>
 
 You can install a Google Cloud cluster with the support for configuring multi-architecture compute machines. After installing the Google Cloud cluster, you can add multi-architecture compute machines to the cluster in the following ways:
 
@@ -9,20 +12,15 @@ You can install a Google Cloud cluster with the support for configuring multi-ar
 
 - Adding 64-bit ARM compute machines to a cluster that uses 64-bit x86 control plane machines and already includes 64-bit x86 compute machines. In this case, 64-bit ARM is considered the secondary architecture.
 
-> [!NOTE]
-> Before adding a secondary architecture node to your cluster, it is recommended to install the Multiarch Tuning Operator, and deploy a `ClusterPodPlacementConfig` custom resource. For more information, see "Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator".
+<div class="note">
+
+Before adding a secondary architecture node to your cluster, it is recommended to install the Multiarch Tuning Operator, and deploy a `ClusterPodPlacementConfig` custom resource. For more information, see "Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator".
+
+</div>
 
 # Installing a cluster with multi-architecture support
 
 You can install a cluster with the support for configuring multi-architecture compute machines.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You installed the OpenShift CLI (`oc`).
 
@@ -30,27 +28,15 @@ Prerequisites
 
 - You downloaded the pull secret for your cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Check that the `openshift-install` binary is using the `multi` payload by running the following command:
 
     ``` terminal
     $ ./openshift-install version
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -62,17 +48,13 @@ Procedure
     default architecture amd64
     ```
 
-    </div>
-
     The output must contain `release architecture multi` to indicate that the `openshift-install` binary is using the `multi` payload.
 
 2.  Update the `install-config.yaml` file to configure the architecture for the nodes.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample `install-config.yaml` file with multi-architecture configuration
+    **Sample `install-config.yaml` file with multi-architecture configuration**
 
     </div>
 
@@ -93,34 +75,12 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - Specify the architecture of the worker node. You can set this field to either `arm64` or `amd64`.
 
     - Specify the control plane node architecture. You can set this field to either `arm64` or `amd64`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - [Deploying the cluster](../../installing/installing_gcp/installing-gcp-customizations.xml#installation-launching-installer_installing-gcp-customizations)
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator)
-
-</div>

@@ -12,8 +12,11 @@ To secure access to Ingress Operator and Ingress Controller metrics, the Ingress
 
 Each Ingress Controller has a default certificate that it uses for secured routes that do not specify their own certificates. Unless you specify a custom certificate, the Operator uses a self-signed certificate by default. The Operator uses its own self-signed signing certificate to sign any default certificate that it generates. The Operator generates this signing certificate and puts it in a secret named `router-ca` in the `openshift-ingress-operator` namespace. When the Operator generates a default certificate, it puts the default certificate in a secret named `router-certs-<name>` (where `<name>` is the name of the Ingress Controller) in the `openshift-ingress` namespace.
 
-> [!WARNING]
-> The Ingress Operator generates a default certificate for an Ingress Controller to serve as a placeholder until you configure a custom default certificate. Do not use Operator-generated default certificates in production clusters.
+<div class="warning">
+
+The Ingress Operator generates a default certificate for an Ingress Controller to serve as a placeholder until you configure a custom default certificate. Do not use Operator-generated default certificates in production clusters.
+
+</div>
 
 # Workflow
 

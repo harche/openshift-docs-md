@@ -24,30 +24,31 @@ When OVS sends data to the collectors, each type of collector receives identical
 
 Collecting the network flows data and sending the records to collectors affects performance. Nodes process packets at a slower rate. If the performance impact is too great, you can delete the destinations for collectors to disable collecting network flows data and restore performance.
 
-> [!NOTE]
-> Enabling network flow collectors might have an impact on the overall performance of the cluster network.
+<div class="note">
+
+Enabling network flow collectors might have an impact on the overall performance of the cluster network.
+
+</div>
 
 # Network object configuration for tracking network flows
 
 The fields for configuring network flows collectors in the Cluster Network Operator (CNO) are shown in the following table:
 
-| Field | Type | Description |
-|----|----|----|
-| `metadata.name` | `string` | The name of the CNO object. This name is always `cluster`. |
-| `spec.exportNetworkFlows` | `object` | One or more of `netFlow`, `sFlow`, or `ipfix`. |
-| `spec.exportNetworkFlows.netFlow.collectors` | `array` | A list of IP address and network port pairs for up to 10 collectors. |
-| `spec.exportNetworkFlows.sFlow.collectors` | `array` | A list of IP address and network port pairs for up to 10 collectors. |
-| `spec.exportNetworkFlows.ipfix.collectors` | `array` | A list of IP address and network port pairs for up to 10 collectors. |
+| Field                                        | Type     | Description                                                          |
+|----------------------------------------------|----------|----------------------------------------------------------------------|
+| `metadata.name`                              | `string` | The name of the CNO object. This name is always `cluster`.           |
+| `spec.exportNetworkFlows`                    | `object` | One or more of `netFlow`, `sFlow`, or `ipfix`.                       |
+| `spec.exportNetworkFlows.netFlow.collectors` | `array`  | A list of IP address and network port pairs for up to 10 collectors. |
+| `spec.exportNetworkFlows.sFlow.collectors`   | `array`  | A list of IP address and network port pairs for up to 10 collectors. |
+| `spec.exportNetworkFlows.ipfix.collectors`   | `array`  | A list of IP address and network port pairs for up to 10 collectors. |
 
 Network flows configuration
 
 After applying the following manifest to the CNO, the Operator configures Open vSwitch (OVS) on each node in the cluster to send network flows records to the NetFlow collector that is listening at `192.168.1.99:2056`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example configuration for tracking network flows
+**Example configuration for tracking network flows**
 
 </div>
 
@@ -63,35 +64,15 @@ spec:
         - 192.168.1.99:2056
 ```
 
-</div>
-
 # Adding destinations for network flows collectors
 
 As a cluster administrator, you can configure the Cluster Network Operator (CNO) to send network flows metadata about the pod network to a network flows collector.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You installed the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster with a user with `cluster-admin` privileges.
 
 - You have a network flows collector and know the IP address and port that it listens on.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a patch file that specifies the network flows collector type and the IP address and port information of the collectors:
 
@@ -109,11 +90,9 @@ Procedure
     $ oc patch network.operator cluster --type merge -p "$(cat <file_name>.yaml)"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -121,21 +100,13 @@ Procedure
     network.operator.openshift.io/cluster patched
     ```
 
-    </div>
+<div class="formalpara-title">
 
-</div>
-
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 Verification is not typically necessary. You can run the following command to confirm that Open vSwitch (OVS) on each node is configured to send network flows records to one or more collectors.
-
-</div>
 
 1.  View the Operator configuration to confirm that the `exportNetworkFlows` field is configured:
 
@@ -143,19 +114,15 @@ Verification is not typically necessary. You can run the following command to co
     $ oc get network.operator cluster -o jsonpath="{.spec.exportNetworkFlows}"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     {"netFlow":{"collectors":["192.168.1.99:2056"]}}
     ```
-
-    </div>
 
 2.  View the network flows configuration in OVS from each node:
 
@@ -169,11 +136,9 @@ Verification is not typically necessary. You can run the following command to co
     done
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -199,33 +164,13 @@ Verification is not typically necessary. You can run the following command to co
     ...
     ```
 
-    </div>
-
 # Deleting all destinations for network flows collectors
 
 As a cluster administrator, you can configure the Cluster Network Operator (CNO) to stop sending network flows metadata to a network flows collector.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You installed the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster with a user with `cluster-admin` privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Remove all network flows collectors:
 
@@ -234,21 +179,15 @@ Procedure
         -p='[{"op":"remove", "path":"/spec/exportNetworkFlows"}]'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     network.operator.openshift.io/cluster patched
     ```
-
-    </div>
-
-</div>
 
 # Additional resources
 

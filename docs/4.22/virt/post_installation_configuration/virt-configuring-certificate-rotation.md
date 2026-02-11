@@ -4,25 +4,7 @@ Configure certificate rotation parameters to replace existing certificates.
 
 You can do this during OpenShift Virtualization installation in the web console or after installation in the `HyperConverged` custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Open the `HyperConverged` CR by running the following command:
 
@@ -65,8 +47,6 @@ Procedure
     ``` terminal
     $ oc apply -f kubevirt-hyperconverged.yaml
     ```
-
-</div>
 
 # Troubleshooting certificate rotation parameters
 

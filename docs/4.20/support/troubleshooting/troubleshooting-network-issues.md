@@ -20,14 +20,6 @@ Users can configure the `NODEIP_HINT` variable to point at a known IP in the sub
 
 The following procedure shows how to override the default node IP selection logic.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Add a hint file to your `/etc/default/nodeip-configuration` file, for example:
 
     ``` text
@@ -35,10 +27,6 @@ Procedure
     ```
 
     <div class="important">
-
-    <div class="title">
-
-    </div>
 
     - Do not use the exact IP address of a node as a hint, for example, `192.0.2.5`. Using the exact IP address of a node causes the node using the hint IP address to fail to configure correctly.
 
@@ -52,11 +40,9 @@ Procedure
     $ echo -n 'NODEIP_HINT=192.0.2.1' | base64 -w0
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -64,15 +50,11 @@ Procedure
     Tk9ERUlQX0hJTlQ9MTkyLjAuMCxxxx==
     ```
 
-    </div>
-
 3.  Activate the hint by creating a machine config manifest for both `master` and `worker` roles before deploying the cluster:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    99-nodeip-hint-master.yaml
+    **99-nodeip-hint-master.yaml**
 
     </div>
 
@@ -96,15 +78,11 @@ Procedure
             path: /etc/default/nodeip-configuration
     ```
 
-    </div>
-
     - Replace `<encoded_contents>` with the base64-encoded content of the `/etc/default/nodeip-configuration` file, for example, `Tk9ERUlQX0hJTlQ9MTkyLjAuMCxxxx==`. Note that a space is not acceptable after the comma and before the encoded content.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      99-nodeip-hint-worker.yaml
+      **99-nodeip-hint-worker.yaml**
 
       </div>
 
@@ -128,15 +106,11 @@ Procedure
              path: /etc/default/nodeip-configuration
       ```
 
-      </div>
-
     - Replace `<encoded_contents>` with the base64-encoded content of the `/etc/default/nodeip-configuration` file, for example, `Tk9ERUlQX0hJTlQ9MTkyLjAuMCxxxx==`. Note that a space is not acceptable after the comma and before the encoded content.
 
 4.  Save the manifest to the directory where you store your cluster configuration, for example, `~/clusterconfigs`.
 
 5.  Deploy the cluster.
-
-</div>
 
 ## Configuring OVN-Kubernetes to use a secondary OVS bridge
 
@@ -144,13 +118,19 @@ You can create an additional or *secondary* Open vSwitch (OVS) bridge, `br-ex1`,
 
 Consider a use case for pods impacted by the Multiple External Gateways (MEG) feature and you want to egress traffic to a different interface, for example `br-ex1`, on a node. Egress traffic for pods not impacted by MEG get routed to the default OVS `br-ex` bridge.
 
-> [!IMPORTANT]
-> Currently, MEG is unsupported for use with other egress features, such as egress IP, egress firewalls, or egress routers. Attempting to use MEG with egress features like egress IP can result in routing and traffic flow conflicts. This occurs because of how OVN-Kubernetes handles routing and source network address translation (SNAT). This results in inconsistent routing and might break connections in some environments where the return path must patch the incoming path.
+<div class="important">
+
+Currently, MEG is unsupported for use with other egress features, such as egress IP, egress firewalls, or egress routers. Attempting to use MEG with egress features like egress IP can result in routing and traffic flow conflicts. This occurs because of how OVN-Kubernetes handles routing and source network address translation (SNAT). This results in inconsistent routing and might break connections in some environments where the return path must patch the incoming path.
+
+</div>
 
 You must define the additional bridge in an interface definition of a machine configuration manifest file. The Machine Config Operator uses the manifest to create a new file at `/etc/ovnk/extra_bridge` on the host. The new file includes the name of the network interface that the additional OVS bridge configures for a node.
 
-> [!IMPORTANT]
-> Do not use the `nmstate` API to make configuration changes to the secondary interface that is defined in the `/etc/ovnk/extra_bridge` directory path. The `configure-ovs.sh` configuration script creates and manages OVS bridge interfaces, so any interruptive changes to these interfaces by the `nmstate` API can lead to network configuration instability.
+<div class="important">
+
+Do not use the `nmstate` API to make configuration changes to the secondary interface that is defined in the `/etc/ovnk/extra_bridge` directory path. The `configure-ovs.sh` configuration script creates and manages OVS bridge interfaces, so any interruptive changes to these interfaces by the `nmstate` API can lead to network configuration instability.
+
+</div>
 
 After you create and edit the manifest file, the Machine Config Operator completes tasks in the following order:
 
@@ -166,33 +146,29 @@ After you create and edit the manifest file, the Machine Config Operator complet
 
 6.  Uncordons the nodes.
 
-> [!NOTE]
-> After all the nodes return to the `Ready` state and the OVN-Kubernetes Operator detects and configures `br-ex` and `br-ex1`, the Operator applies the `k8s.ovn.org/l3-gateway-config` annotation to each node.
+<div class="note">
 
-For more information about useful situations for the additional `br-ex1` bridge and a situation that always requires the default `br-ex` bridge, see "Configuration for a localnet topology".
-
-<div>
-
-<div class="title">
-
-Procedure
+After all the nodes return to the `Ready` state and the OVN-Kubernetes Operator detects and configures `br-ex` and `br-ex1`, the Operator applies the `k8s.ovn.org/l3-gateway-config` annotation to each node.
 
 </div>
 
+For more information about useful situations for the additional `br-ex1` bridge and a situation that always requires the default `br-ex` bridge, see "Configuration for a localnet topology".
+
 1.  Optional: Create an interface connection that your additional bridge, `br-ex1`, can use by completing the following steps. The example steps show the creation of a new bond and its dependent interfaces that are all defined in a machine configuration manifest file. The additional bridge uses the `MachineConfig` object to form a additional bond interface.
 
-    > [!IMPORTANT]
-    > Do not use the Kubernetes NMState Operator or a `NodeNetworkConfigurationPolicy` (NNCP) manifest file to define the additional interface. Ensure that the additional interface or sub-interfaces when defining a `bond` interface are not used by an existing `br-ex` OVN Kubernetes network deployment.
-    >
-    > You cannot make configuration changes to the `br-ex` bridge or its underlying interfaces as a postinstallation task. As a workaround, use a secondary network interface connected to your host or switch.
+    <div class="important">
+
+    Do not use the Kubernetes NMState Operator or a `NodeNetworkConfigurationPolicy` (NNCP) manifest file to define the additional interface. Ensure that the additional interface or sub-interfaces when defining a `bond` interface are not used by an existing `br-ex` OVN Kubernetes network deployment.
+
+    You cannot make configuration changes to the `br-ex` bridge or its underlying interfaces as a postinstallation task. As a workaround, use a secondary network interface connected to your host or switch.
+
+    </div>
 
     1.  Create the following interface definition files. These files get added to a machine configuration manifest file so that host nodes can access the definition files.
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example of the first interface definition file that is named `eno1.config`
+        **Example of the first interface definition file that is named `eno1.config`**
 
         </div>
 
@@ -207,13 +183,9 @@ Procedure
         autoconnect-priority=20
         ```
 
-        </div>
+        <div class="formalpara-title">
 
-        <div class="formalpara">
-
-        <div class="title">
-
-        Example of the second interface definition file that is named `eno2.config`
+        **Example of the second interface definition file that is named `eno2.config`**
 
         </div>
 
@@ -228,13 +200,9 @@ Procedure
         autoconnect-priority=20
         ```
 
-        </div>
+        <div class="formalpara-title">
 
-        <div class="formalpara">
-
-        <div class="title">
-
-        Example of the second bond interface definition file that is named `bond1.config`
+        **Example of the second bond interface definition file that is named `bond1.config`**
 
         </div>
 
@@ -255,8 +223,6 @@ Procedure
         [ipv4]
         method=auto
         ```
-
-        </div>
 
     2.  Convert the definition files to Base64 encoded strings by running the following command:
 
@@ -280,11 +246,9 @@ Procedure
 
 3.  Define each interface definition in a machine configuration manifest file:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example of a machine configuration file with definitions added for `bond1`, `eno1`, and `en02`
+    **Example of a machine configuration file with definitions added for `bond1`, `eno1`, and `en02`**
 
     </div>
 
@@ -319,8 +283,6 @@ Procedure
     # ...
     ```
 
-    </div>
-
 4.  Create a machine configuration manifest file for configuring the network plugin by entering the following command in your terminal:
 
     ``` terminal
@@ -329,11 +291,9 @@ Procedure
 
 5.  Create an Open vSwitch (OVS) bridge, `br-ex1`, on nodes by using the OVN-Kubernetes network plugin to create an `extra_bridge` file\`. Ensure that you save the file in the `/etc/ovnk/extra_bridge` path of the host. The file must state the interface name that supports the additional bridge and not the default interface that supports `br-ex`, which holds the primary IP address of the node.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example configuration for the `extra_bridge` file, `/etc/ovnk/extra_bridge`, that references a additional interface
+    **Example configuration for the `extra_bridge` file, `/etc/ovnk/extra_bridge`, that references a additional interface**
 
     </div>
 
@@ -341,15 +301,11 @@ Procedure
     bond1
     ```
 
-    </div>
-
 6.  Create a machine configuration manifest file that defines the existing static interface that hosts `br-ex1` on any nodes restarted on your cluster:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example of a machine configuration file that defines `bond1` as the interface for hosting `br-ex1`
+    **Example of a machine configuration file that defines `bond1` as the interface for hosting `br-ex1`**
 
     </div>
 
@@ -374,8 +330,6 @@ Procedure
               filesystem: root
     ```
 
-    </div>
-
 7.  Apply the machine-configuration to your selected nodes:
 
     ``` terminal
@@ -384,19 +338,23 @@ Procedure
 
 8.  Optional: You can override the `br-ex` selection logic for nodes by creating a machine configuration file that in turn creates a `/var/lib/ovnk/iface_default_hint` resource.
 
-    > [!NOTE]
-    > The resource lists the name of the interface that `br-ex` selects for your cluster. By default, `br-ex` selects the primary interface for a node based on boot order and the IP address subnet in the machine network. Certain machine network configurations might require that `br-ex` continues to select the default interfaces or bonds for a host node.
+    <div class="note">
+
+    The resource lists the name of the interface that `br-ex` selects for your cluster. By default, `br-ex` selects the primary interface for a node based on boot order and the IP address subnet in the machine network. Certain machine network configurations might require that `br-ex` continues to select the default interfaces or bonds for a host node.
+
+    </div>
 
     1.  Create a machine configuration file on the host node to override the default interface.
 
-        > [!IMPORTANT]
-        > Only create this machine configuration file for the purposes of changing the `br-ex` selection logic. Using this file to change the IP addresses of existing nodes in your cluster is not supported.
+        <div class="important">
 
-        <div class="formalpara">
+        Only create this machine configuration file for the purposes of changing the `br-ex` selection logic. Using this file to change the IP addresses of existing nodes in your cluster is not supported.
 
-        <div class="title">
+        </div>
 
-        Example of a machine configuration file that overrides the default interface
+        <div class="formalpara-title">
+
+        **Example of a machine configuration file that overrides the default interface**
 
         </div>
 
@@ -421,8 +379,6 @@ Procedure
                   filesystem: root
         ```
 
-        </div>
-
         - Ensure `bond0` exists on the node before you apply the machine configuration file to the node.
 
     2.  Before you apply the configuration to all new nodes in your cluster, reboot the host node to verify that `br-ex` selects the intended interface and does not conflict with the new interfaces that you defined on `br-ex1`.
@@ -433,15 +389,7 @@ Procedure
         $ oc create -f <machine_config_file_name>
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Identify the IP addresses of nodes with the `exgw-ip-addresses` label in your cluster to verify that the nodes use the additional bridge instead of the default bridge:
 
@@ -449,11 +397,9 @@ Verification
     $ oc get nodes -o json | grep --color exgw-ip-addresses
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -462,19 +408,15 @@ Verification
        \"exgw-ip-address\":\"172.xx.xx.yy/24\",\"next-hops\":[\"xx.xx.xx.xx\"],
     ```
 
-    </div>
-
 2.  Observe that the additional bridge exists on target nodes by reviewing the network interface names on the host node:
 
     ``` terminal
     $ oc debug node/<node_name> -- chroot /host sh -c "ip a | grep mtu | grep br-ex"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -486,19 +428,15 @@ Verification
     6: br-ex1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
     ```
 
-    </div>
-
 3.  Optional: If you use `/var/lib/ovnk/iface_default_hint`, check that the MAC address of `br-ex` matches the MAC address of the primary selected interface:
 
     ``` terminal
     $ oc debug node/<node_name> -- chroot /host sh -c "ip a | grep -A1 -E 'br-ex|bond0'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output that shows the primary interface for `br-ex` as `bond0`
+    **Example output that shows the primary interface for `br-ex` as `bond0`**
 
     </div>
 
@@ -515,21 +453,7 @@ Verification
         inet 10.xx.xx.xx/21 brd 10.xx.xx.255 scope global dynamic noprefixroute br-ex
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Configure an external gateway on the default network](../../networking/ovn_kubernetes_network_provider/configuring-secondary-external-gateway.xml#configuring-secondary-external-gateway)
-
-</div>
 
 # Troubleshooting Open vSwitch issues
 
@@ -549,27 +473,9 @@ For short-term troubleshooting, you can configure the Open vSwitch (OVS) log lev
 
 After you perform this procedure to change the log level, you can receive log messages from the machine config daemon that indicate a content mismatch for the `ovs-vswitchd.service`. To avoid the log messages, repeat this procedure and set the log level to the original value.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Start a debug pod for a node:
 
@@ -591,11 +497,9 @@ Procedure
 
     The following example output shows the log level for syslog set to `info`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -623,8 +527,6 @@ Procedure
     ...
     ```
 
-    </div>
-
 4.  Specify the log level in the `/etc/systemd/system/ovs-vswitchd.service.d/10-ovs-vswitchd-restart.conf` file:
 
     ``` text
@@ -648,33 +550,13 @@ Procedure
     # systemctl restart ovs-vswitchd
     ```
 
-</div>
-
 ## Configuring the Open vSwitch log level permanently
 
 For long-term changes to the Open vSwitch (OVS) log level, you can change the log level permanently.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a file, such as `99-change-ovs-loglevel.yaml`, with a `MachineConfig` object like the following example:
 
@@ -710,47 +592,19 @@ Procedure
     $ oc apply -f 99-change-ovs-loglevel.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Understanding the Machine Config Operator](../../machine_configuration/index.xml#machine-config-operator_machine-config-overview)
 
 - [Checking machine config pool status](../../machine_configuration/index.xml#checking-mco-status_machine-config-overview)
-
-</div>
 
 ## Displaying Open vSwitch logs
 
 Use the following procedure to display Open vSwitch (OVS) logs.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Run one of the following commands:
 
@@ -767,5 +621,3 @@ Procedure
     ```
 
     One way to log on to a node is by using the `oc debug node/<node_name>` command.
-
-</div>

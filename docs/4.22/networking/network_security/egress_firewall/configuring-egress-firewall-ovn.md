@@ -100,16 +100,17 @@ There might be situations where the IP addresses associated with a DNS record ch
 
 In this situation, the OVN-Kubernetes cluster manager creates a `DNSNameResolver` custom resource object for each unique DNS name used in your egress firewall policy rules. This custom resource stores the following information:
 
-> [!IMPORTANT]
-> Improved DNS resolution for egress firewall rules is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+Improved DNS resolution for egress firewall rules is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-Example `DNSNameResolver` CR definition
+</div>
+
+<div class="formalpara-title">
+
+**Example `DNSNameResolver` CR definition**
 
 </div>
 
@@ -126,8 +127,6 @@ status:
       ttlSeconds: 60
       lastLookupTime: "2023-08-08T15:07:04Z"
 ```
-
-</div>
 
 where:
 
@@ -147,8 +146,11 @@ If during DNS resolution the DNS name in the query matches any name defined in a
 
 The OVN-Kubernetes cluster manager watches for updates to an `EgressFirewall` custom resource object, and creates, modifies, or deletes `DNSNameResolver` CRs associated with those egress firewall policies when that update occurs.
 
-> [!WARNING]
-> Do not modify `DNSNameResolver` custom resources directly. This can lead to unwanted behavior of your egress firewall.
+<div class="warning">
+
+Do not modify `DNSNameResolver` custom resources directly. This can lead to unwanted behavior of your egress firewall.
+
+</div>
 
 # EgressFirewall custom resource (CR)
 
@@ -156,11 +158,9 @@ You can define one or more rules for an egress firewall. A rule is either an `Al
 
 The following YAML describes an `EgressFirewall` CR:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-EgressFirewall object
+**EgressFirewall object**
 
 </div>
 
@@ -174,8 +174,6 @@ spec:
     ...
 ```
 
-</div>
-
 where:
 
 \<ovn\>
@@ -188,11 +186,9 @@ Specifies a collection of one or more egress network policy rules as described i
 
 The following YAML describes the rules for an `EgressFirewall` resource. The user can select either an IP address range in CIDR format, a domain name, or use the `nodeSelector` field to allow or deny egress traffic. The `egress` stanza expects an array of one or more objects.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Egress policy rule stanza
+**Egress policy rule stanza**
 
 </div>
 
@@ -206,8 +202,6 @@ egress:
   ports: <optional_port>
       ...
 ```
-
-</div>
 
 where:
 
@@ -229,11 +223,9 @@ Specifies labels which are key and value pairs that the user defines. Labels are
 \<ports\>
 Specifies an optional field that describes a collection of network ports and protocols for the rule.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Ports stanza
+**Ports stanza**
 
 </div>
 
@@ -242,8 +234,6 @@ ports:
 - port:
   protocol:
 ```
-
-</div>
 
 where:
 
@@ -317,14 +307,9 @@ spec:
 
 As a cluster administrator, you can create an egress firewall policy object for a project.
 
-> [!IMPORTANT]
-> If the project already has an `EgressFirewall` resource, you must edit the existing policy to make changes to egress firewall rules.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If the project already has an `EgressFirewall` resource, you must edit the existing policy to make changes to egress firewall rules.
 
 </div>
 
@@ -333,16 +318,6 @@ Prerequisites
 - Install the OpenShift CLI (`oc`).
 
 - You must log in to the cluster as a cluster administrator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a policy rule:
 
@@ -359,5 +334,3 @@ Procedure
     Successful output lists the `egressfirewall.k8s.ovn.org/v1` name and the `created` status.
 
 3.  Optional: Save the `<policy_name>.yaml` file so that you can make changes later.
-
-</div>

@@ -9,67 +9,69 @@ You can automate your migrations and modify the `MigPlan` and `MigrationControll
 <col style="width: 75%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Term</th>
 <th style="text-align: left;">Definition</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Source cluster</p></td>
 <td style="text-align: left;"><p>Cluster from which the applications are migrated.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Destination cluster<sup>[1]</sup></p></td>
 <td style="text-align: left;"><p>Cluster to which the applications are migrated.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Replication repository</p></td>
 <td style="text-align: left;"><p>Object storage used for copying images, volumes, and Kubernetes objects during indirect migration or for Kubernetes objects during direct volume migration or direct image migration.</p>
 <p>The replication repository must be accessible to all clusters.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Host cluster</p></td>
 <td style="text-align: left;"><p>Cluster on which the <code>migration-controller</code> pod and the web console are running. The host cluster is usually the destination cluster but this is not required.</p>
 <p>The host cluster does not require an exposed registry route for direct image migration.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Remote cluster</p></td>
 <td style="text-align: left;"><p>A remote cluster is usually the source cluster but this is not required.</p>
 <p>A remote cluster requires a <code>Secret</code> custom resource that contains the <code>migration-controller</code> service account token.</p>
 <p>A remote cluster requires an exposed secure registry route for direct image migration.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Indirect migration</p></td>
 <td style="text-align: left;"><p>Images, volumes, and Kubernetes objects are copied from the source cluster to the replication repository and then from the replication repository to the destination cluster.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Direct volume migration</p></td>
 <td style="text-align: left;"><p>Persistent volumes are copied directly from the source cluster to the destination cluster.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Direct image migration</p></td>
 <td style="text-align: left;"><p>Images are copied directly from the source cluster to the destination cluster.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Stage migration</p></td>
 <td style="text-align: left;"><p>Data is copied to the destination cluster without stopping the application.</p>
 <p>Running a stage migration multiple times reduces the duration of the cutover migration.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Cutover migration</p></td>
 <td style="text-align: left;"><p>The application is stopped on the source cluster and its resources are migrated to the destination cluster.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>State migration</p></td>
 <td style="text-align: left;"><p>Application state is migrated by copying specific persistent volume claims to the destination cluster.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Rollback migration</p></td>
 <td style="text-align: left;"><p>Rollback migration rolls back a completed migration.</p></td>
 </tr>
 </tbody>
 </table>
+
+MTC terminology
 
 <sup>1</sup> Called the *target* cluster in the MTC web console.
 
@@ -78,14 +80,6 @@ You can automate your migrations and modify the `MigPlan` and `MigrationControll
 You can migrate from a source cluster that is behind a firewall to a cloud-based destination cluster by establishing a network tunnel between the two clusters. The `crane tunnel-api` command establishes such a tunnel by creating a VPN tunnel on the source cluster and then connecting to a VPN server running on the destination cluster. The VPN server is exposed to the client using a load balancer address on the destination cluster.
 
 A service created on the destination cluster exposes the source cluster’s API to MTC, which is running on the destination cluster.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - The system that creates the VPN tunnel must have access and be logged in to both clusters.
 
@@ -106,16 +100,6 @@ Prerequisites
   - If you use the MTC web console, see *Migrating your applications using the MTC web console*.
 
 - The MTC web console and Migration Controller must be installed on the target cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Install the `crane` utility:
 
@@ -149,8 +133,11 @@ Procedure
           --source-context default/192-168-122-171-nip-io:8443/admin
     ```
 
-    > [!TIP]
-    > See all available parameters for the `crane tunnel-api` command by entering `crane tunnel-api --help`.
+    <div class="tip">
+
+    See all available parameters for the `crane tunnel-api` command by entering `crane tunnel-api --help`.
+
+    </div>
 
     The command generates TSL/SSL Certificates. This process might take several minutes. A message appears when the process completes.
 
@@ -158,33 +145,32 @@ Procedure
 
     After a few minutes, the load balancer resolves on the source node.
 
-    > [!TIP]
-    > You can view the log for the OpenVPN pods to check the status of this process by entering the following commands with root privileges:
-    >
-    > ``` terminal
-    > # oc get po -n <namespace>
-    > ```
-    >
-    > <div class="formalpara">
-    >
-    > <div class="title">
-    >
-    > Example output
-    >
-    > </div>
-    >
-    > ``` terminal
-    > NAME            READY     STATUS      RESTARTS    AGE
-    > <pod_name>    2/2       Running     0           44s
-    > ```
-    >
-    > </div>
-    >
-    > ``` terminal
-    > # oc logs -f -n <namespace> <pod_name> -c openvpn
-    > ```
-    >
-    > When the address of the load balancer is resolved, the message `Initialization Sequence Completed` appears at the end of the log.
+    <div class="tip">
+
+    You can view the log for the OpenVPN pods to check the status of this process by entering the following commands with root privileges:
+
+    ``` terminal
+    # oc get po -n <namespace>
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    NAME            READY     STATUS      RESTARTS    AGE
+    <pod_name>    2/2       Running     0           44s
+    ```
+
+    ``` terminal
+    # oc logs -f -n <namespace> <pod_name> -c openvpn
+    ```
+
+    When the address of the load balancer is resolved, the message `Initialization Sequence Completed` appears at the end of the log.
+
+    </div>
 
 5.  On the OpenVPN server, which is on a destination control node, verify that the `openvpn` service and the `proxied-cluster` service are running:
 
@@ -208,23 +194,11 @@ Procedure
 
     - **Exposed route host to image registry**: `proxied-cluster.<namespace>.svc.cluster.local:5000`. If you did not define a value for `<namespace>`, use `openvpn`.
 
-</div>
-
 After MTC has successfully validated the connection, you can proceed to create and run a migration plan. The namespace for the source cluster should appear in the list of namespaces.
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - For information about creating a MigCluster CR manifest for each remote cluster, see [Migrating an application by using the MTC API](../migrating_from_ocp_3_to_4/advanced-migration-options-3-4.xml#migration-migrating-applications-api_advanced-migration-options-3-4).
 
 - For information about adding a cluster using the web console, see [Migrating your applications by using the MTC web console](../migrating_from_ocp_3_to_4/migrating-applications-3-4.xml#migrating-applications-mtc-web-console_migrating-applications-3-4)
-
-</div>
 
 # Migrating applications by using the command line
 
@@ -234,67 +208,29 @@ You can migrate applications with the MTC API by using the command-line interfac
 
 - You must be logged in as a user with `cluster-admin` privileges on all clusters.
 
-<div>
-
-<div class="title">
-
-Direct image migration
-
-</div>
+<!-- -->
 
 - You must ensure that the secure OpenShift image registry of the source cluster is exposed.
 
 - You must create a route to the exposed registry.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Direct volume migration
-
-</div>
+<!-- -->
 
 - If your clusters use proxies, you must configure an Stunnel TCP proxy.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Internal images
-
-</div>
+<!-- -->
 
 - If your application uses internal images from the `openshift` namespace, you must ensure that the required versions of the images are present on the target cluster.
 
   You can manually update an image stream tag in order to use a deprecated OpenShift Container Platform 3 image on an OpenShift Container Platform 4.17 cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Clusters
-
-</div>
+<!-- -->
 
 - The source cluster must be upgraded to the latest MTC z-stream release.
 
 - The MTC version must be the same on all clusters.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Network
-
-</div>
+<!-- -->
 
 - The clusters have unrestricted network access to each other and to the replication repository.
 
@@ -318,15 +254,7 @@ Network
 
 - You must enable port `443` on the replication repository if you are using TLS.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Persistent volumes (PVs)
-
-</div>
+<!-- -->
 
 - The PVs must be valid.
 
@@ -342,19 +270,9 @@ Persistent volumes (PVs)
 
   - The PVs must have the same storage class.
 
-</div>
-
 ## Creating a registry route for direct image migration
 
 For direct image migration, you must create a route to the exposed OpenShift image registry on all remote clusters.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - The OpenShift image registry must be exposed to external traffic on all remote clusters.
 
@@ -362,15 +280,7 @@ Prerequisites
 
   The OpenShift Container Platform 3 registry must be [exposed manually](https://docs.openshift.com/container-platform/3.11/install_config/registry/securing_and_exposing_registry.html#exposing-the-registry).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To create a route to an OpenShift Container Platform 3 registry, run the following command:
 
@@ -383,8 +293,6 @@ Procedure
   ``` terminal
   $ oc create route passthrough --service=image-registry -n openshift-image-registry
   ```
-
-</div>
 
 ## Proxy configuration
 
@@ -423,17 +331,13 @@ Cluster-wide HTTP/HTTPS proxies in OpenShift are usually configured in man-in-th
 
 #### Known issue
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Migration fails with error `Upgrade request required`
+**Migration fails with error `Upgrade request required`**
 
 </div>
 
 The migration Controller uses the SPDY protocol to execute commands within remote pods. If the remote cluster is behind a proxy or a firewall that does not support the SPDY protocol, the migration controller fails to execute remote commands. The migration fails with the error message `Upgrade request required`. Workaround: Use a proxy that supports the SPDY protocol.
-
-</div>
 
 In addition to supporting the SPDY protocol, the proxy or firewall also must pass the `Upgrade` HTTP header to the API server. The client uses this header to open a websocket connection with the API server. If the `Upgrade` header is blocked by the proxy or firewall, the migration fails with the error message `Upgrade request required`. Workaround: Ensure that the proxy forwards the `Upgrade` header.
 
@@ -525,24 +429,20 @@ spec:
 
 When your PVCs use a shared storage, you can configure the access to that storage by adding supplemental groups to Rsync pod definitions in order for the pods to allow access:
 
-| Variable | Type | Default | Description |
-|----|----|----|----|
-| `src_supplemental_groups` | string | Not set | Comma-separated list of supplemental groups for source Rsync pods |
+| Variable                     | Type   | Default | Description                                                       |
+|------------------------------|--------|---------|-------------------------------------------------------------------|
+| `src_supplemental_groups`    | string | Not set | Comma-separated list of supplemental groups for source Rsync pods |
 | `target_supplemental_groups` | string | Not set | Comma-separated list of supplemental groups for target Rsync pods |
 
 Supplementary groups for Rsync pods
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example usage
+**Example usage**
 
 </div>
 
 The `MigrationController` CR can be updated to set values for these supplemental groups:
-
-</div>
 
 ``` yaml
 spec:
@@ -552,25 +452,7 @@ spec:
 
 ### Configuring proxies
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You must be logged in as a user with `cluster-admin` privileges on all clusters.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Get the `MigrationController` CR manifest:
 
@@ -608,19 +490,9 @@ Procedure
     $ oc replace -f migration-controller.yaml -n openshift-migration
     ```
 
-</div>
-
 ## Migrating an application by using the MTC API
 
 You can migrate an application from the command line by using the Migration Toolkit for Containers (MTC) API.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `MigCluster` CR manifest for the host cluster:
 
@@ -842,11 +714,9 @@ Procedure
 
     The output resembles the following:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -924,10 +794,6 @@ Procedure
       Normal  Running  50s                 migmigration_controller  Step: 10/47
     ```
 
-    </div>
-
-</div>
-
 ## State migration
 
 You can perform repeatable, state-only migrations by using Migration Toolkit for Containers (MTC) to migrate persistent volume claims (PVCs) that constitute an application’s state. You migrate specified PVCs by excluding other PVCs from the migration plan. You can map the PVCs to ensure that the source and the target PVCs are synchronized. Persistent volume (PV) data is copied to the target cluster. The PV references are not moved, and the application pods continue to run on the source cluster.
@@ -938,30 +804,15 @@ If you have a CI/CD pipeline, you can migrate stateless components by deploying 
 
 You can perform a state migration between clusters or within the same cluster.
 
-> [!IMPORTANT]
-> State migration migrates only the components that constitute an application’s state. If you want to migrate an entire namespace, use stage or cutover migration.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+State migration migrates only the components that constitute an application’s state. If you want to migrate an entire namespace, use stage or cutover migration.
 
 </div>
 
 - The state of the application on the source cluster is persisted in `PersistentVolumes` provisioned through `PersistentVolumeClaims`.
 
 - The manifests of the application are available in a central repository that is accessible from both the source and the target clusters.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Migrate persistent volume data from the source to the target cluster.
 
@@ -983,12 +834,13 @@ Procedure
 
 6.  Switch the DNS record to the target cluster to re-direct user traffic to the migrated application.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> MTC 1.6 cannot quiesce applications automatically when performing state migration. It can only migrate PV data. Therefore, you must use your CD mechanisms for quiescing or unquiescing applications.
->
-> MTC 1.7 introduces explicit Stage and Cutover flows. You can use staging to perform initial data transfers as many times as needed. Then you can perform a cutover, in which the source applications are quiesced automatically.
+MTC 1.6 cannot quiesce applications automatically when performing state migration. It can only migrate PV data. Therefore, you must use your CD mechanisms for quiescing or unquiescing applications.
+
+MTC 1.7 introduces explicit Stage and Cutover flows. You can use staging to perform initial data transfers as many times as needed. Then you can perform a cutover, in which the source applications are quiesced automatically.
+
+</div>
 
 ## Additional resources
 
@@ -1014,31 +866,23 @@ A migration hook runs on a source or a target cluster at one of the following mi
 
 You can create a hook by creating an Ansible playbook that runs with the default Ansible image or with a custom hook container.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Ansible playbook
+**Ansible playbook**
 
 </div>
 
 The Ansible playbook is mounted on a hook container as a config map. The hook container runs as a job, using the cluster, service account, and namespace specified in the `MigPlan` custom resource. The job continues to run until it reaches the default limit of 6 retries or a successful completion. This continues even if the initial pod is evicted or killed.
 
-</div>
-
 The default Ansible runtime image is `registry.redhat.io/rhmtc/openshift-migration-hook-runner-rhel7:1.8`. This image is based on the Ansible Runner image and includes `python-openshift` for Ansible Kubernetes resources and an updated `oc` binary.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Custom hook container
+**Custom hook container**
 
 </div>
 
 You can use a custom hook container instead of the default Ansible image.
-
-</div>
 
 ## Writing an Ansible playbook for a migration hook
 
@@ -1050,11 +894,9 @@ The Ansible playbook is mounted onto a hook container as a config map. The hook 
 
 You can use the Ansible `shell` module to run `oc` commands.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `shell` module
+**Example `shell` module**
 
 </div>
 
@@ -1066,15 +908,11 @@ Example `shell` module
     shell: oc get po --all-namespaces
 ```
 
-</div>
-
 You can use `kubernetes.core` modules, such as `k8s_info`, to interact with Kubernetes resources.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `k8s_facts` module
+**Example `k8s_facts` module**
 
 </div>
 
@@ -1095,15 +933,11 @@ Example `k8s_facts` module
       msg: "{{ pods.resources[0].metadata.name }}"
 ```
 
-</div>
-
 You can use the `fail` module to produce a non-zero exit status in cases where a non-zero exit status would not normally be produced, ensuring that the success or failure of a hook is detected. Hooks run as jobs and the success or failure status of a hook is based on the exit status of the job container.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `fail` module
+**Example `fail` module**
 
 </div>
 
@@ -1121,17 +955,13 @@ Example `fail` module
     when: do_fail
 ```
 
-</div>
-
 ### Environment variables
 
 The `MigPlan` CR name and migration namespaces are passed as environment variables to the hook container. These variables are accessed by using the `lookup` plugin.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example environment variables
+**Example environment variables**
 
 </div>
 
@@ -1150,8 +980,6 @@ Example environment variables
       msg: "{{ lookup( 'env', 'MIGRATION_PLAN_NAME') }}"
 ```
 
-</div>
-
 # Migration plan options
 
 You can exclude, edit, and map components in the `MigPlan` custom resource (CR).
@@ -1161,14 +989,6 @@ You can exclude, edit, and map components in the `MigPlan` custom resource (CR).
 You can exclude resources, for example, image streams, persistent volumes (PVs), or subscriptions, from a Migration Toolkit for Containers (MTC) migration plan to reduce the resource load for migration or to migrate images or PVs with a different tool.
 
 By default, the MTC excludes service catalog resources and Operator Lifecycle Manager (OLM) resources from migration. These resources are parts of the service catalog API group and the OLM API group, neither of which is supported for migration at this time.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `MigrationController` custom resource manifest:
 
@@ -1209,11 +1029,9 @@ Procedure
 
     The output contains the excluded resources:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1223,19 +1041,13 @@ Procedure
     resource1,resource2,imagetags,templateinstances,clusterserviceversions,packagemanifests,subscriptions,servicebrokers,servicebindings,serviceclasses,serviceinstances,serviceplans,imagestreams,persistentvolumes,persistentvolumeclaims
     ```
 
-    </div>
-
-</div>
-
 ## Mapping namespaces
 
 If you map namespaces in the `MigPlan` custom resource (CR), you must ensure that the namespaces are not duplicated on the source or the destination clusters because the UID and GID ranges of the namespaces are copied during migration.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Two source namespaces mapped to the same destination namespace
+**Two source namespaces mapped to the same destination namespace**
 
 </div>
 
@@ -1246,15 +1058,11 @@ spec:
     - namespace_1:namespace_2
 ```
 
-</div>
-
 If you want the source namespace to be mapped to a namespace of the same name, you do not need to create a mapping. By default, a source namespace and a target namespace have the same name.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Incorrect namespace mapping
+**Incorrect namespace mapping**
 
 </div>
 
@@ -1264,13 +1072,9 @@ spec:
     - namespace_1:namespace_1
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Correct namespace reference
+**Correct namespace reference**
 
 </div>
 
@@ -1280,31 +1084,13 @@ spec:
     - namespace_1
 ```
 
-</div>
-
 ## Excluding persistent volume claims
 
 You select persistent volume claims (PVCs) for state migration by excluding the PVCs that you do not want to migrate. You exclude PVCs by setting the `spec.persistentVolumes.pvc.selection.action` parameter of the `MigPlan` custom resource (CR) after the persistent volumes (PVs) have been discovered.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - `MigPlan` CR is in a `Ready` state.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Add the `spec.persistentVolumes.pvc.selection.action` parameter to the `MigPlan` CR and set it to `skip`:
 
@@ -1325,33 +1111,15 @@ Procedure
         action: skip
   ```
 
-</div>
-
 ## Mapping persistent volume claims
 
 You can migrate persistent volume (PV) data from the source cluster to persistent volume claims (PVCs) that are already provisioned in the destination cluster in the `MigPlan` CR by mapping the PVCs. This mapping ensures that the destination PVCs of migrated applications are synchronized with the source PVCs.
 
 You map PVCs by updating the `spec.persistentVolumes.pvc.name` parameter in the `MigPlan` custom resource (CR) after the PVs have been discovered.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - `MigPlan` CR is in a `Ready` state.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Update the `spec.persistentVolumes.pvc.name` parameter in the `MigPlan` CR:
 
@@ -1372,46 +1140,31 @@ Procedure
 
   - Specify the PVC on the source cluster and the PVC on the destination cluster. If the destination PVC does not exist, it will be created. You can use this mapping to change the PVC name during migration.
 
-</div>
-
 ## Editing persistent volume attributes
 
 After you create a `MigPlan` custom resource (CR), the `MigrationController` CR discovers the persistent volumes (PVs). The `spec.persistentVolumes` block and the `status.destStorageClasses` block are added to the `MigPlan` CR.
 
 You can edit the values in the `spec.persistentVolumes.selection` block. If you change values outside the `spec.persistentVolumes.selection` block, the values are overwritten when the `MigPlan` CR is reconciled by the `MigrationController` CR.
 
-> [!NOTE]
-> The default value for the `spec.persistentVolumes.selection.storageClass` parameter is determined by the following logic:
->
-> 1.  If the source cluster PV is Gluster or NFS, the default is either `cephfs`, for `accessMode: ReadWriteMany`, or `cephrbd`, for `accessMode: ReadWriteOnce`.
->
-> 2.  If the PV is neither Gluster nor NFS *or* if `cephfs` or `cephrbd` are not available, the default is a storage class for the same provisioner.
->
-> 3.  If a storage class for the same provisioner is not available, the default is the default storage class of the destination cluster.
->
-> You can change the `storageClass` value to the value of any `name` parameter in the `status.destStorageClasses` block of the `MigPlan` CR.
->
-> If the `storageClass` value is empty, the PV will have no storage class after migration. This option is appropriate if, for example, you want to move the PV to an NFS volume on the destination cluster.
+<div class="note">
 
-<div>
+The default value for the `spec.persistentVolumes.selection.storageClass` parameter is determined by the following logic:
 
-<div class="title">
+1.  If the source cluster PV is Gluster or NFS, the default is either `cephfs`, for `accessMode: ReadWriteMany`, or `cephrbd`, for `accessMode: ReadWriteOnce`.
 
-Prerequisites
+2.  If the PV is neither Gluster nor NFS *or* if `cephfs` or `cephrbd` are not available, the default is a storage class for the same provisioner.
+
+3.  If a storage class for the same provisioner is not available, the default is the default storage class of the destination cluster.
+
+You can change the `storageClass` value to the value of any `name` parameter in the `status.destStorageClasses` block of the `MigPlan` CR.
+
+If the `storageClass` value is empty, the PV will have no storage class after migration. This option is appropriate if, for example, you want to move the PV to an NFS volume on the destination cluster.
 
 </div>
 
 - `MigPlan` CR is in a `Ready` state.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Edit the `spec.persistentVolumes.selection` values in the `MigPlan` CR:
 
@@ -1451,8 +1204,6 @@ Procedure
 
   - Allowed values are `ReadWriteOnce` and `ReadWriteMany`. If this value is not specified, the default is the access mode of the source cluster PVC. You can only edit the access mode in the `MigPlan` CR. You cannot edit it by using the MTC web console.
 
-</div>
-
 ### Additional resources
 
 - For details about the `move` and `copy` actions, see [MTC workflow](../migrating_from_ocp_3_to_4/about-mtc-3-4.xml#migration-mtc-workflow_about-mtc-3-4).
@@ -1467,25 +1218,23 @@ After you migrate all the PV data, you can use the Migration Toolkit for Contain
 
 You do this by configuring `MigPlan` custom resource (CR) fields to provide a list of Kubernetes resources with an additional label selector to further filter those resources, and then performing a migration by creating a `MigMigration` CR. The `MigPlan` resource is closed after the migration.
 
-> [!NOTE]
-> Selecting Kubernetes resources is an API-only feature. You must update the `MigPlan` CR and create a `MigMigration` CR for it by using the CLI. The MTC web console does not support migrating Kubernetes objects.
+<div class="note">
 
-> [!NOTE]
-> After migration, the `closed` parameter of the `MigPlan` CR is set to `true`. You cannot create another `MigMigration` CR for this `MigPlan` CR.
+Selecting Kubernetes resources is an API-only feature. You must update the `MigPlan` CR and create a `MigMigration` CR for it by using the CLI. The MTC web console does not support migrating Kubernetes objects.
+
+</div>
+
+<div class="note">
+
+After migration, the `closed` parameter of the `MigPlan` CR is set to `true`. You cannot create another `MigMigration` CR for this `MigPlan` CR.
+
+</div>
 
 You add Kubernetes objects to the `MigPlan` CR by using one of the following options:
 
 - Adding the Kubernetes objects to the `includedResources` section. When the `includedResources` field is specified in the `MigPlan` CR, the plan takes a list of `group-kind` as input. Only resources present in the list are included in the migration.
 
 - Adding the optional `labelSelector` parameter to filter the `includedResources` in the `MigPlan`. When this field is specified, only resources matching the label selector are included in the migration. For example, you can filter a list of `Secret` and `ConfigMap` resources by using the label `app: frontend` as a filter.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Update the `MigPlan` CR to include Kubernetes resources and, optionally, to filter the included resources by adding the `labelSelector` parameter:
 
@@ -1546,8 +1295,6 @@ Procedure
       stage: false
     ```
 
-</div>
-
 # Migration controller options
 
 You can edit migration plan limits, enable persistent volume resizing, or enable cached Kubernetes clients in the `MigrationController` custom resource (CR) for large migrations and improved performance.
@@ -1556,14 +1303,9 @@ You can edit migration plan limits, enable persistent volume resizing, or enable
 
 You can increase the limits on migration objects and container resources for large migrations with the Migration Toolkit for Containers (MTC).
 
-> [!IMPORTANT]
-> You must test these changes before you perform a migration in a production environment.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Procedure
+You must test these changes before you perform a migration in a production environment.
 
 </div>
 
@@ -1607,8 +1349,6 @@ Procedure
 
     If your migration plan exceeds the `MigrationController` CR limits, the MTC console displays a warning message when you save the migration plan.
 
-</div>
-
 ## Enabling persistent volume resizing for direct volume migration
 
 You can enable persistent volume (PV) resizing for direct volume migration to avoid running out of disk space on the destination cluster.
@@ -1623,25 +1363,9 @@ PVC capacity is calculated according to the following criteria:
 
 - If a PV is provisioned through a PVC and then subsequently changed so that its PV and PVC capacities no longer match, the greater value is used.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - The PVCs must be attached to one or more running pods so that the `MigrationController` CR can execute commands.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the host cluster.
 
@@ -1678,29 +1402,25 @@ Procedure
           type: PvCapacityAdjustmentRequired
       ```
 
-      > [!NOTE]
-      > For AWS gp2 storage, this message does not appear unless the `pv_resizing_threshold` is 42% or greater because of the way gp2 calculates volume usage and size. ([**BZ#1973148**](https://bugzilla.redhat.com/show_bug.cgi?id=1973148))
+      <div class="note">
 
-</div>
+      For AWS gp2 storage, this message does not appear unless the `pv_resizing_threshold` is 42% or greater because of the way gp2 calculates volume usage and size. ([**BZ#1973148**](https://bugzilla.redhat.com/show_bug.cgi?id=1973148))
+
+      </div>
 
 ## Enabling cached Kubernetes clients
 
 You can enable cached Kubernetes clients in the `MigrationController` custom resource (CR) for improved performance during migration. The greatest performance benefit is displayed when migrating between clusters in different regions or with significant network latency.
 
-> [!NOTE]
-> Delegated tasks, for example, Rsync backup for direct volume migration or Velero backup and restore, however, do not show improved performance with cached clients.
+<div class="note">
+
+Delegated tasks, for example, Rsync backup for direct volume migration or Velero backup and restore, however, do not show improved performance with cached clients.
+
+</div>
 
 Cached clients require extra memory because the `MigrationController` CR caches all API resources that are required for interacting with `MigCluster` CRs. Requests that are normally sent to the API server are directed to the cache instead. The cache watches the API server for updates.
 
 You can increase the memory limits and requests of the `MigrationController` CR if `OOMKilled` errors occur after you enable cached clients.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Enable cached clients by running the following command:
 
@@ -1722,5 +1442,3 @@ Procedure
     $ oc -n openshift-migration patch migrationcontroller migration-controller --type=json --patch \
       '[{ "op": "replace", "path": "/spec/mig_controller_requests_memory", "value": <350Mi>}]'
     ```
-
-</div>

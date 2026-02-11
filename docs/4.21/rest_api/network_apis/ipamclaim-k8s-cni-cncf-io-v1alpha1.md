@@ -6,13 +6,13 @@ Type
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` |  |
-| `status` | `object` | IPAMClaimStatus contains the observed status of the IPAMClaim. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             |                                                                                                                                                                                                                                                                                                      |
+| `status`     | `object`                                                                             | IPAMClaimStatus contains the observed status of the IPAMClaim.                                                                                                                                                                                                                                       |
 
 ## .spec
 
@@ -26,10 +26,10 @@ Required
 
 - `network`
 
-| Property | Type | Description |
-|----|----|----|
-| `interface` | `string` | The pod interface name for which this allocation was created |
-| `network` | `string` | The network name for which this persistent allocation was created |
+| Property    | Type     | Description                                                       |
+|-------------|----------|-------------------------------------------------------------------|
+| `interface` | `string` | The pod interface name for which this allocation was created      |
+| `network`   | `string` | The network name for which this persistent allocation was created |
 
 ## .status
 
@@ -42,12 +42,12 @@ Type
 Required
 - `ips`
 
-| Property | Type | Description |
-|----|----|----|
-| `conditions` | `array` | Conditions contains details for one aspect of the current state of this API Resource |
-| `conditions[]` | `object` | Condition contains details for one aspect of the current state of this API Resource. |
-| `ips` | `array (string)` | The list of IP addresses (v4, v6) that were allocated for the pod interface |
-| `ownerPod` | `object` | The name of the pod holding the IPAMClaim |
+| Property       | Type             | Description                                                                          |
+|----------------|------------------|--------------------------------------------------------------------------------------|
+| `conditions`   | `array`          | Conditions contains details for one aspect of the current state of this API Resource |
+| `conditions[]` | `object`         | Condition contains details for one aspect of the current state of this API Resource. |
+| `ips`          | `array (string)` | The list of IP addresses (v4, v6) that were allocated for the pod interface          |
+| `ownerPod`     | `object`         | The name of the pod holding the IPAMClaim                                            |
 
 ## .status.conditions
 
@@ -76,14 +76,14 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastTransitionTime` | `string` | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable. |
-| `message` | `string` | message is a human readable message indicating details about the transition. This may be an empty string. |
-| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance. |
-| `reason` | `string` | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
-| `status` | `string` | status of the condition, one of True, False, Unknown. |
-| `type` | `string` | type of condition in CamelCase or in foo.example.com/CamelCase. |
+| Property             | Type      | Description                                                                                                                                                                                                                                                                                                                     |
+|----------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string`  | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable.                                                                                            |
+| `message`            | `string`  | message is a human readable message indicating details about the transition. This may be an empty string.                                                                                                                                                                                                                       |
+| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.                                   |
+| `reason`             | `string`  | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
+| `status`             | `string`  | status of the condition, one of True, False, Unknown.                                                                                                                                                                                                                                                                           |
+| `type`               | `string`  | type of condition in CamelCase or in foo.example.com/CamelCase.                                                                                                                                                                                                                                                                 |
 
 ## .status.ownerPod
 
@@ -139,10 +139,10 @@ HTTP method
 Description
 list objects of kind IPAMClaim
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAMClaimList`](../objects/index.xml#io-cncf-cni-k8s-v1alpha1-IPAMClaimList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                          |
+|--------------------|---------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAMClaimList`](../objects/index.xml#io-cncf-cni-k8s-v1alpha1-IPAMClaimList) schema |
+| 401 - Unauthorized | Empty                                                                                 |
 
 HTTP responses
 
@@ -154,10 +154,10 @@ HTTP method
 Description
 delete collection of IPAMClaim
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -167,10 +167,10 @@ HTTP method
 Description
 list objects of kind IPAMClaim
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAMClaimList`](../objects/index.xml#io-cncf-cni-k8s-v1alpha1-IPAMClaimList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                          |
+|--------------------|---------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAMClaimList`](../objects/index.xml#io-cncf-cni-k8s-v1alpha1-IPAMClaimList) schema |
+| 401 - Unauthorized | Empty                                                                                 |
 
 HTTP responses
 
@@ -180,25 +180,25 @@ HTTP method
 Description
 create an IPAMClaim
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |  |
+| Parameter | Type                                                                                                            | Description |
+|-----------|-----------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
-| 201 - Created | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
-| 202 - Accepted | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                    |
+|--------------------|-----------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
+| 201 - Created      | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
+| 202 - Accepted     | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                           |
 
 HTTP responses
 
@@ -216,17 +216,17 @@ HTTP method
 Description
 delete an IPAMClaim
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -236,10 +236,10 @@ HTTP method
 Description
 read the specified IPAMClaim
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                    |
+|--------------------|-----------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                           |
 
 HTTP responses
 
@@ -249,17 +249,17 @@ HTTP method
 Description
 partially update the specified IPAMClaim
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                    |
+|--------------------|-----------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                           |
 
 HTTP responses
 
@@ -269,24 +269,24 @@ HTTP method
 Description
 replace the specified IPAMClaim
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |  |
+| Parameter | Type                                                                                                            | Description |
+|-----------|-----------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
-| 201 - Created | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                    |
+|--------------------|-----------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
+| 201 - Created      | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                           |
 
 HTTP responses
 
@@ -304,10 +304,10 @@ HTTP method
 Description
 read status of the specified IPAMClaim
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                    |
+|--------------------|-----------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                           |
 
 HTTP responses
 
@@ -317,17 +317,17 @@ HTTP method
 Description
 partially update status of the specified IPAMClaim
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                    |
+|--------------------|-----------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                           |
 
 HTTP responses
 
@@ -337,23 +337,23 @@ HTTP method
 Description
 replace status of the specified IPAMClaim
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |  |
+| Parameter | Type                                                                                                            | Description |
+|-----------|-----------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
-| 201 - Created | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                    |
+|--------------------|-----------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
+| 201 - Created      | [`IPAMClaim`](../network_apis/ipamclaim-k8s-cni-cncf-io-v1alpha1.xml#ipamclaim-k8s-cni-cncf-io-v1alpha1) schema |
+| 401 - Unauthorized | Empty                                                                                                           |
 
 HTTP responses

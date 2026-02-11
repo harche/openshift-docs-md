@@ -16,25 +16,9 @@ You can follow the optional step in the procedure to enable IP forwarding alongs
 
 - Configuring OVN-Kubernetes CNI to use a kernel routing table
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - You are logged in as a user with admin privileges.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Back up the existing network configuration by running the following command:
 
@@ -54,11 +38,9 @@ Procedure
     $ oc get networks.operator.openshift.io cluster -o yaml | grep -A 5 "gatewayConfig"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -77,8 +59,6 @@ Procedure
     # ...
     ```
 
-    </div>
-
     - A value of `true` means that egress traffic gets routed through a specific local gateway on the node that hosts the pod. A value of `false` for the parameter means that a group of nodes share a single gateway so traffic does not get routed through a single host.
 
 4.  Optional: Enable IP forwarding globally by running the following command:
@@ -93,11 +73,9 @@ Procedure
         $ oc get networks.operator.openshift.io cluster -o yaml | grep -A 5 "gatewayConfig"
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -115,7 +93,3 @@ Procedure
               genevePort: 6081
         # ...
         ```
-
-        </div>
-
-</div>

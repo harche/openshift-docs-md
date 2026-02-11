@@ -1,18 +1,8 @@
 When you are ready to move from a basic installation to production, you must configure your control plane, tracing, and security certificates to meet production requirements.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install and configure Red Hat OpenShift Service Mesh.
 
 - Test your configuration in a staging environment.
-
-</div>
 
 # Configuring your ServiceMeshControlPlane resource for production
 
@@ -20,23 +10,13 @@ If you have installed a basic `ServiceMeshControlPlane` resource to test Service
 
 You cannot change the `metadata.name` field of an existing `ServiceMeshControlPlane` resource. For production deployments, you must customize the default template.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Configure the Distributed Tracing Platform (Jaeger) for production.
 
     1.  Edit the `ServiceMeshControlPlane` resource to use the `production` deployment strategy, by setting `spec.addons.jaeger.install.storage.type` to `Elasticsearch` and specify additional configuration options under `install`. You can create and configure your Jaeger instance and set `spec.addons.jaeger.name` to the name of the Jaeger instance.
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Default Jaeger parameters including Elasticsearch
+        **Default Jaeger parameters including Elasticsearch**
 
         </div>
 
@@ -65,29 +45,17 @@ Procedure
                   resources: {}
         ```
 
-        </div>
-
     2.  Configure the sampling rate for production. For more information, see the Performance and scalability section.
 
 2.  Ensure your security certificates are production ready by installing security certificates from an external certificate authority. For more information, see the Security section.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Enter the following command to verify that the `ServiceMeshControlPlane` resource updated properly. In this example, `basic` is the name of the `ServiceMeshControlPlane` resource.
 
     ``` terminal
     $ oc get smcp basic -o yaml
     ```
-
-</div>
 
 # Additional resources
 

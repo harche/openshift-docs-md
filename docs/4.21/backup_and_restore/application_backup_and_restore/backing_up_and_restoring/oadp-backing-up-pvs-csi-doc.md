@@ -4,35 +4,17 @@ For more information, see [Creating a Backup CR](../../../backup_and_restore/app
 
 # Backing up persistent volumes with CSI snapshots
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The cloud provider must support CSI snapshots.
 
 - You must enable CSI in the `DataProtectionApplication` CR.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Add the `metadata.labels.velero.io/csi-volumesnapshot-class: "true"` key-value pair to the `VolumeSnapshotClass` CR:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example configuration file
+  **Example configuration file**
 
   </div>
 
@@ -49,24 +31,12 @@ Procedure
   deletionPolicy: <deletion_policy_type>
   ```
 
-  </div>
-
   - Must be set to `true`.
 
   - If you are restoring this volume in another cluster with the same driver, make sure that you set the `snapshot.storage.kubernetes.io/is-default-class` parameter to `false` instead of setting it to `true`. Otherwise, the restore will partially fail.
 
   - OADP supports the `Retain` and `Delete` deletion policy types for CSI and Data Mover backup and restore.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
+<!-- -->
 
 - You can now create a `Backup` CR.
-
-</div>

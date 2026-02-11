@@ -60,41 +60,31 @@ The AAQ Operator introduces two new API objects defined as custom resource defin
   # ...
   ```
 
-  > [!NOTE]
-  > If both `spec.selector.labels` and `spec.selector.annotations` fields are set, only namespaces that match both are selected.
+  <div class="note">
+
+  If both `spec.selector.labels` and `spec.selector.annotations` fields are set, only namespaces that match both are selected.
+
+  </div>
 
 The AAQ controller uses a scheduling gate mechanism to evaluate whether there is enough of a resource available to run a workload. If so, the scheduling gate is removed from the pod and it is considered ready for scheduling. The quota usage status is updated to indicate how much of the quota is used.
 
 If the CPU and memory requests and limits for the workload exceed the enforced quota usage limit, the pod remains in `SchedulingGated` status until there is enough quota available. The AAQ controller creates an event of type `Warning` with details on why the quota was exceeded. You can view the event details by using the `oc get events` command.
 
-> [!IMPORTANT]
-> Pods that have the `spec.nodeName` field set to a specific node cannot use namespaces that match the `spec.namespaceSelector` labels defined in the `HyperConverged` CR.
+<div class="important">
+
+Pods that have the `spec.nodeName` field set to a specific node cannot use namespaces that match the `spec.namespaceSelector` labels defined in the `HyperConverged` CR.
+
+</div>
 
 # Enabling the AAQ Operator
 
 To deploy the AAQ Operator, set the `enableApplicationAwareQuota` field value to `true` in the `HyperConverged` custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with `cluster-admin` privileges.
 
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Set the `enableApplicationAwareQuota` field value to `true` in the `HyperConverged` CR by running the following command:
 
@@ -103,33 +93,15 @@ Procedure
    --type json -p '[{"op": "add", "path": "/spec/enableApplicationAwareQuota", "value": true}]'
   ```
 
-</div>
-
 # Configuring the AAQ Operator by using the CLI
 
 You can configure the AAQ Operator by specifying the fields of the `spec.applicationAwareConfig` object in the `HyperConverged` custom resource (CR).
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster as a user with `cluster-admin` privileges.
 
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Update the `HyperConverged` CR by running the following command:
 
@@ -165,8 +137,6 @@ Procedure
 
   `allowApplicationAwareClusterResourceQuota`
   If set to `true`, you can create and manage the `ApplicationAwareClusterResourceQuota` object. Setting this attribute to `true` can increase scheduling time.
-
-</div>
 
 # Additional resources
 

@@ -92,30 +92,30 @@ You can work with pods more easily and efficiently with the help of various tool
 <col style="width: 40%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Operation</th>
 <th style="text-align: left;">User</th>
 <th style="text-align: left;">More information</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Create and use a horizontal pod autoscaler.</p></td>
 <td style="text-align: left;"><p>Developer</p></td>
 <td style="text-align: left;"><p>You can use a horizontal pod autoscaler to specify the minimum and the maximum number of pods you want to run, as well as the CPU utilization or memory utilization your pods should target. Using a horizontal pod autoscaler, you can <a href="../nodes/pods/nodes-pods-autoscaling.xml#nodes-pods-autoscaling">automatically scale pods</a>.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><a href="../nodes/pods/nodes-pods-vertical-autoscaler.xml#nodes-pods-vpa">Install and use a vertical pod autoscaler</a>.</p></td>
 <td style="text-align: left;"><p>Administrator and developer</p></td>
 <td style="text-align: left;"><p>As an administrator, use a vertical pod autoscaler to better use cluster resources by monitoring the resources and the resource requirements of workloads.</p>
 <p>As a developer, use a vertical pod autoscaler to ensure your pods stay up during periods of high demand by scheduling pods to nodes that have enough resources for each pod.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Provide access to external resources using device plugins.</p></td>
 <td style="text-align: left;"><p>Administrator</p></td>
 <td style="text-align: left;"><p>A <a href="../nodes/pods/nodes-pods-plugins.xml#nodes-pods-device">device plugin</a> is a gRPC service running on nodes (external to the kubelet), which manages specific hardware resources. You can <a href="../nodes/pods/nodes-pods-plugins.xml#methods-for-deploying-a-device-plugin_nodes-pods-device">deploy a device plugin</a> to provide a consistent and portable solution to consume hardware devices across clusters.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Provide sensitive data to pods <a href="../nodes/pods/nodes-pods-secrets.xml#nodes-pods-secrets">using the <code>Secret</code> object</a>.</p></td>
 <td style="text-align: left;"><p>Administrator</p></td>
 <td style="text-align: left;"><p>Some applications need sensitive information, such as passwords and usernames. You can use the <code>Secret</code> object to provide such information to an application pod.</p></td>

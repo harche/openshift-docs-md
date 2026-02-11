@@ -1,7 +1,10 @@
 Create and manage SELinux profiles and bind them to workloads.
 
-> [!IMPORTANT]
-> The Security Profiles Operator supports only Red Hat Enterprise Linux CoreOS (RHCOS) worker nodes. Red Hat Enterprise Linux (RHEL) nodes are not supported.
+<div class="important">
+
+The Security Profiles Operator supports only Red Hat Enterprise Linux CoreOS (RHCOS) worker nodes. Red Hat Enterprise Linux (RHEL) nodes are not supported.
+
+</div>
 
 # Creating SELinux profiles
 
@@ -16,14 +19,6 @@ The `SelinuxProfile` object has several features that allow for better security 
 - Adds a new keyword `@self` that describes the process using the policy. This allows reusing a policy between workloads and namespaces easily, as the usage of the policy is based on the name and namespace.
 
 - Adds features for better security hardening and readability compared to writing a profile directly in the SELinux CIL language.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a project by running the following command:
 
@@ -60,19 +55,15 @@ Procedure
     $ oc wait --for=condition=ready selinuxprofile nginx-secure
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     selinuxprofile.security-profiles-operator.x-k8s.io/nginx-secure condition met
     ```
-
-    </div>
 
     The policies are placed into an `emptyDir` in the container owned by the Security Profiles Operator. The policies are saved in Common Intermediate Language (CIL) format in `/etc/selinux.d/<name>_<namespace>.cil`.
 
@@ -82,15 +73,7 @@ Procedure
     $ oc -n openshift-security-profiles rsh -c selinuxd ds/spod
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  View the file contents with `cat` by running the following command:
 
@@ -98,11 +81,9 @@ Verification
     $ cat /etc/selinux.d/nginx-secure_.cil
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -115,19 +96,15 @@ Verification
     )
     ```
 
-    </div>
-
 2.  Verify that a policy has been installed by running the following command:
 
     ``` terminal
     $ semodule -l | grep nginx-secure
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -135,23 +112,11 @@ Verification
     nginx-secure_
     ```
 
-    </div>
-
-</div>
-
 # Applying SELinux profiles to a pod
 
 Create a pod to apply one of the created profiles.
 
 For SELinux profiles, the namespace must be labelled to allow [privileged](https://kubernetes.io/docs/concepts/security/pod-security-standards/) workloads.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Apply the `scc.podSecurityLabelSync=false` label to the `nginx-deploy` namespace by running the following command:
 
@@ -171,19 +136,15 @@ Procedure
     $ oc get selinuxprofile.security-profiles-operator.x-k8s.io/nginx-secure -ojsonpath='{.status.usage}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     nginx-secure_.process
     ```
-
-    </div>
 
 4.  Apply the output string in the workload manifest in the `.spec.containers[].securityContext.seLinuxOptions` attribute:
 
@@ -210,23 +171,19 @@ Procedure
               type: nginx-secure_.process
     ```
 
-    > [!IMPORTANT]
-    > The SELinux `type` must exist before creating the workload.
+    <div class="important">
 
-</div>
+    The SELinux `type` must exist before creating the workload.
+
+    </div>
 
 ## Applying SELinux log policies
 
 To log policy violations or AVC denials, set the `SElinuxProfile` profile to `permissive`.
 
-> [!IMPORTANT]
-> This procedure defines logging policies. It does not set enforcement policies.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Procedure
+This procedure defines logging policies. It does not set enforcement policies.
 
 </div>
 
@@ -241,19 +198,9 @@ Procedure
     permissive: true
   ```
 
-</div>
-
 ## Binding workloads to profiles with ProfileBindings
 
 You can use the `ProfileBinding` resource to bind a security profile to the `SecurityContext` of a container.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To bind a pod that uses a `quay.io/security-profiles-operator/test-nginx-unprivileged:1.21` image to the example `SelinuxProfile` profile, create a `ProfileBinding` object in the same namespace with the pod and the `SelinuxProfile` objects:
 
@@ -276,8 +223,11 @@ Procedure
 
     - You can enable a default security profile by using a wildcard in the image attribute: `image: "*"`
 
-      > [!IMPORTANT]
-      > Using the `image: "*"` wildcard attribute binds all new pods with a default security profile in a given namespace.
+      <div class="important">
+
+      Using the `image: "*"` wildcard attribute binds all new pods with a default security profile in a given namespace.
+
+      </div>
 
 2.  Label the namespace with `enable-binding=true` by running the following command:
 
@@ -304,18 +254,11 @@ Procedure
     $ oc create -f test-pod.yaml
     ```
 
-    > [!NOTE]
-    > If the pod already exists, you must re-create the pod for the binding to work properly.
+    <div class="note">
 
-</div>
+    If the pod already exists, you must re-create the pod for the binding to work properly.
 
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+    </div>
 
 - Confirm the pod inherits the `ProfileBinding` by running the following command:
 
@@ -323,11 +266,9 @@ Verification
   $ oc get pod test-pod -o jsonpath='{.spec.containers[*].securityContext.seLinuxOptions.type}'
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -335,21 +276,9 @@ Verification
   profile_.process
   ```
 
-  </div>
-
-</div>
-
 ## Replicating controllers and SecurityContextConstraints
 
 When you deploy SELinux policies for replicating controllers, such as deployments or daemon sets, note that the `Pod` objects spawned by the controllers are not running with the identity of the user who creates the workload. Unless a `ServiceAccount` is selected, the pods might revert to using a restricted `SecurityContextConstraints` (SCC) which does not allow use of custom security policies.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a project by running the following command:
 
@@ -439,10 +368,11 @@ Procedure
 
     - The `.seLinuxOptions.type` must exist before the Deployment is created.
 
-      > [!NOTE]
-      > The SELinux type is not specified in the workload and is handled by the SCC. When the pods are created by the deployment and the `ReplicaSet`, the pods will run with the appropriate profile.
+      <div class="note">
 
-</div>
+      The SELinux type is not specified in the workload and is handled by the SCC. When the pods are created by the deployment and the `ReplicaSet`, the pods will run with the appropriate profile.
+
+      </div>
 
 Ensure that your SCC is usable by only the correct service account. Refer to *Additional resources* for more information.
 
@@ -452,14 +382,9 @@ The Security Profiles Operator can record system calls with `ProfileRecording` o
 
 When using the log enricher for recording SELinux profiles, verify the log enricher feature is enabled. See *Additional resources* for more information.
 
-> [!NOTE]
-> A container with `privileged: true` security context restraints prevents log-based recording. Privileged containers are not subject to SELinux policies, and log-based recording makes use of a special SELinux profile to record events.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+A container with `privileged: true` security context restraints prevents log-based recording. Privileged containers are not subject to SELinux policies, and log-based recording makes use of a special SELinux profile to record events.
 
 </div>
 
@@ -529,11 +454,9 @@ Procedure
     $ oc -n my-namespace get pods
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -542,19 +465,15 @@ Procedure
     my-pod   2/2     Running   0          18s
     ```
 
-    </div>
-
 6.  Confirm the enricher indicates that it receives audit logs for those containers:
 
     ``` terminal
     $ oc -n openshift-security-profiles logs --since=1m --selector name=spod -c log-enricher
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -562,17 +481,7 @@ Procedure
     I0517 13:55:36.383187  348295 enricher.go:376] log-enricher "msg"="audit" "container"="redis" "namespace"="my-namespace" "node"="ip-10-0-189-53.us-east-2.compute.internal" "perm"="name_bind" "pod"="my-pod" "profile"="test-recording_redis_6kmrb_1684331729" "scontext"="system_u:system_r:selinuxrecording.process:s0:c4,c27" "tclass"="tcp_socket" "tcontext"="system_u:object_r:redis_port_t:s0" "timestamp"="1684331735.105:273965" "type"="selinux"
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Remove the pod:
 
@@ -586,11 +495,9 @@ Verification
     $ oc get selinuxprofiles -lspo.x-k8s.io/recording-id=test-recording
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output for selinuxprofile
+    **Example output for selinuxprofile**
 
     </div>
 
@@ -600,21 +507,9 @@ Verification
     test-recording-redis   test-recording-redis_.process   Installed
     ```
 
-    </div>
-
-</div>
-
 ## Merging per-container profile instances
 
 By default, each container instance records into a separate profile. The Security Profiles Operator can merge the per-container profiles into a single profile. Merging profiles is useful when deploying applications using `ReplicaSet` or `Deployment` objects.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit a `ProfileRecording` object to include a `mergeStrategy: containers` variable:
 
@@ -685,11 +580,9 @@ Procedure
     $ oc get selinuxprofiles -lspo.x-k8s.io/recording-id=test-recording -n my-namespace
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output for selinuxprofiles
+    **Example output for selinuxprofiles**
 
     </div>
 
@@ -698,15 +591,11 @@ Procedure
     test-recording-nginx-record   test-recording-nginx-record_.process   Installed
     ```
 
-    </div>
-
 7.  To view the permissions used by any of the containers, run the following command:
 
     ``` terminal
     $ oc get selinuxprofiles test-recording-nginx-record -o yaml
     ```
-
-</div>
 
 ## About seLinuxContext: RunAsAny
 

@@ -6,27 +6,9 @@ You can stop, start, restart, pause, and unpause virtual machines from the web c
 
 To allow users to manage virtual machine (VM) states by using the OpenShift Container Platform web console, you must create an RBAC cluster role and cluster role binding. The cluster role uses the `subresources.kubevirt.io` API to define which resources can be controlled by certain users or groups.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have cluster administrator access to an OpenShift Container Platform cluster where OpenShift Virtualization is installed.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `ClusterRole` object that allows the target user or group to manage VM states:
 
@@ -121,15 +103,7 @@ Procedure
     vm-manager-access-binding   15s
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Check if the user can start a VM by running the following command:
 
@@ -155,37 +129,17 @@ Verification
     yes
     ```
 
-</div>
-
 # Enabling confirmations of virtual machine actions
 
 The **Stop**, **Restart**, and **Pause** actions can display confirmation dialogs if confirmation is enabled. By default, confirmation is disabled.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the **Virtualization** section of the OpenShift Container Platform web console, navigate to **Overview** → **Settings** → **Cluster** → **General settings**.
 
 2.  Toggle the **VirtualMachine actions confirmation** setting to On.
 
-</div>
-
 # Starting a virtual machine
 
 You can start a virtual machine (VM) from the web console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu.
 
@@ -209,22 +163,15 @@ Procedure
 
       2.  Click **Actions** → **Start**.
 
-          > [!NOTE]
-          > When you start VM that is provisioned from a `URL` source for the first time, the VM has a status of **Importing** while OpenShift Virtualization imports the container from the URL endpoint. Depending on the size of the image, this process might take several minutes.
+          <div class="note">
 
-</div>
+          When you start VM that is provisioned from a `URL` source for the first time, the VM has a status of **Importing** while OpenShift Virtualization imports the container from the URL endpoint. Depending on the size of the image, this process might take several minutes.
+
+          </div>
 
 # Stopping a virtual machine
 
 You can stop a virtual machine (VM) from the web console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu.
 
@@ -254,20 +201,13 @@ Procedure
 
       3.  If action confirmation is enabled, click **Stop** in the confirmation dialog.
 
-</div>
-
 # Restarting a virtual machine
 
 You can restart a running virtual machine (VM) from the web console.
 
-> [!IMPORTANT]
-> To avoid errors, do not restart a VM while it has a status of **Importing**.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Procedure
+To avoid errors, do not restart a VM while it has a status of **Importing**.
 
 </div>
 
@@ -299,19 +239,9 @@ Procedure
 
       3.  If action confirmation is enabled, click **Restart** in the confirmation dialog.
 
-</div>
-
 # Pausing a virtual machine
 
 You can pause a virtual machine (VM) from the web console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu.
 
@@ -341,31 +271,11 @@ Procedure
 
       3.  If action confirmation is enabled, click **Pause** in the confirmation dialog.
 
-</div>
-
 # Unpausing a virtual machine
 
 You can unpause a paused virtual machine (VM) from the web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - At least one of your VMs must have a status of **Paused**.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu.
 
@@ -389,19 +299,9 @@ Procedure
 
       2.  Click **Actions** → **Unpause**.
 
-</div>
-
 # Controlling the state of multiple virtual machines
 
 You can start, stop, restart, pause, and unpause multiple virtual machines (VMs) from the web console.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
 
@@ -424,5 +324,3 @@ Procedure
       2.  Click **Actions** and select the intended action from the menu.
 
       3.  If action confirmation is enabled, confirm the action in the confirmation dialog.
-
-</div>

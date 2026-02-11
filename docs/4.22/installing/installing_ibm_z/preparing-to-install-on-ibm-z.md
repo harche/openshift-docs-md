@@ -1,7 +1,10 @@
 You can install an OpenShift Container Platform cluster on IBM Z® and IBM® LinuxONE using a variety of different installation methods. Each method has qualities that can make them more suitable for different use cases, such as installing a cluster in a disconnected environment or installing a cluster with minimal configuration and provisioning.
 
-> [!NOTE]
-> While this document refers only to IBM Z®, all information in it also applies to IBM® LinuxONE.
+<div class="note">
+
+While this document refers only to IBM Z®, all information in it also applies to IBM® LinuxONE.
+
+</div>
 
 # Choosing a method to install OpenShift Container Platform on IBM Z or IBM LinuxONE
 
@@ -13,14 +16,14 @@ The OpenShift Container Platform installation program offers the following metho
 
 - **Full control**: You can deploy a cluster on infrastructure that you prepare and maintain, which provides maximum customizability. You can deploy clusters in connected or disconnected environments.
 
-|  | Assisted Installer | Agent-based Installer | User-provisioned installation | Installer-provisioned installation |
-|----|----|----|----|----|
-| IBM Z® with z/VM | ✓ | ✓ | [✓](../../installing/installing_ibm_z/upi/installing-ibm-z.xml#installing-ibm-z) |  |
-| Restricted network IBM Z® with z/VM |  | ✓ | [✓](../../installing/installing_ibm_z/upi/installing-restricted-networks-ibm-z.xml#installing-restricted-networks-ibm-z) |  |
-| IBM Z® with RHEL KVM | ✓ | ✓ | [✓](../../installing/installing_ibm_z/upi/installing-ibm-z-kvm.xml#installing-ibm-z-kvm) |  |
-| Restricted network IBM Z® with RHEL KVM |  | ✓ | [✓](../../installing/installing_ibm_z/upi/installing-restricted-networks-ibm-z-kvm.xml#installing-restricted-networks-ibm-z-kvm) |  |
-| IBM Z® in an LPAR | ✓ | ✓ | [✓](../../installing/installing_ibm_z/upi/installing-ibm-z-lpar.xml#installing-ibm-z-lpar) |  |
-| Restricted network IBM Z® in an LPAR |  | ✓ | ✓ |  |
+|                                         | Assisted Installer | Agent-based Installer | User-provisioned installation                                                                                                    | Installer-provisioned installation |
+|-----------------------------------------|--------------------|-----------------------|----------------------------------------------------------------------------------------------------------------------------------|------------------------------------|
+| IBM Z® with z/VM                        | ✓                  | ✓                     | [✓](../../installing/installing_ibm_z/upi/installing-ibm-z.xml#installing-ibm-z)                                                 |                                    |
+| Restricted network IBM Z® with z/VM     |                    | ✓                     | [✓](../../installing/installing_ibm_z/upi/installing-restricted-networks-ibm-z.xml#installing-restricted-networks-ibm-z)         |                                    |
+| IBM Z® with RHEL KVM                    | ✓                  | ✓                     | [✓](../../installing/installing_ibm_z/upi/installing-ibm-z-kvm.xml#installing-ibm-z-kvm)                                         |                                    |
+| Restricted network IBM Z® with RHEL KVM |                    | ✓                     | [✓](../../installing/installing_ibm_z/upi/installing-restricted-networks-ibm-z-kvm.xml#installing-restricted-networks-ibm-z-kvm) |                                    |
+| IBM Z® in an LPAR                       | ✓                  | ✓                     | [✓](../../installing/installing_ibm_z/upi/installing-ibm-z-lpar.xml#installing-ibm-z-lpar)                                       |                                    |
+| Restricted network IBM Z® in an LPAR    |                    | ✓                     | ✓                                                                                                                                |                                    |
 
 IBM Z® installation options
 
@@ -30,8 +33,11 @@ For more information about the installation process, see the [Installation proce
 
 User-provisioned infrastructure requires the user to provision all resources required by OpenShift Container Platform.
 
-> [!IMPORTANT]
-> The steps for performing a user-provisioned infrastructure installation are provided as an example only. Installing a cluster with infrastructure you provide requires knowledge of the IBM Z® platform and the installation process of OpenShift Container Platform. Use the user-provisioned infrastructure installation instructions as a guide; you are free to create the required resources through other methods.
+<div class="important">
+
+The steps for performing a user-provisioned infrastructure installation are provided as an example only. Installing a cluster with infrastructure you provide requires knowledge of the IBM Z® platform and the installation process of OpenShift Container Platform. Use the user-provisioned infrastructure installation instructions as a guide; you are free to create the required resources through other methods.
+
+</div>
 
 - **[Installing a cluster with z/VM on IBM Z® and IBM® LinuxONE](../../installing/installing_ibm_z/upi/installing-ibm-z.xml#installing-ibm-z)**: You can install OpenShift Container Platform with z/VM on IBM Z® or IBM® LinuxONE infrastructure that you provision.
 

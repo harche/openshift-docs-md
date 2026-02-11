@@ -8,10 +8,13 @@ The `Deployment` and `DeploymentConfig` API objects in OpenShift Container Platf
 
 Use `Deployment` objects unless you need a specific feature or behavior provided by `DeploymentConfig` objects.
 
-> [!IMPORTANT]
-> As of OpenShift Container Platform 4.14, `DeploymentConfig` objects are deprecated. `DeploymentConfig` objects are still supported, but are not recommended for new installations. Only security-related and critical issues will be fixed.
->
-> Instead, use `Deployment` objects or another alternative to provide declarative updates for pods.
+<div class="important">
+
+As of OpenShift Container Platform 4.14, `DeploymentConfig` objects are deprecated. `DeploymentConfig` objects are still supported, but are not recommended for new installations. Only security-related and critical issues will be fixed.
+
+Instead, use `Deployment` objects or another alternative to provide declarative updates for pods.
+
+</div>
 
 # Building blocks of a deployment
 
@@ -19,8 +22,11 @@ Deployments and deployment configs are enabled by the use of native Kubernetes A
 
 Users do not have to manipulate replica sets, replication controllers, or pods owned by `Deployment` or `DeploymentConfig` objects. The deployment systems ensure changes are propagated appropriately.
 
-> [!TIP]
-> If the existing deployment strategies are not suited for your use case and you must run manual steps during the lifecycle of your deployment, then you should consider creating a custom deployment strategy.
+<div class="tip">
+
+If the existing deployment strategies are not suited for your use case and you must run manual steps during the lifecycle of your deployment, then you should consider creating a custom deployment strategy.
+
+</div>
 
 The following sections provide further details on these objects.
 
@@ -28,8 +34,11 @@ The following sections provide further details on these objects.
 
 A `ReplicaSet` is a native Kubernetes API object that ensures a specified number of pod replicas are running at any given time.
 
-> [!NOTE]
-> Only use replica sets if you require custom update orchestration or do not require updates at all. Otherwise, use deployments. Replica sets can be used independently, but are used by deployments to orchestrate pod creation, deletion, and updates. Deployments manage their replica sets automatically, provide declarative updates to pods, and do not have to manually manage the replica sets that they create.
+<div class="note">
+
+Only use replica sets if you require custom update orchestration or do not require updates at all. Otherwise, use deployments. Replica sets can be used independently, but are used by deployments to orchestrate pod creation, deletion, and updates. Deployments manage their replica sets automatically, provide declarative updates to pods, and do not have to manually manage the replica sets that they create.
+
+</div>
 
 The following is an example `ReplicaSet` definition:
 
@@ -83,10 +92,13 @@ A selector is a set of labels assigned to the pods that are managed by the repli
 
 The replication controller does not perform auto-scaling based on load or traffic, as it does not track either. Rather, this requires its replica count to be adjusted by an external auto-scaler.
 
-> [!NOTE]
-> Use a `DeploymentConfig` to create a replication controller instead of creating replication controllers directly.
->
-> If you require custom orchestration or do not require updates, use replica sets instead of replication controllers.
+<div class="note">
+
+Use a `DeploymentConfig` to create a replication controller instead of creating replication controllers directly.
+
+If you require custom orchestration or do not require updates, use replica sets instead of replication controllers.
+
+</div>
 
 The following is an example definition of a replication controller:
 
@@ -129,11 +141,9 @@ Kubernetes provides a first-class, native API object type in OpenShift Container
 
 For example, the following deployment definition creates a replica set to bring up one `hello-openshift` pod:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Deployment definition
+**Deployment definition**
 
 </div>
 
@@ -159,14 +169,15 @@ spec:
         - containerPort: 80
 ```
 
-</div>
-
 # DeploymentConfig objects
 
-> [!IMPORTANT]
-> As of OpenShift Container Platform 4.14, `DeploymentConfig` objects are deprecated. `DeploymentConfig` objects are still supported, but are not recommended for new installations. Only security-related and critical issues will be fixed.
->
-> Instead, use `Deployment` objects or another alternative to provide declarative updates for pods.
+<div class="important">
+
+As of OpenShift Container Platform 4.14, `DeploymentConfig` objects are deprecated. `DeploymentConfig` objects are still supported, but are not recommended for new installations. Only security-related and critical issues will be fixed.
+
+Instead, use `Deployment` objects or another alternative to provide declarative updates for pods.
+
+</div>
 
 Building on replication controllers, OpenShift Container Platform adds expanded support for the software development and deployment lifecycle with the concept of `DeploymentConfig` objects. In the simplest case, a `DeploymentConfig` object creates a new replication controller and lets it start up pods.
 
@@ -202,11 +213,9 @@ The OpenShift Container Platform `DeploymentConfig` object defines the following
 
 Each time a deployment is triggered, whether manually or automatically, a deployer pod manages the deployment (including scaling down the old replication controller, scaling up the new one, and running hooks). The deployment pod remains for an indefinite amount of time after it completes the deployment to retain its logs of the deployment. When a deployment is superseded by another, the previous replication controller is retained to enable easy rollback if needed.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `DeploymentConfig` definition
+**Example `DeploymentConfig` definition**
 
 </div>
 
@@ -234,8 +243,6 @@ spec:
     type: Rolling
 ```
 
-</div>
-
 - A configuration change trigger results in a new replication controller whenever changes are detected in the pod template of the deployment configuration.
 
 - An image change trigger causes a new deployment to be created each time a new version of the backing image is available in the named image stream.
@@ -248,10 +255,13 @@ Both Kubernetes `Deployment` objects and OpenShift Container Platform-provided `
 
 The following sections go into more detail on the differences between the two object types to further help you decide which type to use.
 
-> [!IMPORTANT]
-> As of OpenShift Container Platform 4.14, `DeploymentConfig` objects are deprecated. `DeploymentConfig` objects are still supported, but are not recommended for new installations. Only security-related and critical issues will be fixed.
->
-> Instead, use `Deployment` objects or another alternative to provide declarative updates for pods.
+<div class="important">
+
+As of OpenShift Container Platform 4.14, `DeploymentConfig` objects are deprecated. `DeploymentConfig` objects are still supported, but are not recommended for new installations. Only security-related and critical issues will be fixed.
+
+Instead, use `Deployment` objects or another alternative to provide declarative updates for pods.
+
+</div>
 
 ## Design
 

@@ -8,36 +8,21 @@ To configure a three-node cluster, set the number of worker nodes to `0` in the 
 
 Setting the number of worker nodes to `0` ensures that the control plane machines are schedulable. This allows application workloads to be scheduled to run from the control plane nodes.
 
-> [!NOTE]
-> Because application workloads run from control plane nodes, additional subscriptions are required, as the control plane nodes are considered to be compute nodes.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Because application workloads run from control plane nodes, additional subscriptions are required, as the control plane nodes are considered to be compute nodes.
 
 </div>
 
 - You have an existing `install-config.yaml` file.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Set the number of compute replicas to `0` in your `install-config.yaml` file, as shown in the following `compute` stanza:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example `install-config.yaml` file for a three-node cluster
+  **Example `install-config.yaml` file for a three-node cluster**
 
   </div>
 
@@ -50,10 +35,6 @@ Procedure
     replicas: 0
   # ...
   ```
-
-  </div>
-
-</div>
 
 # Next steps
 

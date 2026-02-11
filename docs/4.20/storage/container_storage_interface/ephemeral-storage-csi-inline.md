@@ -14,8 +14,11 @@ This feature allows you to specify CSI volumes directly in the `Pod` specificati
 
 ## Support limitations
 
-> [!IMPORTANT]
-> The Shared Resource CSI Driver feature is now generally available in [Builds for Red Hat OpenShift 1.1](https://docs.redhat.com/en/documentation/builds_for_red_hat_openshift/1.1). This feature is now removed in OpenShift Container Platform 4.18 and later. To use this feature, ensure that you are using Builds for Red Hat OpenShift 1.1 or later.
+<div class="important">
+
+The Shared Resource CSI Driver feature is now generally available in [Builds for Red Hat OpenShift 1.1](https://docs.redhat.com/en/documentation/builds_for_red_hat_openshift/1.1). This feature is now removed in OpenShift Container Platform 4.18 and later. To use this feature, ensure that you are using Builds for Red Hat OpenShift 1.1 or later.
+
+</div>
 
 By default, OpenShift Container Platform supports CSI inline ephemeral volumes with these limitations:
 
@@ -52,10 +55,10 @@ The CSI Volume Admission plugin inspects pod volumes when pods are created; exis
 When a CSI driver has the `csi-ephemeral-volume-profile` label, pods using the CSI driver to mount CSI ephemeral volumes must run in a namespace that enforces a pod security standard of equal or greater permission. If the namespace enforces a more restrictive standard, the CSI Volume Admission plugin denies admission. The following table describes the enforcement behavior for different pod security profiles for given label values.
 
 | Pod security profile | Driver label: restricted | Driver label: baseline | Driver label: privileged |
-|----|----|----|----|
-| Restricted | Allowed | Denied | Denied |
-| Baseline | Allowed | Allowed | Denied |
-| Privileged | Allowed | Allowed | Allowed |
+|----------------------|--------------------------|------------------------|--------------------------|
+| Restricted           | Allowed                  | Denied                 | Denied                   |
+| Baseline             | Allowed                  | Allowed                | Denied                   |
+| Privileged           | Allowed                  | Allowed                | Allowed                  |
 
 Pod security profile enforcement
 
@@ -64,10 +67,10 @@ Pod security profile enforcement
 The CSI Volume Admission plugin can warn you if the CSI driver’s effective profile is more permissive than the pod security warning profile for the pod namespace. The following table shows when a warning occurs for different pod security profiles for given label values.
 
 | Pod security profile | Driver label: restricted | Driver label: baseline | Driver label: privileged |
-|----|----|----|----|
-| Restricted | No warning | Warning | Warning |
-| Baseline | No warning | No warning | Warning |
-| Privileged | No warning | No warning | No warning |
+|----------------------|--------------------------|------------------------|--------------------------|
+| Restricted           | No warning               | Warning                | Warning                  |
+| Baseline             | No warning               | No warning             | Warning                  |
+| Privileged           | No warning               | No warning             | No warning               |
 
 Pod security profile warning
 
@@ -76,10 +79,10 @@ Pod security profile warning
 The CSI Volume Admission plugin can apply audit annotations to the pod if the CSI driver’s effective profile is more permissive than the pod security audit profile for the pod namespace. The following table shows the audit annotation applied for different pod security profiles for given label values.
 
 | Pod security profile | Driver label: restricted | Driver label: baseline | Driver label: privileged |
-|----|----|----|----|
-| Restricted | No audit | Audit | Audit |
-| Baseline | No audit | No audit | Audit |
-| Privileged | No audit | No audit | No audit |
+|----------------------|--------------------------|------------------------|--------------------------|
+| Restricted           | No audit                 | Audit                  | Audit                    |
+| Baseline             | No audit                 | No audit               | Audit                    |
+| Privileged           | No audit                 | No audit               | No audit                 |
 
 Pod security profile audit
 
@@ -97,23 +100,13 @@ An admin can change the default value of the label if desired.
 
 You can embed a CSI inline ephemeral volume in the `Pod` specification in OpenShift Container Platform. At runtime, nested inline volumes follow the ephemeral lifecycle of their associated pods so that the CSI driver handles all phases of volume operations as pods are created and destroyed.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the `Pod` object definition and save it to a file.
 
 2.  Embed the CSI inline ephemeral volume in the file.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    my-csi-app.yaml
+    **my-csi-app.yaml**
 
     </div>
 
@@ -138,8 +131,6 @@ Procedure
               foo: bar
     ```
 
-    </div>
-
     - The name of the volume that is used by pods.
 
 3.  Create the object definition file that you saved in the previous step.
@@ -147,8 +138,6 @@ Procedure
     ``` terminal
     $ oc create -f my-csi-app.yaml
     ```
-
-</div>
 
 # Additional resources
 

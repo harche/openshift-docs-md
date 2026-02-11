@@ -4,8 +4,11 @@ You can initiate the live migration of a virtual machine (VM) to another node by
 
 You can cancel a live migration by using the [web console](../../virt/live_migration/virt-initiating-live-migration.xml#virt-canceling-vm-migration-web_virt-initiating-live-migration) or the [command line](../../virt/live_migration/virt-initiating-live-migration.xml#virt-canceling-vm-migration-cli_virt-initiating-live-migration). The VM remains on its original node.
 
-> [!TIP]
-> You can also initiate and cancel live migration by using the `virtctl migrate <vm_name>` and `virtctl migrate-cancel <vm_name>` commands.
+<div class="tip">
+
+You can also initiate and cancel live migration by using the `virtctl migrate <vm_name>` and `virtctl migrate-cancel <vm_name>` commands.
+
+</div>
 
 # Initiating live migration
 
@@ -13,14 +16,9 @@ You can cancel a live migration by using the [web console](../../virt/live_migra
 
 You can live migrate a running virtual machine (VM) to a different node in the cluster by using the OpenShift Container Platform web console.
 
-> [!NOTE]
-> The **Migrate** action is visible to all users but only cluster administrators can initiate a live migration.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The **Migrate** action is visible to all users but only cluster administrators can initiate a live migration.
 
 </div>
 
@@ -29,16 +27,6 @@ Prerequisites
 - The VM is migratable.
 
 - If the VM is configured with a host model CPU, the cluster has an available node that supports the CPU model.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
 
@@ -54,33 +42,13 @@ Procedure
 
 4.  Click **Migrate Virtual Machine**.
 
-</div>
-
 ## Initiating live migration by using the CLI
 
 You can initiate the live migration of a running virtual machine (VM) by using the command line to create a `VirtualMachineInstanceMigration` object for the VM.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have the `kubevirt.io:migrate` RBAC role or you are a cluster administrator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `VirtualMachineInstanceMigration` manifest for the VM that you want to migrate:
 
@@ -100,16 +68,6 @@ Procedure
     ```
 
     The `VirtualMachineInstanceMigration` object triggers a live migration of the VM. This object exists in the cluster for as long as the virtual machine instance is running, unless manually deleted.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Obtain the VM status by running the following command:
 
@@ -139,73 +97,33 @@ Verification
       Target Node Domain Detected:  true
   ```
 
-</div>
-
 # Canceling live migration
 
 ## Canceling live migration by using the web console
 
 You can cancel the live migration of a virtual machine (VM) by using the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have the `kubevirt.io:migrate` RBAC role or you are a cluster administrator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
 
 2.  Select **Cancel Migration** on the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) beside a VM.
 
-</div>
-
 ## Canceling live migration by using the CLI
 
 Cancel the live migration of a virtual machine by deleting the `VirtualMachineInstanceMigration` object associated with the migration.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have the `kubevirt.io:migrate` RBAC role or you are a cluster administrator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Delete the `VirtualMachineInstanceMigration` object that triggered the live migration, `migration-job` in this example:
 
   ``` terminal
   $ oc delete vmim migration-job
   ```
-
-</div>
 
 # Additional resources
 

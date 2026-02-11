@@ -1,24 +1,20 @@
 OpenShift Container Platform supports Fibre Channel, allowing you to provision your OpenShift Container Platform cluster with persistent storage using Fibre channel volumes. Some familiarity with Kubernetes and Fibre Channel is assumed.
 
-> [!IMPORTANT]
-> Persistent storage using Fibre Channel is not supported on ARM architecture based infrastructures.
+<div class="important">
+
+Persistent storage using Fibre Channel is not supported on ARM architecture based infrastructures.
+
+</div>
 
 The Kubernetes persistent volume framework allows administrators to provision a cluster with persistent storage and gives users a way to request those resources without having any knowledge of the underlying infrastructure. Persistent volumes are not bound to a single project or namespace; they can be shared across the OpenShift Container Platform cluster. Persistent volume claims are specific to a project or namespace and can be requested by users.
 
-> [!IMPORTANT]
-> High availability of storage in the infrastructure is left to the underlying storage provider.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Additional resources
+High availability of storage in the infrastructure is left to the underlying storage provider.
 
 </div>
 
 - [Using Fibre Channel devices](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_storage_devices/using-fibre-channel-devices_managing-storage-devices)
-
-</div>
 
 # Provisioning
 
@@ -32,23 +28,11 @@ To provision Fibre Channel volumes using the `PersistentVolume` API the followin
 
 A persistent volume and a LUN have a one-to-one mapping between them.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Fibre Channel LUNs must exist in the underlying infrastructure.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-`PersistentVolume` object definition
+**`PersistentVolume` object definition**
 
 </div>
 
@@ -69,14 +53,15 @@ spec:
     fsType: ext4
 ```
 
-</div>
-
 - World wide identifiers (WWIDs). Either FC `wwids` or a combination of FC `targetWWNs` and `lun` must be set, but not both simultaneously. The FC WWID identifier is recommended over the WWNs target because it is guaranteed to be unique for every storage device, and independent of the path that is used to access the device. The WWID identifier can be obtained by issuing a SCSI Inquiry to retrieve the Device Identification Vital Product Data (`page 0x83`) or Unit Serial Number (`page 0x80`). FC WWIDs are identified as `/dev/disk/by-id/` to reference the data on the disk, even if the path to the device changes and even when accessing the device from different systems.
 
 - Fibre Channel WWNs are identified as `/dev/disk/by-path/pci-<IDENTIFIER>-fc-0x<WWN>-lun-<LUN#>`, but you do not need to provide any part of the path leading up to the `WWN`, including the `0x`, and anything after, including the `-` (hyphen).
 
-> [!IMPORTANT]
-> Changing the value of the `fstype` parameter after the volume has been formatted and provisioned can result in data loss and pod failure.
+<div class="important">
+
+Changing the value of the `fstype` parameter after the volume has been formatted and provisioned can result in data loss and pod failure.
+
+</div>
 
 ## Enforcing disk quotas
 

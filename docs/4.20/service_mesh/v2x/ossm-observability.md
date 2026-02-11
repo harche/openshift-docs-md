@@ -14,25 +14,7 @@ Red Hat OpenShift Service Mesh provides the following consoles to view your ser
 
 When you install the Service Mesh control plane, it automatically generates routes for each of the installed components. Once you have the route address, you can access the Kiali, Jaeger, Prometheus, or Grafana console to view and manage your service mesh data.
 
-<div>
-
-<div class="title">
-
-Prerequisite
-
-</div>
-
 - The component must be enabled and installed. For example, if you did not install distributed tracing, you will not be able to access the Jaeger console.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure from OpenShift console
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console as a user with cluster-admin rights. If you use Red Hat OpenShift Dedicated, you must have an account with the `dedicated-admin` role.
 
@@ -46,15 +28,7 @@ Procedure from OpenShift console
 
 5.  Click **Log In With OpenShift**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure from the CLI
-
-</div>
+<!-- -->
 
 1.  Log in to the OpenShift Container Platform CLI as a user with the `cluster-admin` role. If you use Red Hat OpenShift Dedicated, you must have an account with the `dedicated-admin` role.
 
@@ -90,8 +64,6 @@ Procedure from the CLI
 
 5.  Click **Log In With OpenShift**.
 
-</div>
-
 # Accessing the Kiali console
 
 You can view your application’s topology, health, and metrics in the Kiali console. If your service is experiencing problems, the Kiali console lets you view the data flow through your service. You can view insights about the mesh components at different levels, including abstract applications, services, and workloads. Kiali also provides an interactive graph view of your namespace in real time.
@@ -101,14 +73,6 @@ To access the Kiali console you must have Red Hat OpenShift Service Mesh instal
 The installation process creates a route to access the Kiali console.
 
 If you know the URL for the Kiali console, you can access it directly. If you do not know the URL, use the following directions.
-
-<div>
-
-<div class="title">
-
-Procedure for administrators
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console with an administrator role.
 
@@ -126,15 +90,7 @@ Procedure for administrators
 
     If you are validating the console installation and namespaces have not yet been added to the mesh, there might not be any data to display other than `istio-system`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure for developers
-
-</div>
+<!-- -->
 
 1.  Log in to the OpenShift Container Platform web console with a developer role.
 
@@ -147,8 +103,6 @@ Procedure for developers
 5.  On the **Project** page, in the **Launcher** section, click the **Kiali** link.
 
 6.  Click **Log In With OpenShift**.
-
-</div>
 
 # Viewing service mesh data in the Kiali console
 
@@ -174,14 +128,6 @@ To view a summary of metrics, select any node or edge in the graph to display it
 
 The layout for the Kiali graph can render differently depending on your application architecture and the data to display. For example, the number of graph nodes and their interactions can determine how the Kiali graph is rendered. Because it is not possible to create a single layout that renders nicely for every situation, Kiali offers a choice of several different layouts.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - If you do not have your own application installed, install the Bookinfo sample application. Then generate traffic for the Bookinfo application by entering the following command several times.
 
   ``` terminal
@@ -189,16 +135,6 @@ Prerequisites
   ```
 
   This command simulates a user visiting the `productpage` microservice of the application.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Launch the Kiali console.
 
@@ -228,21 +164,11 @@ Procedure
 
       - Layout 2 cola
 
-</div>
-
 ## Viewing logs in the Kiali console
 
 You can view logs for your workloads in the Kiali console. The **Workload Detail** page includes a **Logs** tab which displays a unified logs view that displays both application and proxy logs. You can select how often you want the log display in Kiali to be refreshed.
 
 To change the logging level on the logs displayed in Kiali, you change the logging configuration for the workload or the proxy.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Service Mesh installed and configured.
 
@@ -251,16 +177,6 @@ Prerequisites
 - The address for the Kiali console.
 
 - Application or Bookinfo sample application added to the mesh.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Launch the Kiali console.
 
@@ -276,10 +192,11 @@ Procedure
 
 6.  On the **Workload Details** page, click the **Logs** tab to view the logs for the workload.
 
-</div>
+<div class="tip">
 
-> [!TIP]
-> If you do not see any log entries, you may need to adjust either the Time Range or the Refresh interval.
+If you do not see any log entries, you may need to adjust either the Time Range or the Refresh interval.
+
+</div>
 
 ## Viewing metrics in the Kiali console
 
@@ -299,14 +216,6 @@ These tabs display predefined metrics dashboards, tailored to the relevant appli
 
 Kiali lets you customize the charts by choosing the charted dimensions. Kiali can also present metrics reported by either source or destination proxy metrics. And for troubleshooting, Kiali can overlay trace spans on the metrics.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Service Mesh installed and configured.
 
 - Kiali installed and configured.
@@ -314,16 +223,6 @@ Prerequisites
 - The address for the Kiali console.
 
 - (Optional) Distributed tracing installed and configured.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Launch the Kiali console.
 
@@ -339,8 +238,6 @@ Procedure
 
 6.  On the **Application Detail**, **Workload Details**, or **Service Details** page, click either the **Inbound Metrics** or **Outbound Metrics** tab to view the metrics.
 
-</div>
-
 # Distributed tracing
 
 Distributed tracing is the process of tracking the performance of individual services in an application by tracing the path of the service calls in the application. Each time a user takes action in an application, a request is executed that might require many services to interact to produce a response. The path of this request is called a distributed transaction.
@@ -353,37 +250,17 @@ You can expose tracing data to the Red Hat OpenShift Distributed Tracing Platfo
 
 You can create a Red Hat build of OpenTelemetry instance in a mesh namespace and configure it to send tracing data to a tracing platform backend service.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You created a TempoStack instance using the Red Hat Tempo Operator in the `tracing-system` namespace. For more information, see "Installing Red Hat OpenShift Distributed Tracing Platform".
 
 - You installed the Red Hat build of OpenTelemetry Operator in either the recommended namespace or the `openshift-operators` namespace. For more information, see "Installing the Red Hat build of OpenTelemetry".
 
 - If using Red Hat OpenShift Service Mesh 2.5 or earlier, set the `spec.tracing.type` parameter of the `ServiceMeshControlPlane` resource to `None` so tracing data can be sent to the OpenTelemetry Collector.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create an OpenTelemetry Collector instance in a mesh namespace. This example uses the `bookinfo` namespace:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example OpenTelemetry Collector configuration
+    **Example OpenTelemetry Collector configuration**
 
     </div>
 
@@ -414,17 +291,11 @@ Procedure
               exporters: [otlp]
     ```
 
-    </div>
-
     - Include the namespace in the `ServiceMeshMemberRoll` member list.
 
     - In this example, a TempoStack instance is running in the `tracing-system` namespace. You do not have to include the TempoStack namespace, such as\`tracing-system\`, in the `ServiceMeshMemberRoll` member list.
 
       <div class="note">
-
-      <div class="title">
-
-      </div>
 
       - Create a single instance of the OpenTelemetry Collector in one of the `ServiceMeshMemberRoll` member namespaces.
 
@@ -434,11 +305,9 @@ Procedure
 
 2.  Check the `otel-collector` pod log and verify that the pod is running:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `otel-collector` pod log check
+    **Example `otel-collector` pod log check**
 
     </div>
 
@@ -446,15 +315,11 @@ Procedure
     $ oc logs -n bookinfo  -l app.kubernetes.io/name=otel-collector
     ```
 
-    </div>
-
 3.  Create or update an existing `ServiceMeshControlPlane` custom resource (CR) in the `istio-system` namespace:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example SMCP custom resource
+    **Example SMCP custom resource**
 
     </div>
 
@@ -485,34 +350,29 @@ Procedure
       version: v2.6
     ```
 
+    <div class="note">
+
+    When upgrading from SMCP 2.5 to 2.6, set the `spec.tracing.type` parameter to `None`:
+
+    <div class="formalpara-title">
+
+    **Example SMCP `spec.tracing.type` parameter**
+
     </div>
 
-    > [!NOTE]
-    > When upgrading from SMCP 2.5 to 2.6, set the `spec.tracing.type` parameter to `None`:
-    >
-    > <div class="formalpara">
-    >
-    > <div class="title">
-    >
-    > Example SMCP `spec.tracing.type` parameter
-    >
-    > </div>
-    >
-    > ``` yaml
-    > spec:
-    >   tracing:
-    >     type: None
-    > ```
-    >
-    > </div>
+    ``` yaml
+    spec:
+      tracing:
+        type: None
+    ```
+
+    </div>
 
 4.  Create a Telemetry resource in the `istio-system` namespace:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example Telemetry resource
+    **Example Telemetry resource**
 
     </div>
 
@@ -529,17 +389,13 @@ Procedure
         randomSamplingPercentage: 100
     ```
 
-    </div>
-
 5.  Verify the `istiod` log.
 
 6.  Configure the Kiali resource specification to enable a Kiali workload traces dashboard. You can use the dashboard to view tracing query results.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example Kiali resource
+    **Example Kiali resource**
 
     </div>
 
@@ -557,20 +413,19 @@ Procedure
           use_grpc: true
     ```
 
-    </div>
-
     - The default `query_timeout` integer value is 30 seconds. If you set the value to greater than 30 seconds, you must update `.spec.server.write_timeout` in the Kiali CR and add the annotation `haproxy.router.openshift.io/timeout=50s` to the Kiali route. Both `.spec.server.write_timeout` and `haproxy.router.openshift.io/timeout=` must be greater than `query_timeout`.
 
     - If you are not using the default HTTP or gRPC port, replace the `in_cluster_url:` port with your custom port.
 
-      > [!NOTE]
-      > Kiali 1.73 uses the Jaeger Query API, which causes a longer response time depending on Tempo resource limits. If you see a `Could not fetch spans` error message in the Kiali UI, then check your Tempo configuration or reduce the limit per query in Kiali.
+      <div class="note">
+
+      Kiali 1.73 uses the Jaeger Query API, which causes a longer response time depending on Tempo resource limits. If you see a `Could not fetch spans` error message in the Kiali UI, then check your Tempo configuration or reduce the limit per query in Kiali.
+
+      </div>
 
 7.  Send requests to your application.
 
 8.  Verify the `istiod` pod logs and the `otel-collector` pod logs.
-
-</div>
 
 ### Configuring the `OpenTelemetryCollector` in a mTLS encrypted Service Mesh member namespace
 
@@ -578,11 +433,9 @@ All traffic is TLS encrypted when you enable Service Mesh `dataPlane` mTLS encry
 
 To enable the mesh to communicate with the `OpenTelemetryCollector` service, disable the TLS `trafficPolicy` by applying a `DestinationRule` for the `OpenTelemetryCollector` service:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `DestinationRule` Tempo CR
+**Example `DestinationRule` Tempo CR**
 
 </div>
 
@@ -598,22 +451,21 @@ spec:
       mode: DISABLE
 ```
 
-</div>
-
 ### Configuring the Red Hat OpenShift Distributed Tracing Platform in a mTLS encrypted Service Mesh member namespace
 
-> [!NOTE]
-> You don’t need this additional `DestinationRule` configuration if you created a TempoStack instance in a namespace that is not a Service Mesh member namespace.
+<div class="note">
+
+You don’t need this additional `DestinationRule` configuration if you created a TempoStack instance in a namespace that is not a Service Mesh member namespace.
+
+</div>
 
 All traffic is TLS encrypted when you enable Service Mesh `dataPlane` mTLS encryption and you create a TempoStack instance in a Service Mesh member namespace such as `tracing-system-mtls`. This encryption is not expected from the Tempo distributed service and returns a TLS error.
 
 To fix the TLS error, disable the TLS `trafficPolicy` by applying a `DestinationRule` for Tempo and Kiali:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `DestinationRule` Tempo
+**Example `DestinationRule` Tempo**
 
 </div>
 
@@ -630,13 +482,9 @@ spec:
       mode: DISABLE
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example `DestinationRule` Kiali
+**Example `DestinationRule` Kiali**
 
 </div>
 
@@ -653,34 +501,17 @@ spec:
       mode: DISABLE
 ```
 
-</div>
-
 ## Connecting an existing distributed tracing Jaeger instance
 
 If you already have an existing Red Hat OpenShift Distributed Tracing Platform (Jaeger) instance in OpenShift Container Platform, you can configure your `ServiceMeshControlPlane` resource to use that instance for Distributed Tracing Platform.
 
-> [!IMPORTANT]
-> Starting with Red Hat OpenShift Service Mesh 2.5, Red Hat OpenShift Distributed Tracing Platform (Jaeger) and OpenShift Elasticsearch Operator are deprecated and will be removed in a future release. Red Hat will provide bug fixes and support for these features during the current release lifecycle, but these features will no longer receive enhancements and will be removed. As an alternative to Red Hat OpenShift Distributed Tracing Platform (Jaeger), you can use Red Hat OpenShift Distributed Tracing Platform instead.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Starting with Red Hat OpenShift Service Mesh 2.5, Red Hat OpenShift Distributed Tracing Platform (Jaeger) and OpenShift Elasticsearch Operator are deprecated and will be removed in a future release. Red Hat will provide bug fixes and support for these features during the current release lifecycle, but these features will no longer receive enhancements and will be removed. As an alternative to Red Hat OpenShift Distributed Tracing Platform (Jaeger), you can use Red Hat OpenShift Distributed Tracing Platform instead.
 
 </div>
 
 - Red Hat OpenShift Distributed Tracing Platform instance installed and configured.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the OpenShift Container Platform web console, click **Ecosystem** → **Installed Operators**.
 
@@ -694,11 +525,9 @@ Procedure
 
     2.  Add the name of your Distributed Tracing Platform (Jaeger) instance to `spec.addons.jaeger.name` in your `ServiceMeshControlPlane` resource. In the following example, `distr-tracing-production` is the name of the Distributed Tracing Platform (Jaeger) instance.
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example distributed tracing configuration
+        **Example distributed tracing configuration**
 
         </div>
 
@@ -709,13 +538,9 @@ Procedure
               name: distr-tracing-production
         ```
 
-        </div>
-
     3.  Click **Save**.
 
 5.  Click **Reload** to verify the `ServiceMeshControlPlane` resource was configured correctly.
-
-</div>
 
 ## Adjusting the sampling rate
 
@@ -731,16 +556,11 @@ In a basic installation, `spec.tracing.sampling` is set to `10000`, which sample
 
 - Setting the value to 500 samples 5% of traces.
 
-> [!NOTE]
-> The Envoy proxy sampling rate applies for applications that are available to a Service Mesh, and use the Envoy proxy. This sampling rate determines how much data the Envoy proxy collects and tracks.
->
-> The Jaeger remote sampling rate applies to applications that are external to the Service Mesh, and do not use the Envoy proxy, such as a database. This sampling rate determines how much data Red Hat OpenShift Distributed Tracing Platform collects and stores.
+<div class="note">
 
-<div>
+The Envoy proxy sampling rate applies for applications that are available to a Service Mesh, and use the Envoy proxy. This sampling rate determines how much data the Envoy proxy collects and tracks.
 
-<div class="title">
-
-Procedure
+The Jaeger remote sampling rate applies to applications that are external to the Service Mesh, and do not use the Envoy proxy, such as a database. This sampling rate determines how much data Red Hat OpenShift Distributed Tracing Platform collects and stores.
 
 </div>
 
@@ -756,11 +576,9 @@ Procedure
 
     2.  Set the value for `spec.tracing.sampling` in your `ServiceMeshControlPlane` resource. In the following example, set it to `100`.
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Jaeger sampling example
+        **Jaeger sampling example**
 
         </div>
 
@@ -770,13 +588,9 @@ Procedure
             sampling: 100
         ```
 
-        </div>
-
     3.  Click **Save**.
 
 5.  Click **Reload** to verify the `ServiceMeshControlPlane` resource was configured correctly.
-
-</div>
 
 # Accessing the Jaeger console
 
@@ -786,14 +600,9 @@ The installation process creates a route to access the Jaeger console.
 
 If you know the URL for the Jaeger console, you can access it directly. If you do not know the URL, use the following directions.
 
-> [!IMPORTANT]
-> Starting with Red Hat OpenShift Service Mesh 2.5, Red Hat OpenShift Distributed Tracing Platform (Jaeger) and OpenShift Elasticsearch Operator have been deprecated and will be removed in a future release. Red Hat will provide bug fixes and support for this feature during the current release lifecycle, but this feature will no longer receive enhancements and will be removed. As an alternative to Red Hat OpenShift Distributed Tracing Platform (Jaeger), you can use Red Hat OpenShift Distributed Tracing Platform instead.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Procedure from OpenShift console
+Starting with Red Hat OpenShift Service Mesh 2.5, Red Hat OpenShift Distributed Tracing Platform (Jaeger) and OpenShift Elasticsearch Operator have been deprecated and will be removed in a future release. Red Hat will provide bug fixes and support for this feature during the current release lifecycle, but this feature will no longer receive enhancements and will be removed. As an alternative to Red Hat OpenShift Distributed Tracing Platform (Jaeger), you can use Red Hat OpenShift Distributed Tracing Platform instead.
 
 </div>
 
@@ -809,15 +618,7 @@ Procedure from OpenShift console
 
 5.  Click **Log In With OpenShift**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure from Kiali console
-
-</div>
+<!-- -->
 
 1.  Launch the Kiali console.
 
@@ -825,15 +626,7 @@ Procedure from Kiali console
 
 3.  Click **Log In With OpenShift**.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure from the CLI
-
-</div>
+<!-- -->
 
 1.  Log in to the OpenShift Container Platform CLI as a user with the `cluster-admin` role. If you use Red Hat OpenShift Dedicated, you must have an account with the `dedicated-admin` role.
 
@@ -855,19 +648,9 @@ Procedure from the CLI
 
     If you are validating the console installation, there is no trace data to display.
 
-</div>
-
 # Accessing the Grafana console
 
 Grafana is an analytics tool you can use to view, query, and analyze your service mesh metrics. In this example, `istio-system` is the Service Mesh control plane namespace. To access Grafana, do the following:
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -879,19 +662,9 @@ Procedure
 
 5.  Log in to the Grafana console with your OpenShift Container Platform credentials.
 
-</div>
-
 # Accessing the Prometheus console
 
 Prometheus is a monitoring and alerting tool that you can use to collect multi-dimensional data about your microservices. In this example, `istio-system` is the Service Mesh control plane namespace.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -903,37 +676,17 @@ Procedure
 
 5.  Log in to the Prometheus console with your OpenShift Container Platform credentials.
 
-</div>
-
 # Integrating with user-workload monitoring
 
 By default, Red Hat OpenShift Service Mesh (OSSM) installs the Service Mesh control plane (SMCP) with a dedicated instance of Prometheus for collecting metrics from a mesh. However, production systems need more advanced monitoring systems, like OpenShift Container Platform monitoring for user-defined projects.
 
 The following steps show how to integrate Service Mesh with user-workload monitoring.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - User-workload monitoring is enabled.
 
 - Red Hat OpenShift Service Mesh Operator 2.4 is installed.
 
 - Kiali Operator 1.65 is installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Grant the `cluster-monitoring-view` role to the Kiali Service Account:
 
@@ -1096,12 +849,15 @@ Procedure
 
     - The string `"basic-istio-system"` is a combination of the SMCP name and its namespace, but any label can be used as long as it is unique for every mesh using user workload monitoring in the cluster. The `spec.prometheus.query_scope` of the Kiali resource configured in Step 2 needs to match this value.
 
-      > [!NOTE]
-      > If there is only one mesh using user-workload monitoring, then both the `mesh_id` relabeling and the `spec.prometheus.query_scope` field in the Kiali resource are optional (but the `query_scope` field given here should be removed if the `mesh_id` label is removed).
-      >
-      > If multiple mesh instances on the cluster might use user-workload monitoring, then both the `mesh_id` relabelings and the `spec.prometheus.query_scope` field in the Kiali resource are required. This ensures that Kiali only sees metrics from its associated mesh.
-      >
-      > If you are not deploying Kiali, you can still apply `mesh_id` relabeling so that metrics from different meshes can be distinguished from one another.
+      <div class="note">
+
+      If there is only one mesh using user-workload monitoring, then both the `mesh_id` relabeling and the `spec.prometheus.query_scope` field in the Kiali resource are optional (but the `query_scope` field given here should be removed if the `mesh_id` label is removed).
+
+      If multiple mesh instances on the cluster might use user-workload monitoring, then both the `mesh_id` relabelings and the `spec.prometheus.query_scope` field in the Kiali resource are required. This ensures that Kiali only sees metrics from its associated mesh.
+
+      If you are not deploying Kiali, you can still apply `mesh_id` relabeling so that metrics from different meshes can be distinguished from one another.
+
+      </div>
 
 7.  Apply a `PodMonitor` object to collect metrics from Istio proxies:
 
@@ -1154,16 +910,17 @@ Procedure
 
     - The string `"basic-istio-system"` is a combination of the SMCP name and its namespace, but any label can be used as long as it is unique for every mesh using user workload monitoring in the cluster. The `spec.prometheus.query_scope` of the Kiali resource configured in Step 2 needs to match this value.
 
-      > [!NOTE]
-      > If there is only one mesh using user-workload monitoring, then both the `mesh_id` relabeling and the `spec.prometheus.query_scope` field in the Kiali resource are optional (but the `query_scope` field given here should be removed if the `mesh_id` label is removed).
-      >
-      > If multiple mesh instances on the cluster might use user-workload monitoring, then both the `mesh_id` relabelings and the `spec.prometheus.query_scope` field in the Kiali resource are required. This ensures that Kiali only sees metrics from its associated mesh.
-      >
-      > If you are not deploying Kiali, you can still apply `mesh_id` relabeling so that metrics from different meshes can be distinguished from one another.
+      <div class="note">
+
+      If there is only one mesh using user-workload monitoring, then both the `mesh_id` relabeling and the `spec.prometheus.query_scope` field in the Kiali resource are optional (but the `query_scope` field given here should be removed if the `mesh_id` label is removed).
+
+      If multiple mesh instances on the cluster might use user-workload monitoring, then both the `mesh_id` relabelings and the `spec.prometheus.query_scope` field in the Kiali resource are required. This ensures that Kiali only sees metrics from its associated mesh.
+
+      If you are not deploying Kiali, you can still apply `mesh_id` relabeling so that metrics from different meshes can be distinguished from one another.
+
+      </div>
 
 8.  Open the OpenShift Container Platform web console, and check that metrics are visible.
-
-</div>
 
 # Additional resources
 

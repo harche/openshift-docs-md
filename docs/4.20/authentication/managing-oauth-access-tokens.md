@@ -4,25 +4,15 @@ Users can review their own OAuth access tokens and delete any that are no longer
 
 You can list your user-owned OAuth access tokens. Token names are not sensitive and cannot be used to log in.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - List all user-owned OAuth access tokens:
 
   ``` terminal
   $ oc get useroauthaccesstokens
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -33,19 +23,15 @@ Procedure
   <token3>   console                        2021-01-11T19:26:29Z   2021-01-12 19:26:29 +0000 UTC   https://console-openshift-console.apps.example.com/auth/callback   user:full
   ```
 
-  </div>
-
 - List user-owned OAuth access tokens for a particular OAuth client:
 
   ``` terminal
   $ oc get useroauthaccesstokens --field-selector=clientName="console"
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -54,21 +40,9 @@ Procedure
   <token3>   console                        2021-01-11T19:26:29Z   2021-01-12 19:26:29 +0000 UTC   https://console-openshift-console.apps.example.com/auth/callback   user:full
   ```
 
-  </div>
-
-</div>
-
 # Viewing the details of a user-owned OAuth access token
 
 You can view the details of a user-owned OAuth access token.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Describe the details of a user-owned OAuth access token:
 
@@ -76,11 +50,9 @@ Procedure
   $ oc describe useroauthaccesstokens <token_name>
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -122,8 +94,6 @@ Procedure
   Events:     <none>
   ```
 
-  </div>
-
   - The token name, which is the sha256 hash of the token. Token names are not sensitive and cannot be used to log in.
 
   - The client name, which describes where the token originated from.
@@ -136,21 +106,11 @@ Procedure
 
   - The user name associated with this token.
 
-</div>
-
 # Deleting user-owned OAuth access tokens
 
 The `oc logout` command only invalidates the OAuth token for the active session. You can use the following procedure to delete any user-owned OAuth tokens that are no longer needed.
 
 Deleting an OAuth access token logs out the user from all sessions that use the token.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Delete the user-owned OAuth access token:
 
@@ -158,21 +118,15 @@ Procedure
   $ oc delete useroauthaccesstokens <token_name>
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
   ``` terminal
   useroauthaccesstoken.oauth.openshift.io "<token_name>" deleted
   ```
-
-  </div>
-
-</div>
 
 # Adding unauthenticated groups to cluster roles
 
@@ -188,30 +142,15 @@ You can add unauthenticated users to the following cluster roles:
 
 - `self-access-reviewer`
 
-> [!IMPORTANT]
-> Always verify compliance with your organization’s security standards when modifying unauthenticated access.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Always verify compliance with your organization’s security standards when modifying unauthenticated access.
 
 </div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file named `add-<cluster_role>-unauth.yaml` and add the following content:
 
@@ -237,5 +176,3 @@ Procedure
     ``` terminal
     $ oc apply -f add-<cluster_role>.yaml
     ```
-
-</div>

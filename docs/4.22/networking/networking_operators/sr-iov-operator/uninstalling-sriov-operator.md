@@ -4,27 +4,9 @@ To uninstall the SR-IOV Network Operator, you must delete any running SR-IOV wor
 
 You can remove the SR-IOV Network Operator from your cluster by uninstalling the Operator. This ensures that the Operator and its associated resources are deleted when you no longer need to manage SR-IOV network devices.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
 
 - You have the SR-IOV Network Operator installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Delete all SR-IOV custom resources (CRs):
 
@@ -77,8 +59,6 @@ Procedure
     ``` terminal
     $ oc delete namespace openshift-sriov-network-operator
     ```
-
-</div>
 
 # Additional resources
 

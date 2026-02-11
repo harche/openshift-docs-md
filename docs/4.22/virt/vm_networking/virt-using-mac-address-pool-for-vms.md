@@ -2,8 +2,11 @@ KubeMacPool allocates MAC addresses for virtual machine (VM) network interfaces 
 
 A virtual machine instance created from that VM retains the assigned MAC address across reboots.
 
-> [!NOTE]
-> KubeMacPool does not handle virtual machine instances created independently from a virtual machine.
+<div class="note">
+
+KubeMacPool does not handle virtual machine instances created independently from a virtual machine.
+
+</div>
 
 # Managing KubeMacPool by using the CLI
 
@@ -11,25 +14,9 @@ You can disable and re-enable KubeMacPool by using the command line.
 
 KubeMacPool is enabled by default.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To disable KubeMacPool in two namespaces, run the following command:
 
@@ -43,35 +30,15 @@ Procedure
   $ oc label namespace <namespace1> <namespace2> mutatevirtualmachines.kubemacpool.io-
   ```
 
-</div>
-
 # Customizing the MAC pool range
 
 KubeMacPool works by allocating MAC addresses to VMs from a range. The `rangeStart` and `rangeEnd` parameters in the `HyperConverged` custom resource (CR) define the MAC pool range.
 
 As a cluster administrator, you can configure this range to ensure that MAC addresses for VMs hosted on OpenShift Virtualization do not conflict with other virtualization solutions on the same network.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have cluster administrator access on an OpenShift Container Platform cluster.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `HyperConverged` CR by running the following command:
 
@@ -93,15 +60,7 @@ Procedure
     # ...
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Run the following command and observe the output:
 
@@ -133,5 +92,3 @@ Verification
     ```
 
     If you have successfully applied the configuration changes, the `macAddress` field in the VM interface is within the range you specified in your `kubeMacPoolConfiguration`, between the value of `rangeStart` and `rangeEnd`.
-
-</div>

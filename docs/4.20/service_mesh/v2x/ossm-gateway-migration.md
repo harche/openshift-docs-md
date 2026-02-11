@@ -10,40 +10,23 @@ Deploying ingress and egress gateways with a `Deployment` resource using gateway
 
 This procedure explains how to migrate with zero downtime from gateways defined in the `ServiceMeshControlPlane` resource to gateways that are managed using gateway injection. This migration is achieved by using the existing gateway `Service` object to target a new gateway deployment that is created using gateway injection.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to the OpenShift Container Platform web console as `cluster-admin`.
 
 - The Red Hat OpenShift Service Mesh Operator must be installed.
 
 - The `ServiceMeshControlPlane` resource must be deployed and an ingress gateway exists in the configuration.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a new ingress gateway that is configured to use gateway injection.
 
-    > [!NOTE]
-    > This procedure migrates away from the default ingress gateway deployment defined in the `ServiceMeshControlPlane` resource to gateway injection. The procedure may be modified to migrate from additional ingress gateways configured in the SMCP.
+    <div class="note">
 
-    <div class="formalpara">
+    This procedure migrates away from the default ingress gateway deployment defined in the `ServiceMeshControlPlane` resource to gateway injection. The procedure may be modified to migrate from additional ingress gateways configured in the SMCP.
 
-    <div class="title">
+    </div>
 
-    Example ingress gateway resource with gateway injection
+    <div class="formalpara-title">
+
+    **Example ingress gateway resource with gateway injection**
 
     </div>
 
@@ -116,8 +99,6 @@ Procedure
         - Ingress
     ```
 
-    </div>
-
     - The gateway injection deployment and all supporting resources should be deployed in the same namespace as the SMCP-defined gateway.
 
     - Ensure that the labels specified in the pod template include all of the label selectors specified in the `Service` object associated with the existing SMCP-defined gateway.
@@ -170,17 +151,11 @@ Procedure
 
     <div class="note">
 
-    <div class="title">
-
-    </div>
-
     - When the old ingress gateway `Service` object is disabled it is not deleted. You may save this `Service` object to a file and manage it alongside the new gateway injection resources.
 
     - The `/spec/gateways/ingress/enabled` path is available if you explicitly set it for the `ServiceMeshControlPlane` resource. If you are using the default value, you must patch the `/spec/gateways/enabled` path for both ingress and egress gateways.
 
     </div>
-
-</div>
 
 # Additional resources
 

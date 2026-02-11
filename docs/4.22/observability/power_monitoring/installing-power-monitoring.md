@@ -1,7 +1,10 @@
-> [!IMPORTANT]
-> Power monitoring is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Power monitoring is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 You can install power monitoring for Red Hat OpenShift by deploying the Power Monitoring Operator in the OpenShift Container Platform web console.
 
@@ -9,30 +12,15 @@ You can install power monitoring for Red Hat OpenShift by deploying the Power Mo
 
 As a cluster administrator, you can install the Power Monitoring Operator from the software catalog by using the OpenShift Container Platform web console.
 
-> [!WARNING]
-> You must remove any previously installed versions of the Power Monitoring Operator before installation.
+<div class="warning">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You must remove any previously installed versions of the Power Monitoring Operator before installation.
 
 </div>
 
 - You have access to the OpenShift Container Platform web console.
 
 - You are logged in as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the web console, go to **Ecosystem** → **Software Catalog**.
 
@@ -42,32 +30,17 @@ Procedure
 
     Power monitoring for Red Hat OpenShift is now available in all namespaces of the OpenShift Container Platform cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the Power Monitoring Operator is listed in **Ecosystem** → **Installed Operators**. The **Status** should resolve to **Succeeded**.
-
-</div>
 
 # Deploying PowerMonitor custom resource
 
 You can deploy Kepler by creating an instance of the `PowerMonitor` custom resource (CR) using the Power Monitoring Operator.
 
-> [!IMPORTANT]
-> The `Kepler` custom resource definition (CRD) has been deprecated and will be removed in a future release. Use the `PowerMonitor` custom resource instead.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The `Kepler` custom resource definition (CRD) has been deprecated and will be removed in a future release. Use the `PowerMonitor` custom resource instead.
 
 </div>
 
@@ -77,16 +50,6 @@ Prerequisites
 
 - You have installed the Power Monitoring Operator.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  In the web console, go to **Ecosystem** → **Installed Operators**.
 
 2.  Click **Power monitoring for Red Hat OpenShift** from the **Installed Operators** list and go to the **PowerMonitor** tab.
@@ -95,9 +58,10 @@ Procedure
 
 4.  On the **Create PowerMonitor** page, ensure the **Name** is set to `power-monitor`.
 
-    > [!IMPORTANT]
-    > The name of your `PowerMonitor` instance must be set to `power-monitor`. All other instances are ignored by the Power Monitoring Operator.
+    <div class="important">
+
+    The name of your `PowerMonitor` instance must be set to `power-monitor`. All other instances are ignored by the Power Monitoring Operator.
+
+    </div>
 
 5.  Click **Create** to deploy the PowerMonitor and power monitoring dashboards.
-
-</div>

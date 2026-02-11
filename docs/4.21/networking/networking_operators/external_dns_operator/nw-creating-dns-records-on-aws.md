@@ -4,14 +4,6 @@ To create DNS records on AWS and AWS GovCloud, use the External DNS Operator. Th
 
 You can create DNS records on a public hosted zone for AWS by using the Red Hat External DNS Operator. You can use the same instructions to create DNS records on a hosted zone for AWS GovCloud.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Check the user profile by running the following command. The profile, such as `system:admin`, must have access to the `kube-system` namespace. If you do not have the credentials, you can fetch the credentials from the `kube-system` namespace to use the cloud provider client by running the following command:
 
     ``` terminal
@@ -34,11 +26,9 @@ Procedure
     $ oc get routes --all-namespaces | grep console
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -47,27 +37,21 @@ Procedure
     openshift-console          downloads           downloads-openshift-console.apps.testextdnsoperator.apacshift.support                     downloads           http    edge/Redirect          None
     ```
 
-    </div>
-
 4.  Get the list of DNS zones and find the DNS zone that corresponds to the domain of the route that you previously queried:
 
     ``` terminal
     $ aws route53 list-hosted-zones | grep testextdnsoperator.apacshift.support
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     HOSTEDZONES  terraform   /hostedzone/Z02355203TNN1XXXX1J6O   testextdnsoperator.apacshift.support.   5
     ```
-
-    </div>
 
 5.  Create the `ExternalDNS` CR for the `route` source:
 
@@ -123,19 +107,9 @@ Procedure
     $ aws route53 list-resource-record-sets --hosted-zone-id Z02355203TNN1XXXX1J6O --query "ResourceRecordSets[?Type == 'CNAME']" | grep console
     ```
 
-</div>
-
 # Creating DNS records in a different AWS account by using a shared VPC
 
 To create DNS records in a different AWS account, configure the ExternalDNS Operator to use a shared Virtual Private Cloud (VPC). Your organization can then use a single Route 53 instance for name resolution across multiple accounts and projects.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have created two Amazon AWS accounts: one with a VPC and a Route 53 private hosted zone configured (Account A), and another for installing a cluster (Account B).
 
@@ -145,27 +119,15 @@ Prerequisites
 
 - You have installed the ExternalDNS Operator in the cluster in Account B.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Get the Role ARN of the IAM Role that you created to allow Account B to access Account A’s Route 53 hosted zone by running the following command:
 
     ``` terminal
     $ aws --profile account-a iam get-role --role-name user-rol1 | head -1
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -173,27 +135,21 @@ Procedure
     ROLE arn:aws:iam::1234567890123:role/user-rol1   2023-09-14T17:21:54+00:00   3600    /   AROA3SGB2ZRKRT5NISNJN   user-rol1
     ```
 
-    </div>
-
 2.  Locate the private hosted zone to use with Account A’s credentials by running the following command:
 
     ``` terminal
     $ aws --profile account-a route53 list-hosted-zones | grep testextdnsoperator.apacshift.support
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     HOSTEDZONES  terraform   /hostedzone/Z02355203TNN1XXXX1J6O   testextdnsoperator.apacshift.support. 5
     ```
-
-    </div>
 
 3.  Create the `ExternalDNS` object by running the following command:
 
@@ -230,5 +186,3 @@ Procedure
     ``` terminal
     $ aws --profile account-a route53 list-resource-record-sets --hosted-zone-id Z02355203TNN1XXXX1J6O --query "ResourceRecordSets[?Type == 'CNAME']" | grep console-openshift-console
     ```
-
-</div>

@@ -18,8 +18,11 @@ Currently, OpenShift Container Platform webhooks only support the analogous vers
 
 When the push events are processed, the OpenShift Container Platform control plane host confirms if the branch reference inside the event matches the branch reference in the corresponding `BuildConfig`. If so, it then checks out the exact commit reference noted in the webhook event on the OpenShift Container Platform build. If they do not match, no build is triggered.
 
-> [!NOTE]
-> `oc new-app` and `oc new-build` create GitHub and Generic webhook triggers automatically, but any other needed webhook triggers must be added manually. You can manually add triggers by setting triggers.
+<div class="note">
+
+`oc new-app` and `oc new-build` create GitHub and Generic webhook triggers automatically, but any other needed webhook triggers must be added manually. You can manually add triggers by setting triggers.
+
+</div>
 
 For all webhooks, you must define a secret with a key named `WebHookSecretKey` and the value being the value to be supplied when invoking the webhook. The webhook definition must then reference the secret. The secret ensures the uniqueness of the URL, preventing others from triggering the build. The value of the key is compared to the secret provided during the webhook invocation.
 
@@ -52,30 +55,15 @@ Adding unauthenticated users to the `system:webhook` role binding is required to
 
 If it is necessary to allow unauthenticated users access to a cluster, you can do so by adding unauthenticated users to the `system:webhook` role binding in each required namespace. This method is more secure than adding unauthenticated users to the `system:webhook` cluster role binding. However, if you have a large number of namespaces, it is possible to add unauthenticated users to the `system:webhook` cluster role binding which would apply the change to all namespaces.
 
-> [!IMPORTANT]
-> Always verify compliance with your organization’s security standards when modifying unauthenticated access.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Always verify compliance with your organization’s security standards when modifying unauthenticated access.
 
 </div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file named `add-webhooks-unauth.yaml` and add the following content:
 
@@ -105,19 +93,7 @@ Procedure
     $ oc apply -f add-webhooks-unauth.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Cluster role bindings for unauthenticated groups](../../authentication/using-rbac.xml#unauthenticated-users-cluster-role-bindings-concept_using-rbac)
-
-</div>
 
 ### Using GitHub webhooks
 
@@ -132,16 +108,17 @@ github:
     name: "mysecret"
 ```
 
-> [!NOTE]
-> The secret used in the webhook trigger configuration is not the same as the `secret` field you encounter when configuring webhook in GitHub UI. The secret in the webhook trigger configuration makes the webhook URL unique and hard to predict. The secret configured in the GitHub UI is an optional string field that is used to create an HMAC hex digest of the body, which is sent as an `X-Hub-Signature` header.
+<div class="note">
+
+The secret used in the webhook trigger configuration is not the same as the `secret` field you encounter when configuring webhook in GitHub UI. The secret in the webhook trigger configuration makes the webhook URL unique and hard to predict. The secret configured in the GitHub UI is an optional string field that is used to create an HMAC hex digest of the body, which is sent as an `X-Hub-Signature` header.
+
+</div>
 
 The payload URL is returned as the GitHub Webhook URL by the `oc describe` command (see Displaying Webhook URLs), and is structured as follows:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -149,29 +126,9 @@ Example output
 https://<openshift_api_host:port>/apis/build.openshift.io/v1/namespaces/<namespace>/buildconfigs/<name>/webhooks/<secret>/github
 ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Create a `BuildConfig` from a GitHub repository.
 
 - `system:unauthenticated` has access to the `system:webhook` role in the required namespaces. Or, `system:unauthenticated` has access to the `system:webhook` cluster role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Configure a GitHub Webhook.
 
@@ -183,19 +140,15 @@ Procedure
 
         This command generates a webhook GitHub URL.
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
         ``` terminal
         https://api.starter-us-east-1.openshift.com:443/apis/build.openshift.io/v1/namespaces/<namespace>/buildconfigs/<name>/webhooks/<secret>/github
         ```
-
-        </div>
 
     2.  Cut and paste this URL into GitHub, from the GitHub web console.
 
@@ -211,8 +164,11 @@ Procedure
 
         Now, when you push a change to your GitHub repository, a new build automatically starts, and upon a successful build a new deployment starts.
 
-        > [!NOTE]
-        > [Gogs](https://gogs.io) supports the same webhook payload format as GitHub. Therefore, if you are using a Gogs server, you can define a GitHub webhook trigger on your `BuildConfig` and trigger it by your Gogs server as well.
+        <div class="note">
+
+        [Gogs](https://gogs.io) supports the same webhook payload format as GitHub. Therefore, if you are using a Gogs server, you can define a GitHub webhook trigger on your `BuildConfig` and trigger it by your Gogs server as well.
+
+        </div>
 
 2.  Given a file containing a valid JSON payload, such as `payload.json`, you can manually trigger the webhook with the following `curl` command:
 
@@ -222,22 +178,13 @@ Procedure
 
     The `-k` argument is only necessary if your API server does not have a properly signed certificate.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The build will only be triggered if the `ref` value from GitHub webhook event matches the `ref` value specified in the `source.git` field of the `BuildConfig` resource.
-
-<div>
-
-<div class="title">
-
-Additional resources
+The build will only be triggered if the `ref` value from GitHub webhook event matches the `ref` value specified in the `source.git` field of the `BuildConfig` resource.
 
 </div>
 
 - [Gogs](https://gogs.io)
-
-</div>
 
 ### Using GitLab webhooks
 
@@ -252,11 +199,9 @@ gitlab:
 
 The payload URL is returned as the GitLab Webhook URL by the `oc describe` command, and is structured as follows:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -264,27 +209,7 @@ Example output
 https://<openshift_api_host:port>/apis/build.openshift.io/v1/namespaces/<namespace>/buildconfigs/<name>/webhooks/<secret>/gitlab
 ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - `system:unauthenticated` has access to the `system:webhook` role in the required namespaces. Or, `system:unauthenticated` has access to the `system:webhook` cluster role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Configure a GitLab Webhook.
 
@@ -306,8 +231,6 @@ Procedure
 
     The `-k` argument is only necessary if your API server does not have a properly signed certificate.
 
-</div>
-
 ### Using Bitbucket webhooks
 
 [Bitbucket webhooks](https://confluence.atlassian.com/bitbucket/manage-webhooks-735643732.html) handle the call made by Bitbucket when a repository is updated. Similar to GitHub and GitLab triggers, you must specify a secret. The following example is a trigger definition YAML within the `BuildConfig`:
@@ -321,11 +244,9 @@ bitbucket:
 
 The payload URL is returned as the Bitbucket Webhook URL by the `oc describe` command, and is structured as follows:
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -333,27 +254,7 @@ Example output
 https://<openshift_api_host:port>/apis/build.openshift.io/v1/namespaces/<namespace>/buildconfigs/<name>/webhooks/<secret>/bitbucket
 ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - `system:unauthenticated` has access to the `system:webhook` role in the required namespaces. Or, `system:unauthenticated` has access to the `system:webhook` cluster role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Configure a Bitbucket Webhook.
 
@@ -375,8 +276,6 @@ Procedure
 
     The `-k` argument is only necessary if your API server does not have a properly signed certificate.
 
-</div>
-
 ### Using generic webhooks
 
 Generic webhooks are called from any system capable of making a web request. As with the other webhooks, you must specify a secret, which is part of the URL that the caller must use to trigger the build. The secret ensures the uniqueness of the URL, preventing others from triggering the build. The following is an example trigger definition YAML within the `BuildConfig`:
@@ -391,27 +290,15 @@ generic:
 
 - Set to `true` to allow a generic webhook to pass in environment variables.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  To set up the caller, supply the calling system with the URL of the generic webhook endpoint for your build.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example generic webhook endpoint URL
+    **Example generic webhook endpoint URL**
 
     </div>
 
         https://<openshift_api_host:port>/apis/build.openshift.io/v1/namespaces/<namespace>/buildconfigs/<name>/webhooks/<secret>/generic
-
-    </div>
 
     The caller must call the webhook as a `POST` operation.
 
@@ -452,26 +339,17 @@ Procedure
 
     The arguments are the same as the previous example with the addition of a header and a payload. The `-H` argument sets the `Content-Type` header to `application/yaml` or `application/json` depending on your payload format. The `--data-binary` argument is used to send a binary payload with newlines intact with the `POST` request.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> OpenShift Container Platform permits builds to be triggered by the generic webhook even if an invalid request payload is presented, for example, invalid content type, unparsable or invalid content, and so on. This behavior is maintained for backwards compatibility. If an invalid request payload is presented, OpenShift Container Platform returns a warning in JSON format as part of its `HTTP 200 OK` response.
+OpenShift Container Platform permits builds to be triggered by the generic webhook even if an invalid request payload is presented, for example, invalid content type, unparsable or invalid content, and so on. This behavior is maintained for backwards compatibility. If an invalid request payload is presented, OpenShift Container Platform returns a warning in JSON format as part of its `HTTP 200 OK` response.
+
+</div>
 
 ### Displaying webhook URLs
 
 You can use the `oc describe` command to display webhook URLs associated with a build configuration. If the command does not display any webhook URLs, then no webhook trigger is currently defined for that build configuration.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - To display any webhook URLs associated with a `BuildConfig`, run the following command:
-
-</div>
 
 ``` terminal
 $ oc describe bc <name>
@@ -483,14 +361,9 @@ As a developer, you can configure your build to run automatically every time a b
 
 You can use image change triggers to automatically invoke your build when a new version of an upstream image is available. For example, if a build is based on a RHEL image, you can trigger that build to run any time the RHEL image changes. As a result, the application image is always running on the latest RHEL base image.
 
-> [!NOTE]
-> Image streams that point to container images in [v1 container registries](http://docs.docker.com/v1.7/reference/api/hub_registry_spec/#docker-registry-1-0) only trigger a build once when the image stream tag becomes available and not on subsequent image updates. This is due to the lack of uniquely identifiable images in v1 container registries.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+Image streams that point to container images in [v1 container registries](http://docs.docker.com/v1.7/reference/api/hub_registry_spec/#docker-registry-1-0) only trigger a build once when the image stream tag becomes available and not on subsequent image updates. This is due to the lack of uniquely identifiable images in v1 container registries.
 
 </div>
 
@@ -533,8 +406,6 @@ Procedure
 
     - An image change trigger that monitors an arbitrary image stream. The `imageChange` part, in this case, must include a `from` field that references the `ImageStreamTag` to monitor.
 
-</div>
-
 When using an image change trigger for the strategy image stream, the generated build is supplied with an immutable docker tag that points to the latest image corresponding to that tag. This new image reference is used by the strategy when it executes for the build.
 
 For other image change triggers that do not reference the strategy image stream, a new build is started, but the build strategy is not updated with a unique image reference.
@@ -566,27 +437,15 @@ In addition to setting the image field for all `Strategy` types, for custom buil
 
 If a build is triggered due to a webhook trigger or manual request, the build that is created uses the `<immutableid>` resolved from the `ImageStream` referenced by the `Strategy`. This ensures that builds are performed using consistent image tags for ease of reproduction.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [v1 container registries](http://docs.docker.com/v1.7/reference/api/hub_registry_spec/#docker-registry-1-0)
-
-</div>
 
 ## Identifying the image change trigger of a build
 
 As a developer, if you have image change triggers, you can identify which image change initiated the last build. This can be useful for debugging or troubleshooting builds.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `BuildConfig`
+**Example `BuildConfig`**
 
 </div>
 
@@ -627,30 +486,13 @@ status:
   lastVersion: 1
 ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> This example omits elements that are not related to image change triggers.
-
-<div>
-
-<div class="title">
-
-Prerequisites
+This example omits elements that are not related to image change triggers.
 
 </div>
 
 - You have configured multiple image change triggers. These triggers have triggered one or more builds.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the `BuildConfig` CR, in `status.imageChangeTriggers`, identify the `lastTriggerTime` that has the latest timestamp.
 
@@ -660,19 +502,13 @@ Procedure
 
 2.  Under `imageChangeTriggers`, compare timestamps to identify the latest
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Image change triggers
+**Image change triggers**
 
 </div>
 
 In your build configuration, `buildConfig.spec.triggers` is an array of build trigger policies, `BuildTriggerPolicy`.
-
-</div>
 
 Each `BuildTriggerPolicy` has a `type` field and set of pointers fields. Each pointer field corresponds to one of the allowed values for the `type` field. As such, you can only set `BuildTriggerPolicy` to only one pointer field.
 
@@ -692,33 +528,19 @@ The `from` field has the following fields of note:
 
 - `name`: Use this field to specify the `ImageStreamTag`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Image change trigger status
+**Image change trigger status**
 
 </div>
 
 In your build configuration, `buildConfig.status.imageChangeTriggers` is an array of `ImageChangeTriggerStatus` elements. Each `ImageChangeTriggerStatus` element includes the `from`, `lastTriggeredImageID`, and `lastTriggerTime` elements shown in the preceding example.
 
-</div>
-
 The `ImageChangeTriggerStatus` that has the most recent `lastTriggerTime` triggered the most recent build. You use its `name` and `namespace` to identify the image change trigger in `buildConfig.spec.triggers` that triggered the build.
 
 The `lastTriggerTime` with the most recent timestamp signifies the `ImageChangeTriggerStatus` of the last build. This `ImageChangeTriggerStatus` has the same `name` and `namespace` as the image change trigger in `buildConfig.spec.triggers` that triggered the build.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [v1 container registries](http://docs.docker.com/v1.7/reference/api/hub_registry_spec/#docker-registry-1-0)
-
-</div>
 
 ## Configuration change triggers
 
@@ -730,20 +552,15 @@ The following is an example trigger definition YAML within the `BuildConfig`:
   type: "ConfigChange"
 ```
 
-> [!NOTE]
-> Configuration change triggers currently only work when creating a new `BuildConfig`. In a future release, configuration change triggers will also be able to launch a build whenever a `BuildConfig` is updated.
+<div class="note">
+
+Configuration change triggers currently only work when creating a new `BuildConfig`. In a future release, configuration change triggers will also be able to launch a build whenever a `BuildConfig` is updated.
+
+</div>
 
 ### Setting triggers manually
 
 Triggers can be added to and removed from build configurations with `oc set triggers`.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To set a GitHub webhook trigger on a build configuration, enter the following command:
 
@@ -763,10 +580,11 @@ Procedure
   $ oc set triggers bc <name> --from-bitbucket --remove
   ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> When a webhook trigger already exists, adding it again regenerates the webhook secret.
+When a webhook trigger already exists, adding it again regenerates the webhook secret.
+
+</div>
 
 For more information, consult the help documentation by entering the following command:
 
@@ -792,14 +610,6 @@ The `postCommit` hook is not only limited to running tests, but can be used for 
 
 There are different ways to configure the post-build hook. All forms in the following examples are equivalent and run `bundle exec rake test --verbose`.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Use one of the following options to configure post-build hooks:
 
   <table>
@@ -808,30 +618,28 @@ Procedure
   <col style="width: 50%" />
   </colgroup>
   <thead>
-  <tr>
+  <tr class="header">
   <th style="text-align: left;">Option</th>
   <th style="text-align: left;">Description</th>
   </tr>
   </thead>
   <tbody>
-  <tr>
+  <tr class="odd">
   <td style="text-align: left;"><p>Shell script</p></td>
   <td style="text-align: left;"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">postCommit</span><span class="kw">:</span></span>
   <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">script</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;bundle exec rake test --verbose&quot;</span></span></code></pre></div>
   <p>The <code>script</code> value is a shell script to be run with <code>/bin/sh -ic</code>. Use this option when a shell script is appropriate to execute the build hook. For example, for running unit tests as above. To control the image entry point or if the image does not have <code>/bin/sh</code>, use <code>command</code>, or <code>args</code>, or both.</p>
   <div class="note">
-  <div class="title">
-  &#10;</div>
   <p>The additional <code>-i</code> flag was introduced to improve the experience working with CentOS and RHEL images, and may be removed in a future release.</p>
   </div></td>
   </tr>
-  <tr>
+  <tr class="even">
   <td style="text-align: left;"><p>Command as the image entry point</p></td>
   <td style="text-align: left;"><div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">postCommit</span><span class="kw">:</span></span>
   <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">command</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">&quot;/bin/bash&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;-c&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;bundle exec rake test --verbose&quot;</span><span class="kw">]</span></span></code></pre></div>
   <p>In this form, <code>command</code> is the command to run, which overrides the image entry point in the exec form, as documented in the <a href="https://docs.docker.com/engine/reference/builder/#entrypoint">Dockerfile reference</a>. This is needed if the image does not have <code>/bin/sh</code>, or if you do not want to use a shell. In all other cases, using <code>script</code> might be more convenient.</p></td>
   </tr>
-  <tr>
+  <tr class="odd">
   <td style="text-align: left;"><p>Command with arguments</p></td>
   <td style="text-align: left;"><div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">postCommit</span><span class="kw">:</span></span>
   <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">command</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">&quot;bundle&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;exec&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;rake&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;test&quot;</span><span class="kw">]</span></span>
@@ -841,22 +649,15 @@ Procedure
   </tbody>
   </table>
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> Providing both `script` and `command` simultaneously creates an invalid build hook.
+Providing both `script` and `command` simultaneously creates an invalid build hook.
+
+</div>
 
 ## Using the CLI to set post commit build hooks
 
 The `oc set build-hook` command can be used to set the build hook for a build configuration.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Complete one of the following actions:
 
@@ -874,5 +675,3 @@ Procedure
       ``` terminal
       $ oc set build-hook bc/mybc --post-commit --script="bundle exec rake test --verbose"
       ```
-
-</div>

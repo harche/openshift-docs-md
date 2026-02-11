@@ -2,22 +2,17 @@ A multi-project quota, defined by a `ClusterResourceQuota` object, allows quotas
 
 This guide describes how cluster administrators can set and manage resource quotas across multiple projects.
 
-> [!IMPORTANT]
-> Do not run workloads in or share access to default projects. Default projects are reserved for running core cluster components.
->
-> The following default projects are considered highly privileged: `default`, `kube-public`, `kube-system`, `openshift`, `openshift-infra`, `openshift-node`, and other system-created projects that have the `openshift.io/run-level` label set to `0` or `1`. Functionality that relies on admission plugins, such as pod security admission, security context constraints, cluster resource quotas, and image reference resolution, does not work in highly privileged projects.
+<div class="important">
+
+Do not run workloads in or share access to default projects. Default projects are reserved for running core cluster components.
+
+The following default projects are considered highly privileged: `default`, `kube-public`, `kube-system`, `openshift`, `openshift-infra`, `openshift-node`, and other system-created projects that have the `openshift.io/run-level` label set to `0` or `1`. Functionality that relies on admission plugins, such as pod security admission, security context constraints, cluster resource quotas, and image reference resolution, does not work in highly privileged projects.
+
+</div>
 
 # Selecting multiple projects during quota creation
 
 When creating quotas, you can select multiple projects based on annotation selection, label selection, or both.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To select projects based on annotations, run the following command:
 
@@ -107,19 +102,9 @@ Procedure
               name: frontend
       ```
 
-</div>
-
 # Viewing applicable cluster resource quotas
 
 A project administrator is not allowed to create or modify the multi-project quota that limits his or her project, but the administrator is allowed to view the multi-project quota documents that are applied to his or her project. The project administrator can do this via the `AppliedClusterResourceQuota` resource.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To view quotas applied to a project, run:
 
@@ -127,11 +112,9 @@ Procedure
     $ oc describe AppliedClusterResourceQuota
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -148,10 +131,6 @@ Procedure
     pods        1     10
     secrets     9     20
     ```
-
-    </div>
-
-</div>
 
 # Selection granularity
 

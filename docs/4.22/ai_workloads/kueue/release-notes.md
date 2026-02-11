@@ -24,8 +24,11 @@ Red Hat build of Kueue version 1.1 and later is supported on the following plat
 
 - Hosted control planes for OpenShift Container Platform
 
-> [!IMPORTANT]
-> Currently, Red Hat build of Kueue is not supported on Red Hat build of MicroShift (MicroShift).
+<div class="important">
+
+Currently, Red Hat build of Kueue is not supported on Red Hat build of MicroShift (MicroShift).
+
+</div>
 
 # Release notes for Red Hat build of Kueue version 1.2
 
@@ -71,8 +74,11 @@ After installing Red Hat build of Kueue, in the **Operator details** view, the 
 
 Red Hat build of Kueue version 1.1 is a generally available release that is supported on OpenShift Container Platform versions 4.18 and later. Red Hat build of Kueue version 1.1 uses [Kueue](https://kueue.sigs.k8s.io/docs/overview/) version 0.12.
 
-> [!IMPORTANT]
-> If you have a previously installed version of Red Hat build of Kueue on your cluster, you must uninstall the Operator and manually install version 1.1. For information see [Upgrading Red Hat build of Kueue](../../ai_workloads/kueue/install-kueue.xml#upgrading-kueue_install-kueue).
+<div class="important">
+
+If you have a previously installed version of Red Hat build of Kueue on your cluster, you must uninstall the Operator and manually install version 1.1. For information see [Upgrading Red Hat build of Kueue](../../ai_workloads/kueue/install-kueue.xml#upgrading-kueue_install-kueue).
+
+</div>
 
 ## New features and enhancements
 

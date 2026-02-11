@@ -14,11 +14,9 @@ This section lists the basic `tkn` CLI commands.
 
 Parent command for `tkn` CLI.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display all options
+**Example: Display all options**
 
 </div>
 
@@ -26,17 +24,13 @@ Example: Display all options
 $ tkn
 ```
 
-</div>
-
 ## completion \[shell\]
 
 Print shell completion code which must be evaluated to provide interactive completion. Supported shells are `bash` and `zsh`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Completion code for `bash` shell
+**Example: Completion code for `bash` shell**
 
 </div>
 
@@ -44,17 +38,13 @@ Example: Completion code for `bash` shell
 $ tkn completion bash
 ```
 
-</div>
-
 ## version
 
 Print version information of the `tkn` CLI.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Check the `tkn` version
+**Example: Check the `tkn` version**
 
 </div>
 
@@ -62,19 +52,15 @@ Example: Check the `tkn` version
 $ tkn version
 ```
 
-</div>
-
 # Pipelines management commands
 
 ## pipeline
 
 Manage pipelines.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display help
+**Example: Display help**
 
 </div>
 
@@ -82,17 +68,13 @@ Example: Display help
 $ tkn pipeline --help
 ```
 
-</div>
-
 ## pipeline delete
 
 Delete a pipeline.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Delete the `mypipeline` pipeline from a namespace
+**Example: Delete the `mypipeline` pipeline from a namespace**
 
 </div>
 
@@ -100,17 +82,13 @@ Example: Delete the `mypipeline` pipeline from a namespace
 $ tkn pipeline delete mypipeline -n myspace
 ```
 
-</div>
-
 ## pipeline describe
 
 Describe a pipeline.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Describe the `mypipeline` pipeline
+**Example: Describe the `mypipeline` pipeline**
 
 </div>
 
@@ -118,17 +96,13 @@ Example: Describe the `mypipeline` pipeline
 $ tkn pipeline describe mypipeline
 ```
 
-</div>
-
 ## pipeline list
 
 Display a list of pipelines.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display a list of pipelines
+**Example: Display a list of pipelines**
 
 </div>
 
@@ -136,17 +110,13 @@ Example: Display a list of pipelines
 $ tkn pipeline list
 ```
 
-</div>
-
 ## pipeline logs
 
 Display the logs for a specific pipeline.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Stream the live logs for the `mypipeline` pipeline
+**Example: Stream the live logs for the `mypipeline` pipeline**
 
 </div>
 
@@ -154,17 +124,13 @@ Example: Stream the live logs for the `mypipeline` pipeline
 $ tkn pipeline logs -f mypipeline
 ```
 
-</div>
-
 ## pipeline start
 
 Start a pipeline.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Start the `mypipeline` pipeline
+**Example: Start the `mypipeline` pipeline**
 
 </div>
 
@@ -172,19 +138,15 @@ Example: Start the `mypipeline` pipeline
 $ tkn pipeline start mypipeline
 ```
 
-</div>
-
 # Pipeline run commands
 
 ## pipelinerun
 
 Manage pipeline runs.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display help
+**Example: Display help**
 
 </div>
 
@@ -192,17 +154,13 @@ Example: Display help
 $ tkn pipelinerun -h
 ```
 
-</div>
-
 ## pipelinerun cancel
 
 Cancel a pipeline run.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Cancel the `mypipelinerun` pipeline run from a namespace
+**Example: Cancel the `mypipelinerun` pipeline run from a namespace**
 
 </div>
 
@@ -210,17 +168,13 @@ Example: Cancel the `mypipelinerun` pipeline run from a namespace
 $ tkn pipelinerun cancel mypipelinerun -n myspace
 ```
 
-</div>
-
 ## pipelinerun delete
 
 Delete a pipeline run.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Delete pipeline runs from a namespace
+**Example: Delete pipeline runs from a namespace**
 
 </div>
 
@@ -228,13 +182,9 @@ Example: Delete pipeline runs from a namespace
 $ tkn pipelinerun delete mypipelinerun1 mypipelinerun2 -n myspace
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example: Delete all pipeline runs from a namespace, except the five most recently executed pipeline runs
+**Example: Delete all pipeline runs from a namespace, except the five most recently executed pipeline runs**
 
 </div>
 
@@ -242,15 +192,11 @@ Example: Delete all pipeline runs from a namespace, except the five most recentl
 $ tkn pipelinerun delete -n myspace --keep 5
 ```
 
-</div>
-
 - Replace `5` with the number of most recently executed pipeline runs you want to retain.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Delete all pipelines
+**Example: Delete all pipelines**
 
 </div>
 
@@ -258,20 +204,19 @@ Example: Delete all pipelines
 $ tkn pipelinerun delete --all
 ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> Starting with Red Hat OpenShift Pipelines 1.6, the `tkn pipelinerun delete --all` command does not delete any resources that are in the running state.
+Starting with Red Hat OpenShift Pipelines 1.6, the `tkn pipelinerun delete --all` command does not delete any resources that are in the running state.
+
+</div>
 
 ## pipelinerun describe
 
 Describe a pipeline run.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Describe the `mypipelinerun` pipeline run in a namespace
+**Example: Describe the `mypipelinerun` pipeline run in a namespace**
 
 </div>
 
@@ -279,17 +224,13 @@ Example: Describe the `mypipelinerun` pipeline run in a namespace
 $ tkn pipelinerun describe mypipelinerun -n myspace
 ```
 
-</div>
-
 ## pipelinerun list
 
 List pipeline runs.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display a list of pipeline runs in a namespace
+**Example: Display a list of pipeline runs in a namespace**
 
 </div>
 
@@ -297,17 +238,13 @@ Example: Display a list of pipeline runs in a namespace
 $ tkn pipelinerun list -n myspace
 ```
 
-</div>
-
 ## pipelinerun logs
 
 Display the logs of a pipeline run.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display the logs of the `mypipelinerun` pipeline run with all tasks and steps in a namespace
+**Example: Display the logs of the `mypipelinerun` pipeline run with all tasks and steps in a namespace**
 
 </div>
 
@@ -315,19 +252,15 @@ Example: Display the logs of the `mypipelinerun` pipeline run with all tasks and
 $ tkn pipelinerun logs mypipelinerun -a -n myspace
 ```
 
-</div>
-
 # Task management commands
 
 ## task
 
 Manage tasks.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display help
+**Example: Display help**
 
 </div>
 
@@ -335,17 +268,13 @@ Example: Display help
 $ tkn task -h
 ```
 
-</div>
-
 ## task delete
 
 Delete a task.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Delete `mytask1` and `mytask2` tasks from a namespace
+**Example: Delete `mytask1` and `mytask2` tasks from a namespace**
 
 </div>
 
@@ -353,17 +282,13 @@ Example: Delete `mytask1` and `mytask2` tasks from a namespace
 $ tkn task delete mytask1 mytask2 -n myspace
 ```
 
-</div>
-
 ## task describe
 
 Describe a task.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Describe the `mytask` task in a namespace
+**Example: Describe the `mytask` task in a namespace**
 
 </div>
 
@@ -371,17 +296,13 @@ Example: Describe the `mytask` task in a namespace
 $ tkn task describe mytask -n myspace
 ```
 
-</div>
-
 ## task list
 
 List tasks.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: List all the tasks in a namespace
+**Example: List all the tasks in a namespace**
 
 </div>
 
@@ -389,17 +310,13 @@ Example: List all the tasks in a namespace
 $ tkn task list -n myspace
 ```
 
-</div>
-
 ## task logs
 
 Display task logs.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display logs for the `mytaskrun` task run of the `mytask` task
+**Example: Display logs for the `mytaskrun` task run of the `mytask` task**
 
 </div>
 
@@ -407,17 +324,13 @@ Example: Display logs for the `mytaskrun` task run of the `mytask` task
 $ tkn task logs mytask mytaskrun -n myspace
 ```
 
-</div>
-
 ## task start
 
 Start a task.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Start the `mytask` task in a namespace
+**Example: Start the `mytask` task in a namespace**
 
 </div>
 
@@ -425,19 +338,15 @@ Example: Start the `mytask` task in a namespace
 $ tkn task start mytask -s <ServiceAccountName> -n myspace
 ```
 
-</div>
-
 # Task run commands
 
 ## taskrun
 
 Manage task runs.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display help
+**Example: Display help**
 
 </div>
 
@@ -445,17 +354,13 @@ Example: Display help
 $ tkn taskrun -h
 ```
 
-</div>
-
 ## taskrun cancel
 
 Cancel a task run.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Cancel the `mytaskrun` task run from a namespace
+**Example: Cancel the `mytaskrun` task run from a namespace**
 
 </div>
 
@@ -463,17 +368,13 @@ Example: Cancel the `mytaskrun` task run from a namespace
 $ tkn taskrun cancel mytaskrun -n myspace
 ```
 
-</div>
-
 ## taskrun delete
 
 Delete a TaskRun.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Delete the `mytaskrun1` and `mytaskrun2` task runs from a namespace
+**Example: Delete the `mytaskrun1` and `mytaskrun2` task runs from a namespace**
 
 </div>
 
@@ -481,13 +382,9 @@ Example: Delete the `mytaskrun1` and `mytaskrun2` task runs from a namespace
 $ tkn taskrun delete mytaskrun1 mytaskrun2 -n myspace
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example: Delete all but the five most recently executed task runs from a namespace
+**Example: Delete all but the five most recently executed task runs from a namespace**
 
 </div>
 
@@ -495,19 +392,15 @@ Example: Delete all but the five most recently executed task runs from a namespa
 $ tkn taskrun delete -n myspace --keep 5
 ```
 
-</div>
-
 - Replace `5` with the number of most recently executed task runs you want to retain.
 
 ## taskrun describe
 
 Describe a task run.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Describe the `mytaskrun` task run in a namespace
+**Example: Describe the `mytaskrun` task run in a namespace**
 
 </div>
 
@@ -515,17 +408,13 @@ Example: Describe the `mytaskrun` task run in a namespace
 $ tkn taskrun describe mytaskrun -n myspace
 ```
 
-</div>
-
 ## taskrun list
 
 List task runs.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: List all the task runs in a namespace
+**Example: List all the task runs in a namespace**
 
 </div>
 
@@ -533,17 +422,13 @@ Example: List all the task runs in a namespace
 $ tkn taskrun list -n myspace
 ```
 
-</div>
-
 ## taskrun logs
 
 Display task run logs.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display live logs for the `mytaskrun` task run in a namespace
+**Example: Display live logs for the `mytaskrun` task run in a namespace**
 
 </div>
 
@@ -551,19 +436,15 @@ Example: Display live logs for the `mytaskrun` task run in a namespace
 $ tkn taskrun logs -f mytaskrun -n myspace
 ```
 
-</div>
-
 # Condition management commands
 
 ## condition
 
 Manage Conditions.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display help
+**Example: Display help**
 
 </div>
 
@@ -571,17 +452,13 @@ Example: Display help
 $ tkn condition --help
 ```
 
-</div>
-
 ## condition delete
 
 Delete a Condition.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Delete the `mycondition1` Condition from a namespace
+**Example: Delete the `mycondition1` Condition from a namespace**
 
 </div>
 
@@ -589,17 +466,13 @@ Example: Delete the `mycondition1` Condition from a namespace
 $ tkn condition delete mycondition1 -n myspace
 ```
 
-</div>
-
 ## condition describe
 
 Describe a Condition.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Describe the `mycondition1` Condition in a namespace
+**Example: Describe the `mycondition1` Condition in a namespace**
 
 </div>
 
@@ -607,17 +480,13 @@ Example: Describe the `mycondition1` Condition in a namespace
 $ tkn condition describe mycondition1 -n myspace
 ```
 
-</div>
-
 ## condition list
 
 List Conditions.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: List Conditions in a namespace
+**Example: List Conditions in a namespace**
 
 </div>
 
@@ -625,19 +494,15 @@ Example: List Conditions in a namespace
 $ tkn condition list -n myspace
 ```
 
-</div>
-
 # Pipeline Resource management commands
 
 ## resource
 
 Manage Pipeline Resources.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display help
+**Example: Display help**
 
 </div>
 
@@ -645,17 +510,13 @@ Example: Display help
 $ tkn resource -h
 ```
 
-</div>
-
 ## resource create
 
 Create a Pipeline Resource.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Create a Pipeline Resource in a namespace
+**Example: Create a Pipeline Resource in a namespace**
 
 </div>
 
@@ -663,19 +524,15 @@ Example: Create a Pipeline Resource in a namespace
 $ tkn resource create -n myspace
 ```
 
-</div>
-
 This is an interactive command that asks for input on the name of the Resource, type of the Resource, and the values based on the type of the Resource.
 
 ## resource delete
 
 Delete a Pipeline Resource.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Delete the `myresource` Pipeline Resource from a namespace
+**Example: Delete the `myresource` Pipeline Resource from a namespace**
 
 </div>
 
@@ -683,17 +540,13 @@ Example: Delete the `myresource` Pipeline Resource from a namespace
 $ tkn resource delete myresource -n myspace
 ```
 
-</div>
-
 ## resource describe
 
 Describe a Pipeline Resource.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Describe the `myresource` Pipeline Resource
+**Example: Describe the `myresource` Pipeline Resource**
 
 </div>
 
@@ -701,17 +554,13 @@ Example: Describe the `myresource` Pipeline Resource
 $ tkn resource describe myresource -n myspace
 ```
 
-</div>
-
 ## resource list
 
 List Pipeline Resources.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: List all Pipeline Resources in a namespace
+**Example: List all Pipeline Resources in a namespace**
 
 </div>
 
@@ -719,22 +568,21 @@ Example: List all Pipeline Resources in a namespace
 $ tkn resource list -n myspace
 ```
 
-</div>
-
 # ClusterTask management commands
 
-> [!IMPORTANT]
-> In Red Hat OpenShift Pipelines 1.10, ClusterTask functionality of the `tkn` command-line utility is deprecated and is planned to be removed in a future release.
+<div class="important">
+
+In Red Hat OpenShift Pipelines 1.10, ClusterTask functionality of the `tkn` command-line utility is deprecated and is planned to be removed in a future release.
+
+</div>
 
 ## clustertask
 
 Manage ClusterTasks.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display help
+**Example: Display help**
 
 </div>
 
@@ -742,17 +590,13 @@ Example: Display help
 $ tkn clustertask --help
 ```
 
-</div>
-
 ## clustertask delete
 
 Delete a ClusterTask resource in a cluster.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Delete `mytask1` and `mytask2` ClusterTasks
+**Example: Delete `mytask1` and `mytask2` ClusterTasks**
 
 </div>
 
@@ -760,17 +604,13 @@ Example: Delete `mytask1` and `mytask2` ClusterTasks
 $ tkn clustertask delete mytask1 mytask2
 ```
 
-</div>
-
 ## clustertask describe
 
 Describe a ClusterTask.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Describe the `mytask` ClusterTask
+**Example: Describe the `mytask` ClusterTask**
 
 </div>
 
@@ -778,17 +618,13 @@ Example: Describe the `mytask` ClusterTask
 $ tkn clustertask describe mytask1
 ```
 
-</div>
-
 ## clustertask list
 
 List ClusterTasks.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: List ClusterTasks
+**Example: List ClusterTasks**
 
 </div>
 
@@ -796,17 +632,13 @@ Example: List ClusterTasks
 $ tkn clustertask list
 ```
 
-</div>
-
 ## clustertask start
 
 Start ClusterTasks.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Start the `mytask` ClusterTask
+**Example: Start the `mytask` ClusterTask**
 
 </div>
 
@@ -814,19 +646,15 @@ Example: Start the `mytask` ClusterTask
 $ tkn clustertask start mytask
 ```
 
-</div>
-
 # Trigger management commands
 
 ## eventlistener
 
 Manage EventListeners.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display help
+**Example: Display help**
 
 </div>
 
@@ -834,17 +662,13 @@ Example: Display help
 $ tkn eventlistener -h
 ```
 
-</div>
-
 ## eventlistener delete
 
 Delete an EventListener.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Delete `mylistener1` and `mylistener2` EventListeners in a namespace
+**Example: Delete `mylistener1` and `mylistener2` EventListeners in a namespace**
 
 </div>
 
@@ -852,17 +676,13 @@ Example: Delete `mylistener1` and `mylistener2` EventListeners in a namespace
 $ tkn eventlistener delete mylistener1 mylistener2 -n myspace
 ```
 
-</div>
-
 ## eventlistener describe
 
 Describe an EventListener.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Describe the `mylistener` EventListener in a namespace
+**Example: Describe the `mylistener` EventListener in a namespace**
 
 </div>
 
@@ -870,17 +690,13 @@ Example: Describe the `mylistener` EventListener in a namespace
 $ tkn eventlistener describe mylistener -n myspace
 ```
 
-</div>
-
 ## eventlistener list
 
 List EventListeners.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: List all the EventListeners in a namespace
+**Example: List all the EventListeners in a namespace**
 
 </div>
 
@@ -888,17 +704,13 @@ Example: List all the EventListeners in a namespace
 $ tkn eventlistener list -n myspace
 ```
 
-</div>
-
 ## eventlistener logs
 
 Display logs of an EventListener.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display the logs of the `mylistener` EventListener in a namespace
+**Example: Display the logs of the `mylistener` EventListener in a namespace**
 
 </div>
 
@@ -906,17 +718,13 @@ Example: Display the logs of the `mylistener` EventListener in a namespace
 $ tkn eventlistener logs mylistener -n myspace
 ```
 
-</div>
-
 ## triggerbinding
 
 Manage TriggerBindings.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display TriggerBindings help
+**Example: Display TriggerBindings help**
 
 </div>
 
@@ -924,17 +732,13 @@ Example: Display TriggerBindings help
 $ tkn triggerbinding -h
 ```
 
-</div>
-
 ## triggerbinding delete
 
 Delete a TriggerBinding.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Delete `mybinding1` and `mybinding2` TriggerBindings in a namespace
+**Example: Delete `mybinding1` and `mybinding2` TriggerBindings in a namespace**
 
 </div>
 
@@ -942,17 +746,13 @@ Example: Delete `mybinding1` and `mybinding2` TriggerBindings in a namespace
 $ tkn triggerbinding delete mybinding1 mybinding2 -n myspace
 ```
 
-</div>
-
 ## triggerbinding describe
 
 Describe a TriggerBinding.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Describe the `mybinding` TriggerBinding in a namespace
+**Example: Describe the `mybinding` TriggerBinding in a namespace**
 
 </div>
 
@@ -960,17 +760,13 @@ Example: Describe the `mybinding` TriggerBinding in a namespace
 $ tkn triggerbinding describe mybinding -n myspace
 ```
 
-</div>
-
 ## triggerbinding list
 
 List TriggerBindings.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: List all the TriggerBindings in a namespace
+**Example: List all the TriggerBindings in a namespace**
 
 </div>
 
@@ -978,17 +774,13 @@ Example: List all the TriggerBindings in a namespace
 $ tkn triggerbinding list -n myspace
 ```
 
-</div>
-
 ## triggertemplate
 
 Manage TriggerTemplates.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display TriggerTemplate help
+**Example: Display TriggerTemplate help**
 
 </div>
 
@@ -996,17 +788,13 @@ Example: Display TriggerTemplate help
 $ tkn triggertemplate -h
 ```
 
-</div>
-
 ## triggertemplate delete
 
 Delete a TriggerTemplate.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Delete `mytemplate1` and `mytemplate2` TriggerTemplates in a namespace
+**Example: Delete `mytemplate1` and `mytemplate2` TriggerTemplates in a namespace**
 
 </div>
 
@@ -1014,17 +802,13 @@ Example: Delete `mytemplate1` and `mytemplate2` TriggerTemplates in a namespace
 $ tkn triggertemplate delete mytemplate1 mytemplate2 -n `myspace`
 ```
 
-</div>
-
 ## triggertemplate describe
 
 Describe a TriggerTemplate.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Describe the `mytemplate` TriggerTemplate in a namespace
+**Example: Describe the `mytemplate` TriggerTemplate in a namespace**
 
 </div>
 
@@ -1032,17 +816,13 @@ Example: Describe the `mytemplate` TriggerTemplate in a namespace
 $ tkn triggertemplate describe mytemplate -n `myspace`
 ```
 
-</div>
-
 ## triggertemplate list
 
 List TriggerTemplates.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: List all the TriggerTemplates in a namespace
+**Example: List all the TriggerTemplates in a namespace**
 
 </div>
 
@@ -1050,17 +830,13 @@ Example: List all the TriggerTemplates in a namespace
 $ tkn triggertemplate list -n myspace
 ```
 
-</div>
-
 ## clustertriggerbinding
 
 Manage ClusterTriggerBindings.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display ClusterTriggerBindings help
+**Example: Display ClusterTriggerBindings help**
 
 </div>
 
@@ -1068,17 +844,13 @@ Example: Display ClusterTriggerBindings help
 $ tkn clustertriggerbinding -h
 ```
 
-</div>
-
 ## clustertriggerbinding delete
 
 Delete a ClusterTriggerBinding.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Delete `myclusterbinding1` and `myclusterbinding2` ClusterTriggerBindings
+**Example: Delete `myclusterbinding1` and `myclusterbinding2` ClusterTriggerBindings**
 
 </div>
 
@@ -1086,17 +858,13 @@ Example: Delete `myclusterbinding1` and `myclusterbinding2` ClusterTriggerBindin
 $ tkn clustertriggerbinding delete myclusterbinding1 myclusterbinding2
 ```
 
-</div>
-
 ## clustertriggerbinding describe
 
 Describe a ClusterTriggerBinding.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Describe the `myclusterbinding` ClusterTriggerBinding
+**Example: Describe the `myclusterbinding` ClusterTriggerBinding**
 
 </div>
 
@@ -1104,25 +872,19 @@ Example: Describe the `myclusterbinding` ClusterTriggerBinding
 $ tkn clustertriggerbinding describe myclusterbinding
 ```
 
-</div>
-
 ## clustertriggerbinding list
 
 List ClusterTriggerBindings.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: List all ClusterTriggerBindings
+**Example: List all ClusterTriggerBindings**
 
 </div>
 
 ``` terminal
 $ tkn clustertriggerbinding list
 ```
-
-</div>
 
 # Hub interaction commands
 
@@ -1132,11 +894,9 @@ Interact with Tekton Hub for resources such as tasks and pipelines.
 
 Interact with hub.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display help
+**Example: Display help**
 
 </div>
 
@@ -1144,13 +904,9 @@ Example: Display help
 $ tkn hub -h
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example: Interact with a hub API server
+**Example: Interact with a hub API server**
 
 </div>
 
@@ -1158,20 +914,19 @@ Example: Interact with a hub API server
 $ tkn hub --api-server https://api.hub.tekton.dev
 ```
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> For each example, to get the corresponding sub-commands and flags, run `tkn hub <command> --help`.
+For each example, to get the corresponding sub-commands and flags, run `tkn hub <command> --help`.
+
+</div>
 
 ## hub downgrade
 
 Downgrade an installed resource.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Downgrade the `mytask` task in the `mynamespace` namespace to its older version
+**Example: Downgrade the `mytask` task in the `mynamespace` namespace to its older version**
 
 </div>
 
@@ -1179,17 +934,13 @@ Example: Downgrade the `mytask` task in the `mynamespace` namespace to its older
 $ tkn hub downgrade task mytask --to version -n mynamespace
 ```
 
-</div>
-
 ## hub get
 
 Get a resource manifest by its name, kind, catalog, and version.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Get the manifest for a specific version of the `myresource` pipeline or task from the `tekton` catalog
+**Example: Get the manifest for a specific version of the `myresource` pipeline or task from the `tekton` catalog**
 
 </div>
 
@@ -1197,17 +948,13 @@ Example: Get the manifest for a specific version of the `myresource` pipeline or
 $ tkn hub get [pipeline | task] myresource --from tekton --version version
 ```
 
-</div>
-
 ## hub info
 
 Display information about a resource by its name, kind, catalog, and version.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Display information about a specific version of the `mytask` task from the `tekton` catalog
+**Example: Display information about a specific version of the `mytask` task from the `tekton` catalog**
 
 </div>
 
@@ -1215,17 +962,13 @@ Example: Display information about a specific version of the `mytask` task from 
 $ tkn hub info task mytask --from tekton --version version
 ```
 
-</div>
-
 ## hub install
 
 Install a resource from a catalog by its kind, name, and version.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Install a specific version of the `mytask` task from the `tekton` catalog in the `mynamespace` namespace
+**Example: Install a specific version of the `mytask` task from the `tekton` catalog in the `mynamespace` namespace**
 
 </div>
 
@@ -1233,17 +976,13 @@ Example: Install a specific version of the `mytask` task from the `tekton` catal
 $ tkn hub install task mytask --from tekton --version version -n mynamespace
 ```
 
-</div>
-
 ## hub reinstall
 
 Reinstall a resource by its kind and name.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Reinstall a specific version of the `mytask` task from the `tekton` catalog in the `mynamespace` namespace
+**Example: Reinstall a specific version of the `mytask` task from the `tekton` catalog in the `mynamespace` namespace**
 
 </div>
 
@@ -1251,17 +990,13 @@ Example: Reinstall a specific version of the `mytask` task from the `tekton` cat
 $ tkn hub reinstall task mytask --from tekton --version version -n mynamespace
 ```
 
-</div>
-
 ## hub search
 
 Search a resource by a combination of name, kind, and tags.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Search a resource with a tag `cli`
+**Example: Search a resource with a tag `cli`**
 
 </div>
 
@@ -1269,22 +1004,16 @@ Example: Search a resource with a tag `cli`
 $ tkn hub search --tags cli
 ```
 
-</div>
-
 ## hub upgrade
 
 Upgrade an installed resource.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example: Upgrade the installed `mytask` task in the `mynamespace` namespace to a new version
+**Example: Upgrade the installed `mytask` task in the `mynamespace` namespace to a new version**
 
 </div>
 
 ``` terminal
 $ tkn hub upgrade task mytask --to version -n mynamespace
 ```
-
-</div>

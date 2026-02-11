@@ -1,33 +1,18 @@
 To troubleshoot issues with the cert-manager components and the cert-manager Operator for Red Hat OpenShift, you can configure the log level verbosity.
 
-> [!NOTE]
-> To use different log levels for different cert-manager components, see *Customizing cert-manager Operator API fields*.
+<div class="note">
+
+To use different log levels for different cert-manager components, see *Customizing cert-manager Operator API fields*.
+
+</div>
 
 # Setting a log level for cert-manager
 
 To troubleshoot issues and control log volume, configure the log level for the cert-manager Operator for Red Hat OpenShift. You can set specific verbosity levels to capture the necessary details for debugging or to reduce noise in your cluster logs.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have installed version 1.11.1 or later of the cert-manager Operator for Red Hat OpenShift.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `CertManager` resource by running the following command:
 
@@ -47,40 +32,25 @@ Procedure
 
     The valid log level values for the `CertManager` resource are `Normal`, `Debug`, `Trace`, and `TraceAll`. To audit logs and perform common operations when there are no issues, set `logLevel` to `Normal` . To troubleshoot a minor issue by viewing verbose logs, set `logLevel` to `Debug` . To troubleshoot a major issue by viewing more verbose logs, you can set `logLevel` to `Trace`. To troubleshoot serious issues, set `logLevel` to `TraceAll`. The default `logLevel` is `Normal`.
 
-    > [!NOTE]
-    > `TraceAll` generates huge amount of logs. After setting `logLevel` to `TraceAll`, you might experience performance issues.
+    <div class="note">
+
+    `TraceAll` generates huge amount of logs. After setting `logLevel` to `TraceAll`, you might experience performance issues.
+
+    </div>
 
 3.  Save your changes and quit the text editor to apply your changes.
 
     After applying the changes, the verbosity level for the cert-manager components controller, CA injector, and webhook is updated.
 
-</div>
-
 # Setting a log level for the cert-manager Operator for Red Hat OpenShift
 
 To troubleshoot issues and control log volume, set the log level for the cert-manager Operator for Red Hat OpenShift. You can configure the verbosity of the Operator log messages to capture the specific details required for your environment.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have installed version 1.11.1 or later of the cert-manager Operator for Red Hat OpenShift.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Update the subscription object for cert-manager Operator for Red Hat OpenShift to provide the verbosity level for the operator logs by running the following command:
 
@@ -90,27 +60,15 @@ Procedure
 
   Replace `v` with the desired log level number. The valid values for `v` can range from `` 1`to `10 ``. The default value is `2`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 1.  The cert-manager Operator pod is redeployed. Verify that the log level of the cert-manager Operator for Red Hat OpenShift is updated by running the following command:
 
     ``` terminal
     $ oc set env deploy/cert-manager-operator-controller-manager -n cert-manager-operator --list | grep -e OPERATOR_LOG_LEVEL -e container
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -121,15 +79,11 @@ Verification
     OPERATOR_LOG_LEVEL=9
     ```
 
-    </div>
-
 2.  Verify that the log level of the cert-manager Operator for Red Hat OpenShift is updated by running the `oc logs` command:
 
     ``` terminal
     $ oc logs deploy/cert-manager-operator-controller-manager -n cert-manager-operator
     ```
-
-</div>
 
 # Additional resources
 

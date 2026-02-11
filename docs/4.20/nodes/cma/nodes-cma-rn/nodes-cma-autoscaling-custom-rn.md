@@ -2,8 +2,11 @@ You can review the following release notes to learn about changes in the Custom 
 
 The Custom Metrics Autoscaler Operator uses the Kubernetes-based Event Driven Autoscaler (KEDA) and is built on top of the OpenShift Container Platform horizontal pod autoscaler (HPA).
 
-> [!NOTE]
-> The Custom Metrics Autoscaler Operator for Red Hat OpenShift is provided as an installable component, with a distinct release cycle from the core OpenShift Container Platform. The [Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift#cma) outlines release compatibility.
+<div class="note">
+
+The Custom Metrics Autoscaler Operator for Red Hat OpenShift is provided as an installable component, with a distinct release cycle from the core OpenShift Container Platform. The [Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift#cma) outlines release compatibility.
+
+</div>
 
 # Supported versions
 
@@ -30,8 +33,11 @@ This release of the Custom Metrics Autoscaler Operator 2.18.1-1 provides new fea
 
 - [RHBA-2026:0730](https://access.redhat.com/errata/RHBA-2026:0730)
 
-> [!IMPORTANT]
-> Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of Kubernetes-based Event Driven Autoscaler (KEDA).
+<div class="important">
+
+Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of Kubernetes-based Event Driven Autoscaler (KEDA).
+
+</div>
 
 ## New features and enhancements
 

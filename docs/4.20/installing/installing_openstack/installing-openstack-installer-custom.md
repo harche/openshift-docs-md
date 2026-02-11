@@ -18,29 +18,35 @@ In OpenShift Container Platform version 4.17, you can install a customized clust
 
 To support an OpenShift Container Platform installation, your Red Hat OpenStack Platform (RHOSP) quota must meet the following requirements:
 
-| Resource | Value |
-|----|----|
-| Floating IP addresses | 3 |
-| Ports | 15 |
-| Routers | 1 |
-| Subnets | 1 |
-| RAM | 88 GB |
-| vCPUs | 22 |
-| Volume storage | 275 GB |
-| Instances | 7 |
-| Security groups | 3 |
-| Security group rules | 60 |
-| Server groups | 2 - plus 1 for each additional availability zone in each machine pool |
+| Resource              | Value                                                                 |
+|-----------------------|-----------------------------------------------------------------------|
+| Floating IP addresses | 3                                                                     |
+| Ports                 | 15                                                                    |
+| Routers               | 1                                                                     |
+| Subnets               | 1                                                                     |
+| RAM                   | 88 GB                                                                 |
+| vCPUs                 | 22                                                                    |
+| Volume storage        | 275 GB                                                                |
+| Instances             | 7                                                                     |
+| Security groups       | 3                                                                     |
+| Security group rules  | 60                                                                    |
+| Server groups         | 2 - plus 1 for each additional availability zone in each machine pool |
 
 Recommended resources for a default OpenShift Container Platform cluster on RHOSP
 
 A cluster might function with fewer than recommended resources, but its performance is not guaranteed.
 
-> [!IMPORTANT]
-> If RHOSP object storage (Swift) is available and operated by a user account with the `swiftoperator` role, it is used as the default backend for the OpenShift Container Platform image registry. In this case, the volume storage requirement is 175 GB. Swift space requirements vary depending on the size of the image registry.
+<div class="important">
 
-> [!NOTE]
-> By default, your security group and security group rule quotas might be low. If you encounter problems, run `openstack quota set --secgroups 3 --secgroup-rules 60 <project>` as an administrator to increase them.
+If RHOSP object storage (Swift) is available and operated by a user account with the `swiftoperator` role, it is used as the default backend for the OpenShift Container Platform image registry. In this case, the volume storage requirement is 175 GB. Swift space requirements vary depending on the size of the image registry.
+
+</div>
+
+<div class="note">
+
+By default, your security group and security group rule quotas might be low. If you encounter problems, run `openstack quota set --secgroups 3 --secgroup-rules 60 <project>` as an administrator to increase them.
+
+</div>
 
 An OpenShift Container Platform deployment comprises control plane machines, compute machines, and a bootstrap machine.
 
@@ -72,8 +78,11 @@ Each machine requires:
 
 - At least 100 GB storage space from the RHOSP quota
 
-> [!TIP]
-> Compute machines host the applications that you run on OpenShift Container Platform; aim to run as many as you can.
+<div class="tip">
+
+Compute machines host the applications that you run on OpenShift Container Platform; aim to run as many as you can.
+
+</div>
 
 ## Bootstrap machine
 
@@ -93,8 +102,11 @@ The bootstrap machine requires:
 
 Before you install OpenShift Container Platform, you can provision your own API and application ingress load balancing infrastructure to use in place of the default, internal load balancing solution. In production scenarios, you can deploy the API and application Ingress load balancers separately so that you can scale the load balancer infrastructure for each in isolation.
 
-> [!NOTE]
-> If you want to deploy the API and application Ingress load balancers with a Red Hat Enterprise Linux (RHEL) instance, you must purchase the RHEL subscription separately.
+<div class="note">
+
+If you want to deploy the API and application Ingress load balancers with a Red Hat Enterprise Linux (RHEL) instance, you must purchase the RHEL subscription separately.
+
+</div>
 
 The load balancing infrastructure must meet the following requirements:
 
@@ -104,18 +116,24 @@ The load balancing infrastructure must meet the following requirements:
 
   - A stateless load balancing algorithm. The options vary based on the load balancer implementation.
 
-> [!IMPORTANT]
-> Do not configure session persistence for an API load balancer. Configuring session persistence for a Kubernetes API server might cause performance issues from excess application traffic for your OpenShift Container Platform cluster and the Kubernetes API that runs inside the cluster.
+<div class="important">
+
+Do not configure session persistence for an API load balancer. Configuring session persistence for a Kubernetes API server might cause performance issues from excess application traffic for your OpenShift Container Platform cluster and the Kubernetes API that runs inside the cluster.
+
+</div>
 
 Configure the following ports on both the front and back of the API load balancers:
 
-| Port | Back-end machines (pool members) | Internal | External | Description |
-|----|----|----|----|----|
-| `6443` | Bootstrap and control plane. You remove the bootstrap machine from the load balancer after the bootstrap machine initializes the cluster control plane. You must configure the `/readyz` endpoint for the API server health check probe. | X | X | Kubernetes API server |
-| `22623` | Bootstrap and control plane. You remove the bootstrap machine from the load balancer after the bootstrap machine initializes the cluster control plane. | X |  | Machine config server |
+| Port    | Back-end machines (pool members)                                                                                                                                                                                                         | Internal | External | Description           |
+|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|----------|-----------------------|
+| `6443`  | Bootstrap and control plane. You remove the bootstrap machine from the load balancer after the bootstrap machine initializes the cluster control plane. You must configure the `/readyz` endpoint for the API server health check probe. | X        | X        | Kubernetes API server |
+| `22623` | Bootstrap and control plane. You remove the bootstrap machine from the load balancer after the bootstrap machine initializes the cluster control plane.                                                                                  | X        |          | Machine config server |
 
-> [!NOTE]
-> The load balancer must be configured to take a maximum of 30 seconds from the time the API server turns off the `/readyz` endpoint to the removal of the API server instance from the pool. Within the time frame after `/readyz` returns an error or becomes healthy, the endpoint must have been removed or added. Probing every 5 or 10 seconds, with two successful requests to become healthy and three to become unhealthy, are well-tested values.
+<div class="note">
+
+The load balancer must be configured to take a maximum of 30 seconds from the time the API server turns off the `/readyz` endpoint to the removal of the API server instance from the pool. Within the time frame after `/readyz` returns an error or becomes healthy, the endpoint must have been removed or added. Probing every 5 or 10 seconds, with two successful requests to become healthy and three to become unhealthy, are well-tested values.
+
+</div>
 
 - Application Ingress load balancer: Provides an ingress point for application traffic flowing in from outside the cluster. A working configuration for the Ingress router is required for an OpenShift Container Platform cluster. Configure the following conditions:
 
@@ -123,38 +141,48 @@ Configure the following ports on both the front and back of the API load balance
 
   - A connection-based or session-based persistence is recommended, based on the options available and types of applications that will be hosted on the platform.
 
-> [!TIP]
-> If the true IP address of the client can be seen by the application Ingress load balancer, enabling source IP-based session persistence can improve performance for applications that use end-to-end TLS encryption.
+<div class="tip">
+
+If the true IP address of the client can be seen by the application Ingress load balancer, enabling source IP-based session persistence can improve performance for applications that use end-to-end TLS encryption.
+
+</div>
 
 Configure the following ports on both the front and back of the load balancers:
 
-| Port | Back-end machines (pool members) | Internal | External | Description |
-|----|----|----|----|----|
-| `443` | The machines that run the Ingress Controller pods, compute, or worker, by default. | X | X | HTTPS traffic |
-| `80` | The machines that run the Ingress Controller pods, compute, or worker, by default. | X | X | HTTP traffic |
+| Port  | Back-end machines (pool members)                                                   | Internal | External | Description   |
+|-------|------------------------------------------------------------------------------------|----------|----------|---------------|
+| `443` | The machines that run the Ingress Controller pods, compute, or worker, by default. | X        | X        | HTTPS traffic |
+| `80`  | The machines that run the Ingress Controller pods, compute, or worker, by default. | X        | X        | HTTP traffic  |
 
 Application Ingress load balancer
 
-> [!NOTE]
-> If you are deploying a three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
+<div class="note">
+
+If you are deploying a three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
+
+</div>
 
 ### Example load balancer configuration for clusters that are deployed with user-managed load balancers
 
 This section provides an example API and application Ingress load balancer configuration that meets the load balancing requirements for clusters that are deployed with user-managed load balancers. The sample is an `/etc/haproxy/haproxy.cfg` configuration for an HAProxy load balancer. The example is not meant to provide advice for choosing one load balancing solution over another.
 
-> [!TIP]
-> If you are using HAProxy as a load balancer, you can check that the `haproxy` process is listening on ports `6443`, `22623`, `443`, and `80` by running `netstat -nltupe` on the HAProxy node.
+<div class="tip">
+
+If you are using HAProxy as a load balancer, you can check that the `haproxy` process is listening on ports `6443`, `22623`, `443`, and `80` by running `netstat -nltupe` on the HAProxy node.
+
+</div>
 
 In the example, the same load balancer is used for the Kubernetes API and application ingress traffic. In production scenarios, you can deploy the API and application ingress load balancers separately so that you can scale the load balancer infrastructure for each in isolation.
 
-> [!NOTE]
-> If you are using HAProxy as a load balancer and SELinux is set to `enforcing`, you must ensure that the HAProxy service can bind to the configured TCP port by running `setsebool -P haproxy_connect_any=1`.
+<div class="note">
 
-<div class="formalpara">
+If you are using HAProxy as a load balancer and SELinux is set to `enforcing`, you must ensure that the HAProxy service can bind to the configured TCP port by running `setsebool -P haproxy_connect_any=1`.
 
-<div class="title">
+</div>
 
-Sample API and application Ingress load balancer configuration
+<div class="formalpara-title">
+
+**Sample API and application Ingress load balancer configuration**
 
 </div>
 
@@ -210,8 +238,6 @@ listen ingress-router-80
   server compute1 compute1.ocp4.example.com:80 check inter 1s
 ```
 
-</div>
-
 where:
 
 `listen api-server-6443`
@@ -229,8 +255,11 @@ Port `443` handles the HTTPS traffic and points to the machines that run the Ing
 `listen ingress-router-80`
 Port `80` handles the HTTP traffic and points to the machines that run the Ingress Controller pods. The Ingress Controller pods run on the compute machines by default.
 
-> [!NOTE]
-> If you are deploying a three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
+<div class="note">
+
+If you are deploying a three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
+
+</div>
 
 # Internet access for OpenShift Container Platform
 
@@ -244,28 +273,29 @@ You must have internet access to perform the following actions:
 
 - Obtain the packages that are required to perform cluster updates.
 
-> [!IMPORTANT]
-> If your cluster cannot have direct internet access, you can perform a restricted network installation on some types of infrastructure that you provision. During that process, you download the required content and use it to populate a mirror registry with the installation packages. With some installation types, the environment that you install your cluster in will not require internet access. Before you update the cluster, you update the content of the mirror registry.
+<div class="important">
+
+If your cluster cannot have direct internet access, you can perform a restricted network installation on some types of infrastructure that you provision. During that process, you download the required content and use it to populate a mirror registry with the installation packages. With some installation types, the environment that you install your cluster in will not require internet access. Before you update the cluster, you update the content of the mirror registry.
+
+</div>
 
 # Enabling Swift on RHOSP
 
 Swift is operated by a user account with the `swiftoperator` role. Add the role to an account before you run the installation program.
 
-> [!IMPORTANT]
-> If [the Red Hat OpenStack Platform (RHOSP) object storage service](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html-single/storage_guide/index#ch-manage-containers), commonly known as Swift, is available, OpenShift Container Platform uses it as the image registry storage. If it is unavailable, the installation program relies on the RHOSP block storage service, commonly known as Cinder.
->
-> If Swift is present and you want to use it, you must enable access to it. If it is not present, or if you do not want to use it, skip this section.
+<div class="important">
 
-> [!IMPORTANT]
-> RHOSP 17 sets the `rgw_max_attr_size` parameter of Ceph RGW to 256 characters. This setting causes issues with uploading container images to the OpenShift Container Platform registry. You must set the value of `rgw_max_attr_size` to at least 1024 characters.
->
-> Before installation, check if your RHOSP deployment is affected by this problem. If it is, reconfigure Ceph RGW.
+If [the Red Hat OpenStack Platform (RHOSP) object storage service](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html-single/storage_guide/index#ch-manage-containers), commonly known as Swift, is available, OpenShift Container Platform uses it as the image registry storage. If it is unavailable, the installation program relies on the RHOSP block storage service, commonly known as Cinder.
 
-<div>
+If Swift is present and you want to use it, you must enable access to it. If it is not present, or if you do not want to use it, skip this section.
 
-<div class="title">
+</div>
 
-Prerequisites
+<div class="important">
+
+RHOSP 17 sets the `rgw_max_attr_size` parameter of Ceph RGW to 256 characters. This setting causes issues with uploading container images to the OpenShift Container Platform registry. You must set the value of `rgw_max_attr_size` to at least 1024 characters.
+
+Before installation, check if your RHOSP deployment is affected by this problem. If it is, reconfigure Ceph RGW.
 
 </div>
 
@@ -275,19 +305,13 @@ Prerequisites
 
 - On [Ceph RGW](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html-single/deploying_an_overcloud_with_containerized_red_hat_ceph/index#ceph-rgw), the `account in url` option is enabled.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To enable Swift on RHOSP:
-
-</div>
 
 1.  As an administrator in the RHOSP CLI, add the `swiftoperator` role to the account that will access Swift:
 
@@ -300,14 +324,6 @@ Your RHOSP deployment can now use Swift for the image registry.
 # Configuring an image registry with custom storage on clusters that run on RHOSP
 
 After you install a cluster on Red Hat OpenStack Platform (RHOSP), you can use a Cinder volume that is in a specific availability zone for registry storage.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file that specifies the storage class and availability zone to use. For example:
 
@@ -323,8 +339,11 @@ Procedure
       availability: <availability_zone_name>
     ```
 
-    > [!NOTE]
-    > OpenShift Container Platform does not verify the existence of the availability zone you choose. Verify the name of the availability zone before you apply the configuration.
+    <div class="note">
+
+    OpenShift Container Platform does not verify the existence of the availability zone you choose. Verify the name of the availability zone before you apply the configuration.
+
+    </div>
 
 2.  From a command line, apply the configuration:
 
@@ -332,19 +351,15 @@ Procedure
     $ oc apply -f <storage_class_file_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     storageclass.storage.k8s.io/custom-csi-storageclass created
     ```
-
-    </div>
 
 3.  Create a YAML file that specifies a persistent volume claim (PVC) that uses your storage class and the `openshift-image-registry` namespace. For example:
 
@@ -383,11 +398,9 @@ Procedure
     $ oc apply -f <pvc_file_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -395,19 +408,15 @@ Procedure
     persistentvolumeclaim/csi-pvc-imageregistry created
     ```
 
-    </div>
-
 5.  Replace the original persistent volume claim in the image registry configuration with the new claim:
 
     ``` terminal
     $ oc patch configs.imageregistry.operator.openshift.io/cluster --type 'json' -p='[{"op": "replace", "path": "/spec/storage/pvc/claim", "value": "csi-pvc-imageregistry"}]'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -415,23 +424,15 @@ Procedure
     config.imageregistry.operator.openshift.io/cluster patched
     ```
 
-    </div>
-
     Over the next several minutes, the configuration is updated.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 To confirm that the registry is using the resources that you defined:
-
-</div>
 
 1.  Verify that the PVC claim value is identical to the name that you provided in your PVC definition:
 
@@ -439,11 +440,9 @@ To confirm that the registry is using the resources that you defined:
     $ oc get configs.imageregistry.operator.openshift.io/cluster -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -457,19 +456,15 @@ To confirm that the registry is using the resources that you defined:
     ...
     ```
 
-    </div>
-
 2.  Verify that the status of the PVC is `Bound`:
 
     ``` terminal
     $ oc get pvc -n openshift-image-registry csi-pvc-imageregistry
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -478,31 +473,11 @@ To confirm that the registry is using the resources that you defined:
     csi-pvc-imageregistry  Bound    pvc-72a8f9c9-f462-11e8-b6b6-fa163e18b7b5   100Gi      RWO            custom-csi-storageclass  11m
     ```
 
-    </div>
-
 # Verifying external network access
 
 The OpenShift Container Platform installation process requires external network access. You must provide an external network value to it, or deployment fails. Before you begin the process, verify that a network with the external router type exists in Red Hat OpenStack Platform (RHOSP).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - [Configure OpenStack’s networking service to have DHCP agents forward instances' DNS queries](https://docs.openstack.org/neutron/rocky/admin/config-dns-res.html#case-2-dhcp-agents-forward-dns-queries-from-instances)
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Using the RHOSP CLI, verify the name and ID of the 'External' network:
 
@@ -510,11 +485,9 @@ Procedure
     $ openstack network list --long -c ID -c Name -c "Router Type"
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -526,47 +499,47 @@ Procedure
     +--------------------------------------+----------------+-------------+
     ```
 
-    </div>
+A network with an external router type appears in the network list. If at least one does not, see [Creating a default floating IP network](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/director_installation_and_usage/performing-overcloud-post-installation-tasks#creating-a-default-floating-ip-network) and [Creating a default provider network](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/director_installation_and_usage/performing-overcloud-post-installation-tasks#creating-a-default-provider-network).
+
+<div class="important">
+
+If the external network’s CIDR range overlaps one of the default network ranges, you must change the matching network ranges in the `install-config.yaml` file before you start the installation process.
+
+The default network ranges are:
+
+| Network          | Range         |
+|------------------|---------------|
+| `machineNetwork` | 10.0.0.0/16   |
+| `serviceNetwork` | 172.30.0.0/16 |
+| `clusterNetwork` | 10.128.0.0/14 |
 
 </div>
 
-A network with an external router type appears in the network list. If at least one does not, see [Creating a default floating IP network](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/director_installation_and_usage/performing-overcloud-post-installation-tasks#creating-a-default-floating-ip-network) and [Creating a default provider network](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/director_installation_and_usage/performing-overcloud-post-installation-tasks#creating-a-default-provider-network).
+<div class="warning">
 
-> [!IMPORTANT]
-> If the external network’s CIDR range overlaps one of the default network ranges, you must change the matching network ranges in the `install-config.yaml` file before you start the installation process.
->
-> The default network ranges are:
->
-> | Network          | Range         |
-> |------------------|---------------|
-> | `machineNetwork` | 10.0.0.0/16   |
-> | `serviceNetwork` | 172.30.0.0/16 |
-> | `clusterNetwork` | 10.128.0.0/14 |
+If the installation program finds multiple networks with the same name, it sets one of them at random. To avoid this behavior, create unique names for resources in RHOSP.
 
-> [!WARNING]
-> If the installation program finds multiple networks with the same name, it sets one of them at random. To avoid this behavior, create unique names for resources in RHOSP.
+</div>
 
-> [!NOTE]
-> If the Neutron trunk service plugin is enabled, a trunk port is created by default. For more information, see [Neutron trunk port](https://wiki.openstack.org/wiki/Neutron/TrunkPort).
+<div class="note">
+
+If the Neutron trunk service plugin is enabled, a trunk port is created by default. For more information, see [Neutron trunk port](https://wiki.openstack.org/wiki/Neutron/TrunkPort).
+
+</div>
 
 # Defining parameters for the installation program
 
 The OpenShift Container Platform installation program relies on a file that is called `clouds.yaml`. The file describes Red Hat OpenStack Platform (RHOSP) configuration parameters, including the project name, log in information, and authorization service URLs.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the `clouds.yaml` file:
 
     - If your RHOSP distribution includes the Horizon web UI, generate a `clouds.yaml` file in it.
 
-      > [!IMPORTANT]
-      > Remember to add a password to the `auth` field. You can also keep secrets in [a separate file](https://docs.openstack.org/os-client-config/latest/user/configuration.html#splitting-secrets) from `clouds.yaml`.
+      <div class="important">
+
+      Remember to add a password to the `auth` field. You can also keep secrets in [a separate file](https://docs.openstack.org/os-client-config/latest/user/configuration.html#splitting-secrets) from `clouds.yaml`.
+
+      </div>
 
     - If your RHOSP distribution does not include the Horizon web UI, or you do not want to use Horizon, create the file yourself. For detailed information about `clouds.yaml`, see [Config files](https://docs.openstack.org/openstacksdk/latest/user/config/configuration.html#config-files) in the RHOSP documentation.
 
@@ -602,12 +575,15 @@ Procedure
             cacert: "/etc/pki/ca-trust/source/anchors/ca.crt.pem"
         ```
 
-        > [!TIP]
-        > After you run the installer with a custom CA certificate, you can update the certificate by editing the value of the `ca-cert.pem` key in the `cloud-provider-config` keymap. On a command line, run:
-        >
-        > ``` terminal
-        > $ oc edit configmap -n openshift-config cloud-provider-config
-        > ```
+        <div class="tip">
+
+        After you run the installer with a custom CA certificate, you can update the certificate by editing the value of the `ca-cert.pem` key in the `cloud-provider-config` keymap. On a command line, run:
+
+        ``` terminal
+        $ oc edit configmap -n openshift-config cloud-provider-config
+        ```
+
+        </div>
 
 3.  Place the `clouds.yaml` file in one of the following locations:
 
@@ -621,21 +597,11 @@ Procedure
 
         The installation program searches for `clouds.yaml` in that order.
 
-</div>
-
 # Setting OpenStack Cloud Controller Manager options
 
 Optionally, you can edit the OpenStack Cloud Controller Manager (CCM) configuration for your cluster. This configuration controls how OpenShift Container Platform interacts with Red Hat OpenStack Platform (RHOSP).
 
 For a complete list of configuration parameters, see the "OpenStack Cloud Controller Manager reference guide" page in the "Installing on OpenStack" documentation.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  If you have not already generated manifest files for your cluster, generate them by running the following command:
 
@@ -677,53 +643,45 @@ Procedure
 
     - This property defines how many successful monitoring requests are required before a load balancer is marked as online. The value must be an integer. This property is required if the value of the `create-monitor` property is `True`.
 
-    > [!IMPORTANT]
-    > Prior to saving your changes, verify that the file is structured correctly. Clusters might fail if properties are not placed in the appropriate section.
+    <div class="important">
 
-    > [!IMPORTANT]
-    > You must set the value of the `create-monitor` property to `True` if you use services that have the value of the `.spec.externalTrafficPolicy` property set to `Local`. The OVN Octavia provider in RHOSP 16.2 does not support health monitors. Therefore, services that have `ETP` parameter values set to `Local` might not respond when the `lb-provider` value is set to `"ovn"`.
+    Prior to saving your changes, verify that the file is structured correctly. Clusters might fail if properties are not placed in the appropriate section.
+
+    </div>
+
+    <div class="important">
+
+    You must set the value of the `create-monitor` property to `True` if you use services that have the value of the `.spec.externalTrafficPolicy` property set to `Local`. The OVN Octavia provider in RHOSP 16.2 does not support health monitors. Therefore, services that have `ETP` parameter values set to `Local` might not respond when the `lb-provider` value is set to `"ovn"`.
+
+    </div>
 
 4.  Save the changes to the file and proceed with installation.
 
-    > [!TIP]
-    > You can update your cloud provider configuration after you run the installer. On a command line, run:
-    >
-    > ``` terminal
-    > $ oc edit configmap -n openshift-config cloud-provider-config
-    > ```
-    >
-    > After you save your changes, your cluster will take some time to reconfigure itself. The process is complete if none of your nodes have a `SchedulingDisabled` status.
+    <div class="tip">
 
-</div>
+    You can update your cloud provider configuration after you run the installer. On a command line, run:
+
+    ``` terminal
+    $ oc edit configmap -n openshift-config cloud-provider-config
+    ```
+
+    After you save your changes, your cluster will take some time to reconfigure itself. The process is complete if none of your nodes have a `SchedulingDisabled` status.
+
+    </div>
 
 # Obtaining the installation program
 
 Before you install OpenShift Container Platform, download the installation file on the host you are using for installation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have a computer that runs Linux or macOS, with 500 MB of local disk space.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to the [Cluster Type](https://console.redhat.com/openshift/install) page on the Red Hat Hybrid Cloud Console. If you have a Red Hat account, log in with your credentials. If you do not, create an account.
 
-    > [!TIP]
-    > You can also [download the binaries for a specific OpenShift Container Platform release](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/).
+    <div class="tip">
+
+    You can also [download the binaries for a specific OpenShift Container Platform release](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/).
+
+    </div>
 
 2.  Select your infrastructure provider from the **Run it yourself** section of the page.
 
@@ -732,10 +690,6 @@ Procedure
 4.  Place the downloaded file in the directory where you want to store the installation configuration files.
 
     <div class="important">
-
-    <div class="title">
-
-    </div>
 
     - The installation program creates several files on the computer that you use to install your cluster. You must keep the installation program and the files that the installation program creates after you finish installing the cluster. Both of the files are required to delete the cluster.
 
@@ -751,34 +705,17 @@ Procedure
 
 6.  Download your installation [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret). This pull secret allows you to authenticate with the services that are provided by the included authorities, including Quay.io, which serves the container images for OpenShift Container Platform components.
 
-    > [!TIP]
-    > Alternatively, you can retrieve the installation program from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/290/), where you can specify a version of the installation program to download. However, you must have an active subscription to access this page.
+    <div class="tip">
 
-</div>
+    Alternatively, you can retrieve the installation program from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/290/), where you can specify a version of the installation program to download. However, you must have an active subscription to access this page.
+
+    </div>
 
 # Creating the installation configuration file
 
 You can customize the OpenShift Container Platform cluster you install on Red Hat OpenStack Platform (RHOSP).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have the OpenShift Container Platform installation program and the pull secret for your cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `install-config.yaml` file.
 
@@ -800,8 +737,11 @@ Procedure
 
         1.  Optional: Select an SSH key to use to access your cluster machines.
 
-            > [!NOTE]
-            > For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+            <div class="note">
+
+            For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+
+            </div>
 
         2.  Select **openstack** as the platform to target.
 
@@ -819,53 +759,29 @@ Procedure
 
 3.  Back up the `install-config.yaml` file so that you can use it to install multiple clusters.
 
-    > [!IMPORTANT]
-    > The `install-config.yaml` file is consumed during the installation process. If you want to reuse the file, you must back it up now.
+    <div class="important">
 
-</div>
+    The `install-config.yaml` file is consumed during the installation process. If you want to reuse the file, you must back it up now.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+    </div>
 
 - [Installation configuration parameters for OpenStack](../../installing/installing_openstack/installation-config-parameters-openstack.xml#installation-config-parameters-openstack)
-
-</div>
 
 ## Configuring the cluster-wide proxy during installation
 
 To enable internet access in environments that deny direct connections, configure a cluster-wide proxy in the `install-config.yaml` file. This configuration ensures that the new OpenShift Container Platform cluster routes traffic through the specified HTTP or HTTPS proxy.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have an existing `install-config.yaml` file.
 
 - You have reviewed the sites that your cluster requires access to and determined whether any of them need to bypass the proxy. By default, all cluster egress traffic is proxied, including calls to hosting cloud provider APIs. You added sites to the `Proxy` object’s `spec.noProxy` field to bypass the proxy if necessary.
 
-  > [!NOTE]
-  > The `Proxy` object `status.noProxy` field is populated with the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
-  >
-  > For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field is also populated with the instance metadata endpoint (`169.254.169.254`).
+  <div class="note">
 
-</div>
+  The `Proxy` object `status.noProxy` field is populated with the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
 
-<div>
+  For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field is also populated with the instance metadata endpoint (`169.254.169.254`).
 
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  Edit your `install-config.yaml` file and add the proxy settings. For example:
 
@@ -901,26 +817,33 @@ Procedure
     `additionalTrustBundlePolicy`
     Specifies the policy that determines the configuration of the `Proxy` object to reference the `user-ca-bundle` config map in the `trustedCA` field. The allowed values are `Proxyonly` and `Always`. Use `Proxyonly` to reference the `user-ca-bundle` config map only when `http/https` proxy is configured. Use `Always` to always reference the `user-ca-bundle` config map. The default value is `Proxyonly`. Optional parameter.
 
-    > [!NOTE]
-    > The installation program does not support the proxy `readinessEndpoints` field.
+    <div class="note">
 
-    > [!NOTE]
-    > If the installer times out, restart and then complete the deployment by using the `wait-for` command of the installer. For example:
-    >
-    > \+
-    >
-    > ``` terminal
-    > $ ./openshift-install wait-for install-complete --log-level debug
-    > ```
+    The installation program does not support the proxy `readinessEndpoints` field.
+
+    </div>
+
+    <div class="note">
+
+    If the installer times out, restart and then complete the deployment by using the `wait-for` command of the installer. For example:
+
+    \+
+
+    ``` terminal
+    $ ./openshift-install wait-for install-complete --log-level debug
+    ```
+
+    </div>
 
 2.  Save the file and reference it when installing OpenShift Container Platform.
 
     The installation program creates a cluster-wide proxy that is named `cluster` that uses the proxy settings in the provided `install-config.yaml` file. If no proxy settings are provided, a `cluster` `Proxy` object is still created, but it will have a nil `spec`.
 
-    > [!NOTE]
-    > Only the `Proxy` object named `cluster` is supported, and no additional proxies can be created.
+    <div class="note">
 
-</div>
+    Only the `Proxy` object named `cluster` is supported, and no additional proxies can be created.
+
+    </div>
 
 ## Custom subnets in RHOSP deployments
 
@@ -944,24 +867,25 @@ Clusters that use custom subnets have the following limitations:
 
 - You cannot use the `platform.openstack.externalDNS` property at the same time as a custom subnet. To add DNS to a cluster that uses a custom subnet, configure DNS on the RHOSP network.
 
-> [!NOTE]
-> By default, the API VIP takes x.x.x.5 and the Ingress VIP takes x.x.x.7 from your network’s CIDR block. To override these default values, set values for `platform.openstack.apiVIPs` and `platform.openstack.ingressVIPs` that are outside of the DHCP allocation pool.
+<div class="note">
 
-> [!IMPORTANT]
-> The CIDR ranges for networks are not adjustable after cluster installation. Red Hat does not provide direct guidance on determining the range during cluster installation because it requires careful consideration of the number of created pods per namespace.
+By default, the API VIP takes x.x.x.5 and the Ingress VIP takes x.x.x.7 from your network’s CIDR block. To override these default values, set values for `platform.openstack.apiVIPs` and `platform.openstack.ingressVIPs` that are outside of the DHCP allocation pool.
+
+</div>
+
+<div class="important">
+
+The CIDR ranges for networks are not adjustable after cluster installation. Red Hat does not provide direct guidance on determining the range during cluster installation because it requires careful consideration of the number of created pods per namespace.
+
+</div>
 
 ## Deploying a cluster with bare metal machines
 
 If you want your cluster to use bare metal machines, modify the `install-config.yaml` file. Your cluster can have compute machines running on bare metal.
 
-> [!NOTE]
-> Be sure that your `install-config.yaml` file reflects whether the RHOSP network that you use for bare metal workers supports floating IP addresses or not.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Be sure that your `install-config.yaml` file reflects whether the RHOSP network that you use for bare metal workers supports floating IP addresses or not.
 
 </div>
 
@@ -979,27 +903,15 @@ Prerequisites
 
 - You created an `install-config.yaml` file as part of the OpenShift Container Platform installation process.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  In the `install-config.yaml` file, edit the flavors for machines:
 
     1.  Change the value of `compute.platform.openstack.type` to a bare metal flavor.
 
     2.  If you want to deploy your machines on a pre-existing network, change the value of `platform.openstack.machinesSubnet` to the RHOSP subnet UUID of the network.
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        An example bare metal `install-config.yaml` file
+        **An example bare metal `install-config.yaml` file**
 
         </div>
 
@@ -1020,24 +932,23 @@ Procedure
         ...
         ```
 
-        </div>
-
         - Change this value to a bare metal flavor to use for compute machines.
 
         - If you want to use a pre-existing network, change this value to the UUID of the RHOSP subnet.
 
-</div>
-
 Use the updated `install-config.yaml` file to complete the installation process. The compute machines that are created during deployment use the flavor that you added to the file.
 
-> [!NOTE]
-> The installer may time out while waiting for bare metal machines to boot.
->
-> If the installer times out, restart and then complete the deployment by using the `wait-for` command of the installer. For example:
->
-> ``` terminal
-> $ ./openshift-install wait-for install-complete --log-level debug
-> ```
+<div class="note">
+
+The installer may time out while waiting for bare metal machines to boot.
+
+If the installer times out, restart and then complete the deployment by using the `wait-for` command of the installer. For example:
+
+``` terminal
+$ ./openshift-install wait-for install-complete --log-level debug
+```
+
+</div>
 
 ## Cluster deployment on RHOSP provider networks
 
@@ -1055,8 +966,11 @@ OpenShift Container Platform clusters that are installed on provider networks do
 
 Example provider network types include flat (untagged) and VLAN (802.1Q tagged).
 
-> [!NOTE]
-> A cluster can support as many provider network connections as the network type allows. For example, VLAN networks typically support up to 4096 connections.
+<div class="note">
+
+A cluster can support as many provider network connections as the network type allows. For example, VLAN networks typically support up to 4096 connections.
+
+</div>
 
 You can learn more about provider and tenant networks in [the RHOSP documentation](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.1/html/networking_guide/networking-overview_rhosp-network#tenant-provider-networks_network-overview).
 
@@ -1070,16 +984,15 @@ Before you install an OpenShift Container Platform cluster, your Red Hat OpenSt
 
 - The provider network can be shared with other tenants.
 
-  > [!TIP]
-  > Use the `openstack network create` command with the `--share` flag to create a network that can be shared.
+  <div class="tip">
+
+  Use the `openstack network create` command with the `--share` flag to create a network that can be shared.
+
+  </div>
 
 - The RHOSP project that you use to install the cluster must own the provider network, as well as an appropriate subnet.
 
   <div class="tip">
-
-  <div class="title">
-
-  </div>
 
   To create a network for a project that is named "openshift," enter the following command
 
@@ -1099,8 +1012,11 @@ Before you install an OpenShift Container Platform cluster, your Red Hat OpenSt
 
   If the cluster is owned by the `admin` user, you must run the installer as that user to create ports on the network.
 
-  > [!IMPORTANT]
-  > Provider networks must be owned by the RHOSP project that is used to create the cluster. If they are not, the RHOSP Compute service (Nova) cannot request a port from that network.
+  <div class="important">
+
+  Provider networks must be owned by the RHOSP project that is used to create the cluster. If they are not, the RHOSP Compute service (Nova) cannot request a port from that network.
+
+  </div>
 
 - Verify that the provider network can reach the RHOSP metadata service IP address, which is `169.254.169.254` by default.
 
@@ -1116,25 +1032,7 @@ Before you install an OpenShift Container Platform cluster, your Red Hat OpenSt
 
 You can deploy an OpenShift Container Platform cluster that has its primary network interface on an Red Hat OpenStack Platform (RHOSP) provider network.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Your Red Hat OpenStack Platform (RHOSP) deployment is configured as described by "RHOSP provider network requirements for cluster installation".
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In a text editor, open the `install-config.yaml` file.
 
@@ -1146,16 +1044,15 @@ Procedure
 
 5.  Set the value of the `networking.machineNetwork.cidr` property to the CIDR block of the provider network subnet.
 
+<div class="important">
+
+The `platform.openstack.apiVIPs` and `platform.openstack.ingressVIPs` properties must both be unassigned IP addresses from the `networking.machineNetwork.cidr` block.
+
 </div>
 
-> [!IMPORTANT]
-> The `platform.openstack.apiVIPs` and `platform.openstack.ingressVIPs` properties must both be unassigned IP addresses from the `networking.machineNetwork.cidr` block.
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Section of an installation configuration file for a cluster that relies on a RHOSP provider network
+**Section of an installation configuration file for a cluster that relies on a RHOSP provider network**
 
 </div>
 
@@ -1174,32 +1071,31 @@ Section of an installation configuration file for a cluster that relies on a RHO
           - cidr: 192.0.2.0/24
 ```
 
-</div>
-
 - In OpenShift Container Platform 4.12 and later, the `apiVIP` and `ingressVIP` configuration settings are deprecated. Instead, use a list format to enter values in the `apiVIPs` and `ingressVIPs` configuration settings.
 
-> [!WARNING]
-> You cannot set the `platform.openstack.externalNetwork` or `platform.openstack.externalDNS` parameters while using a provider network for the primary network interface.
+<div class="warning">
+
+You cannot set the `platform.openstack.externalNetwork` or `platform.openstack.externalDNS` parameters while using a provider network for the primary network interface.
+
+</div>
 
 When you deploy the cluster, the installer uses the `install-config.yaml` file to deploy the cluster on the provider network.
 
-> [!TIP]
-> You can add additional networks, including provider networks, to the `platform.openstack.additionalNetworkIDs` list.
->
-> After you deploy your cluster, you can attach pods to additional networks. For more information, see [Understanding multiple networks](../../networking/multiple_networks/understanding-multiple-networks.xml#understanding-multiple-networks).
+<div class="tip">
+
+You can add additional networks, including provider networks, to the `platform.openstack.additionalNetworkIDs` list.
+
+After you deploy your cluster, you can attach pods to additional networks. For more information, see [Understanding multiple networks](../../networking/multiple_networks/understanding-multiple-networks.xml#understanding-multiple-networks).
+
+</div>
 
 ## Sample customized install-config.yaml file for RHOSP
 
 The following example `install-config.yaml` files demonstrate all of the possible Red Hat OpenStack Platform (RHOSP) customization options.
 
-> [!IMPORTANT]
-> This sample file is provided for reference only. You must obtain your `install-config.yaml` file by using the installation program.
+<div class="important">
 
-<div class="example">
-
-<div class="title">
-
-Example single stack `install-config.yaml` file
+This sample file is provided for reference only. You must obtain your `install-config.yaml` file by using the installation program.
 
 </div>
 
@@ -1237,16 +1133,6 @@ fips: false
 pullSecret: '{"auths": ...}'
 sshKey: ssh-ed25519 AAAA...
 ```
-
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Example dual stack `install-config.yaml` file
-
-</div>
 
 ``` yaml
 apiVersion: v1
@@ -1300,32 +1186,31 @@ pullSecret: '{"auths": ...}'
 sshKey: ssh-ed25519 AAAA...
 ```
 
-</div>
-
 ## Configuring a cluster with dual-stack networking
 
 You can create a dual-stack cluster on RHOSP. However, the dual-stack configuration is enabled only if you are using an RHOSP network with IPv4 and IPv6 subnets.
 
-> [!NOTE]
-> RHOSP does not support the conversion of an IPv4 single-stack cluster to a dual-stack cluster network.
+<div class="note">
 
-### Deploying the dual-stack cluster
-
-<div>
-
-<div class="title">
-
-Procedure
+RHOSP does not support the conversion of an IPv4 single-stack cluster to a dual-stack cluster network.
 
 </div>
 
+### Deploying the dual-stack cluster
+
 1.  Create a network with IPv4 and IPv6 subnets. The available address modes for the `ipv6-ra-mode` and `ipv6-address-mode` fields are: `dhcpv6-stateful`, `dhcpv6-stateless`, and `slaac`.
 
-    > [!NOTE]
-    > The dualstack network MTU must accommodate both the minimum MTU for IPv6, which is 1280, and the OVN-Kubernetes encapsulation overhead, which is 100.
+    <div class="note">
 
-    > [!NOTE]
-    > DHCP must be enabled on the subnets.
+    The dualstack network MTU must accommodate both the minimum MTU for IPv6, which is 1280, and the OVN-Kubernetes encapsulation overhead, which is 100.
+
+    </div>
+
+    <div class="note">
+
+    DHCP must be enabled on the subnets.
+
+    </div>
 
 2.  Create the API and Ingress VIPs ports.
 
@@ -1333,11 +1218,9 @@ Procedure
 
 4.  To configure IPv4 and IPv6 address endpoints for cluster nodes, edit the `install-config.yaml` file. The following is an example of an `install-config.yaml` file:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example `install-config.yaml`
+    **Example `install-config.yaml`**
 
     </div>
 
@@ -1387,8 +1270,6 @@ Procedure
             id: network-id
     ```
 
-    </div>
-
     - You must specify an IP address range for both the IPv4 and IPv6 address families.
 
     - Specify the virtual IP (VIP) address endpoints for the Ingress VIP services to provide an interface to the cluster.
@@ -1405,11 +1286,9 @@ Procedure
 
       Alternatively, if you want an IPv6 primary dual-stack cluster, edit the `install-config.yaml` file following the example below:
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example `install-config.yaml`
+      **Example `install-config.yaml`**
 
       </div>
 
@@ -1459,8 +1338,6 @@ Procedure
               id: network-id
       ```
 
-      </div>
-
     - You must specify an IP address range for both the IPv4 and IPv6 address families.
 
     - Specify the virtual IP (VIP) address endpoints for the Ingress VIP services to provide an interface to the cluster.
@@ -1475,45 +1352,44 @@ Procedure
 
     - Specifying the `network` under the `ControlPlanePort` field is optional.
 
+<div class="note">
+
+When using an installation host in an isolated dual-stack network, the IPv6 address may not be reassigned correctly upon reboot.
+
+To resolve this problem on Red Hat Enterprise Linux (RHEL) 8, create a file called `/etc/NetworkManager/system-connections/required-rhel8-ipv6.conf` that contains the following configuration:
+
+``` text
+[connection]
+type=ethernet
+[ipv6]
+addr-gen-mode=eui64
+method=auto
+```
+
+To resolve this problem on RHEL 9, create a file called `/etc/NetworkManager/conf.d/required-rhel9-ipv6.conf` that contains the following configuration:
+
+``` text
+[connection]
+ipv6.addr-gen-mode=0
+```
+
+After you create and edit the file, reboot the installation host.
+
 </div>
 
-> [!NOTE]
-> When using an installation host in an isolated dual-stack network, the IPv6 address may not be reassigned correctly upon reboot.
->
-> To resolve this problem on Red Hat Enterprise Linux (RHEL) 8, create a file called `/etc/NetworkManager/system-connections/required-rhel8-ipv6.conf` that contains the following configuration:
->
-> ``` text
-> [connection]
-> type=ethernet
-> [ipv6]
-> addr-gen-mode=eui64
-> method=auto
-> ```
->
-> To resolve this problem on RHEL 9, create a file called `/etc/NetworkManager/conf.d/required-rhel9-ipv6.conf` that contains the following configuration:
->
-> ``` text
-> [connection]
-> ipv6.addr-gen-mode=0
-> ```
->
-> After you create and edit the file, reboot the installation host.
+<div class="note">
 
-> [!NOTE]
-> The `ip=dhcp,dhcp6` kernel argument, which is set on all of the nodes, results in a single Network Manager connection profile that is activated on multiple interfaces simultaneously. Because of this behavior, any additional network has the same connection enforced with an identical UUID. If you need an interface-specific configuration, create a new connection profile for that interface so that the default connection is no longer enforced on it.
+The `ip=dhcp,dhcp6` kernel argument, which is set on all of the nodes, results in a single Network Manager connection profile that is activated on multiple interfaces simultaneously. Because of this behavior, any additional network has the same connection enforced with an identical UUID. If you need an interface-specific configuration, create a new connection profile for that interface so that the default connection is no longer enforced on it.
+
+</div>
 
 ## Configuring a cluster with single-stack IPv6 networking
 
 You can create a single-stack IPv6 cluster on Red Hat OpenStack Platform (RHOSP) after you configure your RHOSP deployment.
 
-> [!IMPORTANT]
-> You cannot convert a dual-stack cluster into a single-stack IPv6 cluster.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You cannot convert a dual-stack cluster into a single-stack IPv6 cluster.
 
 </div>
 
@@ -1525,24 +1401,17 @@ Prerequisites
 
 - You added any additional IPv6 subnets that are used in the cluster to an RHOSP router to enable router advertisements.
 
-  > [!NOTE]
-  > Using an IPv6 SLAAC subnet is not supported because any `dns_nameservers` addresses are not enforced by RHOSP Neutron.
+  <div class="note">
+
+  Using an IPv6 SLAAC subnet is not supported because any `dns_nameservers` addresses are not enforced by RHOSP Neutron.
+
+  </div>
 
 - You have a mirror registry with an IPv6 interface.
 
 - The RHOSP network accepts a minimum MTU size of 1442 bytes.
 
 - You created API and ingress virtual IP addresses (VIPs) as RHOSP ports on the machine network and included those addresses in the `install-config.yaml` file.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the API VIP port on the network by running the following command:
 
@@ -1612,19 +1481,7 @@ Procedure
 
     - The `imageContentSources` section contains the mirror details. For more information on configuring a local image registry, see "Creating a mirror registry with mirror registry for Red Hat OpenShift".
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - See [Creating a mirror registry with mirror registry for Red Hat OpenShift](../../disconnected/installing-mirroring-creating-registry.xml#installing-mirroring-creating-registry)
-
-</div>
 
 ## Installation configuration for a cluster on OpenStack with a user-managed load balancer
 
@@ -1677,14 +1534,9 @@ The SSH public key gets added to the `~/.ssh/authorized_keys` list for the `core
 
 If you want to SSH in to your cluster nodes to perform installation debugging or disaster recovery, you must provide the SSH public key during the installation process. The `./openshift-install gather` command also requires the SSH public key to be in place on the cluster nodes.
 
-> [!IMPORTANT]
-> Do not skip this procedure in production environments, where disaster recovery and debugging is required.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Procedure
+Do not skip this procedure in production environments, where disaster recovery and debugging is required.
 
 </div>
 
@@ -1696,8 +1548,11 @@ Procedure
 
     Specifies the path and file name, such as `~/.ssh/id_ed25519`, of the new SSH key. If you have an existing key pair, ensure your public key is in the your `~/.ssh` directory.
 
-    > [!NOTE]
-    > If you plan to install an OpenShift Container Platform cluster that uses the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the `x86_64`, `ppc64le`, and `s390x` architectures, do not create a key that uses the `ed25519` algorithm. Instead, create a key that uses the `rsa` or `ecdsa` algorithm.
+    <div class="note">
+
+    If you plan to install an OpenShift Container Platform cluster that uses the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the `x86_64`, `ppc64le`, and `s390x` architectures, do not create a key that uses the `ed25519` algorithm. Instead, create a key that uses the `rsa` or `ecdsa` algorithm.
+
+    </div>
 
 2.  View the public SSH key:
 
@@ -1713,8 +1568,11 @@ Procedure
 
 3.  Add the SSH private key identity to the SSH agent for your local user, if it has not already been added. SSH agent management of the key is required for password-less SSH authentication onto your cluster nodes, or if you want to use the `./openshift-install gather` command.
 
-    > [!NOTE]
-    > On some distributions, default SSH private key identities such as `~/.ssh/id_rsa` and `~/.ssh/id_dsa` are managed automatically.
+    <div class="note">
+
+    On some distributions, default SSH private key identities such as `~/.ssh/id_rsa` and `~/.ssh/id_dsa` are managed automatically.
+
+    </div>
 
     1.  If the `ssh-agent` process is not already running for your local user, start it as a background task:
 
@@ -1722,11 +1580,9 @@ Procedure
         $ eval "$(ssh-agent -s)"
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1734,10 +1590,11 @@ Procedure
         Agent pid 31874
         ```
 
-        </div>
+        <div class="note">
 
-        > [!NOTE]
-        > If your cluster is in FIPS mode, only use FIPS-compliant algorithms to generate the SSH key. The key must be either RSA or ECDSA.
+        If your cluster is in FIPS mode, only use FIPS-compliant algorithms to generate the SSH key. The key must be either RSA or ECDSA.
+
+        </div>
 
 4.  Add your SSH private key to the `ssh-agent`:
 
@@ -1747,11 +1604,9 @@ Procedure
 
     Specifies the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1759,21 +1614,7 @@ Procedure
     Identity added: /home/<you>/<path>/<file_name> (<computer_name>)
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - When you install OpenShift Container Platform, provide the SSH public key to the installation program.
-
-</div>
 
 # Enabling access to the environment
 
@@ -1784,14 +1625,6 @@ You can configure OpenShift Container Platform API and application access by usi
 ## Enabling access with floating IP addresses
 
 Create floating IP (FIP) addresses for external access to the OpenShift Container Platform API and cluster applications.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Using the Red Hat OpenStack Platform (RHOSP) CLI, create the API FIP:
 
@@ -1812,22 +1645,25 @@ Procedure
     *.apps.<cluster_name>.<base_domain>. IN  A <apps_FIP>
     ```
 
-    > [!NOTE]
-    > If you do not control the DNS server, you can access the cluster by adding the cluster domain names such as the following to your `/etc/hosts` file:
-    >
-    > - `<api_floating_ip> api.<cluster_name>.<base_domain>`
-    >
-    > - `<application_floating_ip> grafana-openshift-monitoring.apps.<cluster_name>.<base_domain>`
-    >
-    > - `<application_floating_ip> prometheus-k8s-openshift-monitoring.apps.<cluster_name>.<base_domain>`
-    >
-    > - `<application_floating_ip> oauth-openshift.apps.<cluster_name>.<base_domain>`
-    >
-    > - `<application_floating_ip> console-openshift-console.apps.<cluster_name>.<base_domain>`
-    >
-    > - `application_floating_ip integrated-oauth-server-openshift-authentication.apps.<cluster_name>.<base_domain>`
-    >
-    > The cluster domain names in the `/etc/hosts` file grant access to the web console and the monitoring interface of your cluster locally. You can also use the `kubectl` or `oc`. You can access the user applications by using the additional entries pointing to the \<application_floating_ip\>. This action makes the API and applications accessible to only you, which is not suitable for production deployment, but does allow installation for development and testing.
+    <div class="note">
+
+    If you do not control the DNS server, you can access the cluster by adding the cluster domain names such as the following to your `/etc/hosts` file:
+
+    - `<api_floating_ip> api.<cluster_name>.<base_domain>`
+
+    - `<application_floating_ip> grafana-openshift-monitoring.apps.<cluster_name>.<base_domain>`
+
+    - `<application_floating_ip> prometheus-k8s-openshift-monitoring.apps.<cluster_name>.<base_domain>`
+
+    - `<application_floating_ip> oauth-openshift.apps.<cluster_name>.<base_domain>`
+
+    - `<application_floating_ip> console-openshift-console.apps.<cluster_name>.<base_domain>`
+
+    - `application_floating_ip integrated-oauth-server-openshift-authentication.apps.<cluster_name>.<base_domain>`
+
+    The cluster domain names in the `/etc/hosts` file grant access to the web console and the monitoring interface of your cluster locally. You can also use the `kubectl` or `oc`. You can access the user applications by using the additional entries pointing to the \<application_floating_ip\>. This action makes the API and applications accessible to only you, which is not suitable for production deployment, but does allow installation for development and testing.
+
+    </div>
 
 4.  Add the FIPs to the `install-config.yaml` file as the values of the following parameters:
 
@@ -1835,12 +1671,13 @@ Procedure
 
     - `platform.openstack.apiFloatingIP`
 
-</div>
-
 If you use these values, you must also enter an external network as the value of the `platform.openstack.externalNetwork` parameter in the `install-config.yaml` file.
 
-> [!TIP]
-> You can make OpenShift Container Platform resources available outside of the cluster by assigning a floating IP address and updating your firewall configuration.
+<div class="tip">
+
+You can make OpenShift Container Platform resources available outside of the cluster by assigning a floating IP address and updating your firewall configuration.
+
+</div>
 
 ## Completing installation without floating IP addresses
 
@@ -1856,28 +1693,26 @@ If you cannot provide an external network, you can also leave `platform.openstac
 
 If you run the installer from a system that cannot reach the cluster API due to a lack of floating IP addresses or name resolution, installation fails. To prevent installation failure in these cases, you can use a proxy network or run the installer from a system that is on the same network as your machines.
 
-> [!NOTE]
-> You can enable name resolution by creating DNS records for the API and Ingress ports. For example:
->
-> ``` dns
-> api.<cluster_name>.<base_domain>.  IN  A  <api_port_IP>
-> *.apps.<cluster_name>.<base_domain>. IN  A <ingress_port_IP>
-> ```
->
-> If you do not control the DNS server, you can add the record to your `/etc/hosts` file. This action makes the API accessible to only you, which is not suitable for production deployment but does allow installation for development and testing.
+<div class="note">
+
+You can enable name resolution by creating DNS records for the API and Ingress ports. For example:
+
+``` dns
+api.<cluster_name>.<base_domain>.  IN  A  <api_port_IP>
+*.apps.<cluster_name>.<base_domain>. IN  A <ingress_port_IP>
+```
+
+If you do not control the DNS server, you can add the record to your `/etc/hosts` file. This action makes the API accessible to only you, which is not suitable for production deployment but does allow installation for development and testing.
+
+</div>
 
 # Deploying the cluster
 
 You can install OpenShift Container Platform on a compatible cloud platform.
 
-> [!IMPORTANT]
-> You can run the `create cluster` command of the installation program only once, during initial installation.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You can run the `create cluster` command of the installation program only once, during initial installation.
 
 </div>
 
@@ -1885,15 +1720,7 @@ Prerequisites
 
 - You have verified that the cloud provider account on your host has the correct permissions to deploy the cluster. An account with incorrect permissions causes the installation process to fail with an error message that displays the missing permissions.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - In the directory that contains the installation program, initialize the cluster deployment by running the following command:
 
@@ -1906,32 +1733,27 @@ Procedure
 
   - To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
 When the cluster deployment completes successfully:
 
-</div>
-
 - The terminal displays directions for accessing your cluster, including a link to the web console and credentials for the `kubeadmin` user.
 
 - Credential information also outputs to `<installation_directory>/.openshift_install.log`.
 
-> [!IMPORTANT]
-> Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
+<div class="important">
 
-<div class="formalpara">
+Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
 
-<div class="title">
+</div>
 
-Example output
+<div class="formalpara-title">
+
+**Example output**
 
 </div>
 
@@ -1944,13 +1766,7 @@ INFO Login to the console with user: "kubeadmin", and password: "password"
 INFO Time elapsed: 36m22s
 ```
 
-</div>
-
 <div class="important">
-
-<div class="title">
-
-</div>
 
 - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
@@ -1961,14 +1777,6 @@ INFO Time elapsed: 36m22s
 # Verifying cluster status
 
 You can verify your OpenShift Container Platform cluster’s status during or after installation.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the cluster environment, export the administrator’s kubeconfig file:
 
@@ -2004,35 +1812,15 @@ Procedure
     $ oc get pods -A
     ```
 
-</div>
-
 # Logging in to the cluster by using the CLI
 
 To log in to your cluster as the default system user, export the `kubeconfig` file. This configuration enables the CLI to authenticate and connect to the specific API server created during OpenShift Container Platform installation.
 
 The `kubeconfig` file is specific to a cluster and is created during OpenShift Container Platform installation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You deployed an OpenShift Container Platform cluster.
 
 - You installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Export the `kubeadmin` credentials by running the following command:
 
@@ -2051,11 +1839,9 @@ Procedure
     $ oc whoami
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -2063,21 +1849,7 @@ Procedure
     system:admin
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - See [Accessing the web console](../../web_console/web-console.xml#web-console) for more details about accessing and understanding the OpenShift Container Platform web console.
-
-</div>
 
 # Telemetry access for OpenShift Container Platform
 
@@ -2085,17 +1857,7 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - See [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring) for more information about the Telemetry service
-
-</div>
 
 # Next steps
 

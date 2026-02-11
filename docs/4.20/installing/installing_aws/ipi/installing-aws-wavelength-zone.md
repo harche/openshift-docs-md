@@ -4,17 +4,7 @@ AWS Wavelength Zones is an infrastructure that AWS configured for mobile edge co
 
 A Wavelength Zone embeds AWS compute and storage services within the 5G network of a communication service provider (CSP). By placing application servers in a Wavelength Zone, the application traffic from your 5G devices can stay in the 5G network. The application traffic of the device reaches the target server directly, making latency a non-issue.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Wavelength Zones(AWS documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-wavelength-zones)
-
-</div>
 
 # Infrastructure prerequisites
 
@@ -24,8 +14,11 @@ Additional resources
 
 - You [configured an AWS account](../../../installing/installing_aws/installing-aws-account.xml#installing-aws-account) to host the cluster.
 
-  > [!WARNING]
-  > If you have an AWS profile stored on your computer, it must not use a temporary session token that you generated while using a multi-factor authentication device. The cluster continues to use your current AWS credentials to create AWS resources for the entire life of the cluster, so you must use key-based, long-term credentials. To generate appropriate keys, see [Managing Access Keys for IAM Users](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) in the AWS documentation. You can supply the keys when you run the installation program.
+  <div class="warning">
+
+  If you have an AWS profile stored on your computer, it must not use a temporary session token that you generated while using a multi-factor authentication device. The cluster continues to use your current AWS credentials to create AWS resources for the entire life of the cluster, so you must use key-based, long-term credentials. To generate appropriate keys, see [Managing Access Keys for IAM Users](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) in the AWS documentation. You can supply the keys when you run the installation program.
+
+  </div>
 
 - You downloaded the AWS CLI and installed it on your computer. See [Install the AWS CLI Using the Bundled Installer (Linux, macOS, or UNIX)](https://docs.aws.amazon.com/cli/latest/userguide/install-bundle.html) in the AWS documentation.
 
@@ -39,11 +32,9 @@ Additional resources
 
 - You added permissions for creating network resources that support AWS Wavelength Zones to the Identity and Access Management (IAM) user or role. For example:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example of an additional IAM policy that attached `ec2:ModifyAvailabilityZoneGroup`, `ec2:CreateCarrierGateway`, and `ec2:DeleteCarrierGateway` permissions to a user or role
+  **Example of an additional IAM policy that attached `ec2:ModifyAvailabilityZoneGroup`, `ec2:CreateCarrierGateway`, and `ec2:DeleteCarrierGateway` permissions to a user or role**
 
   </div>
 
@@ -70,8 +61,6 @@ Additional resources
   }
   ```
 
-  </div>
-
 # About AWS Wavelength Zones and edge compute pool
 
 Read the following sections to understand infrastructure behaviors and cluster limitations in an AWS Wavelength Zones environment.
@@ -80,23 +69,29 @@ Read the following sections to understand infrastructure behaviors and cluster l
 
 Some limitations exist when you try to deploy a cluster with a default installation configuration in an Amazon Web Services (AWS) Wavelength Zone.
 
-> [!IMPORTANT]
-> The following list details limitations when deploying a cluster in a pre-configured AWS zone:
->
-> - The maximum transmission unit (MTU) between an Amazon EC2 instance in a zone and an Amazon EC2 instance in the Region is `1300`. This causes the cluster-wide network MTU to change according to the network plugin that is used with the deployment.
->
-> - Network resources such as Network Load Balancer (NLB), Classic Load Balancer, and Network Address Translation (NAT) Gateways are not globally supported.
->
-> - For an OpenShift Container Platform cluster on AWS, the AWS Elastic Block Storage (EBS) `gp3` type volume is the default for node volumes and the default for the storage class. This volume type is not globally available on zone locations. By default, the nodes running in zones are deployed with the `gp2` EBS volume. The `gp2-csi` `StorageClass` parameter must be set when creating workloads on zone nodes.
+<div class="important">
+
+The following list details limitations when deploying a cluster in a pre-configured AWS zone:
+
+- The maximum transmission unit (MTU) between an Amazon EC2 instance in a zone and an Amazon EC2 instance in the Region is `1300`. This causes the cluster-wide network MTU to change according to the network plugin that is used with the deployment.
+
+- Network resources such as Network Load Balancer (NLB), Classic Load Balancer, and Network Address Translation (NAT) Gateways are not globally supported.
+
+- For an OpenShift Container Platform cluster on AWS, the AWS Elastic Block Storage (EBS) `gp3` type volume is the default for node volumes and the default for the storage class. This volume type is not globally available on zone locations. By default, the nodes running in zones are deployed with the `gp2` EBS volume. The `gp2-csi` `StorageClass` parameter must be set when creating workloads on zone nodes.
+
+</div>
 
 If you want the installation program to automatically create Wavelength Zone subnets for your OpenShift Container Platform cluster, specific configuration limitations apply with this method. The following note details some of these limitations. For other limitations, ensure that you read the "Quotas and considerations for Wavelength Zones" document that Red Hat provides in the "Infrastructure prerequisites" section.
 
-> [!IMPORTANT]
-> The following configuration limitation applies when you set the installation program to automatically create subnets for your OpenShift Container Platform cluster:
->
-> - When the installation program creates private subnets in AWS Wavelength Zones, the program associates each subnet with the route table of its parent zone. This operation ensures that each private subnet can route egress traffic to the internet by way of NAT Gateways in an AWS Region.
->
-> - If the parent-zone route table does not exist during cluster installation, the installation program associates any private subnet with the first available private route table in the Amazon Virtual Private Cloud (VPC). This approach is valid only for AWS Wavelength Zones subnets in an OpenShift Container Platform cluster.
+<div class="important">
+
+The following configuration limitation applies when you set the installation program to automatically create subnets for your OpenShift Container Platform cluster:
+
+- When the installation program creates private subnets in AWS Wavelength Zones, the program associates each subnet with the route table of its parent zone. This operation ensures that each private subnet can route egress traffic to the internet by way of NAT Gateways in an AWS Region.
+
+- If the parent-zone route table does not exist during cluster installation, the installation program associates any private subnet with the first available private route table in the Amazon Virtual Private Cloud (VPC). This approach is valid only for AWS Wavelength Zones subnets in an OpenShift Container Platform cluster.
+
+</div>
 
 ## About edge compute pools
 
@@ -108,12 +103,15 @@ When deploying a cluster that uses Wavelength Zones, consider the following poin
 
 - The latency is lower between the applications running in AWS Wavelength Zones and the end user. A latency impact exists for some workloads if, for example, ingress traffic is mixed between Wavelength Zones and Availability Zones.
 
-> [!IMPORTANT]
-> Generally, the maximum transmission unit (MTU) between an Amazon EC2 instance in a Wavelength Zones and an Amazon EC2 instance in the Region is 1300. The cluster network MTU must be always less than the EC2 MTU to account for the overhead. The specific overhead is determined by the network plugin. For example: OVN-Kubernetes has an overhead of `100 bytes`.
->
-> The network plugin can provide additional features, such as IPsec, that also affect the MTU sizing.
->
-> For more information, see [How AWS Wavelength work](https://docs.aws.amazon.com/wavelength/latest/developerguide/how-wavelengths-work.html) in the AWS documentation.
+<div class="important">
+
+Generally, the maximum transmission unit (MTU) between an Amazon EC2 instance in a Wavelength Zones and an Amazon EC2 instance in the Region is 1300. The cluster network MTU must be always less than the EC2 MTU to account for the overhead. The specific overhead is determined by the network plugin. For example: OVN-Kubernetes has an overhead of `100 bytes`.
+
+The network plugin can provide additional features, such as IPsec, that also affect the MTU sizing.
+
+For more information, see [How AWS Wavelength work](https://docs.aws.amazon.com/wavelength/latest/developerguide/how-wavelengths-work.html) in the AWS documentation.
+
+</div>
 
 OpenShift Container Platform 4.12 introduced a new compute pool, *edge*, that is designed for use in remote zones. The edge compute pool configuration is common between AWS Wavelength Zones locations. Because of the type and size limitations of resources like EC2 and EBS on Wavelength Zones resources, the default instance type can vary from the traditional compute pool.
 
@@ -129,14 +127,6 @@ The edge compute pool creates new labels that developers can use to deploy appli
 
 By default, the machine sets for the edge compute pool define the taint of `NoSchedule` to prevent other workloads from spreading on Wavelength Zones instances. Users can only run user workloads if they define tolerations in the pod specification.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [MTU value selection](../../../networking/advanced_networking/changing-cluster-network-mtu.xml#mtu-value-selection_changing-cluster-network-mtu)
 
 - [Changing the MTU for the cluster network](../../../networking/advanced_networking/changing-cluster-network-mtu.xml#nw-ovn-ipsec-enable_configuring-ipsec-ovn)
@@ -147,8 +137,6 @@ Additional resources
 
 - [Ingress Controller sharding](../../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-ingress-controller.xml#nw-ingress-sharding_configuring-ingress-cluster-traffic-ingress-controller)
 
-</div>
-
 # Installation prerequisites
 
 Before you install a cluster in an AWS Wavelength Zones environment, you must configure your infrastructure so that it can adopt Wavelength Zone capabilities.
@@ -157,37 +145,17 @@ Before you install a cluster in an AWS Wavelength Zones environment, you must co
 
 If you plan to create subnets in AWS Wavelength Zones, you must opt in to each zone group separately.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the AWS CLI.
 
 - You have determined an AWS Region for where you want to deploy your OpenShift Container Platform cluster.
 
 - You have attached a permissive IAM policy to a user or role account that opts in to the zone group.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  List the zones that are available in your AWS Region by running the following command:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example command for listing available AWS Wavelength Zones in an AWS Region
+    **Example command for listing available AWS Wavelength Zones in an AWS Region**
 
     </div>
 
@@ -197,8 +165,6 @@ Procedure
         --filters Name=zone-type,Values=wavelength-zone \
         --all-availability-zones
     ```
-
-    </div>
 
     Depending on the AWS Region, the list of available zones might be long. The command returns the following fields:
 
@@ -221,44 +187,25 @@ Procedure
 
     - Replace `<value_of_GroupName>` with the name of the group of the Wavelength Zones where you want to create subnets. As an example for Wavelength Zones, specify `us-east-1-wl1` to use the zone `us-east-1-wl1-nyc-wlz-1` (US East New York).
 
-</div>
-
 ## Obtaining an AWS Marketplace image
 
 If you are deploying an OpenShift Container Platform cluster using an AWS Marketplace image, you must first subscribe through AWS. Subscribing to the offer provides you with the AMI ID that the installation program uses to deploy compute nodes.
 
-> [!NOTE]
-> You should only modify the RHCOS image for compute machines to use an AWS Marketplace image. Control plane machines and infrastructure nodes do not require an OpenShift Container Platform subscription and use the public RHCOS default image by default, which does not incur subscription costs on your AWS bill. Therefore, you should not modify the cluster default boot image or the control plane boot images. Applying the AWS Marketplace image to them will incur additional licensing costs that cannot be recovered.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You should only modify the RHCOS image for compute machines to use an AWS Marketplace image. Control plane machines and infrastructure nodes do not require an OpenShift Container Platform subscription and use the public RHCOS default image by default, which does not incur subscription costs on your AWS bill. Therefore, you should not modify the cluster default boot image or the control plane boot images. Applying the AWS Marketplace image to them will incur additional licensing costs that cannot be recovered.
 
 </div>
 
 - You have an AWS account to purchase the offer. This account does not have to be the same account that is used to install the cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845).
 
 2.  Record the AMI ID for your specific AWS Region. As part of the installation process, you must update the `install-config.yaml` file with this value before deploying the cluster.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample `install-config.yaml` file with AWS Marketplace compute nodes
+    **Sample `install-config.yaml` file with AWS Marketplace compute nodes**
 
     </div>
 
@@ -282,13 +229,9 @@ Procedure
     pullSecret: '{"auths": ...}'
     ```
 
-    </div>
-
     - The AMI ID from your AWS Marketplace subscription.
 
     - Your AMI ID is associated with a specific AWS Region. When creating the installation configuration file, ensure that you select the same AWS Region that you specified when configuring your subscription.
-
-</div>
 
 # Preparing for the installation
 
@@ -298,11 +241,11 @@ Before you extend nodes to Wavelength Zones, you must prepare certain resources 
 
 Each created cluster must meet minimum requirements so that the cluster runs as expected.
 
-| Machine | Operating System | vCPU <sup>\[1\]</sup> | Virtual RAM | Storage | Input/Output Per Second (IOPS)<sup>\[2\]</sup> |
-|----|----|----|----|----|----|
-| Bootstrap | RHCOS | 4 | 16 GB | 100 GB | 300 |
-| Control plane | RHCOS | 4 | 16 GB | 100 GB | 300 |
-| Compute | RHCOS | 2 | 8 GB | 100 GB | 300 |
+| Machine       | Operating System | vCPU <sup>\[1\]</sup> | Virtual RAM | Storage | Input/Output Per Second (IOPS)<sup>\[2\]</sup> |
+|---------------|------------------|-----------------------|-------------|---------|------------------------------------------------|
+| Bootstrap     | RHCOS            | 4                     | 16 GB       | 100 GB  | 300                                            |
+| Control plane | RHCOS            | 4                     | 16 GB       | 100 GB  | 300                                            |
+| Compute       | RHCOS            | 2                     | 8 GB        | 100 GB  | 300                                            |
 
 Minimum resource requirements
 
@@ -312,18 +255,21 @@ Minimum resource requirements
 
 3.  As with all user-provisioned installations, if you choose to use RHEL compute machines in your cluster, you take responsibility for all operating system life cycle management and maintenance, including performing system updates, applying patches, and completing all other required tasks. Use of RHEL 7 compute machines is deprecated and has been removed in OpenShift Container Platform 4.10 and later.
 
-> [!NOTE]
-> For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.6, which updates the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
->
-> - x86-64 architecture requires x86-64-v2 ISA
->
-> - ARM64 architecture requires ARMv8.0-A ISA
->
-> - IBM Power architecture requires Power 9 ISA
->
-> - s390x architecture requires z14 ISA
->
-> For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures) (RHEL documentation).
+<div class="note">
+
+For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.6, which updates the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
+
+- x86-64 architecture requires x86-64-v2 ISA
+
+- ARM64 architecture requires ARMv8.0-A ISA
+
+- IBM Power architecture requires Power 9 ISA
+
+- s390x architecture requires z14 ISA
+
+For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures) (RHEL documentation).
+
+</div>
 
 If an instance type for your platform meets the minimum requirements for cluster machines, it is supported to use in OpenShift Container Platform.
 
@@ -331,14 +277,9 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 The following Amazon Web Services (AWS) instance types have been tested with OpenShift Container Platform for use with AWS Wavelength Zones.
 
-> [!NOTE]
-> Use the machine types included in the following charts for your AWS instances. If you use an instance type that is not listed in the chart, ensure that the instance size you use matches the minimum resource requirements that are listed in the section named "Minimum resource requirements for cluster installation".
+<div class="note">
 
-<div class="example">
-
-<div class="title">
-
-Machine types based on 64-bit x86 architecture for AWS Wavelength Zones
+Use the machine types included in the following charts for your AWS instances. If you use an instance type that is not listed in the chart, ensure that the instance size you use matches the minimum resource requirements that are listed in the section named "Minimum resource requirements for cluster installation".
 
 </div>
 
@@ -346,45 +287,17 @@ Machine types based on 64-bit x86 architecture for AWS Wavelength Zones
 
 - `t3.*`
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [AWS Wavelength features(AWS documentation)](https://aws.amazon.com/wavelength/features/)
-
-</div>
 
 ## Creating the installation configuration file
 
 Generate and customize the installation configuration file that the installation program needs to deploy your cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You obtained the OpenShift Container Platform installation program and the pull secret for your cluster.
 
 - You checked that you are deploying your cluster to an AWS Region with an accompanying Red Hat Enterprise Linux CoreOS (RHCOS) AMI published by Red Hat. If you are deploying to an AWS Region that requires a custom AMI, such as an AWS GovCloud Region, you must create the `install-config.yaml` file manually.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the `install-config.yaml` file.
 
@@ -396,22 +309,31 @@ Procedure
 
         - For `<installation_directory>`, specify the directory name to store the files that the installation program creates.
 
-          > [!IMPORTANT]
-          > Specify an empty directory. Some installation assets, like bootstrap X.509 certificates have short expiration intervals, so you must not reuse an installation directory. If you want to reuse individual files from another cluster installation, you can copy them into your directory. However, the file names for the installation assets might change between releases. Use caution when copying installation files from an earlier OpenShift Container Platform version.
+          <div class="important">
+
+          Specify an empty directory. Some installation assets, like bootstrap X.509 certificates have short expiration intervals, so you must not reuse an installation directory. If you want to reuse individual files from another cluster installation, you can copy them into your directory. However, the file names for the installation assets might change between releases. Use caution when copying installation files from an earlier OpenShift Container Platform version.
+
+          </div>
 
     2.  At the prompts, provide the configuration details for your cloud:
 
         1.  Optional: Select an SSH key to use to access your cluster machines.
 
-            > [!NOTE]
-            > For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+            <div class="note">
+
+            For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+
+            </div>
 
         2.  Select **aws** as the platform to target.
 
         3.  If you do not have an AWS profile stored on your computer, enter the AWS access key ID and secret access key for the user that you configured to run the installation program.
 
-            > [!NOTE]
-            > The AWS access key ID and secret access key are stored in `~/.aws/credentials` in the home directory of the current user on the installation host. You are prompted for the credentials by the installation program if the credentials for the exported profile are not present in the file. Any credentials that you provide to the installation program are stored in the file.
+            <div class="note">
+
+            The AWS access key ID and secret access key are stored in `~/.aws/credentials` in the home directory of the current user on the installation host. You are prompted for the credentials by the installation program if the credentials for the exported profile are not present in the file. Any credentials that you provide to the installation program are stored in the file.
+
+            </div>
 
         4.  Select the AWS Region to deploy the cluster to.
 
@@ -423,20 +345,19 @@ Procedure
 
 2.  Optional: Back up the `install-config.yaml` file.
 
-    > [!IMPORTANT]
-    > The `install-config.yaml` file is consumed during the installation process. If you want to reuse the file, you must back it up now.
+    <div class="important">
 
-</div>
+    The `install-config.yaml` file is consumed during the installation process. If you want to reuse the file, you must back it up now.
+
+    </div>
 
 ## Examples of installation configuration files with edge compute pools
 
 The following examples show `install-config.yaml` files that contain an edge machine pool configuration.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Configuration that uses an edge pool with a custom instance type
+**Configuration that uses an edge pool with a custom instance type**
 
 </div>
 
@@ -457,15 +378,11 @@ pullSecret: '{"auths": ...}'
 sshKey: ssh-ed25519 AAAA...
 ```
 
-</div>
-
 Instance types differ between locations. To verify availability in the Wavelength Zones in which the cluster runs, see the AWS documentation.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Configuration that uses an edge pool with custom security groups
+**Configuration that uses an edge pool with custom security groups**
 
 </div>
 
@@ -488,8 +405,6 @@ pullSecret: '{"auths": ...}'
 sshKey: ssh-ed25519 AAAA...
 ```
 
-</div>
-
 - Specify the name of the security group as it is displayed on the Amazon EC2 console. Ensure that you include the `sg` prefix.
 
 # Cluster installation options for an AWS Wavelength Zones environment
@@ -500,17 +415,13 @@ Choose one of the following installation options to install an OpenShift Contain
 
 - Existing VPC option: Installing a cluster on AWS into an existing VPC, where you supply Wavelength Zones subnets to the `install-config.yaml` file.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Next steps
+**Next steps**
 
 </div>
 
 Choose one of the following options to install an OpenShift Container Platform cluster in an AWS Wavelength Zones environment:
-
-</div>
 
 - [Installing a cluster quickly in AWS Wavelength Zones](../../../installing/installing_aws/ipi/installing-aws-wavelength-zone.xml#installation-cluster-quickly-extend-compute-nodes_installing-aws-wavelength-zone)
 
@@ -524,14 +435,6 @@ For OpenShift Container Platform 4.17, you can quickly install a cluster on Amaz
 
 Modify an `install-config.yaml` file to include AWS Wavelength Zones.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have configured an AWS account.
 
 - You added your AWS keys and AWS Region to your local AWS profile by running `aws configure`.
@@ -541,16 +444,6 @@ Prerequisites
 - You opted in to the Wavelength Zones group for each zone.
 
 - You created an `install-config.yaml` file by using the procedure "Creating the installation configuration file".
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Modify the `install-config.yaml` file by specifying Wavelength Zones names in the `platform.aws.zones` property of the edge compute pool.
 
@@ -572,11 +465,9 @@ Procedure
 
     - The list of Wavelength Zones names that you use must exist in the same AWS Region specified in the `platform.aws.region` field.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example of a configuration to install a cluster in the `us-west-2` AWS Region that extends edge nodes to Wavelength Zones in `Los Angeles` and `Las Vegas` locations
+      **Example of a configuration to install a cluster in the `us-west-2` AWS Region that extends edge nodes to Wavelength Zones in `Los Angeles` and `Las Vegas` locations**
 
       </div>
 
@@ -600,37 +491,15 @@ Procedure
       #...
       ```
 
-      </div>
-
 2.  Deploy your cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [Creating the installation configuration file](../../../installing/installing_aws/ipi/installing-aws-wavelength-zone.xml#installation-generate-aws-user-infra-install-config_installing-aws-wavelength-zone)
 
 - [Cluster limitations in AWS Wavelength Zones](../../../installing/installing_aws/ipi/installing-aws-wavelength-zone.xml#cluster-limitations-aws-zone_installing-aws-wavelength-zone)
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
+<!-- -->
 
 - [Deploying the cluster](../../../installing/installing_aws/ipi/installing-aws-wavelength-zone.xml#installation-launching-installer_installing-aws-wavelength-zone)
-
-</div>
 
 # Installing a cluster in an existing VPC that has Wavelength Zone subnets
 
@@ -640,8 +509,11 @@ Installing a cluster on AWS into an existing VPC requires extending compute node
 
 You can use a provided CloudFormation template to create network resources. Additionally, you can modify a template to customize your infrastructure or use the information that they contain to create AWS resources according to your company’s policies.
 
-> [!IMPORTANT]
-> The steps for performing an installer-provisioned infrastructure installation are provided for example purposes only. Installing a cluster in an existing VPC requires that you have knowledge of the cloud provider and the installation process of OpenShift Container Platform. You can use a CloudFormation template to assist you with completing these steps or to help model your own cluster installation. Instead of using the CloudFormation template to create resources, you can decide to use other methods for generating these resources.
+<div class="important">
+
+The steps for performing an installer-provisioned infrastructure installation are provided for example purposes only. Installing a cluster in an existing VPC requires that you have knowledge of the cloud provider and the installation process of OpenShift Container Platform. You can use a CloudFormation template to assist you with completing these steps or to help model your own cluster installation. Instead of using the CloudFormation template to create resources, you can decide to use other methods for generating these resources.
+
+</div>
 
 ## Creating a VPC in AWS
 
@@ -649,14 +521,9 @@ You can create a Virtual Private Cloud (VPC), and subnets for all Wavelength Zon
 
 You can use the provided CloudFormation template and a custom parameter file to create a stack of AWS resources that represent the VPC.
 
-> [!NOTE]
-> If you do not use the provided CloudFormation template to create your AWS infrastructure, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you do not use the provided CloudFormation template to create your AWS infrastructure, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
 
 </div>
 
@@ -665,16 +532,6 @@ Prerequisites
 - You added your AWS keys and AWS Region to your local AWS profile by running `aws configure`.
 
 - You opted in to the AWS Wavelength Zones on your AWS account.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a JSON file that contains the parameter values that the CloudFormation template requires:
 
@@ -711,8 +568,11 @@ Procedure
 
 3.  Launch the CloudFormation template to create a stack of AWS resources that represent the VPC by running the following command:
 
-    > [!IMPORTANT]
-    > You must enter the command on a single line.
+    <div class="important">
+
+    You must enter the command on a single line.
+
+    </div>
 
     ``` terminal
     $ aws cloudformation create-stack --stack-name <name> \
@@ -726,19 +586,15 @@ Procedure
 
     - `<parameters>` is the relative path and the name of the CloudFormation parameters JSON file.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
       ``` terminal
       arn:aws:cloudformation:us-east-1:123456789012:stack/cluster-vpc/dbedae40-2fd3-11eb-820e-12a48460849f
       ```
-
-      </div>
 
 4.  Confirm that the template components exist by running the following command:
 
@@ -755,19 +611,9 @@ Procedure
     | `PrivateSubnetIds`   | The IDs of the new private subnets.      |
     | `PublicRouteTableId` | The ID of the new public route table ID. |
 
-</div>
-
 ## CloudFormation template for the VPC
 
 You can use the following CloudFormation template to deploy the VPC that you need for your OpenShift Container Platform cluster.
-
-<div class="example">
-
-<div class="title">
-
-CloudFormation template for the VPC
-
-</div>
 
 ``` yaml
 AWSTemplateFormatVersion: 2010-09-09
@@ -1083,8 +929,6 @@ Outputs:
       ]
 ```
 
-</div>
-
 ## Creating a VPC carrier gateway
 
 To use public subnets in your OpenShift Container Platform cluster that runs on Wavelength Zones, you must create the carrier gateway and associate the carrier gateway to the VPC. Subnets are useful for deploying load balancers or edge compute nodes.
@@ -1109,8 +953,11 @@ The following list explains the functions of a carrier gateway in the context of
 
 - Authorizes outbound traffic to a carrier network and the internet.
 
-> [!NOTE]
-> No inbound connection configuration exists from the internet to a Wavelength Zone through the carrier gateway.
+<div class="note">
+
+No inbound connection configuration exists from the internet to a Wavelength Zone through the carrier gateway.
+
+</div>
 
 You can use the provided CloudFormation template to create a stack of the following AWS resources:
 
@@ -1122,30 +969,15 @@ You can use the provided CloudFormation template to create a stack of the follow
 
 - VPC gateway endpoint for an AWS Simple Storage Service (S3).
 
-> [!NOTE]
-> If you do not use the provided CloudFormation template to create your AWS infrastructure, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you do not use the provided CloudFormation template to create your AWS infrastructure, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
 
 </div>
 
 - You configured an AWS account.
 
 - You added your AWS keys and region to your local AWS profile by running `aws configure`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to the next section of the documentation named "CloudFormation template for the VPC Carrier Gateway", and then copy the syntax from the **CloudFormation template for VPC Carrier Gateway** template. Save the copied template syntax as a YAML file on your local system. This template describes the VPC that your cluster requires.
 
@@ -1168,29 +1000,15 @@ Procedure
 
     - `<ClusterName>` is a custom value that prefixes to resources that the CloudFormation stack creates. You can use the same name that is defined in the `metadata.name` section of the `install-config.yaml` configuration file.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
       ``` terminal
       arn:aws:cloudformation:us-east-1:123456789012:stack/<stack_name>/dbedae40-2fd3-11eb-820e-12a48460849f
       ```
-
-      </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Confirm that the CloudFormation template components exist by running the following command:
 
@@ -1200,35 +1018,17 @@ Verification
 
   After the `StackStatus` displays `CREATE_COMPLETE`, the output displays values for the following parameter. Ensure that you provide the parameter value to the other CloudFormation templates that you run to create for your cluster.
 
-  |  |  |
-  |----|----|
+  |                      |                                                          |
+  |----------------------|----------------------------------------------------------|
   | `PublicRouteTableId` | The ID of the Route Table in the Carrier infrastructure. |
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - See [Amazon S3](https://aws.amazon.com/s3/) in the AWS documentation.
-
-</div>
 
 ## CloudFormation template for the VPC Carrier Gateway
 
 You can use the following CloudFormation template to deploy the Carrier Gateway on AWS Wavelength infrastructure.
-
-<div class="example">
-
-<div class="title">
-
-CloudFormation template for VPC Carrier Gateway
-
-</div>
 
 ``` yaml
 AWSTemplateFormatVersion: 2010-09-09
@@ -1298,22 +1098,15 @@ Outputs:
     Value: !Ref PublicRouteTable
 ```
 
-</div>
-
 ## Creating subnets in Wavelength Zones
 
 Before you configure a machine set for edge compute nodes in your OpenShift Container Platform cluster, you must create the subnets in Wavelength Zones. Complete the following procedure for each Wavelength Zone that you want to deploy compute nodes to.
 
 You can use the provided CloudFormation template and create a CloudFormation stack. You can then use this stack to custom provision a subnet.
 
-> [!NOTE]
-> If you do not use the provided CloudFormation template to create your AWS infrastructure, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you do not use the provided CloudFormation template to create your AWS infrastructure, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
 
 </div>
 
@@ -1322,16 +1115,6 @@ Prerequisites
 - You added your AWS keys and region to your local AWS profile by running `aws configure`.
 
 - You opted in to the Wavelength Zones group.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to the section of the documentation named "CloudFormation template for the VPC subnet", and copy the syntax from the template. Save the copied template syntax as a YAML file on your local system. This template describes the VPC that your cluster requires.
 
@@ -1369,29 +1152,15 @@ Procedure
 
     - `${SUBNET_CIDR_PVT}` is a valid CIDR block that is used to create the private subnet. This block must be part of the VPC CIDR block `VpcCidr`.
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
 ``` terminal
 arn:aws:cloudformation:us-east-1:123456789012:stack/<stack_name>/dbedae40-820e-11eb-2fd3-12a48460849f
 ```
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Confirm that the template components exist by running the following command:
 
@@ -1401,24 +1170,14 @@ Verification
 
   After the `StackStatus` displays `CREATE_COMPLETE`, the output displays values for the following parameters. Ensure that you provide these parameter values to the other CloudFormation templates that you run to create for your cluster.
 
-  |  |  |
-  |----|----|
-  | `PublicSubnetId` | The IDs of the public subnet created by the CloudFormation stack. |
+  |                   |                                                                    |
+  |-------------------|--------------------------------------------------------------------|
+  | `PublicSubnetId`  | The IDs of the public subnet created by the CloudFormation stack.  |
   | `PrivateSubnetId` | The IDs of the private subnet created by the CloudFormation stack. |
-
-</div>
 
 ## CloudFormation template for the VPC subnet
 
 You can use the following CloudFormation template to deploy the private and public subnets in a zone on Wavelength Zones infrastructure.
-
-<div class="example">
-
-<div class="title">
-
-CloudFormation template for VPC subnets
-
-</div>
 
 ``` yaml
 AWSTemplateFormatVersion: 2010-09-09
@@ -1508,41 +1267,21 @@ Outputs:
       !Join ["", [!Ref PrivateSubnet]]
 ```
 
-</div>
-
 ## Modifying an installation configuration file to use AWS Wavelength Zones subnets
 
 Modify your `install-config.yaml` file to include Wavelength Zones subnets.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You created subnets by using the procedure "Creating subnets in Wavelength Zones".
 
 - You created an `install-config.yaml` file by using the procedure "Creating the installation configuration file".
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Modify the `install-config.yaml` configuration file by specifying Wavelength Zones subnets in the `platform.aws.subnets` parameter.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example installation configuration file with Wavelength Zones subnets
+  **Example installation configuration file with Wavelength Zones subnets**
 
   </div>
 
@@ -1562,37 +1301,17 @@ Procedure
   # ...
   ```
 
-  </div>
-
   - List of subnet IDs created in the zones: Availability and Wavelength Zones.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - For more information about viewing the CloudFormation stacks that you created, see [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation).
 
 - For more information about AWS profile and credential configuration, see [Configuration and credential file settings](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) in the AWS documentation.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
+<!-- -->
 
 - [Deploying the cluster](../../../installing/installing_aws/ipi/installing-aws-wavelength-zone.xml#installation-launching-installer_installing-aws-wavelength-zone)
-
-</div>
 
 # Optional: Assign public IP addresses to edge compute nodes
 
@@ -1602,16 +1321,11 @@ AWS Wavelength Zones infrastructure accesses the network traffic in a specified 
 
 The default setting that deploys compute nodes in private subnets might not meet your needs, so consider creating edge compute nodes in public subnets when you want to apply more customization to your infrastructure.
 
-> [!IMPORTANT]
-> By default, OpenShift Container Platform deploy the compute nodes in private subnets. For best performance, consider placing compute nodes in subnets that have their Public IP addresses attached to the subnets.
->
-> You must create additional security groups, but ensure that you only open the groups' rules over the internet when you really need to.
+<div class="important">
 
-<div>
+By default, OpenShift Container Platform deploy the compute nodes in private subnets. For best performance, consider placing compute nodes in subnets that have their Public IP addresses attached to the subnets.
 
-<div class="title">
-
-Procedure
+You must create additional security groups, but ensure that you only open the groups' rules over the internet when you really need to.
 
 </div>
 
@@ -1623,11 +1337,9 @@ Procedure
 
 2.  Edit the machine set manifest that the installation program generates for the Wavelength Zones, so that the manifest gets deployed in public subnets. Specify `true` for the `spec.template.spec.providerSpec.value.publicIP` parameter.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example machine set manifest configuration for installing a cluster quickly in Wavelength Zones
+    **Example machine set manifest configuration for installing a cluster quickly in Wavelength Zones**
 
     </div>
 
@@ -1645,13 +1357,9 @@ Procedure
                       - ${INFRA_ID}-public-${ZONE_NAME}
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example machine set manifest configuration for installing a cluster in an existing VPC that has Wavelength Zones subnets
+    **Example machine set manifest configuration for installing a cluster in an existing VPC that has Wavelength Zones subnets**
 
     </div>
 
@@ -1669,22 +1377,13 @@ Procedure
               publicIp: true
     ```
 
-    </div>
-
-</div>
-
 # Deploying the cluster
 
 You can install OpenShift Container Platform on a compatible cloud platform.
 
-> [!IMPORTANT]
-> You can run the `create cluster` command of the installation program only once, during initial installation.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+You can run the `create cluster` command of the installation program only once, during initial installation.
 
 </div>
 
@@ -1693,16 +1392,6 @@ Prerequisites
 - You have the OpenShift Container Platform installation program and the pull secret for your cluster.
 
 - You have verified that the cloud provider account on your host has the correct permissions to deploy the cluster. An account with incorrect permissions causes the installation process to fail with an error message that displays the missing permissions.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the directory that contains the installation program, initialize the cluster deployment by running the following command:
 
@@ -1717,35 +1406,33 @@ Procedure
 
 2.  Optional: Remove or disable the `AdministratorAccess` policy from the IAM account that you used to install the cluster.
 
-    > [!NOTE]
-    > The elevated permissions provided by the `AdministratorAccess` policy are required only during installation.
+    <div class="note">
 
-</div>
+    The elevated permissions provided by the `AdministratorAccess` policy are required only during installation.
 
-<div class="formalpara">
+    </div>
 
-<div class="title">
+<div class="formalpara-title">
 
-Verification
+**Verification**
 
 </div>
 
 When the cluster deployment completes successfully:
 
-</div>
-
 - The terminal displays directions for accessing your cluster, including a link to the web console and credentials for the `kubeadmin` user.
 
 - Credential information also outputs to `<installation_directory>/.openshift_install.log`.
 
-> [!IMPORTANT]
-> Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
+<div class="important">
 
-<div class="formalpara">
+Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
 
-<div class="title">
+</div>
 
-Example output
+<div class="formalpara-title">
+
+**Example output**
 
 </div>
 
@@ -1758,13 +1445,7 @@ INFO Login to the console with user: "kubeadmin", and password: "password"
 INFO Time elapsed: 36m22s
 ```
 
-</div>
-
 <div class="important">
-
-<div class="title">
-
-</div>
 
 - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
@@ -1782,27 +1463,9 @@ To log in to your cluster as the default system user, export the `kubeconfig` fi
 
 The `kubeconfig` file is specific to a cluster and is created during OpenShift Container Platform installation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You deployed an OpenShift Container Platform cluster.
 
 - You installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Export the `kubeadmin` credentials by running the following command:
 
@@ -1821,11 +1484,9 @@ Procedure
     $ oc whoami
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1833,35 +1494,13 @@ Procedure
     system:admin
     ```
 
-    </div>
-
-</div>
-
 ## Logging in to the cluster by using the web console
 
 The `kubeadmin` user exists by default after an OpenShift Container Platform installation. You can log in to your cluster as the `kubeadmin` user by using the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the installation host.
 
 - You completed a cluster installation and all cluster Operators are available.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Obtain the password for the `kubeadmin` user from the `kubeadmin-password` file on the installation host:
 
@@ -1869,8 +1508,11 @@ Procedure
     $ cat <installation_directory>/auth/kubeadmin-password
     ```
 
-    > [!NOTE]
-    > Alternatively, you can obtain the `kubeadmin` password from the `<installation_directory>/.openshift_install.log` log file on the installation host.
+    <div class="note">
+
+    Alternatively, you can obtain the `kubeadmin` password from the `<installation_directory>/.openshift_install.log` log file on the installation host.
+
+    </div>
 
 2.  List the OpenShift Container Platform web console route:
 
@@ -1878,14 +1520,15 @@ Procedure
     $ oc get routes -n openshift-console | grep 'console-openshift'
     ```
 
-    > [!NOTE]
-    > Alternatively, you can obtain the OpenShift Container Platform route from the `<installation_directory>/.openshift_install.log` log file on the installation host.
+    <div class="note">
 
-    <div class="formalpara">
+    Alternatively, you can obtain the OpenShift Container Platform route from the `<installation_directory>/.openshift_install.log` log file on the installation host.
 
-    <div class="title">
+    </div>
 
-    Example output
+    <div class="formalpara-title">
+
+    **Example output**
 
     </div>
 
@@ -1893,23 +1536,9 @@ Procedure
     console     console-openshift-console.apps.<cluster_name>.<base_domain>            console     https   reencrypt/Redirect   None
     ```
 
-    </div>
-
 3.  Navigate to the route detailed in the output of the preceding command in a web browser and log in as the `kubeadmin` user.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Accessing the web console](../../../web_console/web-console.xml#web-console)
-
-</div>
 
 ## Verifying nodes that were created with edge compute pool
 
@@ -1921,11 +1550,9 @@ After you install a cluster that uses AWS Wavelength Zones infrastructure, check
     $ oc get machineset -n openshift-machine-api
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1937,19 +1564,15 @@ After you install a cluster that uses AWS Wavelength Zones infrastructure, check
     cluster-7xw5g-worker-us-east-1c              1         1         1       1           3h4m
     ```
 
-    </div>
-
 2.  To check the machines that were created from the machine sets, run the following command:
 
     ``` terminal
     $ oc get machines -n openshift-machine-api
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1962,19 +1585,15 @@ After you install a cluster that uses AWS Wavelength Zones infrastructure, check
         cluster-7xw5g-worker-us-east-1b-glm7c             Running   m6i.xlarge    us-east-1   us-east-1b               3h
         cluster-7xw5g-worker-us-east-1c-qfvz4             Running   m6i.xlarge    us-east-1   us-east-1c               3h
 
-    </div>
-
 3.  To check nodes with edge roles, run the following command:
 
     ``` terminal
     $ oc get nodes -l node-role.kubernetes.io/edge
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1983,18 +1602,6 @@ After you install a cluster that uses AWS Wavelength Zones infrastructure, check
     ip-10-0-207-188.ec2.internal   Ready    edge,worker   172m   v1.25.2+d2e245f
     ```
 
-    </div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - [Validating an installation](../../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation).
 
 - If necessary, you can [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
-
-</div>

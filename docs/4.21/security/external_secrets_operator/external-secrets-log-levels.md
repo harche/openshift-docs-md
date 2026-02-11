@@ -1,42 +1,16 @@
 After the External Secrets Operator for Red Hat OpenShift is installed, you can customize its behavior by editing the `ExternalSecretsConfig` custom resource (CR). This lets you modify components like the external-secrets controller, the cert-controller, the webhook, and the `bitwardenSecretManagerProvider` plugin and also lets you set environment variables for the Operator pod.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [External Secrets Operator for Red Hat OpenShift APIs](../external_secrets_operator/external-secrets-operator-api.xml#external-secrets-operator-api)
-
-</div>
 
 # Setting a log level for the External Secrets Operator for Red Hat OpenShift
 
 Set the log level for the External Secrets Operator for Red Hat OpenShift to control the detail of log messages. By adjusting the verbosity, you can troubleshoot issues effectively and manage the volume of log data.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have created the `ExternalSecretsConfig` custom resource.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Update the subscription object for the External Secrets Operator for Red Hat OpenShift to provide the verbosity level for the operator logs by running the following command:
 
@@ -51,16 +25,6 @@ Procedure
 
   log_level
   Specifies the level of log detail. Values range from 1-5. The default is 2.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 1.  The External Secrets Operator pod is redeployed. Verify that the log level of the External Secrets Operator for Red Hat OpenShift is updated by running the following command:
 
@@ -81,33 +45,13 @@ Verification
     $ oc logs -n external-secrets-operator -f deployments/external-secrets-operator-controller-manager -c manager
     ```
 
-</div>
-
 # Setting a log level for the External Secrets Operator for Red Hat OpenShift operand
 
 Set the log level for the External Secrets Operator for Red Hat OpenShift operand to control the verbosity of log messages. By doing this task, you can adjust the amount of detail recorded for troubleshooting or monitoring purposes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have created the `ExternalSecretsConfig` custom resource.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `ExternalSecretsConfig` CR by running the following command:
 
@@ -138,37 +82,17 @@ Procedure
 
 3.  Save your changes and exit the editor.
 
-</div>
-
 # Configuring cert-manager for the external-secrets certificate requirements
 
 Configure cert-manager to handle certificate management for the external-secrets webhook and plugins. This optional configuration automates certificate generation for plugins and eliminates the need for manual configuration.
 
 When `cert-manager` is not used, `external-secrets` defaults to its own certificate management. In this mode, it automatically generates the required certificates for the webhook, while you are responsible for manually configuring certificates for the plugins.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have created the `ExternalSecretsConfig` custom resource.
 
 - You have installed the cert-manager Operator for Red Hat OpenShift. For more information, see "Installing the cert-manager Operator for Red Hat OpenShift"
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `ExternalSecretsConfig` custom resource by running the following command:
 
@@ -237,47 +161,17 @@ Procedure
     $ oc delete secrets external-secrets-webhook -n external-secrets
     ```
 
-</div>
-
-<div id="external-secrets-log-levels_additional-resources">
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [cert-manager Operator for Red Hat Openshift](../cert_manager_operator/index.xml#cert-manager-operator-about)
 
 - [Installing the cert-manager-Operator for Red Hat Openshift](../cert_manager_operator/cert-manager-operator-install.xml#cert-manager-operator-install)
-
-</div>
 
 # Configuring the bitwardenSecretManagerProvider plugin
 
 Configure the `bitwardenSecretManagerProvider` plugin to use Bitwarden Secrets Manager as a source for your secrets. By using this integration, you can sync external secrets to your OpenShift Container Platform cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have created the `ExternalSecretsConfig` custom resource.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `ExternalSecretsConfig` custom resource by running the following command:
 
@@ -307,8 +201,6 @@ Procedure
 3.  Save your changes and exit the editor.
 
 4.  If you disable the plugin the following resources must be deleted manually by running the following commands:
-
-</div>
 
 ``` terminal
 $ oc delete deployments.apps bitwarden-sdk-server -n external-secrets

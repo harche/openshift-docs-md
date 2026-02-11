@@ -6,14 +6,6 @@ The OpenShift Virtualization Operator uses a predefined list of obsolete CPU mod
 
 By default, the following CPU models are eliminated from the list of labels generated for the node:
 
-<div class="example">
-
-<div class="title">
-
-Obsolete CPU models
-
-</div>
-
     "486"
     Conroe
     athlon
@@ -30,21 +22,11 @@ Obsolete CPU models
     qemu32
     qemu64
 
-</div>
-
 This predefined list is not visible in the `HyperConverged` CR. You cannot *remove* CPU models from this list, but you can add to the list by editing the `spec.obsoleteCPUs.cpuModels` field of the `HyperConverged` CR.
 
 # Configuring obsolete CPU models
 
 You can configure a list of obsolete CPU models by editing the `HyperConverged` custom resource (CR).
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Edit the `HyperConverged` custom resource, specifying the obsolete CPU models in the `obsoleteCPUs` array. For example:
 
@@ -62,5 +44,3 @@ Procedure
   ```
 
   - Replace the example values in the `cpuModels` array with obsolete CPU models. Any value that you specify is added to a predefined list of obsolete CPU models. The predefined list is not visible in the CR.
-
-</div>

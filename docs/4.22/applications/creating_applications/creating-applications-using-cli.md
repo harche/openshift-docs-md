@@ -18,8 +18,11 @@ To create an application from a Git repository in a local directory:
 $ oc new-app /<path to source code>
 ```
 
-> [!NOTE]
-> If you use a local Git repository, the repository must have a remote named `origin` that points to a URL that is accessible by the OpenShift Container Platform cluster. If there is no recognized remote, running the `new-app` command will create a binary build.
+<div class="note">
+
+If you use a local Git repository, the repository must have a remote named `origin` that points to a URL that is accessible by the OpenShift Container Platform cluster. If there is no recognized remote, running the `new-app` command will create a binary build.
+
+</div>
 
 ## Remote
 
@@ -35,8 +38,11 @@ To create an application from a private remote Git repository:
 $ oc new-app https://github.com/youruser/yourprivaterepo --source-secret=yoursecret
 ```
 
-> [!NOTE]
-> If you use a private remote Git repository, you can use the `--source-secret` flag to specify an existing source clone secret that will get injected into your build config to access the repository.
+<div class="note">
+
+If you use a private remote Git repository, you can use the `--source-secret` flag to specify an existing source clone secret that will get injected into your build config to access the repository.
+
+</div>
 
 You can use a subdirectory of your source code repository by specifying a `--context-dir` flag. To create an application from a remote Git repository and a context subdirectory:
 
@@ -57,8 +63,11 @@ OpenShift Container Platform automatically determines which build strategy to us
 
 - If a Jenkins file exists in the root or specified context directory of the source repository when creating a new application, OpenShift Container Platform generates a pipeline build strategy.
 
-  > [!NOTE]
-  > The `pipeline` build strategy is deprecated; consider using Red Hat OpenShift Pipelines instead.
+  <div class="note">
+
+  The `pipeline` build strategy is deprecated; consider using Red Hat OpenShift Pipelines instead.
+
+  </div>
 
 - If a Dockerfile exists in the root or specified context directory of the source repository when creating a new application, OpenShift Container Platform generates a docker build strategy.
 
@@ -70,8 +79,11 @@ Override the automatically detected build strategy by setting the `--strategy` f
 $ oc new-app /home/user/code/myapp --strategy=docker
 ```
 
-> [!NOTE]
-> The `oc` command requires that files containing build sources are available in a remote Git repository. For all source builds, you must use `git remote -v`.
+<div class="note">
+
+The `oc` command requires that files containing build sources are available in a remote Git repository. For all source builds, you must use `git remote -v`.
+
+</div>
 
 ## Language detection
 
@@ -107,12 +119,15 @@ To use the `openshift/ruby-20-centos7:latest` container image stream with the so
 $ oc new-app openshift/ruby-20-centos7:latest~/home/user/code/my-ruby-app
 ```
 
-> [!NOTE]
-> Language detection requires the Git client to be locally installed so that your repository can be cloned and inspected. If Git is not available, you can avoid the language detection step by specifying the builder image to use with your repository with the `<image>~<repository>` syntax.
->
-> The `-i <image> <repository>` invocation requires that `new-app` attempt to clone `repository` to determine what type of artifact it is, so this will fail if Git is not available.
->
-> The `-i <image> --code <repository>` invocation requires `new-app` clone `repository` to determine whether `image` should be used as a builder for the source code, or deployed separately, as in the case of a database image.
+<div class="note">
+
+Language detection requires the Git client to be locally installed so that your repository can be cloned and inspected. If Git is not available, you can avoid the language detection step by specifying the builder image to use with your repository with the `<image>~<repository>` syntax.
+
+The `-i <image> <repository>` invocation requires that `new-app` attempt to clone `repository` to determine what type of artifact it is, so this will fail if Git is not available.
+
+The `-i <image> --code <repository>` invocation requires `new-app` clone `repository` to determine whether `image` should be used as a builder for the source code, or deployed separately, as in the case of a database image.
+
+</div>
 
 # Creating an application from an image
 
@@ -120,8 +135,11 @@ You can deploy an application from an existing image. Images can come from image
 
 The `new-app` command attempts to determine the type of image specified in the arguments passed to it. However, you can explicitly tell `new-app` whether the image is a container image using the `--docker-image` argument or an image stream using the `-i|--image-stream` argument.
 
-> [!NOTE]
-> If you specify an image from your local Docker repository, you must ensure that the same image is available to the OpenShift Container Platform cluster nodes.
+<div class="note">
+
+If you specify an image from your local Docker repository, you must ensure that the same image is available to the OpenShift Container Platform cluster nodes.
+
+</div>
 
 ## Docker Hub MySQL image
 
@@ -195,13 +213,13 @@ $ oc new-app ruby-helloworld-sample --param-file=helloworld.params
 
 The `new-app` command generates OpenShift Container Platform objects that build, deploy, and run the application that is created. Normally, these objects are created in the current project and assigned names that are derived from the input source repositories or the input images. However, with `new-app` you can modify this behavior.
 
-| Object | Description |
-|----|----|
-| `BuildConfig` | A `BuildConfig` object is created for each source repository that is specified in the command line. The `BuildConfig` object specifies the strategy to use, the source location, and the build output location. |
-| `ImageStreams` | For the `BuildConfig` object, two image streams are usually created. One represents the input image. With source builds, this is the builder image. With `Docker` builds, this is the **FROM** image. The second one represents the output image. If a container image was specified as input to `new-app`, then an image stream is created for that image as well. |
-| `DeploymentConfig` | A `DeploymentConfig` object is created either to deploy the output of a build, or a specified image. The `new-app` command creates `emptyDir` volumes for all Docker volumes that are specified in containers included in the resulting `DeploymentConfig` object . |
-| `Service` | The `new-app` command attempts to detect exposed ports in input images. It uses the lowest numeric exposed port to generate a service that exposes that port. To expose a different port, after `new-app` has completed, simply use the `oc expose` command to generate additional services. |
-| Other | Other objects can be generated when instantiating templates, according to the template. |
+| Object             | Description                                                                                                                                                                                                                                                                                                                                                         |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `BuildConfig`      | A `BuildConfig` object is created for each source repository that is specified in the command line. The `BuildConfig` object specifies the strategy to use, the source location, and the build output location.                                                                                                                                                     |
+| `ImageStreams`     | For the `BuildConfig` object, two image streams are usually created. One represents the input image. With source builds, this is the builder image. With `Docker` builds, this is the **FROM** image. The second one represents the output image. If a container image was specified as input to `new-app`, then an image stream is created for that image as well. |
+| `DeploymentConfig` | A `DeploymentConfig` object is created either to deploy the output of a build, or a specified image. The `new-app` command creates `emptyDir` volumes for all Docker volumes that are specified in containers included in the resulting `DeploymentConfig` object .                                                                                                 |
+| `Service`          | The `new-app` command attempts to detect exposed ports in input images. It uses the lowest numeric exposed port to generate a service that exposes that port. To expose a different port, after `new-app` has completed, simply use the `oc expose` command to generate additional services.                                                                        |
+| Other              | Other objects can be generated when instantiating templates, according to the template.                                                                                                                                                                                                                                                                             |
 
 `new-app` output objects
 
@@ -236,8 +254,11 @@ Additionally, environment variables can be given on standard input by using `--e
 $ cat postgresql.env | oc new-app openshift/postgresql-92-centos7 --env-file=-
 ```
 
-> [!NOTE]
-> Any `BuildConfig` objects created as part of `new-app` processing are not updated with environment variables passed with the `-e|--env` or `--env-file` argument.
+<div class="note">
+
+Any `BuildConfig` objects created as part of `new-app` processing are not updated with environment variables passed with the `-e|--env` or `--env-file` argument.
+
+</div>
 
 ## Specifying build environment variables
 
@@ -325,8 +346,11 @@ To create an application from a source repository and a Docker Hub image:
 $ oc new-app https://github.com/openshift/ruby-hello-world mysql
 ```
 
-> [!NOTE]
-> If a source code repository and a builder image are specified as separate arguments, `new-app` uses the builder image as the builder for the source code repository. If this is not the intent, specify the required builder image for the source using the `~` separator.
+<div class="note">
+
+If a source code repository and a builder image are specified as separate arguments, `new-app` uses the builder image as the builder for the source code repository. If this is not the intent, specify the required builder image for the source using the `~` separator.
+
+</div>
 
 ## Grouping images and source in a single pod
 

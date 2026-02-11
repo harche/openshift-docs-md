@@ -2,25 +2,15 @@ Although the [Compliance Operator](../../../security/compliance_operator/co-conc
 
 # Installing the oc-compliance plugin
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Extract the `oc-compliance` image to get the `oc-compliance` binary:
 
     ``` terminal
     $ podman run --rm -v ~/.local/bin:/mnt/out:Z registry.redhat.io/compliance/oc-compliance-rhel8:stable /bin/cp /usr/bin/oc-compliance /mnt/out/
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -28,23 +18,11 @@ Procedure
     W0611 20:35:46.486903   11354 manifest.go:440] Chose linux/amd64 manifest from the manifest list.
     ```
 
-    </div>
-
     You can now run `oc-compliance`.
-
-</div>
 
 # Fetching raw results
 
 When a compliance scan finishes, the results of the individual checks are listed in the resulting `ComplianceCheckResult` custom resource (CR). However, an administrator or auditor might require the complete details of the scan. The OpenSCAP tool creates an Advanced Recording Format (ARF) formatted file with the detailed results. This ARF file is too large to store in a config map or other standard Kubernetes resource, so a persistent volume (PV) is created to contain it.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Fetching the results from the PV with the Compliance Operator is a four-step process. However, with the `oc-compliance` plugin, you can use a single command:
 
@@ -62,11 +40,9 @@ Procedure
   $ oc compliance fetch-raw scansettingbindings my-binding -o /tmp/
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -80,29 +56,21 @@ Procedure
   The raw compliance results are available in the following directory: /tmp/ocp4-cis-node-master
   ```
 
-  </div>
-
-</div>
-
 View the list of files in the directory:
 
 ``` terminal
 $ ls /tmp/ocp4-cis-node-master/
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
 ``` terminal
 ocp4-cis-node-master-ip-10-0-128-89.ec2.internal-pod.xml.bzip2  ocp4-cis-node-master-ip-10-0-150-5.ec2.internal-pod.xml.bzip2  ocp4-cis-node-master-ip-10-0-163-32.ec2.internal-pod.xml.bzip2
 ```
-
-</div>
 
 Extract the results:
 
@@ -116,11 +84,9 @@ View the results:
 $ ls resultsdir/worker-scan/
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -130,19 +96,9 @@ worker-scan-stage-459-tqkg7-compute-0-pod.xml.bzip2
 worker-scan-stage-459-tqkg7-compute-1-pod.xml.bzip2
 ```
 
-</div>
-
 # Re-running scans
 
 Although it is possible to run scans as scheduled jobs, you must often re-run a scan on demand, particularly after remediations are applied or when other changes to the cluster are made.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Rerunning a scan with the Compliance Operator requires use of an annotation on the scan object. However, with the `oc-compliance` plugin you can rerun a scan with a single command. Enter the following command to rerun the scans for the `ScanSettingBinding` object named `my-binding`:
 
@@ -150,11 +106,9 @@ Procedure
   $ oc compliance rerun-now scansettingbindings my-binding
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -163,23 +117,11 @@ Procedure
   Re-running scan 'openshift-compliance/ocp4-cis'
   ```
 
-  </div>
-
-</div>
-
 # Using ScanSettingBinding custom resources
 
 When using the `ScanSetting` and `ScanSettingBinding` custom resources (CRs) that the Compliance Operator provides, it is possible to run scans for multiple profiles while using a common set of scan options, such as `schedule`, `machine roles`, `tolerations`, and so on. While that is easier than working with multiple `ComplianceSuite` or `ComplianceScan` objects, it can confuse new users.
 
 The `oc compliance bind` subcommand helps you create a `ScanSettingBinding` CR.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run:
 
@@ -201,11 +143,9 @@ Procedure
       $ oc get profile.compliance -n openshift-compliance
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -251,17 +191,13 @@ Procedure
       rhcos4-stig-v2r1           3h49m   V2R1
       ```
 
-      </div>
-
       ``` terminal
       $ oc get scansettings -n openshift-compliance
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -271,19 +207,15 @@ Procedure
       default-auto-apply   10m
       ```
 
-      </div>
-
 2.  To apply the `default` settings to the `ocp4-cis` and `ocp4-cis-node` profiles, run:
 
     ``` terminal
     $ oc compliance bind -N my-binding profile/ocp4-cis profile/ocp4-cis-node
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -291,11 +223,7 @@ Procedure
     Creating ScanSettingBinding my-binding
     ```
 
-    </div>
-
     After the `ScanSettingBinding` CR is created, the bound profile begins scanning for both profiles with the related settings. Overall, this is the fastest way to begin scanning with the Compliance Operator.
-
-</div>
 
 # Printing controls
 
@@ -309,13 +237,7 @@ Compliance standards are generally organized into a hierarchy as follows:
 
 - The Compliance Operator handles the grouping of rules into a profile for a single benchmark. It can be difficult to determine which controls that the set of rules in a profile satisfy.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - The `oc compliance` `controls` subcommand provides a report of the standards and controls that a given profile satisfies:
 
@@ -323,11 +245,9 @@ Procedure
   $ oc compliance controls profile ocp4-cis-node
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -344,21 +264,9 @@ Procedure
   ...
   ```
 
-  </div>
-
-</div>
-
 # Fetching compliance remediation details
 
 The Compliance Operator provides remediation objects that are used to automate the changes required to make the cluster compliant. The `fetch-fixes` subcommand can help you understand exactly which configuration remediations are used. Use the `fetch-fixes` subcommand to extract the remediation objects from a profile, rule, or `ComplianceRemediation` object into a directory to inspect.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  View the remediations for a profile:
 
@@ -366,11 +274,9 @@ Procedure
     $ oc compliance fetch-fixes profile ocp4-cis -o /tmp
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -390,8 +296,6 @@ Procedure
     Persisted rule fix to /tmp/ocp4-api-server-encryption-provider-config.yaml
     ```
 
-    </div>
-
     - The `No fixes to persist` warning is expected whenever there are rules in a profile that do not have a corresponding remediation, because either the rule cannot be remediated automatically or a remediation was not provided.
 
 2.  You can view a sample of the YAML file. The `head` command will show you the first 10 lines:
@@ -400,11 +304,9 @@ Procedure
     $ head /tmp/ocp4-api-server-audit-log-maxsize.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -417,19 +319,15 @@ Procedure
       maximumFileSizeMegabytes: 100
     ```
 
-    </div>
-
 3.  View the remediation from a `ComplianceRemediation` object created after a scan:
 
     ``` terminal
     $ oc get complianceremediations -n openshift-compliance
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -439,17 +337,13 @@ Procedure
     ocp4-cis-api-server-encryption-provider-config   NotApplied
     ```
 
-    </div>
-
     ``` terminal
     $ oc compliance fetch-fixes complianceremediations ocp4-cis-api-server-encryption-provider-cipher -o /tmp
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -457,19 +351,15 @@ Procedure
     Persisted compliance remediation fix to /tmp/ocp4-cis-api-server-encryption-provider-cipher.yaml
     ```
 
-    </div>
-
 4.  You can view a sample of the YAML file. The `head` command will show you the first 10 lines:
 
     ``` terminal
     $ head /tmp/ocp4-cis-api-server-encryption-provider-cipher.yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -483,29 +373,18 @@ Procedure
         type: aescbc
     ```
 
-    </div>
+<div class="warning">
+
+Use caution before applying remediations directly. Some remediations might not be applicable in bulk, such as the usbguard rules in the moderate profile. In these cases, allow the Compliance Operator to apply the rules because it addresses the dependencies and ensures that the cluster remains in a good state.
 
 </div>
-
-> [!WARNING]
-> Use caution before applying remediations directly. Some remediations might not be applicable in bulk, such as the usbguard rules in the moderate profile. In these cases, allow the Compliance Operator to apply the rules because it addresses the dependencies and ensures that the cluster remains in a good state.
 
 # Viewing ComplianceCheckResult object details
 
 When scans are finished running, `ComplianceCheckResult` objects are created for the individual scan rules. The `view-result` subcommand provides a human-readable output of the `ComplianceCheckResult` object details.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Run:
 
   ``` terminal
   $ oc compliance view-result ocp4-cis-scheduler-no-bind-address
   ```
-
-</div>

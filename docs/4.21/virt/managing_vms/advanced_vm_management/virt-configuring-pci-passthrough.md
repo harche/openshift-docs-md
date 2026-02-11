@@ -10,25 +10,9 @@ You can prevent GPU operands from deploying on worker nodes that you designated 
 
 If you use the [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/contents.html) in your cluster, you can apply the `nvidia.com/gpu.deploy.operands=false` label to nodes that you do not want to configure for GPU or vGPU operands. This prevents the creation of the pods that configure GPU or vGPU operands and terminates existing pods.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The OpenShift CLI (`oc`) is installed.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Label the node by running the following command:
 
@@ -40,14 +24,6 @@ Procedure
 
   `<node_name>`
   Specifies the name of a node where you do not want to install the NVIDIA GPU operands.
-
-  <div>
-
-  <div class="title">
-
-  Verification
-
-  </div>
 
   1.  Verify that the label was added to the node by running the following command:
 
@@ -93,10 +69,6 @@ Procedure
           nvidia-vfio-manager-866pz        1/1     Running   0          8d
           ```
 
-  </div>
-
-</div>
-
 # Preparing host devices for PCI passthrough
 
 ## About preparing a host device for PCI passthrough
@@ -111,14 +83,6 @@ To remove a PCI host device from the cluster by using the CLI, delete the PCI de
 
 To enable the IOMMU driver in the kernel, create the `MachineConfig` object and add the kernel arguments.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have cluster administrator permissions.
 
 - Your CPU hardware is Intel or AMD.
@@ -126,16 +90,6 @@ Prerequisites
 - You enabled Intel Virtualization Technology for Directed I/O extensions or AMD IOMMU in the BIOS.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `MachineConfig` object that identifies the kernel argument. The following example shows a kernel argument for an Intel CPU.
 
@@ -172,15 +126,7 @@ Procedure
     $ oc create -f 100-worker-kernel-arg-iommu.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  Verify that the new `MachineConfig` object was added by entering the following command and observing the output:
 
@@ -219,35 +165,15 @@ Verification
       AMD: [ 0.000000] AMD-Vi: IOMMU Initialized
       ```
 
-</div>
-
 ## Binding PCI devices to the VFIO driver
 
 To bind PCI devices to the VFIO (Virtual Function I/O) driver, obtain the values for `vendor-ID` and `device-ID` from each device and create a list with the values. Add this list to the `MachineConfig` object.
 
 The `MachineConfig` Operator generates the `/etc/modprobe.d/vfio.conf` on the nodes with the PCI devices, and binds the PCI devices to the VFIO driver.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You added kernel arguments to enable IOMMU for the CPU.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the `lspci` command to obtain the `vendor-ID` and the `device-ID` for the PCI device.
 
@@ -263,8 +189,11 @@ Procedure
 
 2.  Create a Butane config file, `100-worker-vfiopci.bu`, binding the PCI device to the VFIO driver.
 
-    > [!NOTE]
-    > The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+    <div class="note">
+
+    The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+
+    </div>
 
     Example:
 
@@ -328,16 +257,6 @@ Procedure
     100-worker-vfiopci-configuration                                            3.5.0            30s
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the VFIO driver is loaded.
 
   ``` terminal
@@ -353,31 +272,11 @@ Verification
               Kernel driver in use: vfio-pci
               Kernel modules: nouveau
 
-</div>
-
 ## Exposing PCI host devices in the cluster using the CLI
 
 To expose PCI host devices in the cluster, add details about the PCI devices to the `spec.permittedHostDevices.pciHostDevices` array of the `HyperConverged` custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `HyperConverged` CR in your default editor by running the following command:
 
@@ -418,20 +317,13 @@ Procedure
 
     - Optional: Setting this field to `true` indicates that the resource is provided by an external device plugin. OpenShift Virtualization allows the usage of this device in the cluster but leaves the allocation and monitoring to an external device plugin.
 
-      > [!NOTE]
-      > The above example snippet shows two PCI host devices that are named `nvidia.com/GV100GL_Tesla_V100` and `nvidia.com/TU104GL_Tesla_T4` added to the list of permitted host devices in the `HyperConverged` CR. These devices have been tested and verified to work with OpenShift Virtualization.
+      <div class="note">
+
+      The above example snippet shows two PCI host devices that are named `nvidia.com/GV100GL_Tesla_V100` and `nvidia.com/TU104GL_Tesla_T4` added to the list of permitted host devices in the `HyperConverged` CR. These devices have been tested and verified to work with OpenShift Virtualization.
+
+      </div>
 
 3.  Save your changes and exit the editor.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Verify that the PCI host devices were added to the node by running the following command. The example output shows that there is one device each associated with the `nvidia.com/GV100GL_Tesla_V100`, `nvidia.com/TU104GL_Tesla_T4`, and `intel.com/qat` resource names.
 
@@ -470,31 +362,11 @@ Verification
     pods:                           250
   ```
 
-</div>
-
 ## Removing PCI host devices from the cluster using the CLI
 
 To remove a PCI host device from the cluster, delete the information for that device from the `HyperConverged` custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `HyperConverged` CR in your default editor by running the following command:
 
@@ -523,16 +395,6 @@ Procedure
     ```
 
 3.  Save your changes and exit the editor.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - Verify that the PCI host device was removed from the node by running the following command. The example output shows that there are zero devices associated with the `intel.com/qat` resource name.
 
@@ -571,8 +433,6 @@ Verification
     pods:                           250
   ```
 
-</div>
-
 # Configuring virtual machines for PCI passthrough
 
 After the PCI devices have been added to the cluster, you can assign them to virtual machines. The PCI devices are now available as if they are physically connected to the virtual machines.
@@ -580,14 +440,6 @@ After the PCI devices have been added to the cluster, you can assign them to vir
 ## Assigning a PCI device to a virtual machine
 
 When a PCI device is available in a cluster, you can assign it to a virtual machine and enable PCI passthrough.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Assign the PCI device to a virtual machine as a host device.
 
@@ -609,15 +461,7 @@ Procedure
   `deviceName`
   Specifies the name of the PCI device that is permitted on the cluster as a host device. The virtual machine can access this host device.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - Use the following command to verify that the host device is available from the virtual machine.
 
@@ -630,8 +474,6 @@ Verification
   ``` terminal
   $ 02:01.0 3D controller [0302]: NVIDIA Corporation GV100GL [Tesla V100 PCIe 32GB] [10de:1eb8] (rev a1)
   ```
-
-</div>
 
 # Additional resources
 

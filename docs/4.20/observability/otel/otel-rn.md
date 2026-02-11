@@ -2,11 +2,17 @@
 
 Red Hat build of OpenTelemetry 3.8.2 is provided through the [Red Hat build of OpenTelemetry Operator 0.140.0](https://catalog.redhat.com/software/containers/rhosdt/opentelemetry-operator-bundle/615618406feffc5384e84400/history) and based on the open source [OpenTelemetry](https://opentelemetry.io/docs/collector/) release 0.140.0.
 
-> [!NOTE]
-> There was no 3.8.1 patch release for Red Hat build of OpenTelemetry. Version 3.8.1 patch release was shipped only for Distributed Tracing Platform.
+<div class="note">
 
-> [!NOTE]
-> Only supported features are documented. Undocumented features are currently unsupported. If you need assistance with a feature, contact Red Hat’s support.
+There was no 3.8.1 patch release for Red Hat build of OpenTelemetry. Version 3.8.1 patch release was shipped only for Distributed Tracing Platform.
+
+</div>
+
+<div class="note">
+
+Only supported features are documented. Undocumented features are currently unsupported. If you need assistance with a feature, contact Red Hat’s support.
+
+</div>
 
 # New features and enhancements
 
@@ -31,10 +37,13 @@ This release introduces support for the Profile signal as a Technology Preview f
 Prometheus Remote Write Receiver (Technology Preview)
 This release introduces the Prometheus Remote Write Receiver as a Technology Preview feature for the Collector of the Red Hat build of OpenTelemetry. You can use the Prometheus Remote Write Receiver to export metrics from the Prometheus server.
 
-> [!IMPORTANT]
-> Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 # Fixed issues
 
@@ -45,8 +54,11 @@ Before this update, the `HostnameError.Error()` function in the Go `crypto/x509`
 
 [CVE-2025-61729](https://access.redhat.com/security/cve/cve-2025-61729)
 
-> [!NOTE]
-> There was no 3.8.1 patch release for Red Hat build of OpenTelemetry. Version 3.8.1 patch release was shipped only for Distributed Tracing Platform.
+<div class="note">
+
+There was no 3.8.1 patch release for Red Hat build of OpenTelemetry. Version 3.8.1 patch release was shipped only for Distributed Tracing Platform.
+
+</div>
 
 The Red Hat build of OpenTelemetry 3.8 release fixes the following issues:
 
@@ -65,8 +77,11 @@ Before this update, the AWS Cloud Watch Exporter ignored short-term token authen
 
 [TRACING-5528](https://issues.redhat.com/browse/TRACING-5528)
 
-> [!NOTE]
-> Some linked Jira tickets are accessible only with Red Hat credentials.
+<div class="note">
+
+Some linked Jira tickets are accessible only with Red Hat credentials.
+
+</div>
 
 # Getting support
 

@@ -44,13 +44,7 @@ Red Hat OpenShift Container Platform enables the following hardware accelerator
 
 - Intel® Gaudi®
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Introduction to Red Hat OpenShift AI](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2-latest/html/introduction_to_red_hat_openshift_ai/index)
 
@@ -59,5 +53,3 @@ Additional resources
 - [AMD Instinct Accelerators](https://www.amd.com/en/products/accelerators/instinct.html)
 
 - [Intel Gaudi Al Accelerators](https://www.intel.com/content/www/us/en/products/details/processors/ai-accelerators/gaudi-overview.html)
-
-</div>

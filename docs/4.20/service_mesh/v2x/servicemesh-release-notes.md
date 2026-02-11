@@ -430,8 +430,11 @@ This release of Red Hat OpenShift Service Mesh updates the Red Hat OpenShift S
 
 This release ends maintenance support for Red Hat OpenShift Service Mesh version 2.3. If you are using Service Mesh version 2.3, you should update to a supported version.
 
-> [!IMPORTANT]
-> Red Hat OpenShift Service Mesh is designed for FIPS. Service Mesh uses the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on the x86_64, ppc64le, and s390x architectures. For more information about the NIST validation program, see [Cryptographic Module Validation Program](https://csrc.nist.gov/Projects/cryptographic-module-validation-program/validated-modules). For the latest NIST status for the individual versions of RHEL cryptographic libraries that have been submitted for validation, see [Compliance Activities and Government Standards](https://access.redhat.com/articles/compliance_activities_and_gov_standards#fips-140-2-and-fips-140-3-2).
+<div class="important">
+
+Red Hat OpenShift Service Mesh is designed for FIPS. Service Mesh uses the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on the x86_64, ppc64le, and s390x architectures. For more information about the NIST validation program, see [Cryptographic Module Validation Program](https://csrc.nist.gov/Projects/cryptographic-module-validation-program/validated-modules). For the latest NIST status for the individual versions of RHEL cryptographic libraries that have been submitted for validation, see [Compliance Activities and Government Standards](https://access.redhat.com/articles/compliance_activities_and_gov_standards#fips-140-2-and-fips-140-3-2).
+
+</div>
 
 ## Component updates
 
@@ -447,11 +450,9 @@ Service Mesh 2.6 is based on Istio 1.20, which provides new features and product
 
 - Native sidecars are supported on OpenShift Container Platform 4.16 or later.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example `ServiceMeshControlPlane` resource
+  **Example `ServiceMeshControlPlane` resource**
 
   </div>
 
@@ -468,8 +469,6 @@ Service Mesh 2.6 is based on Istio 1.20, which provides new features and product
             env:
               ENABLE_NATIVE_SIDECARS: "true"
   ```
-
-  </div>
 
 - Traffic mirroring in Istio 1.20 now supports multiple destinations. This feature enables the mirroring of traffic to various endpoints, allowing for simultaneous observation across different service versions or configurations.
 
@@ -509,16 +508,19 @@ This release introduces the General Availability for using the Kubernetes Gatewa
 
 Gateway API is now enabled by default if cluster-wide mode is enabled (`spec.mode: ClusterWide`). It can be enabled even if the custom resource definitions (CRDs) are not installed in the cluster.
 
-> [!IMPORTANT]
-> Gateway API for multitenant mesh deployments is still in Technology Preview.
+<div class="important">
+
+Gateway API for multitenant mesh deployments is still in Technology Preview.
+
+</div>
 
 Refer to the following table to determine which Gateway API version should be installed with the OpenShift Service Mesh version you are using:
 
-| Service Mesh Version | Istio Version | Gateway API Version | Notes |
-|----|----|----|----|
-| 2.6 | 1.20.x | 1.0.0 | N/A |
-| 2.5.x | 1.18.x | 0.6.2 | Use the experimental branch because `ReferenceGrand` is missing in v0.6.2. |
-| 2.4.x | 1.16.x | 0.5.1 | For multitenant mesh deployment, all Gateway API CRDs must be present. Use the experimental branch. |
+| Service Mesh Version | Istio Version | Gateway API Version | Notes                                                                                               |
+|----------------------|---------------|---------------------|-----------------------------------------------------------------------------------------------------|
+| 2.6                  | 1.20.x        | 1.0.0               | N/A                                                                                                 |
+| 2.5.x                | 1.18.x        | 0.6.2               | Use the experimental branch because `ReferenceGrand` is missing in v0.6.2.                          |
+| 2.4.x                | 1.16.x        | 0.5.1               | For multitenant mesh deployment, all Gateway API CRDs must be present. Use the experimental branch. |
 
 You can disable this feature by setting `PILOT_ENABLE_GATEWAY_API` to `false`:
 
@@ -686,8 +688,11 @@ This release provides the Red Hat OpenShift Service Mesh Operator on ARM-based 
 
 This release introduces a generally available integration of the tracing extension provider(s). You can expose tracing data to the Red Hat OpenShift Distributed Tracing Platform (Tempo) stack by appending a named element and the `zipkin` provider to the `spec.meshConfig.extensionProviders` specification. Then, a telemetry custom resource configures Istio proxies to collect trace spans and send them to the Tempo distributor service endpoint.
 
-> [!NOTE]
-> Red Hat OpenShift Distributed Tracing Platform (Tempo) Stack is not supported on IBM Z.
+<div class="note">
+
+Red Hat OpenShift Distributed Tracing Platform (Tempo) Stack is not supported on IBM Z.
+
+</div>
 
 ### OpenShift Service Mesh Console plugin
 
@@ -703,11 +708,9 @@ The default setting for Istio OpenShift Routing (IOR) has changed. Starting with
 
 For new instances of the `ServiceMeshControlPlane` resources, you can use automatic routes by setting the `enabled` field to `true` in the `gateways.openshiftRoute` specification of the `ServiceMeshControlPlane` resource.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example `ServiceMeshControlPlane` resource
+**Example `ServiceMeshControlPlane` resource**
 
 </div>
 
@@ -719,8 +722,6 @@ spec:
     openshiftRoute:
       enabled: true
 ```
-
-</div>
 
 When updating existing instances of the `ServiceMeshControlPlane` resource to Red Hat OpenShift Service Mesh version 2.5, automatic routes remain enabled by default.
 
@@ -734,17 +735,20 @@ Previously, the default setting for the parameter was `2`.
 
 ### Gateway API CRD versions
 
-> [!IMPORTANT]
-> OpenShift Container Platform Gateway API support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+OpenShift Container Platform Gateway API support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 A new version of the Gateway API custom resource definition (CRD) is now available. Refer to the following table to determine which Gateway API version should be installed with the OpenShift Service Mesh version you are using:
 
-| Service Mesh Version | Istio Version | Gateway API Version | Notes |
-|----|----|----|----|
-| 2.5.x | 1.18.x | 0.6.2 | Use the experimental branch because `ReferenceGrand` is missing in v0.6.2 |
-| 2.4.x | 1.16.x | 0.5.1 | For multitenant mesh deployment, all Gateway API CRDs must be present. Use the experimental branch. |
+| Service Mesh Version | Istio Version | Gateway API Version | Notes                                                                                               |
+|----------------------|---------------|---------------------|-----------------------------------------------------------------------------------------------------|
+| 2.5.x                | 1.18.x        | 0.6.2               | Use the experimental branch because `ReferenceGrand` is missing in v0.6.2                           |
+| 2.4.x                | 1.16.x        | 0.5.1               | For multitenant mesh deployment, all Gateway API CRDs must be present. Use the experimental branch. |
 
 ## New features Red Hat OpenShift Service Mesh version 2.4.7
 
@@ -818,10 +822,13 @@ This release of Red Hat OpenShift Service Mesh addresses Common Vulnerabilities
 
 ### Red Hat OpenShift Service Mesh operator to ARM-based clusters
 
-> [!IMPORTANT]
-> Red Hat OpenShift Service Mesh operator to ARM based clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Red Hat OpenShift Service Mesh operator to ARM based clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 This release makes the Red Hat OpenShift Service Mesh Operator available on ARM-based clusters as a Technology Preview feature. Images are available for Istio, Envoy, Prometheus, Kiali, and Grafana. Images are not available for Jaeger, so Jaeger must be disabled as a Service Mesh add-on.
 
@@ -895,8 +902,11 @@ spec:
 
 With this update, Red Hat OpenShift Service Mesh integrates with the `cert-manager` controller and the `istio-csr` agent. `cert-manager` adds certificates and certificate issuers as resource types in Kubernetes clusters, and simplifies the process of obtaining, renewing, and using those certificates. `cert-manager` provides and rotates an intermediate CA certificate for Istio. Integration with `istio-csr` enables users to delegate signing certificate requests from Istio proxies to `cert-manager`. `ServiceMeshControlPlane` v2.4 accepts CA certificates provided by `cert-manager` as `cacerts` secret.
 
-> [!NOTE]
-> Integration with `cert-manager` and `istio-csr` is not supported on IBM Power®, IBM Z®, and IBM® LinuxONE.
+<div class="note">
+
+Integration with `cert-manager` and `istio-csr` is not supported on IBM Power®, IBM Z®, and IBM® LinuxONE.
+
+</div>
 
 ### Integration with external authorization systems
 
@@ -927,15 +937,21 @@ spec:
 
 This enhancement introduces generally available support for single stack IPv6 clusters, providing access to a broader range of IP addresses. Dual stack IPv4 or IPv6 cluster is not supported.
 
-> [!NOTE]
-> Single stack IPv6 support is not available on IBM Power®, IBM Z®, and IBM® LinuxONE.
+<div class="note">
+
+Single stack IPv6 support is not available on IBM Power®, IBM Z®, and IBM® LinuxONE.
+
+</div>
 
 ### OpenShift Container Platform Gateway API support
 
-> [!IMPORTANT]
-> OpenShift Container Platform Gateway API support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+OpenShift Container Platform Gateway API support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 This enhancement introduces an updated Technology Preview version of the OpenShift Container Platform Gateway API. By default, the OpenShift Container Platform Gateway API is disabled.
 
@@ -1160,24 +1176,33 @@ Service Mesh 2.3 is based on Istio 1.14, which brings in new features and produc
 
 ### OpenShift Service Mesh Console
 
-> [!IMPORTANT]
-> OpenShift Service Mesh Console is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+OpenShift Service Mesh Console is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 This release introduces a Technology Preview version of the OpenShift Container Platform Service Mesh Console, which integrates the Kiali interface directly into the OpenShift web console. For additional information, see [Introducing the OpenShift Service Mesh Console (A Technology Preview)](https://cloud.redhat.com/blog/introducing-the-openshift-service-mesh-console-a-developer-preview)
 
 ### Cluster-wide deployment
 
-> [!IMPORTANT]
-> Cluster-wide deployment is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Cluster-wide deployment is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 This release introduces cluster-wide deployment as a Technology Preview feature. A cluster-wide deployment contains a Service Mesh Control Plane that monitors resources for an entire cluster. The control plane uses a single query across all namespaces to monitor each Istio or Kubernetes resource kind that affects the mesh configuration. In contrast, the multitenant approach uses a query per namespace for each resource kind. Reducing the number of queries the control plane performs in a cluster-wide deployment improves performance.
 
-> [!NOTE]
-> This cluster-wide deployment documentation is only applicable for control planes deployed using SMCP v2.3. cluster-wide deployments created using SMCP v2.3 are not compatible with cluster-wide deployments created using SMCP v2.4.
+<div class="note">
+
+This cluster-wide deployment documentation is only applicable for control planes deployed using SMCP v2.3. cluster-wide deployments created using SMCP v2.3 are not compatible with cluster-wide deployments created using SMCP v2.4.
+
+</div>
 
 #### Configuring cluster-wide deployment
 
@@ -1426,10 +1451,13 @@ Service Mesh 2.2 is based on Istio 1.12, which brings in new features and produc
 
 ### Kubernetes Gateway API
 
-> [!IMPORTANT]
-> Kubernetes Gateway API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Kubernetes Gateway API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 Kubernetes Gateway API is a technology preview feature that is disabled by default. If the Kubernetes API deployment controller is disabled, you must manually deploy and link an ingress gateway to the created Gateway object.
 
@@ -1604,14 +1632,9 @@ Red Hat OpenShift Service Mesh automatically creates and manages a number of `N
 
 If you want to disable the automatic creation and management of `NetworkPolicies` resources, for example to enforce company security policies, you can do so. You can edit the `ServiceMeshControlPlane` to set the `spec.security.manageNetworkPolicy` setting to `false`
 
-> [!NOTE]
-> When you disable `spec.security.manageNetworkPolicy` Red Hat OpenShift Service Mesh will not create **any** `NetworkPolicy` objects. The system administrator is responsible for managing the network and fixing any issues this might cause.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+When you disable `spec.security.manageNetworkPolicy` Red Hat OpenShift Service Mesh will not create **any** `NetworkPolicy` objects. The system administrator is responsible for managing the network and fixing any issues this might cause.
 
 </div>
 
@@ -1635,8 +1658,6 @@ Procedure
     ```
 
 6.  Click **Save**.
-
-</div>
 
 ## New features and enhancements Red Hat OpenShift Service Mesh 2.1
 
@@ -1787,14 +1808,15 @@ With the mitigation, the fragment part of the request’s URI is removed before 
 
 To opt-out from the new behavior in the mitigation, the fragment section in the URI will be kept. You can configure your `ServiceMeshControlPlane` to keep URI fragments.
 
-> [!WARNING]
-> Disabling the new behavior will normalize your paths as described above and is considered unsafe. Ensure that you have accommodated for this in any security policies before opting to keep URI fragments.
+<div class="warning">
 
-<div class="formalpara">
+Disabling the new behavior will normalize your paths as described above and is considered unsafe. Ensure that you have accommodated for this in any security policies before opting to keep URI fragments.
 
-<div class="title">
+</div>
 
-Example `ServiceMeshControlPlane` modification
+<div class="formalpara-title">
+
+**Example `ServiceMeshControlPlane` modification**
 
 </div>
 
@@ -1810,8 +1832,6 @@ spec:
         proxyMetadata: HTTP_STRIP_FRAGMENT_FROM_PATH_UNSAFE_IF_DISABLED: "false"
 ```
 
-</div>
-
 ### Required update for authorization policies
 
 Istio generates hostnames for both the hostname itself and all matching ports. For instance, a virtual service or Gateway for a host of "httpbin.foo" generates a config matching "httpbin.foo and httpbin.foo:\*". However, exact match authorization policies only match the exact string given for the `hosts` or `notHosts` fields.
@@ -1820,11 +1840,9 @@ Your cluster is impacted if you have `AuthorizationPolicy` resources using exact
 
 You must update your authorization policy [rules](https://istio.io/latest/docs/reference/config/security/authorization-policy/#Rule) to use prefix match instead of exact match. For example, replacing `hosts: ["httpbin.com"]` with `hosts: ["httpbin.com:*"]` in the first `AuthorizationPolicy` example.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-First example AuthorizationPolicy using prefix match
+**First example AuthorizationPolicy using prefix match**
 
 </div>
 
@@ -1845,13 +1863,9 @@ spec:
         hosts: [“httpbin.com”,"httpbin.com:*"]
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Second example AuthorizationPolicy using prefix match
+**Second example AuthorizationPolicy using prefix match**
 
 </div>
 
@@ -1868,8 +1882,6 @@ spec:
     - operation:
         hosts: ["httpbin.example.com:*"]
 ```
-
-</div>
 
 ## New features Red Hat OpenShift Service Mesh 2.0.7
 
@@ -1891,8 +1903,11 @@ This release of Red Hat OpenShift Service Mesh addresses Common Vulnerabilities
 
 This release of Red Hat OpenShift Service Mesh addresses Common Vulnerabilities and Exposures (CVEs) and bug fixes.
 
-> [!IMPORTANT]
-> There are manual steps that must be completed to address CVE-2021-29492 and CVE-2021-31920.
+<div class="important">
+
+There are manual steps that must be completed to address CVE-2021-29492 and CVE-2021-31920.
+
+</div>
 
 ### Manual updates required by CVE-2021-29492 and CVE-2021-31920
 
@@ -1912,8 +1927,11 @@ Your cluster is NOT impacted by this vulnerability if:
 
 - Your authorization policies use `ALLOW action + paths` field or `DENY action + notPaths` field patterns. These patterns could only cause unexpected rejection instead of policy bypasses. The upgrade is optional for these cases.
 
-> [!NOTE]
-> The Red Hat OpenShift Service Mesh configuration location for path normalization is different from the Istio configuration.
+<div class="note">
+
+The Red Hat OpenShift Service Mesh configuration location for path normalization is different from the Istio configuration.
+
+</div>
 
 ### Updating the path normalization configuration
 
@@ -1921,12 +1939,12 @@ Istio authorization policies can be based on the URL paths in the HTTP request. 
 
 Istio supports the following normalization schemes on the request paths before evaluating against the authorization policies and routing the requests:
 
-| Option | Description | Example | Notes |
-|----|----|----|----|
-| `NONE` | No normalization is done. Anything received by Envoy will be forwarded exactly as-is to any backend service. | `../%2Fa../b` is evaluated by the authorization policies and sent to your service. | This setting is vulnerable to CVE-2021-31920. |
-| `BASE` | This is currently the option used in the **default** installation of Istio. This applies the [`normalize_path`](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/network/http_connection_manager/v3/http_connection_manager.proto#envoy-v3-api-field-extensions-filters-network-http-connection-manager-v3-httpconnectionmanager-normalize-path) option on Envoy proxies, which follows [RFC 3986](https://tools.ietf.org/html/rfc3986) with extra normalization to convert backslashes to forward slashes. | `/a/../b` is normalized to `/b`. `\da` is normalized to `/da`. | This setting is vulnerable to CVE-2021-31920. |
-| `MERGE_SLASHES` | Slashes are merged after the *BASE* normalization. | `/a//b` is normalized to `/a/b`. | Update to this setting to mitigate CVE-2021-31920. |
-| `DECODE_AND_MERGE_SLASHES` | The strictest setting when you allow all traffic by default. This setting is recommended, with the caveat that you must thoroughly test your authorization policies routes. [Percent-encoded](https://tools.ietf.org/html/rfc3986#section-2.1) slash and backslash characters (`%2F`, `%2f`, `%5C` and `%5c`) are decoded to `/` or `\`, before the `MERGE_SLASHES` normalization. | `/a%2fb` is normalized to `/a/b`. | Update to this setting to mitigate CVE-2021-31920. This setting is more secure, but also has the potential to break applications. Test your applications before deploying to production. |
+| Option                     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Example                                                                            | Notes                                                                                                                                                                                    |
+|----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `NONE`                     | No normalization is done. Anything received by Envoy will be forwarded exactly as-is to any backend service.                                                                                                                                                                                                                                                                                                                                                                                                                     | `../%2Fa../b` is evaluated by the authorization policies and sent to your service. | This setting is vulnerable to CVE-2021-31920.                                                                                                                                            |
+| `BASE`                     | This is currently the option used in the **default** installation of Istio. This applies the [`normalize_path`](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/network/http_connection_manager/v3/http_connection_manager.proto#envoy-v3-api-field-extensions-filters-network-http-connection-manager-v3-httpconnectionmanager-normalize-path) option on Envoy proxies, which follows [RFC 3986](https://tools.ietf.org/html/rfc3986) with extra normalization to convert backslashes to forward slashes. | `/a/../b` is normalized to `/b`. `\da` is normalized to `/da`.                     | This setting is vulnerable to CVE-2021-31920.                                                                                                                                            |
+| `MERGE_SLASHES`            | Slashes are merged after the *BASE* normalization.                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | `/a//b` is normalized to `/a/b`.                                                   | Update to this setting to mitigate CVE-2021-31920.                                                                                                                                       |
+| `DECODE_AND_MERGE_SLASHES` | The strictest setting when you allow all traffic by default. This setting is recommended, with the caveat that you must thoroughly test your authorization policies routes. [Percent-encoded](https://tools.ietf.org/html/rfc3986#section-2.1) slash and backslash characters (`%2F`, `%2f`, `%5C` and `%5c`) are decoded to `/` or `\`, before the `MERGE_SLASHES` normalization.                                                                                                                                               | `/a%2fb` is normalized to `/a/b`.                                                  | Update to this setting to mitigate CVE-2021-31920. This setting is more secure, but also has the potential to break applications. Test your applications before deploying to production. |
 
 Normalization schemes
 
@@ -1938,8 +1956,11 @@ The normalization algorithms are conducted in the following order:
 
 3.  Merge slashes.
 
-> [!WARNING]
-> While these normalization options represent recommendations from HTTP standards and common industry practices, applications may interpret a URL in any way it chooses to. When using denial policies, ensure that you understand how your application behaves.
+<div class="warning">
+
+While these normalization options represent recommendations from HTTP standards and common industry practices, applications may interpret a URL in any way it chooses to. When using denial policies, ensure that you understand how your application behaves.
+
+</div>
 
 ### Path normalization configuration examples
 
@@ -1949,13 +1970,13 @@ Ensuring Envoy normalizes request paths to match your backend services' expectat
 
 2.  Forwarded to the backend application.
 
-| If your application…​ | Choose…​ |
-|----|----|
-| Relies on the proxy to do normalization | `BASE`, `MERGE_SLASHES` or `DECODE_AND_MERGE_SLASHES` |
-| Normalizes request paths based on [RFC 3986](https://tools.ietf.org/html/rfc3986) and does not merge slashes. | `BASE` |
-| Normalizes request paths based on [RFC 3986](https://tools.ietf.org/html/rfc3986) and merges slashes, but does not decode [percent-encoded](https://tools.ietf.org/html/rfc3986#section-2.1) slashes. | `MERGE_SLASHES` |
-| Normalizes request paths based on [RFC 3986](https://tools.ietf.org/html/rfc3986), decodes [percent-encoded](https://tools.ietf.org/html/rfc3986#section-2.1) slashes, and merges slashes. | `DECODE_AND_MERGE_SLASHES` |
-| Processes request paths in a way that is incompatible with [RFC 3986](https://tools.ietf.org/html/rfc3986). | `NONE` |
+| If your application…​                                                                                                                                                                                  | Choose…​                                               |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| Relies on the proxy to do normalization                                                                                                                                                               | `BASE`, `MERGE_SLASHES` or `DECODE_AND_MERGE_SLASHES` |
+| Normalizes request paths based on [RFC 3986](https://tools.ietf.org/html/rfc3986) and does not merge slashes.                                                                                         | `BASE`                                                |
+| Normalizes request paths based on [RFC 3986](https://tools.ietf.org/html/rfc3986) and merges slashes, but does not decode [percent-encoded](https://tools.ietf.org/html/rfc3986#section-2.1) slashes. | `MERGE_SLASHES`                                       |
+| Normalizes request paths based on [RFC 3986](https://tools.ietf.org/html/rfc3986), decodes [percent-encoded](https://tools.ietf.org/html/rfc3986#section-2.1) slashes, and merges slashes.            | `DECODE_AND_MERGE_SLASHES`                            |
+| Processes request paths in a way that is incompatible with [RFC 3986](https://tools.ietf.org/html/rfc3986).                                                                                           | `NONE`                                                |
 
 Configuration examples
 
@@ -1963,11 +1984,9 @@ Configuration examples
 
 To configure path normalization for Red Hat OpenShift Service Mesh, specify the following in your `ServiceMeshControlPlane`. Use the configuration examples to help determine the settings for your system.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-SMCP v2 pathNormalization
+**SMCP v2 pathNormalization**
 
 </div>
 
@@ -1977,8 +1996,6 @@ spec:
     global:
       pathNormalization: <option>
 ```
-
-</div>
 
 ### Configuring for case normalization
 
@@ -2066,10 +2083,13 @@ In addition, this release has the following new features:
 
 Some features in this release are currently in Technology Preview. These experimental features are not intended for production use.
 
-> [!IMPORTANT]
-> Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 # Deprecated and removed features
 
@@ -2330,8 +2350,11 @@ oc label namespace istio-system istio-discovery=enabled
 
 ## Kiali known issues
 
-> [!NOTE]
-> New issues for Kiali should be created in the [OpenShift Service Mesh](https://issues.redhat.com/projects/OSSM/) project with the `Component` set to `Kiali`.
+<div class="note">
+
+New issues for Kiali should be created in the [OpenShift Service Mesh](https://issues.redhat.com/projects/OSSM/) project with the `Component` set to `Kiali`.
+
+</div>
 
 These are the known issues in Kiali:
 

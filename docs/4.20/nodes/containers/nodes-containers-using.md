@@ -20,8 +20,11 @@ $(nproc) X 1/2 MiB
 
 A *container engine* is a piece of software that processes user requests, including command-line options and image pulls. The container engine uses a *container runtime*, also called a *lower-level container runtime*, to run and manage the components required to deploy and operate containers. You likely will not need to interact with the container engine or container runtime.
 
-> [!NOTE]
-> The OpenShift Container Platform documentation uses the term *container runtime* to refer to the lower-level container runtime. Other documentation can refer to the container engine as the container runtime.
+<div class="note">
+
+The OpenShift Container Platform documentation uses the term *container runtime* to refer to the lower-level container runtime. Other documentation can refer to the container engine as the container runtime.
+
+</div>
 
 OpenShift Container Platform uses CRI-O as the container engine and runC or crun as the container runtime. The default container runtime is crun. Both container runtimes adhere to the [Open Container Initiative (OCI)](https://www.opencontainers.org/) runtime specifications.
 

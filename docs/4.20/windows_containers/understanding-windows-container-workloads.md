@@ -1,23 +1,16 @@
 Red Hat OpenShift support for Windows Containers provides built-in support for running Microsoft Windows Server containers on OpenShift Container Platform. For those that administer heterogeneous environments with a mix of Linux and Windows workloads, OpenShift Container Platform allows you to deploy Windows workloads running on Windows Server containers while also providing traditional Linux workloads hosted on Red Hat Enterprise Linux CoreOS (RHCOS) or Red Hat Enterprise Linux (RHEL).
 
-> [!NOTE]
-> Multi-tenancy for clusters that have Windows nodes is not supported. Clusters are considered *multi-tenant* when multiple workloads operate on shared infrastructure and resources. If one or more workloads running on an infrastructure cannot be trusted, the multi-tenant environment is considered *hostile*.
->
-> Hostile multi-tenant clusters introduce security concerns in all Kubernetes environments. Additional security features like [pod security policies](https://kubernetes.io/docs/concepts/policy/pod-security-policy/), or more fine-grained role-based access control (RBAC) for nodes, make exploiting your environment more difficult. However, if you choose to run hostile multi-tenant workloads, a hypervisor is the only security option you should use. The security domain for Kubernetes encompasses the entire cluster, not an individual node. For these types of hostile multi-tenant workloads, you should use physically isolated clusters.
->
-> Windows Server Containers provide resource isolation using a shared kernel but are not intended to be used in hostile multitenancy scenarios.
+<div class="note">
 
-<div>
+Multi-tenancy for clusters that have Windows nodes is not supported. Clusters are considered *multi-tenant* when multiple workloads operate on shared infrastructure and resources. If one or more workloads running on an infrastructure cannot be trusted, the multi-tenant environment is considered *hostile*.
 
-<div class="title">
+Hostile multi-tenant clusters introduce security concerns in all Kubernetes environments. Additional security features like [pod security policies](https://kubernetes.io/docs/concepts/policy/pod-security-policy/), or more fine-grained role-based access control (RBAC) for nodes, make exploiting your environment more difficult. However, if you choose to run hostile multi-tenant workloads, a hypervisor is the only security option you should use. The security domain for Kubernetes encompasses the entire cluster, not an individual node. For these types of hostile multi-tenant workloads, you should use physically isolated clusters.
 
-Additional resources
+Windows Server Containers provide resource isolation using a shared kernel but are not intended to be used in hostile multitenancy scenarios.
 
 </div>
 
 - See [Configuring hybrid networking with OVN-Kubernetes](../networking/ovn_kubernetes_network_provider/configuring-hybrid-networking.xml#configuring-hybrid-ovnkubernetes_configuring-hybrid-networking)
-
-</div>
 
 # Windows workload management
 
@@ -41,8 +34,11 @@ The WMCO expects a predetermined secret in its namespace containing a private ke
 
 After the cluster establishes a connection with the Windows VM, you can manage the Windows node using similar practices as you would a Linux-based node.
 
-> [!NOTE]
-> The OpenShift Container Platform web console provides most of the same monitoring capabilities for Windows nodes that are available for Linux nodes. However, the ability to monitor workload graphs for pods running on Windows nodes is not available at this time.
+<div class="note">
+
+The OpenShift Container Platform web console provides most of the same monitoring capabilities for Windows nodes that are available for Linux nodes. However, the ability to monitor workload graphs for pods running on Windows nodes is not available at this time.
+
+</div>
 
 Scheduling Windows workloads to a Windows node can be done with typical pod scheduling practices like taints, tolerations, and node selectors; alternatively, you can differentiate your Windows workloads from Linux workloads and other Windows-versioned workloads by using a `RuntimeClass` object.
 
@@ -50,14 +46,14 @@ Scheduling Windows workloads to a Windows node can be done with typical pod sche
 
 The following Windows-specific services are installed on each Windows node:
 
-| Service | Description |
-|----|----|
-| kubelet | Registers the Windows node and manages its status. |
-| Container Network Interface (CNI) plugins | Exposes [networking](https://kubernetes.io/docs/setup/production-environment/windows/intro-windows-in-kubernetes/#networking) for Windows nodes. |
-| Windows Instance Config Daemon (WICD) | Maintains the state of all services running on the Windows instance to ensure the instance functions as a worker node. |
-| [Windows Exporter](https://github.com/openshift/prometheus-community-windows_exporter) | Exports Prometheus metrics from Windows nodes |
-| [Kubernetes Cloud Controller Manager (CCM)](https://kubernetes.io/docs/concepts/architecture/cloud-controller/) | Interacts with the underlying Azure cloud platform. |
-| hybrid-overlay | Creates the OpenShift Container Platform [Host Network Service (HNS)](https://docs.microsoft.com/en-us/virtualization/windowscontainers/container-networking/architecture#container-network-management-with-host-network-service). |
-| kube-proxy | Maintains network rules on nodes allowing outside communication. |
-| containerd container runtime | Manages the complete container lifecycle. |
-| CSI Proxy | Enables CSI drivers to perform storage operations on the node, which allows containerized CSI drivers to run on Windows nodes. |
+| Service                                                                                                         | Description                                                                                                                                                                                                                        |
+|-----------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| kubelet                                                                                                         | Registers the Windows node and manages its status.                                                                                                                                                                                 |
+| Container Network Interface (CNI) plugins                                                                       | Exposes [networking](https://kubernetes.io/docs/setup/production-environment/windows/intro-windows-in-kubernetes/#networking) for Windows nodes.                                                                                   |
+| Windows Instance Config Daemon (WICD)                                                                           | Maintains the state of all services running on the Windows instance to ensure the instance functions as a worker node.                                                                                                             |
+| [Windows Exporter](https://github.com/openshift/prometheus-community-windows_exporter)                          | Exports Prometheus metrics from Windows nodes                                                                                                                                                                                      |
+| [Kubernetes Cloud Controller Manager (CCM)](https://kubernetes.io/docs/concepts/architecture/cloud-controller/) | Interacts with the underlying Azure cloud platform.                                                                                                                                                                                |
+| hybrid-overlay                                                                                                  | Creates the OpenShift Container Platform [Host Network Service (HNS)](https://docs.microsoft.com/en-us/virtualization/windowscontainers/container-networking/architecture#container-network-management-with-host-network-service). |
+| kube-proxy                                                                                                      | Maintains network rules on nodes allowing outside communication.                                                                                                                                                                   |
+| containerd container runtime                                                                                    | Manages the complete container lifecycle.                                                                                                                                                                                          |
+| CSI Proxy                                                                                                       | Enables CSI drivers to perform storage operations on the node, which allows containerized CSI drivers to run on Windows nodes.                                                                                                     |

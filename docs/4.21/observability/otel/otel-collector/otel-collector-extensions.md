@@ -6,11 +6,9 @@ Currently, the following General Availability and Technology Preview extensions 
 
 The BearerTokenAuth Extension is an authenticator for receivers and exporters that are based on the HTTP and the gRPC protocol. You can use the OpenTelemetry Collector custom resource to configure client authentication and server authentication for the BearerTokenAuth Extension on the receiver and exporter side. This extension supports traces, metrics, and logs.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-OpenTelemetry Collector custom resource with client and server authentication configured for the BearerTokenAuth Extension
+**OpenTelemetry Collector custom resource with client and server authentication configured for the BearerTokenAuth Extension**
 
 </div>
 
@@ -43,8 +41,6 @@ OpenTelemetry Collector custom resource with client and server authentication co
 # ...
 ```
 
-</div>
-
 - You can configure the BearerTokenAuth Extension to send a custom `scheme`. The default is `Bearer`.
 
 - You can add the BearerTokenAuth Extension token as metadata to identify a message.
@@ -59,16 +55,17 @@ OpenTelemetry Collector custom resource with client and server authentication co
 
 The OAuth2Client Extension is an authenticator for exporters that are based on the HTTP and the gRPC protocol. Client authentication for the OAuth2Client Extension is configured in a separate section in the OpenTelemetry Collector custom resource. This extension supports traces, metrics, and logs.
 
-> [!IMPORTANT]
-> The OAuth2Client Extension is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The OAuth2Client Extension is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with client authentication configured for the OAuth2Client Extension
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with client authentication configured for the OAuth2Client Extension**
 
 </div>
 
@@ -110,8 +107,6 @@ OpenTelemetry Collector custom resource with client authentication configured fo
 # ...
 ```
 
-</div>
-
 - Client identifier, which is provided by the identity provider.
 
 - Confidential key used to authenticate the client to the identity provider.
@@ -140,16 +135,17 @@ OpenTelemetry Collector custom resource with client authentication configured fo
 
 The File Storage Extension supports traces, metrics, and logs. This extension can persist the state to the local file system. This extension persists the sending queue for the OpenTelemetry Protocol (OTLP) exporters that are based on the HTTP and the gRPC protocols. This extension requires the read and write access to a directory. This extension can use a default directory, but the default directory must already exist.
 
-> [!IMPORTANT]
-> The File Storage Extension is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The File Storage Extension is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with a configured File Storage Extension that persists an OTLP sending queue
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with a configured File Storage Extension that persists an OTLP sending queue**
 
 </div>
 
@@ -180,8 +176,6 @@ OpenTelemetry Collector custom resource with a configured File Storage Extension
 # ...
 ```
 
-</div>
-
 - Specifies the directory in which the telemetry data is stored.
 
 - Specifies the timeout time interval for opening the stored files.
@@ -202,16 +196,17 @@ OpenTelemetry Collector custom resource with a configured File Storage Extension
 
 The OIDC Auth Extension authenticates incoming requests to receivers by using the OpenID Connect (OIDC) protocol. It validates the ID token in the authorization header against the issuer and updates the authentication context of the incoming request.
 
-> [!IMPORTANT]
-> The OIDC Auth Extension is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The OIDC Auth Extension is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with the configured OIDC Auth Extension
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with the configured OIDC Auth Extension**
 
 </div>
 
@@ -242,8 +237,6 @@ OpenTelemetry Collector custom resource with the configured OIDC Auth Extension
 # ...
 ```
 
-</div>
-
 - The name of the header that contains the ID token. The default name is `authorization`.
 
 - The base URL of the OIDC provider.
@@ -258,16 +251,17 @@ OpenTelemetry Collector custom resource with the configured OIDC Auth Extension
 
 The Jaeger Remote Sampling Extension enables serving sampling strategies after Jaeger’s remote sampling API. You can configure this extension to proxy requests to a backing remote sampling server such as a Jaeger collector down the pipeline or to a static JSON file from the local file system.
 
-> [!IMPORTANT]
-> The Jaeger Remote Sampling Extension is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Jaeger Remote Sampling Extension is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with a configured Jaeger Remote Sampling Extension
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with a configured Jaeger Remote Sampling Extension**
 
 </div>
 
@@ -299,19 +293,15 @@ OpenTelemetry Collector custom resource with a configured Jaeger Remote Sampling
 # ...
 ```
 
-</div>
-
 - The time interval at which the sampling configuration is updated.
 
 - The endpoint for reaching the Jaeger remote sampling strategy provider.
 
 - The path to a local file that contains a sampling strategy configuration in the JSON format.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example of a Jaeger Remote Sampling strategy file
+**Example of a Jaeger Remote Sampling strategy file**
 
 </div>
 
@@ -360,22 +350,21 @@ Example of a Jaeger Remote Sampling strategy file
 }
 ```
 
-</div>
-
 # Performance Profiler Extension
 
 The Performance Profiler Extension enables the Go `net/http/pprof` endpoint. Developers use this extension to collect performance profiles and investigate issues with the service.
 
-> [!IMPORTANT]
-> The Performance Profiler Extension is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Performance Profiler Extension is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with the configured Performance Profiler Extension
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with the configured Performance Profiler Extension**
 
 </div>
 
@@ -406,8 +395,6 @@ OpenTelemetry Collector custom resource with the configured Performance Profiler
 # ...
 ```
 
-</div>
-
 - The endpoint at which this extension listens. Use `localhost:` to make it available only locally or `":"` to make it available on all network interfaces. The default value is `localhost:1777`.
 
 - Sets a fraction of blocking events to be profiled. To disable profiling, set this to `0` or a negative integer. See the [documentation](https://golang.org/pkg/runtime/#SetBlockProfileRate) for the `runtime` package. The default value is `0`.
@@ -420,16 +407,17 @@ OpenTelemetry Collector custom resource with the configured Performance Profiler
 
 The Health Check Extension provides an HTTP URL for checking the status of the OpenTelemetry Collector. You can use this extension as a liveness and readiness probe on OpenShift.
 
-> [!IMPORTANT]
-> The Health Check Extension is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The Health Check Extension is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with the configured Health Check Extension
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with the configured Health Check Extension**
 
 </div>
 
@@ -466,8 +454,6 @@ OpenTelemetry Collector custom resource with the configured Health Check Extensi
 # ...
 ```
 
-</div>
-
 - The target IP address for publishing the health check status. The default is `0.0.0.0:13133`.
 
 - The TLS server-side configuration. Defines paths to TLS certificates. If omitted, the TLS is disabled.
@@ -486,16 +472,17 @@ OpenTelemetry Collector custom resource with the configured Health Check Extensi
 
 The zPages Extension provides an HTTP endpoint that serves live data for debugging instrumented components in real time. You can use this extension for in-process diagnostics and insights into traces and metrics without relying on an external backend. With this extension, you can monitor and troubleshoot the behavior of the OpenTelemetry Collector and related components by watching the diagnostic information at the provided endpoint.
 
-> [!IMPORTANT]
-> The zPages Extension is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div class="formalpara">
+The zPages Extension is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OpenTelemetry Collector custom resource with the configured zPages Extension
+</div>
+
+<div class="formalpara-title">
+
+**OpenTelemetry Collector custom resource with the configured zPages Extension**
 
 </div>
 
@@ -522,18 +509,19 @@ OpenTelemetry Collector custom resource with the configured zPages Extension
 # ...
 ```
 
-</div>
-
 - Specifies the HTTP endpoint for serving the zPages extension. The default is `localhost:55679`.
 
-> [!IMPORTANT]
-> Accessing the HTTP endpoint requires port-forwarding because the Red Hat build of OpenTelemetry Operator does not expose this route.
->
-> You can enable port-forwarding by running the following `oc` command:
->
-> ``` terminal
-> $ oc port-forward pod/$(oc get pod -l app.kubernetes.io/name=instance-collector -o=jsonpath='{.items[0].metadata.name}') 55679
-> ```
+<div class="important">
+
+Accessing the HTTP endpoint requires port-forwarding because the Red Hat build of OpenTelemetry Operator does not expose this route.
+
+You can enable port-forwarding by running the following `oc` command:
+
+``` terminal
+$ oc port-forward pod/$(oc get pod -l app.kubernetes.io/name=instance-collector -o=jsonpath='{.items[0].metadata.name}') 55679
+```
+
+</div>
 
 The Collector provides the following zPages for diagnostics:
 

@@ -2,11 +2,17 @@ Only the configuration options described in this documentation are supported for
 
 Do not use any other configuration options, as they are unsupported. Configuration paradigms might change across OpenShift Container Platform releases, and such cases can only be handled gracefully if all configuration possibilities are controlled. If you use configurations other than those described in this documentation, your changes will be overwritten, because Operators are designed to reconcile any differences.
 
-> [!NOTE]
-> If you must perform configurations not described in the OpenShift Container Platform documentation, you must set your Red Hat OpenShift Logging Operator to `Unmanaged`. An unmanaged logging instance is not supported and does not receive updates until you return its status to `Managed`.
+<div class="note">
 
-> [!NOTE]
-> Logging is provided as an installable component, with a distinct release cycle from the core OpenShift Container Platform. The [Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift_operators#platform-agnostic) outlines release compatibility.
+If you must perform configurations not described in the OpenShift Container Platform documentation, you must set your Red Hat OpenShift Logging Operator to `Unmanaged`. An unmanaged logging instance is not supported and does not receive updates until you return its status to `Managed`.
+
+</div>
+
+<div class="note">
+
+Logging is provided as an installable component, with a distinct release cycle from the core OpenShift Container Platform. The [Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift_operators#platform-agnostic) outlines release compatibility.
+
+</div>
 
 Loki is a horizontally scalable, highly available, multi-tenant log aggregation system offered as a GA log store for logging for Red Hat OpenShift that can be visualized with the OpenShift Observability UI. The Loki configuration provided by OpenShift Logging is a short-term log store designed to enable users to perform fast troubleshooting with the collected logs. For that purpose, the logging for Red Hat OpenShift configuration of Loki has short-term storage, and is optimized for very recent queries. For long-term storage or queries over a long time period, users should look to log stores external to their cluster.
 
@@ -30,14 +36,14 @@ Logging is not:
 
 The following table describes the supported Logging APIs.
 
-| CustomResourceDefinition (CRD) | ApiVersion | Support state |
-|----|----|----|
-| LokiStack | lokistack.loki.grafana.com/v1 | Supported from 5.5 |
-| RulerConfig | rulerconfig.loki.grafana/v1 | Supported from 5.7 |
-| AlertingRule | alertingrule.loki.grafana/v1 | Supported from 5.7 |
-| RecordingRule | recordingrule.loki.grafana/v1 | Supported from 5.7 |
-| LogFileMetricExporter | LogFileMetricExporter.logging.openshift.io/v1alpha1 | Supported from 5.8 |
-| ClusterLogForwarder | clusterlogforwarder.observability.openshift.io/v1 | Supported from 6.0 |
+| CustomResourceDefinition (CRD) | ApiVersion                                          | Support state      |
+|--------------------------------|-----------------------------------------------------|--------------------|
+| LokiStack                      | lokistack.loki.grafana.com/v1                       | Supported from 5.5 |
+| RulerConfig                    | rulerconfig.loki.grafana/v1                         | Supported from 5.7 |
+| AlertingRule                   | alertingrule.loki.grafana/v1                        | Supported from 5.7 |
+| RecordingRule                  | recordingrule.loki.grafana/v1                       | Supported from 5.7 |
+| LogFileMetricExporter          | LogFileMetricExporter.logging.openshift.io/v1alpha1 | Supported from 5.8 |
+| ClusterLogForwarder            | clusterlogforwarder.observability.openshift.io/v1   | Supported from 6.0 |
 
 Logging API support states
 
@@ -69,8 +75,11 @@ An Operator can be set to an unmanaged state using the following methods:
 
   Changing the `managementState` parameter to `Unmanaged` means that the Operator is not actively managing its resources and will take no action related to the related component. Some Operators might not support this management state as it might damage the cluster and require manual recovery.
 
-  > [!WARNING]
-  > Changing individual Operators to the `Unmanaged` state renders that particular component and functionality unsupported. Reported issues must be reproduced in `Managed` state for support to proceed.
+  <div class="warning">
+
+  Changing individual Operators to the `Unmanaged` state renders that particular component and functionality unsupported. Reported issues must be reproduced in `Managed` state for support to proceed.
+
+  </div>
 
 - **Cluster Version Operator (CVO) overrides**
 
@@ -80,8 +89,11 @@ An Operator can be set to an unmanaged state using the following methods:
   Disabling ownership via cluster version overrides prevents upgrades. Please remove overrides before continuing.
   ```
 
-  > [!WARNING]
-  > Setting a CVO override puts the entire cluster in an unsupported state. Reported issues must be reproduced after removing any overrides for support to proceed.
+  <div class="warning">
+
+  Setting a CVO override puts the entire cluster in an unsupported state. Reported issues must be reproduced after removing any overrides for support to proceed.
+
+  </div>
 
 # Support exception for the Logging UI Plugin
 
@@ -111,17 +123,13 @@ When you run `oc adm must-gather`, a new pod is created on the cluster. The data
 
 You can use the `oc adm must-gather` CLI command to collect information about logging.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To collect logging information with `must-gather`:
-
-</div>
 
 1.  Navigate to the directory where you want to store the `must-gather` information.
 

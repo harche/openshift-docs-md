@@ -4,8 +4,11 @@ OpenShift Virtualization supports the namespace-scoped `UserDefinedNetwork` and 
 
 Cluster administrators can configure a primary `UserDefinedNetwork` CRD to create a tenant network that isolates the tenant namespace from other namespaces without requiring network policies. Additionally, cluster administrators can use the `ClusterUserDefinedNetwork` CRD to create a shared OVN network across multiple namespaces.
 
-> [!NOTE]
-> You must add the `k8s.ovn.org/primary-user-defined-network` label when you create a namespace that is to be used with user-defined networks.
+<div class="note">
+
+You must add the `k8s.ovn.org/primary-user-defined-network` label when you create a namespace that is to be used with user-defined networks.
+
+</div>
 
 With the layer 2 topology, OVN-Kubernetes creates an overlay network between nodes. You can use this overlay network to connect VMs on different nodes without having to configure any additional physical networking infrastructure.
 
@@ -27,25 +30,7 @@ You can use the OpenShift Container Platform web console to create a primary nam
 
 You can create a namespace to be used with primary user-defined networks (UDNs) by using the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Log in to the OpenShift Container Platform web console as a user with `cluster-admin` permissions.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  From the **Administrator** perspective, click **Administration** → **Namespaces**.
 
@@ -61,33 +46,13 @@ Procedure
 
 7.  Click **Create** to create the namespace.
 
-</div>
-
 ## Creating a primary namespace-scoped user-defined network by using the web console
 
 You can create an isolated primary network in your project namespace by creating a `UserDefinedNetwork` custom resource in the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the OpenShift Container Platform web console as a user with `cluster-admin` permissions.
 
 - You have created a namespace and applied the `k8s.ovn.org/primary-user-defined-network` label. For more information, see "Creating a namespace for user-defined networks by using the web console".
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  From the **Administrator** perspective, click **Networking** → **UserDefinedNetworks**.
 
@@ -99,31 +64,11 @@ Procedure
 
 5.  Click **Create**. The user-defined network serves as the default primary network for pods and virtual machines that you create in this namespace.
 
-</div>
-
 ## Creating a primary cluster-scoped user-defined network by using the web console
 
 You can connect multiple namespaces to the same primary user-defined network (UDN) by creating a `ClusterUserDefinedNetwork` custom resource in the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the OpenShift Container Platform web console as a user with `cluster-admin` permissions.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  From the **Administrator** perspective, click **Networking** → **UserDefinedNetworks**.
 
@@ -137,19 +82,7 @@ Procedure
 
 6.  Click **Create**. The cluster-scoped UDN serves as the default primary network for pods and virtual machines located in namespaces that contain the labels that you specified in step 5.
 
-</div>
-
-<div id="next-steps-web_virt-connecting-vm-to-primary-udn">
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - [Create namespaces that are associated with the cluster-scoped UDN](../../virt/vm_networking/virt-connecting-vm-to-primary-udn.xml#virt-creating-udn-namespace-web_virt-connecting-vm-to-primary-udn)
-
-</div>
 
 # Creating a primary user-defined network by using the CLI
 
@@ -159,27 +92,9 @@ You can create a primary `UserDefinedNetwork` or `ClusterUserDefinedNetwork` CRD
 
 You can create a namespace to be used with primary user-defined networks (UDNs) by using the OpenShift CLI (`oc`).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `Namespace` object as a YAML file similar to the following example:
 
@@ -201,33 +116,13 @@ Procedure
     $ oc apply -f <filename>.yaml
     ```
 
-</div>
-
 ## Creating a primary namespace-scoped user-defined network by using the CLI
 
 You can create an isolated primary network in your project namespace by using the CLI. You must use the OVN-Kubernetes layer 2 topology and enable persistent IP address allocation in the user-defined network (UDN) configuration to ensure VM live migration support.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
 
 - You have created a namespace and applied the `k8s.ovn.org/primary-user-defined-network` label.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `UserDefinedNetwork` object to specify the custom network configuration.
 
@@ -266,33 +161,13 @@ Procedure
     $ oc apply -f --validate=true <filename>.yaml
     ```
 
-</div>
-
 ## Creating a primary cluster-scoped user-defined network by using the CLI
 
 You can connect multiple namespaces to the same primary user-defined network (UDN) to achieve native tenant isolation by using the CLI.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with `cluster-admin` privileges.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `ClusterUserDefinedNetwork` object to specify the custom network configuration.
 
@@ -337,19 +212,7 @@ Procedure
     $ oc apply -f --validate=true <filename>.yaml
     ```
 
-</div>
-
-<div id="next-steps-cli_virt-connecting-vm-to-primary-udn">
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - [Create namespaces that are associated with the cluster-scoped UDN](../../virt/vm_networking/virt-connecting-vm-to-primary-udn.xml#virt-creating-udn-namespace-cli_virt-connecting-vm-to-primary-udn)
-
-</div>
 
 # Attaching a virtual machine to the primary user-defined network
 
@@ -369,10 +232,13 @@ Passt binding has the following benefits:
 
 - You can use Red Hat Advanced Cluster Security to monitor TCP traffic within the cluster with detailed insights.
 
-> [!IMPORTANT]
-> Using the passt binding plugin to attach a VM to the primary UDN is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Using the passt binding plugin to attach a VM to the primary UDN is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 ## Attaching a virtual machine to the primary user-defined network by using the web console
 
@@ -380,30 +246,15 @@ You can connect a virtual machine (VM) to the primary user-defined network (UDN)
 
 To attach a VM to the primary UDN by using the Plug a Simple Socket Transport (passt) binding, enable the plugin and configure the VM network interface in the web console.
 
-> [!IMPORTANT]
-> Using the passt binding plugin to attach a VM to the primary UDN is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div>
+Using the passt binding plugin to attach a VM to the primary UDN is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
 - You are logged in to the OpenShift Container Platform web console.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Follow these steps to enable the passt network binding plugin Technology Preview feature:
 
@@ -431,31 +282,11 @@ Procedure
 
 10. If your VM is running, restart it for the changes to take effect.
 
-</div>
-
 ## Attaching a virtual machine to the primary user-defined network by using the CLI
 
 You can connect a virtual machine (VM) to the primary user-defined network (UDN) by using the CLI.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `VirtualMachine` manifest to add the UDN interface details, as in the following example:
 
@@ -497,18 +328,19 @@ Procedure
     $ oc annotate hco kubevirt-hyperconverged -n kubevirt-hyperconverged hco.kubevirt.io/deployPasstNetworkBinding=true --overwrite
     ```
 
-    > [!IMPORTANT]
-    > Using the passt binding plugin to attach a VM to the primary UDN is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-    >
-    > For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+    <div class="important">
+
+    Using the passt binding plugin to attach a VM to the primary UDN is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+    For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+    </div>
 
 3.  Apply the `VirtualMachine` manifest by running the following command:
 
     ``` terminal
     $ oc apply -f <filename>.yaml
     ```
-
-</div>
 
 # Additional resources
 

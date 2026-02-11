@@ -8,11 +8,9 @@ As a cluster administrator, you can configure the OpenTelemetry Collector custom
 
 You can configure the `OpenTelemetryCollector` custom resource (CR) to create a Prometheus `ServiceMonitor` CR or a `PodMonitor` CR for a sidecar deployment. A `ServiceMonitor` can scrape Collector’s internal metrics endpoint and Prometheus exporter metrics endpoints.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example of the OpenTelemetry Collector CR with the Prometheus exporter
+**Example of the OpenTelemetry Collector CR with the Prometheus exporter**
 
 </div>
 
@@ -44,24 +42,23 @@ spec:
           exporters: [prometheus]
 ```
 
-</div>
-
 - Configures the Red Hat build of OpenTelemetry Operator to create the Prometheus `ServiceMonitor` CR or `PodMonitor` CR to scrape the Collector’s internal metrics endpoint and the Prometheus exporter metrics endpoints.
 
-> [!NOTE]
-> Setting `enableMetrics` to `true` creates the following two `ServiceMonitor` instances:
->
-> - One `ServiceMonitor` instance for the `<instance_name>-collector-monitoring` service. This `ServiceMonitor` instance scrapes the Collector’s internal metrics.
->
-> - One `ServiceMonitor` instance for the `<instance_name>-collector` service. This `ServiceMonitor` instance scrapes the metrics exposed by the Prometheus exporter instances.
+<div class="note">
+
+Setting `enableMetrics` to `true` creates the following two `ServiceMonitor` instances:
+
+- One `ServiceMonitor` instance for the `<instance_name>-collector-monitoring` service. This `ServiceMonitor` instance scrapes the Collector’s internal metrics.
+
+- One `ServiceMonitor` instance for the `<instance_name>-collector` service. This `ServiceMonitor` instance scrapes the metrics exposed by the Prometheus exporter instances.
+
+</div>
 
 Alternatively, a manually created Prometheus `PodMonitor` CR can provide fine control, for example removing duplicated labels added during Prometheus scraping.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example of the `PodMonitor` CR that configures the monitoring stack to scrape the Collector metrics
+**Example of the `PodMonitor` CR that configures the monitoring stack to scrape the Collector metrics**
 
 </div>
 
@@ -91,8 +88,6 @@ spec:
       regex: job
 ```
 
-</div>
-
 - The name of the OpenTelemetry Collector CR.
 
 - The name of the internal metrics port for the OpenTelemetry Collector. This port name is always `metrics`.
@@ -103,11 +98,9 @@ spec:
 
 A configured OpenTelemetry Collector custom resource (CR) can set up the Prometheus receiver to scrape metrics from the in-cluster monitoring stack.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example of the OpenTelemetry Collector CR for scraping metrics from the in-cluster monitoring stack
+**Example of the OpenTelemetry Collector CR for scraping metrics from the in-cluster monitoring stack**
 
 </div>
 
@@ -177,8 +170,6 @@ spec:
           processors: []
           exporters: [debug]
 ```
-
-</div>
 
 - Assigns the `cluster-monitoring-view` cluster role to the service account of the OpenTelemetry Collector so that it can access the metrics data.
 

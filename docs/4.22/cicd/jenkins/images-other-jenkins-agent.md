@@ -10,8 +10,11 @@ The Base image for Jenkins agents does the following:
 
 - Provides Dockerfiles for both Red Hat Enterprise Linux (RHEL) and `localdev` images.
 
-> [!IMPORTANT]
-> Use a version of the agent image that is appropriate for your OpenShift Container Platform release version. Embedding an `oc` client version that is not compatible with the OpenShift Container Platform version can cause unexpected behavior.
+<div class="important">
+
+Use a version of the agent image that is appropriate for your OpenShift Container Platform release version. Embedding an `oc` client version that is not compatible with the OpenShift Container Platform version can cause unexpected behavior.
+
+</div>
 
 The OpenShift Container Platform Jenkins image also defines the following sample `java-builder` pod template to illustrate how you can use the agent image with the Jenkins Kubernetes plugin.
 
@@ -48,14 +51,14 @@ Each Jenkins agent container can be configured with the following environment va
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Variable</th>
 <th style="text-align: left;">Definition</th>
 <th style="text-align: left;">Example values and settings</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>JAVA_MAX_HEAP_PARAM</code>, <code>CONTAINER_HEAP_PERCENT</code>, <code>JENKINS_MAX_HEAP_UPPER_BOUND_MB</code></p></td>
 <td style="text-align: left;"><p>These values control the maximum heap size of the Jenkins JVM. If <code>JAVA_MAX_HEAP_PARAM</code> is set, its value takes precedence. Otherwise, the maximum heap size is dynamically calculated as <code>CONTAINER_HEAP_PERCENT</code> of the container memory limit, optionally capped at <code>JENKINS_MAX_HEAP_UPPER_BOUND_MB</code> MiB.</p>
 <p>By default, the maximum heap size of the Jenkins JVM is set to 50% of the container memory limit with no cap.</p></td>
@@ -63,34 +66,34 @@ Each Jenkins agent container can be configured with the following environment va
 <p><code>CONTAINER_HEAP_PERCENT</code> default: <code>0.5</code>, or 50%</p>
 <p><code>JENKINS_MAX_HEAP_UPPER_BOUND_MB</code> example setting: <code>512 MiB</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>JAVA_INITIAL_HEAP_PARAM</code>, <code>CONTAINER_INITIAL_PERCENT</code></p></td>
 <td style="text-align: left;"><p>These values control the initial heap size of the Jenkins JVM. If <code>JAVA_INITIAL_HEAP_PARAM</code> is set, its value takes precedence. Otherwise, the initial heap size is dynamically calculated as <code>CONTAINER_INITIAL_PERCENT</code> of the dynamically calculated maximum heap size.</p>
 <p>By default, the JVM sets the initial heap size.</p></td>
 <td style="text-align: left;"><p><code>JAVA_INITIAL_HEAP_PARAM</code> example setting: <code>-Xms32m</code></p>
 <p><code>CONTAINER_INITIAL_PERCENT</code> example setting: <code>0.1</code>, or 10%</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>CONTAINER_CORE_LIMIT</code></p></td>
 <td style="text-align: left;"><p>If set, specifies an integer number of cores used for sizing numbers of internal JVM threads.</p></td>
 <td style="text-align: left;"><p>Example setting: <code>2</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>JAVA_TOOL_OPTIONS</code></p></td>
 <td style="text-align: left;"><p>Specifies options to apply to all JVMs running in this container. It is not recommended to override this value.</p></td>
 <td style="text-align: left;"><p>Default: <code>-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dsun.zip.disableMemoryMapping=true</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>JAVA_GC_OPTS</code></p></td>
 <td style="text-align: left;"><p>Specifies Jenkins JVM garbage collection parameters. It is not recommended to override this value.</p></td>
 <td style="text-align: left;"><p>Default: <code>-XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90</code></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>JENKINS_JAVA_OVERRIDES</code></p></td>
 <td style="text-align: left;"><p>Specifies additional options for the Jenkins JVM. These options are appended to all other options, including the Java options above, and can be used to override any of them, if necessary. Separate each additional option with a space and if any option contains space characters, escape them with a backslash.</p></td>
 <td style="text-align: left;"><p>Example settings: <code>-Dfoo -Dbar</code>; <code>-Dfoo=first\ value -Dbar=second\ value</code></p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>USE_JAVA_VERSION</code></p></td>
 <td style="text-align: left;"><p>Specifies the version of Java version to use to run the agent in its container. The container base image has two versions of java installed: <code>java-11</code> and <code>java-1.8.0</code>. If you extend the container base image, you can specify any alternative version of java using its associated suffix.</p></td>
 <td style="text-align: left;"><p>The default value is <code>java-11</code>.</p>
@@ -157,5 +160,8 @@ podTemplate(label: "mypod",
 
 - Allowed values for `podRetention` are `never()`, `onFailure()`, `always()`, and `default()`.
 
-> [!WARNING]
-> Pods that are kept might continue to run and count against resource quotas.
+<div class="warning">
+
+Pods that are kept might continue to run and count against resource quotas.
+
+</div>

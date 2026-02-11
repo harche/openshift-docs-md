@@ -6,11 +6,9 @@ Alternatively, to share credentials between objects in multiple namespaces, you 
 
 Trigger authentications and cluster trigger authentication use the same configuration. However, a cluster trigger authentication requires an additional `kind` parameter in the authentication reference of the scaled object.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example trigger authentication that uses a bound service account token
+**Example trigger authentication that uses a bound service account token**
 
 </div>
 
@@ -26,19 +24,15 @@ spec:
       serviceAccountName: thanos
 ```
 
-</div>
-
 - Specifies the namespace of the object you want to scale.
 
 - Specifies that this trigger authentication uses a bound service account token for authorization when connecting to the metrics endpoint.
 
 - Specifies the name of the service account to use.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example cluster trigger authentication that uses a bound service account token
+**Example cluster trigger authentication that uses a bound service account token**
 
 </div>
 
@@ -53,19 +47,15 @@ spec:
       serviceAccountName: thanos
 ```
 
-</div>
-
 - Specifies the namespace of the object you want to scale.
 
 - Specifies that this cluster trigger authentication uses a bound service account token for authorization when connecting to the metrics endpoint.
 
 - Specifies the name of the service account to use.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example trigger authentication that uses a secret for Basic authentication
+**Example trigger authentication that uses a secret for Basic authentication**
 
 </div>
 
@@ -85,8 +75,6 @@ spec:
     key: password
 ```
 
-</div>
-
 - Specifies the namespace of the object you want to scale.
 
 - Specifies that this trigger authentication uses a secret for authorization when connecting to the metrics endpoint.
@@ -97,11 +85,9 @@ spec:
 
 - Specifies the key in the secret to use with the specified parameter.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example secret for Basic authentication
+**Example secret for Basic authentication**
 
 </div>
 
@@ -116,15 +102,11 @@ data:
   password: "cGFzc3dvcmQ="
 ```
 
-</div>
-
 - User name and password to supply to the trigger authentication. The values in the `data` stanza must be base-64 encoded.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example trigger authentication that uses a secret for CA details
+**Example trigger authentication that uses a secret for CA details**
 
 </div>
 
@@ -144,8 +126,6 @@ spec:
       key: ca-cert.pem
 ```
 
-</div>
-
 - Specifies the namespace of the object you want to scale.
 
 - Specifies that this trigger authentication uses a secret for authorization when connecting to the metrics endpoint.
@@ -162,11 +142,9 @@ spec:
 
 - Specifies the key in the secret to use with the specified parameter.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example secret with certificate authority (CA) details
+**Example secret with certificate authority (CA) details**
 
 </div>
 
@@ -182,17 +160,13 @@ data:
   client-key.pem: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0t...
 ```
 
-</div>
-
 - Specifies the TLS CA Certificate for authentication of the metrics endpoint. The value must be base-64 encoded.
 
 - Specifies the TLS certificates and key for TLS client authentication. The values must be base-64 encoded.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example trigger authentication that uses a bearer token
+**Example trigger authentication that uses a bearer token**
 
 </div>
 
@@ -209,8 +183,6 @@ spec:
     key: bearerToken
 ```
 
-</div>
-
 - Specifies the namespace of the object you want to scale.
 
 - Specifies that this trigger authentication uses a secret for authorization when connecting to the metrics endpoint.
@@ -221,11 +193,9 @@ spec:
 
 - Specifies the key in the token to use with the specified parameter.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example secret for a bearer token
+**Example secret for a bearer token**
 
 </div>
 
@@ -239,15 +209,11 @@ data:
   bearerToken: "<bearer_token>"
 ```
 
-</div>
-
 - Specifies a bearer token to use with bearer authentication. The value must be base-64 encoded.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example trigger authentication that uses an environment variable
+**Example trigger authentication that uses an environment variable**
 
 </div>
 
@@ -264,8 +230,6 @@ spec:
     containerName: my-container
 ```
 
-</div>
-
 - Specifies the namespace of the object you want to scale.
 
 - Specifies that this trigger authentication uses environment variables for authorization when connecting to the metrics endpoint.
@@ -276,11 +240,9 @@ spec:
 
 - Optional: Specify a container that requires authentication. The container must be in the same resource as referenced by `scaleTargetRef` in the scaled object.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example trigger authentication that uses pod authentication providers
+**Example trigger authentication that uses pod authentication providers**
 
 </div>
 
@@ -295,39 +257,21 @@ spec:
     provider: aws-eks
 ```
 
-</div>
-
 - Specifies the namespace of the object you want to scale.
 
 - Specifies that this trigger authentication uses a platform-native pod authentication when connecting to the metrics endpoint.
 
 - Specifies a pod identity. Supported values are `none`, `azure`, `gcp`, `aws-eks`, or `aws-kiam`. The default is `none`.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Understanding and creating service accounts](../../authentication/understanding-and-creating-service-accounts.xml#understanding-service-accounts)
 
 - [Providing sensitive data to pods](../../nodes/pods/nodes-pods-secrets.xml#nodes-pods-secrets).
 
-</div>
-
 # Using trigger authentications
 
 You use trigger authentications and cluster trigger authentications by using a custom resource to create the authentication, then add a reference to a scaled object or scaled job.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - The Custom Metrics Autoscaler Operator must be installed.
 
@@ -374,25 +318,13 @@ Prerequisites
 
 - If you are using a secret, the `Secret` object must exist.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create the `TriggerAuthentication` or `ClusterTriggerAuthentication` object.
 
     1.  Create a YAML file that defines the object:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example trigger authentication with a bound service account token
+        **Example trigger authentication with a bound service account token**
 
         </div>
 
@@ -407,8 +339,6 @@ Procedure
             - parameter: token
               serviceAccountName: thanos
         ```
-
-        </div>
 
         - Specifies the namespace of the object you want to scale.
 
@@ -426,11 +356,9 @@ Procedure
 
     1.  Create a YAML file that defines the object by running the following command:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example scaled object with a trigger authentication
+        **Example scaled object with a trigger authentication**
 
         </div>
 
@@ -460,17 +388,13 @@ Procedure
               kind: TriggerAuthentication
         ```
 
-        </div>
-
         - Specify the name of your trigger authentication object.
 
         - Specify `TriggerAuthentication`. `TriggerAuthentication` is the default.
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example scaled object with a cluster trigger authentication
+          **Example scaled object with a cluster trigger authentication**
 
           </div>
 
@@ -500,8 +424,6 @@ Procedure
                 kind: ClusterTriggerAuthentication
           ```
 
-          </div>
-
         - Specify the name of your trigger authentication object.
 
         - Specify `ClusterTriggerAuthentication`.
@@ -511,5 +433,3 @@ Procedure
         ``` terminal
         $ oc apply -f <filename>
         ```
-
-</div>

@@ -48,17 +48,7 @@ OpenShift Container Platform includes the *OpenShift Container Registry*, a priv
 
 OpenShift Container Platform also supports integration with other private registries that you might already be using, such as Red Hat Quay.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Integrated OpenShift image registry](../../registry/index.xml#registry-overview)
-
-</div>
 
 # Storing containers using Red Hat Quay
 

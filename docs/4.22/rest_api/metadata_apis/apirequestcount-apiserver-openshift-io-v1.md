@@ -9,13 +9,13 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | spec defines the characteristics of the resource. |
-| `status` | `object` | status contains the observed state of the resource. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | spec defines the characteristics of the resource.                                                                                                                                                                                                                                                    |
+| `status`     | `object`                                                                             | status contains the observed state of the resource.                                                                                                                                                                                                                                                  |
 
 ## .spec
 
@@ -25,8 +25,8 @@ spec defines the characteristics of the resource.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
+| Property                | Type      | Description                                                                                                                                              |
+|-------------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `numberOfUsersToReport` | `integer` | numberOfUsersToReport is the number of users to include in the report. If unspecified or zero, the default is ten. This is default is subject to change. |
 
 ## .status
@@ -37,15 +37,15 @@ status contains the observed state of the resource.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `conditions` | `array` | conditions contains details of the current status of this API Resource. |
-| `conditions[]` | `object` | Condition contains details for one aspect of the current state of this API Resource. --- This struct is intended for direct use as an array at the field path .status.conditions. For example, type FooStatus struct{ // Represents the observations of a foo’s current state. // Known .status.conditions.type are: "Available", "Progressing", and "Degraded" // +patchMergeKey=type // +patchStrategy=merge // +listType=map // +listMapKey=type Conditions \[\]metav1.Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type" protobuf:"bytes,1,rep,name=conditions"` // other fields } |
-| `currentHour` | `object` | currentHour contains request history for the current hour. This is porcelain to make the API easier to read by humans seeing if they addressed a problem. This field is reset on the hour. |
-| `last24h` | `array` | last24h contains request history for the last 24 hours, indexed by the hour, so 12:00AM-12:59 is in index 0, 6am-6:59am is index 6, etc. The index of the current hour is updated live and then duplicated into the requestsLastHour field. |
-| `last24h[]` | `object` | PerResourceAPIRequestLog logs request for various nodes. |
-| `removedInRelease` | `string` | removedInRelease is when the API will be removed. |
-| `requestCount` | `integer` | requestCount is a sum of all requestCounts across all current hours, nodes, and users. |
+| Property           | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|--------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `conditions`       | `array`   | conditions contains details of the current status of this API Resource.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `conditions[]`     | `object`  | Condition contains details for one aspect of the current state of this API Resource. --- This struct is intended for direct use as an array at the field path .status.conditions. For example, type FooStatus struct{ // Represents the observations of a foo’s current state. // Known .status.conditions.type are: "Available", "Progressing", and "Degraded" // +patchMergeKey=type // +patchStrategy=merge // +listType=map // +listMapKey=type Conditions \[\]metav1.Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type" protobuf:"bytes,1,rep,name=conditions"` // other fields } |
+| `currentHour`      | `object`  | currentHour contains request history for the current hour. This is porcelain to make the API easier to read by humans seeing if they addressed a problem. This field is reset on the hour.                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `last24h`          | `array`   | last24h contains request history for the last 24 hours, indexed by the hour, so 12:00AM-12:59 is in index 0, 6am-6:59am is index 6, etc. The index of the current hour is updated live and then duplicated into the requestsLastHour field.                                                                                                                                                                                                                                                                                                                                                                           |
+| `last24h[]`        | `object`  | PerResourceAPIRequestLog logs request for various nodes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `removedInRelease` | `string`  | removedInRelease is when the API will be removed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `requestCount`     | `integer` | requestCount is a sum of all requestCounts across all current hours, nodes, and users.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 
 ## .status.conditions
 
@@ -74,14 +74,14 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastTransitionTime` | `string` | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable. |
-| `message` | `string` | message is a human readable message indicating details about the transition. This may be an empty string. |
-| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance. |
-| `reason` | `string` | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
-| `status` | `string` | status of the condition, one of True, False, Unknown. |
-| `type` | `string` | type of condition in CamelCase or in foo.example.com/CamelCase. --- Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt) |
+| Property             | Type      | Description                                                                                                                                                                                                                                                                                                                             |
+|----------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string`  | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable.                                                                                                    |
+| `message`            | `string`  | message is a human readable message indicating details about the transition. This may be an empty string.                                                                                                                                                                                                                               |
+| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.                                           |
+| `reason`             | `string`  | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty.         |
+| `status`             | `string`  | status of the condition, one of True, False, Unknown.                                                                                                                                                                                                                                                                                   |
+| `type`               | `string`  | type of condition in CamelCase or in foo.example.com/CamelCase. --- Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt) |
 
 ## .status.currentHour
 
@@ -91,11 +91,11 @@ currentHour contains request history for the current hour. This is porcelain to 
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `byNode` | `array` | byNode contains logs of requests per node. |
-| `byNode[]` | `object` | PerNodeAPIRequestLog contains logs of requests to a certain node. |
-| `requestCount` | `integer` | requestCount is a sum of all requestCounts across nodes. |
+| Property       | Type      | Description                                                       |
+|----------------|-----------|-------------------------------------------------------------------|
+| `byNode`       | `array`   | byNode contains logs of requests per node.                        |
+| `byNode[]`     | `object`  | PerNodeAPIRequestLog contains logs of requests to a certain node. |
+| `requestCount` | `integer` | requestCount is a sum of all requestCounts across nodes.          |
 
 ## .status.currentHour.byNode
 
@@ -113,12 +113,12 @@ PerNodeAPIRequestLog contains logs of requests to a certain node.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `byUser` | `array` | byUser contains request details by top .spec.numberOfUsersToReport users. Note that because in the case of an apiserver, restart the list of top users is determined on a best-effort basis, the list might be imprecise. In addition, some system users may be explicitly included in the list. |
-| `byUser[]` | `object` | PerUserAPIRequestCount contains logs of a user’s requests. |
-| `nodeName` | `string` | nodeName where the request are being handled. |
-| `requestCount` | `integer` | requestCount is a sum of all requestCounts across all users, even those outside of the top 10 users. |
+| Property       | Type      | Description                                                                                                                                                                                                                                                                                      |
+|----------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `byUser`       | `array`   | byUser contains request details by top .spec.numberOfUsersToReport users. Note that because in the case of an apiserver, restart the list of top users is determined on a best-effort basis, the list might be imprecise. In addition, some system users may be explicitly included in the list. |
+| `byUser[]`     | `object`  | PerUserAPIRequestCount contains logs of a user’s requests.                                                                                                                                                                                                                                       |
+| `nodeName`     | `string`  | nodeName where the request are being handled.                                                                                                                                                                                                                                                    |
+| `requestCount` | `integer` | requestCount is a sum of all requestCounts across all users, even those outside of the top 10 users.                                                                                                                                                                                             |
 
 ## .status.currentHour.byNode\[\].byUser
 
@@ -136,13 +136,13 @@ PerUserAPIRequestCount contains logs of a user’s requests.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `byVerb` | `array` | byVerb details by verb. |
-| `byVerb[]` | `object` | PerVerbAPIRequestCount requestCounts requests by API request verb. |
-| `requestCount` | `integer` | requestCount of requests by the user across all verbs. |
-| `userAgent` | `string` | userAgent that made the request. The same user often has multiple binaries which connect (pods with many containers). The different binaries will have different userAgents, but the same user. In addition, we have userAgents with version information embedded and the userName isn’t likely to change. |
-| `username` | `string` | userName that made the request. |
+| Property       | Type      | Description                                                                                                                                                                                                                                                                                                |
+|----------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `byVerb`       | `array`   | byVerb details by verb.                                                                                                                                                                                                                                                                                    |
+| `byVerb[]`     | `object`  | PerVerbAPIRequestCount requestCounts requests by API request verb.                                                                                                                                                                                                                                         |
+| `requestCount` | `integer` | requestCount of requests by the user across all verbs.                                                                                                                                                                                                                                                     |
+| `userAgent`    | `string`  | userAgent that made the request. The same user often has multiple binaries which connect (pods with many containers). The different binaries will have different userAgents, but the same user. In addition, we have userAgents with version information embedded and the userName isn’t likely to change. |
+| `username`     | `string`  | userName that made the request.                                                                                                                                                                                                                                                                            |
 
 ## .status.currentHour.byNode\[\].byUser\[\].byVerb
 
@@ -181,11 +181,11 @@ PerResourceAPIRequestLog logs request for various nodes.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `byNode` | `array` | byNode contains logs of requests per node. |
-| `byNode[]` | `object` | PerNodeAPIRequestLog contains logs of requests to a certain node. |
-| `requestCount` | `integer` | requestCount is a sum of all requestCounts across nodes. |
+| Property       | Type      | Description                                                       |
+|----------------|-----------|-------------------------------------------------------------------|
+| `byNode`       | `array`   | byNode contains logs of requests per node.                        |
+| `byNode[]`     | `object`  | PerNodeAPIRequestLog contains logs of requests to a certain node. |
+| `requestCount` | `integer` | requestCount is a sum of all requestCounts across nodes.          |
 
 ## .status.last24h\[\].byNode
 
@@ -203,12 +203,12 @@ PerNodeAPIRequestLog contains logs of requests to a certain node.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `byUser` | `array` | byUser contains request details by top .spec.numberOfUsersToReport users. Note that because in the case of an apiserver, restart the list of top users is determined on a best-effort basis, the list might be imprecise. In addition, some system users may be explicitly included in the list. |
-| `byUser[]` | `object` | PerUserAPIRequestCount contains logs of a user’s requests. |
-| `nodeName` | `string` | nodeName where the request are being handled. |
-| `requestCount` | `integer` | requestCount is a sum of all requestCounts across all users, even those outside of the top 10 users. |
+| Property       | Type      | Description                                                                                                                                                                                                                                                                                      |
+|----------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `byUser`       | `array`   | byUser contains request details by top .spec.numberOfUsersToReport users. Note that because in the case of an apiserver, restart the list of top users is determined on a best-effort basis, the list might be imprecise. In addition, some system users may be explicitly included in the list. |
+| `byUser[]`     | `object`  | PerUserAPIRequestCount contains logs of a user’s requests.                                                                                                                                                                                                                                       |
+| `nodeName`     | `string`  | nodeName where the request are being handled.                                                                                                                                                                                                                                                    |
+| `requestCount` | `integer` | requestCount is a sum of all requestCounts across all users, even those outside of the top 10 users.                                                                                                                                                                                             |
 
 ## .status.last24h\[\].byNode\[\].byUser
 
@@ -226,13 +226,13 @@ PerUserAPIRequestCount contains logs of a user’s requests.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `byVerb` | `array` | byVerb details by verb. |
-| `byVerb[]` | `object` | PerVerbAPIRequestCount requestCounts requests by API request verb. |
-| `requestCount` | `integer` | requestCount of requests by the user across all verbs. |
-| `userAgent` | `string` | userAgent that made the request. The same user often has multiple binaries which connect (pods with many containers). The different binaries will have different userAgents, but the same user. In addition, we have userAgents with version information embedded and the userName isn’t likely to change. |
-| `username` | `string` | userName that made the request. |
+| Property       | Type      | Description                                                                                                                                                                                                                                                                                                |
+|----------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `byVerb`       | `array`   | byVerb details by verb.                                                                                                                                                                                                                                                                                    |
+| `byVerb[]`     | `object`  | PerVerbAPIRequestCount requestCounts requests by API request verb.                                                                                                                                                                                                                                         |
+| `requestCount` | `integer` | requestCount of requests by the user across all verbs.                                                                                                                                                                                                                                                     |
+| `userAgent`    | `string`  | userAgent that made the request. The same user often has multiple binaries which connect (pods with many containers). The different binaries will have different userAgents, but the same user. In addition, we have userAgents with version information embedded and the userName isn’t likely to change. |
+| `username`     | `string`  | userName that made the request.                                                                                                                                                                                                                                                                            |
 
 ## .status.last24h\[\].byNode\[\].byUser\[\].byVerb
 
@@ -293,10 +293,10 @@ HTTP method
 Description
 delete collection of APIRequestCount
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -306,10 +306,10 @@ HTTP method
 Description
 list objects of kind APIRequestCount
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`APIRequestCountList`](../objects/index.xml#io-openshift-apiserver-v1-APIRequestCountList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                       |
+|--------------------|----------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`APIRequestCountList`](../objects/index.xml#io-openshift-apiserver-v1-APIRequestCountList) schema |
+| 401 - Unauthorized | Empty                                                                                              |
 
 HTTP responses
 
@@ -319,25 +319,25 @@ HTTP method
 Description
 create an APIRequestCount
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                 | Description |
+|-----------|--------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
-| 201 - Created | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
-| 202 - Accepted | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                         |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
+| 201 - Created      | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
+| 202 - Accepted     | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                |
 
 HTTP responses
 
@@ -355,17 +355,17 @@ HTTP method
 Description
 delete an APIRequestCount
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -375,10 +375,10 @@ HTTP method
 Description
 read the specified APIRequestCount
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                         |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                |
 
 HTTP responses
 
@@ -388,17 +388,17 @@ HTTP method
 Description
 partially update the specified APIRequestCount
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                         |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                |
 
 HTTP responses
 
@@ -408,24 +408,24 @@ HTTP method
 Description
 replace the specified APIRequestCount
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                 | Description |
+|-----------|--------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
-| 201 - Created | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                         |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
+| 201 - Created      | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                |
 
 HTTP responses
 
@@ -443,10 +443,10 @@ HTTP method
 Description
 read status of the specified APIRequestCount
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                         |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                |
 
 HTTP responses
 
@@ -456,17 +456,17 @@ HTTP method
 Description
 partially update status of the specified APIRequestCount
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                         |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                |
 
 HTTP responses
 
@@ -476,23 +476,23 @@ HTTP method
 Description
 replace status of the specified APIRequestCount
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                                 | Description |
+|-----------|--------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
-| 201 - Created | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                         |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
+| 201 - Created      | [`APIRequestCount`](../metadata_apis/apirequestcount-apiserver-openshift-io-v1.xml#apirequestcount-apiserver-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                |
 
 HTTP responses

@@ -9,13 +9,13 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | OperatorGroupSpec is the spec for an OperatorGroup resource. |
-| `status` | `object` | OperatorGroupStatus is the status for an OperatorGroupResource. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | OperatorGroupSpec is the spec for an OperatorGroup resource.                                                                                                                                                                                                                                         |
+| `status`     | `object`                                                                             | OperatorGroupStatus is the status for an OperatorGroupResource.                                                                                                                                                                                                                                      |
 
 ## .spec
 
@@ -32,34 +32,34 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>selector</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Selector selects the OperatorGroup’s target namespaces.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>serviceAccountName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ServiceAccountName is the admin specified service account which will be used to deploy operator(s) in this operator group.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>staticProvidedAPIs</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Static tells OLM not to update the OperatorGroup’s providedAPIs annotation</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>targetNamespaces</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>TargetNamespaces is an explicit set of namespaces to target. If it is set, Selector is ignored.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>upgradeStrategy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>UpgradeStrategy defines the upgrade strategy for operators in the namespace. There are currently two supported upgrade strategies:</p>
@@ -78,11 +78,11 @@ Selector selects the OperatorGroup’s target namespaces.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.selector.matchExpressions
 
@@ -105,11 +105,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .status
 
@@ -122,13 +122,13 @@ Type
 Required
 - `lastUpdated`
 
-| Property | Type | Description |
-|----|----|----|
-| `conditions` | `array` | Conditions is an array of the OperatorGroup’s conditions. |
-| `conditions[]` | `object` | Condition contains details for one aspect of the current state of this API Resource. |
-| `lastUpdated` | `string` | LastUpdated is a timestamp of the last time the OperatorGroup’s status was Updated. |
-| `namespaces` | `array (string)` | Namespaces is the set of target namespaces for the OperatorGroup. |
-| `serviceAccountRef` | `object` | ServiceAccountRef references the service account object specified. |
+| Property            | Type             | Description                                                                          |
+|---------------------|------------------|--------------------------------------------------------------------------------------|
+| `conditions`        | `array`          | Conditions is an array of the OperatorGroup’s conditions.                            |
+| `conditions[]`      | `object`         | Condition contains details for one aspect of the current state of this API Resource. |
+| `lastUpdated`       | `string`         | LastUpdated is a timestamp of the last time the OperatorGroup’s status was Updated.  |
+| `namespaces`        | `array (string)` | Namespaces is the set of target namespaces for the OperatorGroup.                    |
+| `serviceAccountRef` | `object`         | ServiceAccountRef references the service account object specified.                   |
 
 ## .status.conditions
 
@@ -157,14 +157,14 @@ Required
 
 - `type`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastTransitionTime` | `string` | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable. |
-| `message` | `string` | message is a human readable message indicating details about the transition. This may be an empty string. |
-| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance. |
-| `reason` | `string` | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
-| `status` | `string` | status of the condition, one of True, False, Unknown. |
-| `type` | `string` | type of condition in CamelCase or in foo.example.com/CamelCase. |
+| Property             | Type      | Description                                                                                                                                                                                                                                                                                                                     |
+|----------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string`  | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable.                                                                                            |
+| `message`            | `string`  | message is a human readable message indicating details about the transition. This may be an empty string.                                                                                                                                                                                                                       |
+| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.                                   |
+| `reason`             | `string`  | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
+| `status`             | `string`  | status of the condition, one of True, False, Unknown.                                                                                                                                                                                                                                                                           |
+| `type`               | `string`  | type of condition in CamelCase or in foo.example.com/CamelCase.                                                                                                                                                                                                                                                                 |
 
 ## .status.serviceAccountRef
 
@@ -174,15 +174,15 @@ ServiceAccountRef references the service account object specified.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | API version of the referent. |
-| `fieldPath` | `string` | If referring to a piece of an object instead of an entire object, this string should contain a valid JSON/Go field access statement, such as desiredState.manifest.containers\[2\]. For example, if the object reference is to a container within a pod, this would take on a value like: "spec.containers{name}" (where "name" refers to the name of the container that triggered the event) or if no container name is specified "spec.containers\[2\]" (container with index 2 in this pod). This syntax is chosen only to have some well-defined way of referencing a part of an object. |
-| `kind` | `string` | Kind of the referent. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `name` | `string` | Name of the referent. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
-| `namespace` | `string` | Namespace of the referent. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/> |
-| `resourceVersion` | `string` | Specific resourceVersion to which this reference is made, if any. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#concurrency-control-and-consistency> |
-| `uid` | `string` | UID of the referent. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#uids> |
+| Property          | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|-------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion`      | `string` | API version of the referent.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `fieldPath`       | `string` | If referring to a piece of an object instead of an entire object, this string should contain a valid JSON/Go field access statement, such as desiredState.manifest.containers\[2\]. For example, if the object reference is to a container within a pod, this would take on a value like: "spec.containers{name}" (where "name" refers to the name of the container that triggered the event) or if no container name is specified "spec.containers\[2\]" (container with index 2 in this pod). This syntax is chosen only to have some well-defined way of referencing a part of an object. |
+| `kind`            | `string` | Kind of the referent. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds>                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `name`            | `string` | Name of the referent. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names>                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `namespace`       | `string` | Namespace of the referent. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `resourceVersion` | `string` | Specific resourceVersion to which this reference is made, if any. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#concurrency-control-and-consistency>                                                                                                                                                                                                                                                                                                                                                                                       |
+| `uid`             | `string` | UID of the referent. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#uids>                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 
 # API endpoints
 
@@ -226,10 +226,10 @@ HTTP method
 Description
 list objects of kind OperatorGroup
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`OperatorGroupList`](../objects/index.xml#com-coreos-operators-v1-OperatorGroupList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                 |
+|--------------------|----------------------------------------------------------------------------------------------|
+| 200 - OK           | [`OperatorGroupList`](../objects/index.xml#com-coreos-operators-v1-OperatorGroupList) schema |
+| 401 - Unauthorized | Empty                                                                                        |
 
 HTTP responses
 
@@ -241,10 +241,10 @@ HTTP method
 Description
 delete collection of OperatorGroup
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -254,10 +254,10 @@ HTTP method
 Description
 list objects of kind OperatorGroup
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`OperatorGroupList`](../objects/index.xml#com-coreos-operators-v1-OperatorGroupList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                 |
+|--------------------|----------------------------------------------------------------------------------------------|
+| 200 - OK           | [`OperatorGroupList`](../objects/index.xml#com-coreos-operators-v1-OperatorGroupList) schema |
+| 401 - Unauthorized | Empty                                                                                        |
 
 HTTP responses
 
@@ -267,25 +267,25 @@ HTTP method
 Description
 create an OperatorGroup
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |  |
+| Parameter | Type                                                                                                                          | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
-| 201 - Created | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
-| 202 - Accepted | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                  |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
+| 201 - Created      | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
+| 202 - Accepted     | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                         |
 
 HTTP responses
 
@@ -303,17 +303,17 @@ HTTP method
 Description
 delete an OperatorGroup
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -323,10 +323,10 @@ HTTP method
 Description
 read the specified OperatorGroup
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                  |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                         |
 
 HTTP responses
 
@@ -336,17 +336,17 @@ HTTP method
 Description
 partially update the specified OperatorGroup
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                  |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                         |
 
 HTTP responses
 
@@ -356,24 +356,24 @@ HTTP method
 Description
 replace the specified OperatorGroup
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |  |
+| Parameter | Type                                                                                                                          | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
-| 201 - Created | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                  |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
+| 201 - Created      | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                         |
 
 HTTP responses
 
@@ -391,10 +391,10 @@ HTTP method
 Description
 read status of the specified OperatorGroup
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                  |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                         |
 
 HTTP responses
 
@@ -404,17 +404,17 @@ HTTP method
 Description
 partially update status of the specified OperatorGroup
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                  |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                         |
 
 HTTP responses
 
@@ -424,23 +424,23 @@ HTTP method
 Description
 replace status of the specified OperatorGroup
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |  |
+| Parameter | Type                                                                                                                          | Description |
+|-----------|-------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
-| 201 - Created | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                  |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
+| 201 - Created      | [`OperatorGroup`](../operatorhub_apis/operatorgroup-operators-coreos-com-v1.xml#operatorgroup-operators-coreos-com-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                         |
 
 HTTP responses

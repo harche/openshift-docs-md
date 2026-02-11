@@ -58,11 +58,9 @@ This release has the following known issues:
 
     OpenShift Container Platform 3.7 and 3.9 do not support the Mount Propagation feature that enables Velero to mount PVs automatically in the `Restic` pod. The `MigAnalytic` custom resource (CR) fails to collect PV data from the `Restic` pod and reports the resources as `0`. The `MigPlan` CR displays a status similar to the following:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -76,8 +74,6 @@ This release has the following known issues:
         status: "True"
         type: ExtendedPVAnalysisFailed
     ```
-
-    </div>
 
     To enable PV resizing, you can manually restart the Restic daemonset on the source cluster or restart the `Restic` pods on the same nodes as the application. If you do not restart Restic, you can run the direct volume migration without PV resizing. ([**BZ#1982729**](https://bugzilla.redhat.com/show_bug.cgi?id=1982729))
 

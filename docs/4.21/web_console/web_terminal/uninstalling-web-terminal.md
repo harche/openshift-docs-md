@@ -10,27 +10,9 @@ Uninstalling the web terminal is a two-step process:
 
 You can uninstall the web terminal by removing the Web Terminal Operator and custom resources used by the Operator.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the OpenShift Container Platform web console as a user with the `cluster-admin` role.
 
 - You have installed the `oc` CLI.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -40,36 +22,19 @@ Procedure
 
 4.  In the **Uninstall Operator** confirmation dialog box, click **Uninstall** to remove the Operator, Operator deployments, and pods from the cluster. The Operator stops running and no longer receives updates.
 
-</div>
-
 # Removing the DevWorkspace Operator
 
 To completely uninstall the web terminal, you must also remove the DevWorkspace Operator and custom resources used by the Operator.
 
-> [!IMPORTANT]
-> The DevWorkspace Operator is a standalone Operator and may be required as a dependency for other Operators installed in the cluster. Follow the steps below only if you are sure that the DevWorkspace Operator is no longer needed.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The DevWorkspace Operator is a standalone Operator and may be required as a dependency for other Operators installed in the cluster. Follow the steps below only if you are sure that the DevWorkspace Operator is no longer needed.
 
 </div>
 
 - You have access to an OpenShift Container Platform cluster with cluster administrator permissions.
 
 - You have installed the `oc` CLI.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Remove the `DevWorkspace` custom resources used by the Operator, along with any related Kubernetes objects:
 
@@ -81,13 +46,19 @@ Procedure
     $ oc delete devworkspaceroutings.controller.devfile.io --all-namespaces --all --wait
     ```
 
-    > [!WARNING]
-    > If this step is not complete, finalizers make it difficult to fully uninstall the Operator.
+    <div class="warning">
+
+    If this step is not complete, finalizers make it difficult to fully uninstall the Operator.
+
+    </div>
 
 2.  Remove the CRDs used by the Operator:
 
-    > [!WARNING]
-    > The DevWorkspace Operator provides custom resource definitions (CRDs) that use conversion webhooks. Failing to remove these CRDs can cause issues in the cluster.
+    <div class="warning">
+
+    The DevWorkspace Operator provides custom resource definitions (CRDs) that use conversion webhooks. Failing to remove these CRDs can cause issues in the cluster.
+
+    </div>
 
     ``` terminal
     $ oc delete customresourcedefinitions.apiextensions.k8s.io devworkspaceroutings.controller.devfile.io
@@ -125,8 +96,11 @@ Procedure
     $ oc delete validatingwebhookconfigurations controller.devfile.io
     ```
 
-    > [!NOTE]
-    > If you remove the `devworkspace-webhook-server` deployment without removing the mutating and validating webhooks, you can not use `oc exec` commands to run commands in a container in the cluster. After you remove the webhooks you can use the `oc exec` commands again.
+    <div class="note">
+
+    If you remove the `devworkspace-webhook-server` deployment without removing the mutating and validating webhooks, you can not use `oc exec` commands to run commands in a container in the cluster. After you remove the webhooks you can use the `oc exec` commands again.
+
+    </div>
 
 5.  Remove any remaining services, secrets, and config maps. Depending on the installation, some resources included in the following commands may not exist in the cluster.
 
@@ -155,5 +129,3 @@ Procedure
     3.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) for the Operator, and then select **Uninstall Operator**.
 
     4.  In the **Uninstall Operator** confirmation dialog box, click **Uninstall** to remove the Operator, Operator deployments, and pods from the cluster. The Operator stops running and no longer receives updates.
-
-</div>

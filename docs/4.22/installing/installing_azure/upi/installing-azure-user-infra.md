@@ -2,8 +2,11 @@ In OpenShift Container Platform version 4.17, you can install a cluster on Micro
 
 Several [Azure Resource Manager](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/overview) (ARM) templates are provided to assist in completing these steps or to help model your own.
 
-> [!IMPORTANT]
-> The steps for performing a user-provisioned infrastructure installation are provided as an example only. Installing a cluster with infrastructure you provide requires knowledge of the cloud provider and the installation process of OpenShift Container Platform. Several ARM templates are provided to assist in completing these steps or to help model your own. You are also free to create the required resources through other methods; the templates are just an example.
+<div class="important">
+
+The steps for performing a user-provisioned infrastructure installation are provided as an example only. Installing a cluster with infrastructure you provide requires knowledge of the cloud provider and the installation process of OpenShift Container Platform. Several ARM templates are provided to assist in completing these steps or to help model your own. You are also free to create the required resources through other methods; the templates are just an example.
+
+</div>
 
 # Prerequisites
 
@@ -19,8 +22,11 @@ Several [Azure Resource Manager](https://docs.microsoft.com/en-us/azure/azure-re
 
 - If you use a firewall and plan to use the Telemetry service, you [configured the firewall to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall) that your cluster requires access to.
 
-  > [!NOTE]
-  > Be sure to also review this site list if you are configuring a proxy.
+  <div class="note">
+
+  Be sure to also review this site list if you are configuring a proxy.
+
+  </div>
 
 # Internet access for OpenShift Container Platform
 
@@ -34,24 +40,33 @@ You must have internet access to perform the following actions:
 
 - Obtain the packages that are required to perform cluster updates.
 
-> [!IMPORTANT]
-> If your cluster cannot have direct internet access, you can perform a restricted network installation on some types of infrastructure that you provision. During that process, you download the required content and use it to populate a mirror registry with the installation packages. With some installation types, the environment that you install your cluster in will not require internet access. Before you update the cluster, you update the content of the mirror registry.
+<div class="important">
+
+If your cluster cannot have direct internet access, you can perform a restricted network installation on some types of infrastructure that you provision. During that process, you download the required content and use it to populate a mirror registry with the installation packages. With some installation types, the environment that you install your cluster in will not require internet access. Before you update the cluster, you update the content of the mirror registry.
+
+</div>
 
 # Configuring your Azure project
 
 Before you can install OpenShift Container Platform, you must configure an Azure project to host it.
 
-> [!IMPORTANT]
-> All Azure resources that are available through public endpoints are subject to resource name restrictions, and you cannot create resources that use certain terms. For a list of terms that Azure restricts, see [Resolve reserved resource name errors](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-reserved-resource-name) in the Azure documentation.
+<div class="important">
+
+All Azure resources that are available through public endpoints are subject to resource name restrictions, and you cannot create resources that use certain terms. For a list of terms that Azure restricts, see [Resolve reserved resource name errors](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-reserved-resource-name) in the Azure documentation.
+
+</div>
 
 ## Azure account limits
 
 The OpenShift Container Platform cluster uses a number of Microsoft Azure components, and the default [Azure subscription and service limits, quotas, and constraints](https://docs.microsoft.com/en-us/azure/azure-subscription-service-limits) affect your ability to install OpenShift Container Platform clusters.
 
-> [!IMPORTANT]
-> Default limits vary by offer category types, such as Free Trial and Pay-As-You-Go, and by series, such as Dv2, F, and G. For example, the default for Enterprise Agreement subscriptions is 350 cores.
->
-> Check the limits for your subscription type and if necessary, increase quota limits for your account before you install a default cluster on Azure.
+<div class="important">
+
+Default limits vary by offer category types, such as Free Trial and Pay-As-You-Go, and by series, such as Dv2, F, and G. For example, the default for Enterprise Agreement subscriptions is 350 cores.
+
+Check the limits for your subscription type and if necessary, increase quota limits for your account before you install a default cluster on Azure.
+
+</div>
 
 The following table summarizes the Azure components whose limits can impact your ability to install and run OpenShift Container Platform clusters.
 
@@ -63,7 +78,7 @@ The following table summarizes the Azure components whose limits can impact your
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Component</th>
 <th style="text-align: left;">Number of components required by default</th>
 <th style="text-align: left;">Default Azure limit</th>
@@ -71,7 +86,7 @@ The following table summarizes the Azure components whose limits can impact your
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>vCPU</p></td>
 <td style="text-align: left;"><p>40</p></td>
 <td style="text-align: left;"><p>20 per region</p></td>
@@ -85,71 +100,69 @@ The following table summarizes the Azure components whose limits can impact your
 <p>Because the bootstrap machine uses <code>Standard_D4s_v3</code> machines, which use 4 vCPUs, the control plane machines use <code>Standard_D8s_v3</code> virtual machines, which use 8 vCPUs, and the worker machines use <code>Standard_D4s_v3</code> virtual machines, which use 4 vCPUs, a default cluster requires 40 vCPUs. The bootstrap node VM, which uses 4 vCPUs, is used only during installation.</p>
 <p>To deploy more worker nodes, enable autoscaling, deploy large workloads, or use a different instance type, you must further increase the vCPU limit for your account to ensure that your cluster can deploy the machines that you require.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>OS Disk</p></td>
 <td style="text-align: left;"><p>7</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Each cluster machine must have a minimum of 100 GB of storage and 300 IOPS.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>Faster storage is recommended for production clusters and clusters with intensive workloads. For more information about optimizing storage for performance, see the page titled "Optimizing storage" in the "Scalability and performance" section.</p>
 </div></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>VNet</p></td>
 <td style="text-align: left;"><p>1</p></td>
 <td style="text-align: left;"><p>1000 per region</p></td>
 <td style="text-align: left;"><p>Each default cluster requires one Virtual Network (VNet), which contains two subnets.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Network interfaces</p></td>
 <td style="text-align: left;"><p>7</p></td>
 <td style="text-align: left;"><p>65,536 per region</p></td>
 <td style="text-align: left;"><p>Each default cluster requires seven network interfaces. If you create more machines or your deployed workloads create load balancers, your cluster uses more network interfaces.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Network security groups</p></td>
 <td style="text-align: left;"><p>2</p></td>
 <td style="text-align: left;"><p>5000</p></td>
 <td style="text-align: left;"><p>Each cluster creates network security groups for each subnet in the VNet. The default cluster creates network security groups for the control plane and for the compute node subnets:</p>
-<table data-custom-style="horizontal">
+<table>
 <colgroup>
 <col style="width: 15%" />
 <col style="width: 85%" />
 </colgroup>
 <tbody>
-<tr>
+<tr class="odd">
 <td><p><code>controlplane</code></p></td>
 <td><p>Allows the control plane machines to be reached on port 6443 from anywhere</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td><p><code>node</code></p></td>
 <td><p>Allows worker nodes to be reached from the internet on ports 80 and 443</p></td>
 </tr>
 </tbody>
 </table></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Network load balancers</p></td>
 <td style="text-align: left;"><p>3</p></td>
 <td style="text-align: left;"><p>1000 per region</p></td>
 <td style="text-align: left;"><p>Each cluster creates the following <a href="https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview">load balancers</a>:</p>
-<table data-custom-style="horizontal">
+<table>
 <colgroup>
 <col style="width: 15%" />
 <col style="width: 85%" />
 </colgroup>
 <tbody>
-<tr>
+<tr class="odd">
 <td><p><code>default</code></p></td>
 <td><p>Public IP address that load balances requests to ports 80 and 443 across worker machines</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td><p><code>internal</code></p></td>
 <td><p>Private IP address that load balances requests to ports 6443 and 22623 across control plane machines</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td><p><code>external</code></p></td>
 <td><p>Public IP address that load balances requests to port 6443 across control plane machines</p></td>
 </tr>
@@ -157,27 +170,25 @@ The following table summarizes the Azure components whose limits can impact your
 </table>
 <p>If your applications create more Kubernetes <code>LoadBalancer</code> service objects, your cluster uses more load balancers.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Public IP addresses</p></td>
 <td style="text-align: left;"><p>3</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Each of the two public load balancers uses a public IP address. The bootstrap machine also uses a public IP address so that you can SSH into the machine to troubleshoot issues during installation. The IP address for the bootstrap node is used only during installation.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p>Private IP addresses</p></td>
 <td style="text-align: left;"><p>7</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The internal load balancer, each of the three control plane machines, and each of the three worker machines each use a private IP address.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Spot VM vCPUs (optional)</p></td>
 <td style="text-align: left;"><p>0</p>
 <p>If you configure spot VMs, your cluster must have two spot VM vCPUs for every compute node.</p></td>
 <td style="text-align: left;"><p>20 per region</p></td>
 <td style="text-align: left;"><p>This is an optional component. To use spot VMs, you must increase the Azure default limit to at least twice the number of compute nodes in your cluster.</p>
 <div class="note">
-<div class="title">
-&#10;</div>
 <p>Using spot VMs for control plane nodes is not recommended.</p>
 </div></td>
 </tr>
@@ -186,29 +197,11 @@ The following table summarizes the Azure components whose limits can impact your
 
 To increase an account limit, file a support request on the Azure portal. For more information, see [Request a quota limit increase for Azure Deployment Environments resources](https://learn.microsoft.com/en-us/azure/deployment-environments/how-to-request-quota-increase).
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Optimizing storage](../../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage)
-
-</div>
 
 ## Configuring a public DNS zone in Azure
 
 To install OpenShift Container Platform, the Microsoft Azure account you use must have a dedicated public hosted DNS zone in your account. This zone must be authoritative for the domain. This service provides cluster DNS resolution and name lookup for external connections to the cluster.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Identify your domain, or subdomain, and registrar. You can transfer an existing domain and registrar or obtain a new one through Azure or another source.
 
@@ -222,8 +215,6 @@ Procedure
 
 3.  If you use a subdomain, follow your organization’s procedures to add its delegation records to the parent domain.
 
-</div>
-
 You can view Azure’s DNS solution by visiting this [example for creating DNS zones](#installation-azure-create-dns-zones_installing-azure-user-infra).
 
 ## Certificate signing requests management
@@ -236,25 +227,7 @@ The `kube-controller-manager` only approves the kubelet client CSRs. The `machin
 
 The installation program requires the subscription and tenant IDs that are associated with your Azure account. You can use the Azure CLI to gather this information.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed or updated the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-yum?view=azure-cli-latest).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the Azure CLI by running the following command:
 
@@ -270,11 +243,9 @@ Procedure
         $ az account list --refresh
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -307,19 +278,15 @@ Procedure
         ]
         ```
 
-        </div>
-
     2.  View the details of the active account, and confirm that this is the subscription you want to use, by running the following command:
 
         ``` terminal
         $ az account show
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -338,8 +305,6 @@ Procedure
         }
         ```
 
-        </div>
-
 3.  If you are not using the right subscription:
 
     1.  Change the active subscription by running the following command:
@@ -354,11 +319,9 @@ Procedure
         $ az account show
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -377,11 +340,7 @@ Procedure
         }
         ```
 
-        </div>
-
 4.  Record the `id` and `tenantId` parameter values from the output. You require these values to install an OpenShift Container Platform cluster.
-
-</div>
 
 ## Supported identities to access Azure resources
 
@@ -409,14 +368,6 @@ The following options are available to you:
 
 The following permissions are required for creating an OpenShift Container Platform cluster on Microsoft Azure.
 
-<div class="example">
-
-<div class="title">
-
-Required permissions for creating authorization resources
-
-</div>
-
 - `Microsoft.Authorization/policies/audit/action`
 
 - `Microsoft.Authorization/policies/auditIfNotExists/action`
@@ -425,15 +376,7 @@ Required permissions for creating authorization resources
 
 - `Microsoft.Authorization/roleAssignments/write`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions for creating compute resources
-
-</div>
+<!-- -->
 
 - `Microsoft.Compute/images/read`
 
@@ -479,15 +422,7 @@ Required permissions for creating compute resources
 
 - `Microsoft.Compute/virtualMachines/deallocate/action`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions for creating identity management resources
-
-</div>
+<!-- -->
 
 - `Microsoft.ManagedIdentity/userAssignedIdentities/assign/action`
 
@@ -495,15 +430,7 @@ Required permissions for creating identity management resources
 
 - `Microsoft.ManagedIdentity/userAssignedIdentities/write`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions for creating network resources
-
-</div>
+<!-- -->
 
 - `Microsoft.Network/dnsZones/A/write`
 
@@ -579,15 +506,7 @@ Required permissions for creating network resources
 
 - `Microsoft.Network/virtualNetworks/write`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions for checking the health of resources
-
-</div>
+<!-- -->
 
 - `Microsoft.Resourcehealth/healthevent/Activated/action`
 
@@ -599,41 +518,17 @@ Required permissions for checking the health of resources
 
 - `Microsoft.Resourcehealth/healthevent/Updated/action`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions for creating a resource group
-
-</div>
+<!-- -->
 
 - `Microsoft.Resources/subscriptions/resourceGroups/read`
 
 - `Microsoft.Resources/subscriptions/resourcegroups/write`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions for creating resource tags
-
-</div>
+<!-- -->
 
 - `Microsoft.Resources/tags/write`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions for creating storage resources
-
-</div>
+<!-- -->
 
 - `Microsoft.Storage/storageAccounts/blobServices/read`
 
@@ -653,15 +548,7 @@ Required permissions for creating storage resources
 
 - `Microsoft.Storage/storageAccounts/write`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions for creating deployments
-
-</div>
+<!-- -->
 
 - `Microsoft.Resources/deployments/read`
 
@@ -671,43 +558,19 @@ Required permissions for creating deployments
 
 - `Microsoft.Resources/deployments/operationstatuses/read`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Optional permissions for creating compute resources
-
-</div>
+<!-- -->
 
 - `Microsoft.Compute/availabilitySets/delete`
 
 - `Microsoft.Compute/availabilitySets/write`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Optional permissions for creating marketplace virtual machine resources
-
-</div>
+<!-- -->
 
 - `Microsoft.MarketplaceOrdering/offertypes/publishers/offers/plans/agreements/read`
 
 - `Microsoft.MarketplaceOrdering/offertypes/publishers/offers/plans/agreements/write`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Optional permissions for enabling user-managed encryption
-
-</div>
+<!-- -->
 
 - `Microsoft.Compute/diskEncryptionSets/read`
 
@@ -729,29 +592,11 @@ Optional permissions for enabling user-managed encryption
 
 - `Microsoft.Features/providers/features/register/action`
 
-</div>
-
 The following permissions are required for deleting an OpenShift Container Platform cluster on Microsoft Azure.
-
-<div class="example">
-
-<div class="title">
-
-Required permissions for deleting authorization resources
-
-</div>
 
 - `Microsoft.Authorization/roleAssignments/delete`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions for deleting compute resources
-
-</div>
+<!-- -->
 
 - `Microsoft.Compute/disks/delete`
 
@@ -765,27 +610,11 @@ Required permissions for deleting compute resources
 
 - `Microsoft.Compute/images/delete`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions for deleting identity management resources
-
-</div>
+<!-- -->
 
 - `Microsoft.ManagedIdentity/userAssignedIdentities/delete`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions for deleting network resources
-
-</div>
+<!-- -->
 
 - `Microsoft.Network/dnszones/read`
 
@@ -815,15 +644,7 @@ Required permissions for deleting network resources
 
 - `Microsoft.Network/virtualNetworks/delete`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions for checking the health of resources
-
-</div>
+<!-- -->
 
 - `Microsoft.Resourcehealth/healthevent/Activated/action`
 
@@ -831,52 +652,29 @@ Required permissions for checking the health of resources
 
 - `Microsoft.Resourcehealth/healthevent/Updated/action`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions for deleting a resource group
-
-</div>
+<!-- -->
 
 - `Microsoft.Resources/subscriptions/resourcegroups/delete`
 
-</div>
-
-<div class="example">
-
-<div class="title">
-
-Required permissions for deleting storage resources
-
-</div>
+<!-- -->
 
 - `Microsoft.Storage/storageAccounts/delete`
 
 - `Microsoft.Storage/storageAccounts/listKeys/action`
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> To install OpenShift Container Platform on Azure, you must scope the permissions related to resource group creation to your subscription. After the resource group is created, you can scope the rest of the permissions to the created resource group. If the public DNS zone is present in a different resource group, then the network DNS zone related permissions must always be applied to your subscription.
->
-> You can scope all the permissions to your subscription when deleting an OpenShift Container Platform cluster.
+To install OpenShift Container Platform on Azure, you must scope the permissions related to resource group creation to your subscription. After the resource group is created, you can scope the rest of the permissions to the created resource group. If the public DNS zone is present in a different resource group, then the network DNS zone related permissions must always be applied to your subscription.
+
+You can scope all the permissions to your subscription when deleting an OpenShift Container Platform cluster.
+
+</div>
 
 ## Using Azure managed identities
 
 The installation program requires an Azure identity to complete the installation. You can use either a system-assigned or user-assigned managed identity.
 
 If you are unable to use a managed identity, you can use a service principal.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  If you are using a system-assigned managed identity, enable it on the virtual machine that you will run the installation program from.
 
@@ -890,37 +688,17 @@ Procedure
 
 3.  Verify that the required permissions are assigned to the managed identity.
 
-</div>
-
 ## Creating a service principal
 
 The installation program requires an Azure identity to complete the installation. You can use a service principal.
 
 If you are unable to use a service principal, you can use a managed identity.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed or updated the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-yum?view=azure-cli-latest).
 
 - You have an Azure subscription ID.
 
 - If you are not assigning the `Contributor` and `User Administrator Access` roles to the service principal, you have created a custom role with the required Azure permissions.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the service principal for your account by running the following command:
 
@@ -936,11 +714,9 @@ Procedure
 
     - Specifies the subscription ID.
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -957,8 +733,6 @@ Procedure
       }
       ```
 
-      </div>
-
       Record the values of the `appId` and `password` parameters from the output. You require these values when installing the cluster.
 
 2.  If you assigned the `Contributor` role to your service principal, assign the `User Administrator Access` role by running the following command:
@@ -973,19 +747,7 @@ Procedure
 
     - Specifies the subscription ID.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - For more information about CCO modes, see [About the Cloud Credential Operator](../../../authentication/managing_cloud_provider_credentials/about-cloud-credential-operator.xml#about-cloud-credential-operator-modes).
-
-</div>
 
 ## Supported Azure regions
 
@@ -1109,19 +871,25 @@ You must specify the minimum required machines or hosts for your cluster so that
 
 The smallest OpenShift Container Platform clusters require the following hosts:
 
-> [!IMPORTANT]
-> For a cluster that contains user-provisioned infrastructure, you must deploy all of the required machines.
+<div class="important">
 
-| Hosts | Description |
-|----|----|
-| One temporary bootstrap machine | The cluster requires the bootstrap machine to deploy the OpenShift Container Platform cluster on the three control plane machines. You can remove the bootstrap machine after you install the cluster. |
-| Three control plane machines | The control plane machines run the Kubernetes and OpenShift Container Platform services that form the control plane. |
-| At least two compute machines, which are also known as worker machines. | The workloads requested by OpenShift Container Platform users run on the compute machines. |
+For a cluster that contains user-provisioned infrastructure, you must deploy all of the required machines.
+
+</div>
+
+| Hosts                                                                   | Description                                                                                                                                                                                            |
+|-------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| One temporary bootstrap machine                                         | The cluster requires the bootstrap machine to deploy the OpenShift Container Platform cluster on the three control plane machines. You can remove the bootstrap machine after you install the cluster. |
+| Three control plane machines                                            | The control plane machines run the Kubernetes and OpenShift Container Platform services that form the control plane.                                                                                   |
+| At least two compute machines, which are also known as worker machines. | The workloads requested by OpenShift Container Platform users run on the compute machines.                                                                                                             |
 
 Minimum required hosts
 
-> [!IMPORTANT]
-> To maintain high availability of your cluster, use separate physical hosts for these cluster machines.
+<div class="important">
+
+To maintain high availability of your cluster, use separate physical hosts for these cluster machines.
+
+</div>
 
 The bootstrap and control plane machines must use Red Hat Enterprise Linux CoreOS (RHCOS) as the operating system. However, the compute machines can choose between Red Hat Enterprise Linux CoreOS (RHCOS), Red Hat Enterprise Linux (RHEL) 8.6 and later.
 
@@ -1131,11 +899,11 @@ Note that RHCOS is based on Red Hat Enterprise Linux (RHEL) 9.2 and inherits al
 
 Each created cluster must meet minimum requirements so that the cluster runs as expected.
 
-| Machine | Operating System | vCPU <sup>\[1\]</sup> | Virtual RAM | Storage | Input/Output Per Second (IOPS)<sup>\[2\]</sup> |
-|----|----|----|----|----|----|
-| Bootstrap | RHCOS | 4 | 16 GB | 100 GB | 300 |
-| Control plane | RHCOS | 4 | 16 GB | 100 GB | 300 |
-| Compute | RHCOS | 2 | 8 GB | 100 GB | 300 |
+| Machine       | Operating System | vCPU <sup>\[1\]</sup> | Virtual RAM | Storage | Input/Output Per Second (IOPS)<sup>\[2\]</sup> |
+|---------------|------------------|-----------------------|-------------|---------|------------------------------------------------|
+| Bootstrap     | RHCOS            | 4                     | 16 GB       | 100 GB  | 300                                            |
+| Control plane | RHCOS            | 4                     | 16 GB       | 100 GB  | 300                                            |
+| Compute       | RHCOS            | 2                     | 8 GB        | 100 GB  | 300                                            |
 
 Minimum resource requirements
 
@@ -1145,67 +913,43 @@ Minimum resource requirements
 
 3.  As with all user-provisioned installations, if you choose to use RHEL compute machines in your cluster, you take responsibility for all operating system life cycle management and maintenance, including performing system updates, applying patches, and completing all other required tasks. Use of RHEL 7 compute machines is deprecated and has been removed in OpenShift Container Platform 4.10 and later.
 
-> [!NOTE]
-> For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.6, which updates the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
->
-> - x86-64 architecture requires x86-64-v2 ISA
->
-> - ARM64 architecture requires ARMv8.0-A ISA
->
-> - IBM Power architecture requires Power 9 ISA
->
-> - s390x architecture requires z14 ISA
->
-> For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures) (RHEL documentation).
+<div class="note">
 
-> [!IMPORTANT]
-> You are required to use Azure virtual machines that have the `premiumIO` parameter set to `true`.
+For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.6, which updates the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
+
+- x86-64 architecture requires x86-64-v2 ISA
+
+- ARM64 architecture requires ARMv8.0-A ISA
+
+- IBM Power architecture requires Power 9 ISA
+
+- s390x architecture requires z14 ISA
+
+For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures) (RHEL documentation).
+
+</div>
+
+<div class="important">
+
+You are required to use Azure virtual machines that have the `premiumIO` parameter set to `true`.
+
+</div>
 
 If an instance type for your platform meets the minimum requirements for cluster machines, it is supported to use in OpenShift Container Platform.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Optimizing storage](../../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage)
-
-</div>
 
 ## Tested instance types for Azure
 
 The following Microsoft Azure instance types have been tested with OpenShift Container Platform.
 
-<div class="example">
-
-<div class="title">
-
-Machine types based on 64-bit x86 architecture
-
-</div>
-
 <https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/azure/tested_instance_types_x86_64.md>
-
-</div>
 
 ## Tested instance types for Azure on 64-bit ARM infrastructures
 
 The following Microsoft Azure ARM64 instance types have been tested with OpenShift Container Platform.
 
-<div class="example">
-
-<div class="title">
-
-Machine types based on 64-bit ARM architecture
-
-</div>
-
 <https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/azure/tested_instance_types_aarch64.md>
-
-</div>
 
 # Using the Azure Marketplace offering
 
@@ -1217,32 +961,17 @@ To deploy an OpenShift Container Platform cluster using the Azure Marketplace of
 
 - The offer includes a `rh-ocp-worker` SKU and a `rh-ocp-worker-gen1` SKU. The `rh-ocp-worker` SKU represents a Hyper-V generation version 2 VM image. The default instance types used in OpenShift Container Platform are version 2 compatible. If you plan to use an instance type that is only version 1 compatible, use the image associated with the `rh-ocp-worker-gen1` SKU. The `rh-ocp-worker-gen1` SKU represents a Hyper-V version 1 VM image.
 
-> [!IMPORTANT]
-> Installing images with the Azure marketplace is not supported on clusters with 64-bit ARM instances.
->
-> You should only modify the RHCOS image for compute machines to use an Azure Marketplace image. Control plane machines and infrastructure nodes do not require an OpenShift Container Platform subscription and use the public RHCOS default image by default, which does not incur subscription costs on your Azure bill. Therefore, you should not modify the cluster default boot image or the control plane boot images. Applying the Azure Marketplace image to them will incur additional licensing costs that cannot be recovered.
+<div class="important">
 
-<div>
+Installing images with the Azure marketplace is not supported on clusters with 64-bit ARM instances.
 
-<div class="title">
-
-Prerequisites
+You should only modify the RHCOS image for compute machines to use an Azure Marketplace image. Control plane machines and infrastructure nodes do not require an OpenShift Container Platform subscription and use the public RHCOS default image by default, which does not incur subscription costs on your Azure bill. Therefore, you should not modify the cluster default boot image or the control plane boot images. Applying the Azure Marketplace image to them will incur additional licensing costs that cannot be recovered.
 
 </div>
 
 - You have installed the Azure CLI client `(az)`.
 
 - Your Azure account is entitled for the offer and you have logged into this account with the Azure CLI client.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Display all of the available OpenShift Container Platform images by running one of the following commands:
 
@@ -1252,11 +981,9 @@ Procedure
       $  az vm image list --all --offer rh-ocp-worker --publisher redhat -o table
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -1267,19 +994,15 @@ Procedure
       rh-ocp-worker  RedHat          rh-ocp-worker-gen1  RedHat:rh-ocp-worker:rh-ocp-worker-gen1:4.17.2024100419         4.17.2024100419
       ```
 
-      </div>
-
     - EMEA:
 
       ``` terminal
       $  az vm image list --all --offer rh-ocp-worker --publisher redhat-limited -o table
       ```
 
-      <div class="formalpara">
+      <div class="formalpara-title">
 
-      <div class="title">
-
-      Example output
+      **Example output**
 
       </div>
 
@@ -1290,10 +1013,11 @@ Procedure
       rh-ocp-worker  redhat-limited  rh-ocp-worker-gen1  redhat-limited:rh-ocp-worker:rh-ocp-worker-gen1:4.17.2024100419         4.17.2024100419
       ```
 
-      </div>
+    <div class="note">
 
-    > [!NOTE]
-    > Use the latest image that is available for compute and control plane nodes. If required, your VMs are automatically upgraded as part of the installation process.
+    Use the latest image that is available for compute and control plane nodes. If required, your VMs are automatically upgraded as part of the installation process.
+
+    </div>
 
 2.  Inspect the image for your offer by running one of the following commands:
 
@@ -1343,11 +1067,9 @@ Procedure
 
     2.  Specify a `plan` for the virtual machines (VMs).
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `06_workers.json` ARM template with an updated `storageProfile.imageReference` object and a specified `plan`
+        **Example `06_workers.json` ARM template with an updated `storageProfile.imageReference` object and a specified `plan`**
 
         </div>
 
@@ -1376,38 +1098,19 @@ Procedure
           }
         ```
 
-        </div>
-
-</div>
-
 # Obtaining the installation program
 
 Before you install OpenShift Container Platform, download the installation file on the host you are using for installation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have a computer that runs Linux or macOS, with 500 MB of local disk space.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to the [Cluster Type](https://console.redhat.com/openshift/install) page on the Red Hat Hybrid Cloud Console. If you have a Red Hat account, log in with your credentials. If you do not, create an account.
 
-    > [!TIP]
-    > You can also [download the binaries for a specific OpenShift Container Platform release](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/).
+    <div class="tip">
+
+    You can also [download the binaries for a specific OpenShift Container Platform release](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/).
+
+    </div>
 
 2.  Select your infrastructure provider from the **Run it yourself** section of the page.
 
@@ -1416,10 +1119,6 @@ Procedure
 4.  Place the downloaded file in the directory where you want to store the installation configuration files.
 
     <div class="important">
-
-    <div class="title">
-
-    </div>
 
     - The installation program creates several files on the computer that you use to install your cluster. You must keep the installation program and the files that the installation program creates after you finish installing the cluster. Both of the files are required to delete the cluster.
 
@@ -1435,10 +1134,11 @@ Procedure
 
 6.  Download your installation [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret). This pull secret allows you to authenticate with the services that are provided by the included authorities, including Quay.io, which serves the container images for OpenShift Container Platform components.
 
-    > [!TIP]
-    > Alternatively, you can retrieve the installation program from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/290/), where you can specify a version of the installation program to download. However, you must have an active subscription to access this page.
+    <div class="tip">
 
-</div>
+    Alternatively, you can retrieve the installation program from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/290/), where you can specify a version of the installation program to download. However, you must have an active subscription to access this page.
+
+    </div>
 
 # Generating a key pair for cluster node SSH access
 
@@ -1448,17 +1148,15 @@ The SSH public key gets added to the `~/.ssh/authorized_keys` list for the `core
 
 If you want to SSH in to your cluster nodes to perform installation debugging or disaster recovery, you must provide the SSH public key during the installation process. The `./openshift-install gather` command also requires the SSH public key to be in place on the cluster nodes.
 
-> [!IMPORTANT]
-> Do not skip this procedure in production environments, where disaster recovery and debugging is required.
+<div class="important">
 
-> [!NOTE]
-> You must use a local key, not one that you configured with platform-specific approaches.
+Do not skip this procedure in production environments, where disaster recovery and debugging is required.
 
-<div>
+</div>
 
-<div class="title">
+<div class="note">
 
-Procedure
+You must use a local key, not one that you configured with platform-specific approaches.
 
 </div>
 
@@ -1470,8 +1168,11 @@ Procedure
 
     Specifies the path and file name, such as `~/.ssh/id_ed25519`, of the new SSH key. If you have an existing key pair, ensure your public key is in the your `~/.ssh` directory.
 
-    > [!NOTE]
-    > If you plan to install an OpenShift Container Platform cluster that uses the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the `x86_64`, `ppc64le`, and `s390x` architectures, do not create a key that uses the `ed25519` algorithm. Instead, create a key that uses the `rsa` or `ecdsa` algorithm.
+    <div class="note">
+
+    If you plan to install an OpenShift Container Platform cluster that uses the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the `x86_64`, `ppc64le`, and `s390x` architectures, do not create a key that uses the `ed25519` algorithm. Instead, create a key that uses the `rsa` or `ecdsa` algorithm.
+
+    </div>
 
 2.  View the public SSH key:
 
@@ -1487,8 +1188,11 @@ Procedure
 
 3.  Add the SSH private key identity to the SSH agent for your local user, if it has not already been added. SSH agent management of the key is required for password-less SSH authentication onto your cluster nodes, or if you want to use the `./openshift-install gather` command.
 
-    > [!NOTE]
-    > On some distributions, default SSH private key identities such as `~/.ssh/id_rsa` and `~/.ssh/id_dsa` are managed automatically.
+    <div class="note">
+
+    On some distributions, default SSH private key identities such as `~/.ssh/id_rsa` and `~/.ssh/id_dsa` are managed automatically.
+
+    </div>
 
     1.  If the `ssh-agent` process is not already running for your local user, start it as a background task:
 
@@ -1496,11 +1200,9 @@ Procedure
         $ eval "$(ssh-agent -s)"
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -1508,10 +1210,11 @@ Procedure
         Agent pid 31874
         ```
 
-        </div>
+        <div class="note">
 
-        > [!NOTE]
-        > If your cluster is in FIPS mode, only use FIPS-compliant algorithms to generate the SSH key. The key must be either RSA or ECDSA.
+        If your cluster is in FIPS mode, only use FIPS-compliant algorithms to generate the SSH key. The key must be either RSA or ECDSA.
+
+        </div>
 
 4.  Add your SSH private key to the `ssh-agent`:
 
@@ -1521,11 +1224,9 @@ Procedure
 
     Specifies the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1533,21 +1234,7 @@ Procedure
     Identity added: /home/<you>/<path>/<file_name> (<computer_name>)
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
-
 - When you install OpenShift Container Platform, provide the SSH public key to the installation program. If you install a cluster on infrastructure that you provision, you must provide the key to the installation program.
-
-</div>
 
 # Creating the installation files for Azure
 
@@ -1569,14 +1256,9 @@ Storing the contents of a `/var` directory separately makes it easier to grow st
 
 Because `/var` must be in place before a fresh installation of Red Hat Enterprise Linux CoreOS (RHCOS), the following procedure sets up the separate `/var` partition by creating a machine config manifest that is inserted during the `openshift-install` preparation phases of an OpenShift Container Platform installation.
 
-> [!IMPORTANT]
-> If you follow the steps to create a separate `/var` partition in this procedure, it is not necessary to create the Kubernetes manifest and Ignition config files again as described later in this section.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Procedure
+If you follow the steps to create a separate `/var` partition in this procedure, it is not necessary to create the Kubernetes manifest and Ignition config files again as described later in this section.
 
 </div>
 
@@ -1592,11 +1274,9 @@ Procedure
     $ openshift-install create manifests --dir $HOME/clusterconfig
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1607,19 +1287,15 @@ Procedure
     INFO Manifests created in: $HOME/clusterconfig/manifests and $HOME/clusterconfig/openshift
     ```
 
-    </div>
-
 3.  Optional: Confirm that the installation program created manifests in the `clusterconfig/openshift` directory:
 
     ``` terminal
     $ ls $HOME/clusterconfig/openshift/
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -1630,8 +1306,6 @@ Procedure
     99_openshift-cluster-api_master-machines-2.yaml
     ...
     ```
-
-    </div>
 
 4.  Create a Butane config that configures the additional partition. For example, name the file `$HOME/clusterconfig/98-var-partition.bu`, change the disk device name to the name of the storage device on the `worker` systems, and set the storage size as appropriate. This example places the `/var` directory on a separate partition:
 
@@ -1666,8 +1340,11 @@ Procedure
 
     - The `prjquota` mount option must be enabled for filesystems used for container storage.
 
-      > [!NOTE]
-      > When creating a separate `/var` partition, you cannot use different instance types for worker nodes, if the different instance types do not have the same device name.
+      <div class="note">
+
+      When creating a separate `/var` partition, you cannot use different instance types for worker nodes, if the different instance types do not have the same device name.
+
+      </div>
 
 5.  Create a manifest from the Butane config and save it to the `clusterconfig/openshift` directory. For example, run the following command:
 
@@ -1688,26 +1365,19 @@ Procedure
 
     You can now use the Ignition config files as input to the installation procedures to install Red Hat Enterprise Linux CoreOS (RHCOS) systems.
 
-</div>
-
 ## Creating the installation configuration file
 
 You can customize the OpenShift Container Platform cluster you install on Microsoft Azure.
 
-> [!IMPORTANT]
-> Do not specify `windows`, `microsoft`, or other variants of these words in the `metadata.name` parameter of the `install-config.yaml` file. Specifying one of these words for the cluster name causes the installation program to generate an error message like the following example message:
->
-> ``` terminal
-> The resource name 'windows-xxxx-identity' or a part of the name is a trademarked or reserved word.
-> ```
->
-> Additionally, specifying `login` at the beginning of the name in the `metadata.name` parameter of the `install-config.yaml` file results in the generation of an error message. You can specify `login` in the middle or end of the name.
+<div class="important">
 
-<div>
+Do not specify `windows`, `microsoft`, or other variants of these words in the `metadata.name` parameter of the `install-config.yaml` file. Specifying one of these words for the cluster name causes the installation program to generate an error message like the following example message:
 
-<div class="title">
+``` terminal
+The resource name 'windows-xxxx-identity' or a part of the name is a trademarked or reserved word.
+```
 
-Prerequisites
+Additionally, specifying `login` at the beginning of the name in the `metadata.name` parameter of the `install-config.yaml` file results in the generation of an error message. You can specify `login` in the middle or end of the name.
 
 </div>
 
@@ -1724,16 +1394,6 @@ Prerequisites
   - You have its client ID.
 
   - You have assigned it to the virtual machine that you will run the installation program from.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Optional: If you have run the installation program on this computer before, and want to use an alternative service principal or managed identity, go to the `~/.azure/` directory and delete the `osServicePrincipal.json` configuration file.
 
@@ -1759,8 +1419,11 @@ Procedure
 
         1.  Optional: Select an SSH key to use to access your cluster machines.
 
-            > [!NOTE]
-            > For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+            <div class="note">
+
+            For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+
+            </div>
 
         2.  Select **azure** as the platform to target.
 
@@ -1794,53 +1457,45 @@ Procedure
 
         8.  Enter a descriptive name for your cluster.
 
-            > [!IMPORTANT]
-            > All Azure resources that are available through public endpoints are subject to resource name restrictions, and you cannot create resources that use certain terms. For a list of terms that Azure restricts, see [Resolve reserved resource name errors](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-reserved-resource-name) in the Azure documentation.
+            <div class="important">
+
+            All Azure resources that are available through public endpoints are subject to resource name restrictions, and you cannot create resources that use certain terms. For a list of terms that Azure restricts, see [Resolve reserved resource name errors](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-reserved-resource-name) in the Azure documentation.
+
+            </div>
 
 3.  Modify the `install-config.yaml` file. You can find more information about the available parameters in the "Installation configuration parameters" section.
 
-    > [!NOTE]
-    > If you are installing a three-node cluster, be sure to set the `compute.replicas` parameter to `0`. This ensures that the cluster’s control planes are schedulable. For more information, see "Installing a three-node cluster on Azure".
+    <div class="note">
+
+    If you are installing a three-node cluster, be sure to set the `compute.replicas` parameter to `0`. This ensures that the cluster’s control planes are schedulable. For more information, see "Installing a three-node cluster on Azure".
+
+    </div>
 
 4.  Back up the `install-config.yaml` file so that you can use it to install multiple clusters.
 
-    > [!IMPORTANT]
-    > The `install-config.yaml` file is consumed during the installation process. If you want to reuse the file, you must back it up now.
+    <div class="important">
+
+    The `install-config.yaml` file is consumed during the installation process. If you want to reuse the file, you must back it up now.
+
+    </div>
 
     If previously not detected, the installation program creates an `osServicePrincipal.json` configuration file and stores this file in the `~/.azure/` directory on your computer. This ensures that the installation program can load the profile when it is creating an OpenShift Container Platform cluster on the target platform.
-
-</div>
 
 ## Configuring the cluster-wide proxy during installation
 
 To enable internet access in environments that deny direct connections, configure a cluster-wide proxy in the `install-config.yaml` file. This configuration ensures that the new OpenShift Container Platform cluster routes traffic through the specified HTTP or HTTPS proxy.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have an existing `install-config.yaml` file.
 
 - You have reviewed the sites that your cluster requires access to and determined whether any of them need to bypass the proxy. By default, all cluster egress traffic is proxied, including calls to hosting cloud provider APIs. You added sites to the `Proxy` object’s `spec.noProxy` field to bypass the proxy if necessary.
 
-  > [!NOTE]
-  > The `Proxy` object `status.noProxy` field is populated with the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
-  >
-  > For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field is also populated with the instance metadata endpoint (`169.254.169.254`).
+  <div class="note">
 
-</div>
+  The `Proxy` object `status.noProxy` field is populated with the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
 
-<div>
+  For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field is also populated with the instance metadata endpoint (`169.254.169.254`).
 
-<div class="title">
-
-Procedure
-
-</div>
+  </div>
 
 1.  Edit your `install-config.yaml` file and add the proxy settings. For example:
 
@@ -1876,53 +1531,45 @@ Procedure
     `additionalTrustBundlePolicy`
     Specifies the policy that determines the configuration of the `Proxy` object to reference the `user-ca-bundle` config map in the `trustedCA` field. The allowed values are `Proxyonly` and `Always`. Use `Proxyonly` to reference the `user-ca-bundle` config map only when `http/https` proxy is configured. Use `Always` to always reference the `user-ca-bundle` config map. The default value is `Proxyonly`. Optional parameter.
 
-    > [!NOTE]
-    > The installation program does not support the proxy `readinessEndpoints` field.
+    <div class="note">
 
-    > [!NOTE]
-    > If the installer times out, restart and then complete the deployment by using the `wait-for` command of the installer. For example:
-    >
-    > \+
-    >
-    > ``` terminal
-    > $ ./openshift-install wait-for install-complete --log-level debug
-    > ```
+    The installation program does not support the proxy `readinessEndpoints` field.
+
+    </div>
+
+    <div class="note">
+
+    If the installer times out, restart and then complete the deployment by using the `wait-for` command of the installer. For example:
+
+    \+
+
+    ``` terminal
+    $ ./openshift-install wait-for install-complete --log-level debug
+    ```
+
+    </div>
 
 2.  Save the file and reference it when installing OpenShift Container Platform.
 
     The installation program creates a cluster-wide proxy that is named `cluster` that uses the proxy settings in the provided `install-config.yaml` file. If no proxy settings are provided, a `cluster` `Proxy` object is still created, but it will have a nil `spec`.
 
-    > [!NOTE]
-    > Only the `Proxy` object named `cluster` is supported, and no additional proxies can be created.
+    <div class="note">
 
-</div>
+    Only the `Proxy` object named `cluster` is supported, and no additional proxies can be created.
+
+    </div>
 
 ## Exporting common variables for ARM templates
 
 You must export a common set of variables that are used with the provided Azure Resource Manager (ARM) templates used to assist in completing a user-provided infrastructure install on Microsoft Azure.
 
-> [!NOTE]
-> Specific ARM templates can also require additional exported variables, which are detailed in their related procedures.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+Specific ARM templates can also require additional exported variables, which are detailed in their related procedures.
 
 </div>
 
 - Obtain the OpenShift Container Platform installation program and the pull secret for your cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Export common variables found in the `install-config.yaml` to be used by the provided ARM templates:
 
@@ -2004,8 +1651,6 @@ Procedure
     `<installation_directory>`
     Specify the path to the directory that you stored the installation files in.
 
-</div>
-
 ## Creating the Kubernetes manifest and Ignition config files
 
 To customize cluster definitions and manually start machines, generate the Kubernetes manifest and Ignition config files. These assets provide the necessary instructions to configure the cluster infrastructure according to your specific deployment requirements.
@@ -2014,37 +1659,15 @@ The installation configuration file transforms into the Kubernetes manifests. Th
 
 <div class="important">
 
-<div class="title">
-
-</div>
-
 - The Ignition config files that the OpenShift Container Platform installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
 - It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
 
 </div>
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You obtained the OpenShift Container Platform installation program.
 
 - You created the `install-config.yaml` installation configuration file.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Change to the directory that contains the OpenShift Container Platform installation program and generate the Kubernetes manifests for the cluster:
 
@@ -2077,16 +1700,25 @@ Procedure
     $ rm -f <installation_directory>/openshift/99_openshift-cluster-api_worker-machineset-*.yaml
     ```
 
-    > [!IMPORTANT]
-    > If you disabled the `MachineAPI` capability when installing a cluster on user-provisioned infrastructure, you must remove the Kubernetes manifest files that define the worker machines. Otherwise, your cluster fails to install.
+    <div class="important">
+
+    If you disabled the `MachineAPI` capability when installing a cluster on user-provisioned infrastructure, you must remove the Kubernetes manifest files that define the worker machines. Otherwise, your cluster fails to install.
+
+    </div>
 
     Because you create and manage the worker machines yourself, you do not need to initialize these machines.
 
-    > [!WARNING]
-    > If you are installing a three-node cluster, skip the following step to allow the control plane nodes to be schedulable.
+    <div class="warning">
 
-    > [!IMPORTANT]
-    > When you configure control plane nodes from the default unschedulable to schedulable, additional subscriptions are required. This is because control plane nodes then become compute nodes.
+    If you are installing a three-node cluster, skip the following step to allow the control plane nodes to be schedulable.
+
+    </div>
+
+    <div class="important">
+
+    When you configure control plane nodes from the default unschedulable to schedulable, additional subscriptions are required. This is because control plane nodes then become compute nodes.
+
+    </div>
 
 5.  Check that the `mastersSchedulable` parameter in the `<installation_directory>/manifests/cluster-scheduler-02-config.yml` Kubernetes manifest file is set to `false`. This setting prevents pods from being scheduled on the control plane machines:
 
@@ -2163,19 +1795,9 @@ Procedure
         ├── metadata.json
         └── worker.ign
 
-</div>
-
 # Creating the Azure resource group
 
 You must create a Microsoft Azure [resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview#resource-groups) and an identity for that resource group. These are both used during the installation of your OpenShift Container Platform cluster on Azure.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the resource group in a supported Azure region:
 
@@ -2209,41 +1831,24 @@ Procedure
         $ az role assignment create --assignee "${PRINCIPAL_ID}" --role 'Contributor' --scope "${RESOURCE_GROUP_ID}"
         ```
 
-        > [!NOTE]
-        > If you want to assign a custom role with all the required permissions to the identity, run the following command:
-        >
-        > ``` terminal
-        > $ az role assignment create --assignee "${PRINCIPAL_ID}" --role <custom_role> \
-        > --scope "${RESOURCE_GROUP_ID}"
-        > ```
-        >
-        > - Specifies the custom role name.
+        <div class="note">
 
-</div>
+        If you want to assign a custom role with all the required permissions to the identity, run the following command:
+
+        ``` terminal
+        $ az role assignment create --assignee "${PRINCIPAL_ID}" --role <custom_role> \
+        --scope "${RESOURCE_GROUP_ID}"
+        ```
+
+        - Specifies the custom role name.
+
+        </div>
 
 # Uploading the RHCOS cluster image and bootstrap Ignition config file
 
 The Azure client does not support deployments based on files existing locally. You must copy and store the RHCOS virtual hard disk (VHD) cluster image and bootstrap Ignition config file in a storage container so they are accessible during deployment.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Generate the Ignition config files for your cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an Azure storage account to store the VHD cluster image:
 
@@ -2251,8 +1856,11 @@ Procedure
     $ az storage account create -g ${RESOURCE_GROUP} --location ${AZURE_REGION} --name ${CLUSTER_NAME}sa --kind Storage --sku Standard_LRS
     ```
 
-    > [!WARNING]
-    > The Azure storage account name must be between 3 and 24 characters in length and use numbers and lower-case letters only. If your `CLUSTER_NAME` variable does not follow these restrictions, you must manually define the Azure storage account name. For more information on Azure storage account name restrictions, see [Resolve errors for storage account names](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/error-storage-account-name) in the Azure documentation.
+    <div class="warning">
+
+    The Azure storage account name must be between 3 and 24 characters in length and use numbers and lower-case letters only. If your `CLUSTER_NAME` variable does not follow these restrictions, you must manually define the Azure storage account name. For more information on Azure storage account name restrictions, see [Resolve errors for storage account names](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/error-storage-account-name) in the Azure documentation.
+
+    </div>
 
 2.  Export the storage account key as an environment variable:
 
@@ -2271,8 +1879,11 @@ Procedure
     `<architecture>`
     Specifies the architecture, valid values include `x86_64` or `aarch64`.
 
-    > [!IMPORTANT]
-    > The RHCOS images might not change with every release of OpenShift Container Platform. You must specify an image with the highest version that is less than or equal to the OpenShift Container Platform version that you install. Use the image version that matches your OpenShift Container Platform version if it is available.
+    <div class="important">
+
+    The RHCOS images might not change with every release of OpenShift Container Platform. You must specify an image with the highest version that is less than or equal to the OpenShift Container Platform version that you install. Use the image version that matches your OpenShift Container Platform version if it is available.
+
+    </div>
 
 4.  Create the storage container for the VHD:
 
@@ -2296,22 +1907,15 @@ Procedure
     $ az storage blob upload --account-name ${CLUSTER_NAME}sa --account-key ${ACCOUNT_KEY} -c "files" -f "<installation_directory>/bootstrap.ign" -n "bootstrap.ign"
     ```
 
-</div>
-
 # Example for creating DNS zones
 
 DNS records are required for clusters that use user-provisioned infrastructure. You should choose the DNS strategy that fits your scenario.
 
 For this example, [Azure’s DNS solution](https://docs.microsoft.com/en-us/azure/dns/dns-overview) is used, so you will create a new public DNS zone for external (internet) visibility and a private DNS zone for internal cluster resolution.
 
-> [!NOTE]
-> The public DNS zone is not required to exist in the same resource group as the cluster deployment and might already exist in your organization for the desired base domain. If that is the case, you can skip creating the public DNS zone; be sure the installation config you generated earlier reflects that scenario.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+The public DNS zone is not required to exist in the same resource group as the cluster deployment and might already exist in your organization for the desired base domain. If that is the case, you can skip creating the public DNS zone; be sure the installation config you generated earlier reflects that scenario.
 
 </div>
 
@@ -2329,22 +1933,15 @@ Procedure
     $ az network private-dns zone create -g ${RESOURCE_GROUP} -n ${CLUSTER_NAME}.${BASE_DOMAIN}
     ```
 
-</div>
-
 You can learn more about [configuring a public DNS zone in Azure](#installation-azure-network-config_installing-azure-user-infra) by visiting that section.
 
 # Creating a VNet in Azure
 
 You must create a virtual network (VNet) in Microsoft Azure for your OpenShift Container Platform cluster to use. You can customize the VNet to meet your requirements. One way to create the VNet is to modify the provided Azure Resource Manager (ARM) template.
 
-> [!NOTE]
-> If you do not use the provided ARM template to create your Azure infrastructure, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+If you do not use the provided ARM template to create your Azure infrastructure, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
 
 </div>
 
@@ -2366,51 +1963,21 @@ Procedure
     $ az network private-dns link vnet create -g ${RESOURCE_GROUP} -z ${CLUSTER_NAME}.${BASE_DOMAIN} -n ${INFRA_ID}-network-link -v "${INFRA_ID}-vnet" -e false
     ```
 
-</div>
-
 ## ARM template for the VNet
 
 You can use the following Azure Resource Manager (ARM) template to deploy the VNet that you need for your OpenShift Container Platform cluster:
-
-<div class="example">
-
-<div class="title">
-
-`01_vnet.json` ARM template
-
-</div>
 
 ``` json
 link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/azure/01_vnet.json[role=include]
 ```
 
-</div>
-
 # Deploying the RHCOS cluster image for the Azure infrastructure
 
 You must use a valid Red Hat Enterprise Linux CoreOS (RHCOS) image for Microsoft Azure for your OpenShift Container Platform nodes.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Store the RHCOS virtual hard disk (VHD) cluster image in an Azure storage container.
 
 - Store the bootstrap Ignition config file in an Azure storage container.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Copy the template from the **ARM template for image storage** section of this topic and save it as `02_storage.json` in your cluster’s installation directory. This template describes the image storage that your cluster requires.
 
@@ -2439,32 +2006,23 @@ Procedure
 
     - Specify the system architecture. Valid values are `x64` (default) or `Arm64`.
 
-</div>
-
 ## ARM template for image storage
 
 You can use the following Azure Resource Manager (ARM) template to deploy the stored Red Hat Enterprise Linux CoreOS (RHCOS) image that you need for your OpenShift Container Platform cluster:
-
-<div class="example">
-
-<div class="title">
-
-`02_storage.json` ARM template
-
-</div>
 
 ``` json
 link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/azure/02_storage.json[role=include]
 ```
 
-</div>
-
 # Networking requirements for user-provisioned infrastructure
 
 You must configure networking for all the Red Hat Enterprise Linux CoreOS (RHCOS) machines in `initramfs` during boot, so that they can fetch their Ignition config files.
 
-> [!IMPORTANT]
-> Ensure you enable the `disk.EnableUUID` parameter on all virtual machines in your cluster.
+<div class="important">
+
+Ensure you enable the `disk.EnableUUID` parameter on all virtual machines in your cluster.
+
+</div>
 
 ## Network connectivity requirements
 
@@ -2472,78 +2030,28 @@ You must configure the network connectivity between machines to allow OpenShift 
 
 This section provides details about the ports that are required.
 
-> [!IMPORTANT]
-> In connected OpenShift Container Platform environments, all nodes are required to have internet access to pull images for platform containers and provide telemetry data to Red Hat.
+<div class="important">
 
-<table>
-<caption>Ports used for all-machine to all-machine communications</caption>
-<colgroup>
-<col style="width: 22%" />
-<col style="width: 22%" />
-<col style="width: 55%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Protocol</th>
-<th style="text-align: left;">Port</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><p>ICMP</p></td>
-<td style="text-align: left;"><p>N/A</p></td>
-<td style="text-align: left;"><p>Network reachability tests</p></td>
-</tr>
-<tr>
-<td rowspan="4" style="text-align: left;"><p>TCP</p></td>
-<td style="text-align: left;"><p><code>1936</code></p></td>
-<td style="text-align: left;"><p>Metrics</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>9000</code>-<code>9999</code></p></td>
-<td style="text-align: left;"><p>Host level services, including the node exporter on ports <code>9100</code>-<code>9101</code> and the Cluster Version Operator on port <code>9099</code>.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>10250</code>-<code>10259</code></p></td>
-<td style="text-align: left;"><p>The default ports that Kubernetes reserves</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>22623</code></p></td>
-<td style="text-align: left;"><p>The port handles traffic from the Machine Config Server and directs the traffic to the control plane machines.</p></td>
-</tr>
-<tr>
-<td rowspan="6" style="text-align: left;"><p>UDP</p></td>
-<td style="text-align: left;"><p><code>6081</code></p></td>
-<td style="text-align: left;"><p>Geneve</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>9000</code>-<code>9999</code></p></td>
-<td style="text-align: left;"><p>Host level services, including the node exporter on ports <code>9100</code>-<code>9101</code>.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>500</code></p></td>
-<td style="text-align: left;"><p>IPsec IKE packets</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>4500</code></p></td>
-<td style="text-align: left;"><p>IPsec NAT-T packets</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>123</code></p></td>
-<td style="text-align: left;"><p>Network Time Protocol (NTP) on UDP port <code>123</code>. If an external NTP time server is configured, you must open UDP port <code>123</code>.</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>TCP/UDP</p></td>
-<td style="text-align: left;"><p><code>30000</code>-<code>32767</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Kubernetes node port</p></td>
-<td style="text-align: left;"><p>ESP</p></td>
-<td style="text-align: left;"><p>N/A</p></td>
-</tr>
-</tbody>
-</table>
+In connected OpenShift Container Platform environments, all nodes are required to have internet access to pull images for platform containers and provide telemetry data to Red Hat.
+
+</div>
+
+| Protocol             | Port                                                                                                                       | Description                |
+|----------------------|----------------------------------------------------------------------------------------------------------------------------|----------------------------|
+| ICMP                 | N/A                                                                                                                        | Network reachability tests |
+| TCP                  | `1936`                                                                                                                     | Metrics                    |
+| `9000`-`9999`        | Host level services, including the node exporter on ports `9100`-`9101` and the Cluster Version Operator on port `9099`.   |                            |
+| `10250`-`10259`      | The default ports that Kubernetes reserves                                                                                 |                            |
+| `22623`              | The port handles traffic from the Machine Config Server and directs the traffic to the control plane machines.             |                            |
+| UDP                  | `6081`                                                                                                                     | Geneve                     |
+| `9000`-`9999`        | Host level services, including the node exporter on ports `9100`-`9101`.                                                   |                            |
+| `500`                | IPsec IKE packets                                                                                                          |                            |
+| `4500`               | IPsec NAT-T packets                                                                                                        |                            |
+| `123`                | Network Time Protocol (NTP) on UDP port `123`. If an external NTP time server is configured, you must open UDP port `123`. |                            |
+| TCP/UDP              | `30000`-`32767`                                                                                                            |                            |
+| Kubernetes node port | ESP                                                                                                                        | N/A                        |
+
+Ports used for all-machine to all-machine communications
 
 | Protocol | Port   | Description    |
 |----------|--------|----------------|
@@ -2561,28 +2069,13 @@ Ports used for control plane machine to control plane machine communications
 
 You must configure networking and load balancing in Microsoft Azure for your OpenShift Container Platform cluster to use. One way to create these components is to modify the provided Azure Resource Manager (ARM) template.
 
-> [!NOTE]
-> If you do not use the provided ARM template to create your Azure infrastructure, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you do not use the provided ARM template to create your Azure infrastructure, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
 
 </div>
 
 - Create and configure a VNet and associated subnets in Azure.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Copy the template from the **ARM template for the network and load balancers** section of this topic and save it as `03_infra.json` in your cluster’s installation directory. This template describes the networking and load balancing objects that your cluster requires.
 
@@ -2619,54 +2112,27 @@ Procedure
         $ az network dns record-set a add-record -g ${BASE_DOMAIN_RESOURCE_GROUP} -z ${BASE_DOMAIN} -n api.${CLUSTER_NAME} -a ${PUBLIC_IP} --ttl 60
         ```
 
-</div>
-
 ## ARM template for the network and load balancers
 
 You can use the following Azure Resource Manager (ARM) template to deploy the networking objects and load balancers that you need for your OpenShift Container Platform cluster:
-
-<div class="example">
-
-<div class="title">
-
-`03_infra.json` ARM template
-
-</div>
 
 ``` json
 link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/azure/03_infra.json[role=include]
 ```
 
-</div>
-
 # Creating the bootstrap machine in Azure
 
 You must create the bootstrap machine in Microsoft Azure to use during OpenShift Container Platform cluster initialization. One way to create this machine is to modify the provided Azure Resource Manager (ARM) template.
 
-> [!NOTE]
-> If you do not use the provided ARM template to create your bootstrap machine, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you do not use the provided ARM template to create your bootstrap machine, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
 
 </div>
 
 - Create and configure networking and load balancers in Azure.
 
 - Create the Azure identity and grant the appropriate roles.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Copy the template from the **ARM template for the bootstrap machine** section of this topic and save it as `04_bootstrap.json` in your cluster’s installation directory. This template describes the bootstrap machine that your cluster requires.
 
@@ -2702,54 +2168,27 @@ Procedure
 
     - Optional: Specify the size of the bootstrap VM. Use a VM size compatible with your specified architecture. If this value is not defined, the default value from the template is set.
 
-</div>
-
 ## ARM template for the bootstrap machine
 
 You can use the following Azure Resource Manager (ARM) template to deploy the bootstrap machine that you need for your OpenShift Container Platform cluster:
-
-<div class="example">
-
-<div class="title">
-
-`04_bootstrap.json` ARM template
-
-</div>
 
 ``` json
 link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/azure/04_bootstrap.json[role=include]
 ```
 
-</div>
-
 # Creating the control plane machines in Azure
 
 You must create the control plane machines in Microsoft Azure for your cluster to use. One way to create these machines is to modify the provided Azure Resource Manager (ARM) template.
 
-> [!NOTE]
-> By default, Microsoft Azure places control plane machines and compute machines in a pre-set availability zone. You can manually set an availability zone for a compute node or control plane node. To do this, modify a vendor’s Azure Resource Manager (ARM) template by specifying each of your availability zones in the `zones` parameter of the virtual machine resource.
+<div class="note">
+
+By default, Microsoft Azure places control plane machines and compute machines in a pre-set availability zone. You can manually set an availability zone for a compute node or control plane node. To do this, modify a vendor’s Azure Resource Manager (ARM) template by specifying each of your availability zones in the `zones` parameter of the virtual machine resource.
+
+</div>
 
 If you do not use the provided ARM template to create your control plane machines, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, consider contacting Red Hat support with your installation logs.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Create the bootstrap machine.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Copy the template from the **ARM template for control plane machines** section of this topic and save it as `05_masters.json` in your cluster’s installation directory. This template describes the control plane machines that your cluster requires.
 
@@ -2775,49 +2214,19 @@ Procedure
 
     - Optional: Specify the size of the Control Plane VM. Use a VM size compatible with your specified architecture. If this value is not defined, the default value from the template is set.
 
-</div>
-
 ## ARM template for control plane machines
 
 You can use the following Azure Resource Manager (ARM) template to deploy the control plane machines that you need for your OpenShift Container Platform cluster:
-
-<div class="example">
-
-<div class="title">
-
-`05_masters.json` ARM template
-
-</div>
 
 ``` json
 link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/azure/05_masters.json[role=include]
 ```
 
-</div>
-
 # Wait for bootstrap completion and remove bootstrap resources in Azure
 
 After you create all of the required infrastructure in Microsoft Azure, wait for the bootstrap process to complete on the machines that you provisioned by using the Ignition config files that you generated with the installation program.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Create the control plane machines.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Change to the directory that contains the installation program and run the following command:
 
@@ -2866,32 +2275,31 @@ Procedure
     $ az network public-ip delete -g ${RESOURCE_GROUP} --name ${INFRA_ID}-bootstrap-ssh-pip
     ```
 
-    > [!NOTE]
-    > If you do not delete the bootstrap server, installation may not succeed due to API traffic being routed to the bootstrap server.
+    <div class="note">
 
-</div>
+    If you do not delete the bootstrap server, installation may not succeed due to API traffic being routed to the bootstrap server.
+
+    </div>
 
 # Creating additional worker machines in Azure
 
 You can create worker machines in Microsoft Azure for your cluster to use by launching individual instances discretely or by automated processes outside the cluster, such as auto scaling groups. You can also take advantage of the built-in cluster scaling mechanisms and the machine API in OpenShift Container Platform.
 
-> [!NOTE]
-> If you are installing a three-node cluster, skip this step. A three-node cluster consists of three control plane machines, which also act as compute machines.
+<div class="note">
+
+If you are installing a three-node cluster, skip this step. A three-node cluster consists of three control plane machines, which also act as compute machines.
+
+</div>
 
 In this example, you manually launch one instance by using the Azure Resource Manager (ARM) template. Additional instances can be launched by including additional resources of type `06_workers.json` in the file.
 
-> [!NOTE]
-> By default, Microsoft Azure places control plane machines and compute machines in a pre-set availability zone. You can manually set an availability zone for a compute node or control plane node. To do this, modify a vendor’s ARM template by specifying each of your availability zones in the `zones` parameter of the virtual machine resource.
+<div class="note">
 
-If you do not use the provided ARM template to create your control plane machines, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, consider contacting Red Hat support with your installation logs.
-
-<div>
-
-<div class="title">
-
-Procedure
+By default, Microsoft Azure places control plane machines and compute machines in a pre-set availability zone. You can manually set an availability zone for a compute node or control plane node. To do this, modify a vendor’s ARM template by specifying each of your availability zones in the `zones` parameter of the virtual machine resource.
 
 </div>
+
+If you do not use the provided ARM template to create your control plane machines, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, consider contacting Red Hat support with your installation logs.
 
 1.  Copy the template from the **ARM template for worker machines** section of this topic and save it as `06_workers.json` in your cluster’s installation directory. This template describes the worker machines that your cluster requires.
 
@@ -2917,40 +2325,23 @@ Procedure
 
     - Optional: Specify the size of the compute node VM. Use a VM size compatible with your specified architecture. If this value is not defined, the default value from the template is set.
 
-</div>
-
 ## ARM template for worker machines
 
 You can use the following Azure Resource Manager (ARM) template to deploy the worker machines that you need for your OpenShift Container Platform cluster:
-
-<div class="example">
-
-<div class="title">
-
-`06_workers.json` ARM template
-
-</div>
 
 ``` json
 link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/azure/06_workers.json[role=include]
 ```
 
-</div>
-
 # Installing the OpenShift CLI on Linux
 
 To manage your cluster and deploy applications from the command line, install the OpenShift CLI (`oc`) binary on Linux.
 
-> [!IMPORTANT]
-> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
->
-> Download and install the new version of `oc`.
+<div class="important">
 
-<div>
+If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
 
-<div class="title">
-
-Procedure
+Download and install the new version of `oc`.
 
 </div>
 
@@ -2976,38 +2367,21 @@ Procedure
     $ echo $PATH
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - After you install the OpenShift CLI, it is available using the `oc` command:
 
   ``` terminal
   $ oc <command>
   ```
 
-</div>
-
 # Installing the OpenShift CLI on Windows
 
 To manage your cluster and deploy applications from the command line, install OpenShift CLI (`oc`) binary on Windows.
 
-> [!IMPORTANT]
-> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
->
-> Download and install the new version of `oc`.
+<div class="important">
 
-<div>
+If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
 
-<div class="title">
-
-Procedure
+Download and install the new version of `oc`.
 
 </div>
 
@@ -3027,38 +2401,21 @@ Procedure
     C:\> path
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - After you install the OpenShift CLI, it is available using the `oc` command:
 
   ``` terminal
   C:\> oc <command>
   ```
 
-</div>
-
 # Installing the OpenShift CLI on macOS
 
 To manage your cluster and deploy applications from the command line, install the OpenShift CLI (`oc`) binary on macOS.
 
-> [!IMPORTANT]
-> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
->
-> Download and install the new version of `oc`.
+<div class="important">
 
-<div>
+If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
 
-<div class="title">
-
-Procedure
+Download and install the new version of `oc`.
 
 </div>
 
@@ -3070,8 +2427,11 @@ Procedure
 
 4.  Click **Download Now** next to the **OpenShift v4.17 macOS Clients** entry and save the file.
 
-    > [!NOTE]
-    > For macOS arm64, choose the **OpenShift v4.17 macOS arm64 Client** entry.
+    <div class="note">
+
+    For macOS arm64, choose the **OpenShift v4.17 macOS arm64 Client** entry.
+
+    </div>
 
 5.  Unpack and unzip the archive.
 
@@ -3083,23 +2443,11 @@ Procedure
     $ echo $PATH
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify your installation by using an `oc` command:
 
   ``` terminal
   $ oc <command>
   ```
-
-</div>
 
 # Logging in to the cluster by using the CLI
 
@@ -3107,27 +2455,9 @@ To log in to your cluster as the default system user, export the `kubeconfig` fi
 
 The `kubeconfig` file is specific to a cluster and is created during OpenShift Container Platform installation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You deployed an OpenShift Container Platform cluster.
 
 - You installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Export the `kubeadmin` credentials by running the following command:
 
@@ -3146,11 +2476,9 @@ Procedure
     $ oc whoami
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -3158,33 +2486,11 @@ Procedure
     system:admin
     ```
 
-    </div>
-
-</div>
-
 # Approving the certificate signing requests for your machines
 
 To add machines to a cluster, verify the status of the certificate signing requests (CSRs) generated for each machine. If manual approval is required, approve the client requests first, followed by the server requests.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You added machines to your cluster.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Confirm that the cluster recognizes the machines:
 
@@ -3192,11 +2498,9 @@ Procedure
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -3207,12 +2511,13 @@ Procedure
     master-2  Ready     master  64m  v1.34.2
     ```
 
-    </div>
-
     The output lists all of the machines that you created.
 
-    > [!NOTE]
-    > The preceding output might not include the compute nodes, also known as worker nodes, until some CSRs are approved.
+    <div class="note">
+
+    The preceding output might not include the compute nodes, also known as worker nodes, until some CSRs are approved.
+
+    </div>
 
 2.  Review the pending CSRs and ensure that you see the client requests with the `Pending` or `Approved` status for each machine that you added to the cluster:
 
@@ -3220,11 +2525,9 @@ Procedure
     $ oc get csr
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -3235,17 +2538,21 @@ Procedure
     ...
     ```
 
-    </div>
-
     In this example, two machines are joining the cluster. You might see more approved CSRs in the list.
 
 3.  If the CSRs were not approved, after all of the pending CSRs for the machines you added are in `Pending` status, approve the CSRs for your cluster machines:
 
-    > [!NOTE]
-    > Because the CSRs rotate automatically, approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    <div class="note">
 
-    > [!NOTE]
-    > For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If a request is not approved, then the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because a serving certificate is required when the API server connects to the kubelet. Any operation that contacts the Kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the CSR was submitted by the `node-bootstrapper` service account in the `system:node` or `system:admin` groups, and confirm the identity of the node.
+    Because the CSRs rotate automatically, approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+
+    </div>
+
+    <div class="note">
+
+    For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If a request is not approved, then the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because a serving certificate is required when the API server connects to the kubelet. Any operation that contacts the Kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the CSR was submitted by the `node-bootstrapper` service account in the `system:node` or `system:admin` groups, and confirm the identity of the node.
+
+    </div>
 
     - To approve them individually, run the following command for each valid CSR:
 
@@ -3264,8 +2571,11 @@ Procedure
       $ oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs --no-run-if-empty oc adm certificate approve
       ```
 
-      > [!NOTE]
-      > Some Operators might not become available until some CSRs are approved.
+      <div class="note">
+
+      Some Operators might not become available until some CSRs are approved.
+
+      </div>
 
 4.  Now that your client requests are approved, you must review the server requests for each machine that you added to the cluster:
 
@@ -3273,11 +2583,9 @@ Procedure
     $ oc get csr
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -3287,8 +2595,6 @@ Procedure
     csr-c57lv   5m26s   system:node:ip-10-0-95-157.us-east-2.compute.internal                       Pending
     ...
     ```
-
-    </div>
 
 5.  If the remaining CSRs are not approved, and are in the `Pending` status, approve the CSRs for your cluster machines:
 
@@ -3315,11 +2621,9 @@ Procedure
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -3332,24 +2636,15 @@ Procedure
     worker-1  Ready     worker  11m  v1.34.2
     ```
 
+    <div class="note">
+
+    It can take a few minutes after approval of the server CSRs for the machines to transition to the `Ready` status.
+
     </div>
-
-    > [!NOTE]
-    > It can take a few minutes after approval of the server CSRs for the machines to transition to the `Ready` status.
-
-</div>
 
 # Adding the Ingress DNS records
 
 If you removed the DNS Zone configuration when creating Kubernetes manifests and generating Ignition configs, you must manually create DNS records that point at the Ingress load balancer. You can create either a wildcard `*.apps.{baseDomain}.` or specific records. You can use A, CNAME, and other records per your requirements.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You deployed an OpenShift Container Platform cluster on Microsoft Azure by using infrastructure that you provisioned.
 
@@ -3357,27 +2652,15 @@ Prerequisites
 
 - Install or update the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-yum?view=azure-cli-latest).
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Confirm the Ingress router has created a load balancer and populated the `EXTERNAL-IP` field:
 
     ``` terminal
     $ oc -n openshift-ingress get service router-default
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -3385,8 +2668,6 @@ Procedure
     NAME             TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)                      AGE
     router-default   LoadBalancer   172.30.20.10   35.130.120.110   80:32288/TCP,443:31215/TCP   20
     ```
-
-    </div>
 
 2.  Export the Ingress router IP as a variable:
 
@@ -3422,19 +2703,15 @@ Procedure
         $ az network private-dns record-set a add-record -g ${RESOURCE_GROUP} -z ${CLUSTER_NAME}.${BASE_DOMAIN} -n *.apps -a ${PUBLIC_IP_ROUTER}
         ```
 
-</div>
-
 If you prefer to add explicit domains instead of using a wildcard, you can create entries for each of the cluster’s current routes:
 
 ``` terminal
 $ oc get --all-namespaces -o jsonpath='{range .items[*]}{range .status.ingress[*]}{"\n"}{end}{end}' routes
 ```
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example output
+**Example output**
 
 </div>
 
@@ -3446,33 +2723,15 @@ alertmanager-main-openshift-monitoring.apps.cluster.basedomain.com
 prometheus-k8s-openshift-monitoring.apps.cluster.basedomain.com
 ```
 
-</div>
-
 # Completing an Azure installation on user-provisioned infrastructure
 
 After you start the OpenShift Container Platform installation on Microsoft Azure user-provisioned infrastructure, you can monitor the cluster events until the cluster is ready.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Deploy the bootstrap machine for an OpenShift Container Platform cluster on user-provisioned Azure infrastructure.
 
 - Install the `oc` CLI and log in.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Complete the cluster installation:
 
@@ -3480,11 +2739,9 @@ Procedure
   $ ./openshift-install --dir <installation_directory> wait-for install-complete
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -3492,15 +2749,9 @@ Procedure
   INFO Waiting up to 30m0s for the cluster to initialize...
   ```
 
-  </div>
-
   - For `<installation_directory>`, specify the path to the directory that you stored the installation files in.
 
     <div class="important">
-
-    <div class="title">
-
-    </div>
 
     - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
@@ -3508,22 +2759,10 @@ Procedure
 
     </div>
 
-</div>
-
 # Telemetry access for OpenShift Container Platform
 
 To provide metrics about cluster health and the success of updates, the Telemetry service requires internet access. When connected, this service runs automatically by default and registers your cluster to [OpenShift Cluster Manager](https://console.redhat.com/openshift).
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - See [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring) for more information about the Telemetry service
-
-</div>

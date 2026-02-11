@@ -9,13 +9,13 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | AdminPolicyBasedExternalRouteSpec defines the desired state of AdminPolicyBasedExternalRoute |
-| `status` | `object` | AdminPolicyBasedRouteStatus contains the observed status of the AdminPolicyBased route types. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | AdminPolicyBasedExternalRouteSpec defines the desired state of AdminPolicyBasedExternalRoute                                                                                                                                                                                                         |
+| `status`     | `object`                                                                             | AdminPolicyBasedRouteStatus contains the observed status of the AdminPolicyBased route types.                                                                                                                                                                                                        |
 
 ## .spec
 
@@ -30,9 +30,9 @@ Required
 
 - `nextHops`
 
-| Property | Type | Description |
-|----|----|----|
-| `from` | `object` | From defines the selectors that will determine the target namespaces to this CR. |
+| Property   | Type     | Description                                                                                                |
+|------------|----------|------------------------------------------------------------------------------------------------------------|
+| `from`     | `object` | From defines the selectors that will determine the target namespaces to this CR.                           |
 | `nextHops` | `object` | NextHops defines two types of hops: Static and Dynamic. Each hop defines at least one external gateway IP. |
 
 ## .spec.from
@@ -46,8 +46,8 @@ Type
 Required
 - `namespaceSelector`
 
-| Property | Type | Description |
-|----|----|----|
+| Property            | Type     | Description                                                                                               |
+|---------------------|----------|-----------------------------------------------------------------------------------------------------------|
 | `namespaceSelector` | `object` | NamespaceSelector defines a selector to be used to determine which namespaces will be targeted by this CR |
 
 ## .spec.from.namespaceSelector
@@ -58,11 +58,11 @@ NamespaceSelector defines a selector to be used to determine which namespaces wi
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.from.namespaceSelector.matchExpressions
 
@@ -85,11 +85,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.nextHops
 
@@ -99,12 +99,12 @@ NextHops defines two types of hops: Static and Dynamic. Each hop defines at leas
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `dynamic` | `array` | DynamicHops defines a slices of DynamicHop. This field is optional. |
+| Property    | Type     | Description                                                                                                                                                                                                                                                                                                                                                 |
+|-------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dynamic`   | `array`  | DynamicHops defines a slices of DynamicHop. This field is optional.                                                                                                                                                                                                                                                                                         |
 | `dynamic[]` | `object` | DynamicHop defines the configuration for a dynamic external gateway interface. These interfaces are wrapped around a pod object that resides inside the cluster. The field NetworkAttachmentName captures the name of the multus network name to use when retrieving the gateway IP to use. The PodSelector and the NamespaceSelector are mandatory fields. |
-| `static` | `array` | StaticHops defines a slice of StaticHop. This field is optional. |
-| `static[]` | `object` | StaticHop defines the configuration of a static IP that acts as an external Gateway Interface. IP field is mandatory. |
+| `static`    | `array`  | StaticHops defines a slice of StaticHop. This field is optional.                                                                                                                                                                                                                                                                                            |
+| `static[]`  | `object` | StaticHop defines the configuration of a static IP that acts as an external Gateway Interface. IP field is mandatory.                                                                                                                                                                                                                                       |
 
 ## .spec.nextHops.dynamic
 
@@ -127,12 +127,12 @@ Required
 
 - `podSelector`
 
-| Property | Type | Description |
-|----|----|----|
-| `bfdEnabled` | `boolean` | BFDEnabled determines if the interface implements the Bidirectional Forward Detection protocol. Defaults to false. |
-| `namespaceSelector` | `object` | NamespaceSelector defines a selector to filter the namespaces where the pod gateways are located. |
-| `networkAttachmentName` | `string` | NetworkAttachmentName determines the multus network name to use when retrieving the pod IPs that will be used as the gateway IP. When this field is empty, the logic assumes that the pod is configured with HostNetwork and is using the node’s IP as gateway. |
-| `podSelector` | `object` | PodSelector defines the selector to filter the pods that are external gateways. |
+| Property                | Type      | Description                                                                                                                                                                                                                                                     |
+|-------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `bfdEnabled`            | `boolean` | BFDEnabled determines if the interface implements the Bidirectional Forward Detection protocol. Defaults to false.                                                                                                                                              |
+| `namespaceSelector`     | `object`  | NamespaceSelector defines a selector to filter the namespaces where the pod gateways are located.                                                                                                                                                               |
+| `networkAttachmentName` | `string`  | NetworkAttachmentName determines the multus network name to use when retrieving the pod IPs that will be used as the gateway IP. When this field is empty, the logic assumes that the pod is configured with HostNetwork and is using the node’s IP as gateway. |
+| `podSelector`           | `object`  | PodSelector defines the selector to filter the pods that are external gateways.                                                                                                                                                                                 |
 
 ## .spec.nextHops.dynamic\[\].namespaceSelector
 
@@ -142,11 +142,11 @@ NamespaceSelector defines a selector to filter the namespaces where the pod gate
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.nextHops.dynamic\[\].namespaceSelector.matchExpressions
 
@@ -169,11 +169,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.nextHops.dynamic\[\].podSelector
 
@@ -183,11 +183,11 @@ PodSelector defines the selector to filter the pods that are external gateways.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
-| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
-| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property             | Type              | Description                                                                                                                                                                                                                                                     |
+|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
+| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
+| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.nextHops.dynamic\[\].podSelector.matchExpressions
 
@@ -210,11 +210,11 @@ Required
 
 - `operator`
 
-| Property | Type | Description |
-|----|----|----|
-| `key` | `string` | key is the label key that the selector applies to. |
-| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
-| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property   | Type             | Description                                                                                                                                                                                                                                |
+|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
+| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
+| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .spec.nextHops.static
 
@@ -235,10 +235,10 @@ Type
 Required
 - `ip`
 
-| Property | Type | Description |
-|----|----|----|
+| Property     | Type      | Description                                                                                                        |
+|--------------|-----------|--------------------------------------------------------------------------------------------------------------------|
 | `bfdEnabled` | `boolean` | BFDEnabled determines if the interface implements the Bidirectional Forward Detection protocol. Defaults to false. |
-| `ip` | `string` | IP defines the static IP to be used for egress traffic. The IP can be either IPv4 or IPv6. |
+| `ip`         | `string`  | IP defines the static IP to be used for egress traffic. The IP can be either IPv4 or IPv6.                         |
 
 ## .status
 
@@ -248,11 +248,11 @@ AdminPolicyBasedRouteStatus contains the observed status of the AdminPolicyBased
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `lastTransitionTime` | `string` | Captures the time when the last change was applied. |
-| `messages` | `array (string)` | An array of Human-readable messages indicating details about the status of the object. |
-| `status` | `string` | A concise indication of whether the AdminPolicyBasedRoute resource is applied with success |
+| Property             | Type             | Description                                                                                |
+|----------------------|------------------|--------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string`         | Captures the time when the last change was applied.                                        |
+| `messages`           | `array (string)` | An array of Human-readable messages indicating details about the status of the object.     |
+| `status`             | `string`         | A concise indication of whether the AdminPolicyBasedRoute resource is applied with success |
 
 # API endpoints
 
@@ -292,10 +292,10 @@ HTTP method
 Description
 delete collection of AdminPolicyBasedExternalRoute
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -305,10 +305,10 @@ HTTP method
 Description
 list objects of kind AdminPolicyBasedExternalRoute
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AdminPolicyBasedExternalRouteList`](../objects/index.xml#org-ovn-k8s-v1-AdminPolicyBasedExternalRouteList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                        |
+|--------------------|---------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AdminPolicyBasedExternalRouteList`](../objects/index.xml#org-ovn-k8s-v1-AdminPolicyBasedExternalRouteList) schema |
+| 401 - Unauthorized | Empty                                                                                                               |
 
 HTTP responses
 
@@ -318,25 +318,25 @@ HTTP method
 Description
 create an AdminPolicyBasedExternalRoute
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |  |
+| Parameter | Type                                                                                                                                                    | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
-| 201 - Created | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
-| 202 - Accepted | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                            |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
+| 201 - Created      | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
+| 202 - Accepted     | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                   |
 
 HTTP responses
 
@@ -354,17 +354,17 @@ HTTP method
 Description
 delete an AdminPolicyBasedExternalRoute
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -374,10 +374,10 @@ HTTP method
 Description
 read the specified AdminPolicyBasedExternalRoute
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                            |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                   |
 
 HTTP responses
 
@@ -387,17 +387,17 @@ HTTP method
 Description
 partially update the specified AdminPolicyBasedExternalRoute
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                            |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                   |
 
 HTTP responses
 
@@ -407,24 +407,24 @@ HTTP method
 Description
 replace the specified AdminPolicyBasedExternalRoute
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |  |
+| Parameter | Type                                                                                                                                                    | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
-| 201 - Created | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                            |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
+| 201 - Created      | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                   |
 
 HTTP responses
 
@@ -442,10 +442,10 @@ HTTP method
 Description
 read status of the specified AdminPolicyBasedExternalRoute
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                            |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                   |
 
 HTTP responses
 
@@ -455,17 +455,17 @@ HTTP method
 Description
 partially update status of the specified AdminPolicyBasedExternalRoute
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                            |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                   |
 
 HTTP responses
 
@@ -475,23 +475,23 @@ HTTP method
 Description
 replace status of the specified AdminPolicyBasedExternalRoute
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |  |
+| Parameter | Type                                                                                                                                                    | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
-| 201 - Created | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                            |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
+| 201 - Created      | [`AdminPolicyBasedExternalRoute`](../network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.xml#adminpolicybasedexternalroute-k8s-ovn-org-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                   |
 
 HTTP responses

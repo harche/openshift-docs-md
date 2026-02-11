@@ -6,13 +6,13 @@ Type
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | If the Labels of a ReplicaSet are empty, they are defaulted to be the same as the Pod(s) that the ReplicaSet manages. Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | ReplicaSetSpec is the specification of a ReplicaSet. |
-| `status` | `object` | ReplicaSetStatus represents the current status of a ReplicaSet. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | If the Labels of a ReplicaSet are empty, they are defaulted to be the same as the Pod(s) that the ReplicaSet manages. Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                          |
+| `spec`       | `object`                                                                             | ReplicaSetSpec is the specification of a ReplicaSet.                                                                                                                                                                                                                                                 |
+| `status`     | `object`                                                                             | ReplicaSetStatus represents the current status of a ReplicaSet.                                                                                                                                                                                                                                      |
 
 ## .spec
 
@@ -25,12 +25,12 @@ Type
 Required
 - `selector`
 
-| Property | Type | Description |
-|----|----|----|
-| `minReadySeconds` | `integer` | Minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready) |
-| `replicas` | `integer` | Replicas is the number of desired pods. This is a pointer to distinguish between explicit zero and unspecified. Defaults to 1. More info: <https://kubernetes.io/docs/concepts/workloads/controllers/replicaset> |
-| `selector` | [`LabelSelector`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-LabelSelector) | Selector is a label query over pods that should match the replica count. Label keys and values that must match in order to be controlled by this replica set. It must match the pod template’s labels. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors> |
-| `template` | [`PodTemplateSpec`](../objects/index.xml#io-k8s-api-core-v1-PodTemplateSpec) | Template is the object that describes the pod that will be created if insufficient replicas are detected. More info: <https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/#pod-template> |
+| Property          | Type                                                                                       | Description                                                                                                                                                                                                                                                                                                   |
+|-------------------|--------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `minReadySeconds` | `integer`                                                                                  | Minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready)                                                                                     |
+| `replicas`        | `integer`                                                                                  | Replicas is the number of desired pods. This is a pointer to distinguish between explicit zero and unspecified. Defaults to 1. More info: <https://kubernetes.io/docs/concepts/workloads/controllers/replicaset>                                                                                              |
+| `selector`        | [`LabelSelector`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-LabelSelector) | Selector is a label query over pods that should match the replica count. Label keys and values that must match in order to be controlled by this replica set. It must match the pod template’s labels. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors> |
+| `template`        | [`PodTemplateSpec`](../objects/index.xml#io-k8s-api-core-v1-PodTemplateSpec)               | Template is the object that describes the pod that will be created if insufficient replicas are detected. More info: <https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/#pod-template>                                                                                                     |
 
 ## .status
 
@@ -50,49 +50,49 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>availableReplicas</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>The number of available non-terminating pods (ready for at least minReadySeconds) for this replica set.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>conditions</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Represents the latest available observations of a replica set’s current state.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>conditions[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ReplicaSetCondition describes the state of a replica set at a certain point.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>fullyLabeledReplicas</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>The number of non-terminating pods that have labels matching the labels of the pod template of the replicaset.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>observedGeneration</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>ObservedGeneration reflects the generation of the most recently observed ReplicaSet.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>readyReplicas</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>The number of non-terminating pods targeted by this ReplicaSet with a Ready Condition.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>replicas</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Replicas is the most recently observed number of non-terminating pods. More info: <a href="https://kubernetes.io/docs/concepts/workloads/controllers/replicaset">https://kubernetes.io/docs/concepts/workloads/controllers/replicaset</a></p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>terminatingReplicas</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>The number of terminating pods for this replica set. Terminating pods have a non-null .metadata.deletionTimestamp and have not yet reached the Failed or Succeeded .status.phase.</p>
@@ -122,13 +122,13 @@ Required
 
 - `status`
 
-| Property | Type | Description |
-|----|----|----|
+| Property             | Type                                                                     | Description                                                          |
+|----------------------|--------------------------------------------------------------------------|----------------------------------------------------------------------|
 | `lastTransitionTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | The last time the condition transitioned from one status to another. |
-| `message` | `string` | A human readable message indicating details about the transition. |
-| `reason` | `string` | The reason for the condition’s last transition. |
-| `status` | `string` | Status of the condition, one of True, False, Unknown. |
-| `type` | `string` | Type of replica set condition. |
+| `message`            | `string`                                                                 | A human readable message indicating details about the transition.    |
+| `reason`             | `string`                                                                 | The reason for the condition’s last transition.                      |
+| `status`             | `string`                                                                 | Status of the condition, one of True, False, Unknown.                |
+| `type`               | `string`                                                                 | Type of replica set condition.                                       |
 
 # API endpoints
 
@@ -184,10 +184,10 @@ HTTP method
 Description
 list or watch objects of kind ReplicaSet
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ReplicaSetList`](../objects/index.xml#io-k8s-api-apps-v1-ReplicaSetList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                      |
+|--------------------|-----------------------------------------------------------------------------------|
+| 200 - OK           | [`ReplicaSetList`](../objects/index.xml#io-k8s-api-apps-v1-ReplicaSetList) schema |
+| 401 - Unauthorized | Empty                                                                             |
 
 HTTP responses
 
@@ -199,10 +199,10 @@ HTTP method
 Description
 watch individual changes to a list of ReplicaSet. deprecated: use the 'watch' parameter with a list operation instead.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -214,16 +214,16 @@ HTTP method
 Description
 delete collection of ReplicaSet
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -233,10 +233,10 @@ HTTP method
 Description
 list or watch objects of kind ReplicaSet
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ReplicaSetList`](../objects/index.xml#io-k8s-api-apps-v1-ReplicaSetList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                      |
+|--------------------|-----------------------------------------------------------------------------------|
+| 200 - OK           | [`ReplicaSetList`](../objects/index.xml#io-k8s-api-apps-v1-ReplicaSetList) schema |
+| 401 - Unauthorized | Empty                                                                             |
 
 HTTP responses
 
@@ -246,25 +246,25 @@ HTTP method
 Description
 create a ReplicaSet
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |  |
+| Parameter | Type                                                                               | Description |
+|-----------|------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
-| 201 - Created | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
-| 202 - Accepted | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                       |
+|--------------------|------------------------------------------------------------------------------------|
+| 200 - OK           | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
+| 201 - Created      | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
+| 202 - Accepted     | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
+| 401 - Unauthorized | Empty                                                                              |
 
 HTTP responses
 
@@ -276,10 +276,10 @@ HTTP method
 Description
 watch individual changes to a list of ReplicaSet. deprecated: use the 'watch' parameter with a list operation instead.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -297,17 +297,17 @@ HTTP method
 Description
 delete a ReplicaSet
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -317,10 +317,10 @@ HTTP method
 Description
 read the specified ReplicaSet
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                       |
+|--------------------|------------------------------------------------------------------------------------|
+| 200 - OK           | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
+| 401 - Unauthorized | Empty                                                                              |
 
 HTTP responses
 
@@ -330,18 +330,18 @@ HTTP method
 Description
 partially update the specified ReplicaSet
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
-| 201 - Created | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                       |
+|--------------------|------------------------------------------------------------------------------------|
+| 200 - OK           | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
+| 201 - Created      | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
+| 401 - Unauthorized | Empty                                                                              |
 
 HTTP responses
 
@@ -351,24 +351,24 @@ HTTP method
 Description
 replace the specified ReplicaSet
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |  |
+| Parameter | Type                                                                               | Description |
+|-----------|------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
-| 201 - Created | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                       |
+|--------------------|------------------------------------------------------------------------------------|
+| 200 - OK           | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
+| 201 - Created      | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
+| 401 - Unauthorized | Empty                                                                              |
 
 HTTP responses
 
@@ -386,10 +386,10 @@ HTTP method
 Description
 watch changes to an object of kind ReplicaSet. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                |
+|--------------------|---------------------------------------------------------------------------------------------|
+| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty                                                                                       |
 
 HTTP responses
 
@@ -407,10 +407,10 @@ HTTP method
 Description
 read status of the specified ReplicaSet
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                       |
+|--------------------|------------------------------------------------------------------------------------|
+| 200 - OK           | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
+| 401 - Unauthorized | Empty                                                                              |
 
 HTTP responses
 
@@ -420,18 +420,18 @@ HTTP method
 Description
 partially update status of the specified ReplicaSet
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
-| 201 - Created | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                       |
+|--------------------|------------------------------------------------------------------------------------|
+| 200 - OK           | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
+| 201 - Created      | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
+| 401 - Unauthorized | Empty                                                                              |
 
 HTTP responses
 
@@ -441,23 +441,23 @@ HTTP method
 Description
 replace status of the specified ReplicaSet
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |  |
+| Parameter | Type                                                                               | Description |
+|-----------|------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
-| 201 - Created | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                       |
+|--------------------|------------------------------------------------------------------------------------|
+| 200 - OK           | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
+| 201 - Created      | [`ReplicaSet`](../workloads_apis/replicaset-apps-v1.xml#replicaset-apps-v1) schema |
+| 401 - Unauthorized | Empty                                                                              |
 
 HTTP responses

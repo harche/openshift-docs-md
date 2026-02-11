@@ -10,14 +10,6 @@ You can create a list of objects from a template using the CLI or, if a template
 
 If you have a JSON or YAML file that defines a template, you can upload the template to projects using the CLI. This saves the template to the project for repeated use by any user with appropriate access to that project. Instructions about writing your own templates are provided later in this topic.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Upload a template using one of the following methods:
 
   - Upload a template to your current project’s template library, pass the JSON or YAML file with the following command:
@@ -32,21 +24,11 @@ Procedure
     $ oc create -f <filename> -n <project>
     ```
 
-</div>
-
 The template is now available for selection using the web console or the CLI.
 
 # Creating an application by using the web console
 
 You can use the web console to create an application from a template.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to your project and click **+Add**
 
@@ -54,8 +36,11 @@ Procedure
 
 3.  Click **Builder Images** under **Type** to see the available builder images.
 
-    > [!NOTE]
-    > Only image stream tags that have the `builder` tag listed in their annotations appear in this list, as demonstrated here:
+    <div class="note">
+
+    Only image stream tags that have the `builder` tag listed in their annotations appear in this list, as demonstrated here:
+
+    </div>
 
     ``` yaml
     kind: "ImageStream"
@@ -80,8 +65,6 @@ Procedure
 
 4.  Modify the settings in the new application screen to configure the objects to support your application.
 
-</div>
-
 # Creating objects from templates by using the CLI
 
 You can use the CLI to process templates and use the configuration that is generated to create objects.
@@ -90,33 +73,15 @@ You can use the CLI to process templates and use the configuration that is gener
 
 Labels are used to manage and organize generated objects, such as pods. The labels specified in the template are applied to every object that is generated from the template.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Add labels in the template from the command line:
 
   ``` terminal
   $ oc process -f <filename> -l name=otherLabel
   ```
 
-</div>
-
 ## Listing parameters
 
 The list of parameters that you can override are listed in the `parameters` section of the template.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  You can list parameters with the CLI by using the following command and specifying the file to be used:
 
@@ -136,11 +101,9 @@ Procedure
     $ oc process --parameters -n openshift rails-postgresql-example
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -162,23 +125,11 @@ Procedure
     POSTGRESQL_SHARED_BUFFERS    database shared buffers                                                                                                      12MB
     ```
 
-    </div>
-
     The output identifies several parameters that are generated with a regular expression-like generator when the template is processed.
-
-</div>
 
 ## Generating a list of objects
 
 Using the CLI, you can process a file defining a template to return the list of objects to standard output.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Process a file defining a template to return the list of objects to standard output:
 
@@ -243,19 +194,9 @@ Procedure
         $ sed s/bob/alice/ postgres.env | oc process -f my-rails-postgresql --param-file=-
         ```
 
-</div>
-
 # Modifying uploaded templates
 
 You can edit a template that has already been uploaded to your project.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Modify a template that has already been uploaded:
 
@@ -263,21 +204,11 @@ Procedure
   $ oc edit template <template>
   ```
 
-</div>
-
 # Using instant app and quick start templates
 
 OpenShift Container Platform provides a number of default instant app and quick start templates to make it easy to quickly get started creating a new application for different languages. Templates are provided for Rails (Ruby), Django (Python), Node.js, CakePHP (PHP), and Dancer (Perl). Your cluster administrator must create these templates in the default, global `openshift` project so you have access to them.
 
 By default, the templates build using a public source repository on GitHub that contains the necessary application code.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  You can list the available default instant app and quick start templates with:
 
@@ -293,10 +224,11 @@ Procedure
 
         By doing this, the build configuration created by the template now points to your fork of the application code, and you can modify the code and rebuild the application at will.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> Some of the instant app and quick start templates define a database deployment configuration. The configuration they define uses ephemeral storage for the database content. These templates should be used for demonstration purposes only as all database data is lost if the database pod restarts for any reason.
+Some of the instant app and quick start templates define a database deployment configuration. The configuration they define uses ephemeral storage for the database content. These templates should be used for demonstration purposes only as all database data is lost if the database pod restarts for any reason.
+
+</div>
 
 ## Quick start templates
 
@@ -404,14 +336,6 @@ message: "Your admin credentials are ${ADMIN_USERNAME}:${ADMIN_PASSWORD}"
 - Tags to be associated with the template for searching and grouping. Add tags that include it into one of the provided catalog categories. Refer to the `id` and `categoryAliases` in `CATALOG_CATEGORIES` in the console constants file. The categories can also be customized for the whole cluster.
 
 - An icon to be displayed with your template in the web console.
-
-  <div class="example">
-
-  <div class="title">
-
-  Available icons
-
-  </div>
 
   - `icon-3scale`
 
@@ -601,8 +525,6 @@ message: "Your admin credentials are ${ADMIN_USERNAME}:${ADMIN_PASSWORD}"
 
   - `icon-zend`
 
-  </div>
-
 - The name of the person or organization providing the template.
 
 - A URL referencing further documentation for the template.
@@ -677,50 +599,45 @@ The syntax available is not a full regular expression syntax. However, you can u
 
 - `[\A]{10}` produces 10 punctuation or symbol characters. This is equal to `` [~!@#$%\^&*()\-_+={}\[\]\\|<,>.?/"';:`]{10} ``.
 
-> [!NOTE]
-> Depending on if the template is written in YAML or JSON, and the type of string that the modifier is embedded within, you might need to escape the backslash with a second backslash. The following examples are equivalent:
->
-> <div class="formalpara">
->
-> <div class="title">
->
-> Example YAML template with a modifier
->
-> </div>
->
-> ``` yaml
->   parameters:
->   - name: singlequoted_example
->     generate: expression
->     from: '[\A]{10}'
->   - name: doublequoted_example
->     generate: expression
->     from: "[\\A]{10}"
-> ```
->
-> </div>
->
-> <div class="formalpara">
->
-> <div class="title">
->
-> Example JSON template with a modifier
->
-> </div>
->
-> ``` json
-> {
->     "parameters": [
->        {
->         "name": "json_example",
->         "generate": "expression",
->         "from": "[\\A]{10}"
->        }
->     ]
-> }
-> ```
->
-> </div>
+<div class="note">
+
+Depending on if the template is written in YAML or JSON, and the type of string that the modifier is embedded within, you might need to escape the backslash with a second backslash. The following examples are equivalent:
+
+<div class="formalpara-title">
+
+**Example YAML template with a modifier**
+
+</div>
+
+``` yaml
+  parameters:
+  - name: singlequoted_example
+    generate: expression
+    from: '[\A]{10}'
+  - name: doublequoted_example
+    generate: expression
+    from: "[\\A]{10}"
+```
+
+<div class="formalpara-title">
+
+**Example JSON template with a modifier**
+
+</div>
+
+``` json
+{
+    "parameters": [
+       {
+        "name": "json_example",
+        "generate": "expression",
+        "from": "[\\A]{10}"
+       }
+    ]
+}
+```
+
+</div>
 
 Here is an example of a full template with parameter definitions and references:
 
@@ -815,24 +732,23 @@ objects:
 
 - The definition of a service, which is created by this template.
 
-> [!NOTE]
-> If an object definition metadata includes a fixed `namespace` field value, the field is stripped out of the definition during template instantiation. If the `namespace` field contains a parameter reference, normal parameter substitution is performed and the object is created in whatever namespace the parameter substitution resolved the value to, assuming the user has permission to create objects in that namespace.
+<div class="note">
+
+If an object definition metadata includes a fixed `namespace` field value, the field is stripped out of the definition during template instantiation. If the `namespace` field contains a parameter reference, normal parameter substitution is performed and the object is created in whatever namespace the parameter substitution resolved the value to, assuming the user has permission to create objects in that namespace.
+
+</div>
 
 ## Marking a template as bindable
 
 The Template Service Broker advertises one service in its catalog for each template object of which it is aware. By default, each of these services is advertised as being bindable, meaning an end user is permitted to bind against the provisioned service.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 Template authors can prevent end users from binding against services provisioned from a given template.
-
-</div>
 
 - Prevent end user from binding against services provisioned from a given template by adding the annotation `template.openshift.io/bindable: "false"` to the template.
 
@@ -846,11 +762,17 @@ Each annotation key, with its prefix removed, is passed through to become a key 
 
 Each annotation value is a Kubernetes JSONPath expression, which is resolved at bind time to indicate the object field whose value should be returned in the `bind` response.
 
-> [!NOTE]
-> `Bind` response key-value pairs can be used in other parts of the system as environment variables. Therefore, it is recommended that every annotation key with its prefix removed should be a valid environment variable name — beginning with a character `A-Z`, `a-z`, or `_`, and being followed by zero or more characters `A-Z`, `a-z`, `0-9`, or `_`.
+<div class="note">
 
-> [!NOTE]
-> Unless escaped with a backslash, Kubernetes' JSONPath implementation interprets characters such as `.`, `@`, and others as metacharacters, regardless of their position in the expression. Therefore, for example, to refer to a `ConfigMap` datum named `my.key`, the required JSONPath expression would be `{.data['my\.key']}`. Depending on how the JSONPath expression is then written in YAML, an additional backslash might be required, for example `"{.data['my\\.key']}"`.
+`Bind` response key-value pairs can be used in other parts of the system as environment variables. Therefore, it is recommended that every annotation key with its prefix removed should be a valid environment variable name — beginning with a character `A-Z`, `a-z`, or `_`, and being followed by zero or more characters `A-Z`, `a-z`, `0-9`, or `_`.
+
+</div>
+
+<div class="note">
+
+Unless escaped with a backslash, Kubernetes' JSONPath implementation interprets characters such as `.`, `@`, and others as metacharacters, regardless of their position in the expression. Therefore, for example, to refer to a `ConfigMap` datum named `my.key`, the required JSONPath expression would be `{.data['my\.key']}`. Depending on how the JSONPath expression is then written in YAML, an additional backslash might be required, for example `"{.data['my\\.key']}"`.
+
+</div>
 
 The following is an example of different objects' fields being exposed:
 
@@ -909,19 +831,9 @@ An example response to a `bind` operation given the above partial template follo
 }
 ```
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Use the `template.openshift.io/expose-` annotation to return the field value as a string. This is convenient, although it does not handle arbitrary binary data.
 
 - If you want to return binary data, use the `template.openshift.io/base64-expose-` annotation instead to base64 encode the data before it is returned.
-
-</div>
 
 ## Waiting for template readiness
 
@@ -935,13 +847,7 @@ Before starting the procedure, read the following considerations:
 
 - A good template builds and deploys cleanly without requiring modifications after the template is deployed.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To use the template feature, mark one or more objects of kind `Build`, `BuildConfig`, `Deployment`, `DeploymentConfig`, `Job`, or `StatefulSet` in a template with the following annotation:
 
@@ -953,14 +859,14 @@ Procedure
 
   For the purposes of instantiation, readiness and failure of each object kind are defined as follows:
 
-  | Kind | Readiness | Failure |
-  |----|----|----|
-  | `Build` | Object reports phase complete. | Object reports phase canceled, error, or failed. |
-  | `BuildConfig` | Latest associated build object reports phase complete. | Latest associated build object reports phase canceled, error, or failed. |
-  | `Deployment` | Object reports new replica set and deployment available. This honors readiness probes defined on the object. | Object reports progressing condition as false. |
-  | `DeploymentConfig` | Object reports new replication controller and deployment available. This honors readiness probes defined on the object. | Object reports progressing condition as false. |
-  | `Job` | Object reports completion. | Object reports that one or more failures have occurred. |
-  | `StatefulSet` | Object reports all replicas ready. This honors readiness probes defined on the object. | Not applicable. |
+  | Kind               | Readiness                                                                                                               | Failure                                                                  |
+  |--------------------|-------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
+  | `Build`            | Object reports phase complete.                                                                                          | Object reports phase canceled, error, or failed.                         |
+  | `BuildConfig`      | Latest associated build object reports phase complete.                                                                  | Latest associated build object reports phase canceled, error, or failed. |
+  | `Deployment`       | Object reports new replica set and deployment available. This honors readiness probes defined on the object.            | Object reports progressing condition as false.                           |
+  | `DeploymentConfig` | Object reports new replication controller and deployment available. This honors readiness probes defined on the object. | Object reports progressing condition as false.                           |
+  | `Job`              | Object reports completion.                                                                                              | Object reports that one or more failures have occurred.                  |
+  | `StatefulSet`      | Object reports all replicas ready. This honors readiness probes defined on the object.                                  | Not applicable.                                                          |
 
   The following is an example template extract, which uses the `wait-for-ready` annotation. Further examples can be found in the OpenShift Container Platform quick start templates.
 
@@ -996,19 +902,9 @@ Procedure
       ...
   ```
 
-</div>
-
 ## Creating a template from existing objects
 
 Rather than writing an entire template from scratch, you can export existing objects from your project in YAML form, and then modify the YAML from there by adding parameters and other customizations as template form.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Export objects in a project in YAML form:
 
@@ -1036,7 +932,8 @@ Procedure
 
   - `Service`
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> Using the `all` alias is not recommended because the contents might vary across different clusters and versions. Instead, specify all required resources.
+Using the `all` alias is not recommended because the contents might vary across different clusters and versions. Instead, specify all required resources.
+
+</div>

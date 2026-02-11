@@ -44,33 +44,21 @@ You must configure RHOSP before you install a cluster that uses SR-IOV on it.
 
 If your Red Hat OpenStack Platform (RHOSP) deployment supports [single root I/O virtualization (SR-IOV)](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.1/html-single/network_functions_virtualization_planning_and_configuration_guide/index#assembly_sriov_parameters), you can provision SR-IOV networks that compute machines run on.
 
-> [!NOTE]
-> The following instructions entail creating an external flat network and an external, VLAN-based network that can be attached to a compute machine. Depending on your RHOSP deployment, other network types might be required.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+The following instructions entail creating an external flat network and an external, VLAN-based network that can be attached to a compute machine. Depending on your RHOSP deployment, other network types might be required.
 
 </div>
 
 - Your cluster supports SR-IOV.
 
-  > [!NOTE]
-  > If you are unsure about what your cluster supports, review the OpenShift Container Platform SR-IOV hardware networks documentation.
+  <div class="note">
+
+  If you are unsure about what your cluster supports, review the OpenShift Container Platform SR-IOV hardware networks documentation.
+
+  </div>
 
 - You created radio and uplink provider networks as part of your RHOSP deployment. The names `radio` and `uplink` are used in all example commands to represent these networks.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  On a command line, create a radio RHOSP network:
 
@@ -95,8 +83,6 @@ Procedure
     ``` terminal
     $ openstack subnet create --network uplink --subnet-range <uplink_network_subnet_range> uplink
     ```
-
-</div>
 
 # Preparing to install a cluster that uses OVS-DPDK
 

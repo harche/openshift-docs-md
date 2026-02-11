@@ -18,8 +18,11 @@ If you do not need a specific external IP address, you can configure a load bala
 
 A load balancer service allocates a unique IP. The load balancer has a single edge router IP, which can be a virtual IP (VIP), but is still a single machine for initial load balancing.
 
-> [!NOTE]
-> A pool gets configured at the infrastructure level and not the cluster administrator level.
+<div class="note">
+
+A pool gets configured at the infrastructure level and not the cluster administrator level.
+
+</div>
 
 # Creating a project and service
 
@@ -27,25 +30,7 @@ If the project and service that you want to expose does not exist, create the pr
 
 If the project and service already exists, skip to the procedure on exposing the service to create a route.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Install the OpenShift CLI (`oc`) and log in as a cluster administrator.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a new project for your service by running the `oc new-project` command:
 
@@ -65,11 +50,9 @@ Procedure
     $ oc get svc -n <project_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -78,36 +61,17 @@ Procedure
     nodejs-ex   ClusterIP   172.30.197.157   <none>        8080/TCP   70s
     ```
 
+    <div class="note">
+
+    By default, the new service does not have an external IP address.
+
     </div>
-
-    > [!NOTE]
-    > By default, the new service does not have an external IP address.
-
-</div>
 
 # Exposing the service by creating a route
 
 To enable external access to your application that runs on OpenShift Container Platform, you can expose the service as a route by using the `oc expose` command.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You logged into OpenShift Container Platform.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the project where the service you want to expose is located:
 
@@ -121,19 +85,15 @@ Procedure
     $ oc expose service nodejs-ex
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
     ``` terminal
     route.route.openshift.io/nodejs-ex exposed
     ```
-
-    </div>
 
 3.  To verify that the service is exposed, you can use a tool, such as `curl` to check that the service is accessible from outside the cluster.
 
@@ -143,11 +103,9 @@ Procedure
         $ oc get route
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -156,15 +114,11 @@ Procedure
         nodejs-ex   nodejs-ex-myproject.example.com         nodejs-ex   8080-tcp                 None
         ```
 
-        </div>
-
     2.  To check that the host responds to a GET request, enter the following command:
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example `curl` command
+        **Example `curl` command**
 
         </div>
 
@@ -172,13 +126,9 @@ Procedure
         $ curl --head nodejs-ex-myproject.example.com
         ```
 
-        </div>
+        <div class="formalpara-title">
 
-        <div class="formalpara">
-
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -187,45 +137,21 @@ Procedure
         ...
         ```
 
-        </div>
-
-</div>
-
 # Creating a load balancer service
 
 To distribute incoming traffic efficiently and ensure high availability for your applications in OpenShift Container Platform, create a load balancer service.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - Make sure that the project and service you want to expose exist.
 
 - Your cloud provider supports load balancers.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Log in to OpenShift Container Platform.
 
 2.  Load the project where the service you want to expose is located.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example command
+    **Example command**
 
     </div>
 
@@ -233,15 +159,11 @@ Procedure
     $ oc project project1
     ```
 
-    </div>
-
 3.  Open a text file on the control plane node and paste the following text into the file. Edit the file as needed.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Sample load balancer configuration file
+    **Sample load balancer configuration file**
 
     </div>
 
@@ -263,8 +185,6 @@ Procedure
         name: mysql
     ```
 
-    </div>
-
     where:
 
     `metadata.name`
@@ -282,8 +202,11 @@ Procedure
     `selector.name`
     Specifies the name of the service.
 
-    > [!NOTE]
-    > To restrict the traffic through the load balancer to specific IP addresses, use the `spec.endpointPublishingStrategy.loadBalancer.allowedSourceRanges` Ingress Controller parameter. Do not set the `loadBalancerSourceRanges` parameter.
+    <div class="note">
+
+    To restrict the traffic through the load balancer to specific IP addresses, use the `spec.endpointPublishingStrategy.loadBalancer.allowedSourceRanges` Ingress Controller parameter. Do not set the `loadBalancerSourceRanges` parameter.
+
+    </div>
 
 4.  Save and exit the file.
 
@@ -305,11 +228,9 @@ Procedure
     $ oc get svc
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -317,8 +238,6 @@ Procedure
     NAME       TYPE           CLUSTER-IP      EXTERNAL-IP                             PORT(S)          AGE
     egress-2   LoadBalancer   172.30.22.226   ad42f5d8b303045-487804948.example.com   3306:30357/TCP   15m
     ```
-
-    </div>
 
     The service has an external IP address automatically assigned if there is a cloud provider enabled.
 
@@ -342,11 +261,9 @@ Procedure
     $ mysql -h 172.30.131.89 -u admin -p
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -356,7 +273,3 @@ Procedure
 
     MySQL [(none)]>
     ```
-
-    </div>
-
-</div>

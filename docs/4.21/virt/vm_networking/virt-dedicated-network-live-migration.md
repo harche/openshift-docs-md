@@ -4,14 +4,6 @@ You can configure a dedicated [Multus network](../../virt/vm_networking/virt-con
 
 To configure a dedicated secondary network for live migration, you must first create a bridge network attachment definition (NAD) by using the CLI. You can then add the name of the `NetworkAttachmentDefinition` object to the `HyperConverged` custom resource (CR).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You installed the OpenShift CLI (`oc`).
 
 - You logged in to the cluster as a user with the `cluster-admin` role.
@@ -19,16 +11,6 @@ Prerequisites
 - Each node has at least two Network Interface Cards (NICs).
 
 - The NICs for live migration are connected to the same VLAN.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `NetworkAttachmentDefinition` manifest according to the following example:
 
@@ -99,57 +81,25 @@ Procedure
 
 4.  Save your changes and exit the editor. The `virt-handler` pods restart and connect to the secondary network.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - When the node that the virtual machine runs on is placed into maintenance mode, the VM automatically migrates to another node in the cluster. You can verify that the migration occurred over the secondary network and not the default pod network by checking the target IP address in the virtual machine instance (VMI) metadata.
 
   ``` terminal
   $ oc get vmi <vmi_name> -o jsonpath='{.status.migrationState.targetNodeAddress}'
   ```
 
-</div>
-
 # Selecting a dedicated network by using the web console
 
 You can select a dedicated network for live migration by using the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You configured a Multus network for live migration.
 
 - You created a network attachment definition for the network.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to **Virtualization \> Overview** in the OpenShift Container Platform web console.
 
 2.  Click the **Settings** tab and then click **Live migration**.
 
 3.  Select the network from the **Live migration network** list.
-
-</div>
 
 # Additional resources
 

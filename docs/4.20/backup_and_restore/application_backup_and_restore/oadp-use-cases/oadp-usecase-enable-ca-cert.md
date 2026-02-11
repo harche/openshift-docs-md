@@ -14,29 +14,13 @@ To prevent a `certificate signed by unknown authority` error, you must include a
 
 - Back up an application.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - You installed the OADP Operator.
 
 - You installed the ODF Operator.
 
 - You have an application with a database running in a separate namespace.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create an OBC manifest to request a NooBaa bucket as shown in the following example:
 
@@ -73,11 +57,9 @@ Procedure
 
     `test-obc` is the name of the OBC.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -94,19 +76,15 @@ Procedure
     s3.openshift-storage.svc
     ```
 
-    </div>
-
 4.  To get the bucket credentials from the `secret` object, run the following command:
 
     ``` terminal
     $ oc extract --to=- secret/test-obc
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -116,8 +94,6 @@ Procedure
     # AWS_SECRET_ACCESS_KEY
     YXf...+NaCkdyC3QPym
     ```
-
-    </div>
 
 5.  Create a `cloud-credentials` file with the object bucket credentials by using the following example configuration:
 
@@ -143,11 +119,9 @@ Procedure
       -o jsonpath='{.data.service-ca\.crt}' | base64 -w0; echo
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -155,8 +129,6 @@ Procedure
     LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0...
     ....gpwOHMwaG9CRmk5a3....FLS0tLS0K
     ```
-
-    </div>
 
 8.  Configure the `DataProtectionApplication` CR manifest file with the bucket name and CA certificate as shown in the following example:
 
@@ -219,11 +191,9 @@ Procedure
     $ oc get dpa -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -252,19 +222,15 @@ Procedure
       resourceVersion: ""
     ```
 
-    </div>
-
 11. Verify that the backup storage location (BSL) is available by running the following command:
 
     ``` terminal
     $ oc get backupstoragelocations.velero.io -n openshift-adp
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -272,8 +238,6 @@ Procedure
     NAME           PHASE       LAST VALIDATED   AGE   DEFAULT
     dpa-sample-1   Available   3s               15s   true
     ```
-
-    </div>
 
 12. Configure the `Backup` CR by using the following example:
 
@@ -299,27 +263,15 @@ Procedure
     $ oc apply -f <backup_cr_filename>
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Verify that the `Backup` object is in the `Completed` phase by running the following command:
 
   ``` terminal
   $ oc describe backup test-backup -n openshift-adp
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -342,7 +294,3 @@ Verification
     Version:            1
   Events:               <none>
   ```
-
-  </div>
-
-</div>

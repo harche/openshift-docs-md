@@ -1,13 +1,8 @@
 To install Red Hat OpenShift Service Mesh, first install the Red Hat OpenShift Service Mesh Operator and any optional Operators on OpenShift Container Platform. Then create a `ServiceMeshControlPlane` resource to deploy the control plane.
 
-> [!NOTE]
-> This basic installation is configured based on the default OpenShift settings and is not designed for production use.  Use this default installation to verify your installation, and then configure your service mesh for your specific environment.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+This basic installation is configured based on the default OpenShift settings and is not designed for production use.  Use this default installation to verify your installation, and then configure your service mesh for your specific environment.
 
 </div>
 
@@ -15,19 +10,23 @@ Prerequisites
 
 - An account with the `cluster-admin` role. If you use Red Hat OpenShift Dedicated, you must have an account with the `dedicated-admin` role.
 
-</div>
-
 The following steps show how to install a basic instance of Red Hat OpenShift Service Mesh on OpenShift Container Platform.
 
-> [!IMPORTANT]
-> Starting with Red Hat OpenShift Service Mesh 2.5, Red Hat OpenShift Distributed Tracing Platform (Jaeger) and OpenShift Elasticsearch Operator are deprecated and will be removed in a future release. Red Hat will provide bug fixes and support for these features during the current release lifecycle, but this feature will no longer receive enhancements and will be removed. As an alternative to Red Hat OpenShift Distributed Tracing Platform (Jaeger), you can use Red Hat OpenShift Distributed Tracing Platform instead.
+<div class="important">
+
+Starting with Red Hat OpenShift Service Mesh 2.5, Red Hat OpenShift Distributed Tracing Platform (Jaeger) and OpenShift Elasticsearch Operator are deprecated and will be removed in a future release. Red Hat will provide bug fixes and support for these features during the current release lifecycle, but this feature will no longer receive enhancements and will be removed. As an alternative to Red Hat OpenShift Distributed Tracing Platform (Jaeger), you can use Red Hat OpenShift Distributed Tracing Platform instead.
+
+</div>
 
 # Service Mesh Operators overview
 
 Red Hat OpenShift Service Mesh requires the use of the Red Hat OpenShift Service Mesh Operator which allows you to connect, secure, control, and observe the microservices that comprise your applications. You can also install other Operators to enhance your service mesh experience.
 
-> [!WARNING]
-> Do not install Community versions of the Operators. Community Operators are not supported.
+<div class="warning">
+
+Do not install Community versions of the Operators. Community Operators are not supported.
+
+</div>
 
 The following Operator is required:
 
@@ -44,8 +43,11 @@ Provides distributed tracing to monitor and troubleshoot transactions in complex
 
 The following optional Operators are deprecated:
 
-> [!IMPORTANT]
-> Starting with Red Hat OpenShift Service Mesh 2.5, Red Hat OpenShift Distributed Tracing Platform (Jaeger) and OpenShift Elasticsearch Operator are deprecated and will be removed in a future release. Red Hat will provide bug fixes and support for these features during the current release lifecycle, but these features will no longer receive enhancements and will be removed. As an alternative to Red Hat OpenShift Distributed Tracing Platform (Jaeger), you can use Red Hat OpenShift Distributed Tracing Platform instead.
+<div class="important">
+
+Starting with Red Hat OpenShift Service Mesh 2.5, Red Hat OpenShift Distributed Tracing Platform (Jaeger) and OpenShift Elasticsearch Operator are deprecated and will be removed in a future release. Red Hat will provide bug fixes and support for these features during the current release lifecycle, but these features will no longer receive enhancements and will be removed. As an alternative to Red Hat OpenShift Distributed Tracing Platform (Jaeger), you can use Red Hat OpenShift Distributed Tracing Platform instead.
+
+</div>
 
 Red Hat OpenShift Distributed Tracing Platform (Jaeger)
 Provides distributed tracing to monitor and troubleshoot transactions in complex distributed systems. It is based on the open source [Jaeger](https://www.jaegertracing.io/) project.
@@ -65,21 +67,19 @@ Additional Operators include:
 
 Deprecated additional Operators include:
 
-> [!IMPORTANT]
-> Starting with Red Hat OpenShift Service Mesh 2.5, Red Hat OpenShift Distributed Tracing Platform (Jaeger) and OpenShift Elasticsearch Operator are deprecated and will be removed in a future release. Red Hat will provide bug fixes and support for these features during the current release lifecycle, but this feature will no longer receive enhancements and will be removed. As an alternative to Red Hat OpenShift Distributed Tracing Platform (Jaeger), you can use Red Hat OpenShift Distributed Tracing Platform instead.
+<div class="important">
+
+Starting with Red Hat OpenShift Service Mesh 2.5, Red Hat OpenShift Distributed Tracing Platform (Jaeger) and OpenShift Elasticsearch Operator are deprecated and will be removed in a future release. Red Hat will provide bug fixes and support for these features during the current release lifecycle, but this feature will no longer receive enhancements and will be removed. As an alternative to Red Hat OpenShift Distributed Tracing Platform (Jaeger), you can use Red Hat OpenShift Distributed Tracing Platform instead.
+
+</div>
 
 - Red Hat OpenShift Distributed Tracing Platform (Jaeger)
 
 - OpenShift Elasticsearch Operator
 
-> [!NOTE]
-> If you have already installed the OpenShift Elasticsearch Operator as part of OpenShift Logging, you do not need to install the OpenShift Elasticsearch Operator again. The Red Hat OpenShift Distributed Tracing Platform (Jaeger) Operator creates the Elasticsearch instance using the installed OpenShift Elasticsearch Operator.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+If you have already installed the OpenShift Elasticsearch Operator as part of OpenShift Logging, you do not need to install the OpenShift Elasticsearch Operator again. The Red Hat OpenShift Distributed Tracing Platform (Jaeger) Operator creates the Elasticsearch instance using the installed OpenShift Elasticsearch Operator.
 
 </div>
 
@@ -103,27 +103,21 @@ Procedure
 
     - The Red Hat OpenShift Distributed Tracing Platform (Jaeger) installs in the `openshift-distributed-tracing` namespace and is available for all namespaces in the cluster.
 
-      > [!IMPORTANT]
-      > Starting with Red Hat OpenShift Service Mesh 2.5, Red Hat OpenShift Distributed Tracing Platform (Jaeger) is deprecated and will be removed in a future release. Red Hat will provide bug fixes and support for this feature during the current release lifecycle, but this feature will no longer receive enhancements and will be removed. As an alternative to Red Hat OpenShift Distributed Tracing Platform (Jaeger), you can use Red Hat OpenShift Distributed Tracing Platform instead.
+      <div class="important">
+
+      Starting with Red Hat OpenShift Service Mesh 2.5, Red Hat OpenShift Distributed Tracing Platform (Jaeger) is deprecated and will be removed in a future release. Red Hat will provide bug fixes and support for this feature during the current release lifecycle, but this feature will no longer receive enhancements and will be removed. As an alternative to Red Hat OpenShift Distributed Tracing Platform (Jaeger), you can use Red Hat OpenShift Distributed Tracing Platform instead.
+
+      </div>
 
     - The OpenShift Elasticsearch Operator installs in the `openshift-operators-redhat` namespace and is available for all namespaces in the cluster.
 
-      > [!IMPORTANT]
-      > Starting with Red Hat OpenShift Service Mesh 2.5, OpenShift Elasticsearch Operator is deprecated and will be removed in a future release. Red Hat will provide bug fixes and support for this feature during the current release lifecycle, but this feature will no longer receive enhancements and will be removed.
+      <div class="important">
 
-</div>
+      Starting with Red Hat OpenShift Service Mesh 2.5, OpenShift Elasticsearch Operator is deprecated and will be removed in a future release. Red Hat will provide bug fixes and support for this feature during the current release lifecycle, but this feature will no longer receive enhancements and will be removed.
 
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+      </div>
 
 - After all you have installed all four Operators, click **Ecosystem** → **Installed Operators** to verify that your Operators are installed.
-
-</div>
 
 # Configuring the Service Mesh Operator to run on infrastructure nodes
 
@@ -131,27 +125,9 @@ This task should only be performed if the Service Mesh Operator runs on an infra
 
 If the operator will run on a worker node, skip this task.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The Service Mesh Operator must be installed.
 
 - One of the nodes comprising the deployment must be an infrastructure node. For more information, see "Creating infrastructure machine sets."
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List the operators installed in the namespace:
 
@@ -195,25 +171,13 @@ Procedure
 
     - Ensures that the pod is accepted by the infrastructure node.
 
-</div>
-
 # Verifying the Service Mesh Operator is running on infrastructure node
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Verify that the node associated with the Operator pod is an infrastructure node:
 
   ``` terminal
   $ oc -n openshift-operators get po -l name=istio-operator -owide
   ```
-
-</div>
 
 # Next steps
 

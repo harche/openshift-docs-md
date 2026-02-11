@@ -8,29 +8,11 @@ Hardware administrators, KVM administrators, and KVM code cannot access data in 
 
 To enable IBM® Secure Execution virtual machines (VMs) on IBM Z® and IBM® LinuxONE on the compute nodes of your cluster, you must ensure that you meet the prerequisites and complete the following steps.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Your cluster has logical partition (LPAR) nodes running on IBM® z15 or later, or IBM® LinuxONE III or later.
 
 - You have IBM® Secure Execution workloads available to run on the cluster.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To run IBM® Secure Execution VMs, you must add the `prot_virt=1` kernel parameter for each compute node. To enable all compute nodes, create a file named `secure-execution.yaml` that contains the following machine config manifest:
 
@@ -59,8 +41,6 @@ Procedure
 
     The Machine Config Operator (MCO) applies the changes and reboots the nodes in a controlled rollout.
 
-</div>
-
 # Launching an IBM Secure Execution VM on IBM Z and IBM LinuxONE
 
 Before launching an IBM® Secure Execution VM on IBM Z® and IBM® LinuxONE, you must add the `launchSecurity` parameter to the VM manifest. Otherwise, the VM does not start correctly because it does not have access to the devices.
@@ -70,14 +50,6 @@ Before launching an IBM® Secure Execution VM on IBM Z® and IBM® LinuxONE, you
 You can launch an IBM® Secure Execution VM on IBM Z® and IBM® LinuxONE by using the command-line interface.
 
 To launch IBM® Secure Execution VMs, you must include the `launchSecurity` parameter to the `VirtualMachine` manifest. The rest of the VM manifest depends on your setup.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - Apply a `VirtualMachine` manifest similar to the following, to the cluster:
 
@@ -119,36 +91,19 @@ Procedure
   `spec.template.spec.domain.launchSecurity`
   Specifies to enable hardware-based memory encryption.
 
-  > [!NOTE]
-  > Because the memory of the VM is protected, you cannot live migrate IBM® Secure Execution VMs. The VMs can only be migrated offline.
+  <div class="note">
 
-</div>
+  Because the memory of the VM is protected, you cannot live migrate IBM® Secure Execution VMs. The VMs can only be migrated offline.
+
+  </div>
 
 ## Launching an IBM Secure Execution VM by using a common instance type
 
 You can launch an IBM® Secure Execution VM on IBM Z® and IBM® LinuxONE by using a common instance type.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have followed the procedure described in "Creating a VM from an instance type by using the web console" and performed the required steps.
 
 - You are using an IBM® Secure Execution enabled VM image.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to **Virtualization** → **Catalog** in the web console.
 
@@ -168,31 +123,11 @@ Procedure
 
 5.  Click **Create VirtualMachine**.
 
-</div>
-
 # Creating a bootable and encrypted IBM Secure Execution VM image on IBM Z and IBM LinuxONE
 
 You can create a bootable and encrypted IBM Secure Execution VM image for Red Hat Enterprise Linux (RHEL) on IBM Z and IBM LinuxONE.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are using an IBM® Secure Execution enabled VM image.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  On a trusted instance, create the `install.ks` kickstart file in the `/var/lib/libvirt/image/` directory with the following content:
 
@@ -509,8 +444,6 @@ Procedure
         ```
 
         The value of this attribute is 1 for Linux instances that detect their environment as consistent with that of a secure host. For other instances, the value is 0.
-
-</div>
 
 # Additional resources
 

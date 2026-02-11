@@ -46,20 +46,15 @@ Consider the data used in testing the new version. If it is the production data,
 
 Blue-green deployments use two `Deployment` objects. Both are running, and the one in production depends on the service the route specifies, with each `Deployment` object exposed to a different service.
 
-> [!NOTE]
-> Routes are intended for web (HTTP and HTTPS) traffic, so this technique is best suited for web applications.
+<div class="note">
+
+Routes are intended for web (HTTP and HTTPS) traffic, so this technique is best suited for web applications.
+
+</div>
 
 You can create a new route to the new version and test it. When ready, change the service in the production route to point to the new service and the new (green) version is live.
 
 If necessary, you can roll back to the older (blue) version by switching the service back to the previous version.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create two independent application components.
 
@@ -91,8 +86,6 @@ Procedure
 
 5.  To verify that the route has changed, refresh the browser until you see the `v2` image.
 
-</div>
-
 # A/B deployments
 
 The A/B deployment strategy lets you try a new version of the application in a limited way in the production environment. You can specify that the production version gets most of the user requests while a limited fraction of requests go to the new version.
@@ -113,17 +106,13 @@ Each service is assigned a `weight` and the portion of requests to each service 
 
 The route can have up to four services. The `weight` for the service can be between `0` and `256`. When the `weight` is `0`, the service does not participate in load balancing but continues to serve existing persistent connections. When the service `weight` is not `0`, each endpoint has a minimum `weight` of `1`. Because of this, a service with a lot of endpoints can end up with higher `weight` than intended. In this case, reduce the number of pods to get the expected load balance `weight`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To set up the A/B environment:
-
-</div>
 
 1.  Create the two applications and give them different names. Each creates a `Deployment` object. The applications are versions of the same program; one is usually the current production version and the other the proposed new version.
 
@@ -151,13 +140,19 @@ To set up the A/B environment:
 
 3.  When you deploy the route, the router balances the traffic according to the `weights` specified for the services. At this point, there is a single service with default `weight=1` so all requests go to it. Adding the other service as an `alternateBackends` and adjusting the `weights` brings the A/B setup to life. This can be done by the `oc set route-backends` command or by editing the route.
 
-    > [!NOTE]
-    > When using `alternateBackends`, also use the `roundrobin` load balancing strategy to ensure requests are distributed as expected to the services based on weight. `roundrobin` can be set for a route by using a route annotation. See the *Additional resources* section for more information about route annotations.
+    <div class="note">
+
+    When using `alternateBackends`, also use the `roundrobin` load balancing strategy to ensure requests are distributed as expected to the services based on weight. `roundrobin` can be set for a route by using a route annotation. See the *Additional resources* section for more information about route annotations.
+
+    </div>
 
     Setting the `oc set route-backend` to `0` means the service does not participate in load balancing, but continues to serve existing persistent connections.
 
-    > [!NOTE]
-    > Changes to the route just change the portion of traffic to the various services. You might have to scale the deployment to adjust the number of pods to handle the anticipated loads.
+    <div class="note">
+
+    Changes to the route just change the portion of traffic to the various services. You might have to scale the deployment to adjust the number of pods to handle the anticipated loads.
+
+    </div>
 
     To edit the route, run:
 
@@ -165,11 +160,9 @@ To set up the A/B environment:
     $ oc edit route <route_name>
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -194,17 +187,7 @@ To set up the A/B environment:
     # ...
     ```
 
-    </div>
-
 ### Managing weights of an existing route using the web console
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Navigate to the **Networking** → **Routes** page.
 
@@ -213,8 +196,6 @@ Procedure
 3.  Edit the YAML file. Update the `weight` to be an integer between `0` and `256` that specifies the relative weight of the target against other target reference objects. The value `0` suppresses requests to this back end. The default is `100`. Run `oc explain routes.spec.alternateBackends` for more information about the options.
 
 4.  Click **Save**.
-
-</div>
 
 ### Managing weights of an new route using the web console
 
@@ -235,14 +216,6 @@ Procedure
 8.  Click **Create**.
 
 ### Managing weights using the CLI
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  To manage the services and corresponding weights load balanced by the route, use the `oc set route-backends` command:
 
@@ -267,11 +240,9 @@ Procedure
     $ oc set route-backends ab-example
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -280,8 +251,6 @@ Procedure
     routes/ab-example       Service  ab-example-a 198 (99%)
     routes/ab-example       Service  ab-example-b 2   (1%)
     ```
-
-    </div>
 
 3.  To override the default values for the load balancing algorithm, adjust the annotation on the route by setting the algorithm to `roundrobin`. For a route on OpenShift Container Platform, the default load balancing algorithm is set to `random` or `source` values.
 
@@ -321,20 +290,13 @@ Procedure
 
     The `--zero` flag sets the `weight` of all services to `0`. All requests then return with a 503 error.
 
-    > [!NOTE]
-    > Not all routers may support multiple or weighted backends.
+    <div class="note">
 
-</div>
+    Not all routers may support multiple or weighted backends.
+
+    </div>
 
 ### One service, multiple `Deployment` objects
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a new application, adding a label `ab-example=true` that will be common to all shards:
 
@@ -403,8 +365,6 @@ Procedure
     ``` terminal
     $ oc edit dc/ab-example-b
     ```
-
-</div>
 
 # Additional resources
 

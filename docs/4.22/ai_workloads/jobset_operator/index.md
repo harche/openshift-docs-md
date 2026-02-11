@@ -1,7 +1,10 @@
 Use the JobSet Operator on OpenShift Container Platform to manage and run large-scale, coordinated workloads like high-performance computing (HPC) and AI training. Features like multi-template job support and stable networking can help you recover quickly and use resources efficiently.
 
-> [!IMPORTANT]
-> The JobSet Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
+<div class="important">
+
+The JobSet Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
+
+</div>
 
 # About the JobSet Operator
 

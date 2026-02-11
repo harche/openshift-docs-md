@@ -1,9 +1,12 @@
 The Machine API and Cluster API are distinct API groups that have similar resources. You can use these API groups to automate the management of infrastructure resources on your OpenShift Container Platform cluster.
 
-> [!IMPORTANT]
-> Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 When you install a standard OpenShift Container Platform cluster that has three control plane nodes, three compute nodes, and uses the default configuration options, the installation program provisions the following infrastructure resources in the `openshift-machine-api` namespace
 
@@ -33,14 +36,6 @@ For clusters that do not support migrating Machine API resources to Cluster API 
 
 You can create a provider-specific machine template resource by creating a YAML manifest file and applying it with the OpenShift CLI (`oc`).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have deployed an OpenShift Container Platform cluster.
 
 - You have enabled the use of the Cluster API.
@@ -48,16 +43,6 @@ Prerequisites
 - You have access to the cluster using an account with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file similar to the following. This procedure uses `<machine_template_resource_file>.yaml` as an example file name.
 
@@ -93,16 +78,6 @@ Procedure
     $ oc create -f <machine_template_resource_file>.yaml
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Confirm that the machine template CR is created by running the following command:
 
   ``` terminal
@@ -111,11 +86,9 @@ Verification
 
   where `<machine_template_kind>` is the value that corresponds to your platform.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -124,17 +97,7 @@ Verification
   <template_name>   77m
   ```
 
-  </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Sample YAML for a Cluster API machine template resource on Amazon Web Services](../../machine_management/cluster_api_machine_management/cluster_api_provider_configurations/cluster-api-config-options-aws.xml#capi-yaml-machine-template-aws_cluster-api-config-options-aws)
 
@@ -148,19 +111,9 @@ Additional resources
 
 - [Sample YAML for a Cluster API machine template resource on bare metal](../../machine_management/cluster_api_machine_management/cluster_api_provider_configurations/cluster-api-config-options-bare-metal.xml#capi-yaml-machine-template-bare-metal_cluster-api-config-options-bare-metal)
 
-</div>
-
 ## Creating a Cluster API compute machine set
 
 You can create compute machine sets that use the Cluster API to dynamically manage the machine compute resources for specific workloads of your choice.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You have deployed an OpenShift Container Platform cluster.
 
@@ -171,16 +124,6 @@ Prerequisites
 - You have installed the OpenShift CLI (`oc`).
 
 - You have created the machine template resource.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a YAML file similar to the following. This procedure uses `<machine_set_resource_file>.yaml` as an example file name.
 
@@ -227,11 +170,9 @@ Procedure
     $ oc get machineset.cluster.x-k8s.io -n openshift-cluster-api
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -240,19 +181,7 @@ Procedure
     <machine_set_name>   <cluster_name>   1          1       1           17m
     ```
 
-    </div>
-
     When the new compute machine set is available, the `REPLICAS` and `AVAILABLE` values match. If the compute machine set is not available, wait a few minutes and run the command again.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
 
 - To verify that the compute machine set is creating machines according to your required configuration, review the lists of machines and nodes in the cluster by running the following commands:
 
@@ -262,11 +191,9 @@ Verification
     $ oc get machine.cluster.x-k8s.io -n openshift-cluster-api
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -275,19 +202,15 @@ Verification
     <machine_set_name>-<string_id>   <cluster_name>   <ip_address>.<region>.compute.internal   <provider_id>   Running   8m23s
     ```
 
-    </div>
-
   - View the list of nodes:
 
     ``` terminal
     $ oc get node
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -298,17 +221,7 @@ Verification
     <ip_address_3>.<region>.compute.internal   Ready    worker   7m      v1.28.5
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Sample YAML for a Cluster API compute machine set resource on Amazon Web Services](../../machine_management/cluster_api_machine_management/cluster_api_provider_configurations/cluster-api-config-options-aws.xml#capi-yaml-machine-set-aws_cluster-api-config-options-aws)
 
@@ -322,8 +235,6 @@ Additional resources
 
 - [Sample YAML for a Cluster API compute machine set resource on bare metal](../../machine_management/cluster_api_machine_management/cluster_api_provider_configurations/cluster-api-config-options-bare-metal.xml#capi-yaml-machine-set-bare-metal_cluster-api-config-options-bare-metal)
 
-</div>
-
 # Migrating Machine API resources to Cluster API resources
 
 On clusters that support migrating Machine API resources to Cluster API resources, a two-way synchronization controller creates the following Cluster API resources in the `openshift-cluster-api` namespace:
@@ -334,8 +245,11 @@ On clusters that support migrating Machine API resources to Cluster API resource
 
 - One or more Cluster API compute machines that correspond to each Machine API compute machine.
 
-> [!NOTE]
-> The two-way synchronization controller only operates on clusters with the `MachineAPIMigration` feature gate in the `TechPreviewNoUpgrade` feature set enabled.
+<div class="note">
+
+The two-way synchronization controller only operates on clusters with the `MachineAPIMigration` feature gate in the `TechPreviewNoUpgrade` feature set enabled.
+
+</div>
 
 These Cluster API resources correspond to the resources that the installation program provisions in the `openshift-machine-api` namespace for a cluster that uses the default configuration options. The Cluster API resources have the same names as their Machine API counterparts and appear in the output of commands, such as `oc get`, that list resources. The synchronization controller creates the Cluster API resources in an unprovisioned (`Paused`) state to prevent unintended reconciliation.
 
@@ -347,13 +261,16 @@ When you change the authoritative API for a compute machine set, any existing co
 
 When you change the authoritative API for a compute machine, the instance on the underlying infrastructure that backs the machine is not recreated or reprovisioned. In-place changes, such as modifying labels, tags, taints, or annotations, are the only changes that the API group can make to the underlying instance that backs the machine.
 
-> [!NOTE]
-> You can only migrate some resources on supported infrastructure types.
+<div class="note">
 
-| Infrastructure | Compute machine | Compute machine set | Machine health check | Control plane machine set | Cluster autoscaler |
-|----|----|----|----|----|----|
-| AWS | Technology Preview | Technology Preview | Not Available | Not Available | Not Available |
-| All other infrastructure types | Not Available | Not Available | Not Available | Not Available | Not Available |
+You can only migrate some resources on supported infrastructure types.
+
+</div>
+
+| Infrastructure                 | Compute machine    | Compute machine set | Machine health check | Control plane machine set | Cluster autoscaler |
+|--------------------------------|--------------------|---------------------|----------------------|---------------------------|--------------------|
+| AWS                            | Technology Preview | Technology Preview  | Not Available        | Not Available             | Not Available      |
+| All other infrastructure types | Not Available      | Not Available       | Not Available        | Not Available             | Not Available      |
 
 Supported resource conversions
 
@@ -361,31 +278,29 @@ Supported resource conversions
 
 The authoritative API of a compute machine depends on the values of the `.spec.authoritativeAPI` and `.spec.template.spec.authoritativeAPI` fields in the Machine API compute machine set that creates it.
 
-|  |  |  |  |  |
-|----|----|----|----|----|
-| **`.spec.authoritativeAPI` value** | `ClusterAPI` | `ClusterAPI` | `MachineAPI` | `MachineAPI` |
-| **`.spec.template.spec.authoritativeAPI` value** | `ClusterAPI` | `MachineAPI` | `MachineAPI` | `ClusterAPI` |
+|                                                       |              |              |              |              |
+|-------------------------------------------------------|--------------|--------------|--------------|--------------|
+| **`.spec.authoritativeAPI` value**                    | `ClusterAPI` | `ClusterAPI` | `MachineAPI` | `MachineAPI` |
+| **`.spec.template.spec.authoritativeAPI` value**      | `ClusterAPI` | `MachineAPI` | `MachineAPI` | `ClusterAPI` |
 | **`authoritativeAPI` value for new compute machines** | `ClusterAPI` | `ClusterAPI` | `MachineAPI` | `ClusterAPI` |
 
 Interaction of `authoritativeAPI` fields when creating compute machines
 
-> [!NOTE]
-> When the `.spec.authoritativeAPI` value is `ClusterAPI`, the Machine API machine set is not authoritative and the `.spec.template.spec.authoritativeAPI` value is not used. As a result, the only combination that creates a compute machine with the Machine API as authoritative is where the `.spec.authoritativeAPI` and `.spec.template.spec.authoritativeAPI` values are `MachineAPI`.
+<div class="note">
+
+When the `.spec.authoritativeAPI` value is `ClusterAPI`, the Machine API machine set is not authoritative and the `.spec.template.spec.authoritativeAPI` value is not used. As a result, the only combination that creates a compute machine with the Machine API as authoritative is where the `.spec.authoritativeAPI` and `.spec.template.spec.authoritativeAPI` values are `MachineAPI`.
+
+</div>
 
 ## Migrating a Machine API resource to use the Cluster API
 
 You can migrate individual Machine API objects to equivalent Cluster API objects.
 
-> [!IMPORTANT]
-> Migrating a Machine API resource to use the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div>
+Migrating a Machine API resource to use the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
@@ -398,16 +313,6 @@ Prerequisites
 - You have access to the cluster using an account with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Identify the Machine API resource that you want to migrate to a Cluster API resource by running the following command:
 
@@ -467,20 +372,13 @@ Procedure
     `status.authoritativeAPI`
     Specifies the value for the current authoritative API. This value indicates which API currently manages this resource. Do not change the value in this part of the specification.
 
-    > [!IMPORTANT]
-    > Do not change other values when you update the value of the `spec.authoritativeAPI` field. Because other controllers might process updates to other values before the synchronization controller processes the `spec.authoritativeAPI` field update, changing other values can cause unexpected behavior.
-    >
-    > For more information, see "Unexpected behavior when changing resource configurations".
+    <div class="important">
 
-</div>
+    Do not change other values when you update the value of the `spec.authoritativeAPI` field. Because other controllers might process updates to other values before the synchronization controller processes the `spec.authoritativeAPI` field update, changing other values can cause unexpected behavior.
 
-<div>
+    For more information, see "Unexpected behavior when changing resource configurations".
 
-<div class="title">
-
-Verification
-
-</div>
+    </div>
 
 - Check the status of the conversion by running the following command:
 
@@ -502,24 +400,17 @@ Verification
 
 - [Unexpected behavior when changing resource configurations](../../machine_management/cluster_api_machine_management/cluster-api-troubleshooting.xml#ts-capi-migrate-unexpected-behavior_cluster-api-troubleshooting)
 
-</div>
-
 ## Deploying Cluster API compute machines by using a Machine API compute machine set
 
 You can configure a Machine API compute machine set to deploy Cluster API compute machines. With this process, you can test the Cluster API compute machine creation workflow without creating and scaling a Cluster API compute machine set.
 
 A Machine API compute machine set with this configuration creates nonauthoritative Machine API compute machines that use the Cluster API as authoritative. The two-way synchronization controller then creates corresponding authoritative Cluster API machines that provision on the underlying infrastructure.
 
-> [!IMPORTANT]
-> Deploying Cluster API compute machines by using a Machine API compute machine set is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div>
+Deploying Cluster API compute machines by using a Machine API compute machine set is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
-
-Prerequisites
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
@@ -532,16 +423,6 @@ Prerequisites
 - You have access to the cluster using an account with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List the Machine API compute machine sets in your cluster by running the following command:
 
@@ -585,15 +466,7 @@ Procedure
 
     - The current value for the Machine API compute machine set. Do not change the value in this part of the specification.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  List the machines that are managed by the updated compute machine set by running the following command:
 
@@ -612,18 +485,6 @@ Verification
 
     For a Cluster API compute machine, the value of the field is `ClusterAPI`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Troubleshooting resource migration](../../machine_management/cluster_api_machine_management/cluster-api-troubleshooting.xml#ts-capi-resource-migration_cluster-api-troubleshooting)
 
 - [Migrating Cluster API resources to Machine API resources](../../machine_management/cluster_api_machine_management/cluster-api-disabling.xml#capi-to-mapi-migration-overview_cluster-api-disabling)
-
-</div>

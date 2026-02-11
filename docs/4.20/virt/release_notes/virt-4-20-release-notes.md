@@ -48,8 +48,11 @@ This release adds new features and enhancements related to the following compone
 
 - You can now directly update OpenShift Virtualization to a later z-stream (x.y.z) release without applying each intermediate z-stream version.
 
-  > [!NOTE]
-  > Ensure that you update to the latest z-stream release of your current minor (x.y) version before updating to the next minor version.
+  <div class="note">
+
+  Ensure that you update to the latest z-stream release of your current minor (x.y) version before updating to the next minor version.
+
+  </div>
 
 <!-- -->
 

@@ -4,8 +4,11 @@ You can increase the number of virtual machines (VMs) on nodes by overcommitting
 
 - You have underused workloads.
 
-> [!NOTE]
-> Memory overcommitment can lower workload performance on a highly utilized system.
+<div class="note">
+
+Memory overcommitment can lower workload performance on a highly utilized system.
+
+</div>
 
 # Using wasp-agent to increase VM workload density
 
@@ -13,18 +16,13 @@ The `wasp-agent` component facilitates memory overcommitment by assigning swap r
 
 The `wasp-agent` component is deployed automatically if `memoryOvercommitPercentage` is set to more than `100` when you first create the `HyperConverged` custom resource (CR).
 
-> [!IMPORTANT]
-> Swap resources can be only assigned to virtual machine workloads (VM pods) of the `Burstable` Quality of Service (QoS) class. VM pods of the `Guaranteed` QoS class and pods of any QoS class that do not belong to VMs cannot swap resources.
->
-> For descriptions of QoS classes, see [Configure Quality of Service for Pods](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/) (Kubernetes documentation).
->
-> Using `spec.domain.resources.requests.memory` in the VM manifest disables the memory overcommit configuration. Use `spec.domain.memory.guest` instead.
+<div class="important">
 
-<div>
+Swap resources can be only assigned to virtual machine workloads (VM pods) of the `Burstable` Quality of Service (QoS) class. VM pods of the `Guaranteed` QoS class and pods of any QoS class that do not belong to VMs cannot swap resources.
 
-<div class="title">
+For descriptions of QoS classes, see [Configure Quality of Service for Pods](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/) (Kubernetes documentation).
 
-Prerequisites
+Using `spec.domain.resources.requests.memory` in the VM manifest disables the memory overcommit configuration. Use `spec.domain.memory.guest` instead.
 
 </div>
 
@@ -36,16 +34,9 @@ Prerequisites
 
 - The node belongs to a worker pool.
 
-</div>
+<div class="note">
 
-> [!NOTE]
-> The `wasp-agent` component deploys an Open Container Initiative (OCI) hook to enable swap usage for containers on the node level. The low-level nature requires the `DaemonSet` object to be privileged.
-
-<div>
-
-<div class="title">
-
-Procedure
+The `wasp-agent` component deploys an Open Container Initiative (OCI) hook to enable swap usage for containers on the node level. The low-level nature requires the `DaemonSet` object to be privileged.
 
 </div>
 
@@ -195,15 +186,7 @@ Procedure
         hyperconverged.hco.kubevirt.io/kubevirt-hyperconverged patched
         ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 1.  To verify the deployment of `wasp-agent`, run the following command:
 
@@ -259,33 +242,13 @@ Verification
 
     The returned value must match the value you had previously configured.
 
-</div>
-
 # Removing the wasp-agent component
 
 If you no longer need memory overcommitment, you can remove the `wasp-agent` component and associated resources from your cluster.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have logged in to the cluster with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Revert the memory overcommitment configuration by running the following command:
 
@@ -313,16 +276,6 @@ Procedure
     $ oc wait mcp worker --for condition=Updated=True --timeout=-1s
     ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
 - Confirm that swap is no longer enabled on a node, by running the following command and observing the output:
 
   ``` terminal
@@ -330,5 +283,3 @@ Verification
   ```
 
   Ensure that the `Swap:` row shows `0` or that no swap space shows as provisioned.
-
-</div>

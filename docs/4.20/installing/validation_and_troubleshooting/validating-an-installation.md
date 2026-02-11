@@ -6,14 +6,6 @@ The OpenShift Container Platform installation program contains pinned versions o
 
 For user-provisioned infrastructure installations, you can access information and use the OpenShift Container Platform installer to indirectly validate RHCOS bootimage artifacts using their SHA-256 checksums.
 
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 - Run the following command to print the metadata for any bootimage artifact:
 
   ``` terminal
@@ -22,11 +14,9 @@ Procedure
 
   - The query for the bootimage you want to obtain information on. For validation purposes, the bootimage artifact must have a generated `sha256sum`. This can include OVA, VHD, QCOW2 and others. For example, to get information on an `x86_64` architecture `iso` file for bare metal platforms, this value would be `.architectures.x86_64.artifacts.metal.formats.iso`.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -39,33 +29,13 @@ Procedure
     }
     ```
 
-    </div>
-
-</div>
-
 # Reviewing the installation log
 
 You can review a summary of an installation in the OpenShift Container Platform installation log. If an installation succeeds, the information required to access the cluster is included in the log.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the installation host.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Review the `.openshift_install.log` log file in the installation directory on your installation host:
 
@@ -73,17 +43,13 @@ Procedure
   $ cat <install_dir>/.openshift_install.log
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
   Cluster credentials are included at the end of the log if the installation is successful, as outlined in the following example:
-
-  </div>
 
   ``` terminal
   ...
@@ -99,33 +65,15 @@ Procedure
   time="2020-12-03T09:50:47Z" level=info msg="Time elapsed: 37m26s"
   ```
 
-</div>
-
 # Viewing the image pull source
 
 For clusters with unrestricted network connectivity, you can view the source of your pulled images by using a command on a node, such as `crictl images`.
 
 However, for disconnected installations, to view the source of pulled images, you must review the CRI-O logs to locate the `Trying to access` log entry, as shown in the following procedure. Other methods to view the image pull source, such as the `crictl images` command, show the non-mirrored image name, even though the image is pulled from the mirrored location.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Review the CRI-O logs for a master or worker node:
 
@@ -133,17 +81,13 @@ Procedure
   $  oc adm node-logs <node_name> -u crio
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
   The `Trying to access` log entry indicates where the image is being pulled from.
-
-  </div>
 
   ``` terminal
   ...
@@ -160,35 +104,15 @@ Procedure
       Trying to access \"li0317gcp1.mirror-registry.qe.gcp.devcluster.openshift.com:5000/ocp/release@sha256:1926eae7cacb9c00f142ec98b00628970e974284b6ddaf9a6a086cb9af7a6c31\"
       Trying to access \"li0317gcp2.mirror-registry.qe.gcp.devcluster.openshift.com:5000/ocp/release@sha256:1926eae7cacb9c00f142ec98b00628970e974284b6ddaf9a6a086cb9af7a6c31\"
 
-</div>
-
 # Getting cluster version, status, and update details
 
 You can view the cluster version and status by running the `oc get clusterversion` command. If the status shows that the installation is still progressing, you can review the status of the Operators for more information.
 
 You can also list the current update channel and review the available cluster updates.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Obtain the cluster version and overall status:
 
@@ -196,11 +120,9 @@ Procedure
     $ oc get clusterversion
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -208,8 +130,6 @@ Procedure
     NAME      VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
     version   4.6.4     True        False         6m25s   Cluster version is 4.6.4
     ```
-
-    </div>
 
     The example output indicates that the cluster has been installed successfully.
 
@@ -231,11 +151,9 @@ Procedure
     $ oc get clusterversion -o jsonpath='{.items[0].spec}{"\n"}'
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -243,19 +161,15 @@ Procedure
     {"channel":"stable-4.6","clusterID":"245539c1-72a3-41aa-9cec-72ed8cf25c5c"}
     ```
 
-    </div>
-
 5.  Review the available cluster updates:
 
     ``` terminal
     $ oc adm upgrade
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -268,18 +182,6 @@ Procedure
     4.6.6   quay.io/openshift-release-dev/ocp-release@sha256:c7e8f18e8116356701bd23ae3a23fb9892dd5ea66c8300662ef30563d7104f39
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - See [Querying Operator status after installation](../../support/troubleshooting/troubleshooting-installations.xml#querying-operator-status-after-installation_troubleshooting-installations) for more information about querying Operator status if your installation is still progressing.
 
 - See [Troubleshooting Operator issues](../../support/troubleshooting/troubleshooting-operator-issues.xml#troubleshooting-operator-issues) for information about investigating issues with Operators.
@@ -288,19 +190,9 @@ Additional resources
 
 - See [Understanding update channels and releases](../../updating/understanding_updates/understanding-update-channels-release.xml#understanding-update-channels-releases) for an overview about update release channels.
 
-</div>
-
 # Verifying that a cluster uses short-term credentials
 
 You can verify that a cluster uses short-term security credentials for individual components by checking the Cloud Credential Operator (CCO) configuration and other values in the cluster.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
 
 - You deployed an OpenShift Container Platform cluster using the Cloud Credential Operator utility (`ccoctl`) to implement short-term credentials.
 
@@ -308,15 +200,7 @@ Prerequisites
 
 - You are logged in as a user with `cluster-admin` privileges.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Verify that the CCO is configured to operate in manual mode by running the following command:
 
@@ -327,19 +211,15 @@ Procedure
 
   The following output confirms that the CCO is operating in manual mode:
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
   ``` text
   Manual
   ```
-
-  </div>
 
 - Verify that the cluster does not have `root` credentials by running the following command:
 
@@ -358,19 +238,15 @@ Procedure
 
   An error confirms that the root secret is not present on the cluster.
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output for an AWS cluster
+  **Example output for an AWS cluster**
 
   </div>
 
   ``` text
   Error from server (NotFound): secrets "aws-creds" not found
   ```
-
-  </div>
 
 - Verify that the components are using short-term security credentials for individual components by running the following command:
 
@@ -399,11 +275,9 @@ Procedure
     -n openshift-cloud-credential-operator
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -413,35 +287,13 @@ Procedure
   pod-identity-webhook-548f977b4c-859lz        1/1     Running   1          70m
   ```
 
-  </div>
-
-</div>
-
 # Querying the status of the cluster nodes by using the CLI
 
 You can verify the status of the cluster nodes after an installation.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  List the status of the cluster nodes. Verify that the output lists all of the expected control plane and compute nodes and that each node has a `Ready` status:
 
@@ -449,11 +301,9 @@ Procedure
     $ oc get nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -467,19 +317,15 @@ Procedure
     control-plane-3.example.com   Ready    master   41m   v1.33.4
     ```
 
-    </div>
-
 2.  Review CPU and memory resource availability for each cluster node:
 
     ``` terminal
     $ oc adm top nodes
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -493,21 +339,7 @@ Procedure
     control-plane-3.example.com   942m         26%    4100Mi          27%
     ```
 
-    </div>
-
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - See [Verifying node health](../../support/troubleshooting/verifying-node-health.xml#verifying-node-health) for more details about reviewing node health and investigating node issues.
-
-</div>
 
 # Reviewing the cluster status from the OpenShift Container Platform web console
 
@@ -529,55 +361,21 @@ You can review the following information in the **Overview** page in the OpenShi
 
 - A list of ongoing cluster activities and recent events
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
+<!-- -->
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Navigate to **Home** → **Overview**.
-
-</div>
 
 # Reviewing the cluster status from Red Hat OpenShift Cluster Manager
 
 From the OpenShift Container Platform web console, you can review detailed information about the status of your cluster on OpenShift Cluster Manager.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to [OpenShift Cluster Manager](https://console.redhat.com/openshift).
 
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Go to the **Cluster List** list in [OpenShift Cluster Manager](https://console.redhat.com/openshift) and locate your OpenShift Container Platform cluster.
 
@@ -597,8 +395,11 @@ Procedure
 
     - Subscription information, including the service level agreement (SLA) status, the subscription unit type, the production status of the cluster, the subscription obligation, and the service level
 
-      > [!TIP]
-      > To view the history for your cluster, click the **Cluster history** tab.
+      <div class="tip">
+
+      To view the history for your cluster, click the **Cluster history** tab.
+
+      </div>
 
 4.  Navigate to the **Monitoring** page to review the following information:
 
@@ -616,19 +417,7 @@ Procedure
 
     - Health-check status by category
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - See [Using Red Hat Lightspeed to identify issues with your cluster](../../support/remote_health_monitoring/using-insights-to-identify-issues-with-your-cluster.xml#using-insights-to-identify-issues-with-your-cluster) for more information about reviewing potential issues with your cluster.
-
-</div>
 
 # Checking cluster resource availability and utilization
 
@@ -651,25 +440,7 @@ As an administrator, you can access dashboards for core OpenShift Container Plat
 <figcaption>Example compute resources dashboard</figcaption>
 </figure>
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  As a cluster administrator in the OpenShift Container Platform web console, navigate to **Observe** → **Dashboards**.
 
@@ -689,43 +460,13 @@ Procedure
 
 5.  Hover over each of the graphs within a dashboard to display detailed information about specific items.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - See [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.20/html/about_monitoring/about-ocp-monitoring) for more information about the OpenShift Container Platform monitoring stack.
-
-</div>
 
 # Listing alerts that are firing
 
 Alerts provide notifications when a set of defined conditions are true in an OpenShift Container Platform cluster. You can review the alerts that are firing in your cluster by using the Alerting UI in the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  In the **Administrator** perspective, navigate to the **Observe** → **Alerting** → **Alerts** page.
 
@@ -733,19 +474,7 @@ Procedure
 
 3.  Select an alert to view more detailed information in the **Alert Details** page.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - See [Managing alerts as an Administrator](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.20/html/managing_alerts/managing-alerts-as-an-administrator) for further details about alerting in OpenShift Container Platform.
-
-</div>
 
 # Next steps
 

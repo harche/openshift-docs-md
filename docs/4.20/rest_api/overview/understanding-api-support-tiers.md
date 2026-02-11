@@ -1,5 +1,8 @@
-> [!IMPORTANT]
-> This guidance does not cover layered OpenShift Container Platform offerings.
+<div class="important">
+
+This guidance does not cover layered OpenShift Container Platform offerings.
+
+</div>
 
 API tiers for bare-metal configurations also apply to virtualized configurations except for any feature that directly interacts with hardware. Those features directly related to hardware have no application operating environment (AOE) compatibility level beyond that which is provided by the hardware vendor. For example, applications that rely on Graphics Processing Units (GPU) features are subject to the AOE compatibility provided by the GPU vendor driver.
 
@@ -49,24 +52,24 @@ API groups that end with the suffix `*.k8s.io` or have the form `version.<name>`
 
 API groups that end with the suffix `*.openshift.io` are governed by the OpenShift Container Platform deprecation policy and follow a general mapping between API version exposed and corresponding compatibility level unless otherwise specified.
 
-| API version example | API tier |
-|----|----|
-| `apps.openshift.io/v1` | Tier 1 |
-| `authorization.openshift.io/v1` | Tier 1, some tier 1 deprecated |
-| `build.openshift.io/v1` | Tier 1, some tier 1 deprecated |
-| `config.openshift.io/v1` | Tier 1 |
-| `image.openshift.io/v1` | Tier 1 |
-| `network.openshift.io/v1` | Tier 1 |
-| `network.operator.openshift.io/v1` | Tier 1 |
-| `oauth.openshift.io/v1` | Tier 1 |
-| `imagecontentsourcepolicy.operator.openshift.io/v1alpha1` | Tier 1 |
-| `project.openshift.io/v1` | Tier 1 |
-| `quota.openshift.io/v1` | Tier 1 |
-| `route.openshift.io/v1` | Tier 1 |
-| `quota.openshift.io/v1` | Tier 1 |
-| `security.openshift.io/v1` | Tier 1 except for `RangeAllocation` (tier 4) and `*Reviews` (tier 2) |
-| `template.openshift.io/v1` | Tier 1 |
-| `console.openshift.io/v1` | Tier 2 |
+| API version example                                       | API tier                                                             |
+|-----------------------------------------------------------|----------------------------------------------------------------------|
+| `apps.openshift.io/v1`                                    | Tier 1                                                               |
+| `authorization.openshift.io/v1`                           | Tier 1, some tier 1 deprecated                                       |
+| `build.openshift.io/v1`                                   | Tier 1, some tier 1 deprecated                                       |
+| `config.openshift.io/v1`                                  | Tier 1                                                               |
+| `image.openshift.io/v1`                                   | Tier 1                                                               |
+| `network.openshift.io/v1`                                 | Tier 1                                                               |
+| `network.operator.openshift.io/v1`                        | Tier 1                                                               |
+| `oauth.openshift.io/v1`                                   | Tier 1                                                               |
+| `imagecontentsourcepolicy.operator.openshift.io/v1alpha1` | Tier 1                                                               |
+| `project.openshift.io/v1`                                 | Tier 1                                                               |
+| `quota.openshift.io/v1`                                   | Tier 1                                                               |
+| `route.openshift.io/v1`                                   | Tier 1                                                               |
+| `quota.openshift.io/v1`                                   | Tier 1                                                               |
+| `security.openshift.io/v1`                                | Tier 1 except for `RangeAllocation` (tier 4) and `*Reviews` (tier 2) |
+| `template.openshift.io/v1`                                | Tier 1                                                               |
+| `console.openshift.io/v1`                                 | Tier 2                                                               |
 
 ## Support for Monitoring API groups
 
@@ -112,12 +115,12 @@ The deprecation policy covers all elements of the API including:
 
 Other than the most recent API version in each group, older API versions must be supported after their announced deprecation for a duration of no less than:
 
-| API tier | Duration |
-|----|----|
-| Tier 1 | Stable within a major release. They may be deprecated within a major release, but they will not be removed until a subsequent major release. |
-| Tier 2 | 9 months or 3 releases from the announcement of deprecation, whichever is longer. |
-| Tier 3 | See the component-specific schedule. |
-| Tier 4 | None. No compatibility is guaranteed. |
+| API tier | Duration                                                                                                                                     |
+|----------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| Tier 1   | Stable within a major release. They may be deprecated within a major release, but they will not be removed until a subsequent major release. |
+| Tier 2   | 9 months or 3 releases from the announcement of deprecation, whichever is longer.                                                            |
+| Tier 3   | See the component-specific schedule.                                                                                                         |
+| Tier 4   | None. No compatibility is guaranteed.                                                                                                        |
 
 The following rules apply to all tier 1 APIs:
 
@@ -143,9 +146,9 @@ All CLI elements default to API tier 1 unless otherwise noted or the CLI depends
 
 The duration and schedule for deprecating an entire component maps directly to the duration associated with the highest API tier of an API exposed by that component. For example, a component that surfaced APIs with tier 1 and 2 could not be removed until the tier 1 deprecation schedule was met.
 
-| API tier | Duration |
-|----|----|
-| Tier 1 | Stable within a major release. They may be deprecated within a major release, but they will not be removed until a subsequent major release. |
-| Tier 2 | 9 months or 3 releases from the announcement of deprecation, whichever is longer. |
-| Tier 3 | See the component-specific schedule. |
-| Tier 4 | None. No compatibility is guaranteed. |
+| API tier | Duration                                                                                                                                     |
+|----------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| Tier 1   | Stable within a major release. They may be deprecated within a major release, but they will not be removed until a subsequent major release. |
+| Tier 2   | 9 months or 3 releases from the announcement of deprecation, whichever is longer.                                                            |
+| Tier 3   | See the component-specific schedule.                                                                                                         |
+| Tier 4   | None. No compatibility is guaranteed.                                                                                                        |

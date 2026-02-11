@@ -13,13 +13,13 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta_v2) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | ClusterResourceQuotaSpec defines the desired quota restrictions |
-| `status` | `object` | ClusterResourceQuotaStatus defines the actual enforced quota and its current usage |
+| Property     | Type                                                                                       | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                                   | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                                   | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta_v2) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                |
+| `spec`       | `object`                                                                                   | ClusterResourceQuotaSpec defines the desired quota restrictions                                                                                                                                                                                                                                      |
+| `status`     | `object`                                                                                   | ClusterResourceQuotaStatus defines the actual enforced quota and its current usage                                                                                                                                                                                                                   |
 
 ## .spec
 
@@ -34,10 +34,10 @@ Required
 
 - `quota`
 
-| Property | Type | Description |
-|----|----|----|
-| `quota` | [`ResourceQuotaSpec_v2`](../objects/index.xml#io-k8s-api-core-v1-ResourceQuotaSpec_v2) | Quota defines the desired quota |
-| `selector` | `object` | ClusterResourceQuotaSelector is used to select projects. At least one of LabelSelector or AnnotationSelector must present. If only one is present, it is the only selection criteria. If both are specified, the project must match both restrictions. |
+| Property   | Type                                                                                   | Description                                                                                                                                                                                                                                            |
+|------------|----------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `quota`    | [`ResourceQuotaSpec_v2`](../objects/index.xml#io-k8s-api-core-v1-ResourceQuotaSpec_v2) | Quota defines the desired quota                                                                                                                                                                                                                        |
+| `selector` | `object`                                                                               | ClusterResourceQuotaSelector is used to select projects. At least one of LabelSelector or AnnotationSelector must present. If only one is present, it is the only selection criteria. If both are specified, the project must match both restrictions. |
 
 ## .spec.selector
 
@@ -47,10 +47,10 @@ ClusterResourceQuotaSelector is used to select projects. At least one of LabelSe
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `annotations` | `object (string)` | AnnotationSelector is used to select projects by annotation. |
-| `labels` | [`LabelSelector_v4`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-LabelSelector_v4) | LabelSelector is used to select projects by label. |
+| Property      | Type                                                                                             | Description                                                  |
+|---------------|--------------------------------------------------------------------------------------------------|--------------------------------------------------------------|
+| `annotations` | `object (string)`                                                                                | AnnotationSelector is used to select projects by annotation. |
+| `labels`      | [`LabelSelector_v4`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-LabelSelector_v4) | LabelSelector is used to select projects by label.           |
 
 ## .status
 
@@ -63,11 +63,11 @@ Type
 Required
 - `total`
 
-| Property | Type | Description |
-|----|----|----|
-| `namespaces` | `array` | Namespaces slices the usage by project. This division allows for quick resolution of deletion reconciliation inside of a single project without requiring a recalculation across all projects. This can be used to pull the deltas for a given project. |
-| `namespaces[]` | `object` | ResourceQuotaStatusByNamespace gives status for a particular project |
-| `total` | [`ResourceQuotaStatus`](../objects/index.xml#io-k8s-api-core-v1-ResourceQuotaStatus) | Total defines the actual enforced quota and its current usage across all projects |
+| Property       | Type                                                                                 | Description                                                                                                                                                                                                                                             |
+|----------------|--------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `namespaces`   | `array`                                                                              | Namespaces slices the usage by project. This division allows for quick resolution of deletion reconciliation inside of a single project without requiring a recalculation across all projects. This can be used to pull the deltas for a given project. |
+| `namespaces[]` | `object`                                                                             | ResourceQuotaStatusByNamespace gives status for a particular project                                                                                                                                                                                    |
+| `total`        | [`ResourceQuotaStatus`](../objects/index.xml#io-k8s-api-core-v1-ResourceQuotaStatus) | Total defines the actual enforced quota and its current usage across all projects                                                                                                                                                                       |
 
 ## .status.namespaces
 
@@ -90,10 +90,10 @@ Required
 
 - `status`
 
-| Property | Type | Description |
-|----|----|----|
-| `namespace` | `string` | Namespace the project this status applies to |
-| `status` | [`ResourceQuotaStatus`](../objects/index.xml#io-k8s-api-core-v1-ResourceQuotaStatus) | Status indicates how many resources have been consumed by this project |
+| Property    | Type                                                                                 | Description                                                            |
+|-------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------|
+| `namespace` | `string`                                                                             | Namespace the project this status applies to                           |
+| `status`    | [`ResourceQuotaStatus`](../objects/index.xml#io-k8s-api-core-v1-ResourceQuotaStatus) | Status indicates how many resources have been consumed by this project |
 
 # API endpoints
 
@@ -119,10 +119,10 @@ HTTP method
 Description
 list objects of kind AppliedClusterResourceQuota
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AppliedClusterResourceQuotaList`](../objects/index.xml#com-github-openshift-api-quota-v1-AppliedClusterResourceQuotaList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                       |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AppliedClusterResourceQuotaList`](../objects/index.xml#com-github-openshift-api-quota-v1-AppliedClusterResourceQuotaList) schema |
+| 401 - Unauthorized | Empty                                                                                                                              |
 
 HTTP responses
 
@@ -134,10 +134,10 @@ HTTP method
 Description
 list objects of kind AppliedClusterResourceQuota
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AppliedClusterResourceQuotaList`](../objects/index.xml#com-github-openshift-api-quota-v1-AppliedClusterResourceQuotaList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                       |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AppliedClusterResourceQuotaList`](../objects/index.xml#com-github-openshift-api-quota-v1-AppliedClusterResourceQuotaList) schema |
+| 401 - Unauthorized | Empty                                                                                                                              |
 
 HTTP responses
 
@@ -155,9 +155,9 @@ HTTP method
 Description
 read the specified AppliedClusterResourceQuota
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AppliedClusterResourceQuota`](../schedule_and_quota_apis/appliedclusterresourcequota-quota-openshift-io-v1.xml#appliedclusterresourcequota-quota-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                                                               |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AppliedClusterResourceQuota`](../schedule_and_quota_apis/appliedclusterresourcequota-quota-openshift-io-v1.xml#appliedclusterresourcequota-quota-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                                      |
 
 HTTP responses

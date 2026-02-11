@@ -6,30 +6,15 @@ The descheduler is not available by default. To enable the descheduler, you must
 
 By default, the descheduler runs in predictive mode, which means that it only simulates pod evictions. You must change the mode to automatic for the descheduler to perform the pod evictions.
 
-> [!IMPORTANT]
-> If you have enabled hosted control planes in your cluster, set a custom priority threshold to lower the chance that pods in the hosted control plane namespaces are evicted. Set the priority threshold class name to `hypershift-control-plane`, because it has the lowest priority value (`100000000`) of the hosted control plane priority classes.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+If you have enabled hosted control planes in your cluster, set a custom priority threshold to lower the chance that pods in the hosted control plane namespaces are evicted. Set the priority threshold class name to `hypershift-control-plane`, because it has the lowest priority value (`100000000`) of the hosted control plane priority classes.
 
 </div>
 
 - You are logged in to OpenShift Container Platform as a user with the `cluster-admin` role.
 
 - Access to the OpenShift Container Platform web console.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -65,8 +50,11 @@ Procedure
 
         2.  Expand the **Profiles** section to select one or more profiles to enable. The `AffinityAndTaints` profile is enabled by default. Click **Add Profile** to select additional profiles.
 
-            > [!NOTE]
-            > Do not enable both `TopologyAndDuplicates` and `SoftTopologyAndDuplicates`. Enabling both results in a conflict.
+            <div class="note">
+
+            Do not enable both `TopologyAndDuplicates` and `SoftTopologyAndDuplicates`. Enabling both results in a conflict.
+
+            </div>
 
         3.  Optional: Expand the **Profile Customizations** section to set optional configurations for the descheduler.
 
@@ -74,8 +62,11 @@ Procedure
 
             - Set a custom priority threshold to consider pods for eviction only if their priority is lower than a specified priority level. Use the **thresholdPriority** field to set a numerical priority threshold or use the **thresholdPriorityClassName** field to specify a certain priority class name.
 
-              > [!NOTE]
-              > Do not specify both **thresholdPriority** and **thresholdPriorityClassName** for the descheduler.
+              <div class="note">
+
+              Do not specify both **thresholdPriority** and **thresholdPriorityClassName** for the descheduler.
+
+              </div>
 
             - Set specific namespaces to exclude or include from descheduler operations. Expand the **namespaces** field and add namespaces to the **excluded** or **included** list. You can only either set a list of namespaces to exclude or a list of namespaces to include. Note that protected namespaces (`openshift-*`, `kube-system`, `hypershift`) are excluded by default.
 
@@ -87,8 +78,11 @@ Procedure
 
               - `High`: 40% underutilized and 70% overutilized
 
-              > [!NOTE]
-              > This setting is experimental and should not be used in a production environment.
+              <div class="note">
+
+              This setting is experimental and should not be used in a production environment.
+
+              </div>
 
         4.  Optional: Use the **Descheduling Interval Seconds** field to change the number of seconds between descheduler runs. The default is `3600` seconds.
 
@@ -96,31 +90,11 @@ Procedure
 
     You can also configure the profiles and settings for the descheduler later using the OpenShift CLI (`oc`). If you did not adjust the profiles when creating the descheduler instance from the web console, the `AffinityAndTaints` profile is enabled by default.
 
-</div>
-
 # Configuring descheduler profiles
 
 To manage cluster pod eviction behavior, select which descheduler profiles to enable.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to OpenShift Container Platform as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `KubeDescheduler` object:
 
@@ -180,31 +154,11 @@ Procedure
 
 3.  Save the file to apply the changes.
 
-</div>
-
 # Configuring the descheduler interval
 
 You can configure the amount of time between descheduler runs. The default is 3600 seconds (one hour).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You are logged in to OpenShift Container Platform as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Edit the `KubeDescheduler` object:
 
@@ -228,5 +182,3 @@ Procedure
     Set the `spec.deschedulingIntervalSeconds` field to the number of seconds you want between descheduler runs. A value of `0` in this field runs the descheduler once and exits.
 
 3.  Save the file to apply the changes.
-
-</div>

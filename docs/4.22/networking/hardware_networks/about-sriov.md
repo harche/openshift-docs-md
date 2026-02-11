@@ -1,7 +1,10 @@
 To share a single physical device with multiple pods, implement the Single Root I/O Virtualization (SR-IOV) specification. This standard enables flexible PCI device assignment, allowing a device to show as multiple separate physical devices for efficient resource allocation.
 
-> [!NOTE]
-> As of OpenShift Container Platform 4.21, the SR-IOV Operator can support ARM hardware.
+<div class="note">
+
+As of OpenShift Container Platform 4.21, the SR-IOV Operator can support ARM hardware.
+
+</div>
 
 You can configure a Single Root I/O Virtualization (SR-IOV) device in your cluster by using the [SR-IOV Operator](../../networking/networking_operators/sr-iov-operator/installing-sriov-operator.xml#installing-sriov-operator).
 
@@ -19,26 +22,35 @@ The SR-IOV Network Operator is supported on the following platforms:
 
 - Red Hat OpenStack Platform (RHOSP)
 
-> [!NOTE]
-> For a list of devices, such as network interface controllers (NICs) that OpenShift Container Platform supports, see [Red Hat certified hardware](https://catalog.redhat.com/en/hardware) on the Red Hat Ecosystem Catalog. The following example, finds the Intel X710 network adapter:
->
-> 1.  From the Red Hat certified hardware webpage, click **Explore** from the **Components** tile.
->
-> 2.  From the **Provider** drop-down menu, click the **Intel Corporation** checkbox.
->
-> 3.  From the **Platform** drop-down menu, click the **Red Hat OpenShift Container Platform** checkbox.
->
-> 4.  Find the **Intel® Ethernet Server Adapter X710** network adapter from the list and then click on its tile. A new webpage opens that shows information for the network adapter.
+<div class="note">
+
+For a list of devices, such as network interface controllers (NICs) that OpenShift Container Platform supports, see [Red Hat certified hardware](https://catalog.redhat.com/en/hardware) on the Red Hat Ecosystem Catalog. The following example, finds the Intel X710 network adapter:
+
+1.  From the Red Hat certified hardware webpage, click **Explore** from the **Components** tile.
+
+2.  From the **Provider** drop-down menu, click the **Intel Corporation** checkbox.
+
+3.  From the **Platform** drop-down menu, click the **Red Hat OpenShift Container Platform** checkbox.
+
+4.  Find the **Intel® Ethernet Server Adapter X710** network adapter from the list and then click on its tile. A new webpage opens that shows information for the network adapter.
+
+</div>
 
 You can configure multi-network policies for SR-IOV networks. The support for this is technology preview and SR-IOV additional networks are only supported with kernel NICs. They are not supported for Data Plane Development Kit (DPDK) applications.
 
-> [!NOTE]
-> Creating multi-network policies on SR-IOV networks might not deliver the same performance to applications compared to SR-IOV networks without a multi-network policy configured.
+<div class="note">
 
-> [!IMPORTANT]
-> Multi-network policies for SR-IOV network is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+Creating multi-network policies on SR-IOV networks might not deliver the same performance to applications compared to SR-IOV networks without a multi-network policy configured.
+
+</div>
+
+<div class="important">
+
+Multi-network policies for SR-IOV network is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 You can enable SR-IOV on a node by using the following command:
 
@@ -84,8 +96,11 @@ A CNI plugin that attaches VF interfaces allocated from the SR-IOV network devic
 SR-IOV InfiniBand CNI plugin
 A CNI plugin that attaches InfiniBand (IB) VF interfaces allocated from the SR-IOV network device plugin directly into a pod.
 
-> [!NOTE]
-> The SR-IOV Network resources injector and SR-IOV Network Operator webhook are enabled by default and can be disabled by editing the `default` `SriovOperatorConfig` CR. Use caution when disabling the SR-IOV Network Operator Admission Controller webhook. You can disable the webhook under specific circumstances, such as troubleshooting, or if you want to use unsupported devices.
+<div class="note">
+
+The SR-IOV Network resources injector and SR-IOV Network Operator webhook are enabled by default and can be disabled by editing the `default` `SriovOperatorConfig` CR. Use caution when disabling the SR-IOV Network Operator Admission Controller webhook. You can disable the webhook under specific circumstances, such as troubleshooting, or if you want to use unsupported devices.
+
+</div>
 
 # Additional resources
 

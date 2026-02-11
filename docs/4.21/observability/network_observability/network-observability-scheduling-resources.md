@@ -18,11 +18,9 @@ The `spec.agent.ebpf.advanced.scheduling`, `spec.processor.advanced.scheduling`,
 
 - `PriorityClassName`
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Sample `FlowCollector` resource for `spec.<component>.advanced.scheduling`
+**Sample `FlowCollector` resource for `spec.<component>.advanced.scheduling`**
 
 </div>
 
@@ -55,20 +53,8 @@ advanced:
 # ...
 ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Understanding taints and tolerations](../../nodes/scheduling/nodes-scheduler-taints-tolerations.xml#nodes-scheduler-taints-tolerations-about_nodes-scheduler-taints-tolerations)
 
 - [Assign Pods to Nodes (Kubernetes documentation)](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)
 
 - [Pod Priority and Preemption (Kubernetes documentation)](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/#priorityclass)
-
-</div>

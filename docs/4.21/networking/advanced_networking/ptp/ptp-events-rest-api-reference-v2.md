@@ -38,11 +38,9 @@ Use the following REST API v2 endpoints to subscribe the `cloud-event-consumer` 
 
 Returns a list of subscriptions. If subscriptions exist, a `200 OK` status code is returned along with the list of subscriptions.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example API response
+**Example API response**
 
 </div>
 
@@ -81,8 +79,6 @@ Example API response
 ]
 ```
 
-</div>
-
 **HTTP method**
 
 `POST api/ocloudNotifications/v2/subscriptions`
@@ -109,11 +105,9 @@ You can subscribe to the following PTP events:
 
 Query parameters
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example sync-state subscription payload
+**Example sync-state subscription payload**
 
 </div>
 
@@ -124,13 +118,9 @@ Example sync-state subscription payload
 }
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example PTP lock-state events subscription payload
+**Example PTP lock-state events subscription payload**
 
 </div>
 
@@ -141,13 +131,9 @@ Example PTP lock-state events subscription payload
 }
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example PTP gnss-sync-status events subscription payload
+**Example PTP gnss-sync-status events subscription payload**
 
 </div>
 
@@ -158,13 +144,9 @@ Example PTP gnss-sync-status events subscription payload
 }
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example PTP os-clock-sync-state events subscription payload
+**Example PTP os-clock-sync-state events subscription payload**
 
 </div>
 
@@ -175,13 +157,9 @@ Example PTP os-clock-sync-state events subscription payload
 }
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example PTP clock-class events subscription payload
+**Example PTP clock-class events subscription payload**
 
 </div>
 
@@ -192,13 +170,9 @@ Example PTP clock-class events subscription payload
 }
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example API response
+**Example API response**
 
 </div>
 
@@ -211,16 +185,14 @@ Example API response
 }
 ```
 
-</div>
-
 The following subscription status events are possible:
 
-| Status code | Description |
-|----|----|
-| `201 Created` | Indicates that the subscription is created |
+| Status code       | Description                                                                                 |
+|-------------------|---------------------------------------------------------------------------------------------|
+| `201 Created`     | Indicates that the subscription is created                                                  |
 | `400 Bad Request` | Indicates that the server could not process the request because it was malformed or invalid |
-| `404 Not Found` | Indicates that the subscription resource is not available |
-| `409 Conflict` | Indicates that the subscription already exists |
+| `404 Not Found`   | Indicates that the subscription resource is not available                                   |
+| `409 Conflict`    | Indicates that the subscription already exists                                              |
 
 PTP events REST API v2 subscription status codes
 
@@ -232,11 +204,9 @@ PTP events REST API v2 subscription status codes
 
 Deletes all subscriptions.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example API response
+**Example API response**
 
 </div>
 
@@ -245,8 +215,6 @@ Example API response
 "status": "deleted all subscriptions"
 }
 ```
-
-</div>
 
 ## api/ocloudNotifications/v2/subscriptions/{subscription_id}
 
@@ -264,11 +232,9 @@ Returns details for the subscription with ID `subscription_id`.
 
 Global path parameters
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example API response
+**Example API response**
 
 </div>
 
@@ -280,8 +246,6 @@ Example API response
     "UriLocation": "http://ptp-event-publisher-service-compute-1.openshift-ptp.svc.cluster.local:9043/api/ocloudNotifications/v2/subscriptions/620283f3-26cd-4a6d-b80a-bdc4b614a96a"
 }
 ```
-
-</div>
 
 **HTTP method**
 
@@ -331,11 +295,9 @@ Returns a list of publisher details for the cluster node. The system generates n
 
 You can use equipment synchronization status subscriptions together to deliver a detailed view of the overall synchronization health of the system.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example API response
+**Example API response**
 
 </div>
 
@@ -373,8 +335,6 @@ Example API response
   }
 ]
 ```
-
-</div>
 
 | HTTP response | Description |
 |---------------|-------------|
@@ -416,11 +376,9 @@ Returns the current state of the `os-clock-sync-state`, `clock-class`, `lock-sta
 
 Global path parameters
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example lock-state API response
+**Example lock-state API response**
 
 </div>
 
@@ -451,13 +409,9 @@ Example lock-state API response
 }
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example os-clock-sync-state API response
+**Example os-clock-sync-state API response**
 
 </div>
 
@@ -490,13 +444,9 @@ Example os-clock-sync-state API response
 }
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example clock-class API response
+**Example clock-class API response**
 
 </div>
 
@@ -521,13 +471,9 @@ Example clock-class API response
 }
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example sync-state API response
+**Example sync-state API response**
 
 </div>
 
@@ -554,13 +500,9 @@ Example sync-state API response
 }
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example gnss-sync-state API response
+**Example gnss-sync-state API response**
 
 </div>
 
@@ -590,5 +532,3 @@ Example gnss-sync-state API response
   }
 }
 ```
-
-</div>

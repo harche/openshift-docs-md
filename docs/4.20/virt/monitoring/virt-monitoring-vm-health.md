@@ -23,25 +23,7 @@ The probe uses the `guest-ping` command to determine if the QEMU guest agent is 
 
 You can define an HTTP readiness probe by setting the `spec.readinessProbe.httpGet` field of the virtual machine (VM) configuration.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Include details of the readiness probe in the VM configuration file.
 
@@ -95,31 +77,11 @@ Procedure
     $ oc create -f <file_name>.yaml
     ```
 
-</div>
-
 ## Defining a TCP readiness probe
 
 You can define a TCP readiness probe by setting the `spec.readinessProbe.tcpSocket` field of the virtual machine (VM) configuration.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Include details of the TCP readiness probe in the VM configuration file.
 
@@ -161,31 +123,11 @@ Procedure
     $ oc create -f <file_name>.yaml
     ```
 
-</div>
-
 ## Defining an HTTP liveness probe
 
 Define an HTTP liveness probe by setting the `spec.livenessProbe.httpGet` field of the virtual machine (VM) configuration. You can define both HTTP and TCP tests for liveness probes in the same way as readiness probes. This procedure configures a sample liveness probe with an HTTP GET test.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Include details of the HTTP liveness probe in the VM configuration file.
 
@@ -233,8 +175,6 @@ Procedure
     $ oc create -f <file_name>.yaml
     ```
 
-</div>
-
 # Defining a watchdog
 
 You can define a watchdog to monitor the health of the guest operating system by performing the following steps:
@@ -249,39 +189,27 @@ The watchdog device monitors the agent and performs one of the following actions
 
 - `reset`: The VM reboots in place and the guest operating system cannot react.
 
-  > [!NOTE]
-  > The reboot time might cause liveness probes to time out. If cluster-level protections detect a failed liveness probe, the VM might be forcibly rescheduled, increasing the reboot time.
+  <div class="note">
+
+  The reboot time might cause liveness probes to time out. If cluster-level protections detect a failed liveness probe, the VM might be forcibly rescheduled, increasing the reboot time.
+
+  </div>
 
 - `shutdown`: The VM gracefully powers down by stopping all services.
 
-> [!NOTE]
-> Watchdog is not available for Windows VMs.
+<div class="note">
+
+Watchdog is not available for Windows VMs.
+
+</div>
 
 ## Configuring a watchdog device for the virtual machine
 
 You configure a watchdog device for the virtual machine (VM).
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - For `x86` systems, the VM must use a kernel that works with the `i6300esb` watchdog device. If you use `s390x` architecture, the kernel must be enabled for `diag288`. Red Hat Enterprise Linux (RHEL) images support `i6300esb` and `diag288`.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a `YAML` file with the following contents:
 
@@ -322,18 +250,15 @@ Procedure
     $ oc apply -f <file_name>.yaml
     ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Verification
+**Verification**
 
 </div>
 
-> [!IMPORTANT]
-> This procedure is provided for testing watchdog functionality only and must not be run on production machines.
+<div class="important">
+
+This procedure is provided for testing watchdog functionality only and must not be run on production machines.
 
 </div>
 
@@ -360,14 +285,6 @@ Verification
 ## Installing the watchdog agent on the guest
 
 You can install the watchdog agent on the guest and start the `watchdog` service.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Log in to the virtual machine as root user.
 
@@ -401,33 +318,13 @@ Procedure
     # systemctl enable --now watchdog.service
     ```
 
-</div>
-
 # Defining a guest agent ping probe
 
 You can define a guest agent ping probe by setting the `spec.readinessProbe.guestAgentPing` field of the virtual machine (VM) configuration.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The QEMU guest agent must be installed and enabled on the virtual machine.
 
 - You have installed the OpenShift CLI (`oc`).
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Include details of the guest agent ping probe in the VM configuration file. For example:
 
@@ -469,8 +366,6 @@ Procedure
     ``` terminal
     $ oc create -f <file_name>.yaml
     ```
-
-</div>
 
 # Additional resources
 

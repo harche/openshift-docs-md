@@ -17,13 +17,13 @@ Required
 
 # Specification
 
-| Property | Type | Description |
-|----|----|----|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
-| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
-| `spec` | `object` | spec describes the desired state of this AlertingRule object. |
-| `status` | `object` | status describes the current state of this AlertOverrides object. |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `spec`       | `object`                                                                             | spec describes the desired state of this AlertingRule object.                                                                                                                                                                                                                                        |
+| `status`     | `object`                                                                             | status describes the current state of this AlertOverrides object.                                                                                                                                                                                                                                    |
 
 ## .spec
 
@@ -43,20 +43,20 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>groups</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>groups is a list of grouped alerting rules. Rule groups are the unit at which Prometheus parallelizes rule processing. All rules in a single group share a configured evaluation interval. All rules in the group will be processed together on this interval, sequentially, and all rules will be processed.</p>
 <p>It’s common to group related alerting rules into a single AlertingRule resources, and within that resource, closely related alerts, or simply alerts with the same interval, into individual groups. You are also free to create AlertingRule resources with only a single rule group, but be aware that this can have a performance impact on Prometheus if the group is extremely large or has very complex query expressions to evaluate. Spreading very complex rules across multiple groups to allow them to be processed in parallel is also a common use-case.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>groups[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>RuleGroup is a list of sequentially evaluated alerting rules.</p></td>
@@ -87,12 +87,12 @@ Required
 
 - `rules`
 
-| Property | Type | Description |
-|----|----|----|
+| Property   | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                |
+|------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `interval` | `string` | interval is how often rules in the group are evaluated. If not specified, it defaults to the global.evaluation_interval configured in Prometheus, which itself defaults to 30 seconds. You can check if this value has been modified from the default on your cluster by inspecting the platform Prometheus configuration: The relevant field in that resource is: spec.evaluationInterval |
-| `name` | `string` | name is the name of the group. |
-| `rules` | `array` | rules is a list of sequentially evaluated alerting rules. Prometheus may process rule groups in parallel, but rules within a single group are always processed sequentially, and all rules are processed. |
-| `rules[]` | `object` | Rule describes an alerting rule. See Prometheus documentation: - <https://www.prometheus.io/docs/prometheus/latest/configuration/alerting_rules> |
+| `name`     | `string` | name is the name of the group.                                                                                                                                                                                                                                                                                                                                                             |
+| `rules`    | `array`  | rules is a list of sequentially evaluated alerting rules. Prometheus may process rule groups in parallel, but rules within a single group are always processed sequentially, and all rules are processed.                                                                                                                                                                                  |
+| `rules[]`  | `object` | Rule describes an alerting rule. See Prometheus documentation: - <https://www.prometheus.io/docs/prometheus/latest/configuration/alerting_rules>                                                                                                                                                                                                                                           |
 
 ## .spec.groups\[\].rules
 
@@ -115,13 +115,13 @@ Required
 
 - `expr`
 
-| Property | Type | Description |
-|----|----|----|
-| `alert` | `string` | alert is the name of the alert. Must be a valid label value, i.e. may contain any Unicode character. |
-| `annotations` | `object (string)` | annotations to add to each alert. These are values that can be used to store longer additional information that you won’t query on, such as alert descriptions or runbook links. |
-| `expr` | `integer-or-string` | expr is the PromQL expression to evaluate. Every evaluation cycle this is evaluated at the current time, and all resultant time series become pending or firing alerts. This is most often a string representing a PromQL expression, e.g.: mapi_current_pending_csr \> mapi_max_pending_csr In rare cases this could be a simple integer, e.g. a simple "1" if the intent is to create an alert that is always firing. This is sometimes used to create an always-firing "Watchdog" alert in order to ensure the alerting pipeline is functional. |
-| `for` | `string` | for is the time period after which alerts are considered firing after first returning results. Alerts which have not yet fired for long enough are considered pending. |
-| `labels` | `object (string)` | labels to add or overwrite for each alert. The results of the PromQL expression for the alert will result in an existing set of labels for the alert, after evaluating the expression, for any label specified here with the same name as a label in that set, the label here wins and overwrites the previous value. These should typically be short identifying values that may be useful to query against. A common example is the alert severity, where one sets `severity: warning` under the `labels` key: |
+| Property      | Type                | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+|---------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `alert`       | `string`            | alert is the name of the alert. Must be a valid label value, i.e. may contain any Unicode character.                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `annotations` | `object (string)`   | annotations to add to each alert. These are values that can be used to store longer additional information that you won’t query on, such as alert descriptions or runbook links.                                                                                                                                                                                                                                                                                                                                                                   |
+| `expr`        | `integer-or-string` | expr is the PromQL expression to evaluate. Every evaluation cycle this is evaluated at the current time, and all resultant time series become pending or firing alerts. This is most often a string representing a PromQL expression, e.g.: mapi_current_pending_csr \> mapi_max_pending_csr In rare cases this could be a simple integer, e.g. a simple "1" if the intent is to create an alert that is always firing. This is sometimes used to create an always-firing "Watchdog" alert in order to ensure the alerting pipeline is functional. |
+| `for`         | `string`            | for is the time period after which alerts are considered firing after first returning results. Alerts which have not yet fired for long enough are considered pending.                                                                                                                                                                                                                                                                                                                                                                             |
+| `labels`      | `object (string)`   | labels to add or overwrite for each alert. The results of the PromQL expression for the alert will result in an existing set of labels for the alert, after evaluating the expression, for any label specified here with the same name as a label in that set, the label here wins and overwrites the previous value. These should typically be short identifying values that may be useful to query against. A common example is the alert severity, where one sets `severity: warning` under the `labels` key:                                   |
 
 ## .status
 
@@ -131,10 +131,10 @@ status describes the current state of this AlertOverrides object.
 Type
 `object`
 
-| Property | Type | Description |
-|----|----|----|
-| `observedGeneration` | `integer` | observedGeneration is the last generation change you’ve dealt with. |
-| `prometheusRule` | `object` | prometheusRule is the generated PrometheusRule for this AlertingRule. Each AlertingRule instance results in a generated PrometheusRule object in the same namespace, which is always the openshift-monitoring namespace. |
+| Property             | Type      | Description                                                                                                                                                                                                              |
+|----------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `observedGeneration` | `integer` | observedGeneration is the last generation change you’ve dealt with.                                                                                                                                                      |
+| `prometheusRule`     | `object`  | prometheusRule is the generated PrometheusRule for this AlertingRule. Each AlertingRule instance results in a generated PrometheusRule object in the same namespace, which is always the openshift-monitoring namespace. |
 
 ## .status.prometheusRule
 
@@ -193,10 +193,10 @@ HTTP method
 Description
 list objects of kind AlertingRule
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AlertingRuleList`](../objects/index.xml#io-openshift-monitoring-v1-AlertingRuleList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                  |
+|--------------------|-----------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AlertingRuleList`](../objects/index.xml#io-openshift-monitoring-v1-AlertingRuleList) schema |
+| 401 - Unauthorized | Empty                                                                                         |
 
 HTTP responses
 
@@ -208,10 +208,10 @@ HTTP method
 Description
 delete collection of AlertingRule
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -221,10 +221,10 @@ HTTP method
 Description
 list objects of kind AlertingRule
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AlertingRuleList`](../objects/index.xml#io-openshift-monitoring-v1-AlertingRuleList) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                  |
+|--------------------|-----------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AlertingRuleList`](../objects/index.xml#io-openshift-monitoring-v1-AlertingRuleList) schema |
+| 401 - Unauthorized | Empty                                                                                         |
 
 HTTP responses
 
@@ -234,25 +234,25 @@ HTTP method
 Description
 create an AlertingRule
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                            | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
-| 201 - Created | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
-| 202 - Accepted | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                    |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
+| 201 - Created      | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
+| 202 - Accepted     | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                           |
 
 HTTP responses
 
@@ -270,17 +270,17 @@ HTTP method
 Description
 delete an AlertingRule
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type     | Description                                                                                                                                                                                                                                              |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -290,10 +290,10 @@ HTTP method
 Description
 read the specified AlertingRule
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                    |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                           |
 
 HTTP responses
 
@@ -303,17 +303,17 @@ HTTP method
 Description
 partially update the specified AlertingRule
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                    |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                           |
 
 HTTP responses
 
@@ -323,24 +323,24 @@ HTTP method
 Description
 replace the specified AlertingRule
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                            | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
-| 201 - Created | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                    |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
+| 201 - Created      | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                           |
 
 HTTP responses
 
@@ -358,10 +358,10 @@ HTTP method
 Description
 read status of the specified AlertingRule
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                    |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                           |
 
 HTTP responses
 
@@ -371,17 +371,17 @@ HTTP method
 Description
 partially update status of the specified AlertingRule
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                    |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                           |
 
 HTTP responses
 
@@ -391,23 +391,23 @@ HTTP method
 Description
 replace status of the specified AlertingRule
 
-| Parameter | Type | Description |
-|----|----|----|
-| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type | Description |
-|----|----|----|
-| `body` | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |  |
+| Parameter | Type                                                                                                                            | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code | Reponse body |
-|----|----|
-| 200 - OK | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
-| 201 - Created | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty |
+| HTTP code          | Reponse body                                                                                                                    |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
+| 201 - Created      | [`AlertingRule`](../monitoring_apis/alertingrule-monitoring-openshift-io-v1.xml#alertingrule-monitoring-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                           |
 
 HTTP responses

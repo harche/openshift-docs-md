@@ -10,10 +10,13 @@ You can use an etcd backup to restore your cluster to a previous state. This can
 
 - An administrator has deleted something critical and must restore to recover the cluster.
 
-> [!WARNING]
-> Restoring to a previous cluster state is a destructive and destablizing action to take on a running cluster. This should only be used as a last resort.
->
-> If you are able to retrieve data using the Kubernetes API server, then etcd is available and you should not restore using an etcd backup.
+<div class="warning">
+
+Restoring to a previous cluster state is a destructive and destablizing action to take on a running cluster. This should only be used as a last resort.
+
+If you are able to retrieve data using the Kubernetes API server, then etcd is available and you should not restore using an etcd backup.
+
+</div>
 
 Restoring etcd effectively takes a cluster back in time and all clients will experience a conflicting, parallel history. This can impact the behavior of watching components like kubelets, Kubernetes controller managers, persistent volume controllers, and OpenShift Container Platform Operators, including the network Operator.
 
@@ -25,14 +28,9 @@ In extreme cases, the cluster can lose track of persistent volumes, delete criti
 
 You can use a saved etcd backup to restore a previous cluster state on a single node.
 
-> [!IMPORTANT]
-> When you restore your cluster, you must use an etcd backup that was taken from the same z-stream release. For example, an OpenShift Container Platform 4.17.2 cluster must use an etcd backup that was taken from 4.17.2.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+When you restore your cluster, you must use an etcd backup that was taken from the same z-stream release. For example, an OpenShift Container Platform 4.17.2 cluster must use an etcd backup that was taken from 4.17.2.
 
 </div>
 
@@ -41,16 +39,6 @@ Prerequisites
 - You have SSH access to control plane hosts.
 
 - A backup directory containing both the etcd snapshot and the resources for the static pods, which were from the same backup. The file names in the directory must be in the following formats: `snapshot_<datetimestamp>.db` and `static_kuberesources_<datetimestamp>.tar.gz`.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Use SSH to connect to the single node and copy the etcd backup to the `/home/core` directory by running the following command:
 
@@ -72,10 +60,11 @@ Procedure
     $ oc adm wait-for-stable-cluster
     ```
 
-    > [!NOTE]
-    > It can take up to 15 minutes for the control plane to recover.
+    <div class="note">
 
-</div>
+    It can take up to 15 minutes for the control plane to recover.
+
+    </div>
 
 # Restoring to a previous cluster state for more than one node
 
@@ -83,17 +72,15 @@ You can use a saved etcd backup to restore a previous cluster state or restore a
 
 For high availability (HA) clusters, a three-node HA cluster requires you to shut down etcd on two hosts to avoid a cluster split. On four-node and five-node HA clusters, you must shut down three hosts. Quorum requires a simple majority of nodes. The minimum number of nodes required for quorum on a three-node HA cluster is two. On four-node and five-node HA clusters, the minimum number of nodes required for quorum is three. If you start a new cluster from backup on your recovery host, the other etcd members might still be able to form quorum and continue service.
 
-> [!NOTE]
-> If your cluster uses a control plane machine set, see "Recovering a degraded etcd Operator" in "Troubleshooting the control plane machine set" for an etcd recovery procedure. For OpenShift Container Platform on a single node, see "Restoring to a previous cluster state for a single node".
+<div class="note">
 
-> [!IMPORTANT]
-> When you restore your cluster, you must use an etcd backup that was taken from the same z-stream release. For example, an OpenShift Container Platform 4.17.2 cluster must use an etcd backup that was taken from 4.17.2.
+If your cluster uses a control plane machine set, see "Recovering a degraded etcd Operator" in "Troubleshooting the control plane machine set" for an etcd recovery procedure. For OpenShift Container Platform on a single node, see "Restoring to a previous cluster state for a single node".
 
-<div>
+</div>
 
-<div class="title">
+<div class="important">
 
-Prerequisites
+When you restore your cluster, you must use an etcd backup that was taken from the same z-stream release. For example, an OpenShift Container Platform 4.17.2 cluster must use an etcd backup that was taken from 4.17.2.
 
 </div>
 
@@ -107,16 +94,9 @@ Prerequisites
 
 - Nodes must be accessible or bootable.
 
-</div>
+<div class="important">
 
-> [!IMPORTANT]
-> For non-recovery control plane nodes, it is not required to establish SSH connectivity or to stop the static pods. You can delete and re-create other non-recovery, control plane machines, one by one.
-
-<div>
-
-<div class="title">
-
-Procedure
+For non-recovery control plane nodes, it is not required to establish SSH connectivity or to stop the static pods. You can delete and re-create other non-recovery, control plane machines, one by one.
 
 </div>
 
@@ -126,8 +106,11 @@ Procedure
 
     `kube-apiserver` becomes inaccessible after the restore process starts, so you cannot access the control plane nodes. For this reason, it is recommended to establish SSH connectivity to each control plane host in a separate terminal.
 
-    > [!IMPORTANT]
-    > If you do not complete this step, you will not be able to access the control plane hosts to complete the restore procedure, and you will be unable to recover your cluster from this state.
+    <div class="important">
+
+    If you do not complete this step, you will not be able to access the control plane hosts to complete the restore procedure, and you will be unable to recover your cluster from this state.
+
+    </div>
 
 3.  Using SSH, connect to each control plane node and run the following command to disable etcd:
 
@@ -159,8 +142,11 @@ Procedure
     $ oc adm wait-for-stable-cluster
     ```
 
-    > [!NOTE]
-    > It can take up to 15 minutes for the control plane to recover.
+    <div class="note">
+
+    It can take up to 15 minutes for the control plane to recover.
+
+    </div>
 
 9.  Once recovered, enable the quorum guard by running the following command:
 
@@ -168,35 +154,19 @@ Procedure
     $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": null}}'
     ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Troubleshooting
+**Troubleshooting**
 
 </div>
 
 If you see no progress rolling out the etcd static pods, you can force redeployment from the `cluster-etcd-operator` by running the following command:
 
-</div>
-
 ``` terminal
 $ oc patch etcd cluster -p='{"spec": {"forceRedeploymentReason": "recovery-'"$(date --rfc-3339=ns )"'"}}' --type=merge
 ```
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Recovering a degraded etcd Operator](../../../machine_management/control_plane_machine_management/cpmso-troubleshooting.xml#cpmso-ts-etcd-degraded_cpmso-troubleshooting)
-
-</div>
 
 # Restoring a cluster manually from an etcd backup
 
@@ -216,36 +186,21 @@ If the cluster uses a `MachineSet` for the control plane, it is suggested to use
 
 When you restore your cluster, you must use an etcd backup that was taken from the same z-stream release. For example, an OpenShift Container Platform 4.7.2 cluster must use an etcd backup that was taken from 4.7.2.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the cluster as a user with the `cluster-admin` role; for example, the `kubeadmin` user.
 
 - SSH access to *all* control plane hosts, with a host user allowed to become `root`; for example, the default `core` host user.
 
 - A backup directory containing both a previous etcd snapshot and the resources for the static pods from the same backup. The file names in the directory must be in the following formats: `snapshot_<datetimestamp>.db` and `static_kuberesources_<datetimestamp>.tar.gz`.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Use SSH to connect to each of the control plane nodes.
 
     The Kubernetes API server becomes inaccessible after the restore process starts, so you cannot access the control plane nodes. For this reason, it is recommended to use a SSH connection for each control plane host you are accessing in a separate terminal.
 
-    > [!IMPORTANT]
-    > If you do not complete this step, you will not be able to access the control plane hosts to complete the restore procedure, and you will be unable to recover your cluster from this state.
+    <div class="important">
+
+    If you do not complete this step, you will not be able to access the control plane hosts to complete the restore procedure, and you will be unable to recover your cluster from this state.
+
+    </div>
 
 2.  Copy the etcd backup directory to each control plane host.
 
@@ -344,8 +299,11 @@ Procedure
         $ uuidgen
         ```
 
-        > [!NOTE]
-        > The value for `<UUID>` must be generated only once. After generating `UUID` on one control plane host, do not generate it again on the others. The same `UUID` will be used in the next steps on all control plane hosts.
+        <div class="note">
+
+        The value for `<UUID>` must be generated only once. After generating `UUID` on one control plane host, do not generate it again on the others. The same `UUID` will be used in the next steps on all control plane hosts.
+
+        </div>
 
     3.  The value for `ETCD_NODE_PEER_URL` should be set like the following example:
 
@@ -364,22 +322,21 @@ Procedure
 
     4.  The value for `<ETCD_INITIAL_CLUSTER>` should be set like the following, where `<ETCD_NAME_n>` is the `<ETCD_NAME>` of each control plane host.
 
-        > [!NOTE]
-        > The port used must be 2380 and not 2379. The port 2379 is used for etcd database management and is configured directly in etcd start command in container.
+        <div class="note">
 
-        <div class="formalpara">
+        The port used must be 2380 and not 2379. The port 2379 is used for etcd database management and is configured directly in etcd start command in container.
 
-        <div class="title">
+        </div>
 
-        Example output
+        <div class="formalpara-title">
+
+        **Example output**
 
         </div>
 
         ``` terminal
         <ETCD_NAME_0>=<ETCD_NODE_PEER_URL_0>,<ETCD_NAME_1>=<ETCD_NODE_PEER_URL_1>,<ETCD_NAME_2>=<ETCD_NODE_PEER_URL_2>
         ```
-
-        </div>
 
         - Specifies the `ETCD_NODE_PEER_URL` values from each control plane host.
 
@@ -423,24 +380,23 @@ Procedure
           --skip-hash-check=true
         ```
 
-        > [!NOTE]
-        > The quotes are mandatory when regenerating the `etcd` database.
+        <div class="note">
+
+        The quotes are mandatory when regenerating the `etcd` database.
+
+        </div>
 
 7.  Record the values printed in the `added member` logs; for example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
         2022-06-28T19:52:43Z    info    membership/cluster.go:421   added member    {"cluster-id": "c5996b7c11c30d6b", "local-member-id": "0", "added-peer-id": "56cd73b614699e7", "added-peer-peer-urls": ["https://10.0.91.5:2380"], "added-peer-is-learner": false}
         2022-06-28T19:52:43Z    info    membership/cluster.go:421   added member    {"cluster-id": "c5996b7c11c30d6b", "local-member-id": "0", "added-peer-id": "1f63d01b31bb9a9e", "added-peer-peer-urls": ["https://10.0.90.221:2380"], "added-peer-is-learner": false}
         2022-06-28T19:52:43Z    info    membership/cluster.go:421   added member    {"cluster-id": "c5996b7c11c30d6b", "local-member-id": "0", "added-peer-id": "fdc2725b3b70127c", "added-peer-peer-urls": ["https://10.0.94.214:2380"], "added-peer-is-learner": false}
-
-    </div>
 
     1.  Exit from the container.
 
@@ -472,8 +428,11 @@ Procedure
         $ rm /var/lib/etcd/<snapshot_yyyy-mm-dd_hhmmss>.db
         ```
 
-        > [!IMPORTANT]
-        > When you are finished the `/var/lib/etcd` directory must contain only the folder `member`.
+        <div class="important">
+
+        When you are finished the `/var/lib/etcd` directory must contain only the folder `member`.
+
+        </div>
 
     4.  Repeat these steps on the other control plane hosts.
 
@@ -493,11 +452,9 @@ Procedure
         $ crictl ps | grep etcd | grep -v operator
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -507,8 +464,6 @@ Procedure
         08ba29b1f58a7       9d28c15860870e85c91d0e36b45f7a6edd3da757b113ec4abb4507df88b17f06                                                         About a minute ago   Running             etcd                                  0                   fe4b9c3d6483c
         2ddc9eda16f53       9d28c15860870e85c91d0e36b45f7a6edd3da757b113ec4abb4507df88b17f06                                                         About a minute ago   Running             etcdctl
         ```
-
-        </div>
 
         If the output of this command is empty, wait a few minutes and check again.
 
@@ -520,11 +475,9 @@ Procedure
         $ crictl exec -it $(crictl ps | grep etcdctl | awk '{print $1}') etcdctl endpoint status -w table
         ```
 
-        <div class="formalpara">
+        <div class="formalpara-title">
 
-        <div class="title">
-
-        Example output
+        **Example output**
 
         </div>
 
@@ -537,8 +490,6 @@ Procedure
         | https://10.0.93.129:2379 | 358efa9c1d91c3d6 |   3.5.0 |   67 MB |     false |      false |         2 |        218 |                218 |        |
         +--------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+
         ```
-
-        </div>
 
 11. Restart the other static pods.
 
@@ -556,8 +507,11 @@ Procedure
         $ crictl ps | grep kube-apiserver | grep -v operator
         ```
 
-        > [!NOTE]
-        > if the output of the following command is empty, wait a few minutes and check again.
+        <div class="note">
+
+        if the output of the following command is empty, wait a few minutes and check again.
+
+        </div>
 
     3.  Repeat the same steps for `kube-controller-manager-pod.yaml` and `kube-scheduler-pod.yaml` files.
 
@@ -590,8 +544,6 @@ Procedure
             done
             ```
 
-</div>
-
 # Additional resources
 
 - [Backing up etcd data](../../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backing-up-etcd-data_backup-etcd)
@@ -606,8 +558,11 @@ Procedure
 
 If your OpenShift Container Platform cluster uses persistent storage of any form, a state of the cluster is typically stored outside etcd. When you restore from an etcd backup, the status of the workloads in OpenShift Container Platform is also restored. However, if the etcd snapshot is old, the status might be invalid or outdated.
 
-> [!IMPORTANT]
-> The contents of persistent volumes (PVs) are never part of the etcd snapshot. When you restore an OpenShift Container Platform cluster from an etcd snapshot, non-critical workloads might gain access to critical data, or vice-versa.
+<div class="important">
+
+The contents of persistent volumes (PVs) are never part of the etcd snapshot. When you restore an OpenShift Container Platform cluster from an etcd snapshot, non-critical workloads might gain access to critical data, or vice-versa.
+
+</div>
 
 The following are some example scenarios that produce an out-of-date status:
 

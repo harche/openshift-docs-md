@@ -2,16 +2,17 @@ To enable your OpenShift Container Platform cluster to use an HTTP or HTTPS prox
 
 After you enable a cluster-wide egress proxy for your cluster on a supported platform, Red Hat Enterprise Linux CoreOS (RHCOS) populates the `status.noProxy` parameter with the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your `install-config.yaml` file that exists on the supported platform.
 
-> [!NOTE]
-> As a postinstallation task, you can change the `networking.clusterNetwork[].cidr` value, but not the `networking.machineNetwork[].cidr` and the `networking.serviceNetwork[]` values. For more information, see "Configuring the cluster network range".
+<div class="note">
+
+As a postinstallation task, you can change the `networking.clusterNetwork[].cidr` value, but not the `networking.machineNetwork[].cidr` and the `networking.serviceNetwork[]` values. For more information, see "Configuring the cluster network range".
+
+</div>
 
 For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `status.noProxy` parameter is also populated with the instance metadata endpoint, `169.254.169.254`.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Example of values added to the `status:` segment of a `Proxy` object by RHCOS
+**Example of values added to the `status:` segment of a `Proxy` object by RHCOS**
 
 </div>
 
@@ -41,8 +42,6 @@ status:
 # ...
 ```
 
-</div>
-
 where:
 
 `<ip_address_from_cidr>`
@@ -57,8 +56,11 @@ Specifies IP address block for services. The default value is `172.30.0.0/16`.
 `<api_server_internal_url>`
 You can find the URL of the internal API server by running the `oc get infrastructures.config.openshift.io cluster -o jsonpath='{.status.etcdDiscoveryDomain}'` command.
 
-> [!IMPORTANT]
-> If your installation type does not include setting the `networking.machineNetwork[].cidr` field, you must include the machine IP addresses manually in the `.status.noProxy` field to make sure that the traffic between nodes can bypass the proxy.
+<div class="important">
+
+If your installation type does not include setting the `networking.machineNetwork[].cidr` field, you must include the machine IP addresses manually in the `.status.noProxy` field to make sure that the traffic between nodes can bypass the proxy.
+
+</div>
 
 # Prerequisites
 
@@ -81,19 +83,17 @@ spec:
 status:
 ```
 
-> [!NOTE]
-> Only the `Proxy` object named `cluster` is supported, and no additional proxies can be created.
+<div class="note">
+
+Only the `Proxy` object named `cluster` is supported, and no additional proxies can be created.
+
+</div>
 
 A cluster administrator can configure the proxy for OpenShift Container Platform by modifying the `cluster` `Proxy` object.
 
-> [!WARNING]
-> After you enable the cluster-wide proxy capability for your cluster and you save the `Proxy` object file, the Machine Config Operator (MCO) reboots all nodes in your cluster so that each node can access connections that exist outside of the cluster. You do not need to manually reboot these nodes.
+<div class="warning">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+After you enable the cluster-wide proxy capability for your cluster and you save the `Proxy` object file, the Machine Config Operator (MCO) reboots all nodes in your cluster so that each node can access connections that exist outside of the cluster. You do not need to manually reboot these nodes.
 
 </div>
 
@@ -101,20 +101,13 @@ Prerequisites
 
 - You installed the OpenShift Container Platform `oc` CLI tool.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
 1.  Create a config map that contains any additional CA certificates required for proxying HTTPS connections.
 
-    > [!NOTE]
-    > You can skip this step if the identity certificate of the proxy is signed by an authority from the Red Hat Enterprise Linux CoreOS (RHCOS) trust bundle.
+    <div class="note">
+
+    You can skip this step if the identity certificate of the proxy is signed by an authority from the Red Hat Enterprise Linux CoreOS (RHCOS) trust bundle.
+
+    </div>
 
     1.  Create a file called `user-ca-bundle.yaml`, and provide the values of your PEM-encoded certificates:
 
@@ -200,33 +193,13 @@ Procedure
 
 4.  Save the file to apply the changes.
 
-</div>
-
 # Removing the cluster-wide proxy
 
 The `cluster` Proxy object cannot be deleted. To remove the cluster-wide proxy configuration from your OpenShift Container Platform cluster, you can remove all spec fields from the `Proxy` object by using the `oc edit` command.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Cluster administrator permissions
 
 - OpenShift Container Platform `oc` CLI tool installed
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Use the `oc edit` command to modify the proxy:
 
@@ -246,33 +219,13 @@ Procedure
 
 3.  Save the file to apply the changes.
 
-</div>
-
 # Verifying the cluster-wide proxy configuration
 
 To verify that your cluster-wide proxy configuration is working correctly in OpenShift Container Platform, you can check the `Proxy` object status, review Machine Config Operator logs, and confirm that system components are routing external requests through the proxy.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - You have cluster administrator permissions.
 
 - You have the OpenShift Container Platform `oc` CLI tool installed.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Check the proxy configuration status using the `oc` command:
 
@@ -288,11 +241,9 @@ Procedure
     $ oc get proxy/cluster -o jsonpath=''
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -304,8 +255,6 @@ Procedure
         noProxy: .cluster.local,.svc,10.0.0.0/16,10.128.0.0/14,127.0.0.1,169.254.169.254,172.30.0.0/16,localhost,test.no-proxy.com
     }
     ```
-
-    </div>
 
 4.  Check the logs of the Machine Config Operator (MCO) to ensure that the configuration changes were applied successfully:
 
@@ -322,8 +271,6 @@ Procedure
     ```
 
 7.  Look for log entries that show that external requests have been routed through the proxy.
-
-</div>
 
 # Additional resources
 

@@ -44,8 +44,11 @@ Because automatic labeling is not currently available, the application owner mus
 
 After creating the VM, apply a common label to the following resources associated with the VM: `VirtualMachine`, `DataVolume`, `PersistentVolumeClaim`, `Service`, `Route`, `Secret` and `ConfigMap`. If the VM uses an instance type or preference, you must also label the `ControllerRevision` copy of these objects referenced by the spec or status of the VM. Do not label virtual machine instances (VMIs) or pods; OpenShift Virtualization creates and manages these automatically.
 
-> [!IMPORTANT]
-> You must apply the common label to everything in the namespace that you want to protect, including objects that you added to the VM that are not listed here.
+<div class="important">
+
+You must apply the common label to everything in the namespace that you want to protect, including objects that you added to the VM that are not listed here.
+
+</div>
 
 Including more than the `VirtualMachine` object in the VM
 Working VMs typically also contain data volumes, persistent volume claims (PVCs), services, routes, secrets, `ConfigMap` objects, and `VirtualMachineSnapshot` objects.
@@ -85,8 +88,11 @@ OpenShift Virtualization supports the [Metro-DR solution for OpenShift Data Foun
 
 - To prevent data corruption, you must ensure that storage is fenced during failover.
 
-  > [!TIP]
-  > Fencing means isolating a node so that workloads do not run on it.
+  <div class="tip">
+
+  Fencing means isolating a node so that workloads do not run on it.
+
+  </div>
 
 For more information about using the Metro-DR solution for OpenShift Data Foundation with OpenShift Virtualization, see IBM’s OpenShift Data Foundation Metro-DR documentation.
 

@@ -22,25 +22,9 @@ You can override the schedule for running the vSphere Problem Detector Operator 
 
 The vSphere Problem Detector Operator automatically runs the checks every hour. After the Operator starts, the Operator runs the checks immediately. After the Cluster Storage Operator starts and determines that a cluster runs on VMware vSphere, the Cluster Storage Operator starts the vSphere Problem Detector Operator. To run the checks immediately, you can scale the vSphere Problem Detector Operator to `0` and back to `1` so that the Cluster Storage Operator restarts the vSphere Problem Detector Operator.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - Access to the cluster as a user with the `cluster-admin` role.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - Scale the Operator to `0`:
 
@@ -49,15 +33,7 @@ Procedure
       -n openshift-cluster-storage-operator
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - Verify that the pods have restarted by running the following command:
 
@@ -65,11 +41,9 @@ Verification
   $ oc -n openshift-cluster-storage-operator get pod -l name=vsphere-problem-detector-operator -w
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -78,49 +52,21 @@ Verification
   vsphere-problem-detector-operator-77486bd645-9ntpb   1/1     Running   0          11s
   ```
 
-  </div>
-
   The `AGE` field must indicate that the pod restarted.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Next steps
-
-</div>
+<!-- -->
 
 - Viewing the events from the vSphere Problem Detector Operator
 
 - Viewing the logs from the vSphere Problem Detector Operator
 
-</div>
-
 # Viewing the events from the vSphere Problem Detector Operator
 
 After the vSphere Problem Detector Operator runs and performs the configuration checks, the Operator creates events that you can view from the command-line interface (CLI) or from the OpenShift Container Platform web console.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The vSphere Problem Detector Operator ran checks on your cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To view the events by using the CLI, run the following command:
 
@@ -129,11 +75,9 @@ Procedure
       --sort-by={.metadata.creationTimestamp}
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -143,11 +87,7 @@ Procedure
   16m     Normal    LeaderElection      configmap/vsphere-problem-detector-lock    vsphere-problem-detector-operator-xxxxx became leader
   ```
 
-  </div>
-
 - To view the events by using the OpenShift Container Platform web console, navigate to **Home** → **Events** and select `openshift-cluster-storage-operator` from the **Project** menu.
-
-</div>
 
 # Viewing the logs from the vSphere Problem Detector Operator
 
@@ -155,25 +95,9 @@ After the vSphere Problem Detector Operator runs and performs the configuration 
 
 The ideal output for a log line indicates `passed` or `0 problems`. If a log line indicates `failure` or 1 or more problems, see the information in the "Configuration checks run by the vSphere Problem Detector Operator" document.
 
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
 - The vSphere Problem Detector Operator ran checks on your cluster.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To view the logs by using the CLI, run the following command. A log line that shows `passed` in the output means that you must analyze the log output and resolve the issue.
 
@@ -182,11 +106,9 @@ Procedure
       -n openshift-cluster-storage-operator
   ```
 
-  <div class="formalpara">
+  <div class="formalpara-title">
 
-  <div class="title">
-
-  Example output
+  **Example output**
 
   </div>
 
@@ -199,8 +121,6 @@ Procedure
   I0108 08:32:28.480685       1 operator.go:271] CheckNodeProviderID:<host_name> passed
   ```
 
-  </div>
-
 - To view the Operator logs with the OpenShift Container Platform web console, perform the following steps:
 
   1.  Navigate to **Workloads** → **Pods**.
@@ -210,8 +130,6 @@ Procedure
   3.  Click the link for the `vsphere-problem-detector-operator` pod.
 
   4.  Click the **Logs** tab on the **Pod details** page to view the logs.
-
-</div>
 
 # Configuration checks run by the vSphere Problem Detector Operator
 
@@ -224,13 +142,13 @@ The following tables identify the configuration checks that the vSphere Problem 
 <col style="width: 80%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Name</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>CheckDefaultDatastore</code></p></td>
 <td style="text-align: left;"><p>Verifies that the default datastore name in the VMware vSphere configuration is short enough for use with dynamic provisioning.</p>
 <p>If this check fails, you can expect the following:</p>
@@ -240,12 +158,12 @@ The following tables identify the configuration checks that the vSphere Problem 
 </ul>
 <p>If this check fails, reconfigure vSphere with a shorter name for the default datastore.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>CheckFolderPermissions</code></p></td>
 <td style="text-align: left;"><p>Verifies the permission to list volumes in the default datastore. You must enable the permission to create volumes. The Operator verifies the permission by listing the <code>/</code> and <code>/kubevols</code> directories. When the Operator performs the check, the root directory must exist. The <code>/kubevols</code> directory might not exist at the time of the check. The creation of the <code>/kubevols</code> directory occurs when the datastore supports dynamic provisioning.</p>
 <p>If this check fails, review the required permissions for the vCenter account that you specified during the OpenShift Container Platform installation.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>CheckStorageClasses</code></p></td>
 <td style="text-align: left;"><p>Verifies the following:</p>
 <ul>
@@ -253,16 +171,18 @@ The following tables identify the configuration checks that the vSphere Problem 
 <li><p>The storage class can use only one storage policy and the policy must be defined.</p></li>
 </ul></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>CheckTaskPermissions</code></p></td>
 <td style="text-align: left;"><p>Verifies the permission to list recent tasks and datastores.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>ClusterInfo</code></p></td>
 <td style="text-align: left;"><p>Collects the cluster version and UUID from vSphere vCenter.</p></td>
 </tr>
 </tbody>
 </table>
+
+Cluster configuration checks
 
 <table>
 <caption>Node configuration checks</caption>
@@ -271,33 +191,35 @@ The following tables identify the configuration checks that the vSphere Problem 
 <col style="width: 80%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th style="text-align: left;">Name</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>CheckNodeDiskUUID</code></p></td>
 <td style="text-align: left;"><p>Verifies that all the vSphere virtual machines include the <code>disk.enableUUID=TRUE</code> configuration.</p>
 <p>If this check fails, see the <a href="https://access.redhat.com/solutions/4606201">How to check <code>disk.EnableUUID</code> parameter from VM in vSphere</a> Red Hat Knowledgebase solution.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>CheckNodeProviderID</code></p></td>
 <td style="text-align: left;"><p>Verifies that all nodes have the <code>ProviderID</code> configuration from vSphere vCenter. This check fails when the output from the following command does not include a provider ID for each node.</p>
 <pre class="terminal"><code>$ oc get nodes -o custom-columns=NAME:.metadata.name,PROVIDER_ID:.spec.providerID,UUID:.status.nodeInfo.systemUUID</code></pre>
 <p>If this check fails, reference the vSphere product documentation on how to set the provider ID for each node in the cluster.</p></td>
 </tr>
-<tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>CollectNodeESXiVersion</code></p></td>
 <td style="text-align: left;"><p>Reports the version of the ESXi hosts that run nodes.</p></td>
 </tr>
-<tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>CollectNodeHWVersion</code></p></td>
 <td style="text-align: left;"><p>Reports the virtual machine hardware version for a node.</p></td>
 </tr>
 </tbody>
 </table>
+
+Node configuration checks
 
 # About the storage class configuration check
 
@@ -321,15 +243,15 @@ The `systemd` process has a 255 character limit for the length of the fully qual
 
 The vSphere Problem Detector Operator exposes the following metrics for use by the OpenShift Container Platform monitoring stack.
 
-| Name | Description |
-|----|----|
-| `vsphere_cluster_check_total` | Cumulative number of cluster-level checks that the vSphere Problem Detector Operator performed. This count includes both successes and failures. |
-| `vsphere_cluster_check_errors` | Number of failed cluster-level checks that the vSphere Problem Detector Operator performed. For example, a value of `1` indicates that one cluster-level check failed. |
-| `vsphere_esxi_version_total` | Counts the number of ESXi hosts with a specific version. Note that if a host runs more than one node, the vSphere Problem Detector Operator counts the host only once. |
-| `vsphere_node_check_total` | Cumulative number of node-level checks that the vSphere Problem Detector Operator performed. This count includes both successes and failures. |
-| `vsphere_node_check_errors` | Counts the number of failed node-level checks that the vSphere Problem Detector Operator performed. For example, a value of `1` indicates that one node-level check failed. |
-| `vsphere_node_hw_version_total` | Number of vSphere nodes with a specific hardware version. |
-| `vsphere_vcenter_info` | Information about the vSphere vCenter Server. |
+| Name                            | Description                                                                                                                                                                 |
+|---------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `vsphere_cluster_check_total`   | Cumulative number of cluster-level checks that the vSphere Problem Detector Operator performed. This count includes both successes and failures.                            |
+| `vsphere_cluster_check_errors`  | Number of failed cluster-level checks that the vSphere Problem Detector Operator performed. For example, a value of `1` indicates that one cluster-level check failed.      |
+| `vsphere_esxi_version_total`    | Counts the number of ESXi hosts with a specific version. Note that if a host runs more than one node, the vSphere Problem Detector Operator counts the host only once.      |
+| `vsphere_node_check_total`      | Cumulative number of node-level checks that the vSphere Problem Detector Operator performed. This count includes both successes and failures.                               |
+| `vsphere_node_check_errors`     | Counts the number of failed node-level checks that the vSphere Problem Detector Operator performed. For example, a value of `1` indicates that one node-level check failed. |
+| `vsphere_node_hw_version_total` | Number of vSphere nodes with a specific hardware version.                                                                                                                   |
+| `vsphere_vcenter_info`          | Information about the vSphere vCenter Server.                                                                                                                               |
 
 Metrics exposed by the vSphere Problem Detector Operator
 

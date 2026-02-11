@@ -12,14 +12,9 @@ The following scenarios are examples of when the `create-only` mode might be of 
 
 Pause reconciliation of the operands by enabling `create-only` mode. This setting prevents the Operator from automatically reverting your manual changes to the desired state. You can enable this mode by updating the Operator’s subscription object.
 
-> [!IMPORTANT]
-> When `create-only` mode is disabled, the Operator overwrites the resources if any conflicts exist.
+<div class="important">
 
-<div>
-
-<div class="title">
-
-Prerequisites
+When `create-only` mode is disabled, the Operator overwrites the resources if any conflicts exist.
 
 </div>
 
@@ -27,15 +22,7 @@ Prerequisites
 
 - You have installed the SPIRE Servers, Agents, SPIFFE Container Storage Interface (CSI), and an OpenID Connect (OIDC) Discovery Provider and are in running status.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
+<!-- -->
 
 - To pause reconciling the operands resources managed by the Operator, add the environment variable `CREATE_ONLY_MODE`: `true` in the subscription object by running the following command:
 
@@ -43,23 +30,13 @@ Procedure
   $ oc -n $OPERATOR_NAMESPACE patch subscription openshift-zero-trust-workload-identity-manager --type='merge' -p '{"spec":{"config":{"env":[{"name":"CREATE_ONLY_MODE","value":"true"}]}}}'
   ```
 
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
+<!-- -->
 
 - Check the status of the `SpireServer` resource to confirm that the `create-only` mode is active. The `status` must be `true` and the `reason` must be `CreateOnlyModeEnabled`.
 
   ``` terminal
   $ oc get SpireServer cluster -o yaml
   ```
-
-</div>
 
 The following is an example that confirms that the 'create-only' mode is active.
 
@@ -83,25 +60,18 @@ status:
     type: CreateOnlyMode
 ```
 
-> [!IMPORTANT]
-> The Operator updates the upgradeable condition to `false` in the `operatorCondition` resource. You might not be able to upgrade the Operator when in `create-only` mode.
+<div class="important">
+
+The Operator updates the upgradeable condition to `false` in the `operatorCondition` resource. You might not be able to upgrade the Operator when in `create-only` mode.
+
+</div>
 
 # Resuming Operator reconciliation
 
 To pause Operator reconciliation for manual configuration or debugging, enable the `create-only` mode. This prevents the controller from overwriting your changes. You can enable this mode by setting the environment variable in the subscription object.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 - To restart reconciling the Operator-managed resources, add the environment variable `CREATE_ONLY_MODE`: `false` in the subscription object by running the following command:
 
   ``` terminal
   $ oc -n $OPERATOR_NAMESPACE patch subscription openshift-zero-trust-workload-identity-manager --type='merge' -p '{"spec":{"config":{"env":[{"name":"CREATE_ONLY_MODE","value":"false"}]}}}'
   ```
-
-</div>

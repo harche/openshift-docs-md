@@ -30,10 +30,13 @@ Default SCCs are created during installation and when you install some Operators
 
 For information about default security context constraints, see [Default security context constraints](../../../authentication/managing-security-context-constraints.xml#default-sccs_configuring-internal-oauth).
 
-> [!IMPORTANT]
-> Do not modify the default SCCs. Customizing the default SCCs can lead to issues when some of the platform pods deploy or OpenShift Container Platform is upgraded. Additionally, the default SCC values are reset to the defaults during some cluster upgrades, which discards all customizations to those SCCs.
->
-> Instead of modifying the default SCCs, create and modify your own SCCs as needed. For detailed steps, see [Creating security context constraints](../../../authentication/managing-security-context-constraints.xml#security-context-constraints-creating_configuring-internal-oauth).
+<div class="important">
+
+Do not modify the default SCCs. Customizing the default SCCs can lead to issues when some of the platform pods deploy or OpenShift Container Platform is upgraded. Additionally, the default SCC values are reset to the defaults during some cluster upgrades, which discards all customizations to those SCCs.
+
+Instead of modifying the default SCCs, create and modify your own SCCs as needed. For detailed steps, see [Creating security context constraints](../../../authentication/managing-security-context-constraints.xml#security-context-constraints-creating_configuring-internal-oauth).
+
+</div>
 
 You can use the following basic SCCs:
 

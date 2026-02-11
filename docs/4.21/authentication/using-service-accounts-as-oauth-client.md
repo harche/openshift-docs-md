@@ -90,8 +90,11 @@ The `first` postfix is used to tie the annotations together. Assuming that the `
 | Port     | "//:8000"       |
 | Path     | "examplepath"   |
 
-> [!NOTE]
-> Specifying a hostname override will replace the hostname data from the referenced object, which is not likely to be desired behavior.
+<div class="note">
+
+Specifying a hostname override will replace the hostname data from the referenced object, which is not likely to be desired behavior.
+
+</div>
 
 Any combination of the above syntax can be combined using the following format:
 

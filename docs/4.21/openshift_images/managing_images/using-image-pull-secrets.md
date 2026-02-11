@@ -2,21 +2,19 @@ To authenticate with container registries and pull images across OpenShift Conta
 
 You first obtain the registry authentication credentials, which are typically found in the `~/.docker/config.json` file for Docker or the `~/.config/containers/auth.json` file for Podman, created by the [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret) process. This content is then used to create or update the global `pullSecret` object within your cluster, allowing access to images from [quay.io](https://quay.io/) and [registry.redhat.io](https://registry.redhat.io).
 
-> [!NOTE]
-> If you are using the OpenShift image registry and are pulling from image streams located in the same project, then your pod service account should already have the correct permissions. No additional action should be required.
+<div class="note">
+
+If you are using the OpenShift image registry and are pulling from image streams located in the same project, then your pod service account should already have the correct permissions. No additional action should be required.
+
+</div>
 
 # Allowing pods to reference images across projects
 
 To allow pods in one OpenShift Container Platform project to reference images from another project, you can bind a service account to the `system:image-puller` role in the target project. Use the `oc policy add-role-to-user` or `oc policy add-role-to-group` command to grant cross-project image access.
 
-> [!NOTE]
-> When you create a pod service account or a namespace, wait until the service account is provisioned with a Docker pull secret. If you create a pod before its service account is fully provisioned, the pod fails to access the OpenShift image registry.
+<div class="note">
 
-<div>
-
-<div class="title">
-
-Procedure
+When you create a pod service account or a namespace, wait until the service account is provisioned with a Docker pull secret. If you create a pod before its service account is fully provisioned, the pod fails to access the OpenShift image registry.
 
 </div>
 
@@ -36,8 +34,6 @@ Procedure
         --namespace=project-b
     ```
 
-</div>
-
 # Allowing pods to reference images from other secured registries
 
 Pull secrets enable pods in OpenShift Container Platform to authenticate with secured registries and pull container images. Docker and Podman store authentication credentials in configuration files that you can use to create pull secrets for your service accounts.
@@ -48,14 +44,15 @@ The following files store your authentication information if you have previously
 
 - **Podman**: By default, Podman uses `$HOME/.config/containers/auth.json`.
 
-> [!NOTE]
-> Both Docker and Podman credential files and the associated pull secret can contain multiple references to the same registry if they have unique paths, for example, `quay.io` and `quay.io/<example_repository>`. However, neither Docker nor Podman support multiple entries for the exact same registry path.
+<div class="note">
 
-<div class="formalpara">
+Both Docker and Podman credential files and the associated pull secret can contain multiple references to the same registry if they have unique paths, for example, `quay.io` and `quay.io/<example_repository>`. However, neither Docker nor Podman support multiple entries for the exact same registry path.
 
-<div class="title">
+</div>
 
-Example `config.json` file
+<div class="formalpara-title">
+
+**Example `config.json` file**
 
 </div>
 
@@ -78,13 +75,9 @@ Example `config.json` file
 }
 ```
 
-</div>
+<div class="formalpara-title">
 
-<div class="formalpara">
-
-<div class="title">
-
-Example pull secret
+**Example pull secret**
 
 </div>
 
@@ -102,19 +95,9 @@ metadata:
 type: Opaque
 ```
 
-</div>
-
 ## Creating a pull secret
 
 To authenticate with container registries in OpenShift Container Platform, you can create pull secrets from existing Docker or Podman authentication files. You can also create secrets by providing registry credentials directly by using the `oc create secret docker-registry` command.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a secret from an existing authentication file:
 
@@ -144,19 +127,9 @@ Procedure
         --docker-email=<email>
     ```
 
-</div>
-
 ## Using a pull secret in a workload
 
 To allow workloads to pull images from private registries in OpenShift Container Platform, you can link the pull secret to a service account by entering the `oc secrets link` command or by defining it directly in your workload configuration YAML file.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Link the pull secret to a service account by entering the following command. Note that the name of the service account should match the name of the service account that pod uses. The default service account is `default`.
 
@@ -170,11 +143,9 @@ Procedure
     $ oc get serviceaccount default -o yaml
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -196,15 +167,11 @@ Procedure
     - name: <pull_secret_name>
     ```
 
-    </div>
-
 3.  Optional: Instead of linking the secret to a service account, you can alternatively reference it directly in your pod or workload definition. This is useful for GitOps workflows such as ArgoCD. For example:
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example pod specification
+    **Example pod specification**
 
     </div>
 
@@ -221,13 +188,9 @@ Procedure
       - name: <pull_secret_name>
     ```
 
-    </div>
+    <div class="formalpara-title">
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example ArgoCD workflow
+    **Example ArgoCD workflow**
 
     </div>
 
@@ -242,21 +205,9 @@ Procedure
       - name: <pull_secret_name>
     ```
 
-    </div>
-
-</div>
-
 ## Pulling from private registries with delegated authentication
 
 To pull images from private registries that delegate authentication to a separate service in OpenShift Container Platform, you can create pull secrets for both the authentication server and the registry endpoint. Use the `oc create secret docker-registry` command to create separate secrets for each service.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create a secret for the delegated authentication server by entering the following command:
 
@@ -280,38 +231,21 @@ Procedure
         private-registry
     ```
 
-</div>
-
 # Updating the global cluster pull secret
 
 To add new registries or update authentication for your OpenShift Container Platform cluster, you can update the global pull secret by appending new credentials to the *additional-pull-secret*. To do this, you can use the `oc set data secret/additional-pull-secret -n kube-system` command. Hypershift manages the new credential propagation among the HostedCluster nodes.
 
-> [!IMPORTANT]
-> The global pull secret is a HostedControlPlane feature only and is not an OCP standalone feature.
->
-> To transfer your cluster to another owner, you must initiate the transfer in [OpenShift Cluster Manager](https://console.redhat.com/openshift) and then update the pull secret on the cluster. Updating a cluster’s pull secret without initiating the transfer in OpenShift Cluster Manager causes the cluster to stop reporting Telemetry metrics in OpenShift Cluster Manager.
->
-> For more information, see *Transferring cluster ownership* under *Additional resources* in the Red Hat OpenShift Cluster Manager documentation.
+<div class="important">
 
-<div>
+The global pull secret is a HostedControlPlane feature only and is not an OCP standalone feature.
 
-<div class="title">
+To transfer your cluster to another owner, you must initiate the transfer in [OpenShift Cluster Manager](https://console.redhat.com/openshift) and then update the pull secret on the cluster. Updating a cluster’s pull secret without initiating the transfer in OpenShift Cluster Manager causes the cluster to stop reporting Telemetry metrics in OpenShift Cluster Manager.
 
-Prerequisites
+For more information, see *Transferring cluster ownership* under *Additional resources* in the Red Hat OpenShift Cluster Manager documentation.
 
 </div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Optional: To append a new pull secret to the existing pull secret:
 
@@ -367,11 +301,9 @@ Procedure
 
     The secret must contain a valid DockerConfigJSON format.
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example pull secret
+    **Example pull secret**
 
     </div>
 
@@ -385,8 +317,6 @@ Procedure
     data:
       .dockerconfigjson: <base64-encoded-docker-config-json>
     ```
-
-    </div>
 
     This results in the following states of the each pull secret:
 
@@ -404,16 +334,4 @@ Procedure
 
     This triggers the automatic cleanup process across your nodes.
 
-</div>
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
 - [Transferring cluster ownership](https://docs.redhat.com/en/documentation/openshift_cluster_manager/1-latest/html-single/managing_clusters/index#transferring-cluster-ownership_downloading-and-updating-pull-secrets)
-
-</div>

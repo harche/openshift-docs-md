@@ -1,33 +1,18 @@
 To migrate a virtual machine (VM) across OpenShift Container Platform clusters, you must configure an OpenShift Container Platform provider for each cluster that you are including in the migration. If MTV is already installed on a cluster, a local provider already exists.
 
-> [!IMPORTANT]
-> Cross-cluster live migration is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
 
-<div>
+Cross-cluster live migration is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
-<div class="title">
-
-Next steps
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
 - See [Adding a Red Hat OpenShift Virtualization source provider](https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.9/html-single/installing_and_using_the_migration_toolkit_for_virtualization/index#adding-source-provider_cnv) and [Adding an OpenShift Virtualization destination provider](https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.9/html-single/installing_and_using_the_migration_toolkit_for_virtualization/index#adding-source-provider_dest_cnv).
 
-</div>
-
 # Configuring the root certificate authority for providers
 
 You must configure an OpenShift Container Platform provider for each cluster that you are including in the migration, and each provider requires a certificate authority (CA) for the cluster. It is important to configure the root CA for the entire cluster to avoid CA expiration, which causes the provider to fail.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Run the following command against the cluster for which you are creating the provider:
 
@@ -47,19 +32,9 @@ Procedure
     -----END CERTIFICATE-----
     ```
 
-</div>
-
 # Creating the long-lived service account and token to use with MTV providers
 
 When you register an OpenShift Virtualization provider in the Migration Toolkit for Virtualization (MTV) web console, you must supply credentials that allow MTV to interact with the cluster. Creating a long-lived service account and cluster role binding gives MTV persistent permissions to read and create virtual machine resources during migration.
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Create the cluster role as shown in the following example:
 
@@ -229,5 +204,3 @@ Procedure
 8.  Copy the printed token.
 
 9.  In the Migration Toolkit for Virtualization (MTV) web console, when you create a provider and select **OpenShift Virtualization**, paste the token into the **Service account bearer token** field.
-
-</div>

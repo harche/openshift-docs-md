@@ -22,8 +22,11 @@ There are opportunities for modifying RHCOS before installation, during installa
 
 For bare metal installations, you can add hardening features to RHCOS before beginning the OpenShift Container Platform installation. For example, you can add kernel options when you boot the RHCOS installer to turn security features on or off, such as various SELinux booleans or low-level settings, such as symmetric multithreading.
 
-> [!WARNING]
-> Disabling SELinux on RHCOS nodes is not supported.
+<div class="warning">
+
+Disabling SELinux on RHCOS nodes is not supported.
+
+</div>
 
 Although bare metal RHCOS installations are more difficult, they offer the opportunity of getting operating system changes in place before starting the OpenShift Container Platform installation. This can be important when you need to ensure that certain features, such as disk encryption or special networking settings, be set up at the earliest possible moment.
 
@@ -40,14 +43,6 @@ After the OpenShift Container Platform cluster is up and running, there are seve
 - Machine config: `MachineConfig` objects contain a subset of Ignition configs in the same format. By applying machine configs to all worker or control plane nodes, you can ensure that the next node of the same type that is added to the cluster has the same changes applied.
 
 All of the features noted here are described in the OpenShift Container Platform product documentation.
-
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
 
 - [OpenShift Security Guide](https://access.redhat.com/articles/5059881)
 
@@ -70,5 +65,3 @@ Additional resources
 - [Support for FIPS cryptography](../../installing/overview/installing-fips.xml#installing-fips)
 
 - [RHEL core crypto components](https://access.redhat.com/articles/3359851)
-
-</div>

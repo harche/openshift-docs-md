@@ -18,8 +18,11 @@ This release of the Custom Metrics Autoscaler Operator 2.17.2 addresses Common V
 
 - [RHSA-2025:16124](https://access.redhat.com/errata/RHSA-2025:16124)
 
-> [!IMPORTANT]
-> Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of Kubernetes-based Event Driven Autoscaler (KEDA).
+<div class="important">
+
+Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of Kubernetes-based Event Driven Autoscaler (KEDA).
+
+</div>
 
 ## New features and enhancements
 
@@ -41,21 +44,13 @@ The Cluster Metrics Autoscaler Operator now supports bound service account token
 
 - Previously, the KEDA version in the `keda-operator` deployment object log reported that the Custom Metrics Autoscaler Operator was based on an incorrect KEDA version. With this fix, the correct KEDA version is reported in the log. ([OCPBUGS-58129](https://issues.redhat.com/browse/OCPBUGS-58129))
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
+<!-- -->
 
 - [Editing the Keda Controller CR](../../../nodes/cma/nodes-cma-autoscaling-custom-install.xml#nodes-cma-autoscaling-keda-controller-edit_nodes-cma-autoscaling-custom-install)
 
 - [Understanding the Kubernetes workload trigger](../../../nodes/cma/nodes-cma-autoscaling-custom-trigger.xml#nodes-cma-autoscaling-custom-trigger-workload_nodes-cma-autoscaling-custom-trigger)
 
 - [Understanding custom metrics autoscaler trigger authentications](../../../nodes/cma/nodes-cma-autoscaling-custom-trigger-auth.xml#nodes-cma-autoscaling-custom-trigger-auth)
-
-</div>
 
 # Custom Metrics Autoscaler Operator 2.15.1-4 release notes
 
@@ -65,8 +60,11 @@ This release of the Custom Metrics Autoscaler Operator 2.15.1-4 addresses Common
 
 - [RHSA-2025:3501](https://access.redhat.com/errata/RHSA-2025:3501)
 
-> [!IMPORTANT]
-> Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of Kubernetes-based Event Driven Autoscaler (KEDA).
+<div class="important">
+
+Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of Kubernetes-based Event Driven Autoscaler (KEDA).
+
+</div>
 
 ## New features and enhancements
 
@@ -78,8 +76,11 @@ With this version of the Custom Metrics Autoscaler Operator, you can now install
 
 This release of the Custom Metrics Autoscaler Operator 2.14.1-467 provides a CVE and a bug fix for running the Operator in an OpenShift Container Platform cluster. The following advisory is available for the [RHSA-2024:7348](https://access.redhat.com/errata/RHSA-2024:7348).
 
-> [!IMPORTANT]
-> Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of Kubernetes-based Event Driven Autoscaler (KEDA).
+<div class="important">
+
+Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of Kubernetes-based Event Driven Autoscaler (KEDA).
+
+</div>
 
 ## Bug fixes
 
@@ -89,8 +90,11 @@ This release of the Custom Metrics Autoscaler Operator 2.14.1-467 provides a CVE
 
 This release of the Custom Metrics Autoscaler Operator 2.14.1-454 provides a CVE, a new feature, and bug fixes for running the Operator in an OpenShift Container Platform cluster. The following advisory is available for the [RHBA-2024:5865](https://access.redhat.com/errata/RHBA-2024:5865).
 
-> [!IMPORTANT]
-> Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of Kubernetes-based Event Driven Autoscaler (KEDA).
+<div class="important">
+
+Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of Kubernetes-based Event Driven Autoscaler (KEDA).
+
+</div>
 
 ## New features and enhancements
 
@@ -108,8 +112,11 @@ For more information, see [Understanding the Cron trigger](../../../nodes/cma/no
 
 This release of the Custom Metrics Autoscaler Operator 2.13.1-421 provides a new feature and a bug fix for running the Operator in an OpenShift Container Platform cluster. The following advisory is available for the [RHBA-2024:4837](https://access.redhat.com/errata/RHBA-2024:4837).
 
-> [!IMPORTANT]
-> Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of Kubernetes-based Event Driven Autoscaler (KEDA).
+<div class="important">
+
+Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of Kubernetes-based Event Driven Autoscaler (KEDA).
+
+</div>
 
 ## New features and enhancements
 
@@ -127,8 +134,11 @@ For more information, see [Custom CA certificates for the Custom Metrics Autosca
 
 This release of the Custom Metrics Autoscaler Operator 2.12.1-394 provides a bug fix for running the Operator in an OpenShift Container Platform cluster. The following advisory is available for the [RHSA-2024:2901](https://access.redhat.com/errata/RHSA-2024:2901).
 
-> [!IMPORTANT]
-> Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of Kubernetes-based Event Driven Autoscaler (KEDA).
+<div class="important">
+
+Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of Kubernetes-based Event Driven Autoscaler (KEDA).
+
+</div>
 
 ## Bug fixes
 
@@ -148,8 +158,11 @@ This release of the Custom Metrics Autoscaler Operator 2.12.1-394 provides a bug
 
 This release of the Custom Metrics Autoscaler Operator 2.12.1-384 provides a bug fix for running the Operator in an OpenShift Container Platform cluster. The following advisory is available for the [RHBA-2024:2043](https://access.redhat.com/errata/RHBA-2024:2043).
 
-> [!IMPORTANT]
-> Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of KEDA.
+<div class="important">
+
+Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of KEDA.
+
+</div>
 
 ## Bug fixes
 
@@ -159,8 +172,11 @@ This release of the Custom Metrics Autoscaler Operator 2.12.1-384 provides a bug
 
 This release of the Custom Metrics Autoscaler Operator 2.12.1-376 provides security updates and bug fixes for running the Operator in an OpenShift Container Platform cluster. The following advisory is available for the [RHSA-2024:1812](https://access.redhat.com/errata/RHSA-2024:1812).
 
-> [!IMPORTANT]
-> Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of KEDA.
+<div class="important">
+
+Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of KEDA.
+
+</div>
 
 ## Bug fixes
 
@@ -172,8 +188,11 @@ This release of the Custom Metrics Autoscaler Operator 2.12.1-376 provides secur
 
 This release of the Custom Metrics Autoscaler Operator 2.11.2-322 provides security updates and bug fixes for running the Operator in an OpenShift Container Platform cluster. The following advisory is available for the [RHSA-2023:6144](https://access.redhat.com/errata/RHSA-2023:6144).
 
-> [!IMPORTANT]
-> Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of KEDA.
+<div class="important">
+
+Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of KEDA.
+
+</div>
 
 ## Bug fixes
 
@@ -183,8 +202,11 @@ This release of the Custom Metrics Autoscaler Operator 2.11.2-322 provides secur
 
 This release of the Custom Metrics Autoscaler Operator 2.11.2-311 provides new features and bug fixes for running the Operator in an OpenShift Container Platform cluster. The components of the Custom Metrics Autoscaler Operator 2.11.2-311 were released in [RHBA-2023:5981](https://access.redhat.com/errata/RHBA-2023:5981).
 
-> [!IMPORTANT]
-> Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of KEDA.
+<div class="important">
+
+Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of KEDA.
+
+</div>
 
 ## New features and enhancements
 
@@ -202,8 +224,11 @@ The Custom Metrics Autoscaler Operator 2.11.2-311 can be installed on Red Hat Op
 
 This release of the Custom Metrics Autoscaler Operator 2.10.1-267 provides new features and bug fixes for running the Operator in an OpenShift Container Platform cluster. The components of the Custom Metrics Autoscaler Operator 2.10.1-267 were released in [RHBA-2023:4089](https://access.redhat.com/errata/RHBA-2023:4089).
 
-> [!IMPORTANT]
-> Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of KEDA.
+<div class="important">
+
+Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of KEDA.
+
+</div>
 
 ## Bug fixes
 
@@ -219,8 +244,11 @@ This release of the Custom Metrics Autoscaler Operator 2.10.1-267 provides new f
 
 This release of the Custom Metrics Autoscaler Operator 2.10.1 provides new features and bug fixes for running the Operator in an OpenShift Container Platform cluster. The components of the Custom Metrics Autoscaler Operator 2.10.1 were released in [RHEA-2023:3199](https://access.redhat.com/errata/RHEA-2023:3199).
 
-> [!IMPORTANT]
-> Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of KEDA.
+<div class="important">
+
+Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of KEDA.
+
+</div>
 
 ## New features and enhancements
 
@@ -228,10 +256,13 @@ This release of the Custom Metrics Autoscaler Operator 2.10.1 provides new featu
 
 The Custom Metrics Autoscaler Operator is now generally available as of Custom Metrics Autoscaler Operator version 2.10.1.
 
-> [!IMPORTANT]
-> Scaling by using a scaled job is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="important">
+
+Scaling by using a scaled job is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 ### Performance metrics
 
@@ -257,8 +288,11 @@ Because the horizontal pod autoscaler (HPA) cannot scale to or from 0 replicas, 
 
 This release of the Custom Metrics Autoscaler Operator 2.8.2-174 provides new features and bug fixes for running the Operator in an OpenShift Container Platform cluster. The components of the Custom Metrics Autoscaler Operator 2.8.2-174 were released in [RHEA-2023:1683](https://access.redhat.com/errata/RHEA-2023:1683).
 
-> [!IMPORTANT]
-> The Custom Metrics Autoscaler Operator version 2.8.2-174 is a [Technology Preview](https://access.redhat.com/support/offerings/techpreview/) feature.
+<div class="important">
+
+The Custom Metrics Autoscaler Operator version 2.8.2-174 is a [Technology Preview](https://access.redhat.com/support/offerings/techpreview/) feature.
+
+</div>
 
 ## New features and enhancements
 
@@ -274,8 +308,11 @@ You can now collect data about the Custom Metrics Autoscaler Operator and its co
 
 This release of the Custom Metrics Autoscaler Operator 2.8.2 provides new features and bug fixes for running the Operator in an OpenShift Container Platform cluster. The components of the Custom Metrics Autoscaler Operator 2.8.2 were released in [RHSA-2023:1042](https://access.redhat.com/errata/RHSA-2023:1042).
 
-> [!IMPORTANT]
-> The Custom Metrics Autoscaler Operator version 2.8.2 is a [Technology Preview](https://access.redhat.com/support/offerings/techpreview/) feature.
+<div class="important">
+
+The Custom Metrics Autoscaler Operator version 2.8.2 is a [Technology Preview](https://access.redhat.com/support/offerings/techpreview/) feature.
+
+</div>
 
 ## New features and enhancements
 

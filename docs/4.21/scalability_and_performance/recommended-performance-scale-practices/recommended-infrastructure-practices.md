@@ -5,21 +5,27 @@ This topic provides recommended performance and scalability practices for infras
 *Infrastructure nodes* are nodes that are labeled to run pieces of the OpenShift Container Platform environment. The infrastructure node resource requirements depend on the cluster age, nodes, and objects in the cluster, as these factors can lead to an increase in the number of metrics or time series in Prometheus. The following infrastructure node size recommendations are based on the results observed in cluster-density testing detailed in the **Control plane node sizing** section, where the monitoring stack and the default ingress-controller were moved to these nodes.
 
 | Number of worker nodes | Cluster density, or number of namespaces | CPU cores | Memory (GB) |
-|----|----|----|----|
-| 27 | 500 | 4 | 24 |
-| 120 | 1000 | 8 | 48 |
-| 252 | 4000 | 16 | 128 |
-| 501 | 4000 | 32 | 128 |
+|------------------------|------------------------------------------|-----------|-------------|
+| 27                     | 500                                      | 4         | 24          |
+| 120                    | 1000                                     | 8         | 48          |
+| 252                    | 4000                                     | 16        | 128         |
+| 501                    | 4000                                     | 32        | 128         |
 
 In general, three infrastructure nodes are recommended per cluster.
 
-> [!IMPORTANT]
-> These sizing recommendations should be used as a guideline. Prometheus is a highly memory intensive application; the resource usage depends on various factors including the number of nodes, objects, the Prometheus metrics scraping interval, metrics or time series, and the age of the cluster. In addition, the router resource usage can also be affected by the number of routes and the amount/type of inbound requests.
->
-> These recommendations apply only to infrastructure nodes hosting Monitoring, Ingress and Registry infrastructure components installed during cluster creation.
+<div class="important">
 
-> [!NOTE]
-> In OpenShift Container Platform 4.17, half of a CPU core (500 millicore) is now reserved by the system by default compared to OpenShift Container Platform 3.11 and previous versions. This influences the stated sizing recommendations.
+These sizing recommendations should be used as a guideline. Prometheus is a highly memory intensive application; the resource usage depends on various factors including the number of nodes, objects, the Prometheus metrics scraping interval, metrics or time series, and the age of the cluster. In addition, the router resource usage can also be affected by the number of routes and the amount/type of inbound requests.
+
+These recommendations apply only to infrastructure nodes hosting Monitoring, Ingress and Registry infrastructure components installed during cluster creation.
+
+</div>
+
+<div class="note">
+
+In OpenShift Container Platform 4.17, half of a CPU core (500 millicore) is now reserved by the system by default compared to OpenShift Container Platform 3.11 and previous versions. This influences the stated sizing recommendations.
+
+</div>
 
 # Scaling the Cluster Monitoring Operator
 
@@ -31,10 +37,6 @@ Red Hat performed various tests for different scale sizes.
 
 <div class="note">
 
-<div class="title">
-
-</div>
-
 - The following Prometheus storage requirements are not prescriptive and should be used as a reference. Higher resource consumption might be observed in your cluster depending on workload activity and resource density, including the number of pods, containers, routes, or other resources exposing metrics collected by Prometheus.
 
 - You can configure the size-based data retention policy to suit your storage requirements.
@@ -42,11 +44,11 @@ Red Hat performed various tests for different scale sizes.
 </div>
 
 | Number of nodes | Number of pods (2 containers per pod) | Prometheus storage growth per day | Prometheus storage growth per 15 days | Network (per tsdb chunk) |
-|----|----|----|----|----|
-| 50 | 1800 | 6.3 GB | 94 GB | 16 MB |
-| 100 | 3600 | 13 GB | 195 GB | 26 MB |
-| 150 | 5400 | 19 GB | 283 GB | 36 MB |
-| 200 | 7200 | 25 GB | 375 GB | 46 MB |
+|-----------------|---------------------------------------|-----------------------------------|---------------------------------------|--------------------------|
+| 50              | 1800                                  | 6.3 GB                            | 94 GB                                 | 16 MB                    |
+| 100             | 3600                                  | 13 GB                             | 195 GB                                | 26 MB                    |
+| 150             | 5400                                  | 19 GB                             | 283 GB                                | 36 MB                    |
+| 200             | 7200                                  | 25 GB                             | 375 GB                                | 46 MB                    |
 
 Prometheus Database storage requirements based on number of nodes/pods in the cluster
 
@@ -54,8 +56,11 @@ Approximately 20 percent of the expected size was added as overhead to ensure th
 
 The above calculation is for the default OpenShift Container Platform Cluster Monitoring Operator.
 
-> [!NOTE]
-> CPU utilization has minor impact. The ratio is approximately 1 core out of 40 per 50 nodes and 1800 pods.
+<div class="note">
+
+CPU utilization has minor impact. The ratio is approximately 1 core out of 40 per 50 nodes and 1800 pods.
+
+</div>
 
 **Recommendations for OpenShift Container Platform**
 
@@ -67,17 +72,13 @@ The above calculation is for the default OpenShift Container Platform Cluster Mo
 
 You can increase the storage capacity for the Prometheus component in the cluster monitoring stack.
 
-<div class="formalpara">
+<div class="formalpara-title">
 
-<div class="title">
-
-Procedure
+**Procedure**
 
 </div>
 
 To increase the storage capacity for Prometheus:
-
-</div>
 
 1.  Create a YAML configuration file, `cluster-monitoring-config.yaml`. For example:
 

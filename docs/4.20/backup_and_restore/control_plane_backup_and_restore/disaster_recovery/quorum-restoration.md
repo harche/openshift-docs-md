@@ -8,31 +8,19 @@ The `quorum-restore.sh` script instantly brings back a new single-member etcd cl
 
 For high availability (HA) clusters, a three-node HA cluster requires you to shut down etcd on two hosts to avoid a cluster split. On four-node and five-node HA clusters, you must shut down three hosts. Quorum requires a simple majority of nodes. The minimum number of nodes required for quorum on a three-node HA cluster is two. On four-node and five-node HA clusters, the minimum number of nodes required for quorum is three. If you start a new cluster from backup on your recovery host, the other etcd members might still be able to form quorum and continue service.
 
-> [!WARNING]
-> You might experience data loss if the host that runs the restoration does not have all data replicated to it.
+<div class="warning">
 
-> [!IMPORTANT]
-> Quorum restoration should not be used to decrease the number of nodes outside of the restoration process. Decreasing the number of nodes results in an unsupported cluster configuration.
+You might experience data loss if the host that runs the restoration does not have all data replicated to it.
 
-<div>
+</div>
 
-<div class="title">
+<div class="important">
 
-Prerequisites
+Quorum restoration should not be used to decrease the number of nodes outside of the restoration process. Decreasing the number of nodes results in an unsupported cluster configuration.
 
 </div>
 
 - You have SSH access to the node used to restore quorum.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
 
 1.  Select a control plane host to use as the recovery host. You run the restore operation on this host.
 
@@ -70,15 +58,21 @@ Procedure
 
     - If you use a user-provisioned bare-metal installation, you can re-create a control plane machine by using the same method that you used to originally create it. For more information, see "Installing a user-provisioned cluster on bare metal".
 
-      > [!WARNING]
-      > Do not delete and re-create the machine for the recovery host.
+      <div class="warning">
+
+      Do not delete and re-create the machine for the recovery host.
+
+      </div>
 
     - If you are running installer-provisioned infrastructure, or you used the Machine API to create your machines, follow these steps:
 
-      > [!WARNING]
-      > Do not delete and re-create the machine for the recovery host.
-      >
-      > For bare-metal installations on installer-provisioned infrastructure, control plane machines are not re-created. For more information, see "Replacing a bare-metal control plane node".
+      <div class="warning">
+
+      Do not delete and re-create the machine for the recovery host.
+
+      For bare-metal installations on installer-provisioned infrastructure, control plane machines are not re-created. For more information, see "Replacing a bare-metal control plane node".
+
+      </div>
 
       1.  Obtain the machine for one of the offline nodes.
 
@@ -88,11 +82,9 @@ Procedure
           $ oc get machines -n openshift-machine-api -o wide
           ```
 
-          <div class="formalpara">
+          <div class="formalpara-title">
 
-          <div class="title">
-
-          Example output
+          **Example output**
 
           </div>
 
@@ -105,8 +97,6 @@ Procedure
           clustername-8qw5l-worker-us-east-1b-lrdxb   Running   m4.large    us-east-1   us-east-1b   3h28m   ip-10-0-144-248.ec2.internal   aws:///us-east-1b/i-0cb45ac45a166173b   running
           clustername-8qw5l-worker-us-east-1c-pkg26   Running   m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
           ```
-
-          </div>
 
           - This is the control plane machine for the offline node, `ip-10-0-131-183.ec2.internal`.
 
@@ -126,11 +116,9 @@ Procedure
     $ oc get machines -n openshift-machine-api -o wide
     ```
 
-    <div class="formalpara">
+    <div class="formalpara-title">
 
-    <div class="title">
-
-    Example output
+    **Example output**
 
     </div>
 
@@ -144,8 +132,6 @@ Procedure
     clustername-8qw5l-worker-us-east-1c-pkg26   Running        m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
     ```
 
-    </div>
-
     - The new machine, `clustername-8qw5l-master-3` is being created and is ready after the phase changes from `Provisioning` to `Running`.
 
       It might take a few minutes for the new machine to be created. The etcd cluster Operator will automatically synchronize when the machine or node returns to a healthy state.
@@ -158,26 +144,17 @@ Procedure
     $ oc adm wait-for-stable-cluster
     ```
 
-    > [!NOTE]
-    > It can take up to 15 minutes for the control plane to recover.
+    <div class="note">
 
-</div>
+    It can take up to 15 minutes for the control plane to recover.
 
-<div>
-
-<div class="title">
-
-Troubleshooting
-
-</div>
+    </div>
 
 - If you see no progress rolling out the etcd static pods, you can force redeployment from the etcd cluster Operator by running the following command:
 
   ``` terminal
   $ oc patch etcd cluster -p='{"spec": {"forceRedeploymentReason": "recovery-'"$(date --rfc-3339=ns )"'"}}' --type=merge
   ```
-
-</div>
 
 # Additional resources
 
